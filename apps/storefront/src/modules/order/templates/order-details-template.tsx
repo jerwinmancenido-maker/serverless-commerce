@@ -2,9 +2,11 @@
 
 import { XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
+import type { ManualPaymentProofResponse } from "@lib/data/manual-payment"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Help from "@modules/order/components/help"
 import Items from "@modules/order/components/items"
+import ManualPaymentProof from "@modules/order/components/manual-payment-proof"
 import OrderDetails from "@modules/order/components/order-details"
 import OrderSummary from "@modules/order/components/order-summary"
 import ShippingDetails from "@modules/order/components/shipping-details"
@@ -12,10 +14,12 @@ import React from "react"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
+  manualPaymentProof: ManualPaymentProofResponse | null
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
+  manualPaymentProof,
 }) => {
   return (
     <div className="flex flex-col justify-center gap-y-4">
@@ -34,6 +38,9 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         data-testid="order-details-container"
       >
         <OrderDetails order={order} showStatus />
+        {manualPaymentProof ? (
+          <ManualPaymentProof orderId={order.id} initial={manualPaymentProof} />
+        ) : null}
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />

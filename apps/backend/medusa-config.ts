@@ -15,7 +15,29 @@ module.exports = defineConfig({
   },
   modules: [
     {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/manual-qr-payment",
+            id: "manual-qr",
+            options: {
+              displayName: process.env.MANUAL_QR_DISPLAY_NAME,
+              instructions: process.env.MANUAL_QR_INSTRUCTIONS,
+              qrImageUrl: process.env.MANUAL_QR_IMAGE_URL,
+              expiresInMinutes: process.env.MANUAL_QR_EXPIRES_IN_MINUTES
+                ? Number(process.env.MANUAL_QR_EXPIRES_IN_MINUTES)
+                : undefined,
+            },
+          },
+        ],
+      },
+    },
+    {
       resolve: "./src/modules/bom",
+    },
+    {
+      resolve: "./src/modules/manual-payment",
     },
   ],
 })

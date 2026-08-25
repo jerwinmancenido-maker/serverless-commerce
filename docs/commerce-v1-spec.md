@@ -33,6 +33,11 @@ marketplace connection, or publication of product data.
 - QR images, account details, instructions, proof storage, reviewer roles, and
   expiry periods are configuration or private operational data. They must not
   be committed to source control.
+- `docs/manual-qr-phase-5-contract.md` defines the deferred-authorization,
+  proof-submission, staff-review, audit, storage, and verification boundaries.
+- Phase 5 customer upload and Admin review interfaces are implemented in
+  source. Payment authorization/capture, persistent storage activation, region
+  enablement, and shared-database migration remain separate runtime gates.
 
 ## Shipping and fulfillment
 
