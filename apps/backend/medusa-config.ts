@@ -17,11 +17,7 @@ module.exports = defineConfig({
     vite: (config) => ({
       resolve: {
         dedupe: [
-          ...new Set([
-            ...(config.resolve?.dedupe ?? []),
-            "react",
-            "react-dom",
-          ]),
+          ...new Set([...(config.resolve?.dedupe ?? []), "react", "react-dom"]),
         ],
       },
     }),
@@ -51,6 +47,12 @@ module.exports = defineConfig({
     },
     {
       resolve: "./src/modules/manual-payment",
+    },
+    {
+      resolve: "./src/modules/research-content",
+    },
+    {
+      resolve: "./src/modules/research-tracking",
     },
   ],
 })
