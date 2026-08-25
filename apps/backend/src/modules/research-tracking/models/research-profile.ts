@@ -2,6 +2,7 @@ import { model } from "@medusajs/framework/utils"
 
 import { RESEARCH_PROFILE_STATUSES } from "../contracts/tracking"
 import ResearchConsentEvent from "./research-consent-event"
+import ResearchPreferenceMutation from "./research-preference-mutation"
 import ResearchPrivacyRequest from "./research-privacy-request"
 import TrackedMaterial from "./tracked-material"
 
@@ -17,6 +18,9 @@ const ResearchProfile = model.define("research_profile", {
     mappedBy: "profile",
   }),
   consent_events: model.hasMany(() => ResearchConsentEvent, {
+    mappedBy: "profile",
+  }),
+  preference_mutations: model.hasMany(() => ResearchPreferenceMutation, {
     mappedBy: "profile",
   }),
   privacy_requests: model.hasMany(() => ResearchPrivacyRequest, {

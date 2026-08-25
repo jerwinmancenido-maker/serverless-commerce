@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRightOnRectangle } from "@medusajs/icons"
+import { ArrowRightOnRectangle, Beaker } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"
 import { useParams, usePathname } from "next/navigation"
 
@@ -14,8 +14,10 @@ import User from "@modules/common/icons/user"
 
 const AccountNav = ({
   customer,
+  researchTrackingAvailable,
 }: {
   customer: HttpTypes.StoreCustomer | null
+  researchTrackingAvailable: boolean
 }) => {
   const route = usePathname()
   const { countryCode } = useParams() as { countryCode: string }
@@ -88,6 +90,21 @@ const AccountNav = ({
                     <ChevronDown className="transform -rotate-90" />
                   </LocalizedClientLink>
                 </li>
+                {researchTrackingAvailable && (
+                  <li>
+                    <LocalizedClientLink
+                      href="/account/research-tracking"
+                      className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                      data-testid="research-tracking-link"
+                    >
+                      <div className="flex items-center gap-x-2">
+                        <Beaker />
+                        <span>Research & Tracking</span>
+                      </div>
+                      <ChevronDown className="transform -rotate-90" />
+                    </LocalizedClientLink>
+                  </li>
+                )}
                 <li>
                   <button
                     type="button"
@@ -150,6 +167,17 @@ const AccountNav = ({
                   Orders
                 </AccountNavLink>
               </li>
+              {researchTrackingAvailable && (
+                <li>
+                  <AccountNavLink
+                    href="/account/research-tracking"
+                    route={route!}
+                    data-testid="research-tracking-link"
+                  >
+                    Research & Tracking
+                  </AccountNavLink>
+                </li>
+              )}
               <li className="text-grey-700">
                 <button
                   type="button"

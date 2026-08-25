@@ -73,6 +73,14 @@ type ResearchPrivacyRequestRecord = {
   cancellation_fingerprint_sha256: string | null
 }
 
+type ResearchPreferenceMutationRecord = {
+  id: string
+  profile_id: string
+  idempotency_key: string
+  request_fingerprint_sha256: string
+  response_payload: ResearchProfileProjection
+}
+
 type ProfileSnapshot = Pick<
   ResearchProfileRecord,
   "id" | "timezone" | "locale" | "consent_version" | "consented_at" | "status"
@@ -99,6 +107,13 @@ type CreatePrivacyRequestStepInput = {
   requestedAt: Date
   idempotencyKey: string
   requestFingerprintSha256: string
+}
+
+type CreatePreferenceMutationStepInput = {
+  profileId: string
+  idempotencyKey: string
+  requestFingerprintSha256: string
+  responsePayload: ResearchProfileProjection
 }
 
 type RestoreProfileAfterCancellationInput = {
@@ -179,6 +194,19 @@ async function findPrivacyRequestByIdempotencyKey(
   )
 
   return request
+}
+
+async function findPreferenceMutationByIdempotencyKey(
+  service: ResearchTrackingModuleService,
+  profileId: string,
+  idempotencyKey: string,
+): Promise<ResearchPreferenceMutationRecord | undefined> {
+  const [mutation] = await service.listResearchPreferenceMutations(
+    { profile_id: profileId, idempotency_key: idempotencyKey },
+    { take: 1 },
+  )
+
+  return mutation
 }
 
 async function findPrivacyRequestByCancellationKey(
@@ -365,12 +393,48 @@ export const createResearchConsentEventStep = createStep(
   },
 )
 
+export type PrepareUpdateResearchProfilePreferencesResult = {
+  profile: ResearchProfileProjection
+  shouldCreateMutation: boolean
+  mutationInput: CreatePreferenceMutationStepInput
+}
+
 export const updateResearchProfilePreferencesStep = createStep(
   "update-research-profile-preferences",
   async (input: UpdateResearchProfilePreferencesInput, { container }) => {
     const normalized = normalizeUpdateResearchProfilePreferencesInput(input)
     const service = getResearchTrackingService(container)
     const profile = await retrieveOwnedProfile(service, normalized.customerId)
+    const existingMutation = await findPreferenceMutationByIdempotencyKey(
+      service,
+      profile.id,
+      normalized.idempotencyKey,
+    )
+
+    if (existingMutation) {
+      assertMatchingResearchFingerprint(
+        existingMutation.request_fingerprint_sha256,
+        normalized.requestFingerprintSha256,
+      )
+
+      return new StepResponse<
+        PrepareUpdateResearchProfilePreferencesResult,
+        ProfileSnapshot
+      >(
+        {
+          profile: existingMutation.response_payload,
+          shouldCreateMutation: false,
+          mutationInput: {
+            profileId: profile.id,
+            idempotencyKey: existingMutation.idempotency_key,
+            requestFingerprintSha256:
+              existingMutation.request_fingerprint_sha256,
+            responsePayload: existingMutation.response_payload,
+          },
+        },
+        undefined,
+      )
+    }
 
     if (profile.status !== "active") {
       conflict("only an active research profile can update preferences")
@@ -381,8 +445,22 @@ export const updateResearchProfilePreferencesStep = createStep(
         normalized.timezone === profile.timezone) &&
       (normalized.locale === undefined || normalized.locale === profile.locale)
     ) {
-      return new StepResponse<ResearchProfileProjection, ProfileSnapshot>(
-        projectResearchProfile(profile),
+      const projected = projectResearchProfile(profile)
+
+      return new StepResponse<
+        PrepareUpdateResearchProfilePreferencesResult,
+        ProfileSnapshot
+      >(
+        {
+          profile: projected,
+          shouldCreateMutation: true,
+          mutationInput: {
+            profileId: profile.id,
+            idempotencyKey: normalized.idempotencyKey,
+            requestFingerprintSha256: normalized.requestFingerprintSha256,
+            responsePayload: projected,
+          },
+        },
         undefined,
       )
     }
@@ -394,7 +472,24 @@ export const updateResearchProfilePreferencesStep = createStep(
       locale: normalized.locale ?? profile.locale,
     })
 
-    return new StepResponse(projectResearchProfile(updated), previous)
+    const projected = projectResearchProfile(updated)
+
+    return new StepResponse<
+      PrepareUpdateResearchProfilePreferencesResult,
+      ProfileSnapshot
+    >(
+      {
+        profile: projected,
+        shouldCreateMutation: true,
+        mutationInput: {
+          profileId: profile.id,
+          idempotencyKey: normalized.idempotencyKey,
+          requestFingerprintSha256: normalized.requestFingerprintSha256,
+          responsePayload: projected,
+        },
+      },
+      previous,
+    )
   },
   async (previous: ProfileSnapshot | undefined, { container }) => {
     if (!previous) {
@@ -402,6 +497,30 @@ export const updateResearchProfilePreferencesStep = createStep(
     }
 
     await getResearchTrackingService(container).updateResearchProfiles(previous)
+  },
+)
+
+export const createResearchPreferenceMutationStep = createStep(
+  "create-research-preference-mutation",
+  async (input: CreatePreferenceMutationStepInput, { container }) => {
+    const service = getResearchTrackingService(container)
+    const created = await service.createResearchPreferenceMutations({
+      profile_id: input.profileId,
+      idempotency_key: input.idempotencyKey,
+      request_fingerprint_sha256: input.requestFingerprintSha256,
+      response_payload: input.responsePayload,
+    })
+
+    return new StepResponse(created.id, created.id)
+  },
+  async (createdId: string | undefined, { container }) => {
+    if (!createdId) {
+      return
+    }
+
+    await getResearchTrackingService(container).deleteResearchPreferenceMutations(
+      createdId,
+    )
   },
 )
 

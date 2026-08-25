@@ -17,6 +17,7 @@ import {
   cancelResearchPrivacyRequestStep,
   closeResearchProfileStep,
   createResearchConsentEventStep,
+  createResearchPreferenceMutationStep,
   createResearchPrivacyRequestStep,
   createResearchProfileStep,
   requestResearchProfileDeletionStep,
@@ -39,6 +40,7 @@ export const createResearchProfileWorkflow = createWorkflow(
     const result = transform(
       { prepared, createdConsentEvent },
       ({ prepared, createdConsentEvent }) => ({
+        created: prepared.shouldCreateConsentEvent,
         research_profile: prepared.profile,
         consent_event: createdConsentEvent ?? prepared.consentEvent,
       }),
@@ -51,9 +53,14 @@ export const createResearchProfileWorkflow = createWorkflow(
 export const updateResearchProfilePreferencesWorkflow = createWorkflow(
   "update-research-profile-preferences",
   function (input: UpdateResearchProfilePreferencesInput) {
-    const profile = updateResearchProfilePreferencesStep(input)
-    const result = transform({ profile }, ({ profile }) => ({
-      research_profile: profile,
+    const prepared = updateResearchProfilePreferencesStep(input)
+    when(
+      "create-research-preference-mutation-record",
+      { prepared },
+      ({ prepared }) => prepared.shouldCreateMutation,
+    ).then(() => createResearchPreferenceMutationStep(prepared.mutationInput))
+    const result = transform({ prepared }, ({ prepared }) => ({
+      research_profile: prepared.profile,
     }))
 
     return new WorkflowResponse(result)
