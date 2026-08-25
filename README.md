@@ -35,6 +35,10 @@ The database-free BOM behavior is defined in
 [docs/bom-phase-1-contract.md](docs/bom-phase-1-contract.md).
 The native Medusa inventory-kit foundation is documented in
 [docs/bom-phase-2-native-foundation.md](docs/bom-phase-2-native-foundation.md).
+The custom metadata and immutable audit module is documented in
+[docs/bom-phase-3-metadata-audit.md](docs/bom-phase-3-metadata-audit.md).
+The Admin component-profile editor and recipe-history viewer are documented in
+[docs/bom-phase-4-admin-interfaces.md](docs/bom-phase-4-admin-interfaces.md).
 
 ## Requirements
 

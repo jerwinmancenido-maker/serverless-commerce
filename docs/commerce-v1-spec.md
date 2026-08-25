@@ -77,6 +77,9 @@ marketplace connection, or publication of product data.
   recipe immutability rule, and disposable-database verification gates.
 - `docs/bom-phase-3-metadata-audit.md` defines component profiles, module links,
   recipe audit snapshots, and the generated custom-module migration boundary.
+- `docs/bom-phase-4-admin-interfaces.md` defines the authenticated Admin API,
+  component-profile editor, recipe-history viewer, and source-only verification
+  boundary.
 
 ## Orders and printables
 
