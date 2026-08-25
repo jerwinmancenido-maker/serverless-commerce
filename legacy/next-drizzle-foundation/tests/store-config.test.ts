@@ -2,11 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { storeConfig } from "@/config/store";
 
-describe("PepStack Labs store configuration", () => {
+describe("Research Compounds store configuration", () => {
   it("captures the accepted brand and checkout policies", () => {
     expect(storeConfig).toMatchObject({
-      name: "PepStack Labs",
-      tagline: "Precision in Every Molecule",
+      name: "Research Compounds",
       currency: "PHP",
       countryCode: "PH",
       customerAccountsRequired: true,

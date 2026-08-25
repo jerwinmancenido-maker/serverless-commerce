@@ -1,4 +1,4 @@
-# PepStack BOM Phase 3 Metadata and Audit Module
+# Research Compounds BOM Phase 3 Metadata and Audit Module
 
 Status: implemented and verified against disposable local PostgreSQL.
 

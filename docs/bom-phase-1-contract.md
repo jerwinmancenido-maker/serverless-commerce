@@ -1,4 +1,4 @@
-# PepStack BOM Phase 1 Contract
+# Research Compounds BOM Phase 1 Contract
 
 Status: accepted implementation contract.
 
@@ -17,7 +17,7 @@ Medusa is the only operational inventory engine.
   inventory-item links and each link's `required_quantity`.
 - Medusa reservation and fulfillment workflows own reserved and stocked
   quantities.
-- The PepStack BOM module may add unit metadata, validation, explanatory
+- The custom BOM module may add unit metadata, validation, explanatory
   availability, and audit snapshots. It must not create a parallel stock,
   reservation, or movement ledger.
 
@@ -25,7 +25,7 @@ The preserved Drizzle implementation is a behavioral reference only.
 
 ## Version 1 inventory scope
 
-- Version 1 operates from one configured PepStack stock location.
+- Version 1 operates from one configured stock location.
 - Stock-location IDs are configuration or database data, never source-code
   constants.
 - The design must remain compatible with additional locations later.

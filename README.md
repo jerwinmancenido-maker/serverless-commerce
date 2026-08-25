@@ -1,8 +1,6 @@
-# PepStack Labs Commerce
+# Research Compounds Commerce
 
-**Precision in Every Molecule**
-
-PepStack Labs Commerce is a Medusa v2 monorepo with a Next.js storefront. The
+Research Compounds Commerce is a Medusa v2 monorepo with a Next.js storefront. The
 storefront is designed for Vercel, while the Medusa backend and Admin run as a
 persistent Node.js service.
 
@@ -21,8 +19,7 @@ not hardcoded storefront choices.
 
 ## Current business decisions
 
-- Brand: PepStack Labs
-- Tagline: Precision in Every Molecule
+- Brand: Research Compounds
 - Market: Philippines
 - Currency: PHP
 - Customer account required before storefront checkout

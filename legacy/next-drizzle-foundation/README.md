@@ -1,6 +1,6 @@
 # Serverless Commerce Core
 
-A Next.js App Router backend and starter storefront for **PepStack Labs — Precision in Every Molecule**. It targets Vercel, Neon Serverless PostgreSQL, Drizzle ORM, Tailwind CSS, and TypeScript. Monetary records default to Philippine pesos (PHP).
+A superseded Next.js App Router backend and starter storefront for **Research Compounds**. It targets Vercel, Neon Serverless PostgreSQL, Drizzle ORM, Tailwind CSS, and TypeScript. Monetary records default to Philippine pesos (PHP).
 
 ## Included
 

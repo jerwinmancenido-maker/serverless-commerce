@@ -1,4 +1,4 @@
-# PepStack Labs Commerce v1 Specification
+# Research Compounds Commerce v1 Specification
 
 Status: accepted product direction, implementation in progress.
 
@@ -8,8 +8,7 @@ marketplace connection, or publication of product data.
 
 ## Store identity
 
-- Store name: PepStack Labs
-- Tagline: Precision in Every Molecule
+- Store name: Research Compounds
 - Primary country: Philippines (`ph`)
 - Store currency: Philippine peso (`php`)
 
@@ -21,6 +20,21 @@ marketplace connection, or publication of product data.
   flow instead of completing a guest checkout.
 - Marketplace-imported orders may not have a local customer account and will
   use a separate integration workflow later.
+
+## Research and tracking
+
+- `docs/research-tracking-rt-0-contract.md` defines the documentation-only
+  foundation for a future authenticated Research & Tracking account area.
+- Purchasing a product must not create a routine, log, measurement, journal
+  entry, supply deduction, or claim of customer use.
+- A customer must explicitly activate tracking for an owned eligible order
+  item before a private tracked material and supply may be created.
+- Merchant-authored research protocols and calculator material profiles remain
+  separate from private customer tracking records.
+- Research protocols and calculators must not recommend or personalize human
+  administration, dosing, treatment, or outcomes.
+- RT implementation and private-data collection remain blocked by the RT-0
+  brand, privacy, retention, export, deletion, and legal-review gates.
 
 ## Payments
 
@@ -120,8 +134,12 @@ marketplace connection, or publication of product data.
 5. Implement Manual QR payment proof and review workflow.
 6. Implement J&T as configurable fulfillment data, beginning manually.
 7. Implement voucher rules and printable documents.
-8. Complete the PepStack storefront and Admin extensions.
+8. Complete the Research Compounds storefront and Admin extensions.
 9. Integrate marketplaces one at a time.
+
+Research & Tracking is a separate gated workstream. Its documentation may
+advance now, but runtime implementation must not displace the commerce launch
+requirements above or activate private-data collection before RT-0 approval.
 
 ## Milestone acceptance
 

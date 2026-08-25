@@ -1,4 +1,4 @@
-# PepStack Manual QR Phase 5 Contract
+# Research Compounds Manual QR Phase 5 Contract
 
 Status: provider, proof domain, authenticated customer upload, and Admin review
 interfaces are implemented in source and verified against disposable local
@@ -115,23 +115,23 @@ configuration.
 
 ## Acceptance tests
 
-| ID     | Scenario                                     | Expected result                                   |
-| ------ | -------------------------------------------- | ------------------------------------------------- |
-| QR-001 | Checkout authorization before proof approval | Provider returns `pending_authorization`          |
-| QR-002 | Provider receives approved trusted marker    | Provider returns `authorized`                     |
-| QR-003 | Duplicate pending submission                 | No new revision or audit event                    |
-| QR-004 | Different file while proof is pending        | Submission is rejected                            |
-| QR-005 | Resubmit after rejection                     | Revision increments and status returns to pending |
-| QR-006 | Reject without reason                        | Review is rejected                                |
-| QR-007 | Replay identical review decision             | No duplicate audit event                          |
-| QR-008 | Conflicting completed review                 | Review is rejected                                |
-| QR-009 | Update an audit event                        | Module rejects the mutation                       |
-| QR-010 | Custom proof table or source stores file bytes | Test and review fail                            |
-| QR-011 | Provider registered but not region-enabled   | Storefront cannot select it                       |
-| QR-012 | Foundation migration on disposable database  | Tables migrate once and second run is idempotent  |
-| QR-013 | Customer uploads proof for another customer  | Generic not-found response; no proof is created   |
-| QR-014 | Customer replays an identical pending upload | Existing proof returned; no file or event duplicate |
-| QR-015 | Staff lacks proof-review policy               | Admin review request is forbidden                 |
+| ID     | Scenario                                       | Expected result                                     |
+| ------ | ---------------------------------------------- | --------------------------------------------------- |
+| QR-001 | Checkout authorization before proof approval   | Provider returns `pending_authorization`            |
+| QR-002 | Provider receives approved trusted marker      | Provider returns `authorized`                       |
+| QR-003 | Duplicate pending submission                   | No new revision or audit event                      |
+| QR-004 | Different file while proof is pending          | Submission is rejected                              |
+| QR-005 | Resubmit after rejection                       | Revision increments and status returns to pending   |
+| QR-006 | Reject without reason                          | Review is rejected                                  |
+| QR-007 | Replay identical review decision               | No duplicate audit event                            |
+| QR-008 | Conflicting completed review                   | Review is rejected                                  |
+| QR-009 | Update an audit event                          | Module rejects the mutation                         |
+| QR-010 | Custom proof table or source stores file bytes | Test and review fail                                |
+| QR-011 | Provider registered but not region-enabled     | Storefront cannot select it                         |
+| QR-012 | Foundation migration on disposable database    | Tables migrate once and second run is idempotent    |
+| QR-013 | Customer uploads proof for another customer    | Generic not-found response; no proof is created     |
+| QR-014 | Customer replays an identical pending upload   | Existing proof returned; no file or event duplicate |
+| QR-015 | Staff lacks proof-review policy                | Admin review request is forbidden                   |
 
 ## Runtime gates
 

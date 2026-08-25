@@ -1,4 +1,4 @@
-# PepStack Manual QR Phase 5B Settlement Contract
+# Research Compounds Manual QR Phase 5B Settlement Contract
 
 Status: Slice 1 source complete. Settlement workflow logic, API and Admin
 activation, migration application, provider activation, shared-database

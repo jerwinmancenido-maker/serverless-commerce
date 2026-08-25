@@ -1,6 +1,5 @@
 export const storeConfig = {
   name: "Research Compounds",
-  tagline: "Precision in Every Molecule",
   countryCode: "ph",
   currencyCode: "php",
   customerAccountsRequired: true,

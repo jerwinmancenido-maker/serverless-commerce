@@ -5,7 +5,7 @@ import { storeConfig } from "./store-config.ts"
 
 test("Research Compounds store policy is represented without provider choices", () => {
   assert.equal(storeConfig.name, "Research Compounds")
-  assert.equal(storeConfig.tagline, "Precision in Every Molecule")
+  assert.equal("tagline" in storeConfig, false)
   assert.equal(storeConfig.countryCode, "ph")
   assert.equal(storeConfig.currencyCode, "php")
   assert.equal(storeConfig.customerAccountsRequired, true)

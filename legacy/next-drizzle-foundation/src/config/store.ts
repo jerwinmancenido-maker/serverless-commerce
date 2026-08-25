@@ -1,6 +1,5 @@
 export const storeConfig = {
-  name: "PepStack Labs",
-  tagline: "Precision in Every Molecule",
+  name: "Research Compounds",
   currency: "PHP",
   countryCode: "PH",
   customerAccountsRequired: true,

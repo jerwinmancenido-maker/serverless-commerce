@@ -1,4 +1,4 @@
-# PepStack BOM Phase 2 Native Inventory Foundation
+# Research Compounds BOM Phase 2 Native Inventory Foundation
 
 Status: implemented and verified against disposable local PostgreSQL.
 
@@ -48,7 +48,7 @@ them. Reapplying an identical recipe is idempotent and remains allowed.
 ## Stock location behavior
 
 - Inventory levels remain native Medusa records.
-- The initial PepStack warehouse is created later as configurable Medusa data,
+- The initial warehouse is created later as configurable Medusa data,
   not as a source-code constant.
 - Inventory items without a level at the active location have zero buildable
   availability there.

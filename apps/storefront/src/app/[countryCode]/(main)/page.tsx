@@ -8,7 +8,6 @@ import { storeConfig } from "@lib/store-config"
 
 export const metadata: Metadata = {
   title: storeConfig.name,
-  description: storeConfig.tagline,
 }
 
 export default async function Home(props: {

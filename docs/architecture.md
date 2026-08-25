@@ -23,9 +23,17 @@ of production reliability.
 
 - Medusa core modules own standard commerce entities and workflows.
 - Medusa's native inventory-kit links are the operational BOM recipe and the
-  PepStack BOM module owns unit metadata, validation, explanatory availability,
+  custom BOM module owns unit metadata, validation, explanatory availability,
   and audit snapshots. It does not own a parallel inventory ledger.
-- Later PepStack custom modules may own marketplace mapping.
+- Later custom modules may own marketplace mapping.
+- A future `researchContent` module may own versioned, published, product-linked
+  research protocols, calculator material profiles, and evidence scope. It
+  must link to Medusa products or variants without duplicating them.
+- A future `researchTracking` module may own private, customer-created tracking
+  records. It must not duplicate customer, product, order, payment,
+  fulfillment, or commerce-inventory ownership.
+- `researchContent` publication permission and private `researchTracking`
+  access are separate security domains.
 - The storefront consumes the Medusa Store API through the official JS SDK.
 - The preserved Drizzle code is read-only migration reference and is excluded
   from the npm workspace.
@@ -72,3 +80,11 @@ configuration. Provider credentials must remain outside Git.
 - Do not run migrations or seeds against an unreviewed database URL.
 - Do not duplicate Medusa inventory-kit links, reservations, inventory levels,
   or fulfillment movements in custom BOM tables.
+- Do not store private research-tracking data in customer, product, order, or
+  analytics metadata.
+- Do not create private tracking records automatically from purchases,
+  fulfillment events, marketplace imports, or protocol views.
+- Do not expose customer tracking records through public, product, cart, or
+  marketplace API routes.
+- Do not persist calculator inputs or outputs by default, or convert calculator
+  results into routines, logs, carts, or orders.

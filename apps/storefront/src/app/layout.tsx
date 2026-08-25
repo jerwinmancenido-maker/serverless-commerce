@@ -9,7 +9,6 @@ export const metadata: Metadata = {
     default: storeConfig.name,
     template: `%s | ${storeConfig.name}`,
   },
-  description: storeConfig.tagline,
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

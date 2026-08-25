@@ -1,4 +1,4 @@
-# PepStack BOM Phase 4 Admin Interfaces
+# Research Compounds BOM Phase 4 Admin Interfaces
 
 Status: source implementation complete; database and browser runtime remain
 unverified.
