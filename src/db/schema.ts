@@ -268,4 +268,3 @@ export const webhookEvents = pgTable(
 );
 
 export type Marketplace = (typeof marketplaceEnum.enumValues)[number];
-

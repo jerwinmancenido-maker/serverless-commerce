@@ -140,4 +140,3 @@ export function normalizeMarketplaceWebhook(
 
   return result.data;
 }
-

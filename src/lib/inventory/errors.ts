@@ -17,4 +17,3 @@ export class InsufficientInventoryError extends Error {
     this.name = "InsufficientInventoryError";
   }
 }
-

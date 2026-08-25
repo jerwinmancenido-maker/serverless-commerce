@@ -85,4 +85,3 @@ export function createMarketplaceWebhookHandler(marketplace: Marketplace) {
     }
   };
 }
-

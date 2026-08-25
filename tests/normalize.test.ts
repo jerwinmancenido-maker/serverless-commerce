@@ -39,4 +39,3 @@ describe("marketplace webhook normalization", () => {
     ).toThrow(/Unsupported shopee webhook payload/);
   });
 });
-

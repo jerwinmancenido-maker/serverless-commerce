@@ -22,4 +22,3 @@ export function verifyWebhookSignature(
   const expected = createWebhookSignature(rawBody, secret);
   return timingSafeEqual(Buffer.from(supplied, "hex"), Buffer.from(expected, "hex"));
 }
-

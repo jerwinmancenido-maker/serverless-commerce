@@ -23,4 +23,3 @@ describe("webhook signatures", () => {
     expect(verifyWebhookSignature("original", "not-hex", "test-secret")).toBe(false);
   });
 });
-

@@ -152,4 +152,3 @@ export async function calculateAvailableStock(variantId: string) {
 
   return Number(availability.available);
 }
-
