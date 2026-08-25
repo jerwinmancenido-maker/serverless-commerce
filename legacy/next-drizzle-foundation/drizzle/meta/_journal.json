@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1787632710539,
+      "tag": "0000_acoustic_boomer",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787637231260,
+      "tag": "0001_calm_prima",
+      "breakpoints": true
+    }
+  ]
+}

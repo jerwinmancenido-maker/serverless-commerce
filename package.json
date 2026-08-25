@@ -1,43 +1,47 @@
 {
-  "name": "serverless-commerce",
-  "version": "0.1.0",
+  "name": "pepstack-labs-commerce",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build --webpack",
-    "build:turbopack": "next build",
-    "start": "next start",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "node scripts/require-database-url.mjs && drizzle-kit migrate",
-    "db:push": "node scripts/require-database-url.mjs && drizzle-kit push",
-    "db:studio": "node scripts/require-database-url.mjs && drizzle-kit studio"
+  "packageManager": "npm@11.5.2",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   },
-  "dependencies": {
-    "@neondatabase/serverless": "^1.1.0",
-    "@next/env": "^16.3.2",
-    "decimal.js": "^10.6.0",
-    "drizzle-orm": "^0.45.2",
-    "next": "16.3.2",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "ws": "^8.21.3",
-    "zod": "^4.4.3"
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "start": "turbo start",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run backend:build",
+    "backend:build": "npm run build --workspace=@pepstack/backend",
+    "backend:seed": "turbo seed --filter=@pepstack/backend",
+    "backend:dev": "turbo dev --filter=@pepstack/backend",
+    "storefront:dev": "turbo dev --filter=@pepstack/storefront"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.0.5",
+      "@types/react-dom": "19.0.5"
+    }
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@types/ws": "^8.18.1",
-    "drizzle-kit": "^0.31.10",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.2",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "vitest": "^4.1.11"
+    "@medusajs/eslint-plugin": "2.19.0",
+    "eslint": "^9.39.4",
+    "jiti": "^2.7.0",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.14",
+    "ajv": "^8.13.0"
+  },
+  "workspaces": [
+    "apps/**",
+    "!apps/backend/.medusa/**"
+  ],
+  "overrides": {
+    "eslint": {
+      "ajv": "^6.12.4"
+    },
+    "@eslint/eslintrc": {
+      "ajv": "^6.12.4"
+    }
   }
 }

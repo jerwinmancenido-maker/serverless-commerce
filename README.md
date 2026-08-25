@@ -1,97 +1,94 @@
-# Serverless Commerce Core
+# PepStack Labs Commerce
 
-A Next.js App Router backend and starter storefront for Vercel, Neon Serverless PostgreSQL, Drizzle ORM, Tailwind CSS, and TypeScript. The database defaults monetary records to Philippine pesos (PHP).
+**Precision in Every Molecule**
 
-## Included
+PepStack Labs Commerce is a Medusa v2 monorepo with a Next.js storefront. The
+storefront is designed for Vercel, while the Medusa backend and Admin run as a
+persistent Node.js service.
 
-- Products and sellable variants
-- Raw warehouse inventory and multi-component BOM recipes
-- Orders and idempotent order lines
-- Lazada, TikTok Shop, and Shopee SKU mappings
-- Webhook event audit/deduplication records
-- Atomic BOM deductions with row locks and derived available stock
-- Raw-body HMAC-SHA256 webhook authentication
+## Active architecture
 
-## Local setup
+- `apps/backend` — Medusa v2 backend and Admin dashboard
+- `apps/storefront` — Medusa Next.js starter storefront
+- `docs` — accepted product and architecture specifications
+- `legacy/next-drizzle-foundation` — preserved pre-Medusa implementation for
+  reference while BOM and marketplace behavior are ported
 
-Requirements: Node.js 20.9 or newer and a Neon PostgreSQL database.
+Medusa owns products, variants, customers, carts, promotions, orders, payment
+providers, fulfillment providers, and inventory. Payment providers and shipping
+options are data-driven; Manual QR and J&T are intended initial configurations,
+not hardcoded storefront choices.
+
+## Current business decisions
+
+- Brand: PepStack Labs
+- Tagline: Precision in Every Molecule
+- Market: Philippines
+- Currency: PHP
+- Customer account required before storefront checkout
+- Vouchers and printable fulfillment documents required
+- Marketplace integrations deferred until the core store is complete
+
+See [docs/commerce-v1-spec.md](docs/commerce-v1-spec.md) and
+[docs/architecture.md](docs/architecture.md) for the accepted boundaries.
+The database-free BOM behavior is defined in
+[docs/bom-phase-1-contract.md](docs/bom-phase-1-contract.md).
+The native Medusa inventory-kit foundation is documented in
+[docs/bom-phase-2-native-foundation.md](docs/bom-phase-2-native-foundation.md).
+
+## Requirements
+
+- Node.js 20.19+ or 22.12+ (Node 24 or lower for the storefront)
+- npm 11
+- PostgreSQL for a running Medusa backend
+- Redis for production
+
+## Install
 
 ```bash
-npm install
-cp .env.example .env.local
+npm ci
 ```
 
-Fill in `DATABASE_URL` and the three webhook secrets in `.env.local`. Marketplace API keys are placeholders for later outbound API work and are not required for inbound webhook verification.
+The scaffold was created with database setup skipped. Installing dependencies,
+linting, and compiling source do not authorize or perform a Neon migration.
 
-Generate a migration without connecting to Neon:
+## Environment setup
+
+Create local environment files only when a development database is ready:
 
 ```bash
-npm run db:generate
+cp apps/backend/.env.template apps/backend/.env
+cp apps/storefront/.env.template apps/storefront/.env.local
 ```
 
-Review the SQL in `drizzle/`, then apply it only when you intend to change the configured database:
+Never commit either local environment file. The required variables and
+deployment topology are documented in `docs/architecture.md`.
+
+## Development commands
 
 ```bash
-npm run db:migrate
+npm run backend:dev
+npm run storefront:dev
 ```
 
-For local development:
-
-```bash
-npm run dev
-```
-
-## Inventory service
-
-`deductRecipeInventory(variantId, quantity)` in `src/lib/inventory/service.ts`:
-
-1. starts a database transaction;
-2. locks every raw inventory row used by the variant, in stable ID order;
-3. validates all component balances before changing any row;
-4. deducts exact decimal component quantities; and
-5. returns the variant's new available stock as `floor(min(on_hand / required))`.
-
-Any missing recipe, insufficient component, or database error rolls back the entire deduction.
-
-## Webhooks
-
-Endpoints:
-
-- `POST /api/webhooks/lazada`
-- `POST /api/webhooks/tiktok`
-- `POST /api/webhooks/shopee`
-
-Each handler reads the body once with `request.text()`, verifies the HMAC over those exact UTF-8 bytes, then parses JSON. Accepted signature headers are documented in `src/lib/webhooks/route.ts`; signatures may be plain hex or prefixed with `sha256=`.
-
-The normalizer accepts a common payload shape as well as common marketplace field names:
-
-```json
-{
-  "event_id": "evt_123",
-  "event_type": "order.paid",
-  "order": { "id": "order_456" },
-  "items": [
-    {
-      "line_id": "line_1",
-      "external_sku": "MARKETPLACE-SKU",
-      "quantity": 2,
-      "unit_price_in_cents": 129900
-    }
-  ]
-}
-```
-
-Before sending a webhook, create a `marketplace_sku_mappings` row for every external SKU. Order lines are unique per marketplace order, so retries and later events cannot deduct the same line twice. Webhook IDs are also deduplicated.
-
-> Production note: marketplace signature envelopes and payload contracts can vary by app type and API version. This project implements the requested raw-body HMAC-SHA256 contract. Confirm each production app's current official webhook documentation and adjust the signature adapter/header list before enabling live callbacks.
+The Medusa backend and Admin use `http://localhost:9000`; the storefront uses
+`http://localhost:8000`.
 
 ## Verification
 
 ```bash
-npm run lint
-npm run typecheck
-npm test
-npm run build
+npm run check
 ```
 
-No migration, database seed, deployment, or external marketplace operation runs as part of these checks.
+This runs lint and TypeScript checks for both applications, plus the Medusa
+backend build. A complete `npm run build` additionally requires a reachable
+Medusa backend and publishable API key because the storefront fetches regions
+and catalog data while collecting pages. Backend integration tests and runtime
+verification require an isolated PostgreSQL database. Do not point those
+commands at production.
+
+## Database safety
+
+No database migration, seed, user creation, deployment, or external provider
+connection is part of repository setup. Those operations require a reviewed
+environment and explicit authorization.
