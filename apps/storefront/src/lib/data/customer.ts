@@ -250,7 +250,7 @@ export async function confirmEmailVerification(
 export async function signout(countryCode: string) {
   await sdk.auth.logout()
 
-  await removeAuthToken()
+  await removeAuthToken(countryCode)
 
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)

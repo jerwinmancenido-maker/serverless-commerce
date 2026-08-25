@@ -4,9 +4,27 @@ import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
 
-export const listRegions = async () => {
+const REGION_CACHE_REVALIDATE_SECONDS = 5 * 60
+
+type ListRegionsOptions = {
+  bypassCache?: boolean
+}
+
+export const listRegions = async (
+  options: ListRegionsOptions = {}
+) => {
+  if (options.bypassCache) {
+    return await sdk.client
+      .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
+        method: "GET",
+        cache: "no-store",
+      })
+      .then(({ regions }) => regions)
+  }
+
   const next = {
     ...(await getCacheOptions("regions")),
+    revalidate: REGION_CACHE_REVALIDATE_SECONDS,
   }
 
   return await sdk.client
@@ -32,28 +50,33 @@ export const retrieveRegion = async (id: string) => {
     .then(({ region }) => region)
 }
 
-const regionMap = new Map<string, HttpTypes.StoreRegion>()
+const findRegionByCountryCode = (
+  regions: HttpTypes.StoreRegion[],
+  countryCode: string
+) =>
+  regions.find((region) =>
+    region.countries?.some((country) => country.iso_2 === countryCode)
+  )
 
 export const getRegion = async (countryCode: string) => {
-  if (regionMap.has(countryCode)) {
-    return regionMap.get(countryCode)
-  }
+  const normalizedCountryCode = countryCode?.trim().toLowerCase() || "us"
 
-  const regions = await listRegions()
+  let regions = await listRegions()
 
   if (!regions) {
     return null
   }
 
-  regions.forEach((region) => {
-    region.countries?.forEach((c) => {
-      regionMap.set(c?.iso_2 ?? "", region)
-    })
-  })
+  const cachedRegion = findRegionByCountryCode(
+    regions,
+    normalizedCountryCode
+  )
 
-  const region = countryCode
-    ? regionMap.get(countryCode)
-    : regionMap.get("us")
+  if (cachedRegion) {
+    return cachedRegion
+  }
 
-  return region
+  regions = await listRegions({ bypassCache: true })
+
+  return findRegionByCountryCode(regions, normalizedCountryCode)
 }

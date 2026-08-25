@@ -13,10 +13,11 @@
     "start": "next start -p 8000",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test src/lib/store-config.test.ts",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test src/lib/*.test.ts",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
+    "@aivangogh/ph-address": "^2026.2.3",
     "@headlessui/react": "^2.2.0",
     "@medusajs/icons": "2.19.0",
     "@medusajs/js-sdk": "2.19.0",

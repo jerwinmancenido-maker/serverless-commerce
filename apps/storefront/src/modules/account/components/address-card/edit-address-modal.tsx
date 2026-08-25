@@ -5,12 +5,14 @@ import {
   updateCustomerAddress,
 } from "@lib/data/customer"
 import useToggleState from "@lib/hooks/use-toggle-state"
+import { storeConfig } from "@lib/store-config"
 import { PencilSquare as Edit, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import CountrySelect from "@modules/checkout/components/country-select"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
+import PhilippineAddressFields from "@modules/common/components/philippine-address-fields"
 import { Button, Heading, Text, clx } from "@modules/common/components/ui"
 import Spinner from "@modules/common/icons/spinner"
 import React, { useActionState, useEffect, useState } from "react"
@@ -146,51 +148,38 @@ const EditAddress: React.FC<EditAddressProps> = ({
                 />
               </div>
               <Input
-                label="Company"
+                label={storeConfig.address.companyLabel}
                 name="company"
                 autoComplete="organization"
                 defaultValue={address.company || undefined}
                 data-testid="company-input"
               />
               <Input
-                label="Address"
+                label={storeConfig.address.addressLine1Label}
                 name="address_1"
                 required
                 autoComplete="address-line1"
                 defaultValue={address.address_1 || undefined}
                 data-testid="address-1-input"
               />
-              <Input
-                label="Apartment, suite, etc."
-                name="address_2"
-                autoComplete="address-line2"
-                defaultValue={address.address_2 || undefined}
-                data-testid="address-2-input"
+              <PhilippineAddressFields
+                initialValues={{
+                  province: address.province,
+                  city: address.city,
+                  barangay: address.address_2,
+                }}
+                testIdPrefix="edit-address"
               />
-              <div className="grid grid-cols-[144px_1fr] gap-x-2">
-                <Input
-                  label="Postal code"
-                  name="postal_code"
-                  required
-                  autoComplete="postal-code"
-                  defaultValue={address.postal_code || undefined}
-                  data-testid="postal-code-input"
-                />
-                <Input
-                  label="City"
-                  name="city"
-                  required
-                  autoComplete="locality"
-                  defaultValue={address.city || undefined}
-                  data-testid="city-input"
-                />
-              </div>
               <Input
-                label="Province / State"
-                name="province"
-                autoComplete="address-level1"
-                defaultValue={address.province || undefined}
-                data-testid="state-input"
+                label={storeConfig.address.postalCodeLabel}
+                name="postal_code"
+                required
+                autoComplete="postal-code"
+                inputMode="numeric"
+                pattern={storeConfig.address.postalCodePattern}
+                title={storeConfig.address.postalCodeTitle}
+                defaultValue={address.postal_code || undefined}
+                data-testid="postal-code-input"
               />
               <CountrySelect
                 name="country_code"
@@ -201,9 +190,11 @@ const EditAddress: React.FC<EditAddressProps> = ({
                 data-testid="country-select"
               />
               <Input
-                label="Phone"
+                label={storeConfig.address.phoneLabel}
                 name="phone"
-                autoComplete="phone"
+                type="tel"
+                autoComplete="tel"
+                required
                 defaultValue={address.phone || undefined}
                 data-testid="phone-input"
               />

@@ -13,6 +13,19 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET,
     },
   },
+  admin: {
+    vite: (config) => ({
+      resolve: {
+        dedupe: [
+          ...new Set([
+            ...(config.resolve?.dedupe ?? []),
+            "react",
+            "react-dom",
+          ]),
+        ],
+      },
+    }),
+  },
   modules: [
     {
       resolve: "@medusajs/medusa/payment",

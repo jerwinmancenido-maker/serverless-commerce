@@ -1,5 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
+import { storeConfig } from "@lib/store-config"
 import Input from "@modules/common/components/input"
+import PhilippineAddressFields from "@modules/common/components/philippine-address-fields"
 import React, { useState } from "react"
 import CountrySelect from "../country-select"
 
@@ -8,10 +10,14 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
     "billing_address.first_name": cart?.billing_address?.first_name || "",
     "billing_address.last_name": cart?.billing_address?.last_name || "",
     "billing_address.address_1": cart?.billing_address?.address_1 || "",
+    "billing_address.address_2": cart?.billing_address?.address_2 || "",
     "billing_address.company": cart?.billing_address?.company || "",
     "billing_address.postal_code": cart?.billing_address?.postal_code || "",
     "billing_address.city": cart?.billing_address?.city || "",
-    "billing_address.country_code": cart?.billing_address?.country_code || "",
+    "billing_address.country_code":
+      cart?.billing_address?.country_code ||
+      cart?.region?.countries?.[0]?.iso_2 ||
+      "",
     "billing_address.province": cart?.billing_address?.province || "",
     "billing_address.phone": cart?.billing_address?.phone || "",
   })
@@ -49,7 +55,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           data-testid="billing-last-name-input"
         />
         <Input
-          label="Address"
+          label={storeConfig.address.addressLine1Label}
           name="billing_address.address_1"
           autoComplete="address-line1"
           value={formData["billing_address.address_1"]}
@@ -58,7 +64,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           data-testid="billing-address-input"
         />
         <Input
-          label="Company"
+          label={storeConfig.address.companyLabel}
           name="billing_address.company"
           value={formData["billing_address.company"]}
           onChange={handleChange}
@@ -66,20 +72,16 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           data-testid="billing-company-input"
         />
         <Input
-          label="Postal code"
+          label={storeConfig.address.postalCodeLabel}
           name="billing_address.postal_code"
           autoComplete="postal-code"
           value={formData["billing_address.postal_code"]}
           onChange={handleChange}
           required
+          inputMode="numeric"
+          pattern={storeConfig.address.postalCodePattern}
+          title={storeConfig.address.postalCodeTitle}
           data-testid="billing-postal-input"
-        />
-        <Input
-          label="City"
-          name="billing_address.city"
-          autoComplete="address-level2"
-          value={formData["billing_address.city"]}
-          onChange={handleChange}
         />
         <CountrySelect
           name="billing_address.country_code"
@@ -91,20 +93,29 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           data-testid="billing-country-select"
         />
         <Input
-          label="State / Province"
-          name="billing_address.province"
-          autoComplete="address-level1"
-          value={formData["billing_address.province"]}
-          onChange={handleChange}
-          data-testid="billing-province-input"
-        />
-        <Input
-          label="Phone"
+          label={storeConfig.address.phoneLabel}
           name="billing_address.phone"
+          type="tel"
           autoComplete="tel"
           value={formData["billing_address.phone"]}
           onChange={handleChange}
+          required
           data-testid="billing-phone-input"
+        />
+      </div>
+      <div className="mt-4">
+        <PhilippineAddressFields
+          fieldNames={{
+            province: "billing_address.province",
+            city: "billing_address.city",
+            barangay: "billing_address.address_2",
+          }}
+          initialValues={{
+            province: formData["billing_address.province"],
+            city: formData["billing_address.city"],
+            barangay: formData["billing_address.address_2"],
+          }}
+          testIdPrefix="billing-address"
         />
       </div>
     </>

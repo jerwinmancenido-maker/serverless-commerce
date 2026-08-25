@@ -19,8 +19,12 @@ export default async function Addresses(props: {
   const customer = await retrieveCustomer()
   const region = await getRegion(countryCode)
 
-  if (!customer || !region) {
+  if (!region) {
     notFound()
+  }
+
+  if (!customer) {
+    return null
   }
 
   return (

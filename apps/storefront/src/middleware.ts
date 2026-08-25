@@ -45,10 +45,13 @@ async function getRegionMap(cacheId: string) {
     const { regions } = json
 
     if (!regions?.length) {
-      return new Map<string, HttpTypes.StoreRegion>()
+      regionMapCache.regionMap.clear()
+      regionMapCache.regionMapUpdated = Date.now()
+      return regionMapCache.regionMap
     }
 
     // Create a map of country codes to regions.
+    regionMapCache.regionMap.clear()
     regions.forEach((region: HttpTypes.StoreRegion) => {
       region.countries?.forEach((c) => {
         regionMapCache.regionMap.set(c.iso_2 ?? "", region)
@@ -97,6 +100,40 @@ async function getCountryCode(
   return countryCode
 }
 
+async function hasValidCustomerSession(request: NextRequest) {
+  const token = request.cookies.get("_medusa_jwt")?.value
+
+  if (!token || !BACKEND_URL || !PUBLISHABLE_API_KEY) {
+    return false
+  }
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/store/customers/me`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-publishable-api-key": PUBLISHABLE_API_KEY,
+      },
+      cache: "no-store",
+    })
+
+    return response.ok
+  } catch {
+    return false
+  }
+}
+
+function clearAuthCookies(response: NextResponse, countryCode: string) {
+  const paths = ["/", `/${countryCode}`, `/${countryCode}/account`]
+
+  paths.forEach((path) => {
+    response.cookies.set("_medusa_jwt", "", {
+      path,
+      maxAge: -1,
+    })
+  })
+}
+
 /**
  * Middleware to handle region selection and onboarding status.
  */
@@ -117,6 +154,17 @@ export async function middleware(request: NextRequest) {
   const urlHasCountry = firstPathSegment === country.toLowerCase()
 
   if (urlHasCountry) {
+    const nestedAccountPath = request.nextUrl.pathname.startsWith(
+      `/${country}/account/`
+    )
+
+    if (nestedAccountPath && !(await hasValidCustomerSession(request))) {
+      const accountUrl = new URL(`/${country}/account`, request.url)
+      const response = NextResponse.redirect(accountUrl, 307)
+      clearAuthCookies(response, country)
+      return response
+    }
+
     if (!cacheIdCookie) {
       const response = NextResponse.next()
       response.cookies.set("_medusa_cache_id", cacheId, {

@@ -4,8 +4,10 @@ import React, { useActionState, useEffect, useMemo } from "react"
 
 import Input from "@modules/common/components/input"
 import NativeSelect from "@modules/common/components/native-select"
+import PhilippineAddressFields from "@modules/common/components/philippine-address-fields"
 
 import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
+import { storeConfig } from "@lib/store-config"
 import { HttpTypes } from "@medusajs/types"
 import AccountInfo from "../account-info"
 
@@ -118,54 +120,44 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
             />
           </div>
           <Input
-            label="Company"
+            label={storeConfig.address.companyLabel}
             name="company"
             defaultValue={billingAddress?.company || undefined}
             data-testid="billing-company-input"
           />
           <Input
-            label="Phone"
+            label={storeConfig.address.phoneLabel}
             name="phone"
-            type="phone"
-            autoComplete="phone"
+            type="tel"
+            autoComplete="tel"
             required
             defaultValue={billingAddress?.phone ?? customer?.phone ?? ""}
             data-testid="billing-phone-input"
           />
           <Input
-            label="Address"
+            label={storeConfig.address.addressLine1Label}
             name="address_1"
             defaultValue={billingAddress?.address_1 || undefined}
             required
             data-testid="billing-address-1-input"
           />
-          <Input
-            label="Apartment, suite, etc."
-            name="address_2"
-            defaultValue={billingAddress?.address_2 || undefined}
-            data-testid="billing-address-2-input"
+          <PhilippineAddressFields
+            initialValues={{
+              province: billingAddress?.province,
+              city: billingAddress?.city,
+              barangay: billingAddress?.address_2,
+            }}
+            testIdPrefix="billing-address"
           />
-          <div className="grid grid-cols-[144px_1fr] gap-x-2">
-            <Input
-              label="Postal code"
-              name="postal_code"
-              defaultValue={billingAddress?.postal_code || undefined}
-              required
-              data-testid="billing-postcal-code-input"
-            />
-            <Input
-              label="City"
-              name="city"
-              defaultValue={billingAddress?.city || undefined}
-              required
-              data-testid="billing-city-input"
-            />
-          </div>
           <Input
-            label="Province"
-            name="province"
-            defaultValue={billingAddress?.province || undefined}
-            data-testid="billing-province-input"
+            label={storeConfig.address.postalCodeLabel}
+            name="postal_code"
+            defaultValue={billingAddress?.postal_code || undefined}
+            required
+            inputMode="numeric"
+            pattern={storeConfig.address.postalCodePattern}
+            title={storeConfig.address.postalCodeTitle}
+            data-testid="billing-postcal-code-input"
           />
           <NativeSelect
             name="country_code"
