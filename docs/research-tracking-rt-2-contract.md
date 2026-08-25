@@ -105,6 +105,7 @@ Each `research_consent_event` belongs to one research profile and stores:
 - immutable notice digest using SHA-256;
 - server-recorded occurrence timestamp;
 - request idempotency key; and
+- SHA-256 request fingerprint used only for idempotency conflicts; and
 - standard created timestamp.
 
 The pair of research profile and idempotency key must be unique. Consent events
@@ -118,15 +119,23 @@ Each `research_privacy_request` belongs to one research profile and stores:
 - request type: `deletion` in RT-2;
 - status: `requested`, `cancelled`, `processing`, `completed`, or `rejected`;
 - prior profile status: `active` or `closed`;
+- nullable unique open-request key while the request is non-terminal;
 - server-recorded requested, cancelled, started, and completed timestamps as
   applicable;
 - request idempotency key; and
+- SHA-256 creation-request fingerprint;
+- optional cancellation idempotency key and SHA-256 cancellation fingerprint;
+  and
 - standard created and updated timestamps.
 
 The pair of research profile and idempotency key must be unique. Only one
 non-terminal deletion request may exist for a profile. RT-2 must not store a
 free-text reason. Export requests and the actual deletion processor remain
 deferred to RT-8.
+
+The pair of research profile and cancellation idempotency key must also be
+unique when the cancellation key is present. A cancellation key used for an
+earlier deletion request cannot silently cancel or replay against a later one.
 
 Any model change requires a newly generated `researchTracking` migration. The
 migration must not be applied merely because it was generated or committed.
@@ -373,6 +382,13 @@ Each workflow must:
 7. restore earlier state if a later step fails;
 8. return only a serializable minimal projection; and
 9. produce the same durable result on exact replay.
+
+Every future mutating route must derive a stable Medusa workflow transaction
+identifier from the authenticated customer, operation, and a one-way digest of
+the validated idempotency key. The raw key must not be placed in the workflow
+identifier or logs. Reusing that transaction identifier is the concurrency
+boundary that returns the original workflow result; model uniqueness remains a
+defense against duplicate records.
 
 The implementation must use built-in Medusa workflow steps where applicable.
 Custom steps must not duplicate built-in link, query, or event operations.
