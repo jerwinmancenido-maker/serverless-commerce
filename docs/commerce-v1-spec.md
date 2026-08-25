@@ -38,6 +38,12 @@ marketplace connection, or publication of product data.
 - Phase 5 customer upload and Admin review interfaces are implemented in
   source. Payment authorization/capture, persistent storage activation, region
   enablement, and shared-database migration remain separate runtime gates.
+- `docs/manual-qr-phase-5b-settlement-contract.md` separates proof review from
+  financial settlement and defines the authorization, capture, reconciliation,
+  concurrency, compensation, and failure boundaries that must be implemented
+  before Manual QR can be activated.
+- Phase 5B Slice 1 settlement projection and audit models are implemented in
+  source, with a generated migration that has not been applied to any database.
 
 ## Shipping and fulfillment
 
