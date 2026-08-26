@@ -1,5 +1,7 @@
 import { z } from "@medusajs/framework/zod"
 
+import { RESEARCH_BASE_UNITS } from "../../../../../lib/research-quantity"
+
 export const StoreCreateResearchProfile = z.strictObject({
   timezone: z.string().min(1),
   locale: z.literal("en-PH"),
@@ -16,9 +18,12 @@ export const StoreUpdateResearchPreferences = z
     timezone: z.string().min(1).optional(),
     locale: z.literal("en-PH").optional(),
   })
-  .refine((value) => value.timezone !== undefined || value.locale !== undefined, {
-    message: "timezone or locale is required",
-  })
+  .refine(
+    (value) => value.timezone !== undefined || value.locale !== undefined,
+    {
+      message: "timezone or locale is required",
+    },
+  )
 
 export type StoreUpdateResearchPreferencesType = z.infer<
   typeof StoreUpdateResearchPreferences
@@ -79,4 +84,130 @@ export const StoreActivatePurchasedSupply = z.strictObject({
 
 export type StoreActivatePurchasedSupplyType = z.infer<
   typeof StoreActivatePurchasedSupply
+>
+
+const StoreRoutineSchedule = z.strictObject({
+  label: z.string().trim().min(1).max(120),
+  planned_quantity_base_units: z.number().int().positive(),
+  base_unit: z.enum(RESEARCH_BASE_UNITS),
+  recurrence_type: z.enum(["once", "daily", "weekly"]),
+  daily_interval: z.number().int().min(1).max(30).nullable().optional(),
+  weekly_interval: z.number().int().min(1).max(12).nullable().optional(),
+  weekdays: z.array(z.number().int().min(0).max(6)).max(7).optional(),
+  local_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  end_date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .nullable()
+    .optional(),
+  effective_from_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+})
+
+export const StoreCreateResearchRoutine = StoreRoutineSchedule.extend({
+  tracked_material_id: z.string().trim().min(1),
+})
+
+export type StoreCreateResearchRoutineType = z.infer<
+  typeof StoreCreateResearchRoutine
+>
+
+export const StoreUpdateResearchRoutine = StoreRoutineSchedule
+
+export type StoreUpdateResearchRoutineType = z.infer<
+  typeof StoreUpdateResearchRoutine
+>
+
+export const StoreTransitionResearchRoutine = z.strictObject({
+  effective_from_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+})
+
+export type StoreTransitionResearchRoutineType = z.infer<
+  typeof StoreTransitionResearchRoutine
+>
+
+export const StoreListResearchOccurrences = z.strictObject({
+  from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+})
+
+export type StoreListResearchOccurrencesType = z.infer<
+  typeof StoreListResearchOccurrences
+>
+
+export const StorePreviewResearchRoutineLog = z.strictObject({
+  routine_id: z.string().trim().min(1),
+  routine_revision_id: z.string().trim().min(1),
+  occurrence_id: z.string().trim().min(1),
+  local_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  supply_id: z.string().trim().min(1),
+  confirmed_quantity_base_units: z.number().int().positive(),
+  base_unit: z.enum(RESEARCH_BASE_UNITS),
+})
+
+export type StorePreviewResearchRoutineLogType = z.infer<
+  typeof StorePreviewResearchRoutineLog
+>
+
+export const StoreConfirmResearchRoutineLog =
+  StorePreviewResearchRoutineLog.extend({
+    preview_token: z.string().trim().min(1),
+  })
+
+export type StoreConfirmResearchRoutineLogType = z.infer<
+  typeof StoreConfirmResearchRoutineLog
+>
+
+export const StorePreviewResearchRoutineLogMutation = z
+  .strictObject({
+    operation: z.enum(["revise", "void", "restore"]),
+    supply_id: z.string().trim().min(1).optional(),
+    confirmed_quantity_base_units: z.number().int().positive().optional(),
+    base_unit: z.enum(RESEARCH_BASE_UNITS).optional(),
+  })
+  .superRefine((value, context) => {
+    if (value.operation === "void") {
+      return
+    }
+
+    if (
+      !value.supply_id ||
+      value.confirmed_quantity_base_units === undefined ||
+      !value.base_unit
+    ) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "supply_id, confirmed_quantity_base_units, and base_unit are required",
+      })
+    }
+  })
+
+export type StorePreviewResearchRoutineLogMutationType = z.infer<
+  typeof StorePreviewResearchRoutineLogMutation
+>
+
+export const StoreReviseResearchRoutineLog = z.strictObject({
+  preview_token: z.string().trim().min(1),
+  supply_id: z.string().trim().min(1),
+  confirmed_quantity_base_units: z.number().int().positive(),
+  base_unit: z.enum(RESEARCH_BASE_UNITS),
+})
+
+export type StoreReviseResearchRoutineLogType = z.infer<
+  typeof StoreReviseResearchRoutineLog
+>
+
+export const StoreVoidResearchRoutineLog = z.strictObject({
+  preview_token: z.string().trim().min(1),
+})
+
+export type StoreVoidResearchRoutineLogType = z.infer<
+  typeof StoreVoidResearchRoutineLog
+>
+
+export const StoreRestoreResearchRoutineLog = StoreReviseResearchRoutineLog
+
+export type StoreRestoreResearchRoutineLogType = z.infer<
+  typeof StoreRestoreResearchRoutineLog
 >

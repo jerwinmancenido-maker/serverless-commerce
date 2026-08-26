@@ -49,6 +49,47 @@ test("passes form-owned idempotency keys to research server actions", () => {
   assert.doesNotMatch(actionSource, /randomUUID/)
 })
 
+test("rotates consumed RT-5 submission keys and provisions refreshed entities", () => {
+  const componentSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/personal-routines.tsx",
+    ),
+    "utf8",
+  )
+
+  assert.match(componentSource, /useRotatingSubmissionKey/)
+  assert.match(componentSource, /initialKey \?\? createClientSubmissionKey\(\)/)
+  assert.match(componentSource, /state\.submissionKeyConsumed/)
+  assert.match(
+    componentSource,
+    /onSubmissionKeyConsumedRef\.current\?\.\(\)/,
+  )
+  assert.match(componentSource, /rotateOperationKey\("revise"\)/)
+  assert.match(componentSource, /rotateOperationKey\("void"\)/)
+  assert.match(componentSource, /rotateOperationKey\("restore"\)/)
+})
+
+test("keeps RT-5 routines and logs visible while removing read-only mutations", () => {
+  const componentSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/personal-routines.tsx",
+    ),
+    "utf8",
+  )
+
+  assert.doesNotMatch(componentSource, /if \(!canMutate\)[\s\S]*return/)
+  assert.match(componentSource, /Personal routines and records are read-only/)
+  assert.match(componentSource, /canMutate && \([\s\S]*<CreateRoutineCard/)
+  assert.match(componentSource, /canMutate=\{canMutate\}/)
+  assert.match(
+    componentSource,
+    /canMutate && routine\.status === "active"/,
+  )
+  assert.match(componentSource, /canMutate && \(log\.status === "confirmed"/)
+})
+
 test("keeps RT-4 purchased activation explicit, private, and SDK-backed", () => {
   const actionSource = readFileSync(
     join(sourceRoot, "src/lib/data/research-tracking.ts"),

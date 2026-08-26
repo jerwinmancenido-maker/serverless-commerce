@@ -3,6 +3,8 @@ import { model } from "@medusajs/framework/utils"
 import { RESEARCH_BASE_UNITS } from "../../../lib/research-quantity"
 import { RESEARCH_SUPPLY_STATUSES } from "../contracts/tracking"
 import ResearchSupplyActivation from "./research-supply-activation"
+import ResearchRoutineLogRevision from "./research-routine-log-revision"
+import ResearchSupplyAdjustment from "./research-supply-adjustment"
 import TrackedMaterial from "./tracked-material"
 
 const ResearchSupply = model
@@ -22,6 +24,12 @@ const ResearchSupply = model
       mappedBy: "supplies",
     }),
     activations: model.hasMany(() => ResearchSupplyActivation, {
+      mappedBy: "supply",
+    }),
+    routine_log_revisions: model.hasMany(() => ResearchRoutineLogRevision, {
+      mappedBy: "supply",
+    }),
+    adjustments: model.hasMany(() => ResearchSupplyAdjustment, {
       mappedBy: "supply",
     }),
   })

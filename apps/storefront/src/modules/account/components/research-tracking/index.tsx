@@ -11,16 +11,21 @@ import {
   type PurchasedItemCandidate,
   type ResearchTrackingActionState,
   type ResearchTrackingConfiguration,
+  type ResearchOccurrence,
+  type ResearchRoutine,
+  type ResearchRoutineLog,
   type TrackedResearchMaterial,
   updateResearchPreferencesAction,
 } from "@lib/data/research-tracking"
 import type {
   PurchasedActivationSubmissionKeys,
   ResearchSubmissionKeys,
+  RoutineSubmissionKeys,
 } from "@lib/research-tracking-idempotency"
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
 
+import PersonalRoutines from "./personal-routines"
 import ProductsAndSupplies from "./products-and-supplies"
 
 type ResearchTrackingProps = {
@@ -31,6 +36,12 @@ type ResearchTrackingProps = {
   purchasedActivationKeys: PurchasedActivationSubmissionKeys
   purchasedItems: PurchasedItemCandidate[]
   purchasedRuntimeReady: boolean
+  occurrences: ResearchOccurrence[]
+  routineLogs: ResearchRoutineLog[]
+  routineToday: string
+  routineRuntimeReady: boolean
+  routines: ResearchRoutine[]
+  routineSubmissionKeys: RoutineSubmissionKeys
   runtimeReady: boolean
   submissionKeys: ResearchSubmissionKeys
   trackedMaterials: TrackedResearchMaterial[]
@@ -42,9 +53,7 @@ const initialState: ResearchTrackingActionState = {
 }
 
 const futureAreas = [
-  ["Today", "A future review-first view of customer-created research routines."],
   ["Measurements", "Deferred until privacy fields and retention are approved."],
-  ["Personal Routines", "Customer-authored organization, never a store recommendation."],
   ["Journal", "Deferred private notes with export and deletion controls."],
   ["Research Protocols", "Published research-reference content linked to products."],
   ["Calculator", "Transparent unit arithmetic with visible inputs and formulas."],
@@ -414,6 +423,12 @@ export default function ResearchTracking({
   purchasedActivationKeys,
   purchasedItems,
   purchasedRuntimeReady,
+  occurrences,
+  routineLogs,
+  routineToday,
+  routineRuntimeReady,
+  routines,
+  routineSubmissionKeys,
   runtimeReady,
   submissionKeys,
   trackedMaterials,
@@ -481,6 +496,23 @@ export default function ResearchTracking({
           purchasedActivationKeys={purchasedActivationKeys}
           purchasedItems={purchasedItems}
           runtimeReady={purchasedRuntimeReady}
+          trackedMaterials={trackedMaterials}
+        />
+      )}
+
+      {runtimeReady && profile && (
+        <PersonalRoutines
+          canMutate={
+            profile.status === "active" &&
+            profile.consent_version === configuration.consent_version
+          }
+          countryCode={countryCode}
+          occurrences={occurrences}
+          logs={routineLogs}
+          routines={routines}
+          today={routineToday}
+          runtimeReady={routineRuntimeReady}
+          submissionKeys={routineSubmissionKeys}
           trackedMaterials={trackedMaterials}
         />
       )}

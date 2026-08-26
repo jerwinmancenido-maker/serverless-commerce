@@ -13,9 +13,76 @@ import {
   StoreRequestResearchDeletion,
   StoreUpdateResearchPreferences,
   StoreListPurchasedSupplies,
+  StoreCreateResearchRoutine,
+  StoreListResearchOccurrences,
+  StoreTransitionResearchRoutine,
+  StoreUpdateResearchRoutine,
+  StoreConfirmResearchRoutineLog,
+  StorePreviewResearchRoutineLog,
+  StorePreviewResearchRoutineLogMutation,
+  StoreRestoreResearchRoutineLog,
+  StoreReviseResearchRoutineLog,
+  StoreVoidResearchRoutineLog,
 } from "./validators"
 
 export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
+  {
+    matcher: "/store/customers/me/research-tracking/routines",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreCreateResearchRoutine)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/routines/:id",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreUpdateResearchRoutine)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/routines/:id/archive",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreTransitionResearchRoutine)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/routines/:id/resume",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreTransitionResearchRoutine)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/occurrences",
+    method: "GET",
+    middlewares: [validateAndTransformQuery(StoreListResearchOccurrences, {})],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/logs/preview",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StorePreviewResearchRoutineLog)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/logs",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreConfirmResearchRoutineLog)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/logs/:id/preview",
+    method: "POST",
+    middlewares: [
+      validateAndTransformBody(StorePreviewResearchRoutineLogMutation),
+    ],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/logs/:id/revise",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreReviseResearchRoutineLog)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/logs/:id/void",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreVoidResearchRoutineLog)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/logs/:id/restore",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreRestoreResearchRoutineLog)],
+  },
   {
     matcher: "/store/customers/me/research-tracking/purchased-items",
     method: "GET",

@@ -5,6 +5,7 @@ import {
   TRACKED_MATERIAL_STATUSES,
 } from "../contracts/tracking"
 import ResearchProfile from "./research-profile"
+import ResearchRoutine from "./research-routine"
 import ResearchSupply from "./research-supply"
 import ResearchSupplyActivation from "./research-supply-activation"
 
@@ -20,6 +21,9 @@ const TrackedMaterial = model
       mappedBy: "tracked_materials",
     }),
     supplies: model.hasMany(() => ResearchSupply, {
+      mappedBy: "tracked_material",
+    }),
+    routines: model.hasMany(() => ResearchRoutine, {
       mappedBy: "tracked_material",
     }),
     supply_activations: model.hasMany(() => ResearchSupplyActivation, {
