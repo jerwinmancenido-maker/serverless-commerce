@@ -1578,6 +1578,679 @@
         }
       },
       "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "source_order_id": {
+          "name": "source_order_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "source_order_line_item_id": {
+          "name": "source_order_line_item_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "source_product_variant_id": {
+          "name": "source_product_variant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "eligible_commerce_quantity": {
+          "name": "eligible_commerce_quantity",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "material_profile_key": {
+          "name": "material_profile_key",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "material_profile_revision": {
+          "name": "material_profile_revision",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "material_quantity_base_units": {
+          "name": "material_quantity_base_units",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "material_base_unit": {
+          "name": "material_base_unit",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [
+            "microgram",
+            "microliter",
+            "piece"
+          ],
+          "mappedType": "enum"
+        },
+        "idempotency_key": {
+          "name": "idempotency_key",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "request_fingerprint_sha256": {
+          "name": "request_fingerprint_sha256",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "activated_at": {
+          "name": "activated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "label_snapshot": {
+          "name": "label_snapshot",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "profile_id": {
+          "name": "profile_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "tracked_material_id": {
+          "name": "tracked_material_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "supply_id": {
+          "name": "supply_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "research_supply_activation",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_research_supply_activation_profile_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_profile_id\" ON \"research_supply_activation\" (\"profile_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_tracked_material_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_tracked_material_id\" ON \"research_supply_activation\" (\"tracked_material_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_supply_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_supply_id\" ON \"research_supply_activation\" (\"supply_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_deleted_at\" ON \"research_supply_activation\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_source_order_line_item_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_research_supply_activation_source_order_line_item_id_unique\" ON \"research_supply_activation\" (\"source_order_line_item_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_supply_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_research_supply_activation_supply_id_unique\" ON \"research_supply_activation\" (\"supply_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_profile_id_idempotency_key_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_research_supply_activation_profile_id_idempotency_key_unique\" ON \"research_supply_activation\" (\"profile_id\", \"idempotency_key\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_profile_id_activated_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_profile_id_activated_at\" ON \"research_supply_activation\" (\"profile_id\", \"activated_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "research_supply_activation_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "research_supply_activation_profile_id_foreign": {
+          "constraintName": "research_supply_activation_profile_id_foreign",
+          "columnNames": [
+            "profile_id"
+          ],
+          "localTableName": "public.research_supply_activation",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.research_profile",
+          "updateRule": "cascade"
+        },
+        "research_supply_activation_tracked_material_id_foreign": {
+          "constraintName": "research_supply_activation_tracked_material_id_foreign",
+          "columnNames": [
+            "tracked_material_id"
+          ],
+          "localTableName": "public.research_supply_activation",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tracked_material",
+          "updateRule": "cascade"
+        },
+        "research_supply_activation_supply_id_foreign": {
+          "constraintName": "research_supply_activation_supply_id_foreign",
+          "columnNames": [
+            "supply_id"
+          ],
+          "localTableName": "public.research_supply_activation",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.research_supply",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "idempotency_key": {
+          "name": "idempotency_key",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "request_fingerprint_sha256": {
+          "name": "request_fingerprint_sha256",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "accepted_at": {
+          "name": "accepted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "profile_id": {
+          "name": "profile_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "activation_id": {
+          "name": "activation_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "research_supply_activation_request",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_research_supply_activation_request_profile_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_request_profile_id\" ON \"research_supply_activation_request\" (\"profile_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_request_activation_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_request_activation_id\" ON \"research_supply_activation_request\" (\"activation_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_request_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_request_deleted_at\" ON \"research_supply_activation_request\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_request_profile_id_idempotency_key_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_research_supply_activation_request_profile_id_idempotency_key_unique\" ON \"research_supply_activation_request\" (\"profile_id\", \"idempotency_key\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_research_supply_activation_request_activation_id_accepted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_research_supply_activation_request_activation_id_accepted_at\" ON \"research_supply_activation_request\" (\"activation_id\", \"accepted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "research_supply_activation_request_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "research_supply_activation_request_profile_id_foreign": {
+          "constraintName": "research_supply_activation_request_profile_id_foreign",
+          "columnNames": [
+            "profile_id"
+          ],
+          "localTableName": "public.research_supply_activation_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.research_profile",
+          "updateRule": "cascade"
+        },
+        "research_supply_activation_request_activation_id_foreign": {
+          "constraintName": "research_supply_activation_request_activation_id_foreign",
+          "columnNames": [
+            "activation_id"
+          ],
+          "localTableName": "public.research_supply_activation_request",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.research_supply_activation",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
     }
   ],
   "nativeEnums": {}
