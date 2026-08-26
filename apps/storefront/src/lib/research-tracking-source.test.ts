@@ -48,3 +48,27 @@ test("passes form-owned idempotency keys to research server actions", () => {
   assert.match(actionSource, /formData\.get\("idempotency_key"\)/)
   assert.doesNotMatch(actionSource, /randomUUID/)
 })
+
+test("keeps RT-4 purchased activation explicit, private, and SDK-backed", () => {
+  const actionSource = readFileSync(
+    join(sourceRoot, "src/lib/data/research-tracking.ts"),
+    "utf8",
+  )
+  const componentSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/products-and-supplies.tsx",
+    ),
+    "utf8",
+  )
+
+  assert.match(actionSource, /sdk\.client\.fetch/)
+  assert.match(actionSource, /cache: "no-store"/)
+  assert.doesNotMatch(actionSource, /JSON\.stringify/)
+  assert.match(actionSource, /purchasedActivationConflictMessages/)
+  assert.match(actionSource, /idempotency_key_conflict/)
+  assert.match(componentSource, /Review private tracking details/)
+  assert.match(componentSource, /name="confirm_tracking"/)
+  assert.match(componentSource, /Purchases are\s+never added automatically/)
+  assert.doesNotMatch(componentSource, /dose|dosing|inject|administration route/i)
+})

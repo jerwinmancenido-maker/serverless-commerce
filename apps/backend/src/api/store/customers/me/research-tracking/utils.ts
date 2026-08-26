@@ -25,9 +25,16 @@ export function createResearchWorkflowContext(
   customerId: string,
   operation: string,
   idempotencyKey: string,
+  requestFingerprintSha256?: string,
 ): { transactionId: string } {
+  const transactionParts = [customerId, operation, idempotencyKey]
+
+  if (requestFingerprintSha256) {
+    transactionParts.push(requestFingerprintSha256)
+  }
+
   const digest = createHash("sha256")
-    .update([customerId, operation, idempotencyKey].join("\u0000"))
+    .update(transactionParts.join("\u0000"))
     .digest("hex")
 
   return {

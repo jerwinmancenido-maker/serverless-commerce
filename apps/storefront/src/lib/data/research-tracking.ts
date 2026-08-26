@@ -26,10 +26,63 @@ export type ResearchPrivacyRequest = {
 
 export type ResearchTrackingConfiguration = {
   available: boolean
+  purchased_activation_available: boolean
   consent_version: string | null
   notice_url: string | null
   default_timezone: string
   supported_locales: string[]
+}
+
+export type PurchasedItemIneligibilityReason =
+  | "not_fulfilled"
+  | "order_cancelled"
+  | "returned_or_reversed"
+  | "unsupported_order_source"
+  | "material_profile_unavailable"
+  | "quantity_unavailable"
+  | "already_tracked"
+  | "archived_material_action_required"
+
+type PurchasedActivationConflictReason =
+  | Exclude<PurchasedItemIneligibilityReason, "already_tracked">
+  | "research_profile_action_required"
+  | "idempotency_key_conflict"
+
+export type PurchasedItemCandidate = {
+  order_id: string
+  order_display_id: string | number
+  line_item_id: string
+  label: string
+  variant_id: string | null
+  variant_sku: string | null
+  eligibility: "eligible" | "ineligible" | "already_tracked"
+  ineligibility_reason: PurchasedItemIneligibilityReason | null
+  eligible_commerce_quantity: number | null
+  initial_quantity_base_units: number | null
+  base_unit: "microgram" | "microliter" | "piece" | null
+  added_to_tracking_at: string | null
+}
+
+export type TrackedResearchSupply = {
+  supply_id: string
+  source_order_line_item_id: string | null
+  initial_quantity_base_units: number
+  remaining_quantity_base_units: number
+  base_unit: "microgram" | "microliter" | "piece"
+  added_to_tracking_at: string
+  lot_number: string | null
+  batch_number: string | null
+  expires_at: string | null
+  storage_note: string | null
+  status: "active" | "depleted" | "archived"
+}
+
+export type TrackedResearchMaterial = {
+  tracked_material_id: string
+  label: string
+  product_variant_id: string | null
+  status: "active"
+  supplies: TrackedResearchSupply[]
 }
 
 export type ResearchTrackingActionState = {
@@ -62,7 +115,37 @@ function accountPath(formData: FormData): string {
   return `/${countryCode}/account/research-tracking`
 }
 
-function customerSafeError(_error: unknown): string {
+const purchasedActivationConflictMessages: Record<
+  PurchasedActivationConflictReason,
+  string
+> = {
+  research_profile_action_required:
+    "Activate or renew your Research & Tracking profile before continuing.",
+  idempotency_key_conflict:
+    "This submission was already used for a different item. Refresh and try again.",
+  not_fulfilled: "This item is not fully fulfilled yet.",
+  order_cancelled: "This item belongs to a cancelled order.",
+  returned_or_reversed: "No eligible fulfilled quantity remains for tracking.",
+  unsupported_order_source:
+    "This order source is not eligible for private tracking.",
+  material_profile_unavailable:
+    "Verified material information is not currently available for this item.",
+  quantity_unavailable:
+    "The eligible material quantity could not be verified safely.",
+  archived_material_action_required:
+    "An archived material requires a separate customer-controlled action.",
+}
+
+function customerSafeError(error: unknown): string {
+  const reason =
+    error instanceof Error
+      ? (error.message as PurchasedActivationConflictReason)
+      : null
+
+  if (reason && reason in purchasedActivationConflictMessages) {
+    return purchasedActivationConflictMessages[reason]
+  }
+
   return "The request could not be completed. Please try again."
 }
 
@@ -130,6 +213,57 @@ export async function retrieveCurrentResearchDeletionRequest(): Promise<Research
   )
 
   return response.privacy_request
+}
+
+export async function retrievePurchasedItemCandidates(): Promise<
+  PurchasedItemCandidate[]
+> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    purchased_items: PurchasedItemCandidate[]
+  }>("/store/customers/me/research-tracking/purchased-items?limit=20&offset=0", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+
+  return response.purchased_items
+}
+
+export async function retrieveTrackedResearchMaterials(): Promise<
+  TrackedResearchMaterial[]
+> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    materials: TrackedResearchMaterial[]
+  }>("/store/customers/me/research-tracking/materials?limit=20&offset=0", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+
+  return response.materials
+}
+
+export async function activatePurchasedSupplyAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  if (formData.get("confirm_tracking") !== "on") {
+    return {
+      success: false,
+      error: "Review and confirm before starting private tracking.",
+    }
+  }
+
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/purchased-items/activate",
+    {
+      order_id: String(formData.get("order_id") || ""),
+      line_item_id: String(formData.get("line_item_id") || ""),
+    },
+    formData,
+  )
 }
 
 export async function createResearchProfileAction(

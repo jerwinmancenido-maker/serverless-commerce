@@ -7,6 +7,10 @@ export const RESEARCH_MAX_BASE_UNITS = 2_147_483_647
 
 export type ResearchBaseUnit = (typeof RESEARCH_BASE_UNITS)[number]
 
+export function isResearchBaseUnit(value: string): value is ResearchBaseUnit {
+  return RESEARCH_BASE_UNITS.includes(value as ResearchBaseUnit)
+}
+
 export type ResearchQuantityInput = {
   baseUnits: number
   baseUnit: ResearchBaseUnit

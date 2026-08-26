@@ -2,6 +2,7 @@ import { model } from "@medusajs/framework/utils"
 
 import { RESEARCH_BASE_UNITS } from "../../../lib/research-quantity"
 import { RESEARCH_SUPPLY_STATUSES } from "../contracts/tracking"
+import ResearchSupplyActivation from "./research-supply-activation"
 import TrackedMaterial from "./tracked-material"
 
 const ResearchSupply = model
@@ -19,6 +20,9 @@ const ResearchSupply = model
     status: model.enum([...RESEARCH_SUPPLY_STATUSES]).default("active"),
     tracked_material: model.belongsTo(() => TrackedMaterial, {
       mappedBy: "supplies",
+    }),
+    activations: model.hasMany(() => ResearchSupplyActivation, {
+      mappedBy: "supply",
     }),
   })
   .indexes([

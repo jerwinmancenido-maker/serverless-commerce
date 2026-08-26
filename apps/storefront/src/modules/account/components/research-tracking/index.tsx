@@ -8,21 +8,32 @@ import {
   requestResearchDeletionAction,
   type ResearchPrivacyRequest,
   type ResearchProfile,
+  type PurchasedItemCandidate,
   type ResearchTrackingActionState,
   type ResearchTrackingConfiguration,
+  type TrackedResearchMaterial,
   updateResearchPreferencesAction,
 } from "@lib/data/research-tracking"
-import type { ResearchSubmissionKeys } from "@lib/research-tracking-idempotency"
+import type {
+  PurchasedActivationSubmissionKeys,
+  ResearchSubmissionKeys,
+} from "@lib/research-tracking-idempotency"
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
+
+import ProductsAndSupplies from "./products-and-supplies"
 
 type ResearchTrackingProps = {
   configuration: ResearchTrackingConfiguration
   countryCode: string
   profile: ResearchProfile | null
   privacyRequest: ResearchPrivacyRequest | null
+  purchasedActivationKeys: PurchasedActivationSubmissionKeys
+  purchasedItems: PurchasedItemCandidate[]
+  purchasedRuntimeReady: boolean
   runtimeReady: boolean
   submissionKeys: ResearchSubmissionKeys
+  trackedMaterials: TrackedResearchMaterial[]
 }
 
 const initialState: ResearchTrackingActionState = {
@@ -33,7 +44,6 @@ const initialState: ResearchTrackingActionState = {
 const futureAreas = [
   ["Today", "A future review-first view of customer-created research routines."],
   ["Measurements", "Deferred until privacy fields and retention are approved."],
-  ["My Products & Supplies", "Future opt-in tracking for eligible purchased items."],
   ["Personal Routines", "Customer-authored organization, never a store recommendation."],
   ["Journal", "Deferred private notes with export and deletion controls."],
   ["Research Protocols", "Published research-reference content linked to products."],
@@ -401,8 +411,12 @@ export default function ResearchTracking({
   countryCode,
   profile,
   privacyRequest,
+  purchasedActivationKeys,
+  purchasedItems,
+  purchasedRuntimeReady,
   runtimeReady,
   submissionKeys,
+  trackedMaterials,
 }: ResearchTrackingProps) {
   return (
     <div className="w-full" data-testid="research-tracking-page">
@@ -456,6 +470,18 @@ export default function ResearchTracking({
           configuration={configuration}
           countryCode={countryCode}
           idempotencyKey={submissionKeys.profileCreate}
+        />
+      )}
+
+      {runtimeReady && profile && (
+        <ProductsAndSupplies
+          configuration={configuration}
+          countryCode={countryCode}
+          profile={profile}
+          purchasedActivationKeys={purchasedActivationKeys}
+          purchasedItems={purchasedItems}
+          runtimeReady={purchasedRuntimeReady}
+          trackedMaterials={trackedMaterials}
         />
       )}
 

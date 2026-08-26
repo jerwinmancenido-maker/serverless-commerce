@@ -17,6 +17,8 @@ export async function GET(
     research_tracking: configuration.available
       ? {
           available: true,
+          purchased_activation_available:
+            configuration.purchasedActivationAvailable,
           consent_version: configuration.activeConsentVersion,
           notice_url: configuration.noticeUrl,
           default_timezone: "Asia/Manila",
@@ -24,6 +26,7 @@ export async function GET(
         }
       : {
           available: false,
+          purchased_activation_available: false,
           consent_version: null,
           notice_url: null,
           default_timezone: "Asia/Manila",

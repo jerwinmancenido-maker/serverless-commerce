@@ -1,18 +1,37 @@
 import {
   type MiddlewareRoute,
   validateAndTransformBody,
+  validateAndTransformQuery,
 } from "@medusajs/framework/http"
 
 import {
   StoreCancelResearchDeletion,
+  StoreActivatePurchasedSupply,
   StoreCloseResearchProfile,
   StoreCreateResearchProfile,
   StoreRecordResearchConsent,
   StoreRequestResearchDeletion,
   StoreUpdateResearchPreferences,
+  StoreListPurchasedSupplies,
 } from "./validators"
 
 export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
+  {
+    matcher: "/store/customers/me/research-tracking/purchased-items",
+    method: "GET",
+    middlewares: [validateAndTransformQuery(StoreListPurchasedSupplies, {})],
+  },
+  {
+    matcher:
+      "/store/customers/me/research-tracking/purchased-items/activate",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreActivatePurchasedSupply)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/materials",
+    method: "GET",
+    middlewares: [validateAndTransformQuery(StoreListPurchasedSupplies, {})],
+  },
   {
     matcher: "/store/customers/me/research-tracking/profile",
     method: "POST",

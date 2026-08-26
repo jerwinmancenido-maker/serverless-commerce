@@ -8,12 +8,14 @@ import {
 export type ResearchTrackingCustomerConfiguration =
   | {
       available: false
+      purchasedActivationAvailable: false
       activeConsentVersion: null
       noticeSha256: null
       noticeUrl: null
     }
   | {
       available: true
+      purchasedActivationAvailable: boolean
       activeConsentVersion: string
       noticeSha256: string
       noticeUrl: string
@@ -25,7 +27,13 @@ type ResearchTrackingEnvironment = Partial<Pick<
   | "RESEARCH_TRACKING_CONSENT_VERSION"
   | "RESEARCH_TRACKING_NOTICE_SHA256"
   | "RESEARCH_TRACKING_NOTICE_URL"
+  | "RESEARCH_TRACKING_ELIGIBLE_SALES_CHANNEL_IDS"
 >>
+
+export type ResearchTrackingPurchasedActivationConfiguration = {
+  available: boolean
+  eligibleSalesChannelIds: string[]
+}
 
 function invalidConfiguration(message: string): never {
   throw new MedusaError(
@@ -40,6 +48,7 @@ export function getResearchTrackingCustomerConfiguration(
   if (environment.RESEARCH_TRACKING_CUSTOMER_API_ENABLED !== "true") {
     return {
       available: false,
+      purchasedActivationAvailable: false,
       activeConsentVersion: null,
       noticeSha256: null,
       noticeUrl: null,
@@ -74,11 +83,32 @@ export function getResearchTrackingCustomerConfiguration(
   try {
     return {
       available: true,
+      purchasedActivationAvailable:
+        getResearchTrackingPurchasedActivationConfiguration(environment)
+          .available,
       activeConsentVersion: normalizeResearchConsentVersion(version),
       noticeSha256: normalizeResearchNoticeSha256(digest),
       noticeUrl: noticeUrl.toString(),
     }
   } catch {
     invalidConfiguration("consent version or notice digest has an invalid format")
+  }
+}
+
+export function getResearchTrackingPurchasedActivationConfiguration(
+  environment: ResearchTrackingEnvironment = process.env,
+): ResearchTrackingPurchasedActivationConfiguration {
+  const eligibleSalesChannelIds = Array.from(
+    new Set(
+      (environment.RESEARCH_TRACKING_ELIGIBLE_SALES_CHANNEL_IDS ?? "")
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean),
+    ),
+  )
+
+  return {
+    available: eligibleSalesChannelIds.length > 0,
+    eligibleSalesChannelIds,
   }
 }

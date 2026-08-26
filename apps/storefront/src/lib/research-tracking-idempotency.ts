@@ -11,6 +11,8 @@ export type ResearchMutationName = (typeof RESEARCH_MUTATION_NAMES)[number]
 
 export type ResearchSubmissionKeys = Record<ResearchMutationName, string>
 
+export type PurchasedActivationSubmissionKeys = Record<string, string>
+
 const idempotencyKeyPattern = /^[A-Za-z0-9._:-]{8,128}$/
 
 export function normalizeResearchSubmissionKey(value: unknown): string {
@@ -32,4 +34,16 @@ export function createResearchSubmissionKeys(
       normalizeResearchSubmissionKey(`storefront:${createId()}`),
     ]),
   ) as ResearchSubmissionKeys
+}
+
+export function createPurchasedActivationSubmissionKeys(
+  lineItemIds: string[],
+  createId: () => string,
+): PurchasedActivationSubmissionKeys {
+  return Object.fromEntries(
+    lineItemIds.map((lineItemId) => [
+      lineItemId,
+      normalizeResearchSubmissionKey(`storefront:${createId()}`),
+    ]),
+  )
 }

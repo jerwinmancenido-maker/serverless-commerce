@@ -1,5 +1,9 @@
-import { getResearchTrackingCustomerConfiguration } from "../config"
 import {
+  getResearchTrackingCustomerConfiguration,
+  getResearchTrackingPurchasedActivationConfiguration,
+} from "../config"
+import {
+  StoreActivatePurchasedSupply,
   StoreCancelResearchDeletion,
   StoreCloseResearchProfile,
   StoreCreateResearchProfile,
@@ -16,6 +20,7 @@ describe("research tracking customer API contract", () => {
   it("keeps customer access unavailable by default", () => {
     expect(getResearchTrackingCustomerConfiguration({})).toEqual({
       available: false,
+      purchasedActivationAvailable: false,
       activeConsentVersion: null,
       noticeSha256: null,
       noticeUrl: null,
@@ -32,9 +37,21 @@ describe("research tracking customer API contract", () => {
       }),
     ).toEqual({
       available: true,
+      purchasedActivationAvailable: false,
       activeConsentVersion: "2026-08-25.v1",
       noticeSha256,
       noticeUrl: "https://example.com/privacy/research",
+    })
+  })
+
+  it("enables purchased activation only with a normalized channel allowlist", () => {
+    expect(
+      getResearchTrackingPurchasedActivationConfiguration({
+        RESEARCH_TRACKING_ELIGIBLE_SALES_CHANNEL_IDS: " sc_1,sc_2,sc_1 ",
+      }),
+    ).toEqual({
+      available: true,
+      eligibleSalesChannelIds: ["sc_1", "sc_2"],
     })
   })
 
@@ -79,6 +96,12 @@ describe("research tracking customer API contract", () => {
         acknowledge_cancellation: true,
       }).success,
     ).toBe(true)
+    expect(
+      StoreActivatePurchasedSupply.safeParse({
+        order_id: "order_1",
+        line_item_id: "ordli_1",
+      }).success,
+    ).toBe(true)
   })
 
   it.each([
@@ -95,6 +118,14 @@ describe("research tracking customer API contract", () => {
     [StoreUpdateResearchPreferences, {}],
     [StoreRecordResearchConsent, { accepted: false }],
     [StoreCloseResearchProfile, { acknowledge_closure: false }],
+    [
+      StoreActivatePurchasedSupply,
+      {
+        order_id: "order_1",
+        line_item_id: "ordli_1",
+        customer_id: "cus_other",
+      },
+    ],
     [
       StoreRequestResearchDeletion,
       { acknowledge_deletion_request: true, profile_id: "rprof_other" },
@@ -118,6 +149,23 @@ describe("research tracking customer API contract", () => {
     expect(first).toEqual(replay)
     expect(first.transactionId).not.toContain("profile:create:1")
     expect(first.transactionId).not.toContain("cus_test")
+  })
+
+  it("separates workflow transactions when one key is reused for different input", () => {
+    const first = createResearchWorkflowContext(
+      "cus_test",
+      "purchased-supply-activate",
+      "activation:key:1",
+      "a".repeat(64),
+    )
+    const conflict = createResearchWorkflowContext(
+      "cus_test",
+      "purchased-supply-activate",
+      "activation:key:1",
+      "b".repeat(64),
+    )
+
+    expect(first.transactionId).not.toBe(conflict.transactionId)
   })
 
   it("identifies research tracking errors even when the URL has a query", () => {

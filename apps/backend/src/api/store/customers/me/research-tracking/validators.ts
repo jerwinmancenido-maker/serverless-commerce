@@ -56,3 +56,27 @@ export const StoreCancelResearchDeletion = z.strictObject({
 export type StoreCancelResearchDeletionType = z.infer<
   typeof StoreCancelResearchDeletion
 >
+
+export const StoreListPurchasedSupplies = z.strictObject({
+  limit: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().min(1).max(50).default(20),
+  ),
+  offset: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().min(0).default(0),
+  ),
+})
+
+export type StoreListPurchasedSuppliesType = z.infer<
+  typeof StoreListPurchasedSupplies
+>
+
+export const StoreActivatePurchasedSupply = z.strictObject({
+  order_id: z.string().trim().min(1),
+  line_item_id: z.string().trim().min(1),
+})
+
+export type StoreActivatePurchasedSupplyType = z.infer<
+  typeof StoreActivatePurchasedSupply
+>

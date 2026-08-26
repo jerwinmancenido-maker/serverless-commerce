@@ -4,6 +4,8 @@ import { RESEARCH_PROFILE_STATUSES } from "../contracts/tracking"
 import ResearchConsentEvent from "./research-consent-event"
 import ResearchPreferenceMutation from "./research-preference-mutation"
 import ResearchPrivacyRequest from "./research-privacy-request"
+import ResearchSupplyActivation from "./research-supply-activation"
+import ResearchSupplyActivationRequest from "./research-supply-activation-request"
 import TrackedMaterial from "./tracked-material"
 
 const ResearchProfile = model.define("research_profile", {
@@ -26,6 +28,15 @@ const ResearchProfile = model.define("research_profile", {
   privacy_requests: model.hasMany(() => ResearchPrivacyRequest, {
     mappedBy: "profile",
   }),
+  supply_activations: model.hasMany(() => ResearchSupplyActivation, {
+    mappedBy: "profile",
+  }),
+  supply_activation_requests: model.hasMany(
+    () => ResearchSupplyActivationRequest,
+    {
+      mappedBy: "profile",
+    },
+  ),
 })
 
 export default ResearchProfile
