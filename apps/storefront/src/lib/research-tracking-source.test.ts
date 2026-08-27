@@ -25,6 +25,17 @@ test("gates Research & Tracking navigation on server activation", () => {
   assert.match(pageSource, /!configuration\.available[\s\S]*notFound\(\)/)
 })
 
+test("does not render a cached customer after authentication is cleared", () => {
+  const customerSource = readFileSync(
+    join(sourceRoot, "src/lib/data/customer.ts"),
+    "utf8",
+  )
+
+  assert.match(customerSource, /if \(!\("authorization" in authHeaders\)\) return null/)
+  assert.match(customerSource, /cache: "no-store"/)
+  assert.doesNotMatch(customerSource, /getCacheOptions\("customers"\)/)
+})
+
 test("does not infer database or collection state from runtime errors", () => {
   const componentSource = readFileSync(
     join(
