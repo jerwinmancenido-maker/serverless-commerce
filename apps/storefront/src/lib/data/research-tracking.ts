@@ -160,6 +160,29 @@ export type ResearchRoutineLog = {
   created_at: string
 }
 
+export type ResearchJournalEntry = {
+  journal_entry_id: string
+  status: "active" | "voided"
+  current_revision: {
+    revision_id: string
+    revision_number: number
+    local_date: string
+    local_time: string
+    timezone: string
+    title: string | null
+    note: string
+    tracked_material_id: string | null
+    supply_id: string | null
+    routine_id: string | null
+    confirmed_log_id: string | null
+    created_at: string
+  }
+  created_at: string
+  updated_at: string
+  voided_at: string | null
+  restored_at: string | null
+}
+
 export type ResearchRoutineLogMutationPreview = {
   log_id: string
   operation: "revise" | "void" | "restore"
@@ -258,6 +281,10 @@ const customerConflictMessages: Record<string, string> = {
     "The supply balance changed. Refresh and review the latest balance.",
   research_routine_log_changed:
     "This record changed after preview. Refresh and review the latest record.",
+  research_journal_changed:
+    "This journal entry changed after the page loaded. Refresh and review the latest version.",
+  confirmed_log_ineligible:
+    "The linked routine record is no longer confirmed. Refresh and review the entry.",
   request_in_progress:
     "This request is already processing. Wait a moment, then refresh.",
   previous_request_failed:
@@ -439,6 +466,92 @@ export async function retrieveResearchRoutineLogs(): Promise<
   )
 
   return response.logs
+}
+
+export async function retrieveResearchJournalEntries(): Promise<
+  ResearchJournalEntry[]
+> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    journal_entries: ResearchJournalEntry[]
+  }>(
+    "/store/customers/me/research-tracking/journal?limit=50&offset=0&include_voided=true",
+    { method: "GET", headers, cache: "no-store" },
+  )
+
+  return response.journal_entries
+}
+
+function journalContentBody(formData: FormData) {
+  const optional = (field: string) =>
+    String(formData.get(field) || "").trim() || null
+
+  return {
+    title: optional("title"),
+    note: String(formData.get("note") || ""),
+    local_date: String(formData.get("local_date") || ""),
+    local_time: String(formData.get("local_time") || ""),
+    timezone: String(formData.get("timezone") || "Asia/Manila"),
+    tracked_material_id: optional("tracked_material_id"),
+    supply_id: optional("supply_id"),
+    routine_id: optional("routine_id"),
+    confirmed_log_id: optional("confirmed_log_id"),
+    confirmed: formData.get("confirmed") === "on",
+  }
+}
+
+export async function createResearchJournalEntryAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  if (formData.get("confirmed") !== "on") {
+    return { success: false, error: "Review and confirm this private entry." }
+  }
+
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/journal",
+    journalContentBody(formData),
+    formData,
+  )
+}
+
+export async function reviseResearchJournalEntryAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  if (formData.get("confirmed") !== "on") {
+    return { success: false, error: "Review and confirm this private entry." }
+  }
+
+  const entryId = String(formData.get("journal_entry_id") || "")
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/journal/${encodeURIComponent(entryId)}/revise`,
+    {
+      ...journalContentBody(formData),
+      expected_revision_id: String(formData.get("expected_revision_id") || ""),
+    },
+    formData,
+  )
+}
+
+export async function transitionResearchJournalEntryAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  if (formData.get("confirmed") !== "on") {
+    return { success: false, error: "Review and confirm this private entry." }
+  }
+
+  const entryId = String(formData.get("journal_entry_id") || "")
+  const operation = formData.get("operation") === "restore" ? "restore" : "void"
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/journal/${encodeURIComponent(entryId)}/${operation}`,
+    {
+      expected_revision_id: String(formData.get("expected_revision_id") || ""),
+      confirmed: true,
+    },
+    formData,
+  )
 }
 
 function routineBody(formData: FormData) {

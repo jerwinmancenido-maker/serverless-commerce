@@ -1,6 +1,10 @@
 import { z } from "@medusajs/framework/zod"
 
 import { RESEARCH_BASE_UNITS } from "../../../../../lib/research-quantity"
+import {
+  RESEARCH_JOURNAL_NOTE_MAX_LENGTH,
+  RESEARCH_JOURNAL_TITLE_MAX_LENGTH,
+} from "../../../../../modules/research-tracking/contracts/journal"
 
 export const StoreCreateResearchProfile = z.strictObject({
   timezone: z.string().min(1),
@@ -210,4 +214,65 @@ export const StoreRestoreResearchRoutineLog = StoreReviseResearchRoutineLog
 
 export type StoreRestoreResearchRoutineLogType = z.infer<
   typeof StoreRestoreResearchRoutineLog
+>
+
+export const StoreListResearchJournalEntries = z.strictObject({
+  limit: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().min(1).max(50).default(20),
+  ),
+  offset: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().min(0).default(0),
+  ),
+  include_voided: z.preprocess(
+    (value) => value === true || value === "true",
+    z.boolean().default(true),
+  ),
+})
+
+export type StoreListResearchJournalEntriesType = z.infer<
+  typeof StoreListResearchJournalEntries
+>
+
+const StoreResearchJournalContent = z.strictObject({
+  title: z
+    .string()
+    .trim()
+    .max(RESEARCH_JOURNAL_TITLE_MAX_LENGTH)
+    .nullable()
+    .optional(),
+  note: z.string().trim().min(1).max(RESEARCH_JOURNAL_NOTE_MAX_LENGTH),
+  local_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  local_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+  timezone: z.string().trim().min(1),
+  tracked_material_id: z.string().trim().min(1).nullable().optional(),
+  supply_id: z.string().trim().min(1).nullable().optional(),
+  routine_id: z.string().trim().min(1).nullable().optional(),
+  confirmed_log_id: z.string().trim().min(1).nullable().optional(),
+  confirmed: z.literal(true),
+})
+
+export const StoreCreateResearchJournalEntry = StoreResearchJournalContent
+
+export type StoreCreateResearchJournalEntryType = z.infer<
+  typeof StoreCreateResearchJournalEntry
+>
+
+export const StoreReviseResearchJournalEntry =
+  StoreResearchJournalContent.extend({
+    expected_revision_id: z.string().trim().min(1),
+  })
+
+export type StoreReviseResearchJournalEntryType = z.infer<
+  typeof StoreReviseResearchJournalEntry
+>
+
+export const StoreTransitionResearchJournalEntry = z.strictObject({
+  expected_revision_id: z.string().trim().min(1),
+  confirmed: z.literal(true),
+})
+
+export type StoreTransitionResearchJournalEntryType = z.infer<
+  typeof StoreTransitionResearchJournalEntry
 >

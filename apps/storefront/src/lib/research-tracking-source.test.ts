@@ -113,3 +113,38 @@ test("keeps RT-4 purchased activation explicit, private, and SDK-backed", () => 
   assert.match(componentSource, /Purchases are\s+never added automatically/)
   assert.doesNotMatch(componentSource, /dose|dosing|inject|administration route/i)
 })
+
+test("keeps the Journal authenticated, private, SDK-backed, and revisioned", () => {
+  const journalSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/journal.tsx",
+    ),
+    "utf8",
+  )
+  const accountSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/index.tsx",
+    ),
+    "utf8",
+  )
+
+  const actionSource = readFileSync(
+    join(sourceRoot, "src/lib/data/research-tracking.ts"),
+    "utf8",
+  )
+
+  assert.match(accountSource, /<Journal/)
+  assert.doesNotMatch(accountSource, /\["Journal",/)
+  assert.match(journalSource, /name="expected_revision_id"/)
+  assert.match(journalSource, /name="confirmed"/)
+  assert.match(journalSource, /disabled while this profile is closed/i)
+  assert.match(actionSource, /retrieveResearchJournalEntries/)
+  assert.match(actionSource, /sdk\.client\.fetch/)
+  assert.match(actionSource, /cache: "no-store"/)
+  assert.doesNotMatch(
+    journalSource,
+    /localStorage|sessionStorage|indexedDB|document\.cookie|analytics/i,
+  )
+})

@@ -20,6 +20,7 @@ describe("RT-5 source-only architecture", () => {
       "Migration20260825121847.ts",
       "Migration20260825143052.ts",
       "Migration20260826033548.ts",
+      "Migration20260826142203.ts",
     ])
   })
 

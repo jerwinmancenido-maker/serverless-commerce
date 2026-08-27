@@ -7,6 +7,7 @@ import {
   retrieveCurrentResearchDeletionRequest,
   retrievePurchasedItemCandidates,
   retrieveResearchProfile,
+  retrieveResearchJournalEntries,
   retrieveResearchOccurrences,
   retrieveResearchRoutineLogs,
   retrieveResearchRoutines,
@@ -14,6 +15,7 @@ import {
   retrieveTrackedResearchMaterials,
   type PurchasedItemCandidate,
   type ResearchPrivacyRequest,
+  type ResearchJournalEntry,
   type ResearchProfile,
   type ResearchOccurrence,
   type ResearchRoutine,
@@ -80,6 +82,8 @@ export default async function ResearchTrackingPage({
   let routineLogs: ResearchRoutineLog[] = []
   let routineToday = localDateInTimezone(new Date(), "Asia/Manila")
   let routineRuntimeReady = true
+  let journalEntries: ResearchJournalEntry[] = []
+  let journalRuntimeReady = true
 
   try {
     configuration = await retrieveResearchTrackingConfiguration()
@@ -119,6 +123,12 @@ export default async function ResearchTrackingPage({
 
     if (profile) {
       try {
+        journalEntries = await retrieveResearchJournalEntries()
+      } catch {
+        journalRuntimeReady = false
+      }
+
+      try {
         routines = await retrieveResearchRoutines()
         routineLogs = await retrieveResearchRoutineLogs()
 
@@ -150,6 +160,20 @@ export default async function ResearchTrackingPage({
       purchasedItems={purchasedItems}
       purchasedRuntimeReady={purchasedRuntimeReady}
       occurrences={occurrences}
+      journalEntries={journalEntries}
+      journalRuntimeReady={journalRuntimeReady}
+      journalSubmissionKeys={{
+        create: randomUUID(),
+        byEntry: Object.fromEntries(
+          journalEntries.map((entry) => [
+            entry.journal_entry_id,
+            {
+              revise: randomUUID(),
+              transition: randomUUID(),
+            },
+          ]),
+        ),
+      }}
       routineLogs={routineLogs}
       routineToday={routineToday}
       routineRuntimeReady={routineRuntimeReady}

@@ -2,6 +2,9 @@ import { model } from "@medusajs/framework/utils"
 
 import { RESEARCH_PROFILE_STATUSES } from "../contracts/tracking"
 import ResearchConsentEvent from "./research-consent-event"
+import ResearchJournalEntry from "./research-journal-entry"
+import ResearchJournalMutation from "./research-journal-mutation"
+import ResearchJournalStateTransition from "./research-journal-state-transition"
 import ResearchPreferenceMutation from "./research-preference-mutation"
 import ResearchPrivacyRequest from "./research-privacy-request"
 import ResearchRoutine from "./research-routine"
@@ -27,6 +30,18 @@ const ResearchProfile = model.define("research_profile", {
   consent_events: model.hasMany(() => ResearchConsentEvent, {
     mappedBy: "profile",
   }),
+  journal_entries: model.hasMany(() => ResearchJournalEntry, {
+    mappedBy: "profile",
+  }),
+  journal_mutations: model.hasMany(() => ResearchJournalMutation, {
+    mappedBy: "profile",
+  }),
+  journal_state_transitions: model.hasMany(
+    () => ResearchJournalStateTransition,
+    {
+      mappedBy: "profile",
+    },
+  ),
   preference_mutations: model.hasMany(() => ResearchPreferenceMutation, {
     mappedBy: "profile",
   }),

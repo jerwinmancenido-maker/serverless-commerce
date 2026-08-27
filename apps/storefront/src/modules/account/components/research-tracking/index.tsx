@@ -12,6 +12,7 @@ import {
   type ResearchTrackingActionState,
   type ResearchTrackingConfiguration,
   type ResearchOccurrence,
+  type ResearchJournalEntry,
   type ResearchRoutine,
   type ResearchRoutineLog,
   type TrackedResearchMaterial,
@@ -25,6 +26,7 @@ import type {
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
 
+import Journal from "./journal"
 import PersonalRoutines from "./personal-routines"
 import ProductsAndSupplies from "./products-and-supplies"
 
@@ -37,6 +39,12 @@ type ResearchTrackingProps = {
   purchasedItems: PurchasedItemCandidate[]
   purchasedRuntimeReady: boolean
   occurrences: ResearchOccurrence[]
+  journalEntries: ResearchJournalEntry[]
+  journalRuntimeReady: boolean
+  journalSubmissionKeys: {
+    create: string
+    byEntry: Record<string, { revise: string; transition: string }>
+  }
   routineLogs: ResearchRoutineLog[]
   routineToday: string
   routineRuntimeReady: boolean
@@ -54,7 +62,6 @@ const initialState: ResearchTrackingActionState = {
 
 const futureAreas = [
   ["Measurements", "Deferred until privacy fields and retention are approved."],
-  ["Journal", "Deferred private notes with export and deletion controls."],
   ["Research Protocols", "Published research-reference content linked to products."],
   ["Calculator", "Transparent unit arithmetic with visible inputs and formulas."],
 ] as const
@@ -424,6 +431,9 @@ export default function ResearchTracking({
   purchasedItems,
   purchasedRuntimeReady,
   occurrences,
+  journalEntries,
+  journalRuntimeReady,
+  journalSubmissionKeys,
   routineLogs,
   routineToday,
   routineRuntimeReady,
@@ -513,6 +523,23 @@ export default function ResearchTracking({
           today={routineToday}
           runtimeReady={routineRuntimeReady}
           submissionKeys={routineSubmissionKeys}
+          trackedMaterials={trackedMaterials}
+        />
+      )}
+
+      {runtimeReady && profile && (
+        <Journal
+          canMutate={
+            profile.status === "active" &&
+            profile.consent_version === configuration.consent_version
+          }
+          countryCode={countryCode}
+          entries={journalEntries}
+          logs={routineLogs}
+          runtimeReady={journalRuntimeReady}
+          routines={routines}
+          submissionKeys={journalSubmissionKeys}
+          timezone={profile.timezone}
           trackedMaterials={trackedMaterials}
         />
       )}

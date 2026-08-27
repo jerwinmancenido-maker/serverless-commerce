@@ -26,6 +26,10 @@ import {
   StoreRestoreResearchRoutineLog,
   StoreReviseResearchRoutineLog,
   StoreVoidResearchRoutineLog,
+  StoreCreateResearchJournalEntry,
+  StoreListResearchJournalEntries,
+  StoreReviseResearchJournalEntry,
+  StoreTransitionResearchJournalEntry,
 } from "./validators"
 import { setResearchPrivateNoStore } from "./utils"
 
@@ -42,6 +46,37 @@ export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/store/customers/me/research-tracking*",
     middlewares: [setResearchTrackingPrivateCache],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/journal",
+    method: "GET",
+    middlewares: [
+      validateAndTransformQuery(StoreListResearchJournalEntries, {}),
+    ],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/journal",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreCreateResearchJournalEntry)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/journal/:id/revise",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreReviseResearchJournalEntry)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/journal/:id/void",
+    method: "POST",
+    middlewares: [
+      validateAndTransformBody(StoreTransitionResearchJournalEntry),
+    ],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/journal/:id/restore",
+    method: "POST",
+    middlewares: [
+      validateAndTransformBody(StoreTransitionResearchJournalEntry),
+    ],
   },
   {
     matcher: "/store/customers/me/research-tracking/routines",

@@ -8,6 +8,10 @@ import {
 } from "@medusajs/framework/utils"
 
 import ResearchConsentEvent from "./models/research-consent-event"
+import ResearchJournalEntry from "./models/research-journal-entry"
+import ResearchJournalEntryRevision from "./models/research-journal-entry-revision"
+import ResearchJournalMutation from "./models/research-journal-mutation"
+import ResearchJournalStateTransition from "./models/research-journal-state-transition"
 import ResearchPreferenceMutation from "./models/research-preference-mutation"
 import ResearchPrivacyRequest from "./models/research-privacy-request"
 import ResearchProfile from "./models/research-profile"
@@ -66,6 +70,25 @@ type ResearchRoutineWrite = {
   tracked_material_id: string
   status: "active" | "archived"
   archived_at: Date | null
+}
+
+type ResearchJournalRevisionWrite = {
+  revision_number: number
+  local_date: Date
+  local_time: string
+  timezone: string
+  title: string | null
+  note: string
+  tracked_material_id: string | null
+  supply_id: string | null
+  routine_id: string | null
+  confirmed_log_id: string | null
+  prior_revision_id: string | null
+}
+
+type ResearchJournalMutationCompletion = {
+  mutation_id: string
+  response_payload: Record<string, unknown>
 }
 
 type ResearchRoutineRevisionWrite = {
@@ -143,6 +166,10 @@ type MutateResearchRoutineLogWrite = {
 
 class ResearchTrackingModuleService extends MedusaService({
   ResearchConsentEvent,
+  ResearchJournalEntry,
+  ResearchJournalEntryRevision,
+  ResearchJournalMutation,
+  ResearchJournalStateTransition,
   ResearchPreferenceMutation,
   ResearchPrivacyRequest,
   ResearchProfile,
@@ -158,6 +185,234 @@ class ResearchTrackingModuleService extends MedusaService({
   ResearchSupplyAdjustment,
   TrackedMaterial,
 }) {
+  async beginJournalMutation(input: {
+    profile_id: string
+    operation: "create" | "revise" | "void" | "restore"
+    idempotency_key: string
+    request_fingerprint_sha256: string
+  }) {
+    return await this.createResearchJournalMutations({
+      ...input,
+      status: "processing",
+      journal_entry_id: null,
+      journal_revision_id: null,
+      response_payload: null,
+      error_code: null,
+      completed_at: null,
+    })
+  }
+
+  async failJournalMutation(input: { mutationId: string; errorCode: string }) {
+    return await this.updateResearchJournalMutations({
+      id: input.mutationId,
+      status: "failed",
+      error_code: input.errorCode,
+      completed_at: new Date(),
+    })
+  }
+
+  @InjectTransactionManager()
+  private async completeJournalMutation(
+    input: ResearchJournalMutationCompletion & {
+      journalEntryId: string
+      journalRevisionId: string
+    },
+    @MedusaContext() sharedContext: Context,
+  ) {
+    return await this.updateResearchJournalMutations(
+      {
+        id: input.mutation_id,
+        status: "completed",
+        journal_entry_id: input.journalEntryId,
+        journal_revision_id: input.journalRevisionId,
+        response_payload: input.response_payload,
+        error_code: null,
+        completed_at: new Date(),
+      },
+      sharedContext,
+    )
+  }
+
+  @InjectManager()
+  @InjectTransactionManager()
+  async createJournalEntryWithRevision(
+    input: {
+      profileId: string
+      revision: ResearchJournalRevisionWrite
+      mutation: ResearchJournalMutationCompletion
+    },
+    @MedusaContext() sharedContext: Context = {},
+  ) {
+    const entry = await this.createResearchJournalEntries(
+      {
+        profile_id: input.profileId,
+        status: "active",
+        current_revision_id: null,
+        voided_at: null,
+        restored_at: null,
+      },
+      sharedContext,
+    )
+    const revision = await this.createResearchJournalEntryRevisions(
+      {
+        ...input.revision,
+        journal_entry_id: entry.id,
+      },
+      sharedContext,
+    )
+    const updatedEntry = await this.updateResearchJournalEntries(
+      {
+        id: entry.id,
+        current_revision_id: revision.id,
+      },
+      sharedContext,
+    )
+    const responsePayload = {
+      ...input.mutation.response_payload,
+      journal_entry_id: entry.id,
+      revision_id: revision.id,
+      status: "active",
+    }
+    const mutation = await this.completeJournalMutation(
+      {
+        ...input.mutation,
+        journalEntryId: entry.id,
+        journalRevisionId: revision.id,
+        response_payload: responsePayload,
+      },
+      sharedContext,
+    )
+
+    return { entry: updatedEntry, revision, mutation, responsePayload }
+  }
+
+  @InjectManager()
+  @InjectTransactionManager()
+  async reviseJournalEntry(
+    input: {
+      journalEntryId: string
+      expectedRevisionId: string
+      revision: ResearchJournalRevisionWrite
+      mutation: ResearchJournalMutationCompletion
+    },
+    @MedusaContext() sharedContext: Context = {},
+  ) {
+    const revision = await this.createResearchJournalEntryRevisions(
+      {
+        ...input.revision,
+        journal_entry_id: input.journalEntryId,
+      },
+      sharedContext,
+    )
+    const entries = await this.updateResearchJournalEntries(
+      {
+        selector: {
+          id: input.journalEntryId,
+          status: "active",
+          current_revision_id: input.expectedRevisionId,
+        },
+        data: {
+          current_revision_id: revision.id,
+        },
+      },
+      sharedContext,
+    )
+    const entry = entries[0]
+
+    if (!entry) {
+      throw new MedusaError(
+        MedusaError.Types.CONFLICT,
+        "research_journal_changed",
+      )
+    }
+
+    const responsePayload = {
+      ...input.mutation.response_payload,
+      journal_entry_id: entry.id,
+      revision_id: revision.id,
+      status: entry.status,
+    }
+    const mutation = await this.completeJournalMutation(
+      {
+        ...input.mutation,
+        journalEntryId: entry.id,
+        journalRevisionId: revision.id,
+        response_payload: responsePayload,
+      },
+      sharedContext,
+    )
+
+    return { entry, revision, mutation, responsePayload }
+  }
+
+  @InjectManager()
+  @InjectTransactionManager()
+  async transitionJournalEntry(
+    input: {
+      profileId: string
+      journalEntryId: string
+      expectedRevisionId: string
+      expectedStatus: "active" | "voided"
+      status: "active" | "voided"
+      operation: "void" | "restore"
+      occurredAt: Date
+      mutation: ResearchJournalMutationCompletion
+    },
+    @MedusaContext() sharedContext: Context = {},
+  ) {
+    const entries = await this.updateResearchJournalEntries(
+      {
+        selector: {
+          id: input.journalEntryId,
+          status: input.expectedStatus,
+          current_revision_id: input.expectedRevisionId,
+        },
+        data: {
+          status: input.status,
+          voided_at: input.operation === "void" ? input.occurredAt : null,
+          restored_at: input.operation === "restore" ? input.occurredAt : null,
+        },
+      },
+      sharedContext,
+    )
+    const entry = entries[0]
+
+    if (!entry) {
+      throw new MedusaError(
+        MedusaError.Types.CONFLICT,
+        "research_journal_changed",
+      )
+    }
+
+    const responsePayload = {
+      ...input.mutation.response_payload,
+      journal_entry_id: entry.id,
+      revision_id: input.expectedRevisionId,
+      status: input.status,
+    }
+    const mutation = await this.completeJournalMutation(
+      {
+        ...input.mutation,
+        journalEntryId: entry.id,
+        journalRevisionId: input.expectedRevisionId,
+        response_payload: responsePayload,
+      },
+      sharedContext,
+    )
+    const transition = await this.createResearchJournalStateTransitions(
+      {
+        profile_id: input.profileId,
+        journal_entry_id: entry.id,
+        mutation_id: mutation.id,
+        operation: input.operation,
+        occurred_at: input.occurredAt,
+      },
+      sharedContext,
+    )
+
+    return { entry, mutation, transition, responsePayload }
+  }
+
   @InjectTransactionManager()
   private async updateSupplyIfUnchanged(
     input: MutateResearchRoutineLogWrite["supplyUpdates"][number],
