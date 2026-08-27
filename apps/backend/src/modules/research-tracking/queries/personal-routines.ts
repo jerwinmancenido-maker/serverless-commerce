@@ -103,7 +103,7 @@ export async function retrieveActiveResearchProfile(
     profile.consent_version !== activeConsentVersion
   ) {
     throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
+      MedusaError.Types.FORBIDDEN,
       "research_profile_action_required",
     )
   }

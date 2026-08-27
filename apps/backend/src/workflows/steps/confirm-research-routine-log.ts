@@ -1,5 +1,8 @@
-import type { MedusaContainer } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import type {
+  ILockingModule,
+  MedusaContainer,
+} from "@medusajs/framework/types"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import { RESEARCH_TRACKING_MODULE } from "../../modules/research-tracking"
@@ -47,40 +50,49 @@ export const confirmResearchRoutineLogStep = createStep(
     }
 
     try {
-      assertResearchRoutineLogConfirmationPreviewToken(input.previewToken, {
-        customerId: normalized.customerId,
-        routineId: normalized.routineId,
-        routineRevisionId: normalized.routineRevisionId,
-        occurrenceId: normalized.occurrenceId,
-        localDate: normalized.localDate,
-        supplyId: normalized.supplyId,
-        confirmedQuantityBaseUnits: normalized.confirmedQuantityBaseUnits,
-        baseUnit: normalized.baseUnit,
-      })
-      const preview = await previewResearchRoutineLog({
-        container,
-        normalized,
-      })
-      const confirmed = await trackingService.confirmRoutineLog({
-        profileId: profile.id,
-        routineId: preview.routine_id,
-        routineRevisionId: preview.routine_revision_id,
-        occurrenceId: preview.occurrence_id,
-        localDate: new Date(`${preview.local_date}T00:00:00.000Z`),
-        localTime: preview.local_time,
-        timezone: preview.timezone,
-        supplyId: preview.supply_id,
-        confirmedQuantityBaseUnits: preview.confirmed_quantity_base_units,
-        baseUnit: preview.base_unit,
-        currentRemainingQuantityBaseUnits:
-          preview.current_remaining_quantity_base_units,
-        mutation: {
-          mutation_id: mutationState.mutationId,
-          response_payload: {},
-        },
-      })
+      const locking = container.resolve<ILockingModule>(Modules.LOCKING)
+      const responsePayload = await locking.execute(
+        `research-supply-ledger:${normalized.customerId}`,
+        async () => {
+          assertResearchRoutineLogConfirmationPreviewToken(input.previewToken, {
+            customerId: normalized.customerId,
+            routineId: normalized.routineId,
+            routineRevisionId: normalized.routineRevisionId,
+            occurrenceId: normalized.occurrenceId,
+            localDate: normalized.localDate,
+            supplyId: normalized.supplyId,
+            confirmedQuantityBaseUnits: normalized.confirmedQuantityBaseUnits,
+            baseUnit: normalized.baseUnit,
+          })
+          const preview = await previewResearchRoutineLog({
+            container,
+            normalized,
+          })
+          const confirmed = await trackingService.confirmRoutineLog({
+            profileId: profile.id,
+            routineId: preview.routine_id,
+            routineRevisionId: preview.routine_revision_id,
+            occurrenceId: preview.occurrence_id,
+            localDate: new Date(`${preview.local_date}T00:00:00.000Z`),
+            localTime: preview.local_time,
+            timezone: preview.timezone,
+            supplyId: preview.supply_id,
+            confirmedQuantityBaseUnits: preview.confirmed_quantity_base_units,
+            baseUnit: preview.base_unit,
+            currentRemainingQuantityBaseUnits:
+              preview.current_remaining_quantity_base_units,
+            mutation: {
+              mutation_id: mutationState.mutationId,
+              response_payload: {},
+            },
+          })
 
-      return new StepResponse(confirmed.responsePayload)
+          return confirmed.responsePayload
+        },
+        { timeout: 10 },
+      )
+
+      return new StepResponse(responsePayload)
     } catch (error) {
       await recordRoutineMutationFailure({
         trackingService,

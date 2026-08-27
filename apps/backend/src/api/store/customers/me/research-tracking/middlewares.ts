@@ -1,4 +1,7 @@
 import {
+  type MedusaNextFunction,
+  type MedusaRequest,
+  type MedusaResponse,
   type MiddlewareRoute,
   validateAndTransformBody,
   validateAndTransformQuery,
@@ -24,8 +27,22 @@ import {
   StoreReviseResearchRoutineLog,
   StoreVoidResearchRoutineLog,
 } from "./validators"
+import { setResearchPrivateNoStore } from "./utils"
+
+function setResearchTrackingPrivateCache(
+  _req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction,
+): void {
+  setResearchPrivateNoStore(res)
+  next()
+}
 
 export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
+  {
+    matcher: "/store/customers/me/research-tracking*",
+    middlewares: [setResearchTrackingPrivateCache],
+  },
   {
     matcher: "/store/customers/me/research-tracking/routines",
     method: "POST",
