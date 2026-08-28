@@ -8,6 +8,7 @@ import {
   retrievePurchasedItemCandidates,
   retrieveResearchProfile,
   retrieveResearchJournalEntries,
+  retrieveResearchPrivateRecordsConfiguration,
   retrieveResearchOccurrences,
   retrieveResearchRoutineLogs,
   retrieveResearchRoutines,
@@ -16,6 +17,7 @@ import {
   type PurchasedItemCandidate,
   type ResearchPrivacyRequest,
   type ResearchJournalEntry,
+  type ResearchPrivateRecordsConfiguration,
   type ResearchProfile,
   type ResearchOccurrence,
   type ResearchRoutine,
@@ -42,6 +44,26 @@ const unavailableConfiguration: ResearchTrackingConfiguration = {
   notice_url: null,
   default_timezone: "Asia/Manila",
   supported_locales: ["en-PH"],
+  journal: {
+    available: false,
+    consent_version: null,
+    notice_url: null,
+    effective_at: null,
+  },
+}
+
+const unavailablePrivateRecords: ResearchPrivateRecordsConfiguration = {
+  journal: {
+    available: false,
+    consent_version: null,
+    notice_url: null,
+    effective_at: null,
+    current_consent: null,
+  },
+  measurements: {
+    available: false,
+    allowlist_version: null,
+  },
 }
 
 function localDateInTimezone(date: Date, timezone: string): string {
@@ -66,10 +88,19 @@ function addCalendarDays(localDate: string, days: number): string {
 
 export default async function ResearchTrackingPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ countryCode: string }>
+  searchParams: Promise<{ journalPage?: string }>
 }) {
   const { countryCode } = await params
+  const requestedJournalPage = Number((await searchParams).journalPage ?? "1")
+  const journalPage =
+    Number.isInteger(requestedJournalPage) && requestedJournalPage > 0
+      ? requestedJournalPage
+      : 1
+  const journalLimit = 10
+  const journalOffset = (journalPage - 1) * journalLimit
   let configuration = unavailableConfiguration
   let profile: ResearchProfile | null = null
   let privacyRequest: ResearchPrivacyRequest | null = null
@@ -83,6 +114,8 @@ export default async function ResearchTrackingPage({
   let routineToday = localDateInTimezone(new Date(), "Asia/Manila")
   let routineRuntimeReady = true
   let journalEntries: ResearchJournalEntry[] = []
+  let journalCount = 0
+  let privateRecords = unavailablePrivateRecords
   let journalRuntimeReady = true
 
   try {
@@ -123,7 +156,13 @@ export default async function ResearchTrackingPage({
 
     if (profile) {
       try {
-        journalEntries = await retrieveResearchJournalEntries()
+        privateRecords = await retrieveResearchPrivateRecordsConfiguration()
+        const journalPageResult = await retrieveResearchJournalEntries({
+          limit: journalLimit,
+          offset: journalOffset,
+        })
+        journalEntries = journalPageResult.entries
+        journalCount = journalPageResult.count
       } catch {
         journalRuntimeReady = false
       }
@@ -161,6 +200,11 @@ export default async function ResearchTrackingPage({
       purchasedRuntimeReady={purchasedRuntimeReady}
       occurrences={occurrences}
       journalEntries={journalEntries}
+      journalCount={journalCount}
+      journalLimit={journalLimit}
+      journalOffset={journalOffset}
+      journalConsentKey={randomUUID()}
+      privateRecords={privateRecords}
       journalRuntimeReady={journalRuntimeReady}
       journalSubmissionKeys={{
         create: randomUUID(),

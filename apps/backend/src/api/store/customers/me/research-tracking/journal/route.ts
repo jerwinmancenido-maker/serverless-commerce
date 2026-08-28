@@ -3,7 +3,10 @@ import type {
   MedusaResponse,
 } from "@medusajs/framework/http"
 
-import { getResearchTrackingCustomerConfiguration } from "../../../../../../modules/research-tracking/config"
+import {
+  getResearchJournalConfiguration,
+  getResearchTrackingCustomerConfiguration,
+} from "../../../../../../modules/research-tracking/config"
 import { listOwnedResearchJournalEntries } from "../../../../../../modules/research-tracking/queries/journal"
 import { manageResearchJournalEntryWorkflow } from "../../../../../../workflows/manage-research-journal-entry"
 import type {
@@ -41,8 +44,9 @@ export async function POST(
 ) {
   setResearchPrivateNoStore(res)
   const configuration = getResearchTrackingCustomerConfiguration()
+  const journalConfiguration = getResearchJournalConfiguration()
 
-  if (!configuration.available) {
+  if (!configuration.available || !journalConfiguration.available) {
     return res.status(503).json({
       type: "not_allowed",
       message: "Research & Tracking customer access is not available",
@@ -58,6 +62,9 @@ export async function POST(
       data: {
         customerId,
         activeConsentVersion: configuration.activeConsentVersion,
+        activeJournalConsentVersion:
+          journalConfiguration.activeConsentVersion,
+        activeJournalNoticeSha256: journalConfiguration.noticeSha256,
         title: body.title,
         note: body.note,
         localDate: body.local_date,

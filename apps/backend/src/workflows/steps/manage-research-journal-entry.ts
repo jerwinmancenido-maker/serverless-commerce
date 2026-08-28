@@ -74,6 +74,8 @@ export const manageResearchJournalEntryStep = createStep(
       container,
       customerId: input.data.customerId,
       activeConsentVersion: input.data.activeConsentVersion,
+      activeJournalConsentVersion: input.data.activeJournalConsentVersion,
+      activeJournalNoticeSha256: input.data.activeJournalNoticeSha256,
     })
 
     if (input.operation === "create") {

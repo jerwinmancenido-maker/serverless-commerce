@@ -40,6 +40,29 @@ export type ResearchTrackingConfiguration = {
   notice_url: string | null
   default_timezone: string
   supported_locales: string[]
+  journal: {
+    available: boolean
+    consent_version: string | null
+    notice_url: string | null
+    effective_at: string | null
+  }
+}
+
+export type ResearchJournalConsent = {
+  event_type: "accepted" | "withdrawn"
+  consent_version: string
+  occurred_at: string
+  is_current: boolean
+}
+
+export type ResearchPrivateRecordsConfiguration = {
+  journal: ResearchTrackingConfiguration["journal"] & {
+    current_consent: ResearchJournalConsent | null
+  }
+  measurements: {
+    available: false
+    allowlist_version: null
+  }
 }
 
 export type ResearchUnitProfile = {
@@ -487,18 +510,80 @@ export async function retrieveResearchRoutineLogs(): Promise<
   return response.logs
 }
 
-export async function retrieveResearchJournalEntries(): Promise<
-  ResearchJournalEntry[]
-> {
+export async function retrieveResearchPrivateRecordsConfiguration(): Promise<ResearchPrivateRecordsConfiguration> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    private_records: ResearchPrivateRecordsConfiguration
+  }>("/store/customers/me/research-tracking/private-records/configuration", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+
+  return response.private_records
+}
+
+export async function retrieveResearchJournalEntries(input: {
+  limit: number
+  offset: number
+}): Promise<{
+  entries: ResearchJournalEntry[]
+  count: number
+  limit: number
+  offset: number
+}> {
   const headers = await getAuthHeaders()
   const response = await sdk.client.fetch<{
     journal_entries: ResearchJournalEntry[]
+    count: number
   }>(
-    "/store/customers/me/research-tracking/journal?limit=50&offset=0&include_voided=true",
+    `/store/customers/me/research-tracking/journal?limit=${input.limit}&offset=${input.offset}&include_voided=true`,
     { method: "GET", headers, cache: "no-store" },
   )
 
-  return response.journal_entries
+  return {
+    entries: response.journal_entries,
+    count: response.count,
+    limit: input.limit,
+    offset: input.offset,
+  }
+}
+
+export async function recordResearchJournalConsentAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const consentAction = String(formData.get("consent_action") || "accept")
+
+  if (
+    consentAction === "accept" &&
+    formData.get("accepted") !== "on"
+  ) {
+    return {
+      success: false,
+      error: "Review and accept the Journal notice before continuing.",
+    }
+  }
+
+  if (
+    consentAction === "withdraw" &&
+    formData.get("confirm_withdrawal") !== "on"
+  ) {
+    return {
+      success: false,
+      error: "Confirm that you want to disable Journal changes.",
+    }
+  }
+
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/private-records/consents",
+    {
+      scope: "journal",
+      consent_version: String(formData.get("journal_consent_version") || ""),
+      accepted: consentAction !== "withdraw",
+    },
+    formData,
+  )
 }
 
 function journalContentBody(formData: FormData) {

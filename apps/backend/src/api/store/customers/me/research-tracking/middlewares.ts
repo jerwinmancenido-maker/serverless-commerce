@@ -13,6 +13,7 @@ import {
   StoreCloseResearchProfile,
   StoreCreateResearchProfile,
   StoreRecordResearchConsent,
+  StoreRecordResearchJournalConsent,
   StoreRequestResearchDeletion,
   StoreUpdateResearchPreferences,
   StoreListPurchasedSupplies,
@@ -165,6 +166,14 @@ export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
     matcher: "/store/customers/me/research-tracking/profile/consents",
     method: "POST",
     middlewares: [validateAndTransformBody(StoreRecordResearchConsent)],
+  },
+  {
+    matcher:
+      "/store/customers/me/research-tracking/private-records/consents",
+    method: "POST",
+    middlewares: [
+      validateAndTransformBody(StoreRecordResearchJournalConsent),
+    ],
   },
   {
     matcher: "/store/customers/me/research-tracking/profile/closure",

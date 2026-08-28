@@ -28,12 +28,33 @@ type ResearchTrackingEnvironment = Partial<Pick<
   | "RESEARCH_TRACKING_NOTICE_SHA256"
   | "RESEARCH_TRACKING_NOTICE_URL"
   | "RESEARCH_TRACKING_ELIGIBLE_SALES_CHANNEL_IDS"
+  | "RESEARCH_TRACKING_JOURNAL_ENABLED"
+  | "RESEARCH_TRACKING_JOURNAL_CONSENT_VERSION"
+  | "RESEARCH_TRACKING_JOURNAL_NOTICE_SHA256"
+  | "RESEARCH_TRACKING_JOURNAL_NOTICE_URL"
+  | "RESEARCH_TRACKING_JOURNAL_EFFECTIVE_AT"
 >>
 
 export type ResearchTrackingPurchasedActivationConfiguration = {
   available: boolean
   eligibleSalesChannelIds: string[]
 }
+
+export type ResearchJournalConfiguration =
+  | {
+      available: false
+      activeConsentVersion: null
+      noticeSha256: null
+      noticeUrl: null
+      effectiveAt: null
+    }
+  | {
+      available: true
+      activeConsentVersion: string
+      noticeSha256: string
+      noticeUrl: string
+      effectiveAt: Date
+    }
 
 function invalidConfiguration(message: string): never {
   throw new MedusaError(
@@ -110,5 +131,78 @@ export function getResearchTrackingPurchasedActivationConfiguration(
   return {
     available: eligibleSalesChannelIds.length > 0,
     eligibleSalesChannelIds,
+  }
+}
+
+export function getResearchJournalConfiguration(
+  environment: ResearchTrackingEnvironment = process.env,
+  now: Date = new Date(),
+): ResearchJournalConfiguration {
+  if (environment.RESEARCH_TRACKING_JOURNAL_ENABLED !== "true") {
+    return {
+      available: false,
+      activeConsentVersion: null,
+      noticeSha256: null,
+      noticeUrl: null,
+      effectiveAt: null,
+    }
+  }
+
+  const version = environment.RESEARCH_TRACKING_JOURNAL_CONSENT_VERSION
+  const digest = environment.RESEARCH_TRACKING_JOURNAL_NOTICE_SHA256
+  const noticeUrlValue = environment.RESEARCH_TRACKING_JOURNAL_NOTICE_URL
+  const effectiveAtValue = environment.RESEARCH_TRACKING_JOURNAL_EFFECTIVE_AT
+
+  if (!version || !digest || !noticeUrlValue || !effectiveAtValue) {
+    invalidConfiguration(
+      "enabled Journal access requires consent version, notice digest, notice URL, and effective timestamp",
+    )
+  }
+
+  let noticeUrl: URL
+
+  try {
+    noticeUrl = new URL(noticeUrlValue)
+  } catch {
+    invalidConfiguration("Journal notice URL must be an absolute URL")
+  }
+
+  if (
+    noticeUrl.protocol !== "https:" &&
+    !["localhost", "127.0.0.1"].includes(noticeUrl.hostname)
+  ) {
+    invalidConfiguration(
+      "Journal notice URL must use HTTPS outside local development",
+    )
+  }
+
+  const effectiveAt = new Date(effectiveAtValue)
+
+  if (Number.isNaN(effectiveAt.getTime())) {
+    invalidConfiguration("Journal effective timestamp must be ISO-8601")
+  }
+
+  if (effectiveAt.getTime() > now.getTime()) {
+    return {
+      available: false,
+      activeConsentVersion: null,
+      noticeSha256: null,
+      noticeUrl: null,
+      effectiveAt: null,
+    }
+  }
+
+  try {
+    return {
+      available: true,
+      activeConsentVersion: normalizeResearchConsentVersion(version),
+      noticeSha256: normalizeResearchNoticeSha256(digest),
+      noticeUrl: noticeUrl.toString(),
+      effectiveAt,
+    }
+  } catch {
+    invalidConfiguration(
+      "Journal consent version or notice digest has an invalid format",
+    )
   }
 }

@@ -6,6 +6,10 @@ import {
   normalizeReviseResearchJournalInput,
   normalizeTransitionResearchJournalInput,
 } from "../contracts/journal"
+import { normalizeResearchJournalConsentInput } from "../contracts/journal-consent"
+
+const activeJournalConsentVersion = "2026-08-28.v1"
+const activeJournalNoticeSha256 = "a".repeat(64)
 
 const content = {
   title: "  Bench observation  ",
@@ -44,6 +48,8 @@ describe("RT-6 Journal contract", () => {
         ...content,
         customerId: "cus_test",
         activeConsentVersion: "2026-08-25.v1",
+        activeJournalConsentVersion,
+        activeJournalNoticeSha256,
         confirmed: false,
         idempotencyKey: "journal-create-test",
       }),
@@ -55,6 +61,8 @@ describe("RT-6 Journal contract", () => {
       ...content,
       customerId: "cus_test",
       activeConsentVersion: "2026-08-25.v1",
+      activeJournalConsentVersion,
+      activeJournalNoticeSha256,
       confirmed: true,
       idempotencyKey: "journal-create-test",
     })
@@ -62,6 +70,8 @@ describe("RT-6 Journal contract", () => {
       ...content,
       customerId: "cus_test",
       activeConsentVersion: "2026-08-25.v1",
+      activeJournalConsentVersion,
+      activeJournalNoticeSha256,
       journalEntryId: "rjournal_test",
       expectedRevisionId: "rjournalrev_test",
       confirmed: true,
@@ -79,6 +89,8 @@ describe("RT-6 Journal contract", () => {
     const first = normalizeTransitionResearchJournalInput({
       customerId: "cus_test",
       activeConsentVersion: "2026-08-25.v1",
+      activeJournalConsentVersion,
+      activeJournalNoticeSha256,
       journalEntryId: "rjournal_test",
       expectedRevisionId: "rjournalrev_1",
       operation: "void",
@@ -88,6 +100,8 @@ describe("RT-6 Journal contract", () => {
     const second = normalizeTransitionResearchJournalInput({
       customerId: "cus_test",
       activeConsentVersion: "2026-08-25.v1",
+      activeJournalConsentVersion,
+      activeJournalNoticeSha256,
       journalEntryId: "rjournal_test",
       expectedRevisionId: "rjournalrev_2",
       operation: "void",
@@ -98,5 +112,20 @@ describe("RT-6 Journal contract", () => {
     expect(first.requestFingerprintSha256).not.toBe(
       second.requestFingerprintSha256,
     )
+  })
+
+  it("binds purpose-specific Journal consent to the active notice", () => {
+    const normalized = normalizeResearchJournalConsentInput({
+      customerId: "cus_test",
+      activeGeneralConsentVersion: "2026-08-25.v1",
+      requestedConsentVersion: activeJournalConsentVersion,
+      activeConsentVersion: activeJournalConsentVersion,
+      noticeSha256: activeJournalNoticeSha256,
+      accepted: true,
+      idempotencyKey: "journal-consent-test",
+    })
+
+    expect(normalized.eventType).toBe("accepted")
+    expect(normalized.requestFingerprintSha256).toMatch(/^[a-f0-9]{64}$/)
   })
 })

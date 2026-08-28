@@ -3,7 +3,10 @@ import type {
   MedusaResponse,
 } from "@medusajs/framework/http"
 
-import { getResearchTrackingCustomerConfiguration } from "../../../../../../modules/research-tracking/config"
+import {
+  getResearchJournalConfiguration,
+  getResearchTrackingCustomerConfiguration,
+} from "../../../../../../modules/research-tracking/config"
 import { setResearchPrivateNoStore } from "../utils"
 
 export async function GET(
@@ -12,6 +15,7 @@ export async function GET(
 ) {
   setResearchPrivateNoStore(res)
   const configuration = getResearchTrackingCustomerConfiguration()
+  const journalConfiguration = getResearchJournalConfiguration()
 
   res.json({
     research_tracking: configuration.available
@@ -23,6 +27,20 @@ export async function GET(
           notice_url: configuration.noticeUrl,
           default_timezone: "Asia/Manila",
           supported_locales: ["en-PH"],
+          journal: journalConfiguration.available
+            ? {
+                available: true,
+                consent_version:
+                  journalConfiguration.activeConsentVersion,
+                notice_url: journalConfiguration.noticeUrl,
+                effective_at: journalConfiguration.effectiveAt,
+              }
+            : {
+                available: false,
+                consent_version: null,
+                notice_url: null,
+                effective_at: null,
+              },
         }
       : {
           available: false,
@@ -31,6 +49,12 @@ export async function GET(
           notice_url: null,
           default_timezone: "Asia/Manila",
           supported_locales: ["en-PH"],
+          journal: {
+            available: false,
+            consent_version: null,
+            notice_url: null,
+            effective_at: null,
+          },
         },
   })
 }

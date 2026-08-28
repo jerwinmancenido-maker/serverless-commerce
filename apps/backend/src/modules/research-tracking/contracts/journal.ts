@@ -50,6 +50,8 @@ export type ResearchJournalContentInput = {
 export type CreateResearchJournalInput = ResearchJournalContentInput & {
   customerId: string
   activeConsentVersion: string
+  activeJournalConsentVersion: string
+  activeJournalNoticeSha256: string
   confirmed: boolean
   idempotencyKey: string
 }
@@ -57,6 +59,8 @@ export type CreateResearchJournalInput = ResearchJournalContentInput & {
 export type ReviseResearchJournalInput = ResearchJournalContentInput & {
   customerId: string
   activeConsentVersion: string
+  activeJournalConsentVersion: string
+  activeJournalNoticeSha256: string
   journalEntryId: string
   expectedRevisionId: string
   confirmed: boolean
@@ -66,6 +70,8 @@ export type ReviseResearchJournalInput = ResearchJournalContentInput & {
 export type TransitionResearchJournalInput = {
   customerId: string
   activeConsentVersion: string
+  activeJournalConsentVersion: string
+  activeJournalNoticeSha256: string
   journalEntryId: string
   expectedRevisionId: string
   operation: "void" | "restore"
@@ -85,6 +91,8 @@ export type NormalizedResearchJournalContent = {
 export type NormalizedCreateResearchJournalInput = {
   customerId: string
   activeConsentVersion: string
+  activeJournalConsentVersion: string
+  activeJournalNoticeSha256: string
   content: NormalizedResearchJournalContent
   idempotencyKey: string
   requestFingerprintSha256: string
@@ -99,6 +107,8 @@ export type NormalizedReviseResearchJournalInput =
 export type NormalizedTransitionResearchJournalInput = {
   customerId: string
   activeConsentVersion: string
+  activeJournalConsentVersion: string
+  activeJournalNoticeSha256: string
   journalEntryId: string
   expectedRevisionId: string
   operation: "void" | "restore"
@@ -249,12 +259,22 @@ export function normalizeCreateResearchJournalInput(
     input.activeConsentVersion,
     "activeConsentVersion",
   )
+  const activeJournalConsentVersion = requiredId(
+    input.activeJournalConsentVersion,
+    "activeJournalConsentVersion",
+  )
+  const activeJournalNoticeSha256 = requiredId(
+    input.activeJournalNoticeSha256,
+    "activeJournalNoticeSha256",
+  )
   const idempotencyKey = normalizeResearchIdempotencyKey(input.idempotencyKey)
   const content = normalizeResearchJournalContent(input)
 
   return {
     customerId,
     activeConsentVersion,
+    activeJournalConsentVersion,
+    activeJournalNoticeSha256,
     content,
     idempotencyKey,
     requestFingerprintSha256: fingerprintContent("create-journal", content),
@@ -270,6 +290,14 @@ export function normalizeReviseResearchJournalInput(
     input.activeConsentVersion,
     "activeConsentVersion",
   )
+  const activeJournalConsentVersion = requiredId(
+    input.activeJournalConsentVersion,
+    "activeJournalConsentVersion",
+  )
+  const activeJournalNoticeSha256 = requiredId(
+    input.activeJournalNoticeSha256,
+    "activeJournalNoticeSha256",
+  )
   const journalEntryId = requiredId(input.journalEntryId, "journalEntryId")
   const expectedRevisionId = requiredId(
     input.expectedRevisionId,
@@ -281,6 +309,8 @@ export function normalizeReviseResearchJournalInput(
   return {
     customerId,
     activeConsentVersion,
+    activeJournalConsentVersion,
+    activeJournalNoticeSha256,
     journalEntryId,
     expectedRevisionId,
     content,
@@ -301,6 +331,14 @@ export function normalizeTransitionResearchJournalInput(
     input.activeConsentVersion,
     "activeConsentVersion",
   )
+  const activeJournalConsentVersion = requiredId(
+    input.activeJournalConsentVersion,
+    "activeJournalConsentVersion",
+  )
+  const activeJournalNoticeSha256 = requiredId(
+    input.activeJournalNoticeSha256,
+    "activeJournalNoticeSha256",
+  )
   const journalEntryId = requiredId(input.journalEntryId, "journalEntryId")
   const expectedRevisionId = requiredId(
     input.expectedRevisionId,
@@ -311,6 +349,8 @@ export function normalizeTransitionResearchJournalInput(
   return {
     customerId,
     activeConsentVersion,
+    activeJournalConsentVersion,
+    activeJournalNoticeSha256,
     journalEntryId,
     expectedRevisionId,
     operation: input.operation,

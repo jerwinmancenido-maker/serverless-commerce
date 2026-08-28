@@ -152,8 +152,16 @@ test("keeps the Journal authenticated, private, SDK-backed, and revisioned", () 
   assert.match(journalSource, /name="confirmed"/)
   assert.match(journalSource, /disabled while this profile is closed/i)
   assert.match(actionSource, /retrieveResearchJournalEntries/)
+  assert.match(actionSource, /retrieveResearchPrivateRecordsConfiguration/)
+  assert.match(actionSource, /recordResearchJournalConsentAction/)
   assert.match(actionSource, /sdk\.client\.fetch/)
   assert.match(actionSource, /cache: "no-store"/)
+  assert.match(journalSource, /Journal privacy choice/)
+  assert.match(accountSource, /current_consent\?\.is_current === true/)
+  assert.match(journalSource, /current_consent\?\.is_current === true/)
+  assert.match(journalSource, /useRotateConsumedKey\(consentState/)
+  assert.match(journalSource, /idempotencyKey=\{consentKey\}/)
+  assert.match(journalSource, /Page \{currentPage\} of \{totalPages\}/)
   assert.doesNotMatch(
     journalSource,
     /localStorage|sessionStorage|indexedDB|document\.cookie|analytics/i,

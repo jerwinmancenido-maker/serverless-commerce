@@ -1,9 +1,10 @@
 # Research Tracking RT-6 Privacy Decision Record
 
-Status: preliminary documentation for formal review. This record does not
-approve production privacy compliance, customer-data collection, RT-6 source
-implementation, migration generation or application, database access, testing,
-commit, push, deployment, or activation.
+Status: preliminary development decision record. Separately authorized,
+default-off Journal source exists for local development, but this record does
+not approve production privacy compliance, live customer-data collection,
+migration generation or application, database access, commit, push, deployment,
+or activation.
 
 ## Purpose
 
@@ -19,7 +20,8 @@ Privacy Impact Assessment signed by a qualified privacy or legal owner.
 
 ## Gate disposition
 
-Overall disposition: **BLOCKED for customer-data source implementation**.
+Overall disposition: **development-only Journal source authorized; live
+customer-data collection and production activation blocked**.
 
 The following decisions are suitable for formal product review:
 
@@ -126,7 +128,7 @@ the project satisfies them.
 | Product owner                                      | Approve purpose, minimization, customer experience, and exclusions                              | Owner not recorded in this document |
 | Personal information controller                    | Determine lawful basis, notice, rights, retention, and processors                               | Unknown                             |
 | Data Protection Officer or qualified privacy owner | Review PIA, risk treatment, registration duties, and production controls                        | Unknown                             |
-| Engineering owner                                  | Implement approved Medusa boundaries and verification evidence                                  | Source work not authorized          |
+| Engineering owner                                  | Implement approved Medusa boundaries and verification evidence                                  | Development-only Journal source authorized; owner not recorded |
 | Infrastructure owner                               | Prove encryption, access, backups, incident response, continuity, and deletion behavior         | Unknown                             |
 | Customer                                           | Create, review, confirm, revise, void, restore, withdraw, export, correct, and request deletion | Future feature only                 |
 
@@ -548,11 +550,13 @@ documentation and synthetic-data engineering plan possible.
 
 ### Customer-data conclusion
 
-Customer-data source implementation and activation remain blocked because
-purpose-owner approval, full notice, consent validity, collection and request
-limits, numeric retention, processor inventory, infrastructure controls,
-DPO/privacy review, minor eligibility, and RT-8 lifecycle behavior are
-incomplete.
+Later explicit gates authorized development-only Journal source while retaining
+the privacy blockers in this record. The implementation must remain default-off
+and must not collect live customer Journal data until purpose-owner approval,
+full notice, consent validity, collection and request limits, numeric retention,
+processor inventory, infrastructure controls, qualified privacy review, minor
+eligibility, and RT-8 lifecycle behavior are resolved. Measurements remain
+disabled with an empty allowlist.
 
 ### Production conclusion
 
@@ -591,7 +595,8 @@ Creating this preliminary decision record does not authorize:
 - approval by a privacy officer, legal adviser, infrastructure owner, or
   regulator;
 - customer-data collection or processing;
-- journal or measurement models, workflows, APIs, or storefront implementation;
+- additional journal or measurement models, workflows, APIs, or storefront
+  implementation beyond separately authorized development gates;
 - any non-empty measurement allowlist;
 - migration generation or application;
 - local, disposable, existing, or Neon database access;

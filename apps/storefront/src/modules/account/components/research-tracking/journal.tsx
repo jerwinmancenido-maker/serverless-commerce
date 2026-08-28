@@ -2,9 +2,11 @@
 
 import {
   createResearchJournalEntryAction,
+  recordResearchJournalConsentAction,
   reviseResearchJournalEntryAction,
   transitionResearchJournalEntryAction,
   type ResearchJournalEntry,
+  type ResearchPrivateRecordsConfiguration,
   type ResearchRoutine,
   type ResearchRoutineLog,
   type ResearchTrackingActionState,
@@ -12,6 +14,7 @@ import {
 } from "@lib/data/research-tracking"
 import { createResearchSubmissionKey } from "@lib/research-tracking-idempotency"
 import { formatResearchQuantity } from "@lib/research-quantity"
+import Link from "next/link"
 import { useActionState, useCallback, useEffect, useState } from "react"
 import { useFormStatus } from "react-dom"
 
@@ -22,9 +25,14 @@ type JournalSubmissionKeys = {
 
 type JournalProps = {
   canMutate: boolean
+  configuration: ResearchPrivateRecordsConfiguration["journal"]
+  consentSubmissionKey: string
   countryCode: string
   entries: ResearchJournalEntry[]
+  entryCount: number
+  limit: number
   logs: ResearchRoutineLog[]
+  offset: number
   runtimeReady: boolean
   routines: ResearchRoutine[]
   submissionKeys: JournalSubmissionKeys
@@ -400,9 +408,14 @@ function JournalEntryCard({
 
 export default function Journal({
   canMutate,
+  configuration,
+  consentSubmissionKey,
   countryCode,
   entries,
+  entryCount,
+  limit,
   logs,
+  offset,
   runtimeReady,
   routines,
   submissionKeys,
@@ -413,10 +426,22 @@ export default function Journal({
     createResearchJournalEntryAction,
     initialState,
   )
+  const [consentState, consentAction] = useActionState(
+    recordResearchJournalConsentAction,
+    initialState,
+  )
   const [createKey, rotateCreateKey] = useRotatingSubmissionKey(
     submissionKeys.create,
   )
+  const [consentKey, rotateConsentKey] = useRotatingSubmissionKey(
+    consentSubmissionKey,
+  )
   useRotateConsumedKey(createState, rotateCreateKey)
+  useRotateConsumedKey(consentState, rotateConsentKey)
+  const currentPage = Math.floor(offset / limit) + 1
+  const totalPages = Math.max(1, Math.ceil(entryCount / limit))
+  const currentJournalConsent =
+    configuration.current_consent?.is_current === true
 
   return (
     <section className="mt-10" data-testid="research-journal">
@@ -430,6 +455,81 @@ export default function Journal({
           descriptive records only and are not medical advice or clinical
           interpretation.
         </p>
+      </div>
+
+      <div className={`${cardClass} mb-5`}>
+        <h3 className="text-base font-semibold">Journal privacy choice</h3>
+        {!configuration.available ? (
+          <p className="mt-2 text-sm leading-6 text-ui-fg-subtle">
+            Journal changes are not currently available. Existing entries remain
+            readable when your account data can be verified.
+          </p>
+        ) : currentJournalConsent ? (
+          <div className="mt-2">
+            <p className="text-sm leading-6 text-ui-fg-subtle">
+              Journal consent version {configuration.consent_version} is
+              current.
+            </p>
+            <form action={consentAction} className="mt-3 space-y-3">
+              <HiddenContext
+                countryCode={countryCode}
+                idempotencyKey={consentKey}
+              />
+              <input
+                type="hidden"
+                name="journal_consent_version"
+                value={configuration.consent_version ?? ""}
+              />
+              <input type="hidden" name="consent_action" value="withdraw" />
+              <label className="flex items-start gap-3 text-sm leading-6 text-ui-fg-subtle">
+                <input
+                  className="mt-1"
+                  type="checkbox"
+                  name="confirm_withdrawal"
+                  required
+                />
+                <span>
+                  Disable new Journal entries and changes. Existing entries
+                  remain readable in this account.
+                </span>
+              </label>
+              <ActionMessage state={consentState} />
+              <SubmitButton>Disable Journal changes</SubmitButton>
+            </form>
+          </div>
+        ) : (
+          <form action={consentAction} className="mt-3 space-y-3">
+            <HiddenContext
+              countryCode={countryCode}
+              idempotencyKey={consentKey}
+            />
+            <input
+              type="hidden"
+              name="journal_consent_version"
+              value={configuration.consent_version ?? ""}
+            />
+            <input type="hidden" name="consent_action" value="accept" />
+            <label className="flex items-start gap-3 text-sm leading-6 text-ui-fg-subtle">
+              <input className="mt-1" type="checkbox" name="accepted" required />
+              <span>
+                I choose to store private Journal entries under notice version
+                {" "}{configuration.consent_version}.{" "}
+                {configuration.notice_url && (
+                  <a
+                    className="font-medium text-ui-fg-base underline"
+                    href={configuration.notice_url}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Read the Journal notice
+                  </a>
+                )}
+              </span>
+            </label>
+            <ActionMessage state={consentState} />
+            <SubmitButton>Enable Journal changes</SubmitButton>
+          </form>
+        )}
       </div>
 
       {!runtimeReady ? (
@@ -510,7 +610,7 @@ export default function Journal({
               <div>
                 <h3 className="text-base font-semibold">Journal timeline</h3>
                 <p className="mt-1 text-xs text-ui-fg-muted">
-                  {entries.length} {entries.length === 1 ? "entry" : "entries"}
+                  {entryCount} {entryCount === 1 ? "entry" : "entries"}
                 </p>
               </div>
             </div>
@@ -533,6 +633,36 @@ export default function Journal({
                   />
                 ))}
               </div>
+            )}
+            {entryCount > 0 && (
+              <nav
+                aria-label="Journal pages"
+                className="mt-4 flex items-center justify-between border-t border-ui-border-base pt-4 text-sm"
+              >
+                {currentPage > 1 ? (
+                  <Link
+                    className="font-medium underline"
+                    href={`/${countryCode}/account/research-tracking?journalPage=${currentPage - 1}`}
+                  >
+                    Previous
+                  </Link>
+                ) : (
+                  <span />
+                )}
+                <span className="text-ui-fg-muted">
+                  Page {currentPage} of {totalPages}
+                </span>
+                {currentPage < totalPages ? (
+                  <Link
+                    className="font-medium underline"
+                    href={`/${countryCode}/account/research-tracking?journalPage=${currentPage + 1}`}
+                  >
+                    Next
+                  </Link>
+                ) : (
+                  <span />
+                )}
+              </nav>
             )}
           </div>
         </div>

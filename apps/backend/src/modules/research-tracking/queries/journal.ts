@@ -8,6 +8,10 @@ import type {
   ResearchJournalStatus,
 } from "../contracts/journal"
 import type ResearchTrackingModuleService from "../service"
+import type {
+  ResearchJournalConsentEventType,
+  ResearchJournalConsentProjection,
+} from "../contracts/journal-consent"
 import {
   retrieveActiveResearchProfile,
   retrieveResearchProfileForRead,
@@ -39,6 +43,14 @@ type JournalRevisionRecord = {
   confirmed_log_id: string | null
   prior_revision_id: string | null
   created_at: Date
+}
+
+type JournalConsentEventRecord = {
+  id: string
+  event_type: ResearchJournalConsentEventType
+  consent_version: string
+  notice_sha256: string
+  occurred_at: Date
 }
 
 function service(container: MedusaContainer): ResearchTrackingModuleService {
@@ -172,12 +184,88 @@ export async function retrieveJournalMutationProfile(input: {
   container: MedusaContainer
   customerId: string
   activeConsentVersion: string
+  activeJournalConsentVersion: string
+  activeJournalNoticeSha256: string
 }) {
-  return await retrieveActiveResearchProfile(
+  const profile = await retrieveActiveResearchProfile(
     input.container,
     input.customerId,
     input.activeConsentVersion,
   )
+  const consent = await retrieveCurrentResearchJournalConsentRecord({
+    container: input.container,
+    profileId: profile.id,
+  })
+
+  if (
+    consent?.event_type !== "accepted" ||
+    consent.consent_version !== input.activeJournalConsentVersion ||
+    consent.notice_sha256 !== input.activeJournalNoticeSha256
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.FORBIDDEN,
+      "research_journal_consent_required",
+    )
+  }
+
+  return profile
+}
+
+export async function retrieveCurrentResearchJournalConsent(input: {
+  container: MedusaContainer
+  profileId: string
+}): Promise<ResearchJournalConsentProjection | null> {
+  const event = await retrieveCurrentResearchJournalConsentRecord(input)
+
+  return event
+    ? {
+        event_type: event.event_type,
+        consent_version: event.consent_version,
+        occurred_at: event.occurred_at,
+      }
+    : null
+}
+
+async function retrieveCurrentResearchJournalConsentRecord(input: {
+  container: MedusaContainer
+  profileId: string
+}): Promise<JournalConsentEventRecord | null> {
+  const [event] = (await service(
+    input.container,
+  ).listResearchJournalConsentEvents(
+    { profile_id: input.profileId },
+    { order: { occurred_at: "DESC", id: "DESC" }, take: 1 },
+  )) as JournalConsentEventRecord[]
+
+  return event ?? null
+}
+
+export async function retrieveOwnedResearchJournalConsentStatus(input: {
+  container: MedusaContainer
+  customerId: string
+  activeConsentVersion: string
+  activeNoticeSha256: string
+}): Promise<(ResearchJournalConsentProjection & { is_current: boolean }) | null> {
+  const profile = await retrieveResearchProfileForRead(
+    input.container,
+    input.customerId,
+  )
+  const event = await retrieveCurrentResearchJournalConsentRecord({
+    container: input.container,
+    profileId: profile.id,
+  })
+
+  return event
+    ? {
+        event_type: event.event_type,
+        consent_version: event.consent_version,
+        occurred_at: event.occurred_at,
+        is_current:
+          event.event_type === "accepted" &&
+          event.consent_version === input.activeConsentVersion &&
+          event.notice_sha256 === input.activeNoticeSha256,
+      }
+    : null
 }
 
 export async function validateOwnedJournalRelations(input: {

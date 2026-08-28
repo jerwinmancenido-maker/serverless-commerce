@@ -42,6 +42,16 @@ export type StoreRecordResearchConsentType = z.infer<
   typeof StoreRecordResearchConsent
 >
 
+export const StoreRecordResearchJournalConsent = z.strictObject({
+  scope: z.literal("journal"),
+  consent_version: z.string().min(1),
+  accepted: z.boolean(),
+})
+
+export type StoreRecordResearchJournalConsentType = z.infer<
+  typeof StoreRecordResearchJournalConsent
+>
+
 export const StoreCloseResearchProfile = z.strictObject({
   acknowledge_closure: z.literal(true),
 })

@@ -1,4 +1,5 @@
 import {
+  getResearchJournalConfiguration,
   getResearchTrackingCustomerConfiguration,
   getResearchTrackingPurchasedActivationConfiguration,
 } from "../config"
@@ -8,6 +9,7 @@ import {
   StoreCloseResearchProfile,
   StoreCreateResearchProfile,
   StoreRecordResearchConsent,
+  StoreRecordResearchJournalConsent,
   StoreRequestResearchDeletion,
   StoreUpdateResearchPreferences,
 } from "../../../api/store/customers/me/research-tracking/validators"
@@ -42,6 +44,45 @@ describe("research tracking customer API contract", () => {
       noticeSha256,
       noticeUrl: "https://example.com/privacy/research",
     })
+  })
+
+  it("keeps Journal collection separately disabled by default", () => {
+    expect(getResearchJournalConfiguration({})).toEqual({
+      available: false,
+      activeConsentVersion: null,
+      noticeSha256: null,
+      noticeUrl: null,
+      effectiveAt: null,
+    })
+  })
+
+  it("requires a complete server-owned Journal configuration", () => {
+    expect(
+      getResearchJournalConfiguration(
+        {
+          RESEARCH_TRACKING_JOURNAL_ENABLED: "true",
+          RESEARCH_TRACKING_JOURNAL_CONSENT_VERSION: "2026-08-28.v1",
+          RESEARCH_TRACKING_JOURNAL_NOTICE_SHA256: noticeSha256,
+          RESEARCH_TRACKING_JOURNAL_NOTICE_URL:
+            "https://example.com/privacy/journal",
+          RESEARCH_TRACKING_JOURNAL_EFFECTIVE_AT:
+            "2026-08-28T00:00:00.000Z",
+        },
+        new Date("2026-08-28T00:00:00.000Z"),
+      ),
+    ).toEqual({
+      available: true,
+      activeConsentVersion: "2026-08-28.v1",
+      noticeSha256,
+      noticeUrl: "https://example.com/privacy/journal",
+      effectiveAt: new Date("2026-08-28T00:00:00.000Z"),
+    })
+
+    expect(() =>
+      getResearchJournalConfiguration({
+        RESEARCH_TRACKING_JOURNAL_ENABLED: "true",
+      }),
+    ).toThrow("enabled Journal access requires")
   })
 
   it("enables purchased activation only with a normalized channel allowlist", () => {
@@ -80,6 +121,20 @@ describe("research tracking customer API contract", () => {
       StoreRecordResearchConsent.safeParse({
         consent_version: "2026-08-25.v1",
         accepted: true,
+      }).success,
+    ).toBe(true)
+    expect(
+      StoreRecordResearchJournalConsent.safeParse({
+        scope: "journal",
+        consent_version: "2026-08-28.v1",
+        accepted: true,
+      }).success,
+    ).toBe(true)
+    expect(
+      StoreRecordResearchJournalConsent.safeParse({
+        scope: "journal",
+        consent_version: "2026-08-28.v1",
+        accepted: false,
       }).success,
     ).toBe(true)
     expect(

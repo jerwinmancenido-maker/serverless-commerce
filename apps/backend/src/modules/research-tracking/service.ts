@@ -8,6 +8,7 @@ import {
 } from "@medusajs/framework/utils"
 
 import ResearchConsentEvent from "./models/research-consent-event"
+import ResearchJournalConsentEvent from "./models/research-journal-consent-event"
 import ResearchJournalEntry from "./models/research-journal-entry"
 import ResearchJournalEntryRevision from "./models/research-journal-entry-revision"
 import ResearchJournalMutation from "./models/research-journal-mutation"
@@ -166,6 +167,7 @@ type MutateResearchRoutineLogWrite = {
 
 class ResearchTrackingModuleService extends MedusaService({
   ResearchConsentEvent,
+  ResearchJournalConsentEvent,
   ResearchJournalEntry,
   ResearchJournalEntryRevision,
   ResearchJournalMutation,

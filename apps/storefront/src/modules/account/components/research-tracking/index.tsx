@@ -13,6 +13,7 @@ import {
   type ResearchTrackingConfiguration,
   type ResearchOccurrence,
   type ResearchJournalEntry,
+  type ResearchPrivateRecordsConfiguration,
   type ResearchRoutine,
   type ResearchRoutineLog,
   type TrackedResearchMaterial,
@@ -34,12 +35,17 @@ type ResearchTrackingProps = {
   configuration: ResearchTrackingConfiguration
   countryCode: string
   profile: ResearchProfile | null
+  privateRecords: ResearchPrivateRecordsConfiguration
   privacyRequest: ResearchPrivacyRequest | null
   purchasedActivationKeys: PurchasedActivationSubmissionKeys
   purchasedItems: PurchasedItemCandidate[]
   purchasedRuntimeReady: boolean
   occurrences: ResearchOccurrence[]
   journalEntries: ResearchJournalEntry[]
+  journalCount: number
+  journalLimit: number
+  journalOffset: number
+  journalConsentKey: string
   journalRuntimeReady: boolean
   journalSubmissionKeys: {
     create: string
@@ -426,12 +432,17 @@ export default function ResearchTracking({
   configuration,
   countryCode,
   profile,
+  privateRecords,
   privacyRequest,
   purchasedActivationKeys,
   purchasedItems,
   purchasedRuntimeReady,
   occurrences,
   journalEntries,
+  journalCount,
+  journalLimit,
+  journalOffset,
+  journalConsentKey,
   journalRuntimeReady,
   journalSubmissionKeys,
   routineLogs,
@@ -531,11 +542,18 @@ export default function ResearchTracking({
         <Journal
           canMutate={
             profile.status === "active" &&
-            profile.consent_version === configuration.consent_version
+            profile.consent_version === configuration.consent_version &&
+            privateRecords.journal.available &&
+            privateRecords.journal.current_consent?.is_current === true
           }
+          configuration={privateRecords.journal}
+          consentSubmissionKey={journalConsentKey}
           countryCode={countryCode}
           entries={journalEntries}
+          entryCount={journalCount}
+          limit={journalLimit}
           logs={routineLogs}
+          offset={journalOffset}
           runtimeReady={journalRuntimeReady}
           routines={routines}
           submissionKeys={journalSubmissionKeys}

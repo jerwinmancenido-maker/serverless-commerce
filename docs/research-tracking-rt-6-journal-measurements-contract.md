@@ -366,8 +366,10 @@ The endpoint names are approved for future source planning:
 - `POST /store/customers/me/research-tracking/private-records/consents`
 
 Mutations require a validated `Idempotency-Key` header and plain-object request
-bodies. Only GET and POST are used. List queries use bounded date ranges and
-cursor pagination. All success and error responses use
+bodies. Only GET and POST are used. Journal list queries use bounded offset
+pagination in the development implementation. Cursor pagination remains a
+production-readiness decision and must be resolved before activation. All
+success and error responses use
 `Cache-Control: private, no-store`.
 
 ## Error contract
@@ -537,8 +539,8 @@ evidence is not Neon, deployment, privacy approval, or production evidence.
 Contract approval retains the following decisions as blocked until separately
 reviewed and approved:
 
-- whether RT-6 journal collection should proceed before the measurement
-  allowlist is approved;
+- Journal source implementation may proceed independently while the measurement
+  allowlist remains empty; this does not authorize production collection;
 - the exact declared purpose and lawful basis for each consent scope;
 - the approved journal privacy notice and consent language;
 - the first measurement type and unit allowlist, if any;
@@ -570,11 +572,30 @@ reviewed and approved:
 
 This approved contract records RT-6 planning only.
 
+### Development implementation reconciliation
+
+Subsequent explicit gates authorized a development-only Journal implementation.
+That source is required to remain default-off and now includes:
+
+- server-owned Journal availability, notice, consent version, digest, and
+  effective-timestamp configuration;
+- a purpose-specific immutable Journal consent-event boundary separate from the
+  general Research & Tracking consent;
+- owner-authenticated Journal reads and workflow-only mutations;
+- bounded offset pagination in the account UI; and
+- an empty Measurements allowlist with no measurement collection source.
+
+This reconciliation records the authorized development state. It does not
+approve a privacy notice, establish legal compliance, authorize live customer
+collection, or remove any migration, database, HTTP-verification, push, Neon,
+deployment, or production-activation gate.
+
 It does not authorize:
 
 - changes to the approved decisions without a new formal review;
 - collection of journal or measurement data;
-- RT-6 models, workflows, API routes, storefront code, or Admin code;
+- additional RT-6 models, workflows, API routes, storefront code, or Admin code
+  beyond separately authorized development gates;
 - a measurement allowlist;
 - migration generation or application;
 - local, disposable, existing, or Neon database access;
