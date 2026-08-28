@@ -3,7 +3,9 @@ import { MathBN, MedusaError } from "@medusajs/framework/utils"
 
 import {
   isResearchBaseUnit,
+  normalizeResearchUnitProfile,
   RESEARCH_MAX_BASE_UNITS,
+  type ResearchDisplayUnit,
   type ResearchBaseUnit,
 } from "../../../lib/research-quantity"
 import {
@@ -74,6 +76,9 @@ export type PublishedMaterialProfileRecord = {
   product_variant_id: string
   material_quantity_base_units: number
   material_base_unit: string
+  display_unit: string
+  base_units_per_display_unit: number
+  display_precision: number
   status: "draft" | "published" | "withdrawn"
   evidence_scope: "sku" | "formulation" | "batch"
   effective_at: Date | null
@@ -87,6 +92,9 @@ export type SelectedMaterialProfile = {
   productVariantId: string
   materialQuantityBaseUnits: number
   materialBaseUnit: ResearchBaseUnit
+  displayUnit: ResearchDisplayUnit
+  baseUnitsPerDisplayUnit: number
+  displayPrecision: number
 }
 
 export type ResearchSupplyActivationProjection = {
@@ -100,6 +108,8 @@ export type ResearchSupplyActivationProjection = {
   initial_quantity_base_units: number
   remaining_quantity_base_units: number
   base_unit: ResearchBaseUnit
+  material_profile_key: string
+  material_profile_revision: number
   added_to_tracking_at: Date
 }
 
@@ -269,12 +279,28 @@ export function selectCurrentPublishedMaterialProfile(
     return null
   }
 
+  let unitProfile
+
+  try {
+    unitProfile = normalizeResearchUnitProfile({
+      baseUnit: selected.material_base_unit,
+      displayUnit: selected.display_unit as ResearchDisplayUnit,
+      baseUnitsPerDisplayUnit: selected.base_units_per_display_unit,
+      displayPrecision: selected.display_precision,
+    })
+  } catch {
+    return null
+  }
+
   return {
     profileKey: selected.profile_key,
     revision: selected.revision,
     productVariantId: selected.product_variant_id,
     materialQuantityBaseUnits: selected.material_quantity_base_units,
     materialBaseUnit: selected.material_base_unit,
+    displayUnit: unitProfile.displayUnit,
+    baseUnitsPerDisplayUnit: unitProfile.baseUnitsPerDisplayUnit,
+    displayPrecision: unitProfile.displayPrecision,
   }
 }
 
@@ -340,6 +366,8 @@ export function projectResearchSupplyActivation(input: {
     activated_at: Date
     tracked_material_id: string
     supply_id: string
+    material_profile_key: string
+    material_profile_revision: number
   }
   supply: {
     id: string
@@ -359,6 +387,8 @@ export function projectResearchSupplyActivation(input: {
     initial_quantity_base_units: input.supply.initial_quantity_base_units,
     remaining_quantity_base_units: input.supply.remaining_quantity_base_units,
     base_unit: input.supply.base_unit,
+    material_profile_key: input.activation.material_profile_key,
+    material_profile_revision: input.activation.material_profile_revision,
     added_to_tracking_at: input.activation.activated_at,
   }
 }

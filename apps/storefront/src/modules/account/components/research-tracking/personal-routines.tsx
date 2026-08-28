@@ -27,6 +27,15 @@ import {
 } from "@lib/research-tracking-idempotency"
 import { researchTrackingQueryKeys } from "@lib/research-tracking-query-keys"
 import {
+  convertResearchDisplayQuantityToBaseUnits,
+  defaultResearchUnitProfile,
+  formatResearchQuantity,
+  researchDisplayQuantity,
+  researchDisplayStep,
+  resolveResearchUnitProfile,
+  serializeResearchUnitProfile,
+} from "@lib/research-quantity"
+import {
   QueryClient,
   QueryClientProvider,
   useQuery,
@@ -72,6 +81,69 @@ const initialMutationPreviewState: ResearchRoutineLogMutationActionState = {
 }
 
 type ResearchTrackingQueryKey = readonly unknown[]
+
+function profileForBaseUnit(
+  baseUnit: ResearchOccurrence["base_unit"],
+  supplies: TrackedResearchMaterial["supplies"],
+) {
+  const profiles = Array.from(
+    new Map(
+      supplies
+        .filter((supply) => supply.base_unit === baseUnit)
+        .map((supply) => {
+          const profile = resolveResearchUnitProfile(supply)
+          const key = serializeResearchUnitProfile(profile)
+
+          return [key, profile] as const
+        }),
+    ).values(),
+  )
+
+  return profiles.length === 1
+    ? profiles[0]
+    : defaultResearchUnitProfile(baseUnit)
+}
+
+function routineUnitOptions(
+  supplies: TrackedResearchMaterial["supplies"],
+) {
+  const profiles = Array.from(
+    new Map(
+      supplies.map((supply) => {
+        const profile = resolveResearchUnitProfile(supply)
+        const key = serializeResearchUnitProfile(profile)
+
+        return [key, { key, profile }] as const
+      }),
+    ).values(),
+  )
+  const iuProfiles = profiles.filter(
+    ({ profile }) => profile.display_unit === "IU",
+  )
+  const hasUnambiguousIuProfile =
+    iuProfiles.length === 1 &&
+    supplies.every(
+      (supply) =>
+        serializeResearchUnitProfile(resolveResearchUnitProfile(supply)) ===
+        iuProfiles[0].key,
+    )
+
+  return profiles.filter(
+    ({ profile }) =>
+      profile.display_unit !== "IU" || hasUnambiguousIuProfile,
+  )
+}
+
+function profileForSupply(
+  supplyId: string,
+  baseUnit: ResearchOccurrence["base_unit"],
+  supplies: TrackedResearchMaterial["supplies"],
+) {
+  return (
+    supplies.find((supply) => supply.supply_id === supplyId) ??
+    profileForBaseUnit(baseUnit, supplies)
+  )
+}
 
 function addCalendarDays(localDate: string, days: number): string {
   const date = new Date(`${localDate}T00:00:00.000Z`)
@@ -174,6 +246,8 @@ function CreateRoutineCard({
   trackedMaterials: TrackedResearchMaterial[]
   today: string
 }) {
+  const [selectedMaterialId, setSelectedMaterialId] = useState("")
+  const [selectedUnitProfile, setSelectedUnitProfile] = useState("")
   const [state, action] = useActionState(
     createResearchRoutineAction,
     initialState,
@@ -187,6 +261,13 @@ function CreateRoutineCard({
       addCalendarDays(today, 6),
     ),
   ], rotateSubmissionKey)
+  const selectedMaterial = trackedMaterials.find(
+    (material) => material.tracked_material_id === selectedMaterialId,
+  )
+  const unitOptions = routineUnitOptions(selectedMaterial?.supplies ?? [])
+  const activeUnitProfile = unitOptions.find(
+    (option) => option.key === selectedUnitProfile,
+  )?.profile
 
   return (
     <form action={action} className={`${cardClass} space-y-4`}>
@@ -201,7 +282,11 @@ function CreateRoutineCard({
         <select
           name="tracked_material_id"
           required
-          defaultValue=""
+          value={selectedMaterialId}
+          onChange={(event) => {
+            setSelectedMaterialId(event.target.value)
+            setSelectedUnitProfile("")
+          }}
           className={`${inputClass} mt-2`}
         >
           <option value="" disabled>
@@ -230,31 +315,41 @@ function CreateRoutineCard({
         <label className="block text-sm font-medium">
           Planned material quantity
           <input
-            name="planned_quantity_base_units"
+            name="planned_quantity_display_units"
             type="number"
-            min="1"
-            step="1"
+            min={activeUnitProfile ? researchDisplayStep(activeUnitProfile) : 0}
+            step={activeUnitProfile ? researchDisplayStep(activeUnitProfile) : "any"}
             required
+            disabled={!activeUnitProfile}
             className={`${inputClass} mt-2`}
           />
         </label>
         <label className="block text-sm font-medium">
           Unit
           <select
-            name="base_unit"
+            name="unit_profile"
             required
-            defaultValue=""
+            value={selectedUnitProfile}
+            onChange={(event) => setSelectedUnitProfile(event.target.value)}
+            disabled={!unitOptions.length}
             className={`${inputClass} mt-2`}
           >
             <option value="" disabled>
               Select unit
             </option>
-            <option value="microgram">microgram</option>
-            <option value="microliter">microliter</option>
-            <option value="piece">piece</option>
+            {unitOptions.map(({ key, profile }) => (
+              <option key={key} value={key}>
+                {profile.display_unit}
+              </option>
+            ))}
           </select>
         </label>
       </div>
+      {selectedMaterial && !unitOptions.length && (
+        <p className="text-sm text-amber-700">
+          This material does not have a verified quantity-unit profile yet.
+        </p>
+      )}
       <div className="grid grid-cols-1 gap-3 small:grid-cols-2">
         <label className="block text-sm font-medium">
           Recurrence
@@ -402,8 +497,10 @@ function OccurrenceCard({
       </div>
       <p className="mt-3 text-sm">
         Planned material quantity:{" "}
-        {occurrence.planned_quantity_base_units.toLocaleString("en-PH")}{" "}
-        {occurrence.base_unit}
+        {formatResearchQuantity(
+          occurrence.planned_quantity_base_units,
+          profileForBaseUnit(occurrence.base_unit, supplies),
+        )}
       </p>
       {occurrence.status === "scheduled" &&
         (supplies.length ? (
@@ -452,10 +549,10 @@ function OccurrenceCard({
                 </option>
                 {supplies.map((supply) => (
                   <option key={supply.supply_id} value={supply.supply_id}>
-                    {supply.remaining_quantity_base_units.toLocaleString(
-                      "en-PH",
-                    )}{" "}
-                    {supply.base_unit} remaining
+                    {formatResearchQuantity(
+                      supply.remaining_quantity_base_units,
+                      supply,
+                    )} remaining
                   </option>
                 ))}
               </select>
@@ -519,10 +616,14 @@ function OccurrenceCard({
           />
           <p className="text-sm">
             Remaining after confirmation:{" "}
-            {previewState.preview.projected_remaining_quantity_base_units.toLocaleString(
-              "en-PH",
-            )}{" "}
-            {previewState.preview.base_unit}
+            {formatResearchQuantity(
+              previewState.preview.projected_remaining_quantity_base_units,
+              profileForSupply(
+                previewState.preview.supply_id,
+                previewState.preview.base_unit,
+                supplies,
+              ),
+            )}
           </p>
           <p className="text-xs leading-5 text-ui-fg-subtle">
             {previewState.preview.notice}
@@ -551,6 +652,7 @@ function RoutineTransitionRow({
   countryCode,
   idempotencyKey,
   routine,
+  trackedMaterials,
   today,
   updateIdempotencyKey,
 }: {
@@ -558,6 +660,7 @@ function RoutineTransitionRow({
   countryCode: string
   idempotencyKey?: string
   routine: ResearchRoutine
+  trackedMaterials: TrackedResearchMaterial[]
   today: string
   updateIdempotencyKey?: string
 }) {
@@ -615,6 +718,10 @@ function RoutineTransitionRow({
           idempotencyKey={updateKey}
           onSuccess={rotateUpdateKey}
           routine={routine}
+          trackedMaterial={trackedMaterials.find(
+            (material) =>
+              material.tracked_material_id === routine.tracked_material_id,
+          )}
           today={today}
         />
       )}
@@ -627,12 +734,14 @@ function RoutineEditForm({
   idempotencyKey,
   onSuccess,
   routine,
+  trackedMaterial,
   today,
 }: {
   countryCode: string
   idempotencyKey: string
   onSuccess: () => void
   routine: ResearchRoutine
+  trackedMaterial?: TrackedResearchMaterial
   today: string
 }) {
   const [state, action] = useActionState(
@@ -649,6 +758,27 @@ function RoutineEditForm({
   ], onSuccess)
   const revision = routine.current_revision
   const schedule = revision.schedule
+  const unitOptions = routineUnitOptions(
+    (trackedMaterial?.supplies ?? []).filter(
+      (supply) => supply.base_unit === revision.base_unit,
+    ),
+  )
+  const fallbackUnitProfile = defaultResearchUnitProfile(revision.base_unit)
+  const initialUnitProfile = unitOptions[0]?.profile ?? fallbackUnitProfile
+  const [selectedUnitProfile, setSelectedUnitProfile] = useState(
+    () => unitOptions[0]?.key ?? serializeResearchUnitProfile(fallbackUnitProfile),
+  )
+  const activeUnitProfile =
+    unitOptions.find((option) => option.key === selectedUnitProfile)?.profile ??
+    fallbackUnitProfile
+  const [displayQuantity, setDisplayQuantity] = useState(() =>
+    String(
+      researchDisplayQuantity(
+        revision.planned_quantity_base_units,
+        initialUnitProfile,
+      ),
+    ),
+  )
 
   return (
     <details className="mt-4 border-t border-ui-border-base pt-4">
@@ -675,26 +805,54 @@ function RoutineEditForm({
         <label className="block text-sm font-medium">
           Planned material quantity
           <input
-            name="planned_quantity_base_units"
+            name="planned_quantity_display_units"
             type="number"
-            min="1"
-            step="1"
+            min={researchDisplayStep(activeUnitProfile)}
+            step={researchDisplayStep(activeUnitProfile)}
             required
-            defaultValue={revision.planned_quantity_base_units}
+            value={displayQuantity}
+            onChange={(event) => setDisplayQuantity(event.target.value)}
             className={`${inputClass} mt-2`}
           />
         </label>
         <label className="block text-sm font-medium">
           Unit
           <select
-            name="base_unit"
+            name="unit_profile"
             required
-            defaultValue={revision.base_unit}
+            value={selectedUnitProfile}
+            onChange={(event) => {
+              const nextKey = event.target.value
+              const nextProfile = unitOptions.find(
+                (option) => option.key === nextKey,
+              )?.profile
+              const baseUnits = convertResearchDisplayQuantityToBaseUnits(
+                Number(displayQuantity),
+                activeUnitProfile,
+              )
+
+              if (nextProfile && baseUnits) {
+                setDisplayQuantity(
+                  String(researchDisplayQuantity(baseUnits, nextProfile)),
+                )
+              }
+              setSelectedUnitProfile(nextKey)
+            }}
             className={`${inputClass} mt-2`}
           >
-            <option value="microgram">microgram</option>
-            <option value="microliter">microliter</option>
-            <option value="piece">piece</option>
+            {(unitOptions.length
+              ? unitOptions
+              : [
+                  {
+                    key: serializeResearchUnitProfile(fallbackUnitProfile),
+                    profile: fallbackUnitProfile,
+                  },
+                ]
+            ).map(({ key, profile }) => (
+              <option key={key} value={key}>
+                {profile.display_unit}
+              </option>
+            ))}
           </select>
         </label>
         <label className="block text-sm font-medium">
@@ -804,6 +962,7 @@ function LogMutationForm({
   supplies: TrackedResearchMaterial["supplies"]
   today: string
 }) {
+  const [selectedSupplyId, setSelectedSupplyId] = useState(log.supply_id)
   const [previewState, previewAction] = useActionState(
     previewResearchRoutineLogMutationAction,
     initialMutationPreviewState,
@@ -826,6 +985,12 @@ function LogMutationForm({
     ) ?? []),
   ], onSuccess)
   const needsSupply = operation !== "void"
+  const selectedSupply =
+    supplies.find((supply) => supply.supply_id === selectedSupplyId) ??
+    supplies[0]
+  const unitProfile = selectedSupply
+    ? resolveResearchUnitProfile(selectedSupply)
+    : defaultResearchUnitProfile(log.base_unit)
 
   return (
     <div className="rounded-lg border border-ui-border-base p-3">
@@ -840,15 +1005,16 @@ function LogMutationForm({
               <select
                 name="supply_id"
                 required
-                defaultValue={log.supply_id}
+                value={selectedSupplyId}
+                onChange={(event) => setSelectedSupplyId(event.target.value)}
                 className={`${inputClass} mt-2`}
               >
                 {supplies.map((supply) => (
                   <option key={supply.supply_id} value={supply.supply_id}>
-                    {supply.remaining_quantity_base_units.toLocaleString(
-                      "en-PH",
-                    )}{" "}
-                    {supply.base_unit} remaining
+                    {formatResearchQuantity(
+                      supply.remaining_quantity_base_units,
+                      supply,
+                    )} remaining
                   </option>
                 ))}
               </select>
@@ -856,16 +1022,24 @@ function LogMutationForm({
             <label className="block text-sm font-medium">
               Confirmed quantity
               <input
-                name="confirmed_quantity_base_units"
+                key={selectedSupplyId}
+                name="confirmed_quantity_display_units"
                 type="number"
-                min="1"
-                step="1"
+                min={researchDisplayStep(unitProfile)}
+                step={researchDisplayStep(unitProfile)}
                 required
-                defaultValue={log.confirmed_quantity_base_units}
+                defaultValue={researchDisplayQuantity(
+                  log.confirmed_quantity_base_units,
+                  unitProfile,
+                )}
                 className={`${inputClass} mt-2`}
               />
             </label>
-            <input type="hidden" name="base_unit" value={log.base_unit} />
+            <input
+              type="hidden"
+              name="unit_profile"
+              value={serializeResearchUnitProfile(unitProfile)}
+            />
           </>
         )}
         {previewState.error && (
@@ -908,14 +1082,15 @@ function LogMutationForm({
           {previewState.preview.supply_changes.map((change) => (
             <p key={change.supply_id} className="text-sm">
               Supply balance:{" "}
-              {change.current_remaining_quantity_base_units.toLocaleString(
-                "en-PH",
+              {formatResearchQuantity(
+                change.current_remaining_quantity_base_units,
+                profileForSupply(change.supply_id, change.base_unit, supplies),
               )}{" "}
               →{" "}
-              {change.projected_remaining_quantity_base_units.toLocaleString(
-                "en-PH",
-              )}{" "}
-              {change.base_unit}
+              {formatResearchQuantity(
+                change.projected_remaining_quantity_base_units,
+                profileForSupply(change.supply_id, change.base_unit, supplies),
+              )}
             </p>
           ))}
           <p className="text-xs leading-5 text-ui-fg-subtle">
@@ -993,7 +1168,10 @@ function RoutineLogCard({
         </p>
         <p className="mt-2 text-sm">
           Recorded material quantity:{" "}
-          {log.confirmed_quantity_base_units.toLocaleString("en-PH")} {log.base_unit}
+          {formatResearchQuantity(
+            log.confirmed_quantity_base_units,
+            profileForSupply(log.supply_id, log.base_unit, supplies),
+          )}
         </p>
       </div>
       {canMutate && (log.status === "confirmed" ? (
@@ -1175,6 +1353,7 @@ function PersonalRoutinesContent({
               idempotencyKey={submissionKeys.transitions[routine.routine_id]}
               updateIdempotencyKey={submissionKeys.updates[routine.routine_id]}
               routine={routine}
+              trackedMaterials={currentTrackedMaterials}
               today={today}
             />
           ))

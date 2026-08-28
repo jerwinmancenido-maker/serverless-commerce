@@ -101,6 +101,16 @@ describe("RT-5 personal routine contract", () => {
     ).toThrow(MedusaError)
   })
 
+  it("rejects a planned quantity that exceeds the PostgreSQL ledger limit", () => {
+    expect(() =>
+      normalizeResearchRoutineInput({
+        ...baseInput,
+        plannedQuantityBaseUnits: 2_147_483_648,
+        recurrenceType: "once",
+      }),
+    ).toThrow("no greater than 2147483647")
+  })
+
   it("projects deterministic occurrence identities without persistence", () => {
     const revision = {
       id: "rrrev_test",

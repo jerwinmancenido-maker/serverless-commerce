@@ -6,6 +6,10 @@ import {
   assertNonNegativeSafeInteger,
   assertPositiveSafeInteger,
 } from "./inventory-kit"
+import {
+  normalizeResearchUnitProfile,
+  type ResearchDisplayUnit,
+} from "../../../lib/research-quantity"
 
 export type SetComponentProfileInput = {
   inventoryItemId: string
@@ -66,6 +70,14 @@ export function normalizeComponentProfileInput(
     input.baseUnitsPerDisplayUnit,
     "baseUnitsPerDisplayUnit",
   )
+  const displayUnit = normalizeRequiredText(input.displayUnit, "displayUnit")
+
+  normalizeResearchUnitProfile({
+    baseUnit: input.baseUnit,
+    displayUnit: displayUnit as ResearchDisplayUnit,
+    baseUnitsPerDisplayUnit: input.baseUnitsPerDisplayUnit,
+    displayPrecision: input.displayPrecision,
+  })
   assertPostgresInteger(input.displayPrecision, "displayPrecision")
   assertPostgresInteger(
     input.reorderThresholdBaseUnits,
@@ -78,7 +90,7 @@ export function normalizeComponentProfileInput(
       "inventoryItemId",
     ),
     baseUnit: input.baseUnit,
-    displayUnit: normalizeRequiredText(input.displayUnit, "displayUnit"),
+    displayUnit,
     baseUnitsPerDisplayUnit: input.baseUnitsPerDisplayUnit,
     displayPrecision: input.displayPrecision,
     reorderThresholdBaseUnits: input.reorderThresholdBaseUnits,

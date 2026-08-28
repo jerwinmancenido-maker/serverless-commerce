@@ -82,6 +82,9 @@ describe("RT-4 purchased supplies contract", () => {
           product_variant_id: "variant_1",
           material_quantity_base_units: 1000,
           material_base_unit: "microgram",
+          display_unit: "mg",
+          base_units_per_display_unit: 1000,
+          display_precision: 2,
           status: "published",
           evidence_scope: "sku",
           effective_at: new Date("2026-01-01T00:00:00.000Z"),
@@ -94,6 +97,9 @@ describe("RT-4 purchased supplies contract", () => {
           product_variant_id: "variant_1",
           material_quantity_base_units: 2000,
           material_base_unit: "microgram",
+          display_unit: "mg",
+          base_units_per_display_unit: 1000,
+          display_precision: 2,
           status: "published",
           evidence_scope: "formulation",
           effective_at: new Date("2026-06-01T00:00:00.000Z"),
@@ -117,6 +123,9 @@ describe("RT-4 purchased supplies contract", () => {
       product_variant_id: "variant_1",
       material_quantity_base_units: 1000,
       material_base_unit: "microgram",
+      display_unit: "mcg",
+      base_units_per_display_unit: 1,
+      display_precision: 0,
       status: "published" as const,
       evidence_scope: "sku" as const,
       effective_at: new Date("2026-01-01T00:00:00.000Z"),
@@ -129,6 +138,31 @@ describe("RT-4 purchased supplies contract", () => {
         [
           { ...base, profile_key: "profile-a" },
           { ...base, profile_key: "profile-b" },
+        ],
+        new Date("2026-08-26T00:00:00.000Z"),
+      ),
+    ).toBeNull()
+  })
+
+  it("rejects a material profile with unsafe display-unit metadata", () => {
+    expect(
+      selectCurrentPublishedMaterialProfile(
+        [
+          {
+            profile_key: "unsafe-iu",
+            revision: 1,
+            product_variant_id: "variant_1",
+            material_quantity_base_units: 1000,
+            material_base_unit: "piece",
+            display_unit: "IU",
+            base_units_per_display_unit: 1,
+            display_precision: 0,
+            status: "published",
+            evidence_scope: "sku",
+            effective_at: new Date("2026-01-01T00:00:00.000Z"),
+            published_at: new Date("2026-01-01T00:00:00.000Z"),
+            withdrawn_at: null,
+          },
         ],
         new Date("2026-08-26T00:00:00.000Z"),
       ),

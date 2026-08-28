@@ -2,7 +2,10 @@ import { createHash, createHmac, timingSafeEqual } from "node:crypto"
 
 import { MedusaError } from "@medusajs/framework/utils"
 
-import type { ResearchBaseUnit } from "../../../lib/research-quantity"
+import {
+  RESEARCH_MAX_BASE_UNITS,
+  type ResearchBaseUnit,
+} from "../../../lib/research-quantity"
 import {
   createResearchRequestFingerprint,
   normalizeResearchIdempotencyKey,
@@ -462,8 +465,14 @@ function normalizeTime(value: string): string {
 }
 
 function normalizePositiveInteger(value: number, field: string): number {
-  if (!Number.isSafeInteger(value) || value <= 0) {
-    invalid(`${field} must be a positive safe integer`)
+  if (
+    !Number.isSafeInteger(value) ||
+    value <= 0 ||
+    value > RESEARCH_MAX_BASE_UNITS
+  ) {
+    invalid(
+      `${field} must be a positive integer no greater than ${RESEARCH_MAX_BASE_UNITS}`,
+    )
   }
 
   return value

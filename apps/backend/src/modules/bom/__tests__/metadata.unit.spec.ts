@@ -57,6 +57,31 @@ describe("BOM component profile contract", () => {
       }),
     ).toThrow("baseUnit")
   })
+
+  it("supports product-specific IU profiles", () => {
+    expect(
+      normalizeComponentProfileInput({
+        ...validProfile,
+        baseUnit: "microliter",
+        displayUnit: "IU",
+        baseUnitsPerDisplayUnit: 10,
+        displayPrecision: 0,
+      }),
+    ).toMatchObject({
+      baseUnit: "microliter",
+      displayUnit: "IU",
+      baseUnitsPerDisplayUnit: 10,
+    })
+  })
+
+  it("rejects mismatched display-unit conversions", () => {
+    expect(() =>
+      normalizeComponentProfileInput({
+        ...validProfile,
+        displayUnit: "mL",
+      }),
+    ).toThrow("mL requires 1000 microliter base units")
+  })
 })
 
 describe("BOM recipe audit contract", () => {

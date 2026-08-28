@@ -86,6 +86,12 @@ marketplace connection, or publication of product data.
 - Recipe and inventory quantities use positive integer base units. Version 1
   base units are micrograms, microliters, and pieces; decimal display units are
   converted before inventory operations.
+- Customer-facing compounded-product quantities use verified unit profiles.
+  Supported display units are `mcg`, `mg`, `mL`, and product-specific `IU`;
+  container counts use `unit`. `mcg`, `mg`, and `mL` use fixed conversions to
+  the integer ledger. `IU` never uses a global conversion: its explicit
+  base-unit conversion and precision must come from the applicable published
+  product/material profile.
 - A custom BOM module will add unit metadata, validation, explanatory
   availability, and audit snapshots without creating a parallel stock ledger.
 - Available sellable quantity is the lowest whole number of units supported by

@@ -6,6 +6,12 @@ import {
   classifyResearchSubmissionFailure,
   normalizeResearchSubmissionKey,
 } from "@lib/research-tracking-idempotency"
+import {
+  convertResearchDisplayQuantityToBaseUnits,
+  parseResearchUnitProfile,
+  type ResearchBaseUnit,
+  type ResearchDisplayUnit,
+} from "@lib/research-quantity"
 import { revalidatePath } from "next/cache"
 
 export type ResearchProfile = {
@@ -36,6 +42,13 @@ export type ResearchTrackingConfiguration = {
   supported_locales: string[]
 }
 
+export type ResearchUnitProfile = {
+  base_unit: ResearchBaseUnit
+  display_unit: ResearchDisplayUnit | null
+  base_units_per_display_unit: number | null
+  display_precision: number | null
+}
+
 export type PurchasedItemIneligibilityReason =
   | "not_fulfilled"
   | "order_cancelled"
@@ -62,7 +75,10 @@ export type PurchasedItemCandidate = {
   ineligibility_reason: PurchasedItemIneligibilityReason | null
   eligible_commerce_quantity: number | null
   initial_quantity_base_units: number | null
-  base_unit: "microgram" | "microliter" | "piece" | null
+  base_unit: ResearchBaseUnit | null
+  display_unit: ResearchDisplayUnit | null
+  base_units_per_display_unit: number | null
+  display_precision: number | null
   added_to_tracking_at: string | null
 }
 
@@ -71,7 +87,10 @@ export type TrackedResearchSupply = {
   source_order_line_item_id: string | null
   initial_quantity_base_units: number
   remaining_quantity_base_units: number
-  base_unit: "microgram" | "microliter" | "piece"
+  base_unit: ResearchBaseUnit
+  display_unit: ResearchDisplayUnit | null
+  base_units_per_display_unit: number | null
+  display_precision: number | null
   added_to_tracking_at: string
   lot_number: string | null
   batch_number: string | null
@@ -98,7 +117,7 @@ export type ResearchRoutine = {
     revision_id: string
     label: string
     planned_quantity_base_units: number
-    base_unit: "microgram" | "microliter" | "piece"
+    base_unit: ResearchBaseUnit
     schedule: {
       recurrence_type: "once" | "daily" | "weekly"
       daily_interval: number | null
@@ -120,7 +139,7 @@ export type ResearchOccurrence = {
   routine_revision_id: string
   label: string
   planned_quantity_base_units: number
-  base_unit: "microgram" | "microliter" | "piece"
+  base_unit: ResearchBaseUnit
   local_date: string
   local_time: string
   timezone: string
@@ -136,7 +155,7 @@ export type ResearchRoutineLogPreview = {
   local_time: string
   timezone: string
   supply_id: string
-  base_unit: "microgram" | "microliter" | "piece"
+  base_unit: ResearchBaseUnit
   confirmed_quantity_base_units: number
   current_remaining_quantity_base_units: number
   projected_remaining_quantity_base_units: number
@@ -156,7 +175,7 @@ export type ResearchRoutineLog = {
   timezone: string
   supply_id: string
   confirmed_quantity_base_units: number
-  base_unit: "microgram" | "microliter" | "piece"
+  base_unit: ResearchBaseUnit
   created_at: string
 }
 
@@ -190,12 +209,12 @@ export type ResearchRoutineLogMutationPreview = {
   projected_status: "confirmed" | "voided"
   supply_changes: Array<{
     supply_id: string
-    base_unit: "microgram" | "microliter" | "piece"
+    base_unit: ResearchBaseUnit
     current_remaining_quantity_base_units: number
     projected_remaining_quantity_base_units: number
   }>
   confirmed_quantity_base_units: number
-  base_unit: "microgram" | "microliter" | "piece"
+  base_unit: ResearchBaseUnit
   notice: string
   preview_token: string
 }
@@ -554,15 +573,42 @@ export async function transitionResearchJournalEntryAction(
   )
 }
 
+function researchQuantityFromForm(
+  formData: FormData,
+  displayField: string,
+  legacyBaseField: string,
+) {
+  const unitProfile = parseResearchUnitProfile(formData.get("unit_profile"))
+
+  if (unitProfile && formData.has(displayField)) {
+    return {
+      baseUnits:
+        convertResearchDisplayQuantityToBaseUnits(
+          Number(formData.get(displayField)),
+          unitProfile,
+        ) ?? Number.NaN,
+      baseUnit: unitProfile.base_unit,
+    }
+  }
+
+  return {
+    baseUnits: Number(formData.get(legacyBaseField)),
+    baseUnit: String(formData.get("base_unit") || ""),
+  }
+}
+
 function routineBody(formData: FormData) {
   const recurrenceType = String(formData.get("recurrence_type") || "once")
+  const quantity = researchQuantityFromForm(
+    formData,
+    "planned_quantity_display_units",
+    "planned_quantity_base_units",
+  )
 
   return {
     label: String(formData.get("label") || ""),
-    planned_quantity_base_units: Number(
-      formData.get("planned_quantity_base_units"),
-    ),
-    base_unit: String(formData.get("base_unit") || ""),
+    planned_quantity_base_units: quantity.baseUnits,
+    base_unit: quantity.baseUnit,
     recurrence_type: recurrenceType,
     daily_interval:
       recurrenceType === "daily"
@@ -631,16 +677,20 @@ export async function transitionResearchRoutineAction(
 }
 
 function routineLogBody(formData: FormData) {
+  const quantity = researchQuantityFromForm(
+    formData,
+    "confirmed_quantity_display_units",
+    "confirmed_quantity_base_units",
+  )
+
   return {
     routine_id: String(formData.get("routine_id") || ""),
     routine_revision_id: String(formData.get("routine_revision_id") || ""),
     occurrence_id: String(formData.get("occurrence_id") || ""),
     local_date: String(formData.get("local_date") || ""),
     supply_id: String(formData.get("supply_id") || ""),
-    confirmed_quantity_base_units: Number(
-      formData.get("confirmed_quantity_base_units"),
-    ),
-    base_unit: String(formData.get("base_unit") || ""),
+    confirmed_quantity_base_units: quantity.baseUnits,
+    base_unit: quantity.baseUnit,
   }
 }
 
@@ -686,6 +736,11 @@ export async function confirmResearchRoutineLogAction(
 
 function routineLogMutationBody(formData: FormData) {
   const operation = String(formData.get("operation") || "")
+  const quantity = researchQuantityFromForm(
+    formData,
+    "confirmed_quantity_display_units",
+    "confirmed_quantity_base_units",
+  )
 
   return {
     operation,
@@ -693,10 +748,8 @@ function routineLogMutationBody(formData: FormData) {
       ? {}
       : {
           supply_id: String(formData.get("supply_id") || ""),
-          confirmed_quantity_base_units: Number(
-            formData.get("confirmed_quantity_base_units"),
-          ),
-          base_unit: String(formData.get("base_unit") || ""),
+          confirmed_quantity_base_units: quantity.baseUnits,
+          base_unit: quantity.baseUnit,
         }),
   }
 }

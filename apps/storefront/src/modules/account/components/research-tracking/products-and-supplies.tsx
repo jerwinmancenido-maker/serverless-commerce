@@ -10,6 +10,7 @@ import {
   type TrackedResearchMaterial,
 } from "@lib/data/research-tracking"
 import type { PurchasedActivationSubmissionKeys } from "@lib/research-tracking-idempotency"
+import { formatResearchQuantity } from "@lib/research-quantity"
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
 
@@ -38,10 +39,6 @@ const reasonLabels: Record<PurchasedItemIneligibilityReason, string> = {
   already_tracked: "This purchased item is already in private tracking.",
   archived_material_action_required:
     "An archived material requires a separate customer-controlled action.",
-}
-
-function formatQuantity(quantity: number, unit: string): string {
-  return `${quantity.toLocaleString("en-PH")} ${unit}`
 }
 
 function StartTrackingButton() {
@@ -119,9 +116,15 @@ function CandidateCard({
             </p>
             {candidate.initial_quantity_base_units && candidate.base_unit && (
               <p className="text-sm">
-                Initial verified quantity: {formatQuantity(
+                Initial verified quantity: {formatResearchQuantity(
                   candidate.initial_quantity_base_units,
-                  candidate.base_unit,
+                  {
+                    base_unit: candidate.base_unit,
+                    display_unit: candidate.display_unit,
+                    base_units_per_display_unit:
+                      candidate.base_units_per_display_unit,
+                    display_precision: candidate.display_precision,
+                  },
                 )}
               </p>
             )}
@@ -236,9 +239,9 @@ export default function ProductsAndSupplies({
                     {material.supplies.map((supply) => (
                       <div key={supply.supply_id} className="text-sm">
                         <p>
-                          Remaining: {formatQuantity(
+                          Remaining: {formatResearchQuantity(
                             supply.remaining_quantity_base_units,
-                            supply.base_unit,
+                            supply,
                           )}
                         </p>
                         <p className="mt-1 text-xs text-ui-fg-muted">

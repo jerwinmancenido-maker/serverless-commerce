@@ -24,7 +24,12 @@ import {
   type ResearchSupplyActivationProjection,
   projectResearchSupplyActivation,
 } from "../contracts/purchased-supplies"
-import type { ResearchBaseUnit } from "../../../lib/research-quantity"
+import {
+  normalizeResearchUnitProfile,
+  type ResearchBaseUnit,
+  type ResearchDisplayUnit,
+  type ResearchUnitProfile,
+} from "../../../lib/research-quantity"
 
 const PURCHASED_ORDER_ITEM_FIELDS = [
   "id",
@@ -108,6 +113,9 @@ export type PurchasedItemCandidateProjection = {
   eligible_commerce_quantity: number | null
   initial_quantity_base_units: number | null
   base_unit: ResearchBaseUnit | null
+  display_unit: ResearchDisplayUnit | null
+  base_units_per_display_unit: number | null
+  display_precision: number | null
   added_to_tracking_at: Date | null
 }
 
@@ -117,6 +125,9 @@ export type TrackedMaterialSupplyProjection = {
   initial_quantity_base_units: number
   remaining_quantity_base_units: number
   base_unit: ResearchBaseUnit
+  display_unit: ResearchDisplayUnit | null
+  base_units_per_display_unit: number | null
+  display_precision: number | null
   added_to_tracking_at: Date
   lot_number: string | null
   batch_number: string | null
@@ -199,6 +210,38 @@ async function materialProfileForVariant(
     profiles as PublishedMaterialProfileRecord[],
     activationTime,
   )
+}
+
+async function unitProfileForActivation(
+  content: ResearchContentModuleService,
+  activation: Pick<
+    ResearchSupplyActivationProjection,
+    "material_profile_key" | "material_profile_revision" | "base_unit"
+  >,
+): Promise<ResearchUnitProfile | null> {
+  const profiles = await content.listCalculatorMaterialProfiles(
+    {
+      profile_key: activation.material_profile_key,
+      revision: activation.material_profile_revision,
+    },
+    { take: 2 },
+  )
+  const profile = profiles.length === 1 ? profiles[0] : null
+
+  if (!profile || profile.material_base_unit !== activation.base_unit) {
+    return null
+  }
+
+  try {
+    return normalizeResearchUnitProfile({
+      baseUnit: activation.base_unit,
+      displayUnit: profile.display_unit as ResearchDisplayUnit,
+      baseUnitsPerDisplayUnit: profile.base_units_per_display_unit,
+      displayPrecision: profile.display_precision,
+    })
+  } catch {
+    return null
+  }
 }
 
 async function existingActivationProjection(
@@ -284,6 +327,8 @@ async function projectCandidate(
   )
 
   if (existing) {
+    const unitProfile = await unitProfileForActivation(content, existing)
+
     return {
       ...base,
       eligibility: "already_tracked",
@@ -291,6 +336,10 @@ async function projectCandidate(
       eligible_commerce_quantity: existing.eligible_commerce_quantity,
       initial_quantity_base_units: existing.initial_quantity_base_units,
       base_unit: existing.base_unit,
+      display_unit: unitProfile?.displayUnit ?? null,
+      base_units_per_display_unit:
+        unitProfile?.baseUnitsPerDisplayUnit ?? null,
+      display_precision: unitProfile?.displayPrecision ?? null,
       added_to_tracking_at: existing.added_to_tracking_at,
     }
   }
@@ -350,6 +399,9 @@ async function projectCandidate(
     eligible_commerce_quantity: quantity.commerceQuantity,
     initial_quantity_base_units: initialQuantity,
     base_unit: profile.materialBaseUnit,
+    display_unit: profile.displayUnit,
+    base_units_per_display_unit: profile.baseUnitsPerDisplayUnit,
+    display_precision: profile.displayPrecision,
     added_to_tracking_at: null,
   }
 }
@@ -373,6 +425,9 @@ function ineligible(
     eligible_commerce_quantity: null,
     initial_quantity_base_units: null,
     base_unit: null,
+    display_unit: null,
+    base_units_per_display_unit: null,
+    display_precision: null,
     added_to_tracking_at: null,
   }
 }
@@ -493,7 +548,7 @@ export async function listTrackedMaterialsAndSupplies(input: {
     input.customerId,
     input.activeConsentVersion,
   )
-  const { tracking } = services(input.container)
+  const { content, tracking } = services(input.container)
   const [materials, count] = await tracking.listAndCountTrackedMaterials(
     { profile_id: profile.id, status: "active" },
     {
@@ -506,15 +561,21 @@ export async function listTrackedMaterialsAndSupplies(input: {
 
   return {
     count,
-    materials: materials.map((material) => ({
+    materials: await Promise.all(materials.map(async (material) => ({
       tracked_material_id: material.id,
       label: material.label,
       product_variant_id: material.product_variant_id,
       status: "active" as const,
-      supplies: material.supplies.map((supply) => {
+      supplies: await Promise.all(material.supplies.map(async (supply) => {
         const activation = material.supply_activations.find(
           (candidate) => candidate.supply_id === supply.id,
         )
+        const unitProfile = activation
+          ? await unitProfileForActivation(
+              content,
+              projectResearchSupplyActivation({ activation, supply }),
+            )
+          : null
 
         return {
           supply_id: supply.id,
@@ -522,6 +583,10 @@ export async function listTrackedMaterialsAndSupplies(input: {
           initial_quantity_base_units: supply.initial_quantity_base_units,
           remaining_quantity_base_units: supply.remaining_quantity_base_units,
           base_unit: supply.base_unit,
+          display_unit: unitProfile?.displayUnit ?? null,
+          base_units_per_display_unit:
+            unitProfile?.baseUnitsPerDisplayUnit ?? null,
+          display_precision: unitProfile?.displayPrecision ?? null,
           added_to_tracking_at: activation?.activated_at ?? supply.acquired_at,
           lot_number: supply.lot_number,
           batch_number: supply.batch_number,
@@ -529,8 +594,8 @@ export async function listTrackedMaterialsAndSupplies(input: {
           storage_note: supply.storage_note,
           status: supply.status,
         }
-      }),
-    })),
+      })),
+    }))),
   }
 }
 

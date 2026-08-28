@@ -11,6 +11,7 @@ import {
   type TrackedResearchMaterial,
 } from "@lib/data/research-tracking"
 import { createResearchSubmissionKey } from "@lib/research-tracking-idempotency"
+import { formatResearchQuantity } from "@lib/research-quantity"
 import { useActionState, useCallback, useEffect, useState } from "react"
 import { useFormStatus } from "react-dom"
 
@@ -182,7 +183,10 @@ function RelationFields({
             <option value="">No linked supply</option>
             {supplies.map((supply) => (
               <option key={supply.supply_id} value={supply.supply_id}>
-                {supply.materialLabel} · {supply.remaining_quantity_base_units} {supply.base_unit}
+                {supply.materialLabel} · {formatResearchQuantity(
+                  supply.remaining_quantity_base_units,
+                  supply,
+                )}
               </option>
             ))}
           </select>
@@ -214,7 +218,15 @@ function RelationFields({
               .filter((log) => log.status === "confirmed")
               .map((log) => (
                 <option key={log.log_id} value={log.log_id}>
-                  {log.local_date} · {log.confirmed_quantity_base_units} {log.base_unit}
+                  {log.local_date} · {formatResearchQuantity(
+                    log.confirmed_quantity_base_units,
+                    supplies.find((supply) => supply.supply_id === log.supply_id) ?? {
+                      base_unit: log.base_unit,
+                      display_unit: null,
+                      base_units_per_display_unit: null,
+                      display_precision: null,
+                    },
+                  )}
                 </option>
               ))}
           </select>
