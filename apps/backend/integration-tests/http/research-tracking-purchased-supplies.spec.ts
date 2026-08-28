@@ -3,6 +3,7 @@ import type {
   IOrderModuleService,
   IProductModuleService,
   ISalesChannelModuleService,
+  MedusaContainer,
 } from "@medusajs/framework/types"
 import {
   ApiKeyType,
@@ -103,7 +104,7 @@ async function ensureProfile(api: ApiClient, customerId: string) {
 
 async function createEligiblePurchasedItem(input: {
   api: ApiClient
-  container: any
+  container: MedusaContainer
   customerId: string
   suffix: string
   quantity?: number
@@ -204,7 +205,7 @@ async function activatePurchasedItem(
   )
 }
 
-async function researchWriteCounts(container: any) {
+async function researchWriteCounts(container: MedusaContainer) {
   const service = container.resolve<ResearchTrackingModuleService>(
     RESEARCH_TRACKING_MODULE,
   )

@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs"
+import { readFileSync } from "node:fs"
 import path from "node:path"
 
 const backendRoot = path.resolve(__dirname, "../../../..")
@@ -8,20 +8,18 @@ function source(relativePath: string): string {
 }
 
 describe("RT-5 source-only architecture", () => {
-  it("registers private routine models without generating a migration", () => {
+  it("registers private routine models in the committed migration chain", () => {
     const service = source("src/modules/research-tracking/service.ts")
-    const migrations = readdirSync(
-      path.join(backendRoot, "src/modules/research-tracking/migrations"),
-    ).filter((name) => name.startsWith("Migration"))
+    const migration = source(
+      "src/modules/research-tracking/migrations/Migration20260826142203.ts",
+    )
 
     expect(service).toContain("ResearchRoutine")
     expect(service).toContain("ResearchSupplyAdjustment")
-    expect(migrations).toEqual([
-      "Migration20260825121847.ts",
-      "Migration20260825143052.ts",
-      "Migration20260826033548.ts",
-      "Migration20260826142203.ts",
-    ])
+    expect(migration).toContain('create table if not exists "research_routine"')
+    expect(migration).toContain(
+      'create table if not exists "research_supply_adjustment"',
+    )
   })
 
   it("keeps mutations behind workflows and PostgreSQL locks", () => {
