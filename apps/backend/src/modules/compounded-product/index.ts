@@ -7,4 +7,3 @@ export const COMPOUNDED_PRODUCT_MODULE = "compoundedProduct"
 export default Module(COMPOUNDED_PRODUCT_MODULE, {
   service: CompoundedProductModuleService,
 })
-

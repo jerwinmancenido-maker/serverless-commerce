@@ -9,4 +9,3 @@ class CompoundedProductModuleService extends MedusaService({
 }) {}
 
 export default CompoundedProductModuleService
-

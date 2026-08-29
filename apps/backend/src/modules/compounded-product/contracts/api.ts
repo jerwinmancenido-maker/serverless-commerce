@@ -42,4 +42,3 @@ export type AdminCompoundedProductPresentationListResponse = {
   limit: number
   offset: number
 }
-

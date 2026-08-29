@@ -33,4 +33,3 @@ const PresentationConfigurationRevision = model
   ])
 
 export default PresentationConfigurationRevision
-

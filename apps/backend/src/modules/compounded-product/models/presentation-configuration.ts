@@ -20,4 +20,3 @@ const PresentationConfiguration = model.define(
 )
 
 export default PresentationConfiguration
-
