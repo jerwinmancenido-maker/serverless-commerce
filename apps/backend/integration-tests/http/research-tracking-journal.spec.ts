@@ -346,7 +346,8 @@ async function tableFingerprint(dbConnection: any, tableNames: string[]) {
 
     const rows = await dbConnection.raw(
       `select row_to_json(record)::text as value
-       from (select * from "${tableName}" order by id) record`,
+       from (select * from "${tableName}") record
+       order by value`,
     )
     fingerprint[tableName] = rows.rows.map(
       (row: { value: string }) => row.value,

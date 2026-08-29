@@ -10,6 +10,8 @@ type MutationRecord = {
 }
 
 const JOURNAL_MUTATION_KEY_CONSUMED_PREFIX = "submission_key_consumed:"
+const JOURNAL_REVISION_UNIQUE_CONFLICT =
+  /^Research journal entry revision with journal_entry_id: [^,]+, revision_number: \d+, already exists\.$/
 
 function conflict(message: string): never {
   throw new MedusaError(MedusaError.Types.CONFLICT, message)
@@ -85,6 +87,21 @@ function journalMutationErrorCode(error: unknown): string {
   }
 
   return "journal_mutation_failed"
+}
+
+export function normalizeJournalRevisionConflict(error: unknown): unknown {
+  if (
+    error instanceof MedusaError &&
+    error.type === MedusaError.Types.INVALID_DATA &&
+    JOURNAL_REVISION_UNIQUE_CONFLICT.test(error.message)
+  ) {
+    return new MedusaError(
+      MedusaError.Types.CONFLICT,
+      "research_journal_changed",
+    )
+  }
+
+  return error
 }
 
 export async function recordJournalMutationFailure(input: {

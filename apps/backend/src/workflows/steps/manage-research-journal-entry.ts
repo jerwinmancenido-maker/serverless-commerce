@@ -21,6 +21,7 @@ import {
 import type ResearchTrackingModuleService from "../../modules/research-tracking/service"
 import {
   beginJournalMutationOrReplay,
+  normalizeJournalRevisionConflict,
   recordJournalMutationFailure,
 } from "./research-journal-mutation"
 
@@ -177,7 +178,7 @@ export const manageResearchJournalEntryStep = createStep(
         await recordJournalMutationFailure({
           trackingService,
           mutationId: mutationState.mutationId,
-          error,
+          error: normalizeJournalRevisionConflict(error),
         })
       }
     }
