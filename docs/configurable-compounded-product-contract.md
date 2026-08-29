@@ -1,7 +1,9 @@
 # Configurable Compounded Product Contract
 
-Status: approved implementation contract; implementation, migration, database,
-deployment, and production activation remain separately unauthorized.
+Status: approved and implemented in the local feature branch. Source, generated
+migration artifacts, disposable-database migration checks, unit tests, and
+authenticated HTTP behavior have been verified. Push, merge, Neon application,
+deployment, catalog configuration, and production activation remain separate.
 
 This contract defines a configurable Medusa product-creation workflow for
 Research Compounds catalog items. It covers vial, nasal, topical, oral, and
@@ -636,10 +638,9 @@ silently mutate previously created products, variants, prices, or recipes.
 | CCP-031 | Required audit write fails | Governed mutation fails and compensation preserves the prior state |
 | CCP-032 | Administrator leaves a variant SKU blank | Backend generates a stable SKU before native creation; replay of the same idempotency key and matrix row yields the same value |
 
-## Implementation slices and gates
+## Implementation slices and evidence boundaries
 
-Implementation remains unauthorized until this contract is reviewed and
-approved. The proposed slices are:
+Implementation proceeded through separately reviewed local slices:
 
 1. Configuration-module model and API contract, source only.
 2. Admin configuration interfaces, source only.
@@ -659,11 +660,11 @@ approved. The proposed slices are:
     and compensation scenarios.
 12. Browser-runtime product-creation smoke testing against approved local data.
 
-Each source review, source fix, local commit, migration generation, migration
-application, database test, push, Neon access, deployment, and production
-activation remains an independent authorization gate.
+These completed local slices do not prove remote-branch, Neon, deployment,
+catalog-data, authenticated Admin-browser, or production state. Those evidence
+boundaries remain separate.
 
-## Open decisions before implementation
+## Open decisions before production rollout
 
 The contract requires explicit review of:
 
@@ -684,6 +685,7 @@ The contract requires explicit review of:
   registration.
 - Governance-audit retention and authorized-access policy.
 
-Until those decisions and later runtime gates are approved, this document is a
-design contract only and is not evidence of implemented or production-ready
-behavior.
+The local implementation and disposable-database evidence do not constitute
+production readiness. The unresolved ownership, retention, access, starter
+configuration, hosted-database, deployment, and activation decisions must be
+resolved and verified before production rollout.
