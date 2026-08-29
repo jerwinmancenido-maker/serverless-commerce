@@ -167,6 +167,13 @@ describe("compounded product draft preparation", () => {
       schema_version: "1",
       image_urls: ["https://assets.example.test/compound-one.png"],
     })
+    const withDiluent = prepared.nativeProduct.variants?.find(
+      (variant) => variant.options?.Inclusion === "With diluent",
+    )
+
+    expect(withDiluent).toBeDefined()
+    expect(prepared.nativeProduct.metadata).not.toHaveProperty("concentration")
+    expect(withDiluent?.metadata).not.toHaveProperty("concentration")
   })
 
   it("generates stable unique native SKUs when submissions leave them blank", () => {

@@ -969,6 +969,144 @@ medusaIntegrationTestRunner({
         expect(registrations).toHaveLength(1)
       })
 
+      it("preserves the successful governed product when concurrent requests share a SKU", async () => {
+        const suffix = Date.now()
+        const configuration =
+          await createCompoundedProductPresentationWorkflow(
+            getContainer(),
+          ).run({
+            input: {
+              key: `concurrent_sku_${suffix}`,
+              snapshot,
+              actorId: adminUserId,
+            },
+          })
+        const activated =
+          await transitionCompoundedProductPresentationWorkflow(
+            getContainer(),
+          ).run({
+            input: {
+              presentationId: configuration.result.presentation.id,
+              expected_current_revision_id:
+                configuration.result.current_revision.id,
+              target_status: "active",
+              reason: "Activate concurrent SKU-conflict test configuration",
+              actorId: adminUserId,
+            },
+          })
+        const revision = activated.result.current_revision
+        const preview = await api.post(
+          "/admin/compounded-product/products/preview",
+          {
+            presentation_revision_id: revision.id,
+            expected_configuration_fingerprint: revision.fingerprint,
+            selected_value_keys_by_axis: {
+              net_content: ["ten_milligrams"],
+            },
+            excluded_combination_keys: [],
+          },
+          adminConfig(),
+        )
+        expect(preview.status).toBe(200)
+
+        const sharedSku = `SHARED-SKU-${suffix}`
+        const requestFor = (requestSuffix: string) => ({
+          idempotency_key: `governance:sku-conflict:${suffix}:${requestSuffix}`,
+          presentation_revision_id: revision.id,
+          expected_configuration_fingerprint: revision.fingerprint,
+          selected_value_keys_by_axis: {
+            net_content: ["ten_milligrams"],
+          },
+          excluded_combination_keys: [],
+          matrix_confirmation: null,
+          product: {
+            title: `Concurrent SKU product ${requestSuffix}`,
+            subtitle: null,
+            description: null,
+            handle: `concurrent-sku-${suffix}-${requestSuffix}`,
+            type_id: null,
+            collection_id: null,
+            category_ids: [],
+            tag_ids: [],
+            sales_channel_ids: [salesChannelId],
+            shipping_profile_id: shippingProfileId,
+            image_urls: [],
+            configured_values: {},
+          },
+          variants: [
+            {
+              matrix_row_key: preview.data.matrix.rows[0].key,
+              sku: sharedSku,
+              prices: [{ amount: "1000", currency_code: "php" }],
+              manage_inventory: false,
+              allow_backorder: false,
+              configured_values: {
+                net_content: {
+                  amount: "10",
+                  displayUnit: "mg",
+                  dimension: "mass",
+                  displayPrecision: 0,
+                  provenance: "declared",
+                  materialProfileId: null,
+                  sourceDocumentId: null,
+                  countBasis: null,
+                },
+              },
+            },
+          ],
+        })
+
+        const responses = await Promise.all([
+          api.post(
+            "/admin/compounded-product/products",
+            requestFor("first"),
+            adminConfig(),
+          ),
+          api.post(
+            "/admin/compounded-product/products",
+            requestFor("second"),
+            adminConfig(),
+          ),
+        ])
+        const succeeded = responses.filter((response) => response.status === 201)
+        const rejected = responses.filter((response) => response.status >= 400)
+
+        expect(succeeded).toHaveLength(1)
+        expect(rejected).toHaveLength(1)
+        expect(rejected[0].data.message).toContain("already exists")
+
+        const productId = succeeded[0].data.result.product_id
+        const productService = getContainer().resolve<IProductModuleService>(
+          Modules.PRODUCT,
+        )
+        const successfulProduct = await productService.retrieveProduct(
+          productId,
+          { relations: ["variants"] },
+        )
+        expect(successfulProduct.variants).toHaveLength(1)
+        expect(successfulProduct.variants?.[0].sku).toBe(sharedSku)
+
+        const service = getContainer().resolve<CompoundedProductModuleService>(
+          COMPOUNDED_PRODUCT_MODULE,
+        )
+        const registrations = await service.listGovernedProductRegistrations({
+          product_id: productId,
+        })
+        expect(registrations).toHaveLength(1)
+
+        const requests = await service.listProductCreationRequests({
+          operation: "create_product",
+          idempotency_key: [
+            `governance:sku-conflict:${suffix}:first`,
+            `governance:sku-conflict:${suffix}:second`,
+          ],
+        })
+        expect(requests.map((request) => request.status).sort()).toEqual([
+          "failed",
+          "succeeded",
+        ])
+      })
+
       it("records rejected publication without mutating the native product", async () => {
         const container = getContainer()
         const productService = container.resolve<IProductModuleService>(
