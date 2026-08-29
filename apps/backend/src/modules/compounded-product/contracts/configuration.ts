@@ -507,6 +507,17 @@ export const AdminTransitionCompoundedProductPresentation = z.strictObject({
   reason: z.string().trim().min(1).max(1_000),
 })
 
+export const AdminListCompoundedProductPresentations = z.strictObject({
+  limit: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().positive().max(100).default(20),
+  ),
+  offset: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().nonnegative().default(0),
+  ),
+})
+
 export type CompoundedProductConfigurationStatus =
   (typeof COMPOUNDED_PRODUCT_CONFIGURATION_STATUSES)[number]
 
@@ -527,4 +538,8 @@ export type AdminCreateCompoundedProductPresentationRevision = z.infer<
 
 export type AdminTransitionCompoundedProductPresentation = z.infer<
   typeof AdminTransitionCompoundedProductPresentation
+>
+
+export type AdminListCompoundedProductPresentations = z.infer<
+  typeof AdminListCompoundedProductPresentations
 >

@@ -7,6 +7,7 @@ import {
 } from "@medusajs/framework/http"
 
 import { adminBomMiddlewares } from "./admin/bom/middlewares"
+import { adminCompoundedProductPresentationMiddlewares } from "./admin/compounded-product/presentations/middlewares"
 import { adminManualPaymentProofMiddlewares } from "./admin/manual-payment-proofs/middlewares"
 import { storeManualPaymentProofMiddlewares } from "./store/customers/me/orders/[id]/manual-payment-proof/middlewares"
 import { storeResearchTrackingMiddlewares } from "./store/customers/me/research-tracking/middlewares"
@@ -36,6 +37,7 @@ export default defineMiddlewares({
   errorHandler: privateResearchTrackingErrorHandler,
   routes: [
     ...adminBomMiddlewares,
+    ...adminCompoundedProductPresentationMiddlewares,
     ...adminManualPaymentProofMiddlewares,
     ...storeManualPaymentProofMiddlewares,
     ...storeResearchTrackingMiddlewares,
