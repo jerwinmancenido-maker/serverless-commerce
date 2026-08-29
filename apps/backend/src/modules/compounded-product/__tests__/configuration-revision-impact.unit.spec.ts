@@ -134,4 +134,73 @@ describe("configuration revision impact", () => {
       }),
     ).toMatchObject({ action: "migrate" })
   })
+
+  it("detects a deactivated value without rewriting the prior revision", () => {
+    const activeValueSnapshot: CompoundedProductPresentationSnapshot = {
+      ...snapshot,
+      variation_axes: [
+        {
+          key: "net_content",
+          semantic_name: "Net Content",
+          help_text: null,
+          position: 0,
+          values: [
+            {
+              key: "one_milligram",
+              label: "1 mg",
+              position: 0,
+              active: true,
+              measurement: {
+                amount: "1",
+                display_unit: "mg",
+                material_profile_id: null,
+              },
+            },
+          ],
+        },
+      ],
+    }
+    const inactiveValueSnapshot: CompoundedProductPresentationSnapshot = {
+      ...activeValueSnapshot,
+      variation_axes: [
+        {
+          ...activeValueSnapshot.variation_axes[0],
+          values: [
+            {
+              ...activeValueSnapshot.variation_axes[0].values[0],
+              active: false,
+            },
+          ],
+        },
+      ],
+    }
+    const previous = revision(
+      "revision_active_value",
+      1,
+      "superseded",
+      activeValueSnapshot,
+    )
+    const current = revision(
+      "revision_inactive_value",
+      2,
+      "active",
+      inactiveValueSnapshot,
+    )
+    const impact = compareCompoundedProductConfigurationRevisions({
+      from: previous,
+      to: current,
+    })
+
+    expect(impact.changed_variation_axes).toEqual([
+      { key: "net_content", change: "changed" },
+    ])
+    expect(
+      (previous.snapshot as CompoundedProductPresentationSnapshot)
+        .variation_axes[0].values[0].active,
+    ).toBe(true)
+    expect(
+      (current.snapshot as CompoundedProductPresentationSnapshot)
+        .variation_axes[0].values[0].active,
+    ).toBe(false)
+  })
 })

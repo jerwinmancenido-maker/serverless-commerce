@@ -176,6 +176,77 @@ describe("compounded product draft preparation", () => {
     expect(withDiluent?.metadata).not.toHaveProperty("concentration")
   })
 
+  it("keeps nasal fill volume and metered output distinct with provenance", () => {
+    const nasalSnapshot = CompoundedProductPresentationSnapshot.parse({
+      ...snapshot,
+      label: "Configurable nasal presentation",
+      fields: [
+        ...snapshot.fields,
+        {
+          key: "fill_volume",
+          label: "Bottle fill volume",
+          help_text: null,
+          position: 2,
+          requirement: "draft",
+          metadata_target: { scope: "product", key: "fill_volume" },
+          kind: "measurement",
+          dimension: "volume",
+          allowed_display_units: ["µL", "mL"],
+          allow_product_specific_iu: false,
+        },
+      ],
+    })
+    const request = buildRequest()
+    request.product.configured_values.fill_volume = {
+      amount: "10",
+      displayUnit: "mL",
+      dimension: "volume",
+      displayPrecision: 1,
+      provenance: "declared",
+      materialProfileId: null,
+      sourceDocumentId: null,
+      countBasis: null,
+    }
+    const meteredOutput = request.variants[0].configured_values.metered_output
+    if (
+      !meteredOutput ||
+      typeof meteredOutput !== "object" ||
+      !("numerator" in meteredOutput)
+    ) {
+      throw new Error("Expected configured metered output")
+    }
+    meteredOutput.numerator.provenance = "estimated"
+
+    const prepared = prepareCompoundedProductDraft({
+      request,
+      snapshot: nasalSnapshot,
+      configurationFingerprint: "a".repeat(64),
+      serverMaximum: 100,
+    })
+
+    expect(prepared.nativeProduct.metadata?.fill_volume).toMatchObject({
+      displayUnit: "mL",
+      baseUnit: "microliter",
+      baseUnits: 10_000,
+      provenance: "declared",
+    })
+    expect(
+      prepared.nativeProduct.variants?.[0]?.metadata?.metered_output,
+    ).toMatchObject({
+      numerator: {
+        displayUnit: "IU",
+        provenance: "estimated",
+      },
+      denominator: {
+        displayUnit: "unit",
+        countBasis: "actuation",
+      },
+    })
+    expect(prepared.nativeProduct.metadata?.fill_volume).not.toEqual(
+      prepared.nativeProduct.variants?.[0]?.metadata?.metered_output,
+    )
+  })
+
   it("generates stable unique native SKUs when submissions leave them blank", () => {
     const request = buildRequest()
     request.variants.forEach((variant) => {

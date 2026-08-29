@@ -609,6 +609,94 @@ medusaIntegrationTestRunner({
         expect(classificationEvents.map((event) => event.event_type)).toContain(
           "classification_mapping_created",
         )
+
+        const failedHandle = `audit-compensated-${suffix}`
+        const failedIdempotencyKey = `governance:audit-compensated:${suffix}`
+        await dbConnection.raw(`
+          CREATE OR REPLACE FUNCTION reject_draft_audit_for_test()
+          RETURNS trigger AS $$
+          BEGIN
+            IF NEW.event_type = 'governed_registration_created' THEN
+              RAISE EXCEPTION 'forced product draft audit failure';
+            END IF;
+            RETURN NEW;
+          END;
+          $$ LANGUAGE plpgsql;
+
+          CREATE TRIGGER reject_draft_audit_for_test
+          BEFORE INSERT ON compounded_product_governance_audit_event
+          FOR EACH ROW EXECUTE FUNCTION reject_draft_audit_for_test();
+        `)
+        try {
+          const failedDraft = await api.post(
+            "/admin/compounded-product/products",
+            {
+              idempotency_key: failedIdempotencyKey,
+              presentation_revision_id: revision.id,
+              expected_configuration_fingerprint: revision.fingerprint,
+              selected_value_keys_by_axis: {
+                net_content: ["ten_milligrams"],
+              },
+              excluded_combination_keys: [],
+              matrix_confirmation: null,
+              product: {
+                title: "Audit-compensated governed draft",
+                subtitle: null,
+                description: null,
+                handle: failedHandle,
+                type_id: governedProductTypeId,
+                collection_id: null,
+                category_ids: [],
+                tag_ids: [],
+                sales_channel_ids: [salesChannelId],
+                shipping_profile_id: shippingProfileId,
+                image_urls: [],
+                configured_values: {},
+              },
+              variants: [
+                {
+                  matrix_row_key: matrixRow.key,
+                  sku: `AUDIT-COMPENSATED-${suffix}`,
+                  prices: [{ amount: "1000", currency_code: "php" }],
+                  manage_inventory: false,
+                  allow_backorder: false,
+                  configured_values: {
+                    net_content: {
+                      amount: "10",
+                      displayUnit: "mg",
+                      dimension: "mass",
+                      displayPrecision: 0,
+                      provenance: "declared",
+                      materialProfileId: null,
+                      sourceDocumentId: null,
+                      countBasis: null,
+                    },
+                  },
+                },
+              ],
+            },
+            adminConfig(),
+          )
+          expect(failedDraft.status).toBe(500)
+        } finally {
+          await dbConnection.raw(`
+            DROP TRIGGER IF EXISTS reject_draft_audit_for_test
+              ON compounded_product_governance_audit_event;
+            DROP FUNCTION IF EXISTS reject_draft_audit_for_test();
+          `)
+        }
+
+        expect(await productService.listProducts({ handle: failedHandle })).toHaveLength(0)
+        const [failedRequest] = await service.listProductCreationRequests({
+          operation: "create_product",
+          idempotency_key: failedIdempotencyKey,
+        })
+        expect(failedRequest).toMatchObject({
+          status: "failed",
+          native_product_id: null,
+          response_payload: null,
+          error_code: "workflow_compensated",
+        })
       })
 
       it("requires and audits stale-revision retain or migrate decisions", async () => {

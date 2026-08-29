@@ -112,25 +112,16 @@ describe("compounded product variant matrix", () => {
     ])
   })
 
-  it("supports selected values and explicit row exclusions", () => {
-    const selected = generate({
-      selectedValueKeysByAxis: {
-        package: ["primary_only", "with_accessory"],
-        net_content: ["one_mg", "two_mg"],
-      },
-    })
+  it("submits five rows when one row is excluded from a six-row matrix", () => {
+    const selected = generate()
     const excluded = generate({
-      selectedValueKeysByAxis: {
-        package: ["primary_only", "with_accessory"],
-        net_content: ["one_mg", "two_mg"],
-      },
       excludedCombinationKeys: [selected.rows[1].key],
     })
 
-    expect(selected.resultingVariantCount).toBe(4)
-    expect(excluded.totalCombinationCount).toBe(4)
+    expect(selected.resultingVariantCount).toBe(6)
+    expect(excluded.totalCombinationCount).toBe(6)
     expect(excluded.excludedCombinationCount).toBe(1)
-    expect(excluded.resultingVariantCount).toBe(3)
+    expect(excluded.resultingVariantCount).toBe(5)
     expect(excluded.rows.map((row) => row.key)).not.toContain(
       selected.rows[1].key,
     )

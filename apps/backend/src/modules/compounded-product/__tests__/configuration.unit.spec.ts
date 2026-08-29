@@ -308,6 +308,28 @@ describe("compounded product configuration API contract", () => {
     )
   })
 
+  it("rejects a new measurement dimension until the shared unit contract supports it", () => {
+    const result = CompoundedProductPresentationSnapshot.safeParse({
+      ...validSnapshot,
+      fields: [
+        {
+          ...validSnapshot.fields[0],
+          dimension: "temperature",
+          allowed_display_units: ["mg"],
+        },
+      ],
+    })
+
+    expect(result.success).toBe(false)
+    expect(result.error?.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          path: expect.arrayContaining(["dimension"]),
+        }),
+      ]),
+    )
+  })
+
   it("requires positive normalized quantities and a profile on IU values", () => {
     for (const amount of ["0", "-5", "NaN", "1e3"]) {
       const result = CompoundedProductPresentationSnapshot.safeParse({

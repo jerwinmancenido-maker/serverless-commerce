@@ -162,11 +162,11 @@ export const createCompoundedProductDraftWorkflow = createWorkflow(
         ]
       },
     )
+    createCompoundedProductGovernanceAuditEventsStep(auditInput)
     releaseLockStep(lockInput)
     releaseLockStep(configurationLockInput).config({
       name: "release-compounded-product-configuration-lock",
     })
-    createCompoundedProductGovernanceAuditEventsStep(auditInput)
 
     const response = transform(
       { claim, completed },
