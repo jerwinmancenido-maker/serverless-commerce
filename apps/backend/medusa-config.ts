@@ -59,6 +59,9 @@ module.exports = defineConfig({
       resolve: "./src/modules/bom",
     },
     {
+      resolve: "./src/modules/compounded-product",
+    },
+    {
       resolve: "./src/modules/manual-payment",
     },
     {

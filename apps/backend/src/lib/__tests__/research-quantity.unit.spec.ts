@@ -1,4 +1,5 @@
 import {
+  convertResearchFixedDisplayAmountToBaseUnits,
   normalizeResearchQuantity,
   normalizeResearchUnitProfile,
   RESEARCH_MAX_BASE_UNITS,
@@ -102,4 +103,57 @@ describe("research quantity contract", () => {
       }),
     ).toThrow("mg requires 1000 microgram base units")
   })
+
+  it.each([
+    ["1", "mg", 1_000, "microgram"],
+    ["0.5", "mL", 500, "microliter"],
+    ["2", "unit", 2, "piece"],
+  ] as const)(
+    "converts %s %s to exact integer base units",
+    (amount, displayUnit, baseUnits, baseUnit) => {
+      expect(
+        convertResearchFixedDisplayAmountToBaseUnits({
+          amount,
+          displayUnit,
+        }),
+      ).toEqual({ baseUnit, baseUnits })
+    },
+  )
+
+  it("leaves IU conversion to an explicit product-specific profile", () => {
+    expect(
+      convertResearchFixedDisplayAmountToBaseUnits({
+        amount: "5000",
+        displayUnit: "IU",
+      }),
+    ).toBeNull()
+  })
+
+  it("rejects an unsupported fixed display unit at runtime", () => {
+    expect(() =>
+      convertResearchFixedDisplayAmountToBaseUnits({
+        amount: "1",
+        displayUnit: "milligram" as never,
+      }),
+    ).toThrow("displayUnit must be one of")
+  })
+
+  it.each([
+    ["0.0001", "mg", "whole number of microgram base units"],
+    [
+      String(RESEARCH_MAX_BASE_UNITS + 1),
+      "mcg",
+      `no greater than ${RESEARCH_MAX_BASE_UNITS}`,
+    ],
+  ] as const)(
+    "rejects non-ledger-safe fixed quantity %s %s",
+    (amount, displayUnit, message) => {
+      expect(() =>
+        convertResearchFixedDisplayAmountToBaseUnits({
+          amount,
+          displayUnit,
+        }),
+      ).toThrow(message)
+    },
+  )
 })
