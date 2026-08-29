@@ -2,9 +2,13 @@ import { z } from "@medusajs/framework/zod"
 
 import {
   convertResearchFixedDisplayAmountToBaseUnits,
+  getResearchDisplayUnitDimension,
+  normalizeResearchDecimalAmount,
   RESEARCH_DISPLAY_UNITS,
   RESEARCH_NORMALIZED_POSITIVE_DECIMAL_PATTERN,
+  RESEARCH_QUANTITY_DIMENSIONS,
   type ResearchDisplayUnit,
+  type ResearchQuantityDimension,
 } from "../../../lib/research-quantity"
 
 export const COMPOUNDED_PRODUCT_CONFIGURATION_SCHEMA_VERSION = "1"
@@ -40,21 +44,10 @@ export const COMPOUNDED_PRODUCT_FIELD_REQUIREMENTS = [
   "publication",
 ] as const
 
-export const COMPOUNDED_PRODUCT_MEASUREMENT_DIMENSIONS = [
-  "mass",
-  "volume",
-  "potency",
-  "count",
-] as const
+export const COMPOUNDED_PRODUCT_MEASUREMENT_DIMENSIONS =
+  RESEARCH_QUANTITY_DIMENSIONS
 
 const CONFIGURATION_KEY_PATTERN = /^[a-z][a-z0-9_]*$/
-
-const DISPLAY_UNITS_BY_DIMENSION = {
-  mass: ["mcg", "mg", "g"],
-  volume: ["µL", "mL"],
-  potency: ["IU"],
-  count: ["piece", "unit"],
-} as const
 
 const ConfigurationKey = z
   .string()
@@ -289,13 +282,6 @@ function addDuplicateDisplayIssues(
   })
 }
 
-function normalizeDecimal(value: string) {
-  const [integer, fraction = ""] = value.split(".")
-  const normalizedFraction = fraction.replace(/0+$/, "")
-
-  return normalizedFraction ? `${integer}.${normalizedFraction}` : integer
-}
-
 function measurementIdentity(
   measurement: {
     amount: string
@@ -322,7 +308,7 @@ function measurementIdentity(
     }
   }
 
-  return `IU:${measurement.material_profile_id}:${normalizeDecimal(measurement.amount)}`
+  return `IU:${measurement.material_profile_id}:${normalizeResearchDecimalAmount(measurement.amount)}`
 }
 
 function addDuplicateMeasurementIssues(
@@ -380,17 +366,15 @@ function addDuplicateSemanticNameIssues(
 
 function addUnitCompatibilityIssues(
   units: readonly string[],
-  dimension: keyof typeof DISPLAY_UNITS_BY_DIMENSION,
+  dimension: ResearchQuantityDimension,
   allowProductSpecificIu: boolean,
   context: z.core.$RefinementCtx,
   path: Array<string | number>,
 ) {
-  const compatibleUnits = DISPLAY_UNITS_BY_DIMENSION[
-    dimension
-  ] as readonly string[]
-
   units.forEach((unit, index) => {
-    if (!compatibleUnits.includes(unit)) {
+    if (
+      getResearchDisplayUnitDimension(unit as ResearchDisplayUnit) !== dimension
+    ) {
       context.addIssue({
         code: "custom",
         message: `${unit} is not compatible with the ${dimension} dimension`,

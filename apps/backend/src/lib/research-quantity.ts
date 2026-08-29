@@ -13,11 +13,20 @@ export const RESEARCH_DISPLAY_UNITS = [
   "unit",
 ] as const
 
+export const RESEARCH_QUANTITY_DIMENSIONS = [
+  "mass",
+  "volume",
+  "potency",
+  "count",
+] as const
+
 // Medusa's model.number() maps these fields to a PostgreSQL integer column.
 export const RESEARCH_MAX_BASE_UNITS = 2_147_483_647
 
 export type ResearchBaseUnit = (typeof RESEARCH_BASE_UNITS)[number]
 export type ResearchDisplayUnit = (typeof RESEARCH_DISPLAY_UNITS)[number]
+export type ResearchQuantityDimension =
+  (typeof RESEARCH_QUANTITY_DIMENSIONS)[number]
 
 export type ResearchUnitProfile = {
   baseUnit: ResearchBaseUnit
@@ -50,10 +59,33 @@ export function isResearchBaseUnit(value: string): value is ResearchBaseUnit {
   return RESEARCH_BASE_UNITS.includes(value as ResearchBaseUnit)
 }
 
+export const RESEARCH_DISPLAY_UNIT_DIMENSIONS = {
+  mcg: "mass",
+  mg: "mass",
+  g: "mass",
+  µL: "volume",
+  mL: "volume",
+  IU: "potency",
+  piece: "count",
+  unit: "count",
+} as const satisfies Record<ResearchDisplayUnit, ResearchQuantityDimension>
+
 export function isResearchDisplayUnit(
   value: string,
 ): value is ResearchDisplayUnit {
   return RESEARCH_DISPLAY_UNITS.includes(value as ResearchDisplayUnit)
+}
+
+export function getResearchDisplayUnitDimension(
+  displayUnit: ResearchDisplayUnit,
+): ResearchQuantityDimension {
+  if (!isResearchDisplayUnit(displayUnit)) {
+    invalidResearchQuantityData(
+      `displayUnit must be one of: ${RESEARCH_DISPLAY_UNITS.join(", ")}`,
+    )
+  }
+
+  return RESEARCH_DISPLAY_UNIT_DIMENSIONS[displayUnit]
 }
 
 function invalidResearchQuantityData(message: string): never {
@@ -127,6 +159,103 @@ export type ResearchFixedDisplayQuantityInput = {
   displayUnit: ResearchDisplayUnit
 }
 
+export function normalizeResearchDecimalAmount(amount: string): string {
+  if (
+    amount.length > 80 ||
+    !RESEARCH_NORMALIZED_POSITIVE_DECIMAL_PATTERN.test(amount) ||
+    !/[1-9]/.test(amount)
+  ) {
+    invalidResearchQuantityData(
+      "amount must be a normalized positive decimal no longer than 80 characters",
+    )
+  }
+
+  const [integer, fraction = ""] = amount.split(".")
+  const normalizedFraction = fraction.replace(/0+$/, "")
+
+  return normalizedFraction ? `${integer}.${normalizedFraction}` : integer
+}
+
+function convertResearchAmountWithProfileToBaseUnits(
+  amount: string,
+  profile: Pick<ResearchUnitProfile, "baseUnit" | "baseUnitsPerDisplayUnit">,
+): ResearchQuantityInput {
+  const normalizedAmount = normalizeResearchDecimalAmount(amount)
+  const [integer, fraction = ""] = normalizedAmount.split(".")
+  const scale = 10n ** BigInt(fraction.length)
+  const decimalInteger = BigInt(`${integer}${fraction}`)
+  const baseUnitsNumerator =
+    decimalInteger * BigInt(profile.baseUnitsPerDisplayUnit)
+
+  if (baseUnitsNumerator % scale !== 0n) {
+    invalidResearchQuantityData(
+      `${amount} does not resolve to a whole number of ${profile.baseUnit} base units`,
+    )
+  }
+
+  const baseUnits = baseUnitsNumerator / scale
+
+  if (baseUnits > BigInt(RESEARCH_MAX_BASE_UNITS)) {
+    invalidResearchQuantityData(
+      `converted base units must be no greater than ${RESEARCH_MAX_BASE_UNITS}`,
+    )
+  }
+
+  return normalizeResearchQuantity({
+    baseUnit: profile.baseUnit,
+    baseUnits: Number(baseUnits),
+  })
+}
+
+export function convertResearchDisplayAmountToBaseUnits(input: {
+  amount: string
+  displayUnit: ResearchDisplayUnit
+  unitProfile?: ResearchUnitProfile
+}): ResearchQuantityInput {
+  if (!isResearchDisplayUnit(input.displayUnit)) {
+    invalidResearchQuantityData(
+      `displayUnit must be one of: ${RESEARCH_DISPLAY_UNITS.join(", ")}`,
+    )
+  }
+
+  const fixed =
+    RESEARCH_FIXED_UNIT_PROFILES[input.displayUnit as ResearchFixedDisplayUnit]
+
+  if (fixed) {
+    if (input.unitProfile) {
+      const profile = normalizeResearchUnitProfile(input.unitProfile)
+
+      if (
+        profile.displayUnit !== input.displayUnit ||
+        profile.baseUnit !== fixed.baseUnit ||
+        profile.baseUnitsPerDisplayUnit !== fixed.baseUnitsPerDisplayUnit
+      ) {
+        invalidResearchQuantityData(
+          `${input.displayUnit} must use its fixed research quantity profile`,
+        )
+      }
+    }
+
+    return convertResearchAmountWithProfileToBaseUnits(input.amount, fixed)
+  }
+
+  if (!input.unitProfile) {
+    invalidResearchQuantityData(
+      "IU conversion requires an explicit product-specific unit profile",
+    )
+  }
+
+  const profile = normalizeResearchUnitProfile(input.unitProfile)
+
+  if (profile.displayUnit !== input.displayUnit) {
+    invalidResearchQuantityData(
+      `unit profile displayUnit must be ${input.displayUnit}`,
+    )
+  }
+
+  return convertResearchAmountWithProfileToBaseUnits(input.amount, profile)
+}
+
 export function convertResearchFixedDisplayAmountToBaseUnits(
   input: ResearchFixedDisplayQuantityInput,
 ): ResearchQuantityInput | null {
@@ -143,40 +272,20 @@ export function convertResearchFixedDisplayAmountToBaseUnits(
     return null
   }
 
-  if (
-    input.amount.length > 80 ||
-    !RESEARCH_NORMALIZED_POSITIVE_DECIMAL_PATTERN.test(input.amount) ||
-    !/[1-9]/.test(input.amount)
-  ) {
-    invalidResearchQuantityData(
-      "amount must be a normalized positive decimal no longer than 80 characters",
-    )
+  try {
+    return convertResearchAmountWithProfileToBaseUnits(input.amount, profile)
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes("does not resolve to a whole number")
+    ) {
+      invalidResearchQuantityData(
+        `${input.amount} ${input.displayUnit} does not resolve to a whole number of ${profile.baseUnit} base units`,
+      )
+    }
+
+    throw error
   }
-
-  const [integer, fraction = ""] = input.amount.split(".")
-  const scale = 10n ** BigInt(fraction.length)
-  const decimalInteger = BigInt(`${integer}${fraction}`)
-  const baseUnitsNumerator =
-    decimalInteger * BigInt(profile.baseUnitsPerDisplayUnit)
-
-  if (baseUnitsNumerator % scale !== 0n) {
-    invalidResearchQuantityData(
-      `${input.amount} ${input.displayUnit} does not resolve to a whole number of ${profile.baseUnit} base units`,
-    )
-  }
-
-  const baseUnits = baseUnitsNumerator / scale
-
-  if (baseUnits > BigInt(RESEARCH_MAX_BASE_UNITS)) {
-    invalidResearchQuantityData(
-      `converted base units must be no greater than ${RESEARCH_MAX_BASE_UNITS}`,
-    )
-  }
-
-  return normalizeResearchQuantity({
-    baseUnit: profile.baseUnit,
-    baseUnits: Number(baseUnits),
-  })
 }
 
 export function normalizeResearchQuantity(

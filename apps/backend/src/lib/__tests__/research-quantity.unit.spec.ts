@@ -1,5 +1,8 @@
 import {
+  convertResearchDisplayAmountToBaseUnits,
   convertResearchFixedDisplayAmountToBaseUnits,
+  getResearchDisplayUnitDimension,
+  normalizeResearchDecimalAmount,
   normalizeResearchQuantity,
   normalizeResearchUnitProfile,
   RESEARCH_MAX_BASE_UNITS,
@@ -127,6 +130,40 @@ describe("research quantity contract", () => {
         displayUnit: "IU",
       }),
     ).toBeNull()
+  })
+
+  it("normalizes exact decimal identity without floating-point arithmetic", () => {
+    expect(normalizeResearchDecimalAmount("1.000")).toBe("1")
+    expect(normalizeResearchDecimalAmount("0.0500")).toBe("0.05")
+  })
+
+  it("resolves the authoritative dimension for every supported display unit", () => {
+    expect(getResearchDisplayUnitDimension("mg")).toBe("mass")
+    expect(getResearchDisplayUnitDimension("mL")).toBe("volume")
+    expect(getResearchDisplayUnitDimension("IU")).toBe("potency")
+    expect(getResearchDisplayUnitDimension("unit")).toBe("count")
+  })
+
+  it("converts IU only through an explicit product-specific unit profile", () => {
+    expect(
+      convertResearchDisplayAmountToBaseUnits({
+        amount: "25",
+        displayUnit: "IU",
+        unitProfile: {
+          baseUnit: "microgram",
+          displayUnit: "IU",
+          baseUnitsPerDisplayUnit: 2,
+          displayPrecision: 0,
+        },
+      }),
+    ).toEqual({ baseUnit: "microgram", baseUnits: 50 })
+
+    expect(() =>
+      convertResearchDisplayAmountToBaseUnits({
+        amount: "25",
+        displayUnit: "IU",
+      }),
+    ).toThrow("explicit product-specific unit profile")
   })
 
   it("rejects an unsupported fixed display unit at runtime", () => {
