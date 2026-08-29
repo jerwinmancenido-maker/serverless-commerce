@@ -5,7 +5,17 @@ export type PresentationSnapshot = {
   fields: unknown[]
   variation_axes: unknown[]
   sku_suggestion_policy: Record<string, unknown> | null
+  readiness_policy: ReadinessPolicy
   variant_warning_threshold: number
+}
+
+export type ReadinessPolicy = {
+  schema_version: "1"
+  require_price: boolean
+  require_sales_channel: boolean
+  require_bom_for_managed_inventory: boolean
+  require_valid_structured_measurements: boolean
+  require_governance_audit: boolean
 }
 
 export type PresentationRevision = {
@@ -44,3 +54,22 @@ export type CreatePresentationInput = {
 }
 
 export type PresentationMutationResponse = PresentationListItem
+
+export type ClassificationMapping = {
+  id: string
+  product_type_id: string
+  presentation_id: string
+  status: "active" | "inactive" | "archived"
+  reason: string
+  created_by_actor_id: string
+  updated_by_actor_id: string
+  created_at: string
+  updated_at: string
+}
+
+export type ClassificationMappingListResponse = {
+  mappings: ClassificationMapping[]
+  count: number
+  limit: number
+  offset: number
+}

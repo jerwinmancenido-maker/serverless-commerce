@@ -10,6 +10,10 @@ import {
   type ResearchDisplayUnit,
   type ResearchQuantityDimension,
 } from "../../../lib/research-quantity"
+import {
+  CompoundedProductReadinessPolicySnapshot,
+  DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
+} from "./governance"
 
 export const COMPOUNDED_PRODUCT_CONFIGURATION_SCHEMA_VERSION = "1"
 
@@ -400,6 +404,9 @@ export const CompoundedProductPresentationSnapshot = z
     fields: z.array(CompoundedProductConfiguredField).max(500),
     variation_axes: z.array(CompoundedProductVariationAxis).max(50),
     sku_suggestion_policy: SkuSuggestionPolicy.nullable().default(null),
+    readiness_policy: CompoundedProductReadinessPolicySnapshot.default(
+      DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
+    ),
     variant_warning_threshold: z.number().int().positive().max(100_000),
   })
   .superRefine((snapshot, context) => {

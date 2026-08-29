@@ -4,6 +4,7 @@ import {
   FocusModal,
   Input,
   Label,
+  Switch,
   Text,
   Textarea,
   toast,
@@ -14,6 +15,7 @@ import { sdk } from "../../lib/sdk"
 import type {
   CreatePresentationInput,
   PresentationListItem,
+  ReadinessPolicy,
 } from "./types"
 
 type CreatePresentationModalProps = {
@@ -31,6 +33,15 @@ const initialForm = {
   skuSuggestionPolicy: "null",
 }
 
+const initialReadinessPolicy: ReadinessPolicy = {
+  schema_version: "1",
+  require_price: true,
+  require_sales_channel: true,
+  require_bom_for_managed_inventory: true,
+  require_valid_structured_measurements: true,
+  require_governance_audit: true,
+}
+
 function parseJsonField(value: string, label: string): unknown {
   try {
     return JSON.parse(value)
@@ -45,6 +56,9 @@ export const CreatePresentationModal = ({
 }: CreatePresentationModalProps) => {
   const queryClient = useQueryClient()
   const [form, setForm] = useState(initialForm)
+  const [readinessPolicy, setReadinessPolicy] = useState<ReadinessPolicy>(
+    initialReadinessPolicy,
+  )
   const [error, setError] = useState<string | null>(null)
   const mutation = useMutation({
     mutationFn: (input: CreatePresentationInput) =>
@@ -61,6 +75,7 @@ export const CreatePresentationModal = ({
       })
       toast.success("Presentation configuration created")
       setForm(initialForm)
+      setReadinessPolicy(initialReadinessPolicy)
       setError(null)
       onOpenChange(false)
     },
@@ -106,6 +121,7 @@ export const CreatePresentationModal = ({
           variation_axes: variationAxes,
           sku_suggestion_policy:
             skuSuggestionPolicy as Record<string, unknown> | null,
+          readiness_policy: readinessPolicy,
           variant_warning_threshold: warningThreshold,
         },
       })
@@ -209,6 +225,50 @@ export const CreatePresentationModal = ({
                     setValue("warningThreshold", event.target.value)
                   }
                 />
+              </div>
+
+              <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+                <div className="flex flex-col gap-y-1">
+                  <Text size="small" weight="plus">
+                    Publication readiness policy
+                  </Text>
+                  <Text size="small" className="text-ui-fg-subtle">
+                    These requirements are versioned with this presentation and
+                    pinned to every product created from it.
+                  </Text>
+                </div>
+                {(
+                  [
+                    ["require_price", "Require at least one price"],
+                    ["require_sales_channel", "Require a sales channel"],
+                    [
+                      "require_bom_for_managed_inventory",
+                      "Require BOM for managed inventory",
+                    ],
+                    [
+                      "require_valid_structured_measurements",
+                      "Require valid structured measurements",
+                    ],
+                    ["require_governance_audit", "Require governance audit"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <div
+                    key={key}
+                    className="flex items-center justify-between gap-x-4"
+                  >
+                    <Label htmlFor={`readiness-${key}`}>{label}</Label>
+                    <Switch
+                      id={`readiness-${key}`}
+                      checked={readinessPolicy[key]}
+                      onCheckedChange={(checked) =>
+                        setReadinessPolicy((current) => ({
+                          ...current,
+                          [key]: checked,
+                        }))
+                      }
+                    />
+                  </div>
+                ))}
               </div>
 
               <div className="flex flex-col gap-y-2">

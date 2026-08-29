@@ -5,6 +5,7 @@ import {
   type CompoundedProductPresentationSnapshot,
 } from "../contracts/configuration"
 import PresentationConfiguration from "./presentation-configuration"
+import GovernedProductRegistration from "./governed-product-registration"
 
 const PresentationConfigurationRevision = model
   .define("compounded_product_presentation_revision", {
@@ -24,6 +25,9 @@ const PresentationConfigurationRevision = model
     archived_at: model.dateTime().nullable(),
     presentation: model.belongsTo(() => PresentationConfiguration, {
       mappedBy: "revisions",
+    }),
+    registrations: model.hasMany(() => GovernedProductRegistration, {
+      mappedBy: "presentation_revision",
     }),
   })
   .indexes([

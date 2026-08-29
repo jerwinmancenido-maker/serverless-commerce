@@ -16,6 +16,7 @@ import { useMemo, useState } from "react"
 import { sdk } from "../../lib/sdk"
 import { CreatePresentationModal } from "./create-presentation-modal"
 import { EditPresentationDrawer } from "./edit-presentation-drawer"
+import { GovernedProductTypes } from "./governed-product-types"
 import type { PresentationListItem, PresentationListResponse } from "./types"
 
 const PAGE_SIZE = 20
@@ -102,7 +103,7 @@ const CompoundedProductConfigurationsPage = () => {
   })
 
   return (
-    <>
+    <div className="flex flex-col gap-y-4">
       <Container className="divide-y p-0">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex flex-col gap-y-1">
@@ -139,7 +140,8 @@ const CompoundedProductConfigurationsPage = () => {
         open={editOpen}
         onOpenChange={setEditOpen}
       />
-    </>
+      <GovernedProductTypes presentations={query.data?.presentations || []} />
+    </div>
   )
 }
 

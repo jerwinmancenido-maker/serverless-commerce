@@ -78,6 +78,14 @@ const validSnapshot = {
     },
   ],
   sku_suggestion_policy: null,
+  readiness_policy: {
+    schema_version: "1" as const,
+    require_price: false,
+    require_sales_channel: true,
+    require_bom_for_managed_inventory: false,
+    require_valid_structured_measurements: true,
+    require_governance_audit: true,
+  },
   variant_warning_threshold: 100,
 }
 
@@ -90,6 +98,7 @@ describe("compounded product configuration API contract", () => {
 
     expect(result.key).toBe("future_presentation")
     expect(result.snapshot.variation_axes).toHaveLength(3)
+    expect(result.snapshot.readiness_policy.require_price).toBe(false)
   })
 
   it("rejects duplicate field, axis, and value identities or positions", () => {

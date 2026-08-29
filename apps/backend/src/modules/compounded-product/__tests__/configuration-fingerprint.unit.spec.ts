@@ -1,4 +1,5 @@
 import { fingerprintCompoundedProductConfiguration } from "../configuration-fingerprint"
+import { DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY } from "../contracts/governance"
 
 describe("compounded product configuration fingerprint", () => {
   it("is stable when object property insertion order differs", () => {
@@ -9,11 +10,13 @@ describe("compounded product configuration fingerprint", () => {
       fields: [],
       variation_axes: [],
       sku_suggestion_policy: null,
+      readiness_policy: DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
       variant_warning_threshold: 100,
     }
     const second = {
       variant_warning_threshold: 100,
       sku_suggestion_policy: null,
+      readiness_policy: DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
       variation_axes: [],
       fields: [],
       description: null,
@@ -34,6 +37,7 @@ describe("compounded product configuration fingerprint", () => {
       fields: [],
       variation_axes: [],
       sku_suggestion_policy: null,
+      readiness_policy: DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
       variant_warning_threshold: 100,
     }
 

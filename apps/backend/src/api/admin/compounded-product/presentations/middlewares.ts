@@ -3,6 +3,7 @@ import {
   validateAndTransformQuery,
   type MiddlewareRoute,
 } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 
 import {
   AdminCreateCompoundedProductPresentationRevision,
@@ -18,12 +19,24 @@ export const adminCompoundedProductPresentationMiddlewares: MiddlewareRoute[] = 
     middlewares: [
       validateAndTransformQuery(AdminListCompoundedProductPresentations, {}),
     ],
+    policies: [
+      {
+        resource: "compounded_product_governance",
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     matcher: "/admin/compounded-product/presentations",
     methods: ["POST"],
     middlewares: [
       validateAndTransformBody(AdminCreateCompoundedProductPresentation),
+    ],
+    policies: [
+      {
+        resource: "compounded_product_governance",
+        operation: PolicyOperation.create,
+      },
     ],
   },
   {
@@ -32,12 +45,24 @@ export const adminCompoundedProductPresentationMiddlewares: MiddlewareRoute[] = 
     middlewares: [
       validateAndTransformBody(AdminCreateCompoundedProductPresentationRevision),
     ],
+    policies: [
+      {
+        resource: "compounded_product_governance",
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     matcher: "/admin/compounded-product/presentations/:id/transitions",
     methods: ["POST"],
     middlewares: [
       validateAndTransformBody(AdminTransitionCompoundedProductPresentation),
+    ],
+    policies: [
+      {
+        resource: "compounded_product_governance",
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

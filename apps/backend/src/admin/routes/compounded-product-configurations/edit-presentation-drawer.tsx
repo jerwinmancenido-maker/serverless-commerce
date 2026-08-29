@@ -5,6 +5,7 @@ import {
   Input,
   Label,
   Select,
+  Switch,
   Text,
   Textarea,
   toast,
@@ -16,6 +17,7 @@ import type {
   PresentationListItem,
   PresentationMutationResponse,
   PresentationSnapshot,
+  ReadinessPolicy,
 } from "./types"
 
 type EditPresentationDrawerProps = {
@@ -27,6 +29,15 @@ type EditPresentationDrawerProps = {
 type TransitionStatus = "active" | "inactive" | "blocked" | "archived"
 
 const formatJson = (value: unknown) => JSON.stringify(value, null, 2)
+
+const defaultReadinessPolicy: ReadinessPolicy = {
+  schema_version: "1",
+  require_price: true,
+  require_sales_channel: true,
+  require_bom_for_managed_inventory: true,
+  require_valid_structured_measurements: true,
+  require_governance_audit: true,
+}
 
 export const EditPresentationDrawer = ({
   item,
@@ -40,6 +51,9 @@ export const EditPresentationDrawer = ({
   const [fields, setFields] = useState("[]")
   const [variationAxes, setVariationAxes] = useState("[]")
   const [skuSuggestionPolicy, setSkuSuggestionPolicy] = useState("null")
+  const [readinessPolicy, setReadinessPolicy] = useState<ReadinessPolicy>(
+    defaultReadinessPolicy,
+  )
   const [reason, setReason] = useState("")
   const [targetStatus, setTargetStatus] =
     useState<TransitionStatus>("active")
@@ -58,6 +72,7 @@ export const EditPresentationDrawer = ({
     setFields(formatJson(snapshot.fields))
     setVariationAxes(formatJson(snapshot.variation_axes))
     setSkuSuggestionPolicy(formatJson(snapshot.sku_suggestion_policy))
+    setReadinessPolicy(snapshot.readiness_policy || defaultReadinessPolicy)
     setReason("")
     setError(null)
   }, [item])
@@ -144,6 +159,7 @@ export const EditPresentationDrawer = ({
           fields: parsedFields,
           variation_axes: parsedAxes,
           sku_suggestion_policy: parsedSkuPolicy,
+          readiness_policy: readinessPolicy,
           variant_warning_threshold: threshold,
         },
       })
@@ -230,6 +246,49 @@ export const EditPresentationDrawer = ({
               value={skuSuggestionPolicy}
               onChange={(event) => setSkuSuggestionPolicy(event.target.value)}
             />
+          </div>
+          <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+            <div className="flex flex-col gap-y-1">
+              <Text size="small" weight="plus">
+                Publication readiness policy
+              </Text>
+              <Text size="small" className="text-ui-fg-subtle">
+                Saving changes creates a new immutable policy revision with the
+                presentation configuration.
+              </Text>
+            </div>
+            {(
+              [
+                ["require_price", "Require at least one price"],
+                ["require_sales_channel", "Require a sales channel"],
+                [
+                  "require_bom_for_managed_inventory",
+                  "Require BOM for managed inventory",
+                ],
+                [
+                  "require_valid_structured_measurements",
+                  "Require valid structured measurements",
+                ],
+                ["require_governance_audit", "Require governance audit"],
+              ] as const
+            ).map(([key, label]) => (
+              <div
+                key={key}
+                className="flex items-center justify-between gap-x-4"
+              >
+                <Label htmlFor={`edit-readiness-${key}`}>{label}</Label>
+                <Switch
+                  id={`edit-readiness-${key}`}
+                  checked={readinessPolicy[key]}
+                  onCheckedChange={(checked) =>
+                    setReadinessPolicy((current) => ({
+                      ...current,
+                      [key]: checked,
+                    }))
+                  }
+                />
+              </div>
+            ))}
           </div>
           <div className="flex flex-col gap-y-2">
             <Label>Reason for change</Label>
