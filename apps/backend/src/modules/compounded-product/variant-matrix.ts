@@ -57,6 +57,10 @@ function assertLimit(name: string, value: number) {
   }
 }
 
+function compareStableText(left: string, right: string): number {
+  return left < right ? -1 : left > right ? 1 : 0
+}
+
 function stableRowKey(options: CompoundedProductVariantOption[]): string {
   return fingerprintCompoundedProductValue(
     options.map((option) => [option.axisKey, option.valueKey]),
@@ -72,7 +76,7 @@ function resolveOrderedAxes(
   const semanticNames = new Set<string>()
   const orderedAxes = [...axes].sort(
     (left, right) =>
-      left.position - right.position || left.key.localeCompare(right.key),
+      left.position - right.position || compareStableText(left.key, right.key),
   )
 
   for (const axis of orderedAxes) {
@@ -142,7 +146,8 @@ function resolveOrderedAxes(
       .filter((value) => value.active)
       .sort(
         (left, right) =>
-          left.position - right.position || left.key.localeCompare(right.key),
+          left.position - right.position ||
+          compareStableText(left.key, right.key),
       )
     const selectedKeys = selectedValueKeysByAxis?.[axis.key]
 
@@ -185,7 +190,8 @@ function resolveOrderedAxes(
       axis,
       values: selectedValues.sort(
         (left, right) =>
-          left.position - right.position || left.key.localeCompare(right.key),
+          left.position - right.position ||
+          compareStableText(left.key, right.key),
       ),
     }
   })

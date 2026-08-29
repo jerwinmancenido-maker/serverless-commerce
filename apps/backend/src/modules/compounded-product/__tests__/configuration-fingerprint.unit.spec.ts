@@ -44,4 +44,23 @@ describe("compounded product configuration fingerprint", () => {
       }),
     )
   })
+
+  it.each([
+    ["undefined", { value: undefined }],
+    ["non-finite number", { value: Number.POSITIVE_INFINITY }],
+    ["non-JSON object", { value: new Date("2026-01-01T00:00:00Z") }],
+  ])("rejects unsupported canonical payload values: %s", (_label, value) => {
+    expect(() => fingerprintCompoundedProductConfiguration(value as never)).toThrow(
+      "fingerprint payload",
+    )
+  })
+
+  it("rejects circular payloads rather than producing an ambiguous hash", () => {
+    const circular: Record<string, unknown> = {}
+    circular.self = circular
+
+    expect(() =>
+      fingerprintCompoundedProductConfiguration(circular as never),
+    ).toThrow("circular reference")
+  })
 })
