@@ -82,6 +82,35 @@ describe("BOM component profile contract", () => {
       }),
     ).toThrow("mL requires 1000 microliter base units")
   })
+
+  it("supports gram and microliter display units", () => {
+    expect(
+      normalizeComponentProfileInput({
+        ...validProfile,
+        displayUnit: "g",
+        baseUnitsPerDisplayUnit: 1_000_000,
+        displayPrecision: 3,
+      }),
+    ).toMatchObject({
+      baseUnit: "microgram",
+      displayUnit: "g",
+      baseUnitsPerDisplayUnit: 1_000_000,
+    })
+
+    expect(
+      normalizeComponentProfileInput({
+        ...validProfile,
+        baseUnit: "microliter",
+        displayUnit: "µL",
+        baseUnitsPerDisplayUnit: 1,
+        displayPrecision: 0,
+      }),
+    ).toMatchObject({
+      baseUnit: "microliter",
+      displayUnit: "µL",
+      baseUnitsPerDisplayUnit: 1,
+    })
+  })
 })
 
 describe("BOM recipe audit contract", () => {

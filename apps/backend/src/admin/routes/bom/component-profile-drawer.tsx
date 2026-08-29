@@ -39,6 +39,80 @@ type FormState = {
   expiryTrackingRequired: boolean
 }
 
+type DisplayUnitOption = {
+  value: string
+  label: string
+  baseUnitsPerDisplayUnit: number | null
+  displayPrecision: number
+}
+
+const displayUnitOptions: Record<BomBaseUnit, DisplayUnitOption[]> = {
+  microgram: [
+    {
+      value: "mcg",
+      label: "mcg — microgram",
+      baseUnitsPerDisplayUnit: 1,
+      displayPrecision: 0,
+    },
+    {
+      value: "mg",
+      label: "mg — milligram",
+      baseUnitsPerDisplayUnit: 1_000,
+      displayPrecision: 3,
+    },
+    {
+      value: "g",
+      label: "g — gram",
+      baseUnitsPerDisplayUnit: 1_000_000,
+      displayPrecision: 6,
+    },
+    {
+      value: "IU",
+      label: "IU — product-specific activity",
+      baseUnitsPerDisplayUnit: null,
+      displayPrecision: 0,
+    },
+  ],
+  microliter: [
+    {
+      value: "µL",
+      label: "µL — microliter",
+      baseUnitsPerDisplayUnit: 1,
+      displayPrecision: 0,
+    },
+    {
+      value: "mL",
+      label: "mL — milliliter",
+      baseUnitsPerDisplayUnit: 1_000,
+      displayPrecision: 3,
+    },
+    {
+      value: "IU",
+      label: "IU — product-specific activity",
+      baseUnitsPerDisplayUnit: null,
+      displayPrecision: 0,
+    },
+  ],
+  piece: [
+    {
+      value: "piece",
+      label: "piece — vial, cap, label, box, or kit",
+      baseUnitsPerDisplayUnit: 1,
+      displayPrecision: 0,
+    },
+  ],
+}
+
+function defaultUnitState(baseUnit: BomBaseUnit) {
+  const option = displayUnitOptions[baseUnit][0]
+
+  return {
+    displayUnit: option.value,
+    baseUnitsPerDisplayUnit: String(option.baseUnitsPerDisplayUnit ?? 1),
+    displayPrecision: String(option.displayPrecision),
+  }
+}
+
 const emptyForm: FormState = {
   baseUnit: "piece",
   displayUnit: "piece",
@@ -57,7 +131,10 @@ function toFormState(profile?: ComponentProfile): FormState {
 
   return {
     baseUnit: profile.base_unit,
-    displayUnit: profile.display_unit,
+    displayUnit:
+      profile.base_unit === "piece" && profile.display_unit === "unit"
+        ? "piece"
+        : profile.display_unit,
     baseUnitsPerDisplayUnit: String(profile.base_units_per_display_unit),
     displayPrecision: String(profile.display_precision),
     reorderThresholdBaseUnits: String(
@@ -127,6 +204,35 @@ export function ComponentProfileDrawer({
     })
   }
 
+  const selectBaseUnit = (baseUnit: BomBaseUnit) => {
+    setForm((current) => ({
+      ...current,
+      baseUnit,
+      ...defaultUnitState(baseUnit),
+    }))
+  }
+
+  const selectDisplayUnit = (displayUnit: string) => {
+    const option = displayUnitOptions[form.baseUnit].find(
+      (candidate) => candidate.value === displayUnit,
+    )
+
+    if (!option) {
+      return
+    }
+
+    setForm((current) => ({
+      ...current,
+      displayUnit,
+      baseUnitsPerDisplayUnit: String(
+        option.baseUnitsPerDisplayUnit ?? 1,
+      ),
+      displayPrecision: String(option.displayPrecision),
+    }))
+  }
+
+  const conversionIsProductSpecific = form.displayUnit === "IU"
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Content>
@@ -142,43 +248,57 @@ export function ComponentProfileDrawer({
           <Drawer.Body className="flex flex-1 flex-col gap-y-6 overflow-y-auto">
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <Label htmlFor="base-unit">Base unit</Label>
+                <Label htmlFor="base-unit">Inventory ledger unit</Label>
                 <Select
                   value={form.baseUnit}
-                  onValueChange={(value) =>
-                    setForm((current) => ({
-                      ...current,
-                      baseUnit: value as BomBaseUnit,
-                    }))
-                  }
+                  onValueChange={(value) => selectBaseUnit(value as BomBaseUnit)}
                 >
                   <Select.Trigger id="base-unit">
                     <Select.Value />
                   </Select.Trigger>
                   <Select.Content>
-                    <Select.Item value="microgram">Microgram</Select.Item>
-                    <Select.Item value="microliter">Microliter</Select.Item>
-                    <Select.Item value="piece">Piece</Select.Item>
+                    <Select.Item value="microgram">
+                      Mass — stored in mcg
+                    </Select.Item>
+                    <Select.Item value="microliter">
+                      Volume — stored in µL
+                    </Select.Item>
+                    <Select.Item value="piece">
+                      Count — stored as pieces
+                    </Select.Item>
                   </Select.Content>
                 </Select>
+                <Text className="text-ui-fg-subtle" size="small">
+                  Uses whole-number ledger units for exact inventory deduction.
+                </Text>
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="display-unit">Display unit</Label>
-                <Input
-                  id="display-unit"
-                  required
+                <Select
                   value={form.displayUnit}
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      displayUnit: event.target.value,
-                    }))
-                  }
-                />
+                  onValueChange={selectDisplayUnit}
+                >
+                  <Select.Trigger id="display-unit">
+                    <Select.Value />
+                  </Select.Trigger>
+                  <Select.Content>
+                    {displayUnitOptions[form.baseUnit].map((option) => (
+                      <Select.Item key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select>
+                <Text className="text-ui-fg-subtle" size="small">
+                  Supported units: mcg, mg, g, µL, mL, IU, or piece.
+                </Text>
               </div>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="conversion">Base units per display unit</Label>
+                <Label htmlFor="conversion">
+                  Ledger units per display unit
+                </Label>
                 <Input
+                  disabled={!conversionIsProductSpecific}
                   id="conversion"
                   min="1"
                   required
@@ -192,6 +312,11 @@ export function ComponentProfileDrawer({
                     }))
                   }
                 />
+                <Text className="text-ui-fg-subtle" size="small">
+                  {conversionIsProductSpecific
+                    ? "Enter the verified product-specific conversion. IU is not universally convertible to mass or volume."
+                    : "Automatically fixed by the selected SI display unit."}
+                </Text>
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="precision">Display precision</Label>
@@ -227,7 +352,7 @@ export function ComponentProfileDrawer({
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="reorder-threshold">
-                Reorder threshold in base units
+                Reorder threshold in ledger units
               </Label>
               <Input
                 id="reorder-threshold"

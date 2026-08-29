@@ -2,7 +2,16 @@ import { MedusaError } from "@medusajs/framework/utils"
 
 export const RESEARCH_BASE_UNITS = ["microgram", "microliter", "piece"] as const
 
-export const RESEARCH_DISPLAY_UNITS = ["mcg", "mg", "mL", "IU", "unit"] as const
+export const RESEARCH_DISPLAY_UNITS = [
+  "mcg",
+  "mg",
+  "g",
+  "µL",
+  "mL",
+  "IU",
+  "piece",
+  "unit",
+] as const
 
 // Medusa's model.number() maps these fields to a PostgreSQL integer column.
 export const RESEARCH_MAX_BASE_UNITS = 2_147_483_647
@@ -69,7 +78,10 @@ export function normalizeResearchUnitProfile(
   > = {
     mcg: { baseUnit: "microgram", baseUnitsPerDisplayUnit: 1 },
     mg: { baseUnit: "microgram", baseUnitsPerDisplayUnit: 1_000 },
+    g: { baseUnit: "microgram", baseUnitsPerDisplayUnit: 1_000_000 },
+    µL: { baseUnit: "microliter", baseUnitsPerDisplayUnit: 1 },
     mL: { baseUnit: "microliter", baseUnitsPerDisplayUnit: 1_000 },
+    piece: { baseUnit: "piece", baseUnitsPerDisplayUnit: 1 },
     unit: { baseUnit: "piece", baseUnitsPerDisplayUnit: 1 },
   }
   const fixed = fixedConversions[input.displayUnit]

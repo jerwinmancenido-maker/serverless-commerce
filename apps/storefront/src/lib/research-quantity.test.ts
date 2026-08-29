@@ -27,6 +27,24 @@ test("formats fixed mass and volume profiles", () => {
     }),
     "2.5 mL",
   )
+  assert.equal(
+    formatResearchQuantity(2_000_000, {
+      base_unit: "microgram",
+      display_unit: "g",
+      base_units_per_display_unit: 1_000_000,
+      display_precision: 3,
+    }),
+    "2 g",
+  )
+  assert.equal(
+    formatResearchQuantity(250, {
+      base_unit: "microliter",
+      display_unit: "µL",
+      base_units_per_display_unit: 1,
+      display_precision: 0,
+    }),
+    "250 µL",
+  )
 })
 
 test("uses the explicit product profile for IU", () => {

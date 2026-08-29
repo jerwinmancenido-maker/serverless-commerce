@@ -43,7 +43,10 @@ describe("research quantity contract", () => {
   it.each([
     ["mcg", "microgram", 1],
     ["mg", "microgram", 1_000],
+    ["g", "microgram", 1_000_000],
+    ["µL", "microliter", 1],
     ["mL", "microliter", 1_000],
+    ["piece", "piece", 1],
     ["unit", "piece", 1],
   ] as const)(
     "accepts the fixed %s conversion",

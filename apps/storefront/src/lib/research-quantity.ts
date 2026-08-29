@@ -1,5 +1,13 @@
 export type ResearchBaseUnit = "microgram" | "microliter" | "piece"
-export type ResearchDisplayUnit = "mcg" | "mg" | "mL" | "IU" | "unit"
+export type ResearchDisplayUnit =
+  | "mcg"
+  | "mg"
+  | "g"
+  | "µL"
+  | "mL"
+  | "IU"
+  | "piece"
+  | "unit"
 
 export type ResearchUnitProfile = {
   base_unit: ResearchBaseUnit
@@ -24,7 +32,7 @@ function validProfile(
     !profile ||
     !displayUnit ||
     !["microgram", "microliter", "piece"].includes(profile.base_unit) ||
-    !["mcg", "mg", "mL", "IU", "unit"].includes(
+    !["mcg", "mg", "g", "µL", "mL", "IU", "piece", "unit"].includes(
       displayUnit,
     ) ||
     !Number.isSafeInteger(profile.base_units_per_display_unit) ||
@@ -39,7 +47,10 @@ function validProfile(
   const fixed = {
     mcg: ["microgram", 1],
     mg: ["microgram", 1_000],
+    g: ["microgram", 1_000_000],
+    µL: ["microliter", 1],
     mL: ["microliter", 1_000],
+    piece: ["piece", 1],
     unit: ["piece", 1],
   } as const
   const expected =
@@ -96,7 +107,7 @@ export function defaultResearchUnitProfile(
 
   return {
     base_unit: baseUnit,
-    display_unit: "unit",
+    display_unit: "piece",
     base_units_per_display_unit: 1,
     display_precision: 0,
   }
