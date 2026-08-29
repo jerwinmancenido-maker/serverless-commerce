@@ -202,6 +202,10 @@ export type ConfiguredValue =
   | boolean
   | StructuredMeasurementInput
   | {
+      documentId: string
+      documentType: string
+    }
+  | {
       numerator: StructuredMeasurementInput
       denominator: StructuredMeasurementInput
     }

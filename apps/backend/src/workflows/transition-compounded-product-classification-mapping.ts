@@ -13,7 +13,9 @@ import {
 export const transitionCompoundedProductClassificationMappingWorkflow =
   createWorkflow(
     "transition-compounded-product-classification-mapping",
-    (input: TransitionCompoundedProductClassificationMappingWorkflowInput) => {
+    function (
+      input: TransitionCompoundedProductClassificationMappingWorkflowInput,
+    ) {
       const mapping =
         transitionCompoundedProductClassificationMappingStep(input)
       const auditInput = transform({ input, mapping }, ({ input, mapping }) => [

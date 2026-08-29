@@ -13,7 +13,9 @@ import {
 export const createCompoundedProductClassificationMappingWorkflow =
   createWorkflow(
     "create-compounded-product-classification-mapping",
-    (input: CreateCompoundedProductClassificationMappingWorkflowInput) => {
+    function (
+      input: CreateCompoundedProductClassificationMappingWorkflowInput,
+    ) {
       const mapping = createCompoundedProductClassificationMappingStep(input)
       const auditInput = transform({ input, mapping }, ({ input, mapping }) => [
         {

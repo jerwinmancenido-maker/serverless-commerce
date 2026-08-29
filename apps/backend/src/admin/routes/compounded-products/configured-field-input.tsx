@@ -43,6 +43,14 @@ const isMeasurement = (
 ): value is StructuredMeasurementInput =>
   typeof value === "object" && value !== null && "displayUnit" in value
 
+const isDocumentReference = (
+  value: ConfiguredValue | undefined,
+): value is { documentId: string; documentType: string } =>
+  typeof value === "object" &&
+  value !== null &&
+  "documentId" in value &&
+  "documentType" in value
+
 const MeasurementInput = ({
   id,
   label,
@@ -285,6 +293,11 @@ export const ConfiguredFieldInput = ({
           countBases: field.denominator_count_bases,
         }),
       })
+    } else if (field.kind === "document_reference") {
+      onChange({
+        documentId: "",
+        documentType: field.allowed_document_types[0],
+      })
     } else {
       onChange("")
     }
@@ -451,15 +464,51 @@ export const ConfiguredFieldInput = ({
       ) : null}
 
       {visible && field.kind === "document_reference" ? (
-        <div className="flex flex-col gap-y-2">
-          <Input
-            id={`configured-${field.key}`}
-            value={typeof value === "string" ? value : ""}
-            onChange={(event) => onChange(event.target.value)}
-          />
-          <Text size="small" leading="compact" className="text-ui-fg-subtle">
-            Allowed document types: {field.allowed_document_types.join(", ")}
-          </Text>
+        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_14rem]">
+          <div className="flex flex-col gap-y-2">
+            <Label htmlFor={`configured-${field.key}`}>Document ID</Label>
+            <Input
+              id={`configured-${field.key}`}
+              value={isDocumentReference(value) ? value.documentId : ""}
+              onChange={(event) =>
+                onChange({
+                  documentId: event.target.value,
+                  documentType: isDocumentReference(value)
+                    ? value.documentType
+                    : field.allowed_document_types[0],
+                })
+              }
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Document type</Label>
+            <Select
+              value={
+                isDocumentReference(value)
+                  ? value.documentType
+                  : field.allowed_document_types[0]
+              }
+              onValueChange={(documentType) =>
+                onChange({
+                  documentId: isDocumentReference(value)
+                    ? value.documentId
+                    : "",
+                  documentType,
+                })
+              }
+            >
+              <Select.Trigger>
+                <Select.Value />
+              </Select.Trigger>
+              <Select.Content>
+                {field.allowed_document_types.map((documentType) => (
+                  <Select.Item key={documentType} value={documentType}>
+                    {documentType}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+          </div>
         </div>
       ) : null}
     </div>

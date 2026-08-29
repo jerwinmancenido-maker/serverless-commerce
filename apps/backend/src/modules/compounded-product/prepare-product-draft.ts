@@ -127,17 +127,27 @@ function normalizeConfiguredValue(
     return normalized
   }
 
-  if (typeof value !== "string") {
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("documentId" in value) ||
+    !("documentType" in value)
+  ) {
     invalidDraft(`${field.key} must be a document reference`)
   }
 
-  const normalized = value.trim()
+  const documentId = String(value.documentId).trim()
+  const documentType = String(value.documentType).trim()
 
-  if (!normalized || normalized.length > 255) {
+  if (!documentId || documentId.length > 255) {
     invalidDraft(`${field.key} must contain a valid document reference`)
   }
 
-  return normalized
+  if (!field.allowed_document_types.includes(documentType)) {
+    invalidDraft(`${field.key} uses a document type outside its configuration`)
+  }
+
+  return { documentId, documentType }
 }
 
 function resolveConfiguredMetadata(input: {

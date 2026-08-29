@@ -303,6 +303,55 @@ describe("compounded product draft preparation", () => {
       "Duplicate price currency: php",
     )
   })
+
+  it("persists only document-reference types allowed by configuration", () => {
+    const documentSnapshot = CompoundedProductPresentationSnapshot.parse({
+      ...snapshot,
+      fields: [
+        ...snapshot.fields,
+        {
+          key: "product_document",
+          label: "Product document",
+          help_text: null,
+          position: 2,
+          requirement: "draft",
+          metadata_target: { scope: "product", key: "product_document" },
+          kind: "document_reference",
+          allowed_document_types: ["coa", "storage_guide"],
+        },
+      ],
+    })
+    const request = buildRequest()
+    request.product.configured_values.product_document = {
+      documentId: "doc_coa_001",
+      documentType: "coa",
+    }
+
+    const prepared = prepareCompoundedProductDraft({
+      request,
+      snapshot: documentSnapshot,
+      configurationFingerprint: "a".repeat(64),
+      serverMaximum: 100,
+    })
+
+    expect(prepared.nativeProduct.metadata?.product_document).toEqual({
+      documentId: "doc_coa_001",
+      documentType: "coa",
+    })
+
+    request.product.configured_values.product_document = {
+      documentId: "doc_other_001",
+      documentType: "unapproved_type",
+    }
+    expect(() =>
+      prepareCompoundedProductDraft({
+        request,
+        snapshot: documentSnapshot,
+        configurationFingerprint: "a".repeat(64),
+        serverMaximum: 100,
+      }),
+    ).toThrow("product_document uses a document type outside its configuration")
+  })
 })
 
 describe("compounded product deployment policy", () => {

@@ -45,11 +45,17 @@ export const CompoundedProductStructuredRatioInputSchema = z.strictObject({
   denominator: CompoundedProductStructuredMeasurementInputSchema,
 })
 
+export const CompoundedProductDocumentReferenceInputSchema = z.strictObject({
+  documentId: z.string().trim().min(1).max(255),
+  documentType: z.string().trim().min(1).max(64),
+})
+
 const CompoundedProductConfiguredValue = z.union([
   z.string().max(10_000),
   z.boolean(),
   CompoundedProductStructuredMeasurementInputSchema,
   CompoundedProductStructuredRatioInputSchema,
+  CompoundedProductDocumentReferenceInputSchema,
 ])
 
 const VariantPrice = z.strictObject({

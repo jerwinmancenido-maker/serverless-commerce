@@ -1,5 +1,6 @@
 import type {
   IFulfillmentModuleService,
+  IInventoryService,
   IProductModuleService,
   ISalesChannelModuleService,
   IUserModuleService,
@@ -16,6 +17,7 @@ import type { CompoundedProductPresentationSnapshot } from "../../src/modules/co
 import { DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY } from "../../src/modules/compounded-product/contracts/governance"
 import type CompoundedProductModuleService from "../../src/modules/compounded-product/service"
 import createCompoundedProductPresentationWorkflow from "../../src/workflows/create-compounded-product-presentation"
+import setComponentProfileWorkflow from "../../src/workflows/set-component-profile"
 import transitionCompoundedProductPresentationWorkflow from "../../src/workflows/transition-compounded-product-presentation"
 
 jest.setTimeout(180 * 1000)
@@ -1207,6 +1209,196 @@ medusaIntegrationTestRunner({
         await expect(
           service.deleteGovernanceAuditEvents(auditEvents[0].id),
         ).rejects.toThrow("cannot be deleted")
+      })
+
+      it("sets a governed variant recipe through the authenticated workflow boundary", async () => {
+        const container = getContainer()
+        const productService = container.resolve<IProductModuleService>(
+          Modules.PRODUCT,
+        )
+        const inventoryService = container.resolve<IInventoryService>(
+          Modules.INVENTORY,
+        )
+        const service = container.resolve<CompoundedProductModuleService>(
+          COMPOUNDED_PRODUCT_MODULE,
+        )
+        const suffix = Date.now()
+        const configuration =
+          await createCompoundedProductPresentationWorkflow(container).run({
+            input: {
+              key: `recipe_governed_${suffix}`,
+              snapshot,
+              actorId: adminUserId,
+            },
+          })
+        const activated =
+          await transitionCompoundedProductPresentationWorkflow(container).run({
+            input: {
+              presentationId: configuration.result.presentation.id,
+              expected_current_revision_id:
+                configuration.result.current_revision.id,
+              target_status: "active",
+              reason: "Activate recipe workflow test configuration",
+              actorId: adminUserId,
+            },
+          })
+        const product = await productService.createProducts({
+          title: "Governed recipe product",
+          status: "draft",
+          metadata: { compounded_product: { schema_version: "1" } },
+          variants: [
+            {
+              title: "10 mg vial",
+              sku: `RECIPE-${suffix}`,
+              manage_inventory: true,
+              allow_backorder: false,
+              metadata: { compounded_product: { schema_version: "1" } },
+            },
+          ],
+        })
+        const unrelatedProduct = await productService.createProducts({
+          title: "Unrelated recipe product",
+          status: "draft",
+          variants: [
+            {
+              title: "Unrelated variant",
+              sku: `RECIPE-UNRELATED-${suffix}`,
+              manage_inventory: false,
+            },
+          ],
+        })
+        await service.createGovernedProductRegistrations({
+          product_id: product.id,
+          catalog_kind: "compounded",
+          contract_schema_version: "1",
+          configuration_snapshot: activated.result.current_revision.snapshot,
+          configuration_fingerprint:
+            activated.result.current_revision.fingerprint,
+          readiness_policy_revision: "1",
+          readiness_policy_snapshot:
+            DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
+          state: "draft",
+          created_by_actor_id: adminUserId,
+          updated_by_actor_id: adminUserId,
+          published_at: null,
+          withdrawn_at: null,
+          presentation_revision_id: activated.result.current_revision.id,
+        })
+        const [active, vial] = await inventoryService.createInventoryItems([
+          { sku: `RECIPE-ACTIVE-${suffix}`, title: "Recipe active material" },
+          { sku: `RECIPE-VIAL-${suffix}`, title: "Recipe vial" },
+        ])
+        await Promise.all([
+          setComponentProfileWorkflow(container).run({
+            input: {
+              inventoryItemId: active.id,
+              baseUnit: "microgram",
+              displayUnit: "mg",
+              baseUnitsPerDisplayUnit: 1_000,
+              displayPrecision: 2,
+              reorderThresholdBaseUnits: 10_000,
+              category: "active ingredient",
+              lotTrackingRequired: true,
+              expiryTrackingRequired: true,
+            },
+          }),
+          setComponentProfileWorkflow(container).run({
+            input: {
+              inventoryItemId: vial.id,
+              baseUnit: "piece",
+              displayUnit: "piece",
+              baseUnitsPerDisplayUnit: 1,
+              displayPrecision: 0,
+              reorderThresholdBaseUnits: 10,
+              category: "container",
+              lotTrackingRequired: false,
+              expiryTrackingRequired: false,
+            },
+          }),
+        ])
+
+        const rejectedOwnership = await api.post(
+          `/admin/compounded-product/products/${product.id}/variants/${unrelatedProduct.variants[0].id}/recipe`,
+          {
+            components: [
+              {
+                inventory_item_id: active.id,
+                required_display_amount: "10",
+              },
+            ],
+            note: "Reject an unrelated variant",
+          },
+          adminConfig(),
+        )
+        expect(rejectedOwnership.status).toBe(404)
+
+        const response = await api.post(
+          `/admin/compounded-product/products/${product.id}/variants/${product.variants[0].id}/recipe`,
+          {
+            components: [
+              {
+                inventory_item_id: active.id,
+                required_display_amount: "10",
+              },
+              {
+                inventory_item_id: vial.id,
+                required_display_amount: "1",
+              },
+            ],
+            note: "Persist a normalized 10 mg vial recipe",
+          },
+          adminConfig(),
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.normalized_components).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventoryItemId: active.id,
+              requiredQuantity: 10_000,
+              baseUnit: "microgram",
+            }),
+            expect.objectContaining({
+              inventoryItemId: vial.id,
+              requiredQuantity: 1,
+              baseUnit: "piece",
+            }),
+          ]),
+        )
+        expect(response.data.readiness.blockers).not.toContain(
+          "managed_inventory_recipe_missing",
+        )
+
+        const query = container.resolve(ContainerRegistrationKeys.QUERY)
+        const { data: links } = await query.graph({
+          entity: "product_variant_inventory_item",
+          fields: ["variant_id", "inventory_item_id", "required_quantity"],
+          filters: { variant_id: product.variants[0].id },
+        })
+        expect(links).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: active.id,
+              required_quantity: 10_000,
+            }),
+            expect.objectContaining({
+              inventory_item_id: vial.id,
+              required_quantity: 1,
+            }),
+          ]),
+        )
+        const auditEvents = await service.listGovernanceAuditEvents({
+          product_id: product.id,
+          variant_id: product.variants[0].id,
+        })
+        expect(auditEvents).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              event_type: "recipe_changed",
+              outcome: "succeeded",
+            }),
+          ]),
+        )
       })
     })
   },
