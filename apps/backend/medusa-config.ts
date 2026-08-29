@@ -14,6 +14,7 @@ module.exports = defineConfig({
     },
   },
   admin: {
+    maxUploadFileSize: 10 * 1024 * 1024,
     vite: (config) => ({
       resolve: {
         dedupe: [
