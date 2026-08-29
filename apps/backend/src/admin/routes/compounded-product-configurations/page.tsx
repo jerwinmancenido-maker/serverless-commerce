@@ -140,7 +140,7 @@ const CompoundedProductConfigurationsPage = () => {
         open={editOpen}
         onOpenChange={setEditOpen}
       />
-      <GovernedProductTypes presentations={query.data?.presentations || []} />
+      <GovernedProductTypes />
     </div>
   )
 }

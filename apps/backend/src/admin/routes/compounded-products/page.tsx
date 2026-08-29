@@ -19,6 +19,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { sdk } from "../../lib/sdk"
+import { loadAllAdminPages } from "../../lib/load-all-pages"
 import { ConfiguredFieldInput } from "./configured-field-input"
 import {
   createCompoundedProductCreationReview,
@@ -118,42 +119,97 @@ const CompoundedProductsPage = () => {
   const presentationsQuery = useQuery({
     queryKey: ["compounded-product-presentations", "creation"],
     queryFn: () =>
-      sdk.client.fetch<PresentationListResponse>(
-        "/admin/compounded-product/presentations?limit=100&offset=0",
-      ),
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.client.fetch<PresentationListResponse>(
+            `/admin/compounded-product/presentations?limit=${limit}&offset=${offset}`,
+          )
+
+          return { items: page.presentations, count: page.count }
+        },
+      }),
   })
   const shippingProfilesQuery = useQuery({
     queryKey: ["shipping-profiles", "compounded-product-creation"],
-    queryFn: () => sdk.admin.shippingProfile.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.shippingProfile.list({ limit, offset })
+
+          return { items: page.shipping_profiles, count: page.count }
+        },
+      }),
   })
   const salesChannelsQuery = useQuery({
     queryKey: ["sales-channels", "compounded-product-creation"],
-    queryFn: () => sdk.admin.salesChannel.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.salesChannel.list({ limit, offset })
+
+          return { items: page.sales_channels, count: page.count }
+        },
+      }),
   })
   const regionsQuery = useQuery({
     queryKey: ["regions", "compounded-product-creation"],
-    queryFn: () => sdk.admin.region.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.region.list({ limit, offset })
+
+          return { items: page.regions, count: page.count }
+        },
+      }),
   })
   const productTypesQuery = useQuery({
     queryKey: ["product-types", "compounded-product-creation"],
-    queryFn: () => sdk.admin.productType.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.productType.list({ limit, offset })
+
+          return { items: page.product_types, count: page.count }
+        },
+      }),
   })
   const collectionsQuery = useQuery({
     queryKey: ["product-collections", "compounded-product-creation"],
-    queryFn: () => sdk.admin.productCollection.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.productCollection.list({ limit, offset })
+
+          return { items: page.collections, count: page.count }
+        },
+      }),
   })
   const categoriesQuery = useQuery({
     queryKey: ["product-categories", "compounded-product-creation"],
-    queryFn: () => sdk.admin.productCategory.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.productCategory.list({ limit, offset })
+
+          return { items: page.product_categories, count: page.count }
+        },
+      }),
   })
   const tagsQuery = useQuery({
     queryKey: ["product-tags", "compounded-product-creation"],
-    queryFn: () => sdk.admin.productTag.list({ limit: 100 }),
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.productTag.list({ limit, offset })
+
+          return { items: page.product_tags, count: page.count }
+        },
+      }),
   })
 
   const activePresentations = useMemo(
     () =>
-      (presentationsQuery.data?.presentations || []).filter(
+      (presentationsQuery.data || []).filter(
         (item) =>
           item.presentation.status === "active" &&
           item.current_revision?.status === "active",
@@ -195,7 +251,7 @@ const CompoundedProductsPage = () => {
     () =>
       Array.from(
         new Set(
-          (regionsQuery.data?.regions || []).map((region) =>
+          (regionsQuery.data || []).map((region) =>
             region.currency_code.toUpperCase(),
           ),
         ),
@@ -341,7 +397,7 @@ const CompoundedProductsPage = () => {
       }
 
       const refreshed = await presentationsQuery.refetch()
-      const currentPresentation = refreshed.data?.presentations.find(
+      const currentPresentation = refreshed.data?.find(
         (item) => item.presentation.id === selectedPresentation.presentation.id,
       )
 
@@ -548,7 +604,11 @@ const CompoundedProductsPage = () => {
     presentationsQuery.isLoading ||
     shippingProfilesQuery.isLoading ||
     salesChannelsQuery.isLoading ||
-    regionsQuery.isLoading
+    regionsQuery.isLoading ||
+    productTypesQuery.isLoading ||
+    collectionsQuery.isLoading ||
+    categoriesQuery.isLoading ||
+    tagsQuery.isLoading
   const referenceDataError =
     presentationsQuery.error ||
     shippingProfilesQuery.error ||
@@ -765,7 +825,7 @@ const CompoundedProductsPage = () => {
                 <Select.Value placeholder="Select shipping profile" />
               </Select.Trigger>
               <Select.Content>
-                {(shippingProfilesQuery.data?.shipping_profiles || []).map(
+                {(shippingProfilesQuery.data || []).map(
                   (profile) => (
                     <Select.Item key={profile.id} value={profile.id}>
                       {profile.name}
@@ -787,7 +847,7 @@ const CompoundedProductsPage = () => {
                 <Select.Value placeholder="No product type" />
               </Select.Trigger>
               <Select.Content>
-                {(productTypesQuery.data?.product_types || []).map((type) => (
+                {(productTypesQuery.data || []).map((type) => (
                   <Select.Item key={type.id} value={type.id}>
                     {type.value}
                   </Select.Item>
@@ -807,7 +867,7 @@ const CompoundedProductsPage = () => {
                 <Select.Value placeholder="No collection" />
               </Select.Trigger>
               <Select.Content>
-                {(collectionsQuery.data?.collections || []).map((collection) => (
+                {(collectionsQuery.data || []).map((collection) => (
                   <Select.Item key={collection.id} value={collection.id}>
                     {collection.title}
                   </Select.Item>
@@ -819,7 +879,7 @@ const CompoundedProductsPage = () => {
 
         <ReferenceCheckboxes
           label="Sales channels"
-          items={(salesChannelsQuery.data?.sales_channels || []).map((item) => ({
+          items={(salesChannelsQuery.data || []).map((item) => ({
             id: item.id,
             label: item.name,
           }))}
@@ -828,7 +888,7 @@ const CompoundedProductsPage = () => {
         />
         <ReferenceCheckboxes
           label="Categories"
-          items={(categoriesQuery.data?.product_categories || []).map((item) => ({
+          items={(categoriesQuery.data || []).map((item) => ({
             id: item.id,
             label: item.name,
           }))}
@@ -837,7 +897,7 @@ const CompoundedProductsPage = () => {
         />
         <ReferenceCheckboxes
           label="Tags"
-          items={(tagsQuery.data?.product_tags || []).map((item) => ({
+          items={(tagsQuery.data || []).map((item) => ({
             id: item.id,
             label: item.value,
           }))}
@@ -1384,6 +1444,7 @@ const CompoundedProductsPage = () => {
           size="small"
           disabled={
             !preview ||
+            Boolean(referenceDataError) ||
             draftSaveBlockers.length > 0 ||
             createMutation.isPending
           }

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Spinner } from "@medusajs/icons"
 import {
   Button,
   Container,
@@ -10,44 +10,69 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
 
 import { sdk } from "../../lib/sdk"
+import { loadAllAdminPages } from "../../lib/load-all-pages"
 import type {
   ClassificationMapping,
   ClassificationMappingListResponse,
   PresentationListItem,
+  PresentationListResponse,
 } from "./types"
-
-type GovernedProductTypesProps = {
-  presentations: PresentationListItem[]
-}
 
 const statusColor = (status: ClassificationMapping["status"]) =>
   status === "active" ? "green" : status === "archived" ? "grey" : "orange"
 
-export const GovernedProductTypes = ({
-  presentations,
-}: GovernedProductTypesProps) => {
+export const GovernedProductTypes = () => {
   const queryClient = useQueryClient()
   const [productTypeId, setProductTypeId] = useState("")
   const [presentationId, setPresentationId] = useState("")
   const [reason, setReason] = useState("")
   const mappingsQuery = useQuery({
     queryKey: ["compounded-product-classification-mappings"],
-    queryFn: () =>
-      sdk.client.fetch<ClassificationMappingListResponse>(
-        "/admin/compounded-product/governed-product-types?limit=100&offset=0",
-      ),
+    queryFn: async () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page =
+            await sdk.client.fetch<ClassificationMappingListResponse>(
+              `/admin/compounded-product/governed-product-types?limit=${limit}&offset=${offset}`,
+            )
+
+          return { items: page.mappings, count: page.count }
+        },
+      }),
+  })
+  const presentationsQuery = useQuery({
+    queryKey: ["compounded-product-presentations", "governed-product-types"],
+    queryFn: async () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.client.fetch<PresentationListResponse>(
+            `/admin/compounded-product/presentations?limit=${limit}&offset=${offset}`,
+          )
+
+          return { items: page.presentations, count: page.count }
+        },
+      }),
   })
   const productTypesQuery = useQuery({
     queryKey: ["product-types", "compounded-product-governance"],
-    queryFn: () => sdk.admin.productType.list({ limit: 100 }),
+    queryFn: async () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.productType.list({ limit, offset })
+
+          return { items: page.product_types, count: page.count }
+        },
+      }),
   })
+  const presentations = presentationsQuery.data || []
   const productTypeNames = useMemo(
     () =>
       new Map(
-        (productTypesQuery.data?.product_types || []).map((type) => [
+        (productTypesQuery.data || []).map((type) => [
           type.id,
           type.value,
         ]),
@@ -125,9 +150,17 @@ export const GovernedProductTypes = ({
           : "Product-type mapping could not be updated",
       ),
   })
-  const mappings = mappingsQuery.data?.mappings || []
+  const mappings = mappingsQuery.data || []
+  const referenceDataLoading =
+    presentationsQuery.isLoading || productTypesQuery.isLoading
+  const referenceDataError =
+    presentationsQuery.isError || productTypesQuery.isError
   const canCreate =
-    productTypeId && presentationId && reason.trim().length >= 3
+    !referenceDataLoading &&
+    !referenceDataError &&
+    productTypeId &&
+    presentationId &&
+    reason.trim().length >= 3
 
   return (
     <Container className="divide-y p-0">
@@ -142,12 +175,16 @@ export const GovernedProductTypes = ({
       <div className="grid gap-4 px-6 py-4 lg:grid-cols-3">
         <div className="flex flex-col gap-y-2">
           <Label>Product type</Label>
-          <Select value={productTypeId} onValueChange={setProductTypeId}>
+          <Select
+            value={productTypeId}
+            onValueChange={setProductTypeId}
+            disabled={referenceDataLoading || referenceDataError}
+          >
             <Select.Trigger>
               <Select.Value placeholder="Select product type" />
             </Select.Trigger>
             <Select.Content>
-              {(productTypesQuery.data?.product_types || []).map((type) => (
+              {(productTypesQuery.data || []).map((type) => (
                 <Select.Item key={type.id} value={type.id}>
                   {type.value}
                 </Select.Item>
@@ -157,7 +194,11 @@ export const GovernedProductTypes = ({
         </div>
         <div className="flex flex-col gap-y-2">
           <Label>Presentation configuration</Label>
-          <Select value={presentationId} onValueChange={setPresentationId}>
+          <Select
+            value={presentationId}
+            onValueChange={setPresentationId}
+            disabled={referenceDataLoading || referenceDataError}
+          >
             <Select.Trigger>
               <Select.Value placeholder="Select presentation" />
             </Select.Trigger>
@@ -197,12 +238,28 @@ export const GovernedProductTypes = ({
         </div>
       </div>
       <div className="flex flex-col gap-y-3 px-6 py-4">
-        {mappingsQuery.isError ? (
+        {mappingsQuery.isLoading ||
+        presentationsQuery.isLoading ||
+        productTypesQuery.isLoading ? (
+          <div className="flex items-center gap-x-2">
+            <Spinner className="animate-spin" />
+            <Text size="small" className="text-ui-fg-subtle">
+              Loading governed configuration references...
+            </Text>
+          </div>
+        ) : null}
+        {mappingsQuery.isError ||
+        presentationsQuery.isError ||
+        productTypesQuery.isError ? (
           <Text size="small" className="text-ui-fg-error">
-            Governed product-type mappings could not be loaded.
+            Governed product-type mappings or reference data could not be
+            loaded.
           </Text>
         ) : null}
-        {!mappingsQuery.isLoading && !mappings.length ? (
+        {!mappingsQuery.isLoading &&
+        !mappingsQuery.isError &&
+        !referenceDataError &&
+        !mappings.length ? (
           <Text size="small" className="text-ui-fg-subtle">
             No product types are currently governed by configuration.
           </Text>
