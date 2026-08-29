@@ -505,7 +505,7 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 matrix_row_key: matrixRow.key,
-                sku: `GOV-${Date.now()}`,
+                sku: "",
                 prices: [{ amount: "1000", currency_code: "php" }],
                 manage_inventory: false,
                 allow_backorder: false,
@@ -535,6 +535,9 @@ medusaIntegrationTestRunner({
         )
         expect(readiness.status).toBe(200)
         expect(readiness.data.ready).toBe(true)
+        expect(readiness.data.variants[0].sku).toMatch(
+          /^GOVERNED-VIAL-[A-Z0-9-]+-[A-F0-9]{16}$/,
+        )
 
         const bypassPublish = await api.post(
           `/admin/products/${productId}`,

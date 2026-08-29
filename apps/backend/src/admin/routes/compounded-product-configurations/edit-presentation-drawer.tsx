@@ -241,6 +241,11 @@ export const EditPresentationDrawer = ({
           </div>
           <div className="flex flex-col gap-y-2">
             <Label>SKU suggestion policy</Label>
+            <Text size="small" className="text-ui-fg-subtle">
+              Optional JSON. Tokens: {"{product}"}, {"{presentation}"},{" "}
+              {"{options}"}, {"{variant}"}, and {"{separator}"}. A stable
+              uniqueness suffix is always added to generated SKUs.
+            </Text>
             <Textarea
               rows={5}
               value={skuSuggestionPolicy}

@@ -101,6 +101,57 @@ describe("compounded product configuration API contract", () => {
     expect(result.snapshot.readiness_policy.require_price).toBe(false)
   })
 
+  it("accepts configured SKU tokens and rejects unknown template tokens", () => {
+    const accepted = CompoundedProductPresentationSnapshot.safeParse({
+      ...validSnapshot,
+      sku_suggestion_policy: {
+        template: "{presentation}{separator}{product}{separator}{options}",
+        separator: "-",
+        normalization: "uppercase",
+      },
+    })
+    const rejected = CompoundedProductPresentationSnapshot.safeParse({
+      ...validSnapshot,
+      sku_suggestion_policy: {
+        template: "{product}-{unconfigured}",
+        separator: "-",
+        normalization: "uppercase",
+      },
+    })
+
+    expect(accepted.success).toBe(true)
+    expect(rejected.success).toBe(false)
+    expect(rejected.error?.issues[0]?.message).toBe(
+      "Unknown SKU template token: {unconfigured}",
+    )
+  })
+
+  it("rejects unsafe SKU separators", () => {
+    const unsafe = CompoundedProductPresentationSnapshot.safeParse({
+      ...validSnapshot,
+      sku_suggestion_policy: {
+        template: "{product}{separator}{options}",
+        separator: "$&",
+        normalization: "uppercase",
+      },
+    })
+    const empty = CompoundedProductPresentationSnapshot.safeParse({
+      ...validSnapshot,
+      sku_suggestion_policy: {
+        template: "{product}{separator}{options}",
+        separator: "",
+        normalization: "uppercase",
+      },
+    })
+
+    expect(unsafe.success).toBe(false)
+    expect(unsafe.error?.issues[0]?.message).toBe(
+      "SKU separator may contain only -, _, or .",
+    )
+    expect(empty.success).toBe(false)
+    expect(empty.error?.issues[0]?.message).toBe("SKU separator is required")
+  })
+
   it("rejects duplicate field, axis, and value identities or positions", () => {
     const result = CompoundedProductPresentationSnapshot.safeParse({
       ...validSnapshot,

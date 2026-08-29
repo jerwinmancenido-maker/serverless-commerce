@@ -7,6 +7,7 @@ import {
   normalizeCompoundedProductStructuredMeasurement,
   normalizeCompoundedProductStructuredRatio,
 } from "./structured-measurement"
+import { generateCompoundedProductSku } from "./sku-suggestion"
 import {
   assertCompoundedProductVariantMatrixConfirmed,
   generateCompoundedProductVariantMatrix,
@@ -272,10 +273,19 @@ export function prepareCompoundedProductDraft(input: {
       invalidDraft(`Variant submission is missing row ${row.key}`)
     }
 
-    const skuIdentity = submission.sku.toLocaleUpperCase("en-US")
+    const sku = generateCompoundedProductSku({
+      explicitSku: submission.sku,
+      productTitle: input.request.product.title,
+      productHandle: input.request.product.handle,
+      presentationLabel: input.snapshot.label,
+      row,
+      idempotencyKey: input.request.idempotency_key,
+      policy: input.snapshot.sku_suggestion_policy,
+    })
+    const skuIdentity = sku.toLocaleUpperCase("en-US")
 
     if (skuSet.has(skuIdentity)) {
-      invalidDraft(`Duplicate SKU in request: ${submission.sku}`)
+      invalidDraft(`Duplicate SKU in request: ${sku}`)
     }
 
     skuSet.add(skuIdentity)
@@ -284,12 +294,12 @@ export function prepareCompoundedProductDraft(input: {
       fields: input.snapshot.fields,
       values: submission.configured_values,
       scope: "variant",
-      context: `Variant ${submission.sku}`,
+      context: `Variant ${sku}`,
     })
 
     return {
       title: row.title,
-      sku: submission.sku,
+      sku,
       options: Object.fromEntries(
         row.options.map((option) => [option.semanticName, option.valueLabel]),
       ),

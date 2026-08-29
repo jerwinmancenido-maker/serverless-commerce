@@ -224,11 +224,38 @@ export const CompoundedProductVariationAxis = z.strictObject({
   values: z.array(CompoundedProductVariationValue).min(1).max(500),
 })
 
-const SkuSuggestionPolicy = z.strictObject({
-  template: z.string().trim().min(1).max(500),
-  separator: z.string().max(8),
-  normalization: z.enum(["uppercase", "lowercase", "preserve"]),
-})
+const SKU_SUGGESTION_TEMPLATE_TOKENS = new Set([
+  "{product}",
+  "{presentation}",
+  "{options}",
+  "{variant}",
+  "{separator}",
+])
+
+const SkuSuggestionPolicy = z
+  .strictObject({
+    template: z.string().trim().min(1).max(500),
+    separator: z
+      .string()
+      .min(1, "SKU separator is required")
+      .max(8)
+      .regex(/^[-_.]+$/, "SKU separator may contain only -, _, or ."),
+    normalization: z.enum(["uppercase", "lowercase", "preserve"]),
+  })
+  .superRefine((policy, context) => {
+    const referencedTokens = policy.template.match(/\{[^{}]+\}/g) || []
+    const unknownTokens = referencedTokens.filter(
+      (token) => !SKU_SUGGESTION_TEMPLATE_TOKENS.has(token),
+    )
+
+    if (unknownTokens.length) {
+      context.addIssue({
+        code: "custom",
+        message: `Unknown SKU template token: ${unknownTokens[0]}`,
+        path: ["template"],
+      })
+    }
+  })
 
 function addDuplicateIssues(
   values: Array<{ key: string; position: number }>,

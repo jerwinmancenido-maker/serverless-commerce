@@ -169,6 +169,59 @@ describe("compounded product draft preparation", () => {
     })
   })
 
+  it("generates stable unique native SKUs when submissions leave them blank", () => {
+    const request = buildRequest()
+    request.variants.forEach((variant) => {
+      variant.sku = ""
+    })
+
+    const first = prepareCompoundedProductDraft({
+      request,
+      snapshot,
+      configurationFingerprint: "a".repeat(64),
+      serverMaximum: 100,
+    })
+    const replay = prepareCompoundedProductDraft({
+      request,
+      snapshot,
+      configurationFingerprint: "a".repeat(64),
+      serverMaximum: 100,
+    })
+    const firstSkus = first.nativeProduct.variants?.map((variant) => variant.sku)
+    const replaySkus = replay.nativeProduct.variants?.map(
+      (variant) => variant.sku,
+    )
+
+    expect(firstSkus).toEqual(replaySkus)
+    expect(new Set(firstSkus).size).toBe(2)
+    expect(
+      firstSkus?.every((sku) =>
+        Boolean(sku?.startsWith("CONFIGURABLE-COMPOUND")),
+      ),
+    ).toBe(true)
+  })
+
+  it("defaults omitted submission SKUs to backend-generated values", () => {
+    const request = buildRequest()
+    const parsed = AdminCreateCompoundedProductDraft.parse({
+      ...request,
+      variants: request.variants.map(({ sku: _sku, ...variant }) => variant),
+    })
+    const prepared = prepareCompoundedProductDraft({
+      request: parsed,
+      snapshot,
+      configurationFingerprint: "a".repeat(64),
+      serverMaximum: 100,
+    })
+
+    expect(parsed.variants.every((variant) => variant.sku === "")).toBe(true)
+    expect(
+      prepared.nativeProduct.variants?.every((variant) =>
+        Boolean(variant.sku?.startsWith("CONFIGURABLE-COMPOUND")),
+      ),
+    ).toBe(true)
+  })
+
   it("rejects a draft whose submitted rows do not match the matrix", () => {
     const request = buildRequest()
     request.variants.pop()

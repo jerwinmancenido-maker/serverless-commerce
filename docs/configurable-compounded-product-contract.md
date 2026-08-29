@@ -323,7 +323,7 @@ a new fingerprint.
 Every generated row exposes:
 
 - Option combination and generated title preview.
-- Editable SKU suggestion.
+- Optional editable SKU input; a blank value is generated on submission.
 - Region-aware price fields, including PHP when the selected region uses PHP.
 - Inventory management and backorder policy.
 - Optional structured measurement and concentration metadata.
@@ -398,10 +398,25 @@ Rules for governed classification are:
 
 ## SKU and marketplace boundaries
 
-SKU generation is a suggestion service, not an authority. Its template,
-segments, separators, normalization, and optional presentation codes are
-Admin-managed configuration. Every suggested SKU remains editable and must
-pass Medusa uniqueness validation.
+SKU input is optional in the compounded-product creation interface. An explicit
+administrator-supplied SKU is trimmed, preserved, and submitted unchanged. If
+the input is blank or omitted, the authoritative backend generates the SKU
+before duplicate-request checks and native Medusa product creation.
+
+Generation uses the pinned SKU configuration policy when one is available and
+a presentation-neutral fallback otherwise. Configurable templates may use the
+`{product}`, `{presentation}`, `{options}`, `{variant}`, and `{separator}`
+tokens. Separators must be non-empty and may contain only the approved literal
+characters `-`, `_`, or `.`. Normalization is configured as uppercase,
+lowercase, or preserve.
+
+Every generated SKU includes a deterministic suffix derived from the request's
+idempotency key and matrix-row identity. This makes replay of the same logical
+row stable while separating independently submitted rows. Generation does not
+replace Medusa's uniqueness authority: explicit and generated SKUs must still
+pass native Medusa uniqueness validation. Organization-specific prefixes and
+the activated configuration records that provide them remain Admin-managed
+configuration rather than source-code constants.
 
 Marketplace SKU mappings remain separate integration data. A Lazada, TikTok
 Shop, or Shopee identifier must not become the canonical Medusa variant ID or
@@ -619,6 +634,7 @@ silently mutate previously created products, variants, prices, or recipes.
 | CCP-029 | Variant count exceeds the server maximum | Request is rejected before any native mutation |
 | CCP-030 | Governed publication succeeds | Immutable actor, revision, decision, and outcome audit event exists |
 | CCP-031 | Required audit write fails | Governed mutation fails and compensation preserves the prior state |
+| CCP-032 | Administrator leaves a variant SKU blank | Backend generates a stable SKU before native creation; replay of the same idempotency key and matrix row yields the same value |
 
 ## Implementation slices and gates
 
@@ -656,7 +672,8 @@ The contract requires explicit review of:
   starter records.
 - Which fields are required for draft and which block publication.
 - The approved structured field types available to future presentations.
-- SKU suggestion policy and any organization-specific prefixes.
+- Which activated SKU configuration records and organization-specific prefixes
+  should replace the presentation-neutral fallback.
 - Who may manage configuration, create drafts, and publish products.
 - Whether reusable BOM recipe templates belong in this configuration boundary
   or a later BOM-specific contract.

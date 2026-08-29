@@ -306,6 +306,11 @@ export const CreatePresentationModal = ({
                 <Label htmlFor="sku-suggestion-policy">
                   SKU suggestion policy
                 </Label>
+                <Text size="small" className="text-ui-fg-subtle">
+                  Optional JSON. Tokens: {"{product}"}, {"{presentation}"},{" "}
+                  {"{options}"}, {"{variant}"}, and {"{separator}"}. A stable
+                  uniqueness suffix is always added to generated SKUs.
+                </Text>
                 <Textarea
                   id="sku-suggestion-policy"
                   rows={5}

@@ -65,7 +65,7 @@ const VariantPrice = z.strictObject({
 const VariantSubmission = z
   .strictObject({
     matrix_row_key: z.string().length(64).regex(/^[a-f0-9]{64}$/),
-    sku: z.string().trim().min(1).max(255),
+    sku: z.string().trim().max(255).default(""),
     prices: z.array(VariantPrice).max(50).default([]),
     image_urls: z.array(z.string().url().max(2_000)).max(50).default([]),
     manage_inventory: z.boolean().default(true),
