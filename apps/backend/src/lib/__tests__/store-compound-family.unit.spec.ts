@@ -1,4 +1,7 @@
-import { retrieveStoreCompoundFamilyByKey } from "../store-compound-family"
+import {
+  retrieveStoreCompoundFamilyByKey,
+  retrieveStoreCompoundFamilyByProductId,
+} from "../store-compound-family"
 
 const family = {
   id: "cpfam_01",
@@ -10,13 +13,16 @@ const family = {
 
 const registration = (index: number) => ({
   product_id: `prod_${String(index).padStart(3, "0")}`,
-  compound_format: {
-    id: `cpfmt_${index}`,
-    key: index % 2 ? "nasal" : "injectable",
-    name: index % 2 ? "Nasal" : "Injectable",
-    description: null,
-    status: "active" as const,
-  },
+  compound_family_id: family.id,
+  compound_format_id: `cpfmt_${index}`,
+})
+
+const format = (index: number) => ({
+  id: `cpfmt_${index}`,
+  key: index % 2 ? "nasal" : "injectable",
+  name: index % 2 ? "Nasal" : "Injectable",
+  description: null,
+  status: "active" as const,
 })
 
 describe("store compound family retrieval", () => {
@@ -25,13 +31,20 @@ describe("store compound family retrieval", () => {
       registration(index),
     )
     const lastPage = [registration(100)]
-    const graph = jest
+    const listCompoundFamilies = jest.fn().mockResolvedValue([family])
+    const listGovernedProductRegistrations = jest
       .fn()
-      .mockResolvedValueOnce({ data: [family] })
-      .mockResolvedValueOnce({ data: firstPage })
-      .mockResolvedValueOnce({ data: lastPage })
+      .mockResolvedValueOnce(firstPage)
+      .mockResolvedValueOnce(lastPage)
+    const listCompoundProductFormats = jest
+      .fn()
+      .mockResolvedValue(Array.from({ length: 101 }, (_, index) => format(index)))
     const scope = {
-      resolve: jest.fn(() => ({ graph })),
+      resolve: jest.fn(() => ({
+        listCompoundFamilies,
+        listGovernedProductRegistrations,
+        listCompoundProductFormats,
+      })),
     }
 
     const result = await retrieveStoreCompoundFamilyByKey(
@@ -49,36 +62,68 @@ describe("store compound family retrieval", () => {
         description: null,
       },
     })
-    expect(graph).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({
-        filters: {
-          state: "published",
-          compound_family: { id: family.id },
-          compound_format: { status: "active" },
-        },
-        pagination: expect.objectContaining({ take: 100, skip: 0 }),
-      }),
+    expect(listCompoundFamilies).toHaveBeenCalledWith(
+      { key: "semax", status: "active" },
+      { take: 1, skip: 0 },
     )
-    expect(graph).toHaveBeenNthCalledWith(
-      3,
-      expect.objectContaining({
-        pagination: expect.objectContaining({ take: 100, skip: 100 }),
-      }),
+    expect(listGovernedProductRegistrations).toHaveBeenNthCalledWith(
+      1,
+      { state: "published", compound_family_id: family.id },
+      expect.objectContaining({ take: 100, skip: 0 }),
+    )
+    expect(listGovernedProductRegistrations).toHaveBeenNthCalledWith(
+      2,
+      { state: "published", compound_family_id: family.id },
+      expect.objectContaining({ take: 100, skip: 100 }),
     )
   })
 
   it("does not expose a family that has no published active presentations", async () => {
-    const graph = jest
-      .fn()
-      .mockResolvedValueOnce({ data: [family] })
-      .mockResolvedValueOnce({ data: [] })
+    const service = {
+      listCompoundFamilies: jest.fn().mockResolvedValue([family]),
+      listGovernedProductRegistrations: jest.fn().mockResolvedValue([]),
+      listCompoundProductFormats: jest.fn(),
+    }
     const scope = {
-      resolve: jest.fn(() => ({ graph })),
+      resolve: jest.fn(() => service),
     }
 
     await expect(
       retrieveStoreCompoundFamilyByKey(scope as never, "semax"),
     ).rejects.toThrow("Compound family was not found")
+  })
+
+  it("uses the governed registration service entity for product lookup", async () => {
+    const listCompoundFamilies = jest.fn().mockResolvedValue([family])
+    const listGovernedProductRegistrations = jest
+      .fn()
+      .mockResolvedValueOnce([registration(1)])
+      .mockResolvedValueOnce([registration(1)])
+    const listCompoundProductFormats = jest
+      .fn()
+      .mockResolvedValue([format(1)])
+    const scope = {
+      resolve: jest.fn(() => ({
+        listCompoundFamilies,
+        listGovernedProductRegistrations,
+        listCompoundProductFormats,
+      })),
+    }
+
+    const result = await retrieveStoreCompoundFamilyByProductId(
+      scope as never,
+      "prod_001",
+    )
+
+    expect(result.key).toBe("semax")
+    expect(listGovernedProductRegistrations).toHaveBeenNthCalledWith(
+      1,
+      { product_id: "prod_001", state: "published" },
+      { take: 1, skip: 0 },
+    )
+    expect(listCompoundFamilies).toHaveBeenCalledWith(
+      { id: family.id, status: "active" },
+      { take: 1, skip: 0 },
+    )
   })
 })

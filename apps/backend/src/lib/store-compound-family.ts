@@ -1,5 +1,8 @@
 import type { MedusaContainer } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
+
+import { COMPOUNDED_PRODUCT_MODULE } from "../modules/compounded-product"
+import type CompoundedProductModuleService from "../modules/compounded-product/service"
 
 type FamilyRecord = {
   id: string
@@ -11,14 +14,16 @@ type FamilyRecord = {
 
 type RegistrationRecord = {
   product_id: string
-  compound_format: {
-    id: string
-    key: string
-    name: string
-    description: string | null
-    status: "active" | "archived"
-  } | null
-  compound_family?: FamilyRecord | null
+  compound_family_id?: string | null
+  compound_format_id?: string | null
+}
+
+type FormatRecord = {
+  id: string
+  key: string
+  name: string
+  description: string | null
+  status: "active" | "archived"
 }
 
 export type StoreCompoundFamily = {
@@ -47,34 +52,25 @@ async function loadFamilyMembers(
   scope: MedusaContainer,
   family: FamilyRecord,
 ): Promise<StoreCompoundFamily> {
-  const query = scope.resolve(ContainerRegistrationKeys.QUERY)
+  const service = scope.resolve<CompoundedProductModuleService>(
+    COMPOUNDED_PRODUCT_MODULE,
+  )
   const registrations: RegistrationRecord[] = []
   const pageSize = 100
   let skip = 0
 
   while (true) {
-    const { data } = await query.graph({
-      entity: "compounded_product_registration",
-      fields: [
-        "product_id",
-        "compound_format.id",
-        "compound_format.key",
-        "compound_format.name",
-        "compound_format.description",
-        "compound_format.status",
-      ],
-      filters: {
+    const page = (await service.listGovernedProductRegistrations(
+      {
         state: "published",
-        compound_family: { id: family.id },
-        compound_format: { status: "active" },
+        compound_family_id: family.id,
       },
-      pagination: {
+      {
         take: pageSize,
         skip,
         order: { product_id: "ASC" },
       },
-    })
-    const page = data as RegistrationRecord[]
+    )) as RegistrationRecord[]
 
     registrations.push(...page)
 
@@ -84,15 +80,41 @@ async function loadFamilyMembers(
 
     skip += page.length
   }
-  const members = registrations.map((registration) => ({
-    product_id: registration.product_id,
-    presentation: {
-      id: registration.compound_format!.id,
-      key: registration.compound_format!.key,
-      name: registration.compound_format!.name,
-      description: registration.compound_format!.description,
-    },
-  }))
+  const formatIds = Array.from(
+    new Set(
+      registrations.flatMap((registration) =>
+        registration.compound_format_id
+          ? [registration.compound_format_id]
+          : [],
+      ),
+    ),
+  )
+  const formats = formatIds.length
+    ? ((await service.listCompoundProductFormats({
+        id: formatIds,
+        status: "active",
+      })) as FormatRecord[])
+    : []
+  const formatsById = new Map(formats.map((format) => [format.id, format]))
+  const members = registrations.flatMap((registration) => {
+    const format = registration.compound_format_id
+      ? formatsById.get(registration.compound_format_id)
+      : undefined
+
+    return format
+      ? [
+          {
+            product_id: registration.product_id,
+            presentation: {
+              id: format.id,
+              key: format.key,
+              name: format.name,
+              description: format.description,
+            },
+          },
+        ]
+      : []
+  })
 
   if (!members.length) {
     throw familyNotFound()
@@ -111,14 +133,13 @@ export async function retrieveStoreCompoundFamilyByKey(
   scope: MedusaContainer,
   key: string,
 ) {
-  const query = scope.resolve(ContainerRegistrationKeys.QUERY)
-  const { data } = await query.graph({
-    entity: "compounded_product_family",
-    fields: ["id", "key", "name", "description", "status"],
-    filters: { key, status: "active" },
-    pagination: { take: 1, skip: 0 },
-  })
-  const family = (data as FamilyRecord[])[0]
+  const service = scope.resolve<CompoundedProductModuleService>(
+    COMPOUNDED_PRODUCT_MODULE,
+  )
+  const [family] = (await service.listCompoundFamilies(
+    { key, status: "active" },
+    { take: 1, skip: 0 },
+  )) as FamilyRecord[]
 
   if (!family) {
     throw familyNotFound()
@@ -131,29 +152,29 @@ export async function retrieveStoreCompoundFamilyByProductId(
   scope: MedusaContainer,
   productId: string,
 ) {
-  const query = scope.resolve(ContainerRegistrationKeys.QUERY)
-  const { data } = await query.graph({
-    entity: "compounded_product_registration",
-    fields: [
-      "product_id",
-      "compound_family.id",
-      "compound_family.key",
-      "compound_family.name",
-      "compound_family.description",
-      "compound_family.status",
-    ],
-    filters: {
+  const service = scope.resolve<CompoundedProductModuleService>(
+    COMPOUNDED_PRODUCT_MODULE,
+  )
+  const [registration] = (await service.listGovernedProductRegistrations(
+    {
       product_id: productId,
       state: "published",
-      compound_family: { status: "active" },
     },
-    pagination: { take: 1, skip: 0 },
-  })
-  const registration = (data as RegistrationRecord[])[0]
+    { take: 1, skip: 0 },
+  )) as RegistrationRecord[]
 
-  if (!registration?.compound_family) {
+  if (!registration?.compound_family_id) {
     throw familyNotFound()
   }
 
-  return loadFamilyMembers(scope, registration.compound_family)
+  const [family] = (await service.listCompoundFamilies(
+    { id: registration.compound_family_id, status: "active" },
+    { take: 1, skip: 0 },
+  )) as FamilyRecord[]
+
+  if (!family) {
+    throw familyNotFound()
+  }
+
+  return loadFamilyMembers(scope, family)
 }
