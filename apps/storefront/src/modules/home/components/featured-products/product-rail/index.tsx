@@ -6,10 +6,10 @@ import InteractiveLink from "@modules/common/components/interactive-link"
 import ProductPreview from "@modules/products/components/product-preview"
 
 export default async function ProductRail({
-  collection,
+  category,
   region,
 }: {
-  collection: HttpTypes.StoreCollection
+  category: HttpTypes.StoreProductCategory
   region: HttpTypes.StoreRegion
 }) {
   const {
@@ -17,20 +17,21 @@ export default async function ProductRail({
   } = await listProducts({
     regionId: region.id,
     queryParams: {
-      collection_id: collection.id,
+      category_id: [category.id],
       fields: "*variants.calculated_price",
+      limit: 6,
     },
   })
 
-  if (!pricedProducts) {
+  if (!pricedProducts.length) {
     return null
   }
 
   return (
     <div className="content-container py-12 small:py-24">
       <div className="flex justify-between mb-8">
-        <Text className="txt-xlarge">{collection.title}</Text>
-        <InteractiveLink href={`/collections/${collection.handle}`}>
+        <Text className="txt-xlarge">{category.name}</Text>
+        <InteractiveLink href={`/categories/${category.handle}`}>
           View all
         </InteractiveLink>
       </div>
