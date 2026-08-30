@@ -17,6 +17,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import { merchantProductErrorMessage } from "../../../lib/admin-product-error"
 import { sdk } from "../../lib/sdk"
 import { loadAllAdminPages } from "../../lib/load-all-pages"
 import { AdvancedSettingsDrawer } from "./advanced-settings-drawer"
@@ -24,7 +25,13 @@ import { BuilderSection } from "./builder-section"
 import { ConfiguredFieldInput } from "./configured-field-input"
 import { ProductDescriptionEditor } from "./product-description-editor"
 import { createPresentationKey } from "./presentation-key"
-import { InventoryRecipeBuilder } from "./inventory-recipe-builder"
+import { CombinationInventoryDrawer } from "./combination-inventory-drawer"
+import {
+  combinationComponentsAreComplete,
+  completeRowsForAvailability,
+  componentsForCombination,
+  withInferredRecipeAxisRoles,
+} from "./combination-recipe-adapter"
 import {
   buildDirectRecipeRules,
   configuredRecipeCoverageIsComplete,
@@ -35,9 +42,7 @@ import {
   createCompoundedProductCreationReview,
   suggestCompoundedProductHandle,
 } from "./creation-review"
-import {
-  DirectVariationBuilder,
-} from "./direct-variation-builder"
+import { DirectVariationBuilder } from "./direct-variation-builder"
 import {
   newDirectVariationAxis,
   prepareAutomaticDirectProductSnapshot,
@@ -52,7 +57,6 @@ import type {
   MatrixPreviewResponse,
   PresentationListItem,
   PresentationSnapshot,
-  RecipeRule,
   VariantDraft,
 } from "./types"
 
@@ -92,8 +96,7 @@ const sortedFields = (
     .filter((field) => field.metadata_target?.scope === scope)
     .sort((left, right) => left.position - right.position)
 
-const messageFromError = (error: unknown, fallback: string) =>
-  error instanceof Error ? error.message : fallback
+const messageFromError = merchantProductErrorMessage
 
 const CompoundedProductsPage = () => {
   const navigate = useNavigate()
@@ -126,7 +129,12 @@ const CompoundedProductsPage = () => {
   >({})
   const [bulkPriceAmount, setBulkPriceAmount] = useState("")
   const [pricingCurrencyCode, setPricingCurrencyCode] = useState("")
-  const [imagePickerRowKey, setImagePickerRowKey] = useState<string | null>(null)
+  const [imagePickerRowKey, setImagePickerRowKey] = useState<string | null>(
+    null,
+  )
+  const [inventoryContentsRowKey, setInventoryContentsRowKey] = useState<
+    string | null
+  >(null)
   const [salesChannelIds, setSalesChannelIds] = useState<string[]>([])
   const [categoryIds, setCategoryIds] = useState<string[]>([])
   const [tagIds, setTagIds] = useState<string[]>([])
@@ -236,7 +244,10 @@ const CompoundedProductsPage = () => {
     queryFn: () =>
       loadAllAdminPages({
         loadPage: async (limit, offset) => {
-          const page = await sdk.admin.productCollection.list({ limit, offset })
+          const page = await sdk.admin.productCollection.list({
+            limit,
+            offset,
+          })
 
           return { items: page.collections, count: page.count }
         },
@@ -290,11 +301,15 @@ const CompoundedProductsPage = () => {
 
     return defaultProfile?.id || (profiles.length === 1 ? profiles[0].id : "")
   }, [shippingProfilesQuery.data])
+  const effectiveRecipeConfiguration = useMemo(
+    () => withInferredRecipeAxisRoles(recipeConfiguration, directVariationAxes),
+    [directVariationAxes, recipeConfiguration],
+  )
   const automaticSnapshot = useMemo(() => {
     const prepared = prepareAutomaticDirectProductSnapshot({
-        productTitle: product.title,
-        axes: directVariationAxes,
-      })
+      productTitle: product.title,
+      axes: directVariationAxes,
+    })
 
     if (!prepared.snapshot) {
       return prepared
@@ -305,13 +320,13 @@ const CompoundedProductsPage = () => {
       snapshot: {
         ...prepared.snapshot,
         recipe_rules: buildDirectRecipeRules({
-          configuration: recipeConfiguration,
+          configuration: effectiveRecipeConfiguration,
           axes: directVariationAxes,
           snapshot: prepared.snapshot,
         }),
       },
     }
-  }, [directVariationAxes, product.title, recipeConfiguration])
+  }, [directVariationAxes, effectiveRecipeConfiguration, product.title])
 
   useEffect(() => {
     const salesChannels = salesChannelsQuery.data || []
@@ -420,7 +435,12 @@ const CompoundedProductsPage = () => {
   }, [automaticSnapshot.snapshot])
 
   const uploadMutation = useMutation({
-    mutationFn: async ({ files }: { files: File[]; assignToRowKey?: string }) => {
+    mutationFn: async ({
+      files,
+    }: {
+      files: File[]
+      assignToRowKey?: string
+    }) => {
       const oversized = files.find((file) => file.size > 10 * 1024 * 1024)
 
       if (oversized) {
@@ -450,7 +470,9 @@ const CompoundedProductsPage = () => {
           }
         })
       }
-      toast.success(`${files.length} image${files.length === 1 ? "" : "s"} uploaded`)
+      toast.success(
+        `${files.length} image${files.length === 1 ? "" : "s"} uploaded`,
+      )
     },
     onError: (error) =>
       toast.error(messageFromError(error, "Images could not be uploaded")),
@@ -475,7 +497,9 @@ const CompoundedProductsPage = () => {
       )
     },
     onError: (error) =>
-      toast.error(messageFromError(error, "Uploaded image could not be removed")),
+      toast.error(
+        messageFromError(error, "Uploaded image could not be removed"),
+      ),
   })
 
   const createMutation = useMutation({
@@ -492,10 +516,7 @@ const CompoundedProductsPage = () => {
         throw new Error("Store fulfillment setup is incomplete")
       }
 
-      if (
-        preview.matrix.requiresConfirmation &&
-        !largeMatrixConfirmed
-      ) {
+      if (preview.matrix.requiresConfirmation && !largeMatrixConfirmed) {
         throw new Error("Confirm the current large variant matrix")
       }
 
@@ -531,7 +552,8 @@ const CompoundedProductsPage = () => {
 
       if (
         !activated?.current_revision ||
-        activated.current_revision.fingerprint !== preview.configuration_fingerprint
+        activated.current_revision.fingerprint !==
+          preview.configuration_fingerprint
       ) {
         const configuration = await sdk.client.fetch<PresentationListItem>(
           "/admin/compounded-product/presentations",
@@ -589,8 +611,7 @@ const CompoundedProductsPage = () => {
             matrix_confirmation: preview.matrix.requiresConfirmation
               ? {
                   fingerprint: preview.matrix.fingerprint,
-                  resulting_variant_count:
-                    preview.matrix.resultingVariantCount,
+                  resulting_variant_count: preview.matrix.resultingVariantCount,
                 }
               : null,
             product: {
@@ -623,7 +644,9 @@ const CompoundedProductsPage = () => {
       navigate(`/compounded-products/${response.result.product_id}`)
     },
     onError: (error) =>
-      toast.error(messageFromError(error, "Product draft could not be created")),
+      toast.error(
+        messageFromError(error, "Product draft could not be created"),
+      ),
   })
 
   const updateVariant = (rowKey: string, patch: Partial<VariantDraft>) => {
@@ -648,7 +671,12 @@ const CompoundedProductsPage = () => {
     current: string[],
     id: string,
     setter: (ids: string[]) => void,
-  ) => setter(current.includes(id) ? current.filter((item) => item !== id) : [...current, id])
+  ) =>
+    setter(
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    )
 
   const isLoadingReferenceData =
     shippingProfilesQuery.isLoading ||
@@ -658,8 +686,8 @@ const CompoundedProductsPage = () => {
     productTypesQuery.isLoading ||
     collectionsQuery.isLoading ||
     categoriesQuery.isLoading ||
-    tagsQuery.isLoading
-    || compoundFormatsQuery.isLoading
+    tagsQuery.isLoading ||
+    compoundFormatsQuery.isLoading
   const referenceDataError =
     shippingProfilesQuery.error ||
     stockLocationsQuery.error ||
@@ -668,45 +696,42 @@ const CompoundedProductsPage = () => {
     productTypesQuery.error ||
     collectionsQuery.error ||
     categoriesQuery.error ||
-    tagsQuery.error
-    || compoundFormatsQuery.error
-  const configuredRecipeCoverageComplete =
-    configuredRecipeCoverageIsComplete({
-      rules: directSnapshot?.recipe_rules || [],
-      rows: preview?.matrix.rows || [],
-    })
-  const configuredRecipeRowCount = useMemo(() => {
-    const rows = preview?.matrix.rows || []
-    const finishedRules = (directSnapshot?.recipe_rules || []).filter(
-      (
-        rule,
-      ): rule is Exclude<RecipeRule, { kind: "common_packaging" }> =>
-        rule.kind === "finished_product",
-    )
-
-    return rows.filter(
-      (row) =>
-        finishedRules.filter((rule) =>
-          row.options.some(
-            (option) =>
-              option.axisKey === rule.match.axis_key &&
-              option.valueKey === rule.match.value_key,
-          ),
-        ).length === 1,
-    ).length
-  }, [directSnapshot?.recipe_rules, preview?.matrix.rows])
+    tagsQuery.error ||
+    compoundFormatsQuery.error
+  const configuredRecipeCoverageComplete = configuredRecipeCoverageIsComplete({
+    rules: directSnapshot?.recipe_rules || [],
+    rows: preview?.matrix.rows || [],
+  })
+  const completeAvailabilityRows = useMemo(
+    () =>
+      directSnapshot && preview
+        ? completeRowsForAvailability({
+            configuration: effectiveRecipeConfiguration,
+            axes: directVariationAxes,
+            snapshot: directSnapshot,
+            rows: preview.matrix.rows,
+          })
+        : [],
+    [
+      directSnapshot,
+      directVariationAxes,
+      effectiveRecipeConfiguration,
+      preview,
+    ],
+  )
+  const configuredRecipeRowCount = completeAvailabilityRows.length
   const configuredAvailabilityQuery = useQuery({
     queryKey: [
       "configured-recipe-availability",
       selectedStockLocationId,
       preview?.matrix.fingerprint,
       directSnapshot?.recipe_rules,
+      completeAvailabilityRows.map((row) => row.key),
     ],
     enabled: Boolean(
       selectedStockLocationId &&
-        configuredRecipeCoverageComplete &&
-        preview?.matrix.rows.length &&
-        directSnapshot?.recipe_rules.length,
+      completeAvailabilityRows.length &&
+      directSnapshot?.recipe_rules.length,
     ),
     queryFn: () =>
       sdk.client.fetch<ConfiguredRecipeAvailabilityResponse>(
@@ -715,7 +740,7 @@ const CompoundedProductsPage = () => {
           method: "POST",
           body: {
             location_id: selectedStockLocationId,
-            matrix_rows: (preview?.matrix.rows || []).map((row) => ({
+            matrix_rows: completeAvailabilityRows.map((row) => ({
               key: row.key,
               options: row.options.map((option) => ({
                 axis_key: option.axisKey,
@@ -739,55 +764,33 @@ const CompoundedProductsPage = () => {
       ),
     [configuredAvailabilityQuery.data?.variants],
   )
-  const sharedComponentAvailability = useMemo(() => {
-    const summary = new Map<
-      string,
-      { title: string; available: number; usedByRows: number }
-    >()
-
-    for (const variant of configuredAvailabilityQuery.data?.variants || []) {
-      for (const component of variant.components) {
-        const existing = summary.get(component.inventory_item_id)
-
-        summary.set(component.inventory_item_id, {
-          title: component.inventory_item_title,
-          available: component.available_quantity,
-          usedByRows: (existing?.usedByRows || 0) + 1,
-        })
-      }
-    }
-
-    return Array.from(summary.entries())
-      .map(([id, value]) => ({ id, ...value }))
-      .sort((left, right) => left.title.localeCompare(right.title))
-  }, [configuredAvailabilityQuery.data?.variants])
-  const {
-    autoGeneratedSkuCount,
-    draftSaveBlockers,
-    publicationReviewItems,
-  } = createCompoundedProductCreationReview({
-    title: product.title,
-    storeConfigurationReady: Boolean(shippingProfileId),
-    rows: preview?.matrix.rows || [],
-    drafts: variantDrafts,
-    policy: snapshot?.readiness_policy || {
-      require_price: false,
-      require_sales_channel: false,
-      require_bom_for_managed_inventory: false,
-    },
-    salesChannelCount: salesChannelIds.length,
-    configuredRecipeCoverageComplete,
-    largeMatrixRequiresConfirmation:
-      preview?.matrix.requiresConfirmation || false,
-    largeMatrixConfirmed,
-  })
+  const selectedStockLocationName =
+    stockLocationsQuery.data?.stock_locations.find(
+      (location) => location.id === selectedStockLocationId,
+    )?.name || ""
+  const inventoryContentsRow =
+    preview?.matrix.rows.find((row) => row.key === inventoryContentsRowKey) ||
+    null
+  const { autoGeneratedSkuCount, draftSaveBlockers, publicationReviewItems } =
+    createCompoundedProductCreationReview({
+      title: product.title,
+      storeConfigurationReady: Boolean(shippingProfileId),
+      rows: preview?.matrix.rows || [],
+      drafts: variantDrafts,
+      policy: snapshot?.readiness_policy || {
+        require_price: false,
+        require_sales_channel: false,
+        require_bom_for_managed_inventory: false,
+      },
+      salesChannelCount: salesChannelIds.length,
+      configuredRecipeCoverageComplete,
+      largeMatrixRequiresConfirmation:
+        preview?.matrix.requiresConfirmation || false,
+      largeMatrixConfirmed,
+    })
   const productSaveBlockers = [
     ...(product.description.length > 20_000
       ? ["Product description must be 20,000 characters or fewer."]
-      : []),
-    ...(Boolean(directSnapshot?.recipe_rules.length) &&
-    !configuredRecipeCoverageComplete
-      ? ["Every product combination needs one finished-product inventory item."]
       : []),
     ...draftSaveBlockers,
   ]
@@ -812,8 +815,8 @@ const CompoundedProductsPage = () => {
       {referenceDataError ? (
         <Container className="px-6 py-4">
           <Text size="small" className="text-ui-fg-error">
-            Required Medusa reference data could not be loaded. Refresh the
-            page before creating a product.
+            Required Medusa reference data could not be loaded. Refresh the page
+            before creating a product.
           </Text>
         </Container>
       ) : null}
@@ -855,26 +858,26 @@ const CompoundedProductsPage = () => {
               </Button>
             </div>
             <Select
-                value={compoundFormatId || unassignedTaxonomyValue}
-                onValueChange={(value) =>
-                  setCompoundFormatId(
-                    value === unassignedTaxonomyValue ? "" : value,
-                  )
-                }
-              >
-                <Select.Trigger>
-                  <Select.Value placeholder="Assign before publication" />
-                </Select.Trigger>
-                <Select.Content>
-                  <Select.Item value={unassignedTaxonomyValue}>
-                    Not assigned
+              value={compoundFormatId || unassignedTaxonomyValue}
+              onValueChange={(value) =>
+                setCompoundFormatId(
+                  value === unassignedTaxonomyValue ? "" : value,
+                )
+              }
+            >
+              <Select.Trigger>
+                <Select.Value placeholder="Assign before publication" />
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Item value={unassignedTaxonomyValue}>
+                  Not assigned
+                </Select.Item>
+                {(compoundFormatsQuery.data || []).map((format) => (
+                  <Select.Item key={format.id} value={format.id}>
+                    {format.name}
                   </Select.Item>
-                  {(compoundFormatsQuery.data || []).map((format) => (
-                    <Select.Item key={format.id} value={format.id}>
-                      {format.name}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
+                ))}
+              </Select.Content>
             </Select>
             <Text size="xsmall" className="text-ui-fg-subtle">
               Choose the physical product format, such as Vial, Nasal Spray,
@@ -971,7 +974,11 @@ const CompoundedProductsPage = () => {
               <Text size="small" leading="compact" weight="plus">
                 Add product images
               </Text>
-              <Text size="small" leading="compact" className="text-ui-fg-subtle">
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
                 Click to upload.
               </Text>
             </button>
@@ -1014,102 +1021,12 @@ const CompoundedProductsPage = () => {
         ) : null}
       </BuilderSection>
 
-      <BuilderSection
-        eyebrow="Step 4"
-        title="Inventory recipes"
-        description="Map variation values and common packaging to shared component inventory. Product-specific names and quantities are never hardcoded."
-      >
-        <InventoryRecipeBuilder
-          axes={directVariationAxes}
-          configuration={recipeConfiguration}
-          onChange={setRecipeConfiguration}
-        />
-
-        <div className="mt-4 grid gap-3 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3 lg:grid-cols-[16rem_minmax(0,1fr)]">
-          <div className="flex flex-col gap-y-1">
-            <Label>Shared stock location</Label>
-            <Select
-              value={selectedStockLocationId || undefined}
-              onValueChange={setSelectedStockLocationId}
-              disabled={!stockLocationsQuery.data?.stock_locations.length}
-            >
-              <Select.Trigger>
-                <Select.Value placeholder="Choose stock location" />
-              </Select.Trigger>
-              <Select.Content>
-                {(stockLocationsQuery.data?.stock_locations || []).map(
-                  (location) => (
-                    <Select.Item key={location.id} value={location.id}>
-                      {location.name}
-                    </Select.Item>
-                  ),
-                )}
-              </Select.Content>
-            </Select>
-          </div>
-
-          <div className="flex min-w-0 flex-col gap-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge
-                color={configuredRecipeCoverageComplete ? "green" : "orange"}
-              >
-                {configuredRecipeCoverageComplete
-                  ? "Recipes complete"
-                  : "Recipes incomplete"}
-              </Badge>
-              <Text size="small" leading="compact" className="text-ui-fg-subtle">
-                {configuredRecipeRowCount}/{preview?.matrix.rows.length || 0}{" "}
-                combinations mapped
-              </Text>
-              {configuredAvailabilityQuery.isFetching ? (
-                <Spinner className="text-ui-fg-muted" />
-              ) : null}
-            </div>
-
-            {!stockLocationsQuery.data?.stock_locations.length ? (
-              <Text size="small" leading="compact" className="text-ui-fg-error">
-                Configure a Medusa stock location before calculating inventory.
-              </Text>
-            ) : configuredAvailabilityQuery.error ? (
-              <Text size="small" leading="compact" className="text-ui-fg-error">
-                {messageFromError(
-                  configuredAvailabilityQuery.error,
-                  "Inventory availability could not be calculated",
-                )}
-              </Text>
-            ) : sharedComponentAvailability.length ? (
-              <div className="flex flex-wrap gap-2">
-                {sharedComponentAvailability.map((component) => (
-                  <span
-                    key={component.id}
-                    className="rounded-md border border-ui-border-base bg-ui-bg-base px-2 py-1"
-                  >
-                    <Text size="xsmall" leading="compact" weight="plus">
-                      {component.title}: {component.available} available
-                    </Text>
-                    <Text size="xsmall" leading="compact" className="text-ui-fg-subtle">
-                      Shared by {component.usedByRows} combination
-                      {component.usedByRows === 1 ? "" : "s"}
-                    </Text>
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <Text size="small" leading="compact" className="text-ui-fg-subtle">
-                Complete the finished-product mappings to preview shared stock.
-              </Text>
-            )}
-          </div>
-        </div>
-      </BuilderSection>
-
       {preview ? (
         <BuilderSection
-          eyebrow="Step 5"
+          eyebrow="Step 4"
           title="Product combinations"
           description={`${preview.matrix.totalCombinationCount} combinations · ${preview.matrix.excludedCombinationCount} excluded · ${preview.matrix.resultingVariantCount} sellable variants`}
         >
-
           {preview.matrix.requiresConfirmation ? (
             <label className="flex items-start gap-x-3 rounded-lg border border-ui-border-warning bg-ui-bg-subtle p-4">
               <Checkbox
@@ -1120,11 +1037,13 @@ const CompoundedProductsPage = () => {
               />
               <span className="flex flex-col gap-y-1">
                 <Text size="small" weight="plus">
-                  Confirm this {preview.matrix.resultingVariantCount}-variant matrix
+                  Confirm this {preview.matrix.resultingVariantCount}-variant
+                  matrix
                 </Text>
                 <Text size="small" className="text-ui-fg-subtle">
                   This confirmation is bound to the current server-generated
-                  matrix fingerprint and becomes invalid when the matrix changes.
+                  matrix fingerprint and becomes invalid when the matrix
+                  changes.
                 </Text>
               </span>
             </label>
@@ -1166,6 +1085,50 @@ const CompoundedProductsPage = () => {
             >
               Apply to all
             </Button>
+            <div className="ml-auto flex min-w-52 flex-col gap-y-1">
+              <Label>Shared stock location</Label>
+              <Select
+                value={selectedStockLocationId || undefined}
+                onValueChange={setSelectedStockLocationId}
+                disabled={!stockLocationsQuery.data?.stock_locations.length}
+              >
+                <Select.Trigger>
+                  <Select.Value placeholder="Choose stock location" />
+                </Select.Trigger>
+                <Select.Content>
+                  {(stockLocationsQuery.data?.stock_locations || []).map(
+                    (location) => (
+                      <Select.Item key={location.id} value={location.id}>
+                        {location.name}
+                      </Select.Item>
+                    ),
+                  )}
+                </Select.Content>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge
+              color={configuredRecipeCoverageComplete ? "green" : "orange"}
+            >
+              {configuredRecipeCoverageComplete
+                ? "Inventory ready"
+                : "Inventory setup incomplete"}
+            </Badge>
+            <Text size="small" leading="compact" className="text-ui-fg-subtle">
+              {configuredRecipeRowCount}/{preview.matrix.rows.length}{" "}
+              combinations configured
+            </Text>
+            {configuredAvailabilityQuery.isFetching ? (
+              <Spinner className="text-ui-fg-muted" />
+            ) : null}
+            {configuredAvailabilityQuery.error ? (
+              <Text size="small" leading="compact" className="text-ui-fg-error">
+                Stock preview is temporarily unavailable for configured
+                combinations.
+              </Text>
+            ) : null}
           </div>
 
           <div className="overflow-x-auto rounded-lg border border-ui-border-base">
@@ -1178,6 +1141,7 @@ const CompoundedProductsPage = () => {
                     </Table.HeaderCell>
                   ))}
                   <Table.HeaderCell>Photo</Table.HeaderCell>
+                  <Table.HeaderCell>Inventory contents</Table.HeaderCell>
                   <Table.HeaderCell>Calculated stock</Table.HeaderCell>
                   <Table.HeaderCell>Limiting component</Table.HeaderCell>
                   <Table.HeaderCell>Price</Table.HeaderCell>
@@ -1187,8 +1151,9 @@ const CompoundedProductsPage = () => {
               <Table.Body>
                 {preview.matrix.rows.map((row) => {
                   const draft = variantDrafts[row.key]
-                  const availability =
-                    configuredAvailabilityByRowKey.get(row.key)
+                  const availability = configuredAvailabilityByRowKey.get(
+                    row.key,
+                  )
 
                   return (
                     <Table.Row key={row.key}>
@@ -1215,9 +1180,54 @@ const CompoundedProductsPage = () => {
                             variant="secondary"
                             onClick={() => setImagePickerRowKey(row.key)}
                           >
-                            {draft?.imageUrls.length ? "Change photo" : "Add photo"}
+                            {draft?.imageUrls.length
+                              ? "Change photo"
+                              : "Add photo"}
                           </Button>
                         </div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        {directSnapshot
+                          ? (() => {
+                              const contents = componentsForCombination({
+                                configuration: effectiveRecipeConfiguration,
+                                axes: directVariationAxes,
+                                snapshot: directSnapshot,
+                                row,
+                                rows: preview.matrix.rows,
+                              })
+                              const itemCount = contents.all.length
+                              const ready =
+                                combinationComponentsAreComplete(contents)
+
+                              return (
+                                <div className="flex min-w-44 items-center gap-2">
+                                  <Badge color={ready ? "green" : "orange"}>
+                                    {ready ? "Ready" : "Needs setup"}
+                                  </Badge>
+                                  <Text
+                                    size="xsmall"
+                                    className="text-ui-fg-subtle"
+                                  >
+                                    {ready
+                                      ? `${itemCount} item${itemCount === 1 ? "" : "s"}`
+                                      : contents.finishedProduct.length
+                                        ? "Check quantities"
+                                        : "Finished product required"}
+                                  </Text>
+                                  <Button
+                                    size="small"
+                                    variant="secondary"
+                                    onClick={() =>
+                                      setInventoryContentsRowKey(row.key)
+                                    }
+                                  >
+                                    {itemCount ? "Edit" : "Configure"}
+                                  </Button>
+                                </div>
+                              )
+                            })()
+                          : null}
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex min-w-48 flex-col gap-y-1">
@@ -1249,8 +1259,7 @@ const CompoundedProductsPage = () => {
                           {availability?.limiting_components.length
                             ? availability.limiting_components
                                 .map(
-                                  (component) =>
-                                    component.inventory_item_title,
+                                  (component) => component.inventory_item_title,
                                 )
                                 .join(", ")
                             : "—"}
@@ -1297,6 +1306,27 @@ const CompoundedProductsPage = () => {
           </Text>
         </BuilderSection>
       ) : null}
+
+      <CombinationInventoryDrawer
+        open={Boolean(inventoryContentsRow)}
+        onOpenChange={(open) => {
+          if (!open) setInventoryContentsRowKey(null)
+        }}
+        row={inventoryContentsRow}
+        rows={preview?.matrix.rows || []}
+        axes={directVariationAxes}
+        snapshot={directSnapshot}
+        configuration={effectiveRecipeConfiguration}
+        availability={
+          inventoryContentsRow
+            ? configuredAvailabilityByRowKey.get(inventoryContentsRow.key)
+            : undefined
+        }
+        stockLocationName={selectedStockLocationName}
+        onSave={(configuration) => {
+          setRecipeConfiguration(configuration)
+        }}
+      />
 
       <Container className="flex flex-col gap-2 border border-ui-border-base px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 flex-col gap-y-1">
@@ -1439,9 +1469,7 @@ const CompoundedProductsPage = () => {
                 id="new-presentation-name"
                 value={newPresentationName}
                 placeholder="For example, Nasal Spray"
-                onChange={(event) =>
-                  setNewPresentationName(event.target.value)
-                }
+                onChange={(event) => setNewPresentationName(event.target.value)}
               />
               <Text size="xsmall" className="text-ui-fg-subtle">
                 Internal key:{" "}
@@ -1450,9 +1478,7 @@ const CompoundedProductsPage = () => {
               </Text>
             </div>
             <div className="flex flex-col gap-y-2">
-              <Label htmlFor="new-presentation-description">
-                Description
-              </Label>
+              <Label htmlFor="new-presentation-description">Description</Label>
               <Input
                 id="new-presentation-description"
                 value={newPresentationDescription}
@@ -1491,7 +1517,8 @@ const CompoundedProductsPage = () => {
           <Drawer.Header>
             <Drawer.Title>Combination photo</Drawer.Title>
             <Drawer.Description>
-              Select existing product images or upload images for this product combination.
+              Select existing product images or upload images for this product
+              combination.
             </Drawer.Description>
           </Drawer.Header>
           <Drawer.Body className="flex flex-col gap-y-4 overflow-y-auto p-6">
@@ -1543,7 +1570,8 @@ const CompoundedProductsPage = () => {
               </div>
             ) : (
               <Text size="small" className="text-ui-fg-subtle">
-                No product images are available yet. Upload a photo to add it to this combination.
+                No product images are available yet. Upload a photo to add it to
+                this combination.
               </Text>
             )}
           </Drawer.Body>
@@ -1554,7 +1582,6 @@ const CompoundedProductsPage = () => {
           </Drawer.Footer>
         </Drawer.Content>
       </Drawer>
-
     </div>
   )
 }

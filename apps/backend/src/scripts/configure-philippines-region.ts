@@ -4,14 +4,28 @@ import {
   createRegionsWorkflow,
   createTaxRegionsWorkflow,
   updateRegionsWorkflow,
+  updateSalesChannelsWorkflow,
+  updateStockLocationsWorkflow,
   updateStoresWorkflow,
 } from "@medusajs/medusa/core-flows"
 
-const countryCode = "ph"
-const currencyCode = "php"
-const regionName = "Philippines"
-const systemPaymentProviderId = "pp_system_default"
-const systemTaxProviderId = "tp_system"
+import {
+  mergeProviderIds,
+  PHILIPPINE_STORE_CONFIG,
+  selectPreferredRecord,
+} from "../lib/philippine-store-config"
+
+const {
+  countryCode,
+  currencyCode,
+  manualQrPaymentProviderId,
+  regionName,
+  salesChannelName,
+  stockLocationName,
+  storeName,
+  systemPaymentProviderId,
+  taxProviderId,
+} = PHILIPPINE_STORE_CONFIG
 
 type RegionRecord = {
   id: string
@@ -29,7 +43,24 @@ type StoreCurrencyRecord = {
 
 type StoreRecord = {
   id: string
+  name: string
   supported_currencies?: StoreCurrencyRecord[]
+}
+
+type NamedRecord = {
+  id: string
+  name: string
+}
+
+type StockLocationRecord = NamedRecord & {
+  address?: {
+    address_1?: string
+    address_2?: string
+    city?: string
+    province?: string
+    postal_code?: string
+    phone?: string
+  }
 }
 
 export default async function configurePhilippinesRegion({
@@ -60,10 +91,10 @@ export default async function configurePhilippinesRegion({
   let regionId: string
 
   if (existingRegion) {
-    const paymentProviders = new Set(
-      existingRegion.payment_providers?.map((provider) => provider.id) ?? []
+    const paymentProviders = mergeProviderIds(
+      existingRegion.payment_providers?.map((provider) => provider.id) ?? [],
+      [systemPaymentProviderId, manualQrPaymentProviderId]
     )
-    paymentProviders.add(systemPaymentProviderId)
 
     const { result } = await updateRegionsWorkflow(container).run({
       input: {
@@ -72,7 +103,7 @@ export default async function configurePhilippinesRegion({
           name: regionName,
           currency_code: currencyCode,
           countries: [countryCode],
-          payment_providers: [...paymentProviders],
+          payment_providers: paymentProviders,
         },
       },
     })
@@ -87,7 +118,10 @@ export default async function configurePhilippinesRegion({
             name: regionName,
             currency_code: currencyCode,
             countries: [countryCode],
-            payment_providers: [systemPaymentProviderId],
+            payment_providers: [
+              systemPaymentProviderId,
+              manualQrPaymentProviderId,
+            ],
           },
         ],
       },
@@ -110,7 +144,7 @@ export default async function configurePhilippinesRegion({
       input: [
         {
           country_code: countryCode,
-          provider_id: systemTaxProviderId,
+          provider_id: taxProviderId,
         },
       ],
     })
@@ -121,6 +155,7 @@ export default async function configurePhilippinesRegion({
     entity: "store",
     fields: [
       "id",
+      "name",
       "supported_currencies.currency_code",
       "supported_currencies.is_default",
       "supported_currencies.is_tax_inclusive",
@@ -128,6 +163,28 @@ export default async function configurePhilippinesRegion({
   })
 
   const stores = storeData as StoreRecord[]
+
+  const { data: salesChannelData } = await query.graph({
+    entity: "sales_channel",
+    fields: ["id", "name"],
+  })
+  const salesChannel = selectPreferredRecord(
+    salesChannelData as NamedRecord[],
+    salesChannelName,
+    ["Default Sales Channel"]
+  )
+
+  if (salesChannel && salesChannel.name !== salesChannelName) {
+    await updateSalesChannelsWorkflow(container).run({
+      input: {
+        selector: { id: salesChannel.id },
+        update: {
+          name: salesChannelName,
+          description: "Primary customer storefront sales channel",
+        },
+      },
+    })
+  }
 
   for (const store of stores) {
     const currencies = new Map(
@@ -147,7 +204,9 @@ export default async function configurePhilippinesRegion({
       input: {
         selector: { id: store.id },
         update: {
+          name: storeName,
           default_region_id: regionId,
+          default_sales_channel_id: salesChannel?.id,
           supported_currencies: [...currencies.values()].map((currency) => ({
             currency_code: currency.currency_code,
             is_default: currency.currency_code === currencyCode,
@@ -158,5 +217,47 @@ export default async function configurePhilippinesRegion({
     })
   }
 
-  logger.info("Set PHP and the Philippines region as the store defaults")
+  const { data: stockLocationData } = await query.graph({
+    entity: "stock_location",
+    fields: [
+      "id",
+      "name",
+      "address.address_1",
+      "address.address_2",
+      "address.city",
+      "address.province",
+      "address.postal_code",
+      "address.phone",
+    ],
+  })
+  const stockLocation = selectPreferredRecord(
+    stockLocationData as StockLocationRecord[],
+    stockLocationName,
+    ["European Warehouse"]
+  )
+
+  if (stockLocation) {
+    await updateStockLocationsWorkflow(container).run({
+      input: {
+        selector: { id: stockLocation.id },
+        update: {
+          name: stockLocationName,
+          address: {
+            address_1: stockLocation.address?.address_1 ?? "",
+            address_2: stockLocation.address?.address_2,
+            city: stockLocation.address?.city,
+            province: stockLocation.address?.province,
+            postal_code: stockLocation.address?.postal_code,
+            phone: stockLocation.address?.phone,
+            country_code: countryCode,
+          },
+        },
+      },
+    })
+  }
+
+  logger.info(
+    `Configured ${storeName}, PHP, the Philippines region, ${salesChannelName}, ` +
+      `${stockLocationName}, and manual QR availability`
+  )
 }

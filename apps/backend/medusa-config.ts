@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "@medusajs/framework/utils"
 
 import { resolveSessionProjectConfig } from "./src/lib/session-config"
+import { routineAdminNavigationPlugin } from "./src/lib/admin-navigation"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
 
@@ -19,6 +20,10 @@ module.exports = defineConfig({
   admin: {
     maxUploadFileSize: 10 * 1024 * 1024,
     vite: (config) => ({
+      plugins: [
+        ...(config.plugins ?? []),
+        routineAdminNavigationPlugin(),
+      ],
       resolve: {
         dedupe: [
           ...new Set([...(config.resolve?.dedupe ?? []), "react", "react-dom"]),

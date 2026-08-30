@@ -24,6 +24,7 @@ export const uploadCustomerManualPaymentProofWorkflow = createWorkflow(
       files: [prepared.upload],
     }))
     const changed = when(
+      "upload-new-customer-manual-payment-proof",
       { prepared },
       ({ prepared }) => prepared.shouldUpload,
     ).then(() => {

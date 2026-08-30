@@ -89,7 +89,10 @@ const ProfileSummary = ({ profile }: { profile: ComponentProfile }) => {
   return (
     <dl className="grid grid-cols-1 gap-x-8 gap-y-3 px-6 py-4 small:grid-cols-2">
       {details.map(([label, value]) => (
-        <div className="flex min-w-0 items-start justify-between gap-4" key={label}>
+        <div
+          className="flex min-w-0 items-start justify-between gap-4"
+          key={label}
+        >
           <dt>
             <Text size="small" leading="compact" className="text-ui-fg-subtle">
               {label}
@@ -151,7 +154,11 @@ const InventoryItemBomContextWidget = ({
             <Text size="small" className="text-ui-fg-error">
               Component details could not be loaded.
             </Text>
-            <Button size="small" variant="secondary" onClick={() => query.refetch()}>
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => query.refetch()}
+            >
               Retry
             </Button>
           </div>
@@ -160,8 +167,8 @@ const InventoryItemBomContextWidget = ({
         ) : (
           <div className="px-6 py-5">
             <Text size="small" className="text-ui-fg-subtle">
-              No component profile is configured. Physical stock remains managed by
-              Medusa Inventory.
+              No component profile is configured. Physical stock remains managed
+              by Medusa Inventory.
             </Text>
           </div>
         )}
@@ -172,8 +179,8 @@ const InventoryItemBomContextWidget = ({
               <div>
                 <Heading level="h2">BOM usage</Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  Recipe quantities only. Medusa&apos;s native Associated variants remain
-                  unchanged.
+                  Recipe quantities only. Medusa&apos;s native Associated
+                  variants remain unchanged.
                 </Text>
               </div>
               <Badge color={usageCount > 0 ? "blue" : "grey"}>
@@ -195,7 +202,11 @@ const InventoryItemBomContextWidget = ({
                       <Text size="small" leading="compact" weight="plus">
                         {row.product_title} · {row.variant_title}
                       </Text>
-                      <Text size="xsmall" leading="compact" className="text-ui-fg-subtle">
+                      <Text
+                        size="xsmall"
+                        leading="compact"
+                        className="text-ui-fg-subtle"
+                      >
                         {row.variant_sku || "No SKU"}
                         {row.latest_audit_version
                           ? ` · Recipe v${row.latest_audit_version}`
@@ -223,7 +234,11 @@ const InventoryItemBomContextWidget = ({
                         {row.recipe_status === "missing_variant" && (
                           <Badge color="orange">Needs attention</Badge>
                         )}
-                        <Text size="small" weight="plus" className="tabular-nums">
+                        <Text
+                          size="small"
+                          weight="plus"
+                          className="tabular-nums"
+                        >
                           {formatQuantity(row.required_quantity)} required
                         </Text>
                       </div>
@@ -255,6 +270,7 @@ const InventoryItemBomContextWidget = ({
 
 export const config = defineWidgetConfig({
   zone: "inventory_item.details",
+  id: "pepstack:inventory-item-bom-context",
 })
 
 export default InventoryItemBomContextWidget
