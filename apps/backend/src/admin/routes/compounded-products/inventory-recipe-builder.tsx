@@ -533,7 +533,7 @@ export const InventoryRecipeBuilder = ({
                     <Text size="small" className="text-ui-fg-subtle">
                       Configure a {targetClassification
                         ? classificationLabel[targetClassification].toLowerCase()
-                        : "component"} profile in BOM Inventory first.
+                        : "component"} profile in Inventory first.
                     </Text>
                   </div>
                 )}
