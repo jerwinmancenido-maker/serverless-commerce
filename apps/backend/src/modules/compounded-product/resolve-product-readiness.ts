@@ -103,6 +103,20 @@ export async function resolveCompoundedProductReadiness(
   const revision = await service.retrievePresentationConfigurationRevision(
     registration.presentation_revision_id,
   )
+  const compoundFamilyId = registration.compound_family_id || null
+  const compoundFormatId = registration.compound_format_id || null
+  const [compoundFamily] = compoundFamilyId
+    ? await service.listCompoundFamilies(
+        { id: compoundFamilyId },
+        { take: 1 },
+      )
+    : [null]
+  const [compoundFormat] = compoundFormatId
+    ? await service.listCompoundProductFormats(
+        { id: compoundFormatId },
+        { take: 1 },
+      )
+    : [null]
   const productVariantIds = new Set(
     (product.variants || []).map((variant) => variant.id),
   )
@@ -155,11 +169,17 @@ export async function resolveCompoundedProductReadiness(
     registration: {
       id: registration.id,
       state: registration.state,
+      compound_family_id: compoundFamilyId,
+      compound_format_id: compoundFormatId,
       presentation_revision_id: registration.presentation_revision_id,
       readiness_policy_revision: registration.readiness_policy_revision,
     },
     ...buildCompoundedProductReadinessReport({
       registration_exists: true,
+      compound_family_assigned: Boolean(compoundFamilyId),
+      compound_family_active: compoundFamily?.status === "active",
+      compound_format_assigned: Boolean(compoundFormatId),
+      compound_format_active: compoundFormat?.status === "active",
       configuration_revision_active:
         revision.status === "active" &&
         revision.fingerprint === registration.configuration_fingerprint,

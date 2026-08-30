@@ -9,6 +9,8 @@ import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
+import type { HydratedCompoundFamily } from "@lib/data/compound-families"
+import CompoundPresentationSwitcher from "@modules/products/components/compound-presentation-switcher"
 
 import ProductActionsWrapper from "./product-actions-wrapper"
 
@@ -17,6 +19,7 @@ type ProductTemplateProps = {
   region: HttpTypes.StoreRegion
   countryCode: string
   images: HttpTypes.StoreProductImage[]
+  familyGroup: HydratedCompoundFamily | null
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -24,6 +27,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   region,
   countryCode,
   images,
+  familyGroup,
 }) => {
   if (!product || !product.id) {
     return notFound()
@@ -37,6 +41,12 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
       >
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
           <ProductInfo product={product} />
+          {familyGroup ? (
+            <CompoundPresentationSwitcher
+              family={familyGroup}
+              currentProductId={product.id}
+            />
+          ) : null}
           <ProductTabs product={product} />
         </div>
         <div className="block w-full relative">

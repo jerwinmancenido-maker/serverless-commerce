@@ -6,6 +6,10 @@ import {
 
 const facts = (): CompoundedProductReadinessFacts => ({
   registration_exists: true,
+  compound_family_assigned: true,
+  compound_family_active: true,
+  compound_format_assigned: true,
+  compound_format_active: true,
   configuration_revision_active: true,
   sales_channels_ready: true,
   structured_measurements_valid: true,

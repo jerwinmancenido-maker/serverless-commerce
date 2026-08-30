@@ -6,6 +6,8 @@ import ProductCreationRequest from "./models/product-creation-request"
 import GovernedProductRegistration from "./models/governed-product-registration"
 import GovernanceAuditEvent from "./models/governance-audit-event"
 import GovernedProductTypeMapping from "./models/governed-product-type-mapping"
+import CompoundFamily from "./models/compound-family"
+import CompoundProductFormat from "./models/compound-product-format"
 
 class CompoundedProductModuleService extends MedusaService({
   PresentationConfiguration,
@@ -14,6 +16,8 @@ class CompoundedProductModuleService extends MedusaService({
   GovernedProductRegistration,
   GovernanceAuditEvent,
   GovernedProductTypeMapping,
+  CompoundFamily,
+  CompoundProductFormat,
 }) {
   override updateGovernanceAuditEvents = async (
     ..._updates: unknown[]

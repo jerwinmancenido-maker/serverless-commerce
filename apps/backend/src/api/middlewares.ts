@@ -10,6 +10,7 @@ import { adminBomMiddlewares } from "./admin/bom/middlewares"
 import { adminCompoundedProductProductMiddlewares } from "./admin/compounded-product/products/middlewares"
 import { adminCompoundedProductClassificationMiddlewares } from "./admin/compounded-product/governed-product-types/middlewares"
 import { adminCompoundedProductPresentationMiddlewares } from "./admin/compounded-product/presentations/middlewares"
+import { adminCompoundCatalogMiddlewares } from "./admin/compounded-product/families/middlewares"
 import { adminManualPaymentProofMiddlewares } from "./admin/manual-payment-proofs/middlewares"
 import { storeManualPaymentProofMiddlewares } from "./store/customers/me/orders/[id]/manual-payment-proof/middlewares"
 import { storeResearchTrackingMiddlewares } from "./store/customers/me/research-tracking/middlewares"
@@ -40,6 +41,7 @@ export default defineMiddlewares({
   routes: [
     ...adminBomMiddlewares,
     ...adminCompoundedProductClassificationMiddlewares,
+    ...adminCompoundCatalogMiddlewares,
     ...adminCompoundedProductProductMiddlewares,
     ...adminCompoundedProductPresentationMiddlewares,
     ...adminManualPaymentProofMiddlewares,

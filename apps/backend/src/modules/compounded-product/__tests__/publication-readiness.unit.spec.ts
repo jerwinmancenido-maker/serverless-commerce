@@ -2,6 +2,10 @@ import { evaluateCompoundedProductPublicationReadiness } from "../publication-re
 
 const readyInput = {
   registration_exists: true,
+  compound_family_assigned: true,
+  compound_family_active: true,
+  compound_format_assigned: true,
+  compound_format_active: true,
   configuration_revision_active: true,
   variant_count: 2,
   prices_ready: true,
@@ -33,6 +37,10 @@ describe("compounded product publication readiness", () => {
       evaluateCompoundedProductPublicationReadiness({
         ...readyInput,
         registration_exists: false,
+        compound_family_assigned: false,
+        compound_family_active: false,
+        compound_format_assigned: false,
+        compound_format_active: false,
         configuration_revision_active: false,
         variant_count: 0,
         prices_ready: false,
@@ -45,6 +53,8 @@ describe("compounded product publication readiness", () => {
       ready: false,
       blockers: [
         "registration_missing",
+        "compound_family_missing",
+        "compound_format_missing",
         "configuration_revision_inactive",
         "variant_matrix_empty",
         "price_missing",
@@ -54,6 +64,40 @@ describe("compounded product publication readiness", () => {
         "audit_unavailable",
       ],
     })
+  })
+
+  it("requires an active product presentation independently of optional policy checks", () => {
+    expect(
+      evaluateCompoundedProductPublicationReadiness({
+        ...readyInput,
+        compound_format_assigned: false,
+        compound_format_active: false,
+      }),
+    ).toEqual({ ready: false, blockers: ["compound_format_missing"] })
+
+    expect(
+      evaluateCompoundedProductPublicationReadiness({
+        ...readyInput,
+        compound_format_active: false,
+      }),
+    ).toEqual({ ready: false, blockers: ["compound_format_inactive"] })
+  })
+
+  it("requires an active compound family independently of optional policy checks", () => {
+    expect(
+      evaluateCompoundedProductPublicationReadiness({
+        ...readyInput,
+        compound_family_assigned: false,
+        compound_family_active: false,
+      }),
+    ).toEqual({ ready: false, blockers: ["compound_family_missing"] })
+
+    expect(
+      evaluateCompoundedProductPublicationReadiness({
+        ...readyInput,
+        compound_family_active: false,
+      }),
+    ).toEqual({ ready: false, blockers: ["compound_family_inactive"] })
   })
 
   it("uses the pinned policy rather than hardcoding optional operations", () => {

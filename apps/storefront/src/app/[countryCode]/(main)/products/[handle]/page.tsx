@@ -4,6 +4,10 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import {
+  hydrateCompoundFamily,
+  retrieveCompoundFamilyByProductId,
+} from "@lib/data/compound-families"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -119,6 +123,10 @@ export default async function ProductPage(props: Props) {
   }
 
   const images = getImagesForVariant(pricedProduct, selectedVariantId)
+  const family = await retrieveCompoundFamilyByProductId(pricedProduct.id)
+  const familyGroup = family
+    ? await hydrateCompoundFamily(family, params.countryCode)
+    : null
 
   return (
     <ProductTemplate
@@ -126,6 +134,7 @@ export default async function ProductPage(props: Props) {
       region={region}
       countryCode={params.countryCode}
       images={images ?? []}
+      familyGroup={familyGroup}
     />
   )
 }

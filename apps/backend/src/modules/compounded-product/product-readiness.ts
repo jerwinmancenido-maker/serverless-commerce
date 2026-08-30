@@ -19,6 +19,10 @@ export type CompoundedProductReadinessVariant = {
 
 export type CompoundedProductReadinessFacts = {
   registration_exists: boolean
+  compound_family_assigned: boolean
+  compound_family_active: boolean
+  compound_format_assigned: boolean
+  compound_format_active: boolean
   configuration_revision_active: boolean
   sales_channels_ready: boolean
   structured_measurements_valid: boolean
@@ -54,6 +58,10 @@ export function buildCompoundedProductReadinessReport(
   )
   const result = evaluateCompoundedProductPublicationReadiness({
     registration_exists: facts.registration_exists,
+    compound_family_assigned: facts.compound_family_assigned,
+    compound_family_active: facts.compound_family_active,
+    compound_format_assigned: facts.compound_format_assigned,
+    compound_format_active: facts.compound_format_active,
     configuration_revision_active: facts.configuration_revision_active,
     variant_count: facts.variants.length,
     prices_ready:

@@ -5,6 +5,8 @@ import {
   type CompoundedProductReadinessPolicySnapshot,
 } from "../contracts/governance"
 import type { CompoundedProductPresentationSnapshot } from "../contracts/configuration"
+import CompoundFamily from "./compound-family"
+import CompoundProductFormat from "./compound-product-format"
 import PresentationConfigurationRevision from "./presentation-configuration-revision"
 
 const GovernedProductRegistration = model
@@ -26,6 +28,12 @@ const GovernedProductRegistration = model
     updated_by_actor_id: model.text(),
     published_at: model.dateTime().nullable(),
     withdrawn_at: model.dateTime().nullable(),
+    compound_family: model
+      .belongsTo(() => CompoundFamily, { mappedBy: "registrations" })
+      .nullable(),
+    compound_format: model
+      .belongsTo(() => CompoundProductFormat, { mappedBy: "registrations" })
+      .nullable(),
     presentation_revision: model.belongsTo(
       () => PresentationConfigurationRevision,
       { mappedBy: "registrations" },
@@ -33,6 +41,8 @@ const GovernedProductRegistration = model
   })
   .indexes([
     { on: ["state"] },
+    { on: ["compound_family_id"] },
+    { on: ["compound_format_id"] },
     { on: ["configuration_fingerprint"] },
   ])
 

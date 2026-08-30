@@ -64,6 +64,25 @@ const emptyProduct = {
 }
 
 const newSubmissionKey = () => crypto.randomUUID()
+const unassignedTaxonomyValue = "__unassigned__"
+
+type CompoundTaxonomyRecord = {
+  id: string
+  key: string
+  name: string
+  description: string | null
+  status: "active" | "archived"
+}
+
+type CompoundFamiliesResponse = {
+  families: CompoundTaxonomyRecord[]
+  count: number
+}
+
+type CompoundFormatsResponse = {
+  formats: CompoundTaxonomyRecord[]
+  count: number
+}
 
 const sortedFields = (
   fields: ConfiguredField[],
@@ -92,6 +111,8 @@ const CompoundedProductsPage = () => {
   const [preview, setPreview] = useState<MatrixPreviewResponse | null>(null)
   const [largeMatrixConfirmed, setLargeMatrixConfirmed] = useState(false)
   const [product, setProduct] = useState(emptyProduct)
+  const [compoundFamilyId, setCompoundFamilyId] = useState("")
+  const [compoundFormatId, setCompoundFormatId] = useState("")
   const [handleEdited, setHandleEdited] = useState(false)
   const [productConfiguredValues, setProductConfiguredValues] = useState<
     Record<string, ConfiguredValue>
@@ -122,6 +143,32 @@ const CompoundedProductsPage = () => {
           const page = await sdk.admin.shippingProfile.list({ limit, offset })
 
           return { items: page.shipping_profiles, count: page.count }
+        },
+      }),
+  })
+  const compoundFamiliesQuery = useQuery({
+    queryKey: ["compound-families", "compounded-product-creation"],
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.client.fetch<CompoundFamiliesResponse>(
+            `/admin/compounded-product/families?status=active&limit=${limit}&offset=${offset}`,
+          )
+
+          return { items: page.families, count: page.count }
+        },
+      }),
+  })
+  const compoundFormatsQuery = useQuery({
+    queryKey: ["compound-formats", "compounded-product-creation"],
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.client.fetch<CompoundFormatsResponse>(
+            `/admin/compounded-product/formats?status=active&limit=${limit}&offset=${offset}`,
+          )
+
+          return { items: page.formats, count: page.count }
         },
       }),
   })
@@ -526,6 +573,8 @@ const CompoundedProductsPage = () => {
               : null,
             product: {
               title: product.title,
+              compound_family_id: compoundFamilyId || null,
+              compound_format_id: compoundFormatId || null,
               description: product.description || null,
               handle: product.handle || null,
               type_id: product.typeId || null,
@@ -588,6 +637,8 @@ const CompoundedProductsPage = () => {
     collectionsQuery.isLoading ||
     categoriesQuery.isLoading ||
     tagsQuery.isLoading
+    || compoundFamiliesQuery.isLoading
+    || compoundFormatsQuery.isLoading
   const referenceDataError =
     shippingProfilesQuery.error ||
     stockLocationsQuery.error ||
@@ -597,6 +648,8 @@ const CompoundedProductsPage = () => {
     collectionsQuery.error ||
     categoriesQuery.error ||
     tagsQuery.error
+    || compoundFamiliesQuery.error
+    || compoundFormatsQuery.error
   const configuredRecipeCoverageComplete =
     configuredRecipeCoverageIsComplete({
       rules: directSnapshot?.recipe_rules || [],
@@ -768,6 +821,81 @@ const CompoundedProductsPage = () => {
               }}
               placeholder="Enter product name"
             />
+          </div>
+          <div className="mt-3 grid gap-3 md:grid-cols-2">
+            <div className="flex flex-col gap-y-2">
+              <Label>Compound family</Label>
+              <Select
+                value={compoundFamilyId || unassignedTaxonomyValue}
+                onValueChange={(value) =>
+                  setCompoundFamilyId(
+                    value === unassignedTaxonomyValue ? "" : value,
+                  )
+                }
+              >
+                <Select.Trigger>
+                  <Select.Value placeholder="Assign before publication" />
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Item value={unassignedTaxonomyValue}>
+                    Not assigned
+                  </Select.Item>
+                  {(compoundFamiliesQuery.data || []).map(
+                    (family) => (
+                      <Select.Item key={family.id} value={family.id}>
+                        {family.name}
+                      </Select.Item>
+                    ),
+                  )}
+                </Select.Content>
+              </Select>
+              <Text size="xsmall" className="text-ui-fg-subtle">
+                Groups separate formats of the same compound, without sharing
+                inventory or variants.
+              </Text>
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <Label>Presentation</Label>
+              <Select
+                value={compoundFormatId || unassignedTaxonomyValue}
+                onValueChange={(value) =>
+                  setCompoundFormatId(
+                    value === unassignedTaxonomyValue ? "" : value,
+                  )
+                }
+              >
+                <Select.Trigger>
+                  <Select.Value placeholder="Assign before publication" />
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Item value={unassignedTaxonomyValue}>
+                    Not assigned
+                  </Select.Item>
+                  {(compoundFormatsQuery.data || []).map((format) => (
+                    <Select.Item key={format.id} value={format.id}>
+                      {format.name}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
+              <Text size="xsmall" className="text-ui-fg-subtle">
+                A configurable product format such as Nasal or Injectable.
+              </Text>
+            </div>
+          </div>
+          <div className="mt-3 flex items-center justify-between rounded-lg border border-ui-border-base bg-ui-bg-subtle px-3 py-2">
+            <Text size="xsmall" className="text-ui-fg-subtle">
+              Family and Presentation are optional for drafts and required to
+              publish.
+            </Text>
+            <Button
+              type="button"
+              size="small"
+              variant="secondary"
+              onClick={() => navigate("/compound-catalog")}
+            >
+              Manage
+            </Button>
           </div>
           <div className="mt-3 flex flex-col gap-y-2">
             <Label htmlFor="product-description">Description</Label>

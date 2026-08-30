@@ -130,6 +130,8 @@ export const createCompoundedProductDraftWorkflow = createWorkflow(
           event_type: "governed_registration_created" as const,
           decision: {
             catalog_kind: registration.catalog_kind,
+            compound_family_id: registration.compound_family_id,
+            compound_format_id: registration.compound_format_id,
             governed_product_type_id:
               registration.governed_product_type_id,
             contract_schema_version: registration.contract_schema_version,

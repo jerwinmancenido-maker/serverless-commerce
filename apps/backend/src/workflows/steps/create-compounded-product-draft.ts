@@ -84,6 +84,47 @@ export const prepareCompoundedProductDraftStep = createStep(
     const service = container.resolve<CompoundedProductModuleService>(
       COMPOUNDED_PRODUCT_MODULE,
     )
+
+    if (request.product.compound_family_id) {
+      const [compoundFamily] = await service.listCompoundFamilies(
+        { id: request.product.compound_family_id },
+        { take: 1 },
+      )
+
+      if (!compoundFamily) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          "Compound family was not found",
+        )
+      }
+
+      if (compoundFamily.status !== "active") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Archived compound families cannot be assigned to new products",
+        )
+      }
+    }
+    if (request.product.compound_format_id) {
+      const [compoundFormat] = await service.listCompoundProductFormats(
+        { id: request.product.compound_format_id },
+        { take: 1 },
+      )
+
+      if (!compoundFormat) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          "Compound product presentation was not found",
+        )
+      }
+
+      if (compoundFormat.status !== "active") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Archived product presentations cannot be assigned to new products",
+        )
+      }
+    }
     const [revision] = await service.listPresentationConfigurationRevisions(
       { id: request.presentation_revision_id },
       { take: 1 },
@@ -424,6 +465,10 @@ export const registerCompoundedProductDraftStep = createStep(
     )
     const registration = await service.createGovernedProductRegistrations({
       product_id: input.nativeProductId,
+      compound_family_id:
+        input.prepared.request.product.compound_family_id || null,
+      compound_format_id:
+        input.prepared.request.product.compound_format_id || null,
       governed_product_type_id: input.prepared.request.product.type_id,
       catalog_kind: "compounded",
       contract_schema_version: "1",

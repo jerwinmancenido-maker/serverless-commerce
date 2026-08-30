@@ -102,6 +102,8 @@ const VariantSubmission = z
 
 const ProductSubmission = z.strictObject({
   title: z.string().trim().min(1).max(255),
+  compound_family_id: OptionalId,
+  compound_format_id: OptionalId,
   description: OptionalText(20_000),
   handle: z
     .string()
