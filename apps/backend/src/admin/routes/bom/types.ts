@@ -1,4 +1,9 @@
 export type BomBaseUnit = "microgram" | "microliter" | "piece"
+export type BomComponentClassification =
+  | "finished_product"
+  | "included_supply"
+  | "packaging"
+export type BomSupplierUnit = "box" | "pack" | "roll" | "piece"
 
 export type ComponentProfile = {
   id: string
@@ -8,6 +13,9 @@ export type ComponentProfile = {
   base_units_per_display_unit: number
   display_precision: number
   reorder_threshold_base_units: number
+  classification: BomComponentClassification
+  supplier_unit: BomSupplierUnit
+  inventory_units_per_supplier_unit: number
   category: string
   lot_tracking_required: boolean
   expiry_tracking_required: boolean
@@ -51,4 +59,34 @@ export type RecipeHistoryResponse = {
   }
   recipe_history: RecipeAuditSnapshot[]
   count: number
+}
+
+export type VariantComponentAvailability = {
+  inventory_item_id: string
+  inventory_item_title: string
+  stocked_quantity: number
+  reserved_quantity: number
+  available_quantity: number
+  required_quantity: number
+  capacity: number
+  limiting: boolean
+}
+
+export type VariantLocationAvailability = {
+  variant_id: string
+  status: "calculated" | "missing_recipe"
+  calculated_stock: number | null
+  limiting_components: Array<{
+    inventory_item_id: string
+    inventory_item_title: string
+  }>
+  components: VariantComponentAvailability[]
+}
+
+export type BomAvailabilityResponse = {
+  location: {
+    id: string
+    name: string
+  }
+  variants: VariantLocationAvailability[]
 }

@@ -11,6 +11,7 @@ const snapshot: CompoundedProductPresentationSnapshot = {
   description: null,
   fields: [],
   variation_axes: [],
+  recipe_rules: [],
   sku_suggestion_policy: null,
   readiness_policy: {
     schema_version: "1",
@@ -202,5 +203,56 @@ describe("configuration revision impact", () => {
       (current.snapshot as CompoundedProductPresentationSnapshot)
         .variation_axes[0].values[0].active,
     ).toBe(false)
+  })
+
+  it("includes recipe-rule changes in the revision impact fingerprint", () => {
+    const previous = revision("revision_without_recipe", 1, "superseded")
+    const current = revision("revision_with_recipe", 2, "active", {
+      ...snapshot,
+      variation_axes: [
+        {
+          key: "content",
+          semantic_name: "Content",
+          help_text: null,
+          position: 0,
+          values: [
+            {
+              key: "configured_value",
+              label: "Configured value",
+              position: 0,
+              active: true,
+              measurement: null,
+            },
+          ],
+        },
+      ],
+      recipe_rules: [
+        {
+          key: "finished_configured_value",
+          label: "Configured value",
+          kind: "finished_product",
+          position: 0,
+          match: {
+            axis_key: "content",
+            value_key: "configured_value",
+          },
+          components: [
+            {
+              inventory_item_id: "inventory_finished",
+              required_display_amount: "1",
+            },
+          ],
+        },
+      ],
+    })
+    const impact = compareCompoundedProductConfigurationRevisions({
+      from: previous,
+      to: current,
+    })
+
+    expect(impact.changed_recipe_rules).toEqual([
+      { key: "finished_configured_value", change: "added" },
+    ])
+    expect(impact.impact_fingerprint).toMatch(/^[a-f0-9]{64}$/)
   })
 })

@@ -49,3 +49,23 @@ export function previewCompoundedProductVariantMatrix(input: {
     }),
   }
 }
+
+export function previewDirectCompoundedProductVariantMatrix(input: {
+  request: AdminPreviewCompoundedProductVariantMatrix
+  snapshot: CompoundedProductPresentationSnapshot
+  serverMaximum: number
+}) {
+  const fingerprint = fingerprintCompoundedProductConfiguration(input.snapshot)
+
+  return {
+    presentation_revision_id: null,
+    configuration_fingerprint: fingerprint,
+    matrix: generateCompoundedProductVariantMatrix({
+      axes: input.snapshot.variation_axes,
+      selectedValueKeysByAxis: input.request.selected_value_keys_by_axis,
+      excludedCombinationKeys: input.request.excluded_combination_keys,
+      warningThreshold: input.snapshot.variant_warning_threshold,
+      serverMaximum: input.serverMaximum,
+    }),
+  }
+}

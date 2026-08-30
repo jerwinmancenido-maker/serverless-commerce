@@ -1,4 +1,5 @@
 import {
+  convertSupplierUnitsToInventoryUnits,
   normalizeComponentProfileInput,
   type SetComponentProfileInput,
 } from "../contracts/component-profile"
@@ -14,6 +15,9 @@ const validProfile: SetComponentProfileInput = {
   baseUnitsPerDisplayUnit: 1_000,
   displayPrecision: 2,
   reorderThresholdBaseUnits: 50_000,
+  classification: "finished_product",
+  supplierUnit: "box",
+  inventoryUnitsPerSupplierUnit: 100,
   category: "active ingredient",
   lotTrackingRequired: true,
   expiryTrackingRequired: true,
@@ -40,6 +44,9 @@ describe("BOM component profile contract", () => {
     ["reorderThresholdBaseUnits", -1],
     ["reorderThresholdBaseUnits", 1.5],
     ["reorderThresholdBaseUnits", 2_147_483_648],
+    ["inventoryUnitsPerSupplierUnit", 0],
+    ["inventoryUnitsPerSupplierUnit", 1.5],
+    ["inventoryUnitsPerSupplierUnit", 2_147_483_648],
   ] as const)("rejects invalid %s values", (field, value) => {
     expect(() =>
       normalizeComponentProfileInput({
@@ -72,6 +79,53 @@ describe("BOM component profile contract", () => {
       displayUnit: "IU",
       baseUnitsPerDisplayUnit: 10,
     })
+  })
+
+  it("defaults legacy profiles to individually received included supplies", () => {
+    const {
+      classification: _classification,
+      supplierUnit: _supplierUnit,
+      inventoryUnitsPerSupplierUnit: _conversion,
+      ...legacyProfile
+    } = validProfile
+
+    expect(normalizeComponentProfileInput(legacyProfile)).toMatchObject({
+      classification: "included_supply",
+      supplierUnit: "piece",
+      inventoryUnitsPerSupplierUnit: 1,
+    })
+  })
+
+  it("requires one inventory piece for an individually received piece", () => {
+    expect(() =>
+      normalizeComponentProfileInput({
+        ...validProfile,
+        supplierUnit: "piece",
+        inventoryUnitsPerSupplierUnit: 2,
+      }),
+    ).toThrow("must be 1 when supplierUnit is piece")
+  })
+
+  it("converts supplier boxes to individually tracked inventory pieces", () => {
+    expect(
+      convertSupplierUnitsToInventoryUnits({
+        supplierUnits: 3,
+        inventoryUnitsPerSupplierUnit: 100,
+      }),
+    ).toBe(300)
+  })
+
+  it.each([
+    ["fractional supplier quantity", 1.5, 100],
+    ["zero conversion", 1, 0],
+    ["unsafe result", Number.MAX_SAFE_INTEGER, 2],
+  ])("rejects %s", (_label, supplierUnits, conversion) => {
+    expect(() =>
+      convertSupplierUnitsToInventoryUnits({
+        supplierUnits,
+        inventoryUnitsPerSupplierUnit: conversion,
+      }),
+    ).toThrow()
   })
 
   it("rejects mismatched display-unit conversions", () => {

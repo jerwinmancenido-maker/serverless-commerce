@@ -2,12 +2,15 @@ import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import { COMPOUNDED_PRODUCT_MODULE } from "../../modules/compounded-product"
+import { PEPSTACK_BOM_MODULE } from "../../modules/bom"
+import type PepstackBomModuleService from "../../modules/bom/service"
 import { fingerprintCompoundedProductConfiguration } from "../../modules/compounded-product/configuration-fingerprint"
 import {
   AdminCreateCompoundedProductPresentation,
   type AdminCreateCompoundedProductPresentation as AdminCreateCompoundedProductPresentationInput,
 } from "../../modules/compounded-product/contracts/configuration"
 import type CompoundedProductModuleService from "../../modules/compounded-product/service"
+import { validateAndNormalizeCompoundedProductRecipeRules } from "../../modules/compounded-product/recipe-rules"
 
 export type CreateCompoundedProductPresentationWorkflowInput =
   AdminCreateCompoundedProductPresentationInput & {
@@ -16,11 +19,35 @@ export type CreateCompoundedProductPresentationWorkflowInput =
 
 export const validateCompoundedProductPresentationStep = createStep(
   "validate-compounded-product-presentation",
-  async (input: CreateCompoundedProductPresentationWorkflowInput) => {
+  async (
+    input: CreateCompoundedProductPresentationWorkflowInput,
+    { container },
+  ) => {
     const parsed = AdminCreateCompoundedProductPresentation.parse({
       key: input.key,
       snapshot: input.snapshot,
     })
+    const inventoryItemIds = Array.from(
+      new Set(
+        parsed.snapshot.recipe_rules.flatMap((rule) =>
+          rule.components.map((component) => component.inventory_item_id),
+        ),
+      ),
+    )
+
+    if (inventoryItemIds.length) {
+      const bomService = container.resolve<PepstackBomModuleService>(
+        PEPSTACK_BOM_MODULE,
+      )
+      const profiles = await bomService.listComponentProfiles({
+        inventory_item_id: inventoryItemIds,
+      })
+
+      validateAndNormalizeCompoundedProductRecipeRules({
+        rules: parsed.snapshot.recipe_rules,
+        profiles,
+      })
+    }
 
     return new StepResponse({ ...parsed, actorId: input.actorId })
   },

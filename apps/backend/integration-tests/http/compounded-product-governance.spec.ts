@@ -65,6 +65,7 @@ const snapshot: CompoundedProductPresentationSnapshot = {
       ],
     },
   ],
+  recipe_rules: [],
   sku_suggestion_policy: null,
   readiness_policy: DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
   variant_warning_threshold: 20,
@@ -215,7 +216,6 @@ medusaIntegrationTestRunner({
             matrix_confirmation: null,
             product: {
               title: "Reclassifiable governed product",
-              subtitle: null,
               description: null,
               handle: `reclassifiable-governed-${suffix}`,
               type_id: governedProductTypeId,
@@ -492,7 +492,6 @@ medusaIntegrationTestRunner({
             matrix_confirmation: null,
             product: {
               title: "Disposable governed 10 mg vial",
-              subtitle: null,
               description: null,
               handle: `governed-vial-${suffix}-product`,
               type_id: governedProductTypeId,
@@ -641,7 +640,6 @@ medusaIntegrationTestRunner({
               matrix_confirmation: null,
               product: {
                 title: "Audit-compensated governed draft",
-                subtitle: null,
                 description: null,
                 handle: failedHandle,
                 type_id: governedProductTypeId,
@@ -795,7 +793,6 @@ medusaIntegrationTestRunner({
           matrix_confirmation: null,
           product: {
             title: input.title,
-            subtitle: null,
             description: null,
             handle: `revision-decision-${suffix}-${input.sku.toLowerCase()}`,
             type_id: null,
@@ -966,7 +963,6 @@ medusaIntegrationTestRunner({
           matrix_confirmation: null,
           product: {
             title: "Concurrent governed 10 mg vial",
-            subtitle: null,
             description: null,
             handle,
             type_id: null,
@@ -1111,7 +1107,6 @@ medusaIntegrationTestRunner({
           matrix_confirmation: null,
           product: {
             title: `Concurrent SKU product ${requestSuffix}`,
-            subtitle: null,
             description: null,
             handle: `concurrent-sku-${suffix}-${requestSuffix}`,
             type_id: null,

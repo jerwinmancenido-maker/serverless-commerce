@@ -7,16 +7,21 @@ import {
   DataTable,
   type DataTablePaginationState,
   Heading,
+  Select,
   Text,
   useDataTable,
 } from "@medusajs/ui"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { sdk } from "../../lib/sdk"
 import { ComponentProfileDrawer } from "./component-profile-drawer"
 import { RecipeHistoryDrawer } from "./recipe-history-drawer"
-import type { ComponentProfile, ComponentProfilesResponse } from "./types"
+import type {
+  BomAvailabilityResponse,
+  ComponentProfile,
+  ComponentProfilesResponse,
+} from "./types"
 
 const PAGE_SIZE = 20
 const inventoryColumnHelper =
@@ -26,6 +31,21 @@ const variantColumnHelper =
 
 function profileMap(profiles: ComponentProfile[]) {
   return new Map(profiles.map((profile) => [profile.inventory_item_id, profile]))
+}
+
+const classificationLabels: Record<
+  ComponentProfile["classification"],
+  string
+> = {
+  finished_product: "Finished product",
+  included_supply: "Included supply",
+  packaging: "Packaging",
+}
+
+const inventoryUnitLabels: Record<ComponentProfile["base_unit"], string> = {
+  microgram: "mcg",
+  microliter: "µL",
+  piece: "pieces",
 }
 
 const BomPage = () => {
@@ -42,6 +62,7 @@ const BomPage = () => {
   const [selectedVariant, setSelectedVariant] =
     useState<HttpTypes.AdminProductVariant | null>(null)
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false)
+  const [selectedLocationId, setSelectedLocationId] = useState("")
 
   const profilesQuery = useQuery({
     queryKey: ["bom-component-profiles"],
@@ -90,7 +111,7 @@ const BomPage = () => {
             <div className="flex items-center gap-2">
               <Badge color="green">Configured</Badge>
               <Text className="text-ui-fg-subtle" size="small">
-                {profile.category}
+                {classificationLabels[profile.classification]}
               </Text>
             </div>
           ) : (
@@ -103,6 +124,17 @@ const BomPage = () => {
         header: "Display unit",
         cell: ({ row }) =>
           profilesByInventoryItem.get(row.original.id)?.display_unit || "—",
+      }),
+      inventoryColumnHelper.display({
+        id: "receiving",
+        header: "Receiving unit",
+        cell: ({ row }) => {
+          const profile = profilesByInventoryItem.get(row.original.id)
+
+          return profile
+            ? `1 ${profile.supplier_unit} = ${profile.inventory_units_per_supplier_unit} ${inventoryUnitLabels[profile.base_unit]}`
+            : "—"
+        },
       }),
     ],
     [profilesByInventoryItem],
@@ -139,6 +171,59 @@ const BomPage = () => {
       }),
     placeholderData: keepPreviousData,
   })
+  const stockLocationsQuery = useQuery({
+    queryKey: ["bom-stock-locations"],
+    queryFn: () => sdk.admin.stockLocation.list({ limit: 100 }),
+  })
+  const stockLocations = useMemo(
+    () => stockLocationsQuery.data?.stock_locations || [],
+    [stockLocationsQuery.data?.stock_locations],
+  )
+
+  useEffect(() => {
+    if (!stockLocationsQuery.data) {
+      return
+    }
+
+    const selectionStillExists = stockLocations.some(
+      (location) => location.id === selectedLocationId,
+    )
+
+    if (!selectionStillExists) {
+      setSelectedLocationId(stockLocations[0]?.id || "")
+    }
+  }, [selectedLocationId, stockLocations, stockLocationsQuery.data])
+
+  const visibleVariantIds = useMemo(
+    () => (variantsQuery.data?.variants || []).map((variant) => variant.id),
+    [variantsQuery.data?.variants],
+  )
+  const visibleVariantIdKey = visibleVariantIds.join(",")
+  const availabilityQuery = useQuery({
+    queryKey: [
+      "bom-location-availability",
+      selectedLocationId,
+      visibleVariantIdKey,
+    ],
+    queryFn: () =>
+      sdk.client.fetch<BomAvailabilityResponse>("/admin/bom/availability", {
+        query: {
+          location_id: selectedLocationId,
+          variant_ids: visibleVariantIdKey,
+        },
+      }),
+    enabled: Boolean(selectedLocationId && visibleVariantIds.length),
+  })
+  const availabilityByVariantId = useMemo(
+    () =>
+      new Map(
+        (availabilityQuery.data?.variants || []).map((availability) => [
+          availability.variant_id,
+          availability,
+        ]),
+      ),
+    [availabilityQuery.data?.variants],
+  )
 
   const variantColumns = useMemo(
     () => [
@@ -155,8 +240,69 @@ const BomPage = () => {
         header: "Product",
         cell: ({ row }) => row.original.product?.title || "—",
       }),
+      variantColumnHelper.display({
+        id: "calculated_stock",
+        header: "Calculated stock",
+        cell: ({ row }) => {
+          if (!selectedLocationId) {
+            return "—"
+          }
+
+          if (availabilityQuery.isLoading) {
+            return (
+              <Text className="text-ui-fg-subtle" size="small">
+                Calculating…
+              </Text>
+            )
+          }
+
+          const availability = availabilityByVariantId.get(row.original.id)
+
+          if (!availability || availability.status === "missing_recipe") {
+            return <Badge color="grey">No recipe</Badge>
+          }
+
+          return (
+            <Text size="small" weight="plus">
+              {availability.calculated_stock}
+            </Text>
+          )
+        },
+      }),
+      variantColumnHelper.display({
+        id: "limiting_component",
+        header: "Limiting component",
+        cell: ({ row }) => {
+          if (availabilityQuery.isError) {
+            return (
+              <Text className="text-ui-fg-error" size="small">
+                Unavailable
+              </Text>
+            )
+          }
+
+          const availability = availabilityByVariantId.get(row.original.id)
+
+          if (!availability || availability.status === "missing_recipe") {
+            return "—"
+          }
+
+          return (
+            <Text className="text-ui-fg-subtle" size="small">
+              {availability.limiting_components
+                .map((component) => component.inventory_item_title)
+                .join(", ") || "—"}
+            </Text>
+          )
+        },
+      }),
     ],
-    [],
+    [
+      availabilityByVariantId,
+      availabilityQuery.isError,
+      availabilityQuery.isLoading,
+      selectedLocationId,
+    ],
   )
 
   const variantTable = useDataTable({
@@ -185,8 +331,9 @@ const BomPage = () => {
         <div className="px-6 py-4">
           <Heading>BOM component profiles</Heading>
           <Text className="text-ui-fg-subtle" size="small">
-            Select an inventory item to configure units, category, thresholds,
-            and tracking requirements.
+            Configure classification, supplier conversion, units, thresholds,
+            and tracking requirements. Stock remains in Medusa Inventory at the
+            shared stock location.
           </Text>
         </div>
         {profilesQuery.isError ? (
@@ -204,12 +351,48 @@ const BomPage = () => {
       </Container>
 
       <Container className="divide-y p-0">
-        <div className="px-6 py-4">
-          <Heading>Recipe history</Heading>
-          <Text className="text-ui-fg-subtle" size="small">
-            Select a product variant to inspect its immutable BOM snapshots.
-          </Text>
+        <div className="flex items-end justify-between gap-4 px-6 py-4">
+          <div>
+            <Heading>Recipe availability</Heading>
+            <Text className="text-ui-fg-subtle" size="small">
+              Calculated stock is the lowest whole-recipe capacity after
+              subtracting reservations at the selected location. Select a row
+              to inspect its immutable recipe history.
+            </Text>
+          </div>
+          <div className="w-full max-w-64">
+            <Text size="small" leading="compact" weight="plus">
+              Stock location
+            </Text>
+            <Select
+              value={selectedLocationId || undefined}
+              onValueChange={setSelectedLocationId}
+              disabled={stockLocationsQuery.isLoading || !stockLocations.length}
+            >
+              <Select.Trigger>
+                <Select.Value
+                  placeholder={
+                    stockLocationsQuery.isLoading
+                      ? "Loading locations…"
+                      : "No stock location"
+                  }
+                />
+              </Select.Trigger>
+              <Select.Content>
+                {stockLocations.map((location) => (
+                  <Select.Item key={location.id} value={location.id}>
+                    {location.name}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+          </div>
         </div>
+        {availabilityQuery.isError ? (
+          <Text className="text-ui-fg-error px-6 py-4" size="small">
+            Calculated stock could not be loaded for this location.
+          </Text>
+        ) : null}
         <DataTable instance={variantTable}>
           <DataTable.Toolbar>
             <DataTable.Search placeholder="Search product variants" />

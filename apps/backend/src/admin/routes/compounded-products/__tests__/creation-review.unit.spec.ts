@@ -20,7 +20,7 @@ describe("compounded-product creation review", () => {
   it("treats blank SKUs as auto-generated instead of draft blockers", () => {
     const review = createCompoundedProductCreationReview({
       title: "",
-      shippingProfileId: "",
+      storeConfigurationReady: false,
       rows: [{ key: "one" }, { key: "two" }],
       drafts: {
         one: {
@@ -44,6 +44,7 @@ describe("compounded-product creation review", () => {
       },
       policy,
       salesChannelCount: 0,
+      configuredRecipeCoverageComplete: false,
       largeMatrixRequiresConfirmation: true,
       largeMatrixConfirmed: false,
     })
@@ -54,13 +55,13 @@ describe("compounded-product creation review", () => {
       managedVariantCount: 1,
       draftSaveBlockers: [
         "Product title is required",
-        "Shipping profile is required",
+        "Store fulfillment setup is incomplete",
         "The current large variant matrix needs confirmation",
       ],
       publicationReviewItems: [
         "1 variant has no price",
         "No sales channel is selected",
-        "1 managed-inventory variant requires a reviewed BOM recipe after draft creation",
+        "1 inventory-tracked variant requires a reviewed ingredient recipe after draft creation",
       ],
     })
   })
@@ -68,7 +69,7 @@ describe("compounded-product creation review", () => {
   it("reports a draft as saveable without overstating publication readiness", () => {
     const review = createCompoundedProductCreationReview({
       title: "Configured compound",
-      shippingProfileId: "sp_default",
+      storeConfigurationReady: true,
       rows: [{ key: "one" }],
       drafts: {
         one: {
@@ -83,6 +84,7 @@ describe("compounded-product creation review", () => {
       },
       policy,
       salesChannelCount: 1,
+      configuredRecipeCoverageComplete: true,
       largeMatrixRequiresConfirmation: false,
       largeMatrixConfirmed: false,
     })

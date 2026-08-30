@@ -98,6 +98,7 @@ describe("compounded product configuration API contract", () => {
 
     expect(result.key).toBe("future_presentation")
     expect(result.snapshot.variation_axes).toHaveLength(3)
+    expect(result.snapshot.recipe_rules).toEqual([])
     expect(result.snapshot.readiness_policy.require_price).toBe(false)
   })
 

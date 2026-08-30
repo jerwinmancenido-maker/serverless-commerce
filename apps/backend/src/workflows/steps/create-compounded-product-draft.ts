@@ -1,6 +1,11 @@
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
+import { PEPSTACK_BOM_MODULE } from "../../modules/bom"
+import type PepstackBomModuleService from "../../modules/bom/service"
 import { COMPOUNDED_PRODUCT_MODULE } from "../../modules/compounded-product"
 import { fingerprintCompoundedProductConfiguration } from "../../modules/compounded-product/configuration-fingerprint"
 import { validateCompoundedProductRevisionDecision } from "../../modules/compounded-product/configuration-revision-impact"
@@ -15,7 +20,9 @@ import {
   type CompoundedProductCreationRequestRecord,
 } from "../../modules/compounded-product/product-creation-idempotency"
 import { prepareCompoundedProductDraft } from "../../modules/compounded-product/prepare-product-draft"
+import { validateAndNormalizeCompoundedProductRecipeRules } from "../../modules/compounded-product/recipe-rules"
 import { resolveCompoundedProductVariantServerMaximum } from "../../modules/compounded-product/readiness-policy"
+import { resolveConfiguredCompoundedProductRecipes } from "../../modules/compounded-product/resolve-configured-recipes"
 import type CompoundedProductModuleService from "../../modules/compounded-product/service"
 
 export type CreateCompoundedProductDraftWorkflowInput =
@@ -177,6 +184,71 @@ export const prepareCompoundedProductDraftStep = createStep(
       configurationFingerprint,
       serverMaximum: resolveCompoundedProductVariantServerMaximum(),
     })
+
+    if (configurationSnapshot.recipe_rules.length) {
+      const bomService = container.resolve<PepstackBomModuleService>(
+        PEPSTACK_BOM_MODULE,
+      )
+      const query = container.resolve(ContainerRegistrationKeys.QUERY)
+      const inventoryItemIds = Array.from(
+        new Set(
+          configurationSnapshot.recipe_rules.flatMap((rule) =>
+            rule.components.map((component) => component.inventory_item_id),
+          ),
+        ),
+      )
+      const [profiles, { data: inventoryItems }] = await Promise.all([
+        bomService.listComponentProfiles({
+          inventory_item_id: inventoryItemIds,
+        }),
+        query.graph({
+          entity: "inventory_item",
+          fields: ["id"],
+          filters: { id: inventoryItemIds },
+        }),
+      ])
+      const foundInventoryItemIds = new Set(
+        (inventoryItems as Array<{ id: string }>).map((item) => item.id),
+      )
+      const missingInventoryItemIds = inventoryItemIds.filter(
+        (id) => !foundInventoryItemIds.has(id),
+      )
+
+      if (missingInventoryItemIds.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Recipe inventory items were not found: ${missingInventoryItemIds.join(", ")}`,
+        )
+      }
+
+      const normalizedRules =
+        validateAndNormalizeCompoundedProductRecipeRules({
+          rules: configurationSnapshot.recipe_rules,
+          profiles,
+        })
+      const resolvedRecipes = resolveConfiguredCompoundedProductRecipes({
+        matrix: prepared.matrix,
+        rules: normalizedRules,
+      })
+      const variants = prepared.nativeProduct.variants || []
+
+      if (resolvedRecipes.length !== variants.length) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Resolved BOM recipes do not match the native product variants",
+        )
+      }
+
+      prepared.nativeProduct.variants = variants.map((variant, index) => ({
+        ...variant,
+        inventory_items: resolvedRecipes[index].components.map(
+          ({ inventoryItemId, requiredQuantity }) => ({
+            inventory_item_id: inventoryItemId,
+            required_quantity: requiredQuantity,
+          }),
+        ),
+      }))
+    }
     const { idempotency_key: _idempotencyKey, ...fingerprintedRequest } = request
     const payloadFingerprint =
       createCompoundedProductCreationPayloadFingerprint({

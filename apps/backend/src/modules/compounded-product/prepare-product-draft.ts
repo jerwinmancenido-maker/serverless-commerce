@@ -308,7 +308,7 @@ export function prepareCompoundedProductDraft(input: {
     })
 
     return {
-      title: row.title,
+      title: row.title || "Default variant",
       sku,
       options: Object.fromEntries(
         row.options.map((option) => [option.semanticName, option.valueLabel]),
@@ -359,7 +359,6 @@ export function prepareCompoundedProductDraft(input: {
     matrix,
     nativeProduct: {
       title: input.request.product.title,
-      subtitle: input.request.product.subtitle,
       description: input.request.product.description,
       handle: input.request.product.handle,
       status: "draft",

@@ -17,6 +17,7 @@ import {
   registerCompoundedProductDraftStep,
   type CreateCompoundedProductDraftWorkflowInput,
 } from "./steps/create-compounded-product-draft"
+import applyConfiguredCompoundedProductRecipesWorkflow from "./apply-configured-compounded-product-recipes"
 import { createCompoundedProductGovernanceAuditEventsStep } from "./steps/create-compounded-product-governance-audit-events"
 
 export const createCompoundedProductDraftWorkflow = createWorkflow(
@@ -63,8 +64,28 @@ export const createCompoundedProductDraftWorkflow = createWorkflow(
       { claim },
       ({ claim }) => claim.action === "create",
     ).then(() => registerCompoundedProductDraftStep(registrationInput))
+    const recipeInput = transform(
+      { createdProducts, prepared, registration },
+      ({ createdProducts, prepared, registration }) => ({
+        productId: createdProducts?.[0]?.id || "",
+        registrationId: registration?.id || "",
+        presentationRevisionId: prepared.presentationRevisionId,
+        actorId: prepared.actorId,
+        snapshot: prepared.configurationSnapshot,
+        matrix: prepared.matrix,
+      }),
+    )
+    const configuredRecipes = when(
+      "apply-configured-compounded-product-recipes",
+      { claim },
+      ({ claim }) => claim.action === "create",
+    ).then(() =>
+      applyConfiguredCompoundedProductRecipesWorkflow.runAsStep({
+        input: recipeInput,
+      }),
+    )
     const completionInput = transform(
-      { claim, createdProducts, registration, prepared },
+      { claim, configuredRecipes, createdProducts, registration, prepared },
       ({ claim, createdProducts, registration, prepared }) => ({
         requestId: claim.request.id,
         nativeProductId: createdProducts?.[0]?.id || "",

@@ -93,6 +93,10 @@ export function compareCompoundedProductConfigurationRevisions(input: {
     fromSnapshot.variation_axes,
     toSnapshot.variation_axes,
   )
+  const changed_recipe_rules = changedItems(
+    fromSnapshot.recipe_rules,
+    toSnapshot.recipe_rules,
+  )
   const sku_policy_changed =
     fingerprintCompoundedProductValue(fromSnapshot.sku_suggestion_policy) !==
     fingerprintCompoundedProductValue(toSnapshot.sku_suggestion_policy)
@@ -124,6 +128,7 @@ export function compareCompoundedProductConfigurationRevisions(input: {
       fromSnapshot.description !== toSnapshot.description,
     changed_fields,
     changed_variation_axes,
+    changed_recipe_rules,
     sku_policy_changed,
     readiness_policy_changed,
     variant_policy_changed:

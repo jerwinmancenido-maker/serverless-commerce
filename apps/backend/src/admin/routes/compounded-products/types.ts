@@ -86,12 +86,38 @@ export type VariationAxis = {
   values: VariationValue[]
 }
 
+export type RecipeRuleComponent = {
+  inventory_item_id: string
+  required_display_amount: string
+}
+
+export type RecipeRule =
+  | {
+      key: string
+      label: string
+      kind: "finished_product" | "variation_value"
+      position: number
+      match: {
+        axis_key: string
+        value_key: string
+      }
+      components: RecipeRuleComponent[]
+    }
+  | {
+      key: string
+      label: string
+      kind: "common_packaging"
+      position: number
+      components: RecipeRuleComponent[]
+    }
+
 export type PresentationSnapshot = {
   schema_version: "1"
   label: string
   description: string | null
   fields: ConfiguredField[]
   variation_axes: VariationAxis[]
+  recipe_rules: RecipeRule[]
   sku_suggestion_policy: {
     template: string
     separator: string
@@ -170,6 +196,10 @@ export type ConfigurationRevisionImpact = {
     key: string
     change: "added" | "removed" | "changed"
   }>
+  changed_recipe_rules: Array<{
+    key: string
+    change: "added" | "removed" | "changed"
+  }>
   sku_policy_changed: boolean
   readiness_policy_changed: boolean
   variant_policy_changed: boolean
@@ -225,7 +255,7 @@ export type MatrixRow = {
 }
 
 export type MatrixPreviewResponse = {
-  presentation_revision_id: string
+  presentation_revision_id: string | null
   configuration_fingerprint: string
   matrix: {
     fingerprint: string
@@ -237,6 +267,34 @@ export type MatrixPreviewResponse = {
     confirmationSatisfied: boolean
     rows: MatrixRow[]
   }
+}
+
+export type ConfiguredRecipeAvailabilityComponent = {
+  inventory_item_id: string
+  inventory_item_title: string
+  stocked_quantity: number
+  reserved_quantity: number
+  available_quantity: number
+  required_quantity: number
+  capacity: number
+  limiting: boolean
+}
+
+export type ConfiguredRecipeAvailabilityResponse = {
+  location: {
+    id: string
+    name: string
+  }
+  variants: Array<{
+    variant_id: string
+    status: "calculated" | "missing_recipe"
+    calculated_stock: number | null
+    limiting_components: Array<{
+      inventory_item_id: string
+      inventory_item_title: string
+    }>
+    components: ConfiguredRecipeAvailabilityComponent[]
+  }>
 }
 
 export type VariantDraft = {
@@ -267,6 +325,9 @@ export type ComponentProfile = {
   display_unit: ResearchDisplayUnit
   base_units_per_display_unit: number
   display_precision: number
+  classification: "finished_product" | "included_supply" | "packaging"
+  supplier_unit: "box" | "pack" | "roll" | "piece"
+  inventory_units_per_supplier_unit: number
   category: string
 }
 

@@ -4,6 +4,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import {
   normalizeComponentProfileInput,
+  type NormalizedComponentProfileInput,
   type SetComponentProfileInput,
 } from "../../modules/bom/contracts/component-profile"
 import { PEPSTACK_BOM_MODULE } from "../../modules/bom"
@@ -16,6 +17,9 @@ type ComponentProfileValues = {
   base_units_per_display_unit: number
   display_precision: number
   reorder_threshold_base_units: number
+  classification: NormalizedComponentProfileInput["classification"]
+  supplier_unit: NormalizedComponentProfileInput["supplierUnit"]
+  inventory_units_per_supplier_unit: number
   category: string
   lot_tracking_required: boolean
   expiry_tracking_required: boolean
@@ -27,7 +31,7 @@ type SetComponentProfileCompensation = {
 }
 
 function toProfileValues(
-  input: SetComponentProfileInput,
+  input: NormalizedComponentProfileInput,
 ): ComponentProfileValues {
   return {
     inventory_item_id: input.inventoryItemId,
@@ -36,6 +40,10 @@ function toProfileValues(
     base_units_per_display_unit: input.baseUnitsPerDisplayUnit,
     display_precision: input.displayPrecision,
     reorder_threshold_base_units: input.reorderThresholdBaseUnits,
+    classification: input.classification,
+    supplier_unit: input.supplierUnit,
+    inventory_units_per_supplier_unit:
+      input.inventoryUnitsPerSupplierUnit,
     category: input.category,
     lot_tracking_required: input.lotTrackingRequired,
     expiry_tracking_required: input.expiryTrackingRequired,
@@ -50,7 +58,7 @@ export const validateComponentProfileInputStep = createStep(
 
 export const setComponentProfileStep = createStep(
   "set-component-profile",
-  async (input: SetComponentProfileInput, { container }) => {
+  async (input: NormalizedComponentProfileInput, { container }) => {
     const inventoryService = container.resolve<IInventoryService>(
       Modules.INVENTORY,
     )
@@ -90,6 +98,10 @@ export const setComponentProfileStep = createStep(
           display_precision: previous.display_precision,
           reorder_threshold_base_units:
             previous.reorder_threshold_base_units,
+          classification: previous.classification,
+          supplier_unit: previous.supplier_unit,
+          inventory_units_per_supplier_unit:
+            previous.inventory_units_per_supplier_unit,
           category: previous.category,
           lot_tracking_required: previous.lot_tracking_required,
           expiry_tracking_required: previous.expiry_tracking_required,

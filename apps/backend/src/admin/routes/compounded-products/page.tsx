@@ -1,17 +1,16 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { Spinner } from "@medusajs/icons"
 import {
+  Badge,
   Button,
   Checkbox,
   Container,
+  Drawer,
   Heading,
   Input,
   Label,
-  Prompt,
   Select,
-  Switch,
+  Table,
   Text,
-  Textarea,
   toast,
 } from "@medusajs/ui"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -20,32 +19,48 @@ import { useNavigate } from "react-router-dom"
 
 import { sdk } from "../../lib/sdk"
 import { loadAllAdminPages } from "../../lib/load-all-pages"
+import { AdvancedSettingsDrawer } from "./advanced-settings-drawer"
+import { BuilderSection } from "./builder-section"
 import { ConfiguredFieldInput } from "./configured-field-input"
+import { ProductDescriptionEditor } from "./product-description-editor"
+import { InventoryRecipeBuilder } from "./inventory-recipe-builder"
+import {
+  buildDirectRecipeRules,
+  configuredRecipeCoverageIsComplete,
+  emptyDirectRecipeConfiguration,
+  type DirectRecipeConfiguration,
+} from "./direct-recipe-rules"
 import {
   createCompoundedProductCreationReview,
   suggestCompoundedProductHandle,
 } from "./creation-review"
+import {
+  DirectVariationBuilder,
+} from "./direct-variation-builder"
+import {
+  newDirectVariationAxis,
+  prepareAutomaticDirectProductSnapshot,
+  selectedValuesForSnapshot,
+  type DirectVariationAxis,
+} from "./direct-variation-snapshot"
 import type {
   ConfiguredField,
   ConfiguredValue,
-  ConfigurationRevisionImpact,
-  ConfigurationRevisionImpactResponse,
-  ConfigurationRevisionResolution,
+  ConfiguredRecipeAvailabilityResponse,
   CreateDraftResponse,
   MatrixPreviewResponse,
   PresentationListItem,
-  PresentationListResponse,
+  PresentationSnapshot,
+  RecipeRule,
   VariantDraft,
 } from "./types"
 
 const emptyProduct = {
   title: "",
-  subtitle: "",
   handle: "",
   description: "",
   typeId: "",
   collectionId: "",
-  shippingProfileId: "",
 }
 
 const newSubmissionKey = () => crypto.randomUUID()
@@ -61,27 +76,18 @@ const sortedFields = (
 const messageFromError = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback
 
-class RevisionDecisionRequiredError extends Error {}
-
-const countStructuredMeasurements = (values: Record<string, ConfiguredValue>) =>
-  Object.values(values).reduce((count, value) => {
-    if (!value || typeof value !== "object") return count
-    if ("amount" in value) return count + 1
-    if ("numerator" in value && "denominator" in value) return count + 2
-    return count
-  }, 0)
-
 const CompoundedProductsPage = () => {
   const navigate = useNavigate()
   const uploadInputRef = useRef<HTMLInputElement>(null)
-  const [presentationRevisionId, setPresentationRevisionId] = useState("")
-  const [pinnedPresentation, setPinnedPresentation] =
+  const variantUploadInputRef = useRef<HTMLInputElement>(null)
+  const latestPreviewRequestKeyRef = useRef<string | null>(null)
+  const [directVariationAxes, setDirectVariationAxes] = useState<
+    DirectVariationAxis[]
+  >(() => [newDirectVariationAxis(), newDirectVariationAxis()])
+  const [directSnapshot, setDirectSnapshot] =
+    useState<PresentationSnapshot | null>(null)
+  const [productConfiguration, setProductConfiguration] =
     useState<PresentationListItem | null>(null)
-  const [pendingPresentationRevisionId, setPendingPresentationRevisionId] =
-    useState<string | null>(null)
-  const [selectedValues, setSelectedValues] = useState<
-    Record<string, string[]>
-  >({})
   const [excludedKeys, setExcludedKeys] = useState<string[]>([])
   const [preview, setPreview] = useState<MatrixPreviewResponse | null>(null)
   const [largeMatrixConfirmed, setLargeMatrixConfirmed] = useState(false)
@@ -93,7 +99,9 @@ const CompoundedProductsPage = () => {
   const [variantDrafts, setVariantDrafts] = useState<
     Record<string, VariantDraft>
   >({})
-  const [expandedRows, setExpandedRows] = useState<string[]>([])
+  const [bulkPriceAmount, setBulkPriceAmount] = useState("")
+  const [pricingCurrencyCode, setPricingCurrencyCode] = useState("")
+  const [imagePickerRowKey, setImagePickerRowKey] = useState<string | null>(null)
   const [salesChannelIds, setSalesChannelIds] = useState<string[]>([])
   const [categoryIds, setCategoryIds] = useState<string[]>([])
   const [tagIds, setTagIds] = useState<string[]>([])
@@ -101,34 +109,11 @@ const CompoundedProductsPage = () => {
     Array<{ id: string; url: string }>
   >([])
   const [submissionKey, setSubmissionKey] = useState(newSubmissionKey)
-  const [revisionResolution, setRevisionResolution] =
-    useState<ConfigurationRevisionResolution | null>(null)
-  const [pendingRevisionImpact, setPendingRevisionImpact] = useState<{
-    impact: ConfigurationRevisionImpact
-    target: PresentationListItem
-  } | null>(null)
-  const [pendingVariationChange, setPendingVariationChange] = useState<{
-    axisKey: string
-    axisLabel: string
-    valueKey: string
-    valueLabel: string
-    selecting: boolean
-  } | null>(null)
-  const [revisionDecisionReason, setRevisionDecisionReason] = useState("")
-
-  const presentationsQuery = useQuery({
-    queryKey: ["compounded-product-presentations", "creation"],
-    queryFn: () =>
-      loadAllAdminPages({
-        loadPage: async (limit, offset) => {
-          const page = await sdk.client.fetch<PresentationListResponse>(
-            `/admin/compounded-product/presentations?limit=${limit}&offset=${offset}`,
-          )
-
-          return { items: page.presentations, count: page.count }
-        },
-      }),
-  })
+  const [advancedSettingsOpen, setAdvancedSettingsOpen] = useState(false)
+  const [variationsTouched, setVariationsTouched] = useState(false)
+  const [selectedStockLocationId, setSelectedStockLocationId] = useState("")
+  const [recipeConfiguration, setRecipeConfiguration] =
+    useState<DirectRecipeConfiguration>(emptyDirectRecipeConfiguration)
   const shippingProfilesQuery = useQuery({
     queryKey: ["shipping-profiles", "compounded-product-creation"],
     queryFn: () =>
@@ -150,6 +135,10 @@ const CompoundedProductsPage = () => {
           return { items: page.sales_channels, count: page.count }
         },
       }),
+  })
+  const stockLocationsQuery = useQuery({
+    queryKey: ["stock-locations", "compounded-product-creation"],
+    queryFn: () => sdk.admin.stockLocation.list({ limit: 100 }),
   })
   const regionsQuery = useQuery({
     queryKey: ["regions", "compounded-product-creation"],
@@ -207,44 +196,9 @@ const CompoundedProductsPage = () => {
       }),
   })
 
-  const activePresentations = useMemo(
-    () =>
-      (presentationsQuery.data || []).filter(
-        (item) =>
-          item.presentation.status === "active" &&
-          item.current_revision?.status === "active",
-      ),
-    [presentationsQuery.data],
-  )
-  const selectedPresentation = useMemo(
-    () =>
-      (pinnedPresentation?.current_revision?.id === presentationRevisionId
-        ? pinnedPresentation
-        : activePresentations.find(
-            (item) => item.current_revision?.id === presentationRevisionId,
-          )) || null,
-    [activePresentations, pinnedPresentation, presentationRevisionId],
-  )
-  const presentationOptions = useMemo(() => {
-    if (
-      !pinnedPresentation?.current_revision ||
-      activePresentations.some(
-        (item) =>
-          item.current_revision?.id === pinnedPresentation.current_revision?.id,
-      )
-    ) {
-      return activePresentations
-    }
-
-    return [pinnedPresentation, ...activePresentations]
-  }, [activePresentations, pinnedPresentation])
-  const snapshot = selectedPresentation?.current_revision?.snapshot || null
+  const snapshot = directSnapshot
   const productFields = useMemo(
     () => sortedFields(snapshot?.fields || [], "product"),
-    [snapshot],
-  )
-  const variantFields = useMemo(
-    () => sortedFields(snapshot?.fields || [], "variant"),
     [snapshot],
   )
   const currencies = useMemo(
@@ -259,70 +213,96 @@ const CompoundedProductsPage = () => {
     [regionsQuery.data],
   )
   const imageUrls = uploadedMedia.map((file) => file.url)
-
-  useEffect(() => {
-    if (presentationRevisionId || activePresentations.length !== 1) {
-      return
-    }
-
-    setPinnedPresentation(activePresentations[0])
-    setPresentationRevisionId(activePresentations[0].current_revision!.id)
-  }, [activePresentations, presentationRevisionId])
-
-  useEffect(() => {
-    if (!snapshot) {
-      setSelectedValues({})
-      setPreview(null)
-      return
-    }
-
-    setSelectedValues(
-      Object.fromEntries(
-        snapshot.variation_axes.map((axis) => [
-          axis.key,
-          axis.values
-            .filter((value) => value.active)
-            .sort((left, right) => left.position - right.position)
-            .map((value) => value.key),
-        ]),
-      ),
+  const shippingProfileId = useMemo(() => {
+    const profiles = shippingProfilesQuery.data || []
+    const defaultProfile = profiles.find(
+      (profile) => profile.type === "default",
     )
-    setExcludedKeys([])
-    setPreview(null)
-    setLargeMatrixConfirmed(false)
-  }, [presentationRevisionId, snapshot])
+
+    return defaultProfile?.id || (profiles.length === 1 ? profiles[0].id : "")
+  }, [shippingProfilesQuery.data])
+  const automaticSnapshot = useMemo(() => {
+    const prepared = prepareAutomaticDirectProductSnapshot({
+        productTitle: product.title,
+        axes: directVariationAxes,
+      })
+
+    if (!prepared.snapshot) {
+      return prepared
+    }
+
+    return {
+      ...prepared,
+      snapshot: {
+        ...prepared.snapshot,
+        recipe_rules: buildDirectRecipeRules({
+          configuration: recipeConfiguration,
+          axes: directVariationAxes,
+          snapshot: prepared.snapshot,
+        }),
+      },
+    }
+  }, [directVariationAxes, product.title, recipeConfiguration])
+
+  useEffect(() => {
+    const salesChannels = salesChannelsQuery.data || []
+
+    if (!salesChannelIds.length && salesChannels.length === 1) {
+      setSalesChannelIds([salesChannels[0].id])
+    }
+  }, [salesChannelIds.length, salesChannelsQuery.data])
+
+  useEffect(() => {
+    const locations = stockLocationsQuery.data?.stock_locations || []
+
+    if (
+      !locations.some((location) => location.id === selectedStockLocationId)
+    ) {
+      setSelectedStockLocationId(locations[0]?.id || "")
+    }
+  }, [selectedStockLocationId, stockLocationsQuery.data?.stock_locations])
+
+  useEffect(() => {
+    if (!pricingCurrencyCode && currencies.length === 1) {
+      setPricingCurrencyCode(currencies[0])
+    }
+  }, [currencies, pricingCurrencyCode])
 
   const previewMutation = useMutation({
-    mutationFn: () => {
-      if (!selectedPresentation?.current_revision) {
-        throw new Error("Select an active presentation configuration")
-      }
+    mutationFn: (snapshotInput: PresentationSnapshot) => {
+      const selected = selectedValuesForSnapshot(snapshotInput)
 
       return sdk.client.fetch<MatrixPreviewResponse>(
         "/admin/compounded-product/products/preview",
         {
           method: "POST",
           body: {
-            presentation_revision_id: selectedPresentation.current_revision.id,
-            expected_configuration_fingerprint:
-              selectedPresentation.current_revision.fingerprint,
-            selected_value_keys_by_axis: selectedValues,
+            configuration_snapshot: snapshotInput,
+            selected_value_keys_by_axis: selected,
             excluded_combination_keys: excludedKeys,
           },
         },
       )
     },
-    onSuccess: (result) => {
+    onSuccess: (result, snapshotInput) => {
+      if (
+        latestPreviewRequestKeyRef.current !== JSON.stringify(snapshotInput)
+      ) {
+        return
+      }
+
       setPreview(result)
       setLargeMatrixConfirmed(false)
       setVariantDrafts((current) => {
-        const next = { ...current }
+        const next: Record<string, VariantDraft> = {}
 
         result.matrix.rows.forEach((row) => {
           next[row.key] = next[row.key] || {
             sku: "",
             priceAmount: "",
-            currencyCode: currencies.length === 1 ? currencies[0] : "",
+            currencyCode:
+              pricingCurrencyCode ||
+              (currencies.length === 1 ? currencies[0] : ""),
             imageUrls: [],
             manageInventory: true,
             allowBackorder: false,
@@ -333,12 +313,45 @@ const CompoundedProductsPage = () => {
         return next
       })
     },
-    onError: (error) =>
-      toast.error(messageFromError(error, "Variant matrix could not be generated")),
+    onError: (error, snapshotInput) => {
+      if (
+        latestPreviewRequestKeyRef.current === JSON.stringify(snapshotInput)
+      ) {
+        toast.error(
+          messageFromError(error, "Product combinations could not be updated"),
+        )
+      }
+    },
   })
 
+  useEffect(() => {
+    setProductConfiguration(null)
+    setExcludedKeys([])
+    setPreview(null)
+    setLargeMatrixConfirmed(false)
+
+    if (!automaticSnapshot.snapshot) {
+      latestPreviewRequestKeyRef.current = null
+      setDirectSnapshot(null)
+      return
+    }
+
+    const snapshotInput = automaticSnapshot.snapshot
+    const requestKey = JSON.stringify(snapshotInput)
+    latestPreviewRequestKeyRef.current = requestKey
+
+    const timeout = window.setTimeout(() => {
+      if (latestPreviewRequestKeyRef.current !== requestKey) return
+
+      setDirectSnapshot(snapshotInput)
+      previewMutation.mutate(snapshotInput)
+    }, 350)
+
+    return () => window.clearTimeout(timeout)
+  }, [automaticSnapshot.snapshot])
+
   const uploadMutation = useMutation({
-    mutationFn: async (files: File[]) => {
+    mutationFn: async ({ files }: { files: File[]; assignToRowKey?: string }) => {
       const oversized = files.find((file) => file.size > 10 * 1024 * 1024)
 
       if (oversized) {
@@ -347,11 +360,27 @@ const CompoundedProductsPage = () => {
 
       return sdk.admin.upload.create({ files })
     },
-    onSuccess: ({ files }) => {
+    onSuccess: ({ files }, variables) => {
       setUploadedMedia((current) => [
         ...current,
         ...files.map((file) => ({ id: file.id, url: file.url })),
       ])
+      if (variables.assignToRowKey) {
+        setVariantDrafts((current) => {
+          const draft = current[variables.assignToRowKey!]
+          if (!draft) return current
+
+          return {
+            ...current,
+            [variables.assignToRowKey!]: {
+              ...draft,
+              imageUrls: Array.from(
+                new Set([...draft.imageUrls, ...files.map((file) => file.url)]),
+              ),
+            },
+          }
+        })
+      }
       toast.success(`${files.length} image${files.length === 1 ? "" : "s"} uploaded`)
     },
     onError: (error) =>
@@ -381,66 +410,17 @@ const CompoundedProductsPage = () => {
   })
 
   const createMutation = useMutation({
-    mutationFn: async (
-      resolutionOverride?: ConfigurationRevisionResolution,
-    ) => {
-      if (!selectedPresentation?.current_revision || !preview) {
-        throw new Error("Generate the current variant matrix before saving")
+    mutationFn: async () => {
+      if (!directSnapshot || !preview) {
+        throw new Error("Wait for the current product combinations to update")
       }
 
       if (!product.title.trim()) {
         throw new Error("Product title is required")
       }
 
-      if (!product.shippingProfileId) {
-        throw new Error("Shipping profile is required")
-      }
-
-      const refreshed = await presentationsQuery.refetch()
-      const currentPresentation = refreshed.data?.find(
-        (item) => item.presentation.id === selectedPresentation.presentation.id,
-      )
-
-      if (!currentPresentation?.current_revision) {
-        throw new Error(
-          "The selected presentation is no longer available for new products",
-        )
-      }
-
-      const effectiveResolution = resolutionOverride || revisionResolution
-
-      if (
-        currentPresentation.current_revision.id !==
-        selectedPresentation.current_revision.id
-      ) {
-        const impactResponse =
-          await sdk.client.fetch<ConfigurationRevisionImpactResponse>(
-            "/admin/compounded-product/products/revision-impact",
-            {
-              method: "POST",
-              body: {
-                from_revision_id: selectedPresentation.current_revision.id,
-                to_revision_id: currentPresentation.current_revision.id,
-              },
-            },
-          )
-        const retainingThisImpact =
-          effectiveResolution?.action === "retain" &&
-          effectiveResolution.from_revision_id ===
-            selectedPresentation.current_revision.id &&
-          effectiveResolution.to_revision_id ===
-            currentPresentation.current_revision.id &&
-          effectiveResolution.impact_fingerprint ===
-            impactResponse.impact.impact_fingerprint
-
-        if (!retainingThisImpact) {
-          setPendingRevisionImpact({
-            impact: impactResponse.impact,
-            target: currentPresentation,
-          })
-          setRevisionDecisionReason("")
-          throw new RevisionDecisionRequiredError()
-        }
+      if (!shippingProfileId) {
+        throw new Error("Store fulfillment setup is incomplete")
       }
 
       if (
@@ -478,17 +458,64 @@ const CompoundedProductsPage = () => {
         }
       })
 
+      let activated = productConfiguration
+
+      if (
+        !activated?.current_revision ||
+        activated.current_revision.fingerprint !== preview.configuration_fingerprint
+      ) {
+        const configuration = await sdk.client.fetch<PresentationListItem>(
+          "/admin/compounded-product/presentations",
+          {
+            method: "POST",
+            body: {
+              key: `product_${submissionKey.replace(/-/g, "")}`,
+              snapshot: directSnapshot,
+            },
+          },
+        )
+
+        if (!configuration.current_revision) {
+          throw new Error("Product configuration could not be created")
+        }
+
+        activated = await sdk.client.fetch<PresentationListItem>(
+          `/admin/compounded-product/presentations/${configuration.presentation.id}/transitions`,
+          {
+            method: "POST",
+            body: {
+              expected_current_revision_id: configuration.current_revision.id,
+              target_status: "active",
+              reason: "Automatically created with product draft",
+            },
+          },
+        )
+        setProductConfiguration(activated)
+      }
+
+      if (!activated.current_revision) {
+        throw new Error("Product configuration could not be activated")
+      }
+
+      if (
+        activated.current_revision.fingerprint !==
+        preview.configuration_fingerprint
+      ) {
+        throw new Error("Product configuration changed before save")
+      }
+
       return sdk.client.fetch<CreateDraftResponse>(
         "/admin/compounded-product/products",
         {
           method: "POST",
           body: {
             idempotency_key: submissionKey,
-            presentation_revision_id: selectedPresentation.current_revision.id,
+            presentation_revision_id: activated.current_revision.id,
             expected_configuration_fingerprint:
-              selectedPresentation.current_revision.fingerprint,
-            configuration_revision_resolution: effectiveResolution,
-            selected_value_keys_by_axis: selectedValues,
+              activated.current_revision.fingerprint,
+            configuration_revision_resolution: null,
+            selected_value_keys_by_axis:
+              selectedValuesForSnapshot(directSnapshot),
             excluded_combination_keys: excludedKeys,
             matrix_confirmation: preview.matrix.requiresConfirmation
               ? {
@@ -499,7 +526,6 @@ const CompoundedProductsPage = () => {
               : null,
             product: {
               title: product.title,
-              subtitle: product.subtitle || null,
               description: product.description || null,
               handle: product.handle || null,
               type_id: product.typeId || null,
@@ -507,7 +533,7 @@ const CompoundedProductsPage = () => {
               category_ids: categoryIds,
               tag_ids: tagIds,
               sales_channel_ids: salesChannelIds,
-              shipping_profile_id: product.shippingProfileId,
+              shipping_profile_id: shippingProfileId,
               image_urls: imageUrls,
               configured_values: productConfiguredValues,
             },
@@ -525,10 +551,8 @@ const CompoundedProductsPage = () => {
       )
       navigate(`/compounded-products/${response.result.product_id}`)
     },
-    onError: (error) => {
-      if (error instanceof RevisionDecisionRequiredError) return
-      toast.error(messageFromError(error, "Product draft could not be created"))
-    },
+    onError: (error) =>
+      toast.error(messageFromError(error, "Product draft could not be created")),
   })
 
   const updateVariant = (rowKey: string, patch: Partial<VariantDraft>) => {
@@ -549,51 +573,6 @@ const CompoundedProductsPage = () => {
     }))
   }
 
-  const applySelectedValueChange = (axisKey: string, valueKey: string) => {
-    setSelectedValues((current) => {
-      const selected = current[axisKey] || []
-      const next = selected.includes(valueKey)
-        ? selected.filter((key) => key !== valueKey)
-        : [...selected, valueKey]
-
-      return { ...current, [axisKey]: next }
-    })
-    setExcludedKeys([])
-    setPreview(null)
-    setLargeMatrixConfirmed(false)
-    setExpandedRows([])
-    setPendingVariationChange(null)
-  }
-
-  const requestSelectedValueChange = (input: {
-    axisKey: string
-    axisLabel: string
-    valueKey: string
-    valueLabel: string
-  }) => {
-    const selected = selectedValues[input.axisKey] || []
-    const hasDownstreamWork =
-      Boolean(preview) ||
-      excludedKeys.length > 0 ||
-      Object.values(variantDrafts).some(
-        (draft) =>
-          Boolean(draft.sku.trim()) ||
-          Boolean(draft.priceAmount) ||
-          Boolean(draft.currencyCode) ||
-          Object.keys(draft.configuredValues).length > 0,
-      )
-
-    if (!hasDownstreamWork) {
-      applySelectedValueChange(input.axisKey, input.valueKey)
-      return
-    }
-
-    setPendingVariationChange({
-      ...input,
-      selecting: !selected.includes(input.valueKey),
-    })
-  }
-
   const toggleId = (
     current: string[],
     id: string,
@@ -601,8 +580,8 @@ const CompoundedProductsPage = () => {
   ) => setter(current.includes(id) ? current.filter((item) => item !== id) : [...current, id])
 
   const isLoadingReferenceData =
-    presentationsQuery.isLoading ||
     shippingProfilesQuery.isLoading ||
+    stockLocationsQuery.isLoading ||
     salesChannelsQuery.isLoading ||
     regionsQuery.isLoading ||
     productTypesQuery.isLoading ||
@@ -610,43 +589,112 @@ const CompoundedProductsPage = () => {
     categoriesQuery.isLoading ||
     tagsQuery.isLoading
   const referenceDataError =
-    presentationsQuery.error ||
     shippingProfilesQuery.error ||
+    stockLocationsQuery.error ||
     salesChannelsQuery.error ||
     regionsQuery.error ||
     productTypesQuery.error ||
     collectionsQuery.error ||
     categoriesQuery.error ||
     tagsQuery.error
-  const revisionDownstreamImpact = {
-    product_field_values: Object.keys(productConfiguredValues).length,
-    variants: preview?.matrix.resultingVariantCount || 0,
-    skus: Object.values(variantDrafts).filter((draft) => draft.sku.trim())
-      .length,
-    prices: Object.values(variantDrafts).filter(
-      (draft) => draft.priceAmount && draft.currencyCode,
-    ).length,
-    measurements:
-      countStructuredMeasurements(productConfiguredValues) +
-      Object.values(variantDrafts).reduce(
-        (count, draft) =>
-          count + countStructuredMeasurements(draft.configuredValues),
-        0,
-      ),
-    assigned_images: Object.values(variantDrafts).reduce(
-      (count, draft) => count + draft.imageUrls.length,
-      0,
+  const configuredRecipeCoverageComplete =
+    configuredRecipeCoverageIsComplete({
+      rules: directSnapshot?.recipe_rules || [],
+      rows: preview?.matrix.rows || [],
+    })
+  const configuredRecipeRowCount = useMemo(() => {
+    const rows = preview?.matrix.rows || []
+    const finishedRules = (directSnapshot?.recipe_rules || []).filter(
+      (
+        rule,
+      ): rule is Exclude<RecipeRule, { kind: "common_packaging" }> =>
+        rule.kind === "finished_product",
+    )
+
+    return rows.filter(
+      (row) =>
+        finishedRules.filter((rule) =>
+          row.options.some(
+            (option) =>
+              option.axisKey === rule.match.axis_key &&
+              option.valueKey === rule.match.value_key,
+          ),
+        ).length === 1,
+    ).length
+  }, [directSnapshot?.recipe_rules, preview?.matrix.rows])
+  const configuredAvailabilityQuery = useQuery({
+    queryKey: [
+      "configured-recipe-availability",
+      selectedStockLocationId,
+      preview?.matrix.fingerprint,
+      directSnapshot?.recipe_rules,
+    ],
+    enabled: Boolean(
+      selectedStockLocationId &&
+        configuredRecipeCoverageComplete &&
+        preview?.matrix.rows.length &&
+        directSnapshot?.recipe_rules.length,
     ),
-    bom_choices: 0,
-  }
+    queryFn: () =>
+      sdk.client.fetch<ConfiguredRecipeAvailabilityResponse>(
+        "/admin/compounded-product/products/availability-preview",
+        {
+          method: "POST",
+          body: {
+            location_id: selectedStockLocationId,
+            matrix_rows: (preview?.matrix.rows || []).map((row) => ({
+              key: row.key,
+              options: row.options.map((option) => ({
+                axis_key: option.axisKey,
+                value_key: option.valueKey,
+              })),
+            })),
+            recipe_rules: directSnapshot?.recipe_rules || [],
+          },
+        },
+      ),
+    staleTime: 15_000,
+    refetchInterval: 15_000,
+  })
+  const configuredAvailabilityByRowKey = useMemo(
+    () =>
+      new Map(
+        (configuredAvailabilityQuery.data?.variants || []).map((variant) => [
+          variant.variant_id,
+          variant,
+        ]),
+      ),
+    [configuredAvailabilityQuery.data?.variants],
+  )
+  const sharedComponentAvailability = useMemo(() => {
+    const summary = new Map<
+      string,
+      { title: string; available: number; usedByRows: number }
+    >()
+
+    for (const variant of configuredAvailabilityQuery.data?.variants || []) {
+      for (const component of variant.components) {
+        const existing = summary.get(component.inventory_item_id)
+
+        summary.set(component.inventory_item_id, {
+          title: component.inventory_item_title,
+          available: component.available_quantity,
+          usedByRows: (existing?.usedByRows || 0) + 1,
+        })
+      }
+    }
+
+    return Array.from(summary.entries())
+      .map(([id, value]) => ({ id, ...value }))
+      .sort((left, right) => left.title.localeCompare(right.title))
+  }, [configuredAvailabilityQuery.data?.variants])
   const {
     autoGeneratedSkuCount,
-    managedVariantCount,
     draftSaveBlockers,
     publicationReviewItems,
   } = createCompoundedProductCreationReview({
     title: product.title,
-    shippingProfileId: product.shippingProfileId,
+    storeConfigurationReady: Boolean(shippingProfileId),
     rows: preview?.matrix.rows || [],
     drafts: variantDrafts,
     policy: snapshot?.readiness_policy || {
@@ -655,28 +703,21 @@ const CompoundedProductsPage = () => {
       require_bom_for_managed_inventory: false,
     },
     salesChannelCount: salesChannelIds.length,
+    configuredRecipeCoverageComplete,
     largeMatrixRequiresConfirmation:
       preview?.matrix.requiresConfirmation || false,
     largeMatrixConfirmed,
   })
-
-  const applyPresentationChange = (
-    presentation: PresentationListItem,
-    resolution: ConfigurationRevisionResolution | null = null,
-  ) => {
-    if (!presentation.current_revision) return
-    setPinnedPresentation(presentation)
-    setPresentationRevisionId(presentation.current_revision.id)
-    setRevisionResolution(resolution)
-    setProductConfiguredValues({})
-    setVariantDrafts({})
-    setSelectedValues({})
-    setExcludedKeys([])
-    setPreview(null)
-    setLargeMatrixConfirmed(false)
-    setExpandedRows([])
-    setPendingPresentationRevisionId(null)
-  }
+  const productSaveBlockers = [
+    ...(product.description.length > 20_000
+      ? ["Product description must be 20,000 characters or fewer."]
+      : []),
+    ...(Boolean(directSnapshot?.recipe_rules.length) &&
+    !configuredRecipeCoverageComplete
+      ? ["Every product combination needs one finished-product inventory item."]
+      : []),
+    ...draftSaveBlockers,
+  ]
 
   if (isLoadingReferenceData) {
     return (
@@ -687,14 +728,13 @@ const CompoundedProductsPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <Container className="flex flex-col gap-y-1 px-6 py-4">
-        <Heading>Create compounded product</Heading>
+    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-y-3 pb-8">
+      <div className="flex flex-col gap-y-1 px-1 py-1">
+        <Heading>Create product</Heading>
         <Text size="small" leading="compact" className="text-ui-fg-subtle">
-          Build a native Medusa draft from an active, versioned presentation.
-          Presentation fields and variation axes come from configuration.
+          Add product information, images, variations, and prices.
         </Text>
-      </Container>
+      </div>
 
       {referenceDataError ? (
         <Container className="px-6 py-4">
@@ -705,52 +745,14 @@ const CompoundedProductsPage = () => {
         </Container>
       ) : null}
 
-      <Container className="flex flex-col gap-y-5 px-6 py-4">
-        <div className="flex flex-col gap-y-1">
-          <Text size="small" leading="compact" weight="plus">
-            1. Product identity
-          </Text>
-          <Text size="small" leading="compact" className="text-ui-fg-subtle">
-            The title identifies the catalog product. Strength, package, and
-            inclusion belong in configured fields or variation values.
-          </Text>
-        </div>
-        <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+        <BuilderSection
+          eyebrow="Step 1"
+          title="Product information"
+          description="Customer-facing product name and description."
+        >
           <div className="flex flex-col gap-y-2">
-            <Label>Presentation configuration</Label>
-            <Select
-              value={presentationRevisionId}
-              onValueChange={(revisionId) => {
-                if (!presentationRevisionId) {
-                  const selected = presentationOptions.find(
-                    (item) => item.current_revision?.id === revisionId,
-                  )
-                  if (selected) applyPresentationChange(selected)
-                  return
-                }
-
-                if (revisionId !== presentationRevisionId) {
-                  setPendingPresentationRevisionId(revisionId)
-                }
-              }}
-            >
-              <Select.Trigger>
-                <Select.Value placeholder="Select active presentation" />
-              </Select.Trigger>
-              <Select.Content>
-                {presentationOptions.map((item) => (
-                  <Select.Item
-                    key={item.current_revision!.id}
-                    value={item.current_revision!.id}
-                  >
-                    {item.current_revision!.snapshot.label} · revision {item.current_revision!.revision}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <Label htmlFor="product-title">Title</Label>
+            <Label htmlFor="product-title">Product name *</Label>
             <Input
               id="product-title"
               value={product.title}
@@ -764,348 +766,231 @@ const CompoundedProductsPage = () => {
                     : suggestCompoundedProductHandle(title),
                 }))
               }}
-              placeholder="Research compound name"
+              placeholder="Enter product name"
             />
           </div>
-          <div className="flex flex-col gap-y-2">
-            <Label htmlFor="product-subtitle">Subtitle</Label>
-            <Input
-              id="product-subtitle"
-              value={product.subtitle}
-              onChange={(event) =>
+          <div className="mt-3 flex flex-col gap-y-2">
+            <Label htmlFor="product-description">Description</Label>
+            <ProductDescriptionEditor
+              value={product.description}
+              onChange={(description) =>
                 setProduct((current) => ({
                   ...current,
-                  subtitle: event.target.value,
+                  description,
                 }))
               }
-              placeholder="Optional presentation-neutral subtitle"
             />
           </div>
-          <div className="flex flex-col gap-y-2">
-            <Label htmlFor="product-handle">Handle</Label>
-            <Input
-              id="product-handle"
-              value={product.handle}
-              onChange={(event) => {
-                setHandleEdited(true)
-                setProduct((current) => ({
-                  ...current,
-                  handle: event.target.value,
-                }))
-              }}
-              placeholder="research-compound-name"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <Label htmlFor="product-description">Description</Label>
-          <Textarea
-            id="product-description"
-            value={product.description}
-            onChange={(event) =>
-              setProduct((current) => ({
-                ...current,
-                description: event.target.value,
-              }))
-            }
-            placeholder="Product description"
-          />
-        </div>
+        </BuilderSection>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="flex flex-col gap-y-2">
-            <Label>Shipping profile *</Label>
-            <Select
-              value={product.shippingProfileId}
-              onValueChange={(shippingProfileId) =>
-                setProduct((current) => ({ ...current, shippingProfileId }))
-              }
-            >
-              <Select.Trigger>
-                <Select.Value placeholder="Select shipping profile" />
-              </Select.Trigger>
-              <Select.Content>
-                {(shippingProfilesQuery.data || []).map(
-                  (profile) => (
-                    <Select.Item key={profile.id} value={profile.id}>
-                      {profile.name}
-                    </Select.Item>
-                  ),
-                )}
-              </Select.Content>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <Label>Product type</Label>
-            <Select
-              value={product.typeId || undefined}
-              onValueChange={(typeId) =>
-                setProduct((current) => ({ ...current, typeId }))
-              }
-            >
-              <Select.Trigger>
-                <Select.Value placeholder="No product type" />
-              </Select.Trigger>
-              <Select.Content>
-                {(productTypesQuery.data || []).map((type) => (
-                  <Select.Item key={type.id} value={type.id}>
-                    {type.value}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <Label>Collection</Label>
-            <Select
-              value={product.collectionId || undefined}
-              onValueChange={(collectionId) =>
-                setProduct((current) => ({ ...current, collectionId }))
-              }
-            >
-              <Select.Trigger>
-                <Select.Value placeholder="No collection" />
-              </Select.Trigger>
-              <Select.Content>
-                {(collectionsQuery.data || []).map((collection) => (
-                  <Select.Item key={collection.id} value={collection.id}>
-                    {collection.title}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-          </div>
-        </div>
-
-        <ReferenceCheckboxes
-          label="Sales channels"
-          items={(salesChannelsQuery.data || []).map((item) => ({
-            id: item.id,
-            label: item.name,
-          }))}
-          selected={salesChannelIds}
-          onToggle={(id) => toggleId(salesChannelIds, id, setSalesChannelIds)}
-        />
-        <ReferenceCheckboxes
-          label="Categories"
-          items={(categoriesQuery.data || []).map((item) => ({
-            id: item.id,
-            label: item.name,
-          }))}
-          selected={categoryIds}
-          onToggle={(id) => toggleId(categoryIds, id, setCategoryIds)}
-        />
-        <ReferenceCheckboxes
-          label="Tags"
-          items={(tagsQuery.data || []).map((item) => ({
-            id: item.id,
-            label: item.value,
-          }))}
-          selected={tagIds}
-          onToggle={(id) => toggleId(tagIds, id, setTagIds)}
-        />
-
-        <div className="flex flex-col gap-y-3">
-          <div className="flex items-center justify-between gap-x-3">
-            <div className="flex flex-col gap-y-1">
-              <Label>Media</Label>
-              <Text size="small" leading="compact" className="text-ui-fg-subtle">
-                Upload images up to 10 MB each.
-              </Text>
-            </div>
+        <BuilderSection
+          eyebrow="Step 2"
+          title="Product media"
+          description="Up to 10 MB each. First image is primary."
+          action={
             <Button
               size="small"
               variant="secondary"
               isLoading={uploadMutation.isPending}
               onClick={() => uploadInputRef.current?.click()}
             >
-              Upload images
+              Upload
             </Button>
-            <input
-              ref={uploadInputRef}
-              className="hidden"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(event) => {
-                const files = Array.from(event.target.files || [])
-                if (files.length) uploadMutation.mutate(files)
-                event.target.value = ""
-              }}
-            />
-          </div>
+          }
+        >
+          <input
+            ref={uploadInputRef}
+            className="hidden"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(event) => {
+              const files = Array.from(event.target.files || [])
+              if (files.length) uploadMutation.mutate({ files })
+              event.target.value = ""
+            }}
+          />
           {uploadedMedia.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {uploadedMedia.map((file) => (
+            <div className="grid grid-cols-2 gap-2">
+              {uploadedMedia.map((file, index) => (
                 <div
                   key={file.id}
-                  className="flex flex-col gap-y-2 rounded-lg border border-ui-border-base p-3"
+                  className="flex flex-col gap-y-2 rounded-lg border border-ui-border-base p-2"
                 >
-                  <img
-                    src={file.url}
-                    alt="Uploaded product media"
-                    className="aspect-square w-full rounded-md object-cover"
-                  />
+                  <div className="relative">
+                    <img
+                      src={file.url}
+                      alt={`Uploaded product media ${index + 1}`}
+                      className="aspect-square w-full rounded-md object-cover"
+                    />
+                    {index === 0 ? (
+                      <Text
+                        size="xsmall"
+                        weight="plus"
+                        className="absolute left-1 top-1 rounded-md bg-ui-bg-base px-2 py-1"
+                      >
+                        Primary
+                      </Text>
+                    ) : null}
+                  </div>
                   <Button
                     size="small"
                     variant="secondary"
                     isLoading={removeUploadMutation.isPending}
                     onClick={() => removeUploadMutation.mutate(file)}
                   >
-                    Remove from product
+                    Remove
                   </Button>
                 </div>
               ))}
             </div>
-          ) : null}
-        </div>
-      </Container>
-
-      {snapshot ? (
-        <Container className="flex flex-col gap-y-5 px-6 py-4">
-          <div className="flex flex-col gap-y-1">
-            <Text size="small" leading="compact" weight="plus">
-              2. Presentation data
-            </Text>
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              Fields, units, requirements, and persistence targets are defined
-              by {snapshot.label}.
-            </Text>
-          </div>
-          {snapshot.fields.some((field) => !field.metadata_target) ? (
-            <Text size="small" className="text-ui-fg-warning">
-              Fields without a metadata persistence target are configuration
-              guidance only and cannot be written into this draft.
-            </Text>
-          ) : null}
-          {productFields.length ? (
-            <div className="flex flex-col gap-y-5">
-              {productFields.map((field) => (
-                <ConfiguredFieldInput
-                  key={field.key}
-                  field={field}
-                  value={productConfiguredValues[field.key]}
-                  onChange={(value) =>
-                    setProductConfiguredValues((current) => {
-                      const next = { ...current }
-                      if (value === undefined) delete next[field.key]
-                      else next[field.key] = value
-                      return next
-                    })
-                  }
-                />
-              ))}
-            </div>
           ) : (
-            <Text size="small" className="text-ui-fg-subtle">
-              This presentation has no product-level configured fields.
-            </Text>
-          )}
-        </Container>
-      ) : null}
-
-      {snapshot ? (
-        <Container className="flex flex-col gap-y-5 px-6 py-4">
-          <div className="flex items-start justify-between gap-x-4">
-            <div className="flex flex-col gap-y-1">
+            <button
+              type="button"
+              className="flex min-h-28 w-full flex-col items-center justify-center gap-y-1 rounded-lg border border-dashed border-ui-border-strong bg-ui-bg-subtle p-4 text-center"
+              onClick={() => uploadInputRef.current?.click()}
+            >
               <Text size="small" leading="compact" weight="plus">
-                3. Variations
+                Add product images
               </Text>
               <Text size="small" leading="compact" className="text-ui-fg-subtle">
-                Select values for every ordered, semantic product option.
+                Click to upload.
               </Text>
-            </div>
-            <Button
-              size="small"
-              onClick={() => previewMutation.mutate()}
-              isLoading={previewMutation.isPending}
+            </button>
+          )}
+        </BuilderSection>
+      </div>
+
+      <BuilderSection
+        eyebrow="Step 3"
+        title="Variations"
+        description="Combinations update automatically as variation names and options are entered."
+      >
+        <DirectVariationBuilder
+          axes={directVariationAxes}
+          onChange={(axes) => {
+            setVariationsTouched(true)
+            setDirectVariationAxes(axes)
+            setDirectSnapshot(null)
+            setProductConfiguration(null)
+            setExcludedKeys([])
+            setPreview(null)
+            setLargeMatrixConfirmed(false)
+          }}
+        />
+        {previewMutation.isPending ? (
+          <div className="mt-3 flex items-center gap-x-2">
+            <Spinner className="text-ui-fg-muted" />
+            <Text size="small" leading="compact" className="text-ui-fg-subtle">
+              Updating product combinations…
+            </Text>
+          </div>
+        ) : variationsTouched && automaticSnapshot.validationMessage ? (
+          <Text
+            size="small"
+            leading="compact"
+            className="mt-3 text-ui-fg-subtle"
+          >
+            {automaticSnapshot.validationMessage}
+          </Text>
+        ) : null}
+      </BuilderSection>
+
+      <BuilderSection
+        eyebrow="Step 4"
+        title="Inventory recipes"
+        description="Map variation values and common packaging to shared component inventory. Product-specific names and quantities are never hardcoded."
+      >
+        <InventoryRecipeBuilder
+          axes={directVariationAxes}
+          configuration={recipeConfiguration}
+          onChange={setRecipeConfiguration}
+        />
+
+        <div className="mt-4 grid gap-3 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3 lg:grid-cols-[16rem_minmax(0,1fr)]">
+          <div className="flex flex-col gap-y-1">
+            <Label>Shared stock location</Label>
+            <Select
+              value={selectedStockLocationId || undefined}
+              onValueChange={setSelectedStockLocationId}
+              disabled={!stockLocationsQuery.data?.stock_locations.length}
             >
-              Generate matrix
-            </Button>
+              <Select.Trigger>
+                <Select.Value placeholder="Choose stock location" />
+              </Select.Trigger>
+              <Select.Content>
+                {(stockLocationsQuery.data?.stock_locations || []).map(
+                  (location) => (
+                    <Select.Item key={location.id} value={location.id}>
+                      {location.name}
+                    </Select.Item>
+                  ),
+                )}
+              </Select.Content>
+            </Select>
           </div>
 
-          {snapshot.variation_axes
-            .slice()
-            .sort((left, right) => left.position - right.position)
-            .map((axis, index) => (
-              <div
-                key={axis.key}
-                className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4"
+          <div className="flex min-w-0 flex-col gap-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge
+                color={configuredRecipeCoverageComplete ? "green" : "orange"}
               >
-                <div className="flex flex-col gap-y-1">
-                  <Text size="small" leading="compact" weight="plus">
-                    Variation {index + 1} — {axis.semantic_name}
-                  </Text>
-                  {axis.help_text ? (
-                    <Text size="small" className="text-ui-fg-subtle">
-                      {axis.help_text}
+                {configuredRecipeCoverageComplete
+                  ? "Recipes complete"
+                  : "Recipes incomplete"}
+              </Badge>
+              <Text size="small" leading="compact" className="text-ui-fg-subtle">
+                {configuredRecipeRowCount}/{preview?.matrix.rows.length || 0}{" "}
+                combinations mapped
+              </Text>
+              {configuredAvailabilityQuery.isFetching ? (
+                <Spinner className="text-ui-fg-muted" />
+              ) : null}
+            </div>
+
+            {!stockLocationsQuery.data?.stock_locations.length ? (
+              <Text size="small" leading="compact" className="text-ui-fg-error">
+                Configure a Medusa stock location before calculating inventory.
+              </Text>
+            ) : configuredAvailabilityQuery.error ? (
+              <Text size="small" leading="compact" className="text-ui-fg-error">
+                {messageFromError(
+                  configuredAvailabilityQuery.error,
+                  "Inventory availability could not be calculated",
+                )}
+              </Text>
+            ) : sharedComponentAvailability.length ? (
+              <div className="flex flex-wrap gap-2">
+                {sharedComponentAvailability.map((component) => (
+                  <span
+                    key={component.id}
+                    className="rounded-md border border-ui-border-base bg-ui-bg-base px-2 py-1"
+                  >
+                    <Text size="xsmall" leading="compact" weight="plus">
+                      {component.title}: {component.available} available
                     </Text>
-                  ) : null}
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                  {axis.values
-                    .filter((value) => value.active)
-                    .sort((left, right) => left.position - right.position)
-                    .map((value) => (
-                      <label
-                        key={value.key}
-                        className="flex cursor-pointer items-start gap-x-3 rounded-lg border border-ui-border-base p-3"
-                      >
-                        <Checkbox
-                          checked={(selectedValues[axis.key] || []).includes(
-                            value.key,
-                          )}
-                          onCheckedChange={() =>
-                            requestSelectedValueChange({
-                              axisKey: axis.key,
-                              axisLabel: axis.semantic_name,
-                              valueKey: value.key,
-                              valueLabel: value.label,
-                            })
-                          }
-                        />
-                        <span className="flex flex-col gap-y-1">
-                          <Text size="small" weight="plus">
-                            {value.label}
-                          </Text>
-                          {value.measurement ? (
-                            <Text size="small" className="text-ui-fg-subtle">
-                              {value.measurement.amount} {value.measurement.display_unit}
-                            </Text>
-                          ) : null}
-                        </span>
-                      </label>
-                    ))}
-                </div>
+                    <Text size="xsmall" leading="compact" className="text-ui-fg-subtle">
+                      Shared by {component.usedByRows} combination
+                      {component.usedByRows === 1 ? "" : "s"}
+                    </Text>
+                  </span>
+                ))}
               </div>
-            ))}
-        </Container>
-      ) : null}
+            ) : (
+              <Text size="small" leading="compact" className="text-ui-fg-subtle">
+                Complete the finished-product mappings to preview shared stock.
+              </Text>
+            )}
+          </div>
+        </div>
+      </BuilderSection>
 
       {preview ? (
-        <Container className="flex flex-col gap-y-5 px-6 py-4">
-          <div className="flex items-start justify-between gap-x-4">
-            <div className="flex flex-col gap-y-1">
-              <Text size="small" leading="compact" weight="plus">
-                4. Variant matrix
-              </Text>
-              <Text size="small" leading="compact" className="text-ui-fg-subtle">
-                {preview.matrix.totalCombinationCount} total · {preview.matrix.excludedCombinationCount} excluded · {preview.matrix.resultingVariantCount} resulting
-              </Text>
-            </div>
-            {excludedKeys.length ? (
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={() => {
-                  setExcludedKeys([])
-                  setPreview(null)
-                }}
-              >
-                Clear exclusions
-              </Button>
-            ) : null}
-          </div>
+        <BuilderSection
+          eyebrow="Step 5"
+          title="Product combinations"
+          description={`${preview.matrix.totalCombinationCount} combinations · ${preview.matrix.excludedCombinationCount} excluded · ${preview.matrix.resultingVariantCount} sellable variants`}
+        >
 
           {preview.matrix.requiresConfirmation ? (
             <label className="flex items-start gap-x-3 rounded-lg border border-ui-border-warning bg-ui-bg-subtle p-4">
@@ -1127,611 +1012,373 @@ const CompoundedProductsPage = () => {
             </label>
           ) : null}
 
-          <div className="flex flex-col gap-y-3">
-            {preview.matrix.rows.map((row) => {
-              const draft = variantDrafts[row.key]
-              const expanded = expandedRows.includes(row.key)
-
-              return (
-                <div
-                  key={row.key}
-                  className="flex flex-col gap-y-4 rounded-lg border border-ui-border-base p-4"
-                >
-                  <div className="flex items-start justify-between gap-x-4">
-                    <div className="flex flex-col gap-y-1">
-                      <Text size="small" weight="plus">
-                        {row.title}
-                      </Text>
-                      <Text size="small" className="text-ui-fg-subtle">
-                        {row.options
-                          .map(
-                            (option) =>
-                              `${option.semanticName}: ${option.valueLabel}`,
-                          )
-                          .join(" · ")}
-                      </Text>
-                    </div>
-                    <div className="flex items-center gap-x-2">
-                      {variantFields.length ? (
-                        <Button
-                          size="small"
-                          variant="secondary"
-                          onClick={() =>
-                            setExpandedRows((current) =>
-                              current.includes(row.key)
-                                ? current.filter((key) => key !== row.key)
-                                : [...current, row.key],
-                            )
-                          }
-                        >
-                          {expanded ? "Hide fields" : "Configured fields"}
-                        </Button>
-                      ) : null}
-                      <Button
-                        size="small"
-                        variant="secondary"
-                        onClick={() => {
-                          setExcludedKeys((current) => [...current, row.key])
-                          setPreview(null)
-                        }}
-                      >
-                        Exclude
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="grid gap-3 lg:grid-cols-3">
-                    <div className="flex flex-col gap-y-2">
-                      <Label htmlFor={`sku-${row.key}`}>SKU (optional)</Label>
-                      <Input
-                        id={`sku-${row.key}`}
-                        value={draft?.sku || ""}
-                        placeholder="Generated automatically when blank"
-                        onChange={(event) =>
-                          updateVariant(row.key, { sku: event.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="flex flex-col gap-y-2">
-                      <Label htmlFor={`price-${row.key}`}>Price amount</Label>
-                      <Input
-                        id={`price-${row.key}`}
-                        inputMode="decimal"
-                        value={draft?.priceAmount || ""}
-                        onChange={(event) =>
-                          updateVariant(row.key, {
-                            priceAmount: event.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="flex flex-col gap-y-2">
-                      <Label>Currency</Label>
-                      {currencies.length ? (
-                        <Select
-                          value={draft?.currencyCode || undefined}
-                          onValueChange={(currencyCode) =>
-                            updateVariant(row.key, { currencyCode })
-                          }
-                        >
-                          <Select.Trigger>
-                            <Select.Value placeholder="Select currency" />
-                          </Select.Trigger>
-                          <Select.Content>
-                            {currencies.map((currency) => (
-                              <Select.Item key={currency} value={currency}>
-                                {currency}
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select>
-                      ) : (
-                        <Input
-                          maxLength={3}
-                          value={draft?.currencyCode || ""}
-                          onChange={(event) =>
-                            updateVariant(row.key, {
-                              currencyCode: event.target.value.toUpperCase(),
-                            })
-                          }
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <ToggleSetting
-                      label="Manage inventory"
-                      description="Use Medusa inventory for this sellable variant."
-                      checked={draft?.manageInventory ?? true}
-                      onChange={(manageInventory) =>
-                        updateVariant(row.key, { manageInventory })
-                      }
-                    />
-                    <ToggleSetting
-                      label="Allow backorders"
-                      description="Allow checkout when available stock is exhausted."
-                      checked={draft?.allowBackorder ?? false}
-                      onChange={(allowBackorder) =>
-                        updateVariant(row.key, { allowBackorder })
-                      }
-                    />
-                  </div>
-                  {uploadedMedia.length ? (
-                    <div className="flex flex-col gap-y-2">
-                      <Text size="small" weight="plus">
-                        Variant images
-                      </Text>
-                      <Text size="small" className="text-ui-fg-subtle">
-                        Assign uploaded product images that represent this
-                        specific option combination.
-                      </Text>
-                      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
-                        {uploadedMedia.map((file) => {
-                          const selected =
-                            draft?.imageUrls.includes(file.url) || false
-
-                          return (
-                            <label
-                              key={file.id}
-                              className="flex cursor-pointer flex-col gap-y-2 rounded-lg border border-ui-border-base p-2"
-                            >
-                              <img
-                                src={file.url}
-                                alt="Uploaded product media option"
-                                className="aspect-square w-full rounded-md object-cover"
-                              />
-                              <span className="flex items-center gap-x-2">
-                                <Checkbox
-                                  checked={selected}
-                                  onCheckedChange={() =>
-                                    updateVariant(row.key, {
-                                      imageUrls: selected
-                                        ? (draft?.imageUrls || []).filter(
-                                            (url) => url !== file.url,
-                                          )
-                                        : [
-                                            ...(draft?.imageUrls || []),
-                                            file.url,
-                                          ],
-                                    })
-                                  }
-                                />
-                                <Text size="small">
-                                  {selected ? "Assigned" : "Assign"}
-                                </Text>
-                              </span>
-                            </label>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  ) : null}
-                  {expanded ? (
-                    <div className="flex flex-col gap-y-5 border-t border-ui-border-base pt-4">
-                      {variantFields.map((field) => (
-                        <ConfiguredFieldInput
-                          key={field.key}
-                          field={field}
-                          value={draft?.configuredValues[field.key]}
-                          onChange={(value) => {
-                            const configuredValues = {
-                              ...(draft?.configuredValues || {}),
-                            }
-                            if (value === undefined) delete configuredValues[field.key]
-                            else configuredValues[field.key] = value
-                            updateVariant(row.key, { configuredValues })
-                          }}
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              )
-            })}
-          </div>
-        </Container>
-      ) : null}
-
-      {preview ? (
-        <Container className="flex flex-col gap-y-4 px-6 py-4">
-          <div className="flex flex-col gap-y-1">
-            <Text size="small" leading="compact" weight="plus">
-              5. BOM readiness
-            </Text>
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              Recipes attach to native variants after the draft exists. This
-              stage previews which generated variants will require component
-              review without inventing inventory-item IDs or quantities.
-            </Text>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border border-ui-border-base p-4">
-              <Text size="small" weight="plus">
-                {managedVariantCount} managed-inventory variant{managedVariantCount === 1 ? "" : "s"}
-              </Text>
-              <Text size="small" className="text-ui-fg-subtle">
-                {snapshot?.readiness_policy.require_bom_for_managed_inventory
-                  ? "A valid recipe is required before publication."
-                  : "This presentation does not make a recipe a publication requirement."}
-              </Text>
+          <div className="flex flex-wrap items-end gap-2 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3">
+            <div className="flex min-w-40 max-w-56 flex-1 flex-col gap-y-1">
+              <Label htmlFor="bulk-price">Apply price to all</Label>
+              <Input
+                id="bulk-price"
+                inputMode="decimal"
+                value={bulkPriceAmount}
+                placeholder="Price amount"
+                onChange={(event) => setBulkPriceAmount(event.target.value)}
+              />
             </div>
-            <div className="rounded-lg border border-ui-border-base p-4">
-              <Text size="small" weight="plus">
-                Recipe selection remains pending
-              </Text>
-              <Text size="small" className="text-ui-fg-subtle">
-                Save the draft, then select approved BOM component profiles and
-                exact base-unit quantities from the product readiness page.
-              </Text>
-            </div>
-          </div>
-        </Container>
-      ) : null}
-
-      {preview ? (
-        <Container className="flex flex-col gap-y-4 px-6 py-4">
-          <div className="flex flex-col gap-y-1">
-            <Text size="small" leading="compact" weight="plus">
-              6. Review
-            </Text>
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              Confirm what can be saved now and what must be resolved before
-              the separately governed publication action.
-            </Text>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border border-ui-border-base p-4">
-              <Text size="small" weight="plus">
-                Draft save
-              </Text>
-              {draftSaveBlockers.length ? (
-                <div className="mt-2 flex flex-col gap-y-1">
-                  {draftSaveBlockers.map((blocker) => (
-                    <Text key={blocker} size="small" className="text-ui-fg-error">
-                      {blocker}
-                    </Text>
-                  ))}
-                </div>
-              ) : (
-                <div className="mt-2 flex flex-col gap-y-1">
-                  <Text size="small" className="text-ui-fg-success">
-                    The current payload is ready to save as a native Medusa
-                    draft.
-                  </Text>
-                  {autoGeneratedSkuCount > 0 ? (
-                    <Text size="small" className="text-ui-fg-subtle">
-                      {autoGeneratedSkuCount} blank SKU
-                      {autoGeneratedSkuCount === 1 ? " will" : "s will"} be
-                      generated automatically when saved.
-                    </Text>
-                  ) : null}
-                </div>
-              )}
-            </div>
-            <div className="rounded-lg border border-ui-border-base p-4">
-              <Text size="small" weight="plus">
-                Publication follow-up
-              </Text>
-              {publicationReviewItems.length ? (
-                <div className="mt-2 flex flex-col gap-y-1">
-                  {publicationReviewItems.map((item) => (
-                    <Text key={item} size="small" className="text-ui-fg-warning">
-                      {item}
-                    </Text>
-                  ))}
-                </div>
-              ) : (
-                <Text size="small" className="mt-2 text-ui-fg-subtle">
-                  No known configuration-level publication follow-up is shown;
-                  server readiness is evaluated again after draft creation.
-                </Text>
-              )}
-            </div>
-          </div>
-        </Container>
-      ) : null}
-
-      <Container className="flex items-center justify-between gap-x-4 px-6 py-4">
-        <div className="flex flex-col gap-y-1">
-          <Text size="small" weight="plus">
-            Save as draft
-          </Text>
-          <Text size="small" className="text-ui-fg-subtle">
-            Publication, BOM completion, and readiness evaluation remain
-            separate governed actions.
-          </Text>
-        </div>
-        <Button
-          size="small"
-          disabled={
-            !preview ||
-            Boolean(referenceDataError) ||
-            draftSaveBlockers.length > 0 ||
-            createMutation.isPending
-          }
-          isLoading={createMutation.isPending}
-          onClick={() => createMutation.mutate(undefined)}
-        >
-          Save product draft
-        </Button>
-      </Container>
-
-      <Prompt
-        open={Boolean(pendingPresentationRevisionId)}
-        onOpenChange={(open) => {
-          if (!open) setPendingPresentationRevisionId(null)
-        }}
-      >
-        <Prompt.Content>
-          <Prompt.Header>
-            <Prompt.Title>Change presentation configuration?</Prompt.Title>
-            <Prompt.Description>
-              This resets presentation fields, selected variation values,
-              exclusions, generated variants, SKUs, prices, and variant-level
-              metadata. Product identity and uploaded media are retained. The
-              current downstream impact is {revisionDownstreamImpact.variants}
-              {" "}variants, {revisionDownstreamImpact.skus} SKUs,{" "}
-              {revisionDownstreamImpact.prices} prices,{" "}
-              {revisionDownstreamImpact.measurements} measurements,{" "}
-              {revisionDownstreamImpact.assigned_images} image assignments,
-              and{" "}
-              {revisionDownstreamImpact.bom_choices} BOM choices.
-            </Prompt.Description>
-          </Prompt.Header>
-          <Prompt.Footer>
-            <Prompt.Cancel>Keep current presentation</Prompt.Cancel>
-            <Prompt.Action
-              onClick={() => {
-                const selected = activePresentations.find(
-                  (item) =>
-                    item.current_revision?.id === pendingPresentationRevisionId,
-                )
-                if (selected) {
-                  applyPresentationChange(selected)
-                }
-              }}
-            >
-              Reset and change
-            </Prompt.Action>
-          </Prompt.Footer>
-        </Prompt.Content>
-      </Prompt>
-
-      <Prompt
-        open={Boolean(pendingVariationChange)}
-        onOpenChange={(open) => {
-          if (!open) setPendingVariationChange(null)
-        }}
-      >
-        <Prompt.Content>
-          <Prompt.Header>
-            <Prompt.Title>Change the variant matrix inputs?</Prompt.Title>
-            <Prompt.Description>
-              {pendingVariationChange
-                ? `${pendingVariationChange.selecting ? "Adding" : "Removing"} ${pendingVariationChange.valueLabel} in ${pendingVariationChange.axisLabel} invalidates the current matrix preview and exclusions.`
-                : "This variation change invalidates the current matrix preview."}{" "}
-              Existing configured row data is retained by combination key and
-              will be reused when the same row appears again. Current impact:{" "}
-              {revisionDownstreamImpact.variants} variants,{" "}
-              {revisionDownstreamImpact.skus} SKUs,{" "}
-              {revisionDownstreamImpact.prices} prices,{" "}
-              {revisionDownstreamImpact.measurements} measurements,{" "}
-              {revisionDownstreamImpact.assigned_images} image assignments,
-              and{" "}
-              {revisionDownstreamImpact.bom_choices} BOM choices.
-            </Prompt.Description>
-          </Prompt.Header>
-          <Prompt.Footer>
-            <Prompt.Cancel>Keep current matrix</Prompt.Cancel>
-            <Prompt.Action
-              onClick={() => {
-                if (pendingVariationChange) {
-                  applySelectedValueChange(
-                    pendingVariationChange.axisKey,
-                    pendingVariationChange.valueKey,
-                  )
-                }
-              }}
-            >
-              Change and regenerate
-            </Prompt.Action>
-          </Prompt.Footer>
-        </Prompt.Content>
-      </Prompt>
-
-      <Prompt
-        open={Boolean(pendingRevisionImpact)}
-        onOpenChange={(open) => {
-          if (!open) setPendingRevisionImpact(null)
-        }}
-      >
-        <Prompt.Content>
-          <Prompt.Header>
-            <Prompt.Title>Configuration revision changed</Prompt.Title>
-            <Prompt.Description>
-              Review the impact before retaining the pinned configuration or
-              migrating this unfinished draft. Migration resets the affected
-              presentation data; it never discards it silently.
-            </Prompt.Description>
-          </Prompt.Header>
-          {pendingRevisionImpact ? (
-            <div className="flex flex-col gap-y-4 px-6 pb-4">
-              <div className="rounded-lg border border-ui-border-base p-4">
-                <Text size="small" weight="plus">
-                  Revision {pendingRevisionImpact.impact.from_revision.revision}
-                  {" → "}
-                  {pendingRevisionImpact.impact.to_revision.revision}
-                </Text>
-                <Text size="small" className="text-ui-fg-subtle">
-                  Fields changed: {pendingRevisionImpact.impact.changed_fields.length}
-                  {" · "}variation axes changed:{" "}
-                  {pendingRevisionImpact.impact.changed_variation_axes.length}
-                  {" · "}label/description:{" "}
-                  {pendingRevisionImpact.impact.label_changed ||
-                  pendingRevisionImpact.impact.description_changed
-                    ? "changed"
-                    : "unchanged"}
-                  {" · "}SKU policy:{" "}
-                  {pendingRevisionImpact.impact.sku_policy_changed
-                    ? "changed"
-                    : "unchanged"}
-                  {" · "}readiness policy:{" "}
-                  {pendingRevisionImpact.impact.readiness_policy_changed
-                    ? "changed"
-                    : "unchanged"}
-                </Text>
-              </div>
-              <div className="rounded-lg border border-ui-border-base p-4">
-                <Text size="small" weight="plus">
-                  Unfinished work affected by migration
-                </Text>
-                <Text size="small" className="text-ui-fg-subtle">
-                  {revisionDownstreamImpact.product_field_values} product field
-                  values · {revisionDownstreamImpact.variants} variants ·{" "}
-                  {revisionDownstreamImpact.skus} SKUs ·{" "}
-                  {revisionDownstreamImpact.prices} prices ·{" "}
-                  {revisionDownstreamImpact.measurements} measurements ·{" "}
-                  {revisionDownstreamImpact.bom_choices} BOM choices
-                </Text>
-              </div>
-              {!pendingRevisionImpact.impact.retain_eligible ? (
-                <Text size="small" className="text-ui-fg-error">
-                  The pinned revision is blocked or archived and cannot be
-                  retained for a new product.
-                </Text>
-              ) : null}
-              <div className="flex flex-col gap-y-2">
-                <Label htmlFor="revision-decision-reason">
-                  Decision reason
-                </Label>
-                <Textarea
-                  id="revision-decision-reason"
-                  value={revisionDecisionReason}
-                  onChange={(event) =>
-                    setRevisionDecisionReason(event.target.value)
-                  }
-                  placeholder="Explain why this draft should retain or migrate configuration"
-                />
-              </div>
-            </div>
-          ) : null}
-          <Prompt.Footer>
-            <Prompt.Cancel>Continue reviewing</Prompt.Cancel>
             <Button
               size="small"
               variant="secondary"
-              disabled={
-                !pendingRevisionImpact?.impact.retain_eligible ||
-                revisionDecisionReason.trim().length < 3
-              }
-              onClick={() => {
-                if (!pendingRevisionImpact) return
-                const resolution: ConfigurationRevisionResolution = {
-                  action: "retain",
-                  from_revision_id:
-                    pendingRevisionImpact.impact.from_revision.id,
-                  to_revision_id: pendingRevisionImpact.impact.to_revision.id,
-                  impact_fingerprint:
-                    pendingRevisionImpact.impact.impact_fingerprint,
-                  reason: revisionDecisionReason.trim(),
-                }
-                setRevisionResolution(resolution)
-                setPendingRevisionImpact(null)
-                createMutation.mutate(resolution)
-              }}
-            >
-              Retain pinned revision
-            </Button>
-            <Prompt.Action
-              disabled={revisionDecisionReason.trim().length < 3}
-              onClick={() => {
-                if (!pendingRevisionImpact) return
-                const resolution: ConfigurationRevisionResolution = {
-                  action: "migrate",
-                  from_revision_id:
-                    pendingRevisionImpact.impact.from_revision.id,
-                  to_revision_id: pendingRevisionImpact.impact.to_revision.id,
-                  impact_fingerprint:
-                    pendingRevisionImpact.impact.impact_fingerprint,
-                  reason: revisionDecisionReason.trim(),
-                }
-                applyPresentationChange(
-                  pendingRevisionImpact.target,
-                  resolution,
+              disabled={!bulkPriceAmount}
+              onClick={() =>
+                setVariantDrafts((current) =>
+                  Object.fromEntries(
+                    preview.matrix.rows.map((row) => [
+                      row.key,
+                      {
+                        ...current[row.key],
+                        ...(bulkPriceAmount
+                          ? { priceAmount: bulkPriceAmount }
+                          : {}),
+                        ...(pricingCurrencyCode
+                          ? { currencyCode: pricingCurrencyCode }
+                          : {}),
+                      },
+                    ]),
+                  ),
                 )
-                setPendingRevisionImpact(null)
-              }}
+              }
             >
-              Migrate and reset affected work
-            </Prompt.Action>
-          </Prompt.Footer>
-        </Prompt.Content>
-      </Prompt>
-    </div>
-  )
-}
+              Apply to all
+            </Button>
+          </div>
 
-const ReferenceCheckboxes = ({
-  label,
-  items,
-  selected,
-  onToggle,
-}: {
-  label: string
-  items: Array<{ id: string; label: string }>
-  selected: string[]
-  onToggle: (id: string) => void
-}) => {
-  if (!items.length) {
-    return null
-  }
+          <div className="overflow-x-auto rounded-lg border border-ui-border-base">
+            <Table>
+              <Table.Header>
+                <Table.Row>
+                  {(directSnapshot?.variation_axes || []).map((axis) => (
+                    <Table.HeaderCell key={axis.key}>
+                      {axis.semantic_name}
+                    </Table.HeaderCell>
+                  ))}
+                  <Table.HeaderCell>Photo</Table.HeaderCell>
+                  <Table.HeaderCell>Calculated stock</Table.HeaderCell>
+                  <Table.HeaderCell>Limiting component</Table.HeaderCell>
+                  <Table.HeaderCell>Price</Table.HeaderCell>
+                  <Table.HeaderCell>SKU</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {preview.matrix.rows.map((row) => {
+                  const draft = variantDrafts[row.key]
+                  const availability =
+                    configuredAvailabilityByRowKey.get(row.key)
 
-  return (
-    <div className="flex flex-col gap-y-2">
-      <Label>{label}</Label>
-      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-        {items.map((item) => (
-          <label
-            key={item.id}
-            className="flex cursor-pointer items-center gap-x-3 rounded-lg border border-ui-border-base p-3"
+                  return (
+                    <Table.Row key={row.key}>
+                      {(directSnapshot?.variation_axes || []).map((axis) => (
+                        <Table.Cell key={`${row.key}-${axis.key}`}>
+                          <Text size="small" leading="compact" weight="plus">
+                            {row.options.find(
+                              (option) => option.axisKey === axis.key,
+                            )?.valueLabel || "—"}
+                          </Text>
+                        </Table.Cell>
+                      ))}
+                      <Table.Cell>
+                        <div className="flex min-w-32 items-center gap-x-2">
+                          {draft?.imageUrls[0] ? (
+                            <img
+                              src={draft.imageUrls[0]}
+                              alt={`${row.title} combination`}
+                              className="size-8 rounded-md object-cover"
+                            />
+                          ) : null}
+                          <Button
+                            size="small"
+                            variant="secondary"
+                            onClick={() => setImagePickerRowKey(row.key)}
+                          >
+                            {draft?.imageUrls.length ? "Change photo" : "Add photo"}
+                          </Button>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="flex min-w-48 flex-col gap-y-1">
+                          <Text size="small" leading="compact" weight="plus">
+                            {availability?.calculated_stock ?? "—"}
+                          </Text>
+                          {availability?.components.length ? (
+                            <Text
+                              size="xsmall"
+                              leading="compact"
+                              className="text-ui-fg-subtle"
+                            >
+                              {availability.components
+                                .map(
+                                  (component) =>
+                                    `${component.inventory_item_title}: ${component.capacity}`,
+                                )
+                                .join(" · ")}
+                            </Text>
+                          ) : null}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Text
+                          size="small"
+                          leading="compact"
+                          className="min-w-40"
+                        >
+                          {availability?.limiting_components.length
+                            ? availability.limiting_components
+                                .map(
+                                  (component) =>
+                                    component.inventory_item_title,
+                                )
+                                .join(", ")
+                            : "—"}
+                        </Text>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Input
+                          aria-label={`Price for ${row.title}`}
+                          className="min-w-28"
+                          inputMode="decimal"
+                          value={draft?.priceAmount || ""}
+                          placeholder="0.00"
+                          onChange={(event) =>
+                            updateVariant(row.key, {
+                              priceAmount: event.target.value,
+                              currencyCode:
+                                draft?.currencyCode || pricingCurrencyCode,
+                            })
+                          }
+                        />
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Input
+                          aria-label={`SKU for ${row.title}`}
+                          className="min-w-48"
+                          value={draft?.sku || ""}
+                          placeholder="Auto-generated if blank"
+                          onChange={(event) =>
+                            updateVariant(row.key, { sku: event.target.value })
+                          }
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  )
+                })}
+              </Table.Body>
+            </Table>
+          </div>
+
+          <Text size="small" leading="compact" className="text-ui-fg-subtle">
+            Blank SKUs are generated automatically. Calculated stock is the
+            lowest component capacity at the selected location; shared balances
+            are reused across combinations and are never summed.
+          </Text>
+        </BuilderSection>
+      ) : null}
+
+      <Container className="flex flex-col gap-2 border border-ui-border-base px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 flex-col gap-y-1">
+          {productSaveBlockers.length ? (
+            <Text size="small" leading="compact" className="text-ui-fg-error">
+              {preview || product.description.length > 20_000
+                ? productSaveBlockers[0]
+                : automaticSnapshot.validationMessage ||
+                  "Product combinations are updating."}
+            </Text>
+          ) : (
+            <Text size="small" leading="compact" weight="plus">
+              Ready to save as a draft
+            </Text>
+          )}
+          <Text size="small" leading="compact" className="text-ui-fg-subtle">
+            {preview && autoGeneratedSkuCount > 0
+              ? `${autoGeneratedSkuCount} blank SKU${autoGeneratedSkuCount === 1 ? " will" : "s will"} be generated automatically.`
+              : publicationReviewItems[0] ||
+                "Configured inventory recipes will be linked when this draft is saved."}
+          </Text>
+        </div>
+        <div className="flex shrink-0 items-center gap-x-2">
+          <Button
+            size="small"
+            variant="secondary"
+            onClick={() => setAdvancedSettingsOpen(true)}
           >
-            <Checkbox
-              checked={selected.includes(item.id)}
-              onCheckedChange={() => onToggle(item.id)}
-            />
-            <Text size="small">{item.label}</Text>
-          </label>
-        ))}
-      </div>
+            More settings
+          </Button>
+          <Button
+            size="small"
+            disabled={
+              !preview ||
+              previewMutation.isPending ||
+              Boolean(referenceDataError) ||
+              productSaveBlockers.length > 0 ||
+              createMutation.isPending
+            }
+            isLoading={createMutation.isPending}
+            onClick={() => createMutation.mutate(undefined)}
+          >
+            Save draft
+          </Button>
+        </div>
+      </Container>
+
+      <AdvancedSettingsDrawer
+        open={advancedSettingsOpen}
+        onOpenChange={setAdvancedSettingsOpen}
+        handle={product.handle}
+        onHandleChange={(handle) => {
+          setHandleEdited(true)
+          setProduct((current) => ({ ...current, handle }))
+        }}
+        typeId={product.typeId}
+        onTypeChange={(typeId) =>
+          setProduct((current) => ({ ...current, typeId }))
+        }
+        collectionId={product.collectionId}
+        onCollectionChange={(collectionId) =>
+          setProduct((current) => ({ ...current, collectionId }))
+        }
+        productTypes={(productTypesQuery.data || []).map((item) => ({
+          id: item.id,
+          label: item.value,
+        }))}
+        collections={(collectionsQuery.data || []).map((item) => ({
+          id: item.id,
+          label: item.title,
+        }))}
+        salesChannels={(salesChannelsQuery.data || []).map((item) => ({
+          id: item.id,
+          label: item.name,
+        }))}
+        selectedSalesChannelIds={salesChannelIds}
+        onToggleSalesChannel={(id) =>
+          toggleId(salesChannelIds, id, setSalesChannelIds)
+        }
+        categories={(categoriesQuery.data || []).map((item) => ({
+          id: item.id,
+          label: item.name,
+        }))}
+        selectedCategoryIds={categoryIds}
+        onToggleCategory={(id) => toggleId(categoryIds, id, setCategoryIds)}
+        tags={(tagsQuery.data || []).map((item) => ({
+          id: item.id,
+          label: item.value,
+        }))}
+        selectedTagIds={tagIds}
+        onToggleTag={(id) => toggleId(tagIds, id, setTagIds)}
+        currencies={currencies}
+        currencyCode={pricingCurrencyCode}
+        onCurrencyChange={(currencyCode) => {
+          setPricingCurrencyCode(currencyCode)
+          setVariantDrafts((current) =>
+            Object.fromEntries(
+              Object.entries(current).map(([key, draft]) => [
+                key,
+                { ...draft, currencyCode },
+              ]),
+            ),
+          )
+        }}
+      />
+
+      <input
+        ref={variantUploadInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(event) => {
+          const files = Array.from(event.target.files || [])
+          if (files.length && imagePickerRowKey) {
+            uploadMutation.mutate({
+              files,
+              assignToRowKey: imagePickerRowKey,
+            })
+          }
+          event.target.value = ""
+        }}
+      />
+
+      <Drawer
+        open={Boolean(imagePickerRowKey)}
+        onOpenChange={(open) => {
+          if (!open) setImagePickerRowKey(null)
+        }}
+      >
+        <Drawer.Content>
+          <Drawer.Header>
+            <Drawer.Title>Combination photo</Drawer.Title>
+            <Drawer.Description>
+              Select existing product images or upload images for this product combination.
+            </Drawer.Description>
+          </Drawer.Header>
+          <Drawer.Body className="flex flex-col gap-y-4 overflow-y-auto p-6">
+            <Button
+              size="small"
+              variant="secondary"
+              isLoading={uploadMutation.isPending}
+              disabled={uploadMutation.isPending}
+              onClick={() => variantUploadInputRef.current?.click()}
+            >
+              Upload new photo
+            </Button>
+            {imagePickerRowKey && uploadedMedia.length ? (
+              <div className="grid grid-cols-2 gap-3">
+                {uploadedMedia.map((file) => {
+                  const draft = variantDrafts[imagePickerRowKey]
+                  const selected = draft?.imageUrls.includes(file.url) || false
+
+                  return (
+                    <label
+                      key={file.id}
+                      className="flex cursor-pointer flex-col gap-y-2 rounded-lg border border-ui-border-base p-2"
+                    >
+                      <img
+                        src={file.url}
+                        alt="Available product media"
+                        className="aspect-square w-full rounded-md object-cover"
+                      />
+                      <span className="flex items-center gap-x-2">
+                        <Checkbox
+                          checked={selected}
+                          onCheckedChange={() =>
+                            updateVariant(imagePickerRowKey, {
+                              imageUrls: selected
+                                ? (draft?.imageUrls || []).filter(
+                                    (url) => url !== file.url,
+                                  )
+                                : [...(draft?.imageUrls || []), file.url],
+                            })
+                          }
+                        />
+                        <Text size="small">
+                          {selected ? "Selected" : "Use this photo"}
+                        </Text>
+                      </span>
+                    </label>
+                  )
+                })}
+              </div>
+            ) : (
+              <Text size="small" className="text-ui-fg-subtle">
+                No product images are available yet. Upload a photo to add it to this combination.
+              </Text>
+            )}
+          </Drawer.Body>
+          <Drawer.Footer>
+            <Drawer.Close asChild>
+              <Button size="small">Done</Button>
+            </Drawer.Close>
+          </Drawer.Footer>
+        </Drawer.Content>
+      </Drawer>
+
     </div>
   )
 }
-
-const ToggleSetting = ({
-  label,
-  description,
-  checked,
-  onChange,
-}: {
-  label: string
-  description: string
-  checked: boolean
-  onChange: (checked: boolean) => void
-}) => (
-  <div className="flex items-center justify-between gap-x-4 rounded-lg border border-ui-border-base p-4">
-    <div className="flex flex-col gap-y-1">
-      <Text size="small" weight="plus">
-        {label}
-      </Text>
-      <Text size="small" className="text-ui-fg-subtle">
-        {description}
-      </Text>
-    </div>
-    <Switch checked={checked} onCheckedChange={onChange} />
-  </div>
-)
-
-export const config = defineRouteConfig({
-  label: "Create Compounded Product",
-})
 
 export default CompoundedProductsPage

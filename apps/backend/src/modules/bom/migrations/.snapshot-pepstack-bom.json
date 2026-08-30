@@ -122,6 +122,63 @@
           "enumItems": [],
           "mappedType": "integer"
         },
+        "classification": {
+          "name": "classification",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'included_supply'",
+          "comment": null,
+          "enumItems": [
+            "finished_product",
+            "included_supply",
+            "packaging"
+          ],
+          "mappedType": "enum"
+        },
+        "supplier_unit": {
+          "name": "supplier_unit",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'piece'",
+          "comment": null,
+          "enumItems": [
+            "box",
+            "pack",
+            "roll",
+            "piece"
+          ],
+          "mappedType": "enum"
+        },
+        "inventory_units_per_supplier_unit": {
+          "name": "inventory_units_per_supplier_unit",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "1",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
         "category": {
           "name": "category",
           "type": "text",

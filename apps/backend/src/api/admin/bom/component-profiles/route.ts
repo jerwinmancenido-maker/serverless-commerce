@@ -41,6 +41,10 @@ export async function POST(
       baseUnitsPerDisplayUnit: input.base_units_per_display_unit,
       displayPrecision: input.display_precision,
       reorderThresholdBaseUnits: input.reorder_threshold_base_units,
+      classification: input.classification,
+      supplierUnit: input.supplier_unit,
+      inventoryUnitsPerSupplierUnit:
+        input.inventory_units_per_supplier_unit,
       category: input.category,
       lotTrackingRequired: input.lot_tracking_required,
       expiryTrackingRequired: input.expiry_tracking_required,

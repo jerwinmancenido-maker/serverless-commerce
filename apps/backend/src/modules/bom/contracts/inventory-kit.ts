@@ -20,6 +20,13 @@ export type BuildableQuantity = {
   limitingInventoryItemIds: string[];
 };
 
+export type ComponentCapacity = {
+  inventoryItemId: string;
+  availableQuantity: number;
+  requiredQuantity: number;
+  capacity: number;
+};
+
 function assertIdentifier(value: string, field: string) {
   if (value.trim().length === 0) {
     throw new MedusaError(
@@ -107,9 +114,9 @@ export function inventoryKitsAreEqual(
   );
 }
 
-export function calculateBuildableQuantity(
+export function calculateComponentCapacities(
   components: ComponentAvailability[],
-): BuildableQuantity {
+): ComponentCapacity[] {
   if (components.length === 0) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -118,7 +125,7 @@ export function calculateBuildableQuantity(
   }
 
   const seenInventoryItemIds = new Set<string>();
-  const capacities = components.map((component) => {
+  return components.map((component) => {
     assertIdentifier(component.inventoryItemId, "inventoryItemId");
 
     if (seenInventoryItemIds.has(component.inventoryItemId)) {
@@ -137,11 +144,19 @@ export function calculateBuildableQuantity(
 
     return {
       inventoryItemId: component.inventoryItemId,
+      availableQuantity: component.availableQuantity,
+      requiredQuantity: component.requiredQuantity,
       capacity: Math.floor(
         component.availableQuantity / component.requiredQuantity,
       ),
     };
   });
+}
+
+export function calculateBuildableQuantity(
+  components: ComponentAvailability[],
+): BuildableQuantity {
+  const capacities = calculateComponentCapacities(components);
 
   const quantity = Math.min(...capacities.map(({ capacity }) => capacity));
 

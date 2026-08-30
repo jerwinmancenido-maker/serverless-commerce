@@ -2,6 +2,8 @@ import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import { COMPOUNDED_PRODUCT_MODULE } from "../../modules/compounded-product"
+import { PEPSTACK_BOM_MODULE } from "../../modules/bom"
+import type PepstackBomModuleService from "../../modules/bom/service"
 import { fingerprintCompoundedProductConfiguration } from "../../modules/compounded-product/configuration-fingerprint"
 import {
   AdminCreateCompoundedProductPresentationRevision,
@@ -9,6 +11,7 @@ import {
   type CompoundedProductConfigurationStatus,
 } from "../../modules/compounded-product/contracts/configuration"
 import type CompoundedProductModuleService from "../../modules/compounded-product/service"
+import { validateAndNormalizeCompoundedProductRecipeRules } from "../../modules/compounded-product/recipe-rules"
 
 export type ReviseCompoundedProductPresentationWorkflowInput =
   AdminCreateCompoundedProductPresentationRevisionInput & {
@@ -18,12 +21,36 @@ export type ReviseCompoundedProductPresentationWorkflowInput =
 
 export const validateCompoundedProductPresentationRevisionStep = createStep(
   "validate-compounded-product-presentation-revision",
-  async (input: ReviseCompoundedProductPresentationWorkflowInput) => {
+  async (
+    input: ReviseCompoundedProductPresentationWorkflowInput,
+    { container },
+  ) => {
     const parsed = AdminCreateCompoundedProductPresentationRevision.parse({
       expected_current_revision_id: input.expected_current_revision_id,
       snapshot: input.snapshot,
       reason: input.reason,
     })
+    const inventoryItemIds = Array.from(
+      new Set(
+        parsed.snapshot.recipe_rules.flatMap((rule) =>
+          rule.components.map((component) => component.inventory_item_id),
+        ),
+      ),
+    )
+
+    if (inventoryItemIds.length) {
+      const bomService = container.resolve<PepstackBomModuleService>(
+        PEPSTACK_BOM_MODULE,
+      )
+      const profiles = await bomService.listComponentProfiles({
+        inventory_item_id: inventoryItemIds,
+      })
+
+      validateAndNormalizeCompoundedProductRecipeRules({
+        rules: parsed.snapshot.recipe_rules,
+        profiles,
+      })
+    }
 
     return new StepResponse({
       ...parsed,

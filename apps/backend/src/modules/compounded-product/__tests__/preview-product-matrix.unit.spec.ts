@@ -1,7 +1,10 @@
 import { fingerprintCompoundedProductConfiguration } from "../configuration-fingerprint"
 import type { CompoundedProductPresentationSnapshot } from "../contracts/configuration"
 import { DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY } from "../contracts/governance"
-import { previewCompoundedProductVariantMatrix } from "../preview-product-matrix"
+import {
+  previewCompoundedProductVariantMatrix,
+  previewDirectCompoundedProductVariantMatrix,
+} from "../preview-product-matrix"
 
 const snapshot: CompoundedProductPresentationSnapshot = {
   schema_version: "1",
@@ -32,6 +35,7 @@ const snapshot: CompoundedProductPresentationSnapshot = {
       ],
     },
   ],
+  recipe_rules: [],
   sku_suggestion_policy: null,
   readiness_policy: DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
   variant_warning_threshold: 1,
@@ -40,6 +44,22 @@ const snapshot: CompoundedProductPresentationSnapshot = {
 const fingerprint = fingerprintCompoundedProductConfiguration(snapshot)
 
 describe("previewCompoundedProductVariantMatrix", () => {
+  it("previews a direct product configuration without a template revision", () => {
+    const result = previewDirectCompoundedProductVariantMatrix({
+      request: {
+        configuration_snapshot: snapshot,
+        selected_value_keys_by_axis: { package: ["one", "two"] },
+        excluded_combination_keys: [],
+      },
+      snapshot,
+      serverMaximum: 10,
+    })
+
+    expect(result.presentation_revision_id).toBeNull()
+    expect(result.configuration_fingerprint).toBe(fingerprint)
+    expect(result.matrix.resultingVariantCount).toBe(2)
+  })
+
   it("returns an authoritative bounded matrix without satisfying confirmation", () => {
     const result = previewCompoundedProductVariantMatrix({
       request: {

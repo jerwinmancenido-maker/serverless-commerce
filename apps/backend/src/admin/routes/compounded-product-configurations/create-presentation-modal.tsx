@@ -186,7 +186,7 @@ export const CreatePresentationModal = ({
                     id="presentation-key"
                     value={form.key}
                     onChange={(event) => setValue("key", event.target.value)}
-                    placeholder="nasal_spray"
+                    placeholder="unique_template_key"
                   />
                 </div>
                 <div className="flex flex-col gap-y-2">
@@ -195,7 +195,7 @@ export const CreatePresentationModal = ({
                     id="presentation-label"
                     value={form.label}
                     onChange={(event) => setValue("label", event.target.value)}
-                    placeholder="Nasal spray"
+                    placeholder="Customer-facing template name"
                   />
                 </div>
               </div>

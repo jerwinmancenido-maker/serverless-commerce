@@ -48,6 +48,12 @@ export const COMPOUNDED_PRODUCT_FIELD_REQUIREMENTS = [
   "publication",
 ] as const
 
+export const COMPOUNDED_PRODUCT_RECIPE_RULE_KINDS = [
+  "finished_product",
+  "variation_value",
+  "common_packaging",
+] as const
+
 export const COMPOUNDED_PRODUCT_MEASUREMENT_DIMENSIONS =
   RESEARCH_QUANTITY_DIMENSIONS
 
@@ -76,6 +82,48 @@ const PositiveDecimalAmount = z
   })
 
 const Position = z.number().int().nonnegative().max(10_000)
+
+const RecipeComponent = z.strictObject({
+  inventory_item_id: z.string().trim().min(1).max(255),
+  required_display_amount: PositiveDecimalAmount,
+})
+
+const RecipeRuleMatch = z.strictObject({
+  axis_key: ConfigurationKey,
+  value_key: ConfigurationKey,
+})
+
+const RecipeRuleBase = {
+  key: ConfigurationKey,
+  label: DisplayLabel,
+  position: Position,
+}
+
+const FinishedProductRecipeRule = z.strictObject({
+  ...RecipeRuleBase,
+  kind: z.literal("finished_product"),
+  match: RecipeRuleMatch,
+  components: z.array(RecipeComponent).length(1),
+})
+
+const VariationValueRecipeRule = z.strictObject({
+  ...RecipeRuleBase,
+  kind: z.literal("variation_value"),
+  match: RecipeRuleMatch,
+  components: z.array(RecipeComponent).max(100),
+})
+
+const CommonPackagingRecipeRule = z.strictObject({
+  ...RecipeRuleBase,
+  kind: z.literal("common_packaging"),
+  components: z.array(RecipeComponent).min(1).max(100),
+})
+
+export const CompoundedProductRecipeRule = z.discriminatedUnion("kind", [
+  FinishedProductRecipeRule,
+  VariationValueRecipeRule,
+  CommonPackagingRecipeRule,
+])
 
 const MetadataTarget = z.strictObject({
   scope: z.enum(["product", "variant"]),
@@ -430,6 +478,10 @@ export const CompoundedProductPresentationSnapshot = z
     description: z.string().trim().max(2_000).nullable().default(null),
     fields: z.array(CompoundedProductConfiguredField).max(500),
     variation_axes: z.array(CompoundedProductVariationAxis).max(50),
+    recipe_rules: z
+      .array(CompoundedProductRecipeRule)
+      .max(1_000)
+      .default([]),
     sku_suggestion_policy: SkuSuggestionPolicy.nullable().default(null),
     readiness_policy: CompoundedProductReadinessPolicySnapshot.default(
       DEFAULT_COMPOUNDED_PRODUCT_READINESS_POLICY,
@@ -439,7 +491,73 @@ export const CompoundedProductPresentationSnapshot = z
   .superRefine((snapshot, context) => {
     addDuplicateIssues(snapshot.fields, context, ["fields"])
     addDuplicateIssues(snapshot.variation_axes, context, ["variation_axes"])
+    addDuplicateIssues(snapshot.recipe_rules, context, ["recipe_rules"])
     addDuplicateSemanticNameIssues(snapshot.variation_axes, context)
+
+    const variationValues = new Map(
+      snapshot.variation_axes.map((axis) => [
+        axis.key,
+        new Set(axis.values.map((value) => value.key)),
+      ]),
+    )
+    const matchedRuleTargets = new Set<string>()
+
+    snapshot.recipe_rules.forEach((rule, ruleIndex) => {
+      const componentIds = new Set<string>()
+
+      rule.components.forEach((component, componentIndex) => {
+        if (componentIds.has(component.inventory_item_id)) {
+          context.addIssue({
+            code: "custom",
+            message: `Duplicate recipe component: ${component.inventory_item_id}`,
+            path: [
+              "recipe_rules",
+              ruleIndex,
+              "components",
+              componentIndex,
+              "inventory_item_id",
+            ],
+          })
+        }
+
+        componentIds.add(component.inventory_item_id)
+      })
+
+      if (rule.kind === "common_packaging") {
+        return
+      }
+
+      const axisValues = variationValues.get(rule.match.axis_key)
+
+      if (!axisValues) {
+        context.addIssue({
+          code: "custom",
+          message: `Recipe rule references unknown variation axis: ${rule.match.axis_key}`,
+          path: ["recipe_rules", ruleIndex, "match", "axis_key"],
+        })
+        return
+      }
+
+      if (!axisValues.has(rule.match.value_key)) {
+        context.addIssue({
+          code: "custom",
+          message: `Recipe rule references unknown variation value: ${rule.match.value_key}`,
+          path: ["recipe_rules", ruleIndex, "match", "value_key"],
+        })
+      }
+
+      const target = `${rule.kind}:${rule.match.axis_key}:${rule.match.value_key}`
+
+      if (matchedRuleTargets.has(target)) {
+        context.addIssue({
+          code: "custom",
+          message: "Duplicate recipe rule target",
+          path: ["recipe_rules", ruleIndex, "match"],
+        })
+      }
+
+      matchedRuleTargets.add(target)
+    })
 
     snapshot.variation_axes.forEach((axis, axisIndex) => {
       const path = ["variation_axes", axisIndex, "values"]

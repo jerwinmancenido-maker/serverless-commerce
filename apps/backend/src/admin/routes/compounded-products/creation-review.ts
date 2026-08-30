@@ -25,11 +25,12 @@ export function suggestCompoundedProductHandle(title: string): string {
 
 export function createCompoundedProductCreationReview(input: {
   title: string
-  shippingProfileId: string
+  storeConfigurationReady: boolean
   rows: Array<{ key: string }>
   drafts: Record<string, VariantDraft>
   policy: CreationReviewPolicy
   salesChannelCount: number
+  configuredRecipeCoverageComplete: boolean
   largeMatrixRequiresConfirmation: boolean
   largeMatrixConfirmed: boolean
 }): CompoundedProductCreationReview {
@@ -45,7 +46,9 @@ export function createCompoundedProductCreationReview(input: {
   ).length
   const draftSaveBlockers = [
     !input.title.trim() ? "Product title is required" : null,
-    !input.shippingProfileId ? "Shipping profile is required" : null,
+    !input.storeConfigurationReady
+      ? "Store fulfillment setup is incomplete"
+      : null,
     input.largeMatrixRequiresConfirmation && !input.largeMatrixConfirmed
       ? "The current large variant matrix needs confirmation"
       : null,
@@ -57,8 +60,10 @@ export function createCompoundedProductCreationReview(input: {
     input.policy.require_sales_channel && input.salesChannelCount === 0
       ? "No sales channel is selected"
       : null,
-    input.policy.require_bom_for_managed_inventory && managedVariantCount > 0
-      ? `${managedVariantCount} managed-inventory variant${managedVariantCount === 1 ? " requires" : "s require"} a reviewed BOM recipe after draft creation`
+    input.policy.require_bom_for_managed_inventory &&
+    managedVariantCount > 0 &&
+    !input.configuredRecipeCoverageComplete
+      ? `${managedVariantCount} inventory-tracked variant${managedVariantCount === 1 ? " requires" : "s require"} a reviewed ingredient recipe after draft creation`
       : null,
   ].filter((value): value is string => Boolean(value))
 

@@ -7,6 +7,10 @@ import {
   RESEARCH_QUANTITY_DIMENSIONS,
 } from "../../../lib/research-quantity"
 import { COMPOUNDED_PRODUCT_MEASUREMENT_PROVENANCE } from "../structured-measurement"
+import {
+  CompoundedProductPresentationSnapshot,
+  CompoundedProductRecipeRule,
+} from "./configuration"
 import { CompoundedProductIdempotencyKey } from "./idempotency"
 
 const OptionalId = z.string().trim().min(1).max(255).nullable().default(null)
@@ -98,7 +102,6 @@ const VariantSubmission = z
 
 const ProductSubmission = z.strictObject({
   title: z.string().trim().min(1).max(255),
-  subtitle: OptionalText(255),
   description: OptionalText(20_000),
   handle: z
     .string()
@@ -169,19 +172,77 @@ export const AdminCompareCompoundedProductConfigurationRevisions =
     to_revision_id: z.string().trim().min(1).max(255),
   })
 
-export const AdminPreviewCompoundedProductVariantMatrix = z.strictObject({
-  presentation_revision_id: z.string().trim().min(1).max(255),
-  expected_configuration_fingerprint: z
-    .string()
-    .length(64)
-    .regex(/^[a-f0-9]{64}$/),
-  selected_value_keys_by_axis: z
-    .record(z.string(), z.array(z.string().trim().min(1).max(64)).min(1))
-    .default({}),
-  excluded_combination_keys: z
-    .array(z.string().length(64).regex(/^[a-f0-9]{64}$/))
-    .default([]),
+export const AdminPreviewCompoundedProductVariantMatrix = z
+  .strictObject({
+    presentation_revision_id: z.string().trim().min(1).max(255).optional(),
+    expected_configuration_fingerprint: z
+      .string()
+      .length(64)
+      .regex(/^[a-f0-9]{64}$/)
+      .optional(),
+    configuration_snapshot: CompoundedProductPresentationSnapshot.optional(),
+    selected_value_keys_by_axis: z
+      .record(z.string(), z.array(z.string().trim().min(1).max(64)).min(1))
+      .default({}),
+    excluded_combination_keys: z
+      .array(z.string().length(64).regex(/^[a-f0-9]{64}$/))
+      .default([]),
+  })
+  .superRefine((request, context) => {
+    const hasRevision = Boolean(request.presentation_revision_id)
+    const hasFingerprint = Boolean(request.expected_configuration_fingerprint)
+    const hasSnapshot = Boolean(request.configuration_snapshot)
+
+    if (hasRevision !== hasFingerprint) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Presentation revision and configuration fingerprint must be supplied together",
+        path: ["presentation_revision_id"],
+      })
+    }
+
+    if (hasSnapshot === hasRevision) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Supply either a direct configuration snapshot or a presentation revision",
+        path: ["configuration_snapshot"],
+      })
+    }
+  })
+
+const AvailabilityMatrixOption = z.strictObject({
+  axis_key: z.string().trim().min(1).max(64),
+  value_key: z.string().trim().min(1).max(64),
 })
+
+const AvailabilityMatrixRow = z.strictObject({
+  key: z.string().length(64).regex(/^[a-f0-9]{64}$/),
+  options: z.array(AvailabilityMatrixOption).min(1).max(20),
+})
+
+export const AdminPreviewConfiguredRecipeAvailability = z
+  .strictObject({
+    location_id: z.string().trim().min(1).max(255),
+    matrix_rows: z.array(AvailabilityMatrixRow).min(1).max(1_000),
+    recipe_rules: z.array(CompoundedProductRecipeRule).min(1).max(1_000),
+  })
+  .superRefine((request, context) => {
+    const rowKeys = new Set<string>()
+
+    request.matrix_rows.forEach((row, rowIndex) => {
+      if (rowKeys.has(row.key)) {
+        context.addIssue({
+          code: "custom",
+          message: `Duplicate matrix row key: ${row.key}`,
+          path: ["matrix_rows", rowIndex, "key"],
+        })
+      }
+
+      rowKeys.add(row.key)
+    })
+  })
 
 export type AdminCreateCompoundedProductDraft = z.infer<
   typeof AdminCreateCompoundedProductDraft
@@ -189,6 +250,10 @@ export type AdminCreateCompoundedProductDraft = z.infer<
 
 export type AdminPreviewCompoundedProductVariantMatrix = z.infer<
   typeof AdminPreviewCompoundedProductVariantMatrix
+>
+
+export type AdminPreviewConfiguredRecipeAvailability = z.infer<
+  typeof AdminPreviewConfiguredRecipeAvailability
 >
 
 export type AdminCompareCompoundedProductConfigurationRevisions = z.infer<

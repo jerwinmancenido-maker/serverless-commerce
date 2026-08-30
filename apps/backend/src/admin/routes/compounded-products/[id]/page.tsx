@@ -394,8 +394,8 @@ const CompoundedProductReadinessPage = () => {
         <div className="flex flex-col gap-y-1">
           <Heading>{product.title}</Heading>
           <Text size="small" className="text-ui-fg-subtle">
-            Configure native inventory-kit recipes and review publication
-            blockers before using the governed publish or withdrawal controls.
+            Review the native inventory-kit recipes generated during product
+            creation and resolve publication blockers before publishing.
           </Text>
         </div>
         <Button asChild size="small" variant="secondary">
@@ -406,12 +406,12 @@ const CompoundedProductReadinessPage = () => {
       <Container className="flex flex-col gap-y-5 px-6 py-4">
         <div className="flex flex-col gap-y-1">
           <Text size="small" weight="plus">
-            5. BOM recipes
+            Inventory recipes
           </Text>
           <Text size="small" className="text-ui-fg-subtle">
-            Components are inventory items with an approved BOM profile. Enter
-            quantities in each profile&apos;s display unit; the server converts
-            them to integer ledger units.
+            Add Product generates these links from the selected finished item,
+            Inclusion supplies, and common packaging. You can review or revise
+            them here before the variant appears on an order.
           </Text>
         </div>
 

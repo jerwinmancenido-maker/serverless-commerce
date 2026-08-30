@@ -16,6 +16,8 @@ import { type FormEvent, useEffect, useState } from "react"
 import { sdk } from "../../lib/sdk"
 import type {
   BomBaseUnit,
+  BomComponentClassification,
+  BomSupplierUnit,
   ComponentProfile,
   ComponentProfileRequest,
   ComponentProfileResponse,
@@ -34,6 +36,9 @@ type FormState = {
   baseUnitsPerDisplayUnit: string
   displayPrecision: string
   reorderThresholdBaseUnits: string
+  classification: BomComponentClassification
+  supplierUnit: BomSupplierUnit
+  inventoryUnitsPerSupplierUnit: string
   category: string
   lotTrackingRequired: boolean
   expiryTrackingRequired: boolean
@@ -103,6 +108,12 @@ const displayUnitOptions: Record<BomBaseUnit, DisplayUnitOption[]> = {
   ],
 }
 
+const inventoryUnitLabels: Record<BomBaseUnit, string> = {
+  microgram: "mcg",
+  microliter: "µL",
+  piece: "pieces",
+}
+
 function defaultUnitState(baseUnit: BomBaseUnit) {
   const option = displayUnitOptions[baseUnit][0]
 
@@ -119,6 +130,9 @@ const emptyForm: FormState = {
   baseUnitsPerDisplayUnit: "1",
   displayPrecision: "0",
   reorderThresholdBaseUnits: "0",
+  classification: "included_supply",
+  supplierUnit: "piece",
+  inventoryUnitsPerSupplierUnit: "1",
   category: "other",
   lotTrackingRequired: false,
   expiryTrackingRequired: false,
@@ -139,6 +153,11 @@ function toFormState(profile?: ComponentProfile): FormState {
     displayPrecision: String(profile.display_precision),
     reorderThresholdBaseUnits: String(
       profile.reorder_threshold_base_units,
+    ),
+    classification: profile.classification,
+    supplierUnit: profile.supplier_unit,
+    inventoryUnitsPerSupplierUnit: String(
+      profile.inventory_units_per_supplier_unit,
     ),
     category: profile.category,
     lotTrackingRequired: profile.lot_tracking_required,
@@ -198,6 +217,11 @@ export function ComponentProfileDrawer({
       base_units_per_display_unit: Number(form.baseUnitsPerDisplayUnit),
       display_precision: Number(form.displayPrecision),
       reorder_threshold_base_units: Number(form.reorderThresholdBaseUnits),
+      classification: form.classification,
+      supplier_unit: form.supplierUnit,
+      inventory_units_per_supplier_unit: Number(
+        form.inventoryUnitsPerSupplierUnit,
+      ),
       category: form.category,
       lot_tracking_required: form.lotTrackingRequired,
       expiry_tracking_required: form.expiryTrackingRequired,
@@ -232,6 +256,7 @@ export function ComponentProfileDrawer({
   }
 
   const conversionIsProductSpecific = form.displayUnit === "IU"
+  const supplierConversionIsFixed = form.supplierUnit === "piece"
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -336,19 +361,119 @@ export function ComponentProfileDrawer({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="category">Category</Label>
-              <Input
-                id="category"
-                required
-                value={form.category}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    category: event.target.value,
-                  }))
-                }
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="classification">Component classification</Label>
+                <Select
+                  value={form.classification}
+                  onValueChange={(value) =>
+                    setForm((current) => ({
+                      ...current,
+                      classification: value as BomComponentClassification,
+                    }))
+                  }
+                >
+                  <Select.Trigger id="classification">
+                    <Select.Value />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="finished_product">
+                      Finished product
+                    </Select.Item>
+                    <Select.Item value="included_supply">
+                      Included supply
+                    </Select.Item>
+                    <Select.Item value="packaging">Packaging</Select.Item>
+                  </Select.Content>
+                </Select>
+                <Text className="text-ui-fg-subtle" size="small">
+                  Finished products can use any current or future presentation.
+                </Text>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="category">Operational category</Label>
+                <Input
+                  id="category"
+                  required
+                  value={form.category}
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      category: event.target.value,
+                    }))
+                  }
+                />
+                <Text className="text-ui-fg-subtle" size="small">
+                  Merchant-defined taxonomy for filtering and operations.
+                </Text>
+              </div>
+            </div>
+            <div className="rounded-lg border border-ui-border-base p-4">
+              <Text size="small" leading="compact" weight="plus">
+                Receiving conversion
+              </Text>
+              <Text
+                size="small"
+                leading="compact"
+                className="mt-1 text-ui-fg-subtle"
+              >
+                Convert supplier boxes, packs, or rolls into the individual
+                inventory units tracked by Medusa Inventory.
+              </Text>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="supplier-unit">Supplier unit</Label>
+                  <Select
+                    value={form.supplierUnit}
+                    onValueChange={(value) =>
+                      setForm((current) => ({
+                        ...current,
+                        supplierUnit: value as BomSupplierUnit,
+                        inventoryUnitsPerSupplierUnit:
+                          value === "piece"
+                            ? "1"
+                            : current.inventoryUnitsPerSupplierUnit,
+                      }))
+                    }
+                  >
+                    <Select.Trigger id="supplier-unit">
+                      <Select.Value />
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Item value="box">Box</Select.Item>
+                      <Select.Item value="pack">Pack</Select.Item>
+                      <Select.Item value="roll">Roll</Select.Item>
+                      <Select.Item value="piece">Piece</Select.Item>
+                    </Select.Content>
+                  </Select>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="supplier-conversion">
+                    {inventoryUnitLabels[form.baseUnit]} per supplier unit
+                  </Label>
+                  <Input
+                    disabled={supplierConversionIsFixed}
+                    id="supplier-conversion"
+                    min="1"
+                    required
+                    step="1"
+                    type="number"
+                    value={form.inventoryUnitsPerSupplierUnit}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        inventoryUnitsPerSupplierUnit: event.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+              <Text className="mt-3 text-ui-fg-subtle" size="small">
+                Receiving 1 {form.supplierUnit} adds{" "}
+                {form.inventoryUnitsPerSupplierUnit || "0"}{" "}
+                {inventoryUnitLabels[form.baseUnit]} to the shared stock
+                location.
+              </Text>
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="reorder-threshold">

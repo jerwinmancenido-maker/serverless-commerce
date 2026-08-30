@@ -6,6 +6,7 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 
 import {
   AdminCreateCompoundedProductDraft,
+  AdminPreviewConfiguredRecipeAvailability,
   AdminCompareCompoundedProductConfigurationRevisions,
   AdminPreviewCompoundedProductVariantMatrix,
 } from "../../../../modules/compounded-product/contracts/product-creation"
@@ -50,6 +51,19 @@ export const adminCompoundedProductProductMiddlewares: MiddlewareRoute[] = [
     methods: ["POST"],
     middlewares: [
       validateAndTransformBody(AdminPreviewCompoundedProductVariantMatrix),
+    ],
+    policies: [
+      {
+        resource: "compounded_product_governance",
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    matcher: "/admin/compounded-product/products/availability-preview",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminPreviewConfiguredRecipeAvailability),
     ],
     policies: [
       {
