@@ -194,9 +194,20 @@ export function ComponentProfileDrawer({
         },
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["bom-component-profiles"],
-      })
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["bom-component-profiles"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["bom-inventory-item-context", inventoryItem?.id],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["bom-location-availability"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["configured-recipe-availability"],
+        }),
+      ])
       toast.success("Component profile saved")
       onOpenChange(false)
     },

@@ -47,3 +47,20 @@ export const AdminGetBomAvailability = z.strictObject({
 export type AdminGetBomAvailabilityType = z.infer<
   typeof AdminGetBomAvailability
 >
+
+export const AdminGetBuildableProducts = z.strictObject({
+  location_id: z.string().trim().min(1),
+  q: z.string().trim().max(200).optional(),
+  limit: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().min(1).max(100).default(20),
+  ),
+  offset: z.preprocess(
+    (value) => (typeof value === "string" ? Number(value) : value),
+    z.number().int().min(0).default(0),
+  ),
+})
+
+export type AdminGetBuildableProductsType = z.infer<
+  typeof AdminGetBuildableProducts
+>

@@ -5,6 +5,7 @@ import {
 } from "@medusajs/framework/http"
 
 import {
+  AdminGetBuildableProducts,
   AdminGetBomAvailability,
   AdminSetComponentProfile,
 } from "./validators"
@@ -20,6 +21,13 @@ export const adminBomMiddlewares: MiddlewareRoute[] = [
     methods: ["GET"],
     middlewares: [
       validateAndTransformQuery(AdminGetBomAvailability, {}),
+    ],
+  },
+  {
+    matcher: "/admin/bom/buildable-products",
+    methods: ["GET"],
+    middlewares: [
+      validateAndTransformQuery(AdminGetBuildableProducts, {}),
     ],
   },
 ]

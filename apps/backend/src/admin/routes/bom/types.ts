@@ -30,6 +30,24 @@ export type ComponentProfileResponse = {
   component_profile: ComponentProfile
 }
 
+export type InventoryItemBomUsage = {
+  variant_id: string
+  variant_title: string
+  variant_sku: string | null
+  product_id: string | null
+  product_title: string
+  required_quantity: number
+  recipe_status: "configured" | "missing_variant"
+  latest_audit_version: number | null
+}
+
+export type InventoryItemBomContextResponse = {
+  component_profile: ComponentProfile | null
+  recipe_usage: InventoryItemBomUsage[]
+  recipe_usage_count: number
+  recipe_usage_limit: number
+}
+
 export type ComponentProfileRequest = Omit<ComponentProfile, "id">
 
 export type RecipeSnapshotComponent = {
@@ -89,4 +107,29 @@ export type BomAvailabilityResponse = {
     name: string
   }
   variants: VariantLocationAvailability[]
+}
+
+export type BuildableProductRow = {
+  product_id: string | null
+  product_title: string
+  variant_id: string
+  variant_title: string
+  sku: string | null
+  recipe_status: "configured" | "missing_recipe"
+  calculated_stock: number | null
+  limiting_items: Array<{
+    inventory_item_id: string
+    inventory_item_title: string
+  }>
+}
+
+export type BuildableProductsResponse = {
+  location: {
+    id: string
+    name: string
+  }
+  buildable_products: BuildableProductRow[]
+  count: number
+  limit: number
+  offset: number
 }

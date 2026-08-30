@@ -1,4 +1,5 @@
 import {
+  AdminGetBuildableProducts,
   AdminGetBomAvailability,
   AdminSetComponentProfile,
 } from "../validators"
@@ -77,5 +78,30 @@ describe("Admin BOM API validation", () => {
     ],
   ])("rejects an invalid availability request", (input) => {
     expect(() => AdminGetBomAvailability.parse(input)).toThrow()
+  })
+
+  it("normalizes paginated Buildable products query parameters", () => {
+    expect(
+      AdminGetBuildableProducts.parse({
+        location_id: "sloc_shared",
+        q: "SUBQ",
+        limit: "25",
+        offset: "50",
+      }),
+    ).toEqual({
+      location_id: "sloc_shared",
+      q: "SUBQ",
+      limit: 25,
+      offset: 50,
+    })
+  })
+
+  it.each([
+    [{ location_id: "", limit: "20", offset: "0" }],
+    [{ location_id: "sloc_shared", limit: "0", offset: "0" }],
+    [{ location_id: "sloc_shared", limit: "101", offset: "0" }],
+    [{ location_id: "sloc_shared", limit: "20", offset: "-1" }],
+  ])("rejects an invalid Buildable products request", (input) => {
+    expect(() => AdminGetBuildableProducts.parse(input)).toThrow()
   })
 })
