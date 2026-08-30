@@ -2,6 +2,7 @@ import {
   ROUTINE_HIDDEN_ADMIN_PATHS,
   routineAdminNavigationCss,
   routineAdminNavigationPlugin,
+  routineAdminViteConfig,
 } from "../admin-navigation"
 
 describe("routine Admin navigation", () => {
@@ -21,5 +22,14 @@ describe("routine Admin navigation", () => {
 
     expect(plugin.name).toBe("pepstack-routine-admin-navigation")
     expect(plugin.transformIndexHtml).toMatchObject({ order: "post" })
+  })
+
+  it("returns only project Vite additions without copying Medusa plugins", () => {
+    const config = routineAdminViteConfig()
+
+    expect(config.plugins.map((plugin) => plugin.name)).toEqual([
+      "pepstack-routine-admin-navigation",
+    ])
+    expect(config.resolve.dedupe).toEqual(["react", "react-dom"])
   })
 })

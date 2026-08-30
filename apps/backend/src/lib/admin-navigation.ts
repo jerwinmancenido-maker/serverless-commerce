@@ -25,3 +25,15 @@ export const routineAdminNavigationPlugin = () => ({
     ],
   },
 })
+
+/**
+ * Return only the project-specific Vite additions. Medusa combines this result
+ * with its own Admin Vite configuration, so copying the incoming plugin array
+ * would register Medusa's React Refresh plugin a second time.
+ */
+export const routineAdminViteConfig = () => ({
+  plugins: [routineAdminNavigationPlugin()],
+  resolve: {
+    dedupe: ["react", "react-dom"],
+  },
+})
