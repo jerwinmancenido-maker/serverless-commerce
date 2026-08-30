@@ -13,7 +13,7 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -23,6 +23,7 @@ import { AdvancedSettingsDrawer } from "./advanced-settings-drawer"
 import { BuilderSection } from "./builder-section"
 import { ConfiguredFieldInput } from "./configured-field-input"
 import { ProductDescriptionEditor } from "./product-description-editor"
+import { createPresentationKey } from "./presentation-key"
 import { InventoryRecipeBuilder } from "./inventory-recipe-builder"
 import {
   buildDirectRecipeRules,
@@ -74,14 +75,13 @@ type CompoundTaxonomyRecord = {
   status: "active" | "archived"
 }
 
-type CompoundFamiliesResponse = {
-  families: CompoundTaxonomyRecord[]
-  count: number
-}
-
 type CompoundFormatsResponse = {
   formats: CompoundTaxonomyRecord[]
   count: number
+}
+
+type CreateCompoundFormatResponse = {
+  format: CompoundTaxonomyRecord
 }
 
 const sortedFields = (
@@ -97,6 +97,7 @@ const messageFromError = (error: unknown, fallback: string) =>
 
 const CompoundedProductsPage = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const uploadInputRef = useRef<HTMLInputElement>(null)
   const variantUploadInputRef = useRef<HTMLInputElement>(null)
   const latestPreviewRequestKeyRef = useRef<string | null>(null)
@@ -111,8 +112,11 @@ const CompoundedProductsPage = () => {
   const [preview, setPreview] = useState<MatrixPreviewResponse | null>(null)
   const [largeMatrixConfirmed, setLargeMatrixConfirmed] = useState(false)
   const [product, setProduct] = useState(emptyProduct)
-  const [compoundFamilyId, setCompoundFamilyId] = useState("")
   const [compoundFormatId, setCompoundFormatId] = useState("")
+  const [presentationDrawerOpen, setPresentationDrawerOpen] = useState(false)
+  const [newPresentationName, setNewPresentationName] = useState("")
+  const [newPresentationDescription, setNewPresentationDescription] =
+    useState("")
   const [handleEdited, setHandleEdited] = useState(false)
   const [productConfiguredValues, setProductConfiguredValues] = useState<
     Record<string, ConfiguredValue>
@@ -146,19 +150,6 @@ const CompoundedProductsPage = () => {
         },
       }),
   })
-  const compoundFamiliesQuery = useQuery({
-    queryKey: ["compound-families", "compounded-product-creation"],
-    queryFn: () =>
-      loadAllAdminPages({
-        loadPage: async (limit, offset) => {
-          const page = await sdk.client.fetch<CompoundFamiliesResponse>(
-            `/admin/compounded-product/families?status=active&limit=${limit}&offset=${offset}`,
-          )
-
-          return { items: page.families, count: page.count }
-        },
-      }),
-  })
   const compoundFormatsQuery = useQuery({
     queryKey: ["compound-formats", "compounded-product-creation"],
     queryFn: () =>
@@ -171,6 +162,37 @@ const CompoundedProductsPage = () => {
           return { items: page.formats, count: page.count }
         },
       }),
+  })
+  const createPresentationMutation = useMutation({
+    mutationFn: () => {
+      const key = createPresentationKey(newPresentationName)
+
+      if (!key) {
+        throw new Error("Enter a product format name using letters or numbers")
+      }
+
+      return sdk.client.fetch<CreateCompoundFormatResponse>(
+        "/admin/compounded-product/formats",
+        {
+          method: "POST",
+          body: {
+            key,
+            name: newPresentationName.trim(),
+            description: newPresentationDescription.trim() || null,
+          },
+        },
+      )
+    },
+    onSuccess: async ({ format }) => {
+      await queryClient.invalidateQueries({ queryKey: ["compound-formats"] })
+      setCompoundFormatId(format.id)
+      setNewPresentationName("")
+      setNewPresentationDescription("")
+      setPresentationDrawerOpen(false)
+      toast.success("Product format added and selected")
+    },
+    onError: (error) =>
+      toast.error(messageFromError(error, "Product format could not be added")),
   })
   const salesChannelsQuery = useQuery({
     queryKey: ["sales-channels", "compounded-product-creation"],
@@ -573,7 +595,7 @@ const CompoundedProductsPage = () => {
               : null,
             product: {
               title: product.title,
-              compound_family_id: compoundFamilyId || null,
+              compound_family_id: null,
               compound_format_id: compoundFormatId || null,
               description: product.description || null,
               handle: product.handle || null,
@@ -637,7 +659,6 @@ const CompoundedProductsPage = () => {
     collectionsQuery.isLoading ||
     categoriesQuery.isLoading ||
     tagsQuery.isLoading
-    || compoundFamiliesQuery.isLoading
     || compoundFormatsQuery.isLoading
   const referenceDataError =
     shippingProfilesQuery.error ||
@@ -648,7 +669,6 @@ const CompoundedProductsPage = () => {
     collectionsQuery.error ||
     categoriesQuery.error ||
     tagsQuery.error
-    || compoundFamiliesQuery.error
     || compoundFormatsQuery.error
   const configuredRecipeCoverageComplete =
     configuredRecipeCoverageIsComplete({
@@ -822,41 +842,19 @@ const CompoundedProductsPage = () => {
               placeholder="Enter product name"
             />
           </div>
-          <div className="mt-3 grid gap-3 md:grid-cols-2">
-            <div className="flex flex-col gap-y-2">
-              <Label>Compound family</Label>
-              <Select
-                value={compoundFamilyId || unassignedTaxonomyValue}
-                onValueChange={(value) =>
-                  setCompoundFamilyId(
-                    value === unassignedTaxonomyValue ? "" : value,
-                  )
-                }
+          <div className="mt-3 flex flex-col gap-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <Label>Product format</Label>
+              <Button
+                type="button"
+                size="small"
+                variant="transparent"
+                onClick={() => setPresentationDrawerOpen(true)}
               >
-                <Select.Trigger>
-                  <Select.Value placeholder="Assign before publication" />
-                </Select.Trigger>
-                <Select.Content>
-                  <Select.Item value={unassignedTaxonomyValue}>
-                    Not assigned
-                  </Select.Item>
-                  {(compoundFamiliesQuery.data || []).map(
-                    (family) => (
-                      <Select.Item key={family.id} value={family.id}>
-                        {family.name}
-                      </Select.Item>
-                    ),
-                  )}
-                </Select.Content>
-              </Select>
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                Groups separate formats of the same compound, without sharing
-                inventory or variants.
-              </Text>
+                Add product format
+              </Button>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <Label>Presentation</Label>
-              <Select
+            <Select
                 value={compoundFormatId || unassignedTaxonomyValue}
                 onValueChange={(value) =>
                   setCompoundFormatId(
@@ -877,25 +875,17 @@ const CompoundedProductsPage = () => {
                     </Select.Item>
                   ))}
                 </Select.Content>
-              </Select>
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                A configurable product format such as Nasal or Injectable.
-              </Text>
-            </div>
-          </div>
-          <div className="mt-3 flex items-center justify-between rounded-lg border border-ui-border-base bg-ui-bg-subtle px-3 py-2">
+            </Select>
             <Text size="xsmall" className="text-ui-fg-subtle">
-              Family and Presentation are optional for drafts and required to
-              publish.
+              Choose the physical product format, such as Vial, Nasal Spray,
+              Oral, or Topical. Add future formats without leaving this page.
             </Text>
-            <Button
-              type="button"
-              size="small"
-              variant="secondary"
-              onClick={() => navigate("/compound-catalog")}
-            >
-              Manage
-            </Button>
+          </div>
+          <div className="mt-3 rounded-lg border border-ui-border-base bg-ui-bg-subtle px-3 py-2">
+            <Text size="xsmall" className="text-ui-fg-subtle">
+              Product format is optional for a draft and required before
+              publication.
+            </Text>
           </div>
           <div className="mt-3 flex flex-col gap-y-2">
             <Label htmlFor="product-description">Description</Label>
@@ -1430,6 +1420,66 @@ const CompoundedProductsPage = () => {
           event.target.value = ""
         }}
       />
+
+      <Drawer
+        open={presentationDrawerOpen}
+        onOpenChange={setPresentationDrawerOpen}
+      >
+        <Drawer.Content>
+          <Drawer.Header>
+            <Drawer.Title>Add product format</Drawer.Title>
+            <Drawer.Description>
+              Add a reusable physical format and select it for this product.
+            </Drawer.Description>
+          </Drawer.Header>
+          <Drawer.Body className="flex flex-col gap-y-5 overflow-y-auto p-6">
+            <div className="flex flex-col gap-y-2">
+              <Label htmlFor="new-presentation-name">Format name *</Label>
+              <Input
+                id="new-presentation-name"
+                value={newPresentationName}
+                placeholder="For example, Nasal Spray"
+                onChange={(event) =>
+                  setNewPresentationName(event.target.value)
+                }
+              />
+              <Text size="xsmall" className="text-ui-fg-subtle">
+                Internal key:{" "}
+                {createPresentationKey(newPresentationName) ||
+                  "generated-from-name"}
+              </Text>
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <Label htmlFor="new-presentation-description">
+                Description
+              </Label>
+              <Input
+                id="new-presentation-description"
+                value={newPresentationDescription}
+                placeholder="Optional merchant-facing explanation"
+                onChange={(event) =>
+                  setNewPresentationDescription(event.target.value)
+                }
+              />
+            </div>
+          </Drawer.Body>
+          <Drawer.Footer>
+            <Drawer.Close asChild>
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
+            </Drawer.Close>
+            <Button
+              type="button"
+              disabled={!newPresentationName.trim()}
+              isLoading={createPresentationMutation.isPending}
+              onClick={() => createPresentationMutation.mutate()}
+            >
+              Add and select
+            </Button>
+          </Drawer.Footer>
+        </Drawer.Content>
+      </Drawer>
 
       <Drawer
         open={Boolean(imagePickerRowKey)}

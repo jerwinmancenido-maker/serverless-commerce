@@ -341,6 +341,8 @@ export type ProductReadinessResponse = {
   registration: {
     id: string
     state: "draft" | "ready" | "blocked" | "published" | "withdrawn"
+    compound_family_id?: string | null
+    compound_format_id?: string | null
     presentation_revision_id: string
     readiness_policy_revision: string
   }

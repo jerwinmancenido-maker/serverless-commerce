@@ -10,8 +10,6 @@ export const COMPOUNDED_PRODUCT_REGISTRATION_STATES = [
 
 export const COMPOUNDED_PRODUCT_READINESS_BLOCKERS = [
   "registration_missing",
-  "compound_family_missing",
-  "compound_family_inactive",
   "compound_format_missing",
   "compound_format_inactive",
   "configuration_revision_inactive",
@@ -34,8 +32,6 @@ export const CompoundedProductReadinessPolicySnapshot = z.strictObject({
 
 export const CompoundedProductPublicationReadinessInput = z.strictObject({
   registration_exists: z.boolean(),
-  compound_family_assigned: z.boolean(),
-  compound_family_active: z.boolean(),
   compound_format_assigned: z.boolean(),
   compound_format_active: z.boolean(),
   configuration_revision_active: z.boolean(),

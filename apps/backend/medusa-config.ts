@@ -1,10 +1,13 @@
 import { defineConfig, loadEnv } from "@medusajs/framework/utils"
 
+import { resolveSessionProjectConfig } from "./src/lib/session-config"
+
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
 
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    ...resolveSessionProjectConfig(),
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,

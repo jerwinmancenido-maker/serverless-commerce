@@ -18,12 +18,6 @@ export function evaluateCompoundedProductPublicationReadiness(
     blockers.push("registration_missing")
   }
 
-  if (!input.compound_family_assigned) {
-    blockers.push("compound_family_missing")
-  } else if (!input.compound_family_active) {
-    blockers.push("compound_family_inactive")
-  }
-
   if (!input.compound_format_assigned) {
     blockers.push("compound_format_missing")
   } else if (!input.compound_format_active) {
