@@ -12,8 +12,10 @@ import { adminCompoundedProductClassificationMiddlewares } from "./admin/compoun
 import { adminCompoundedProductPresentationMiddlewares } from "./admin/compounded-product/presentations/middlewares"
 import { adminCompoundCatalogMiddlewares } from "./admin/compounded-product/families/middlewares"
 import { adminManualPaymentProofMiddlewares } from "./admin/manual-payment-proofs/middlewares"
+import { adminResearchProtocolMiddlewares } from "./admin/research-protocols/middlewares"
 import { storeManualPaymentProofMiddlewares } from "./store/customers/me/orders/[id]/manual-payment-proof/middlewares"
 import { storeResearchTrackingMiddlewares } from "./store/customers/me/research-tracking/middlewares"
+import { storeResearchProtocolCommentMiddlewares } from "./store/research-protocol-comments/middlewares"
 
 const defaultErrorHandler = errorHandler()
 
@@ -45,7 +47,9 @@ export default defineMiddlewares({
     ...adminCompoundedProductProductMiddlewares,
     ...adminCompoundedProductPresentationMiddlewares,
     ...adminManualPaymentProofMiddlewares,
+    ...adminResearchProtocolMiddlewares,
     ...storeManualPaymentProofMiddlewares,
+    ...storeResearchProtocolCommentMiddlewares,
     ...storeResearchTrackingMiddlewares,
   ],
 })

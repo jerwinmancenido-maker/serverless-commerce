@@ -5,11 +5,11 @@ import ResearchContentModule from "../modules/research-content"
 
 export default defineLink(
   {
-    linkable: ResearchContentModule.linkable.researchProtocol,
-    field: "product_variant_id",
+    linkable: ResearchContentModule.linkable.researchProtocolProductLink,
+    field: "product_id",
     isList: true,
   },
-  ProductModule.linkable.productVariant,
+  ProductModule.linkable.product,
   {
     readOnly: true,
   },

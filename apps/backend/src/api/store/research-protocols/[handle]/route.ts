@@ -1,0 +1,19 @@
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
+
+import { RESEARCH_CONTENT_MODULE } from "../../../../modules/research-content"
+import { ResearchProtocolContent } from "../../../../modules/research-content/contracts/research-protocol"
+import type ResearchContentModuleService from "../../../../modules/research-content/service"
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const service = req.scope.resolve<ResearchContentModuleService>(RESEARCH_CONTENT_MODULE)
+  const [series] = await service.listResearchProtocolSeries({ protocol_key: req.params.handle, archived_at: null }, { take: 1 })
+  if (!series) throw new MedusaError(MedusaError.Types.NOT_FOUND, "Research protocol was not found")
+  const [revision] = await service.listResearchProtocols({ series_id: series.id, status: "published" }, { take: 1, order: { revision: "DESC" } })
+  if (!revision) throw new MedusaError(MedusaError.Types.NOT_FOUND, "Published research protocol was not found")
+  const links = await service.listResearchProtocolProductLinks({ series_id: series.id, archived_at: null }, { relations: ["variant_targets"] })
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const productResult = links.length ? await query.graph({ entity: "product", fields: ["id", "title", "handle", "thumbnail", "variants.id", "variants.title"], filters: { id: links.map((link) => link.product_id) } }) : { data: [] }
+  res.setHeader("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
+  res.json({ protocol: { handle: series.protocol_key, revision: revision.revision, title: revision.title, summary: revision.summary, published_at: revision.published_at, updated_at: revision.updated_at, content: ResearchProtocolContent.parse(revision.content), products: productResult.data } })
+}

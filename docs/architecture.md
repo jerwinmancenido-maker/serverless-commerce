@@ -34,6 +34,9 @@ of production reliability.
   fulfillment, or commerce-inventory ownership.
 - `researchContent` publication permission and private `researchTracking`
   access are separate security domains.
+- `researchContent` also owns moderated protocol community comments. Customer
+  submissions enter a pending state; Admin moderation is required before the
+  Store API exposes them, and comments never become protocol revision content.
 - The storefront consumes the Medusa Store API through the official JS SDK.
 - The preserved Drizzle code is read-only migration reference and is excluded
   from the npm workspace.
@@ -87,4 +90,5 @@ configuration. Provider credentials must remain outside Git.
 - Do not expose customer tracking records through public, product, cart, or
   marketplace API routes.
 - Do not persist calculator inputs or outputs by default, or convert calculator
-  results into routines, logs, carts, or orders.
+  results into routines, logs, carts, or orders. Published protocol calculator
+  configuration remains part of the immutable research-content revision.

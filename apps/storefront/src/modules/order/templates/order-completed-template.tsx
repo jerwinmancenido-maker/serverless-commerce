@@ -9,6 +9,8 @@ import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
 import { HttpTypes } from "@medusajs/types"
+import { listOrderResearchProtocols } from "@lib/data/research-protocols"
+import { ResearchProtocolAccess } from "@modules/order/components/research-protocol-access"
 
 type OrderCompletedTemplateProps = {
   order: HttpTypes.StoreOrder
@@ -18,6 +20,8 @@ export default async function OrderCompletedTemplate({
   order,
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
+  const countryCode = order.shipping_address?.country_code || "ph"
+  const protocolAccesses = await listOrderResearchProtocols(order.id).then((response) => response.research_protocols).catch(() => [])
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
 
@@ -44,6 +48,7 @@ export default async function OrderCompletedTemplate({
           <CartTotals totals={order} />
           <ShippingDetails order={order} />
           <PaymentDetails order={order} />
+          <ResearchProtocolAccess accesses={protocolAccesses} countryCode={countryCode} />
           <Help />
         </div>
       </div>

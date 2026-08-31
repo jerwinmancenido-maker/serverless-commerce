@@ -31,8 +31,20 @@ marketplace connection, or publication of product data.
   item before a private tracked material and supply may be created.
 - Merchant-authored research protocols and calculator material profiles remain
   separate from private customer tracking records.
-- Research protocols and calculators must not recommend or personalize human
-  administration, dosing, treatment, or outcomes.
+- Merchant-authored Research Protocol revisions may publish structured dosing,
+  administration, preparation, storage, evidence, and calculator reference
+  content. The commerce application must preserve the exact published revision
+  and explicit units used by that content.
+- Only authenticated Admin actors with Research Protocol update permission may
+  publish, withdraw, archive, or moderate protocol content. Customer community
+  comments are separate records and can never mutate a protocol revision.
+- Signed-in customers may submit protocol ideas, recommendations, questions,
+  and general comments. New submissions are private until an Admin approves
+  them; rejected and hidden comments remain unavailable through the Store API.
+- Calculator results are deterministic transformations of the values entered by
+  the customer and the protocol revision's configured conversion rules. They
+  must not use private customer tracking data to personalize recommendations
+  unless a later accepted specification explicitly authorizes that capability.
 - RT implementation and private-data collection remain blocked by the RT-0
   brand, privacy, retention, export, deletion, and legal-review gates.
 

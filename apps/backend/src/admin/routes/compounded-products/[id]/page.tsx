@@ -29,6 +29,7 @@ import type {
   ProductReadinessResponse,
   ConfiguredRecipeAvailabilityResponse,
 } from "../types"
+import type { ResearchProtocolListResponse } from "../research-protocol-types"
 
 type RecipeRow = {
   inventoryItemId: string
@@ -170,6 +171,15 @@ const CompoundedProductReadinessPage = () => {
     queryFn: () =>
       sdk.client.fetch<ProductReadinessResponse>(
         `/admin/compounded-product/products/${id}/readiness`,
+      ),
+  })
+  const researchProtocolsQuery = useQuery({
+    queryKey: ["research-protocols", id],
+    enabled: Boolean(id),
+    queryFn: () =>
+      sdk.client.fetch<ResearchProtocolListResponse>(
+        `/admin/products/${id}/research-protocols`,
+        { query: { limit: 100, offset: 0 } },
       ),
   })
   const profilesQuery = useQuery({
@@ -425,6 +435,7 @@ const CompoundedProductReadinessPage = () => {
     productQuery.isLoading ||
     productTypesQuery.isLoading ||
     readinessQuery.isLoading ||
+    researchProtocolsQuery.isLoading ||
     profilesQuery.isLoading ||
     inventoryQuery.isLoading ||
     compoundFormatsQuery.isLoading ||
@@ -973,6 +984,55 @@ const CompoundedProductReadinessPage = () => {
             </div>
           )
         })}
+      </Container>
+
+      <Container className="flex items-center justify-between gap-x-4 px-6 py-4">
+        <div className="flex min-w-0 flex-col gap-y-1">
+          <div className="flex flex-wrap items-center gap-x-2">
+            <Text size="small" weight="plus">
+              Research protocols
+            </Text>
+            {!researchProtocolsQuery.isError ? (
+              <Badge
+                color={
+                  (researchProtocolsQuery.data?.protocols || []).some(
+                    (protocol) =>
+                      protocol.revisions.some(
+                        (revision) => revision.status === "published",
+                      ),
+                  )
+                    ? "green"
+                    : "orange"
+                }
+              >
+                {(researchProtocolsQuery.data?.protocols || []).some(
+                  (protocol) =>
+                    protocol.revisions.some(
+                      (revision) => revision.status === "published",
+                    ),
+                )
+                  ? "Published reference available"
+                  : "No published protocol"}
+              </Badge>
+            ) : null}
+          </div>
+          <Text size="small" className="truncate text-ui-fg-subtle">
+            {researchProtocolsQuery.isError
+              ? "Protocol status could not be loaded."
+              : `${researchProtocolsQuery.data?.count || 0} versioned research reference${researchProtocolsQuery.data?.count === 1 ? "" : "s"} for this product.`}
+          </Text>
+        </div>
+        <div className="flex shrink-0 gap-x-2">
+          <Button asChild size="small" variant="secondary">
+            <Link to="/research-protocols/new">Add protocol</Link>
+          </Button>
+          <Button asChild size="small" variant="secondary">
+            <Link to="/research-protocols">Link existing protocol</Link>
+          </Button>
+          <Button asChild size="small" variant="secondary">
+            <Link to="/research-protocols">Manage protocols</Link>
+          </Button>
+        </div>
       </Container>
 
       <div className="grid gap-4 lg:grid-cols-2">
