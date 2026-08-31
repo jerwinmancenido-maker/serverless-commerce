@@ -21,7 +21,18 @@ export const retrieveResearchProtocol = async (handle: string) => sdk.client.fet
 
 export type OrderResearchProtocolAccess = { line_item_id: string; title: string; handle: string; revision: number; access_token: string }
 
-export const listOrderResearchProtocols = async (orderId: string) => sdk.client.fetch<{ research_protocols: OrderResearchProtocolAccess[] }>(`/store/customers/me/orders/${orderId}/research-protocols`, { method: "GET", cache: "no-store" })
+export const listOrderResearchProtocols = async (orderId: string) => {
+  const headers = await getAuthHeaders()
+
+  return sdk.client.fetch<{ research_protocols: OrderResearchProtocolAccess[] }>(
+    `/store/customers/me/orders/${orderId}/research-protocols`,
+    {
+      method: "GET",
+      headers,
+      cache: "no-store",
+    }
+  )
+}
 
 export type ResearchProtocolCommunityComment = {
   id: string
