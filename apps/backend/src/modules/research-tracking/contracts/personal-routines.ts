@@ -98,6 +98,7 @@ export type ResearchOccurrence = {
   occurrence_id: string
   routine_id: string
   routine_revision_id: string
+  routine_schedule_segment_id: string | null
   label: string
   planned_quantity_base_units: number
   base_unit: ResearchBaseUnit
@@ -419,6 +420,22 @@ type RoutineRevisionForProjection = {
   end_date: Date | string | null
   effective_from_date: Date | string
   timezone: string
+}
+
+export type RoutineScheduleSegmentForProjection = {
+  id: string
+  position: number
+  source_row_key: string | null
+  label: string
+  start_offset_days: number
+  end_offset_days: number | null
+  planned_quantity_base_units: number
+  base_unit: ResearchBaseUnit
+  recurrence_type: ResearchRecurrenceType
+  daily_interval: number | null
+  weekly_interval: number | null
+  weekdays: number[] | null
+  local_times: string[]
 }
 
 function invalid(message: string): never {
@@ -760,9 +777,14 @@ export function createOccurrenceId(
   routineRevisionId: string,
   localDate: string,
   localTime: string,
+  scheduleSegmentId?: string,
 ): string {
   const digest = createHash("sha256")
-    .update([routineRevisionId, localDate, localTime].join("\u0000"))
+    .update(
+      [routineRevisionId, scheduleSegmentId ?? "", localDate, localTime].join(
+        "\u0000",
+      ),
+    )
     .digest("hex")
 
   return `occ_${digest}`
@@ -778,6 +800,7 @@ export function projectResearchOccurrences(input: {
   >
   archivedAtDate?: string | null
   inactiveDateRanges?: Array<{ from: string; to: string | null }>
+  scheduleSegments?: RoutineScheduleSegmentForProjection[]
 }): ResearchOccurrence[] {
   const range = validateOccurrenceRange(input.from, input.to)
   const occurrences: ResearchOccurrence[] = []
@@ -793,6 +816,7 @@ export function projectResearchOccurrences(input: {
         (range) =>
           localDate >= range.from && (!range.to || localDate < range.to),
       ) &&
+      !input.scheduleSegments?.length &&
       occursOnDate(input.revision, localDate)
     ) {
       const occurrenceId = createOccurrenceId(
@@ -806,6 +830,7 @@ export function projectResearchOccurrences(input: {
         occurrence_id: occurrenceId,
         routine_id: input.revision.routine_id,
         routine_revision_id: input.revision.id,
+        routine_schedule_segment_id: null,
         label: input.revision.label,
         planned_quantity_base_units: input.revision.planned_quantity_base_units,
         base_unit: input.revision.base_unit,
@@ -815,6 +840,76 @@ export function projectResearchOccurrences(input: {
         status: logged?.status ?? "scheduled",
         log_id: logged?.logId ?? null,
       })
+    }
+
+    if (
+      (!input.archivedAtDate || localDate < input.archivedAtDate) &&
+      !input.inactiveDateRanges?.some(
+        (range) =>
+          localDate >= range.from && (!range.to || localDate < range.to),
+      )
+    ) {
+      for (const segment of input.scheduleSegments ?? []) {
+        const routineStart = dateString(input.revision.start_date)
+        const segmentStartDate = new Date(
+          Date.parse(`${routineStart}T00:00:00.000Z`) +
+            segment.start_offset_days * 86_400_000,
+        )
+          .toISOString()
+          .slice(0, 10)
+        const segmentEndDate =
+          segment.end_offset_days === null
+            ? input.revision.end_date
+              ? dateString(input.revision.end_date)
+              : null
+            : new Date(
+                Date.parse(`${routineStart}T00:00:00.000Z`) +
+                  segment.end_offset_days * 86_400_000,
+              )
+                .toISOString()
+                .slice(0, 10)
+        const segmentRevision: RoutineRevisionForProjection = {
+          ...input.revision,
+          label: segment.label,
+          planned_quantity_base_units: segment.planned_quantity_base_units,
+          base_unit: segment.base_unit,
+          recurrence_type: segment.recurrence_type,
+          daily_interval: segment.daily_interval,
+          weekly_interval: segment.weekly_interval,
+          weekdays: segment.weekdays,
+          start_date: segmentStartDate,
+          end_date: segmentEndDate,
+        }
+
+        if (!occursOnDate(segmentRevision, localDate)) {
+          continue
+        }
+
+        for (const localTime of segment.local_times) {
+          const occurrenceId = createOccurrenceId(
+            input.revision.id,
+            localDate,
+            localTime,
+            segment.id,
+          )
+          const logged = input.loggedOccurrences?.get(occurrenceId) ?? null
+
+          occurrences.push({
+            occurrence_id: occurrenceId,
+            routine_id: input.revision.routine_id,
+            routine_revision_id: input.revision.id,
+            routine_schedule_segment_id: segment.id,
+            label: segment.label,
+            planned_quantity_base_units: segment.planned_quantity_base_units,
+            base_unit: segment.base_unit,
+            local_date: localDate,
+            local_time: localTime,
+            timezone: input.revision.timezone,
+            status: logged?.status ?? "scheduled",
+            log_id: logged?.logId ?? null,
+          })
+        }
+      }
     }
 
     cursor.setUTCDate(cursor.getUTCDate() + 1)

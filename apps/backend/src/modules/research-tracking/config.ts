@@ -33,6 +33,11 @@ type ResearchTrackingEnvironment = Partial<Pick<
   | "RESEARCH_TRACKING_JOURNAL_NOTICE_SHA256"
   | "RESEARCH_TRACKING_JOURNAL_NOTICE_URL"
   | "RESEARCH_TRACKING_JOURNAL_EFFECTIVE_AT"
+  | "RESEARCH_TRACKING_MEASUREMENTS_ENABLED"
+  | "RESEARCH_TRACKING_MEASUREMENTS_CONSENT_VERSION"
+  | "RESEARCH_TRACKING_MEASUREMENTS_NOTICE_SHA256"
+  | "RESEARCH_TRACKING_MEASUREMENTS_NOTICE_URL"
+  | "RESEARCH_TRACKING_MEASUREMENTS_EFFECTIVE_AT"
 >>
 
 export type ResearchTrackingPurchasedActivationConfiguration = {
@@ -55,6 +60,14 @@ export type ResearchJournalConfiguration =
       noticeUrl: string
       effectiveAt: Date
     }
+
+export type ResearchMeasurementConfiguration =
+  | (Extract<ResearchJournalConfiguration, { available: false }> & {
+      allowlistVersion: null
+    })
+  | (Extract<ResearchJournalConfiguration, { available: true }> & {
+      allowlistVersion: string
+    })
 
 function invalidConfiguration(message: string): never {
   throw new MedusaError(
@@ -205,4 +218,44 @@ export function getResearchJournalConfiguration(
       "Journal consent version or notice digest has an invalid format",
     )
   }
+}
+
+export function getResearchMeasurementConfiguration(
+  environment: ResearchTrackingEnvironment = process.env,
+  now: Date = new Date(),
+): ResearchMeasurementConfiguration {
+  if (environment.RESEARCH_TRACKING_MEASUREMENTS_ENABLED !== "true") {
+    return {
+      available: false,
+      activeConsentVersion: null,
+      noticeSha256: null,
+      noticeUrl: null,
+      effectiveAt: null,
+      allowlistVersion: null,
+    }
+  }
+
+  const mapped = {
+    ...environment,
+    RESEARCH_TRACKING_JOURNAL_ENABLED: "true",
+    RESEARCH_TRACKING_JOURNAL_CONSENT_VERSION:
+      environment.RESEARCH_TRACKING_MEASUREMENTS_CONSENT_VERSION,
+    RESEARCH_TRACKING_JOURNAL_NOTICE_SHA256:
+      environment.RESEARCH_TRACKING_MEASUREMENTS_NOTICE_SHA256,
+    RESEARCH_TRACKING_JOURNAL_NOTICE_URL:
+      environment.RESEARCH_TRACKING_MEASUREMENTS_NOTICE_URL,
+    RESEARCH_TRACKING_JOURNAL_EFFECTIVE_AT:
+      environment.RESEARCH_TRACKING_MEASUREMENTS_EFFECTIVE_AT,
+  }
+  const configuration = getResearchJournalConfiguration(mapped, now)
+
+  return configuration.available
+    ? {
+        ...configuration,
+        allowlistVersion: "progress-metrics-v1",
+      }
+    : {
+        ...configuration,
+        allowlistVersion: null,
+      }
 }

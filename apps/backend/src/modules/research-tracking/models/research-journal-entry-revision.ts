@@ -15,6 +15,13 @@ const ResearchJournalEntryRevision = model
     supply_id: model.text().nullable(),
     routine_id: model.text().nullable(),
     confirmed_log_id: model.text().nullable(),
+    routine_revision_id: model.text().nullable(),
+    protocol_revision_id: model.text().nullable(),
+    profile_protocol_access_id: model.text().nullable(),
+    measurement_entry_id: model.text().nullable(),
+    order_id: model.text().nullable(),
+    product_id: model.text().nullable(),
+    product_variant_id: model.text().nullable(),
     prior_revision_id: model.text().nullable(),
     journal_entry: model.belongsTo(() => ResearchJournalEntry, {
       mappedBy: "revisions",

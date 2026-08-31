@@ -16,6 +16,11 @@ import {
   type ResearchPrivateRecordsConfiguration,
   type ResearchRoutine,
   type ResearchRoutineLog,
+  type ResearchReplenishmentProjection,
+  type ResearchProtocolAccess,
+  type ResearchMeasurement,
+  type ResearchMeasurementSummary,
+  type ResearchTimelineEvent,
   type TrackedResearchMaterial,
   updateResearchPreferencesAction,
 } from "@lib/data/research-tracking"
@@ -30,11 +35,21 @@ import { useFormStatus } from "react-dom"
 import Journal from "./journal"
 import PersonalRoutines from "./personal-routines"
 import ProductsAndSupplies from "./products-and-supplies"
+import MyProtocols from "./my-protocols"
+import Measurements from "./measurements"
+import ActivityTimeline from "./activity-timeline"
+import Replenishment from "./replenishment"
+import ProductRecommendations, {
+  type ResearchRecommendationItem,
+} from "@modules/research-protocols/product-recommendations"
 
 type ResearchTrackingProps = {
   configuration: ResearchTrackingConfiguration
   countryCode: string
   profile: ResearchProfile | null
+  protocolAccesses: ResearchProtocolAccess[]
+  protocolRuntimeReady: boolean
+  protocolRoutineKeys: Record<string, string>
   privateRecords: ResearchPrivateRecordsConfiguration
   privacyRequest: ResearchPrivacyRequest | null
   purchasedActivationKeys: PurchasedActivationSubmissionKeys
@@ -51,7 +66,19 @@ type ResearchTrackingProps = {
     create: string
     byEntry: Record<string, { revise: string; transition: string }>
   }
+  measurements: ResearchMeasurement[]
+  measurementSummary: ResearchMeasurementSummary
+  measurementRuntimeReady: boolean
+  measurementSubmissionKeys: {
+    consent: string
+    create: string
+    byEntry: Record<string, string>
+  }
+  timeline: ResearchTimelineEvent[]
+  timelineRuntimeReady: boolean
   routineLogs: ResearchRoutineLog[]
+  replenishmentProjections: ResearchReplenishmentProjection[]
+  replenishmentRuntimeReady: boolean
   routineToday: string
   routineRuntimeReady: boolean
   routines: ResearchRoutine[]
@@ -59,18 +86,20 @@ type ResearchTrackingProps = {
   runtimeReady: boolean
   submissionKeys: ResearchSubmissionKeys
   trackedMaterials: TrackedResearchMaterial[]
+  myProtocolsRecommendations: {
+    handle: string
+    items: ResearchRecommendationItem[]
+  } | null
+  dashboardRecommendations: {
+    handle: string
+    items: ResearchRecommendationItem[]
+  } | null
 }
 
 const initialState: ResearchTrackingActionState = {
   success: false,
   error: null,
 }
-
-const futureAreas = [
-  ["Measurements", "Deferred until privacy fields and retention are approved."],
-  ["Research Protocols", "Published research-reference content linked to products."],
-  ["Calculator", "Transparent unit arithmetic with visible inputs and formulas."],
-] as const
 
 const cardClass = "rounded-xl border border-ui-border-base bg-white p-5"
 const inputClass =
@@ -432,6 +461,9 @@ export default function ResearchTracking({
   configuration,
   countryCode,
   profile,
+  protocolAccesses,
+  protocolRuntimeReady,
+  protocolRoutineKeys,
   privateRecords,
   privacyRequest,
   purchasedActivationKeys,
@@ -445,7 +477,15 @@ export default function ResearchTracking({
   journalConsentKey,
   journalRuntimeReady,
   journalSubmissionKeys,
+  measurements,
+  measurementSummary,
+  measurementRuntimeReady,
+  measurementSubmissionKeys,
+  timeline,
+  timelineRuntimeReady,
   routineLogs,
+  replenishmentProjections,
+  replenishmentRuntimeReady,
   routineToday,
   routineRuntimeReady,
   routines,
@@ -453,6 +493,8 @@ export default function ResearchTracking({
   runtimeReady,
   submissionKeys,
   trackedMaterials,
+  myProtocolsRecommendations,
+  dashboardRecommendations,
 }: ResearchTrackingProps) {
   return (
     <div className="w-full" data-testid="research-tracking-page">
@@ -510,6 +552,24 @@ export default function ResearchTracking({
       )}
 
       {runtimeReady && profile && (
+        <MyProtocols
+          protocols={protocolAccesses}
+          runtimeReady={protocolRuntimeReady}
+          countryCode={countryCode}
+          submissionKeys={protocolRoutineKeys}
+          trackedMaterials={trackedMaterials}
+        />
+      )}
+
+      {runtimeReady && profile && myProtocolsRecommendations?.items.length ? (
+        <ProductRecommendations
+          handle={myProtocolsRecommendations.handle}
+          items={myProtocolsRecommendations.items}
+          eyebrow="For your protocols"
+        />
+      ) : null}
+
+      {runtimeReady && profile && (
         <ProductsAndSupplies
           configuration={configuration}
           countryCode={countryCode}
@@ -520,6 +580,40 @@ export default function ResearchTracking({
           trackedMaterials={trackedMaterials}
         />
       )}
+
+      {runtimeReady && profile && (
+        <Measurements
+          configuration={privateRecords.measurements}
+          countryCode={countryCode}
+          measurements={measurements}
+          profile={profile}
+          protocols={protocolAccesses}
+          routines={routines}
+          runtimeReady={measurementRuntimeReady}
+          submissionKeys={measurementSubmissionKeys}
+          summary={measurementSummary}
+          trackedMaterials={trackedMaterials}
+        />
+      )}
+
+      {runtimeReady && profile && (
+        <ActivityTimeline events={timeline} runtimeReady={timelineRuntimeReady} />
+      )}
+
+      {runtimeReady && profile && (
+        <Replenishment
+          projections={replenishmentProjections}
+          runtimeReady={replenishmentRuntimeReady}
+        />
+      )}
+
+      {runtimeReady && profile && dashboardRecommendations?.items.length ? (
+        <ProductRecommendations
+          handle={dashboardRecommendations.handle}
+          items={dashboardRecommendations.items}
+          eyebrow="Supply and reorder options"
+        />
+      ) : null}
 
       {runtimeReady && profile && (
         <PersonalRoutines
@@ -562,29 +656,6 @@ export default function ResearchTracking({
         />
       )}
 
-      <div className="mt-10">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold">Planned workspace</h2>
-            <p className="mt-1 text-sm text-ui-fg-subtle">
-              These areas remain read-only previews until their own reviewed phase.
-            </p>
-          </div>
-          <span className="rounded-full bg-ui-bg-subtle px-3 py-1 text-xs font-medium">
-            Coming later
-          </span>
-        </div>
-        <div className="grid grid-cols-1 gap-3 medium:grid-cols-2">
-          {futureAreas.map(([title, description]) => (
-            <div key={title} className="rounded-xl border border-ui-border-base p-4">
-              <p className="text-sm font-semibold">{title}</p>
-              <p className="mt-1 text-sm leading-5 text-ui-fg-subtle">
-                {description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }

@@ -53,6 +53,38 @@ type RevisionRecord = {
   created_at: Date
 }
 
+type ScheduleSegmentRecord = {
+  id: string
+  position: number
+  source_row_key: string | null
+  label: string
+  start_offset_days: number
+  end_offset_days: number | null
+  planned_quantity_base_units: number
+  base_unit: ResearchBaseUnit
+  recurrence_type: ResearchRecurrenceType
+  daily_interval: number | null
+  weekly_interval: number | null
+  weekdays: { values: number[] } | null
+  local_times: { values: string[] }
+}
+
+async function listScheduleSegments(
+  trackingService: ResearchTrackingModuleService,
+  revisionId: string,
+) {
+  const segments = (await trackingService.listResearchRoutineScheduleSegments(
+    { routine_revision_id: revisionId },
+    { order: { position: "ASC" } },
+  )) as unknown as ScheduleSegmentRecord[]
+
+  return segments.map((segment) => ({
+    ...segment,
+    weekdays: segment.weekdays?.values ?? [],
+    local_times: segment.local_times.values,
+  }))
+}
+
 type TrackedMaterialRecord = {
   id: string
   profile_id: string
@@ -279,7 +311,7 @@ export async function listOwnedResearchOccurrences(input: {
       }
     }
 
-    revisions.forEach((revision, index) => {
+    for (const [index, revision] of revisions.entries()) {
       const nextRevision = revisions[index + 1]
       const nextEffectiveDate = nextRevision
         ? nextRevision.effective_from_date.toISOString().slice(0, 10)
@@ -293,8 +325,13 @@ export async function listOwnedResearchOccurrences(input: {
         : input.to
 
       if (revisionEnd < input.from) {
-        return
+        continue
       }
+
+      const scheduleSegments = await listScheduleSegments(
+        trackingService,
+        revision.id,
+      )
 
       occurrences.push(
         ...projectResearchOccurrences({
@@ -308,9 +345,10 @@ export async function listOwnedResearchOccurrences(input: {
           archivedAtDate:
             routine.archived_at?.toISOString().slice(0, 10) ?? null,
           inactiveDateRanges,
+          scheduleSegments,
         }),
       )
-    })
+    }
   }
 
   return occurrences.sort((left, right) =>
@@ -349,6 +387,10 @@ export async function previewResearchRoutineLog(input: {
     input.container,
     input.normalized.routineRevisionId,
   )
+  const scheduleSegments = await listScheduleSegments(
+    service(input.container),
+    revision.id,
+  )
   const projected = projectResearchOccurrences({
     revision: {
       ...revision,
@@ -356,7 +398,10 @@ export async function previewResearchRoutineLog(input: {
     },
     from: input.normalized.localDate,
     to: input.normalized.localDate,
-  })[0]
+    scheduleSegments,
+  }).find(
+    (occurrence) => occurrence.occurrence_id === input.normalized.occurrenceId,
+  )
 
   if (!projected || projected.occurrence_id !== input.normalized.occurrenceId) {
     throw new MedusaError(MedusaError.Types.CONFLICT, "occurrence_changed")

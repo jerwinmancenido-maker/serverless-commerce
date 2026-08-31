@@ -31,6 +31,13 @@ describe("RT-6 Journal contract", () => {
         trackedMaterialId: null,
         supplyId: null,
         routineId: null,
+        routineRevisionId: null,
+        protocolRevisionId: null,
+        profileProtocolAccessId: null,
+        measurementEntryId: null,
+        orderId: null,
+        productId: null,
+        productVariantId: null,
         confirmedLogId: null,
       },
     })

@@ -41,6 +41,13 @@ type JournalRevisionRecord = {
   supply_id: string | null
   routine_id: string | null
   confirmed_log_id: string | null
+  routine_revision_id: string | null
+  protocol_revision_id: string | null
+  profile_protocol_access_id: string | null
+  measurement_entry_id: string | null
+  order_id: string | null
+  product_id: string | null
+  product_variant_id: string | null
   prior_revision_id: string | null
   created_at: Date
 }
@@ -120,6 +127,13 @@ async function projectJournalEntry(input: {
       supply_id: revision.supply_id,
       routine_id: revision.routine_id,
       confirmed_log_id: revision.confirmed_log_id,
+      routine_revision_id: revision.routine_revision_id,
+      protocol_revision_id: revision.protocol_revision_id,
+      profile_protocol_access_id: revision.profile_protocol_access_id,
+      measurement_entry_id: revision.measurement_entry_id,
+      order_id: revision.order_id,
+      product_id: revision.product_id,
+      product_variant_id: revision.product_variant_id,
       created_at: revision.created_at,
     },
     created_at: input.entry.created_at,
@@ -339,5 +353,51 @@ export async function validateOwnedJournalRelations(input: {
         "confirmed_log_ineligible",
       )
     }
+  }
+
+  if (input.relations.routineRevisionId) {
+    const [revision] = await trackingService.listResearchRoutineRevisions({
+      id: input.relations.routineRevisionId,
+    })
+    const [routine] = revision
+      ? await trackingService.listResearchRoutines({
+          id: revision.routine_id,
+          profile_id: input.profileId,
+        })
+      : []
+    if (!routine) notFound()
+  }
+
+  if (input.relations.measurementEntryId) {
+    const [measurement] = await trackingService.listResearchMeasurementEntries({
+      id: input.relations.measurementEntryId,
+      profile_id: input.profileId,
+    })
+    if (!measurement) notFound()
+  }
+
+  if (input.relations.profileProtocolAccessId) {
+    const [access] = await trackingService.listResearchProtocolProfileAccesses({
+      id: input.relations.profileProtocolAccessId,
+      profile_id: input.profileId,
+    })
+    if (!access) notFound()
+    if (
+      (input.relations.protocolRevisionId &&
+        input.relations.protocolRevisionId !== access.protocol_revision_id) ||
+      (input.relations.orderId && input.relations.orderId !== access.order_id) ||
+      (input.relations.productId && input.relations.productId !== access.product_id) ||
+      (input.relations.productVariantId &&
+        input.relations.productVariantId !== access.product_variant_id)
+    ) {
+      notFound()
+    }
+  } else if (
+    input.relations.protocolRevisionId ||
+    input.relations.orderId ||
+    input.relations.productId ||
+    input.relations.productVariantId
+  ) {
+    notFound()
   }
 }

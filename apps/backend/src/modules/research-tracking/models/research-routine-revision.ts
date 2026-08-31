@@ -3,6 +3,7 @@ import { model } from "@medusajs/framework/utils"
 import { RESEARCH_BASE_UNITS } from "../../../lib/research-quantity"
 import { RESEARCH_RECURRENCE_TYPES } from "../contracts/personal-routines"
 import ResearchRoutine from "./research-routine"
+import ResearchRoutineScheduleSegment from "./research-routine-schedule-segment"
 
 const ResearchRoutineRevision = model
   .define("research_routine_revision", {
@@ -20,8 +21,21 @@ const ResearchRoutineRevision = model
     end_date: model.dateTime().nullable(),
     effective_from_date: model.dateTime(),
     superseded_revision_id: model.text().nullable(),
+    source_protocol_series_id: model.text().nullable(),
+    source_protocol_revision_id: model.text().nullable(),
+    source_protocol_level_key: model.text().nullable(),
+    source_profile_access_id: model.text().nullable(),
+    source_order_id: model.text().nullable(),
+    source_product_id: model.text().nullable(),
+    source_product_variant_id: model.text().nullable(),
+    source_schedule_snapshot: model.json().nullable(),
+    calculator_result_snapshot: model.json().nullable(),
+    customer_modified_schedule: model.boolean().default(false),
     routine: model.belongsTo(() => ResearchRoutine, {
       mappedBy: "revisions",
+    }),
+    schedule_segments: model.hasMany(() => ResearchRoutineScheduleSegment, {
+      mappedBy: "routine_revision",
     }),
   })
   .indexes([{ on: ["routine_id", "created_at"] }])

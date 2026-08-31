@@ -25,6 +25,7 @@ import {
   updateResearchProfileConsentStep,
   updateResearchProfilePreferencesStep,
 } from "./steps/research-tracking-ownership"
+import { grantResearchProtocolProfileAccessesStep } from "./steps/grant-research-protocol-profile-accesses"
 
 export const createResearchProfileWorkflow = createWorkflow(
   "create-research-profile",
@@ -37,6 +38,10 @@ export const createResearchProfileWorkflow = createWorkflow(
     ).then(() =>
       createResearchConsentEventStep(prepared.consentEventInput),
     )
+    grantResearchProtocolProfileAccessesStep({
+      customerId: input.customerId,
+      profileId: prepared.profileId,
+    })
     const result = transform(
       { prepared, createdConsentEvent },
       ({ prepared, createdConsentEvent }) => ({

@@ -19,6 +19,75 @@ export const listResearchProtocols = async () => sdk.client.fetch<{ protocols: S
 
 export const retrieveResearchProtocol = async (handle: string) => sdk.client.fetch<{ protocol: StoreResearchProtocol }>(`/store/research-protocols/${encodeURIComponent(handle)}`, { method: "GET", cache: "no-store" })
 
+export type ResearchProtocolRecommendation = {
+  id: string
+  protocol_revision_id: string
+  product_id: string
+  product_variant_ids: string[]
+  relationship_type: string
+  placement: string
+  heading: string | null
+  reason: string
+  quick_add_enabled: boolean
+  hide_after_purchase: boolean
+  priority: number
+}
+
+export const listResearchProtocolRecommendations = async ({
+  handle,
+  placement,
+  excludeProductIds = [],
+  limit = 6,
+}: {
+  handle: string
+  placement: string
+  excludeProductIds?: string[]
+  limit?: number
+}) =>
+  sdk.client.fetch<{ recommendations: ResearchProtocolRecommendation[] }>(
+    `/store/research-protocols/${encodeURIComponent(handle)}/recommendations`,
+    {
+      method: "GET",
+      query: {
+        placement,
+        limit,
+        exclude_product_ids: excludeProductIds.join(","),
+      },
+      cache: "no-store",
+    }
+  )
+
+export const recordResearchProtocolRecommendationEvent = async ({
+  handle,
+  recommendation,
+  eventType,
+  productVariantId = null,
+}: {
+  handle: string
+  recommendation: ResearchProtocolRecommendation
+  eventType: "impression" | "click" | "add_to_cart" | "dismiss" | "purchase"
+  productVariantId?: string | null
+}) => {
+  const headers = await getAuthHeaders()
+  await sdk.client.fetch(
+    `/store/research-protocols/${encodeURIComponent(handle)}/recommendations/events`,
+    {
+      method: "POST",
+      headers,
+      body: {
+        merchandising_link_id: recommendation.id,
+        event_type: eventType,
+        placement: recommendation.placement,
+        product_id: recommendation.product_id,
+        product_variant_id: productVariantId,
+        protocol_revision_id: recommendation.protocol_revision_id,
+        context: null,
+      },
+      cache: "no-store",
+    }
+  )
+}
+
 export type OrderResearchProtocolAccess = { line_item_id: string; title: string; handle: string; revision: number; access_token: string }
 
 export const listOrderResearchProtocols = async (orderId: string) => {

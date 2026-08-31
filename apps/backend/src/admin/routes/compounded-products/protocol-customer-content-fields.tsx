@@ -38,7 +38,7 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
       </div>
       <div className="flex flex-col gap-y-2"><Label>Customer introduction</Label><Textarea value={content.short_introduction || ""} disabled={disabled} onChange={(event) => update({ short_introduction: event.target.value || null })} /></div>
 
-      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+      <div id="quick-reference" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
         <div className="flex items-start justify-between gap-x-4">
           <div><Text size="small" weight="plus">Quick-reference cards</Text><Text size="small" className="text-ui-fg-subtle">Typical amount, frequency, duration, half-life, preparation, storage, or any custom fact.</Text></div>
           <Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ quick_reference: [...content.quick_reference, { key: `fact-${content.quick_reference.length + 1}`, label: "", value: "", description: null, evidence_label: null, reference_keys: [] }] })}>Add card</Button>
@@ -63,7 +63,7 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
         })}
       </div>
 
-      <div className="flex flex-col gap-y-4 rounded-lg border border-ui-border-base p-4">
+      <div id="calculator" className="scroll-mt-24 flex flex-col gap-y-4 rounded-lg border border-ui-border-base p-4">
         <div className="flex items-center justify-between gap-x-4">
           <div><Text size="small" weight="plus">Calculator</Text><Text size="small" className="text-ui-fg-subtle">Configure the defaults used by the customer-side concentration and delivery calculator.</Text></div>
           <Button size="small" variant={content.calculator.enabled ? "primary" : "secondary"} disabled={disabled} onClick={() => update({ calculator: { ...content.calculator, enabled: !content.calculator.enabled } })}>{content.calculator.enabled ? "Enabled" : "Enable calculator"}</Button>
@@ -85,34 +85,45 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
         </> : null}
       </div>
 
-      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
-        <div className="flex items-start justify-between gap-x-4"><div><Text size="small" weight="plus">Protocol levels</Text><Text size="small" className="text-ui-fg-subtle">Micro, starter, standard, advanced, or custom schedules.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ protocol_levels: [...content.protocol_levels, { key: `level-${content.protocol_levels.length + 1}`, title: "", summary: null, duration: null, interval: null, applicability: null, evidence_label: null, reference_keys: [], rows: [] }] })}>Add level</Button></div>
+      <div id="dosage-schedule" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+        <div className="flex items-start justify-between gap-x-4"><div><Text size="small" weight="plus">Dosage schedule</Text><Text size="small" className="text-ui-fg-subtle">Structured levels and phases shown to customers and available for Personal Routines.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ protocol_levels: [...content.protocol_levels, { key: `level-${content.protocol_levels.length + 1}`, title: "", summary: null, duration: null, interval: null, applicability: null, evidence_label: null, reference_keys: [], routine_enabled: false, rows: [] }] })}>Add level</Button></div>
         {content.protocol_levels.map((level, levelIndex) => {
           const changeLevel = (patch: Partial<typeof level>) => { const next = [...content.protocol_levels]; next[levelIndex] = { ...level, ...patch }; update({ protocol_levels: next }) }
           return <div key={`${level.key}-${levelIndex}`} className="flex flex-col gap-y-3 rounded-lg bg-ui-bg-subtle p-3">
-            <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
+            <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto_auto]">
               <div className="flex flex-col gap-y-2"><Label>Level title</Label><Input value={level.title} disabled={disabled} onChange={(event) => changeLevel({ title: event.target.value, key: keyFrom(event.target.value, level.key) })} /></div>
               <div className="flex flex-col gap-y-2"><Label>Duration</Label><Input value={level.duration || ""} disabled={disabled} onChange={(event) => changeLevel({ duration: event.target.value || null })} /></div>
               <div className="flex flex-col gap-y-2"><Label>Interval or washout</Label><Input value={level.interval || ""} disabled={disabled} onChange={(event) => changeLevel({ interval: event.target.value || null })} /></div>
+              <Button size="small" variant={level.routine_enabled ? "primary" : "secondary"} className="self-end" disabled={disabled} onClick={() => changeLevel({ routine_enabled: !level.routine_enabled })}>{level.routine_enabled ? "Routine enabled" : "Enable routine"}</Button>
               <Button size="small" variant="secondary" className="self-end" disabled={disabled} onClick={() => update({ protocol_levels: content.protocol_levels.filter((_, index) => index !== levelIndex) })}>Remove</Button>
             </div>
             <div className="grid gap-3 md:grid-cols-2"><div className="flex flex-col gap-y-2"><Label>Summary</Label><Textarea value={level.summary || ""} disabled={disabled} onChange={(event) => changeLevel({ summary: event.target.value || null })} /></div><div className="flex flex-col gap-y-2"><Label>Applicability</Label><Textarea value={level.applicability || ""} disabled={disabled} onChange={(event) => changeLevel({ applicability: event.target.value || null })} /></div></div>
-            <div className="flex items-center justify-between"><Text size="small" weight="plus">Schedule rows</Text><Button size="small" variant="secondary" disabled={disabled} onClick={() => changeLevel({ rows: [...level.rows, { period: "", amount: "", unit: "mcg", frequency: "", notes: null }] })}>Add row</Button></div>
+            <div className="flex items-center justify-between"><div><Text size="small" weight="plus">Schedule rows</Text><Text size="xsmall" className="text-ui-fg-subtle">Offsets start at day 0. Times use the customer&apos;s local timezone.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => changeLevel({ rows: [...level.rows, { row_key: `phase-${level.rows.length + 1}`, period: "", start_offset_days: null, end_offset_days: null, amount: "", unit: "mcg", recurrence_type: "custom", times_per_day: null, weekdays: [], suggested_local_times: [], frequency: "", notes: null, reference_keys: [] }] })}>Add row</Button></div>
             {level.rows.map((row, rowIndex) => {
               const changeRow = (patch: Partial<typeof row>) => { const rows = [...level.rows]; rows[rowIndex] = { ...row, ...patch }; changeLevel({ rows }) }
-              return <div key={`row-${rowIndex}`} className="grid gap-3 rounded-lg border border-ui-border-base p-3 md:grid-cols-[1fr_1fr_100px_1fr_auto]">
-                <div className="flex flex-col gap-y-2"><Label>Period</Label><Input value={row.period} disabled={disabled} onChange={(event) => changeRow({ period: event.target.value })} /></div>
-                <div className="flex flex-col gap-y-2"><Label>Amount</Label><Input value={row.amount} disabled={disabled} onChange={(event) => changeRow({ amount: event.target.value })} /></div>
-                <div className="flex flex-col gap-y-2"><Label>Unit</Label><Select value={row.unit} disabled={disabled} onValueChange={(unit) => changeRow({ unit: unit as ResearchProtocolUnit })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content>{units.map((unit) => <Select.Item key={unit} value={unit}>{unit}</Select.Item>)}</Select.Content></Select></div>
-                <div className="flex flex-col gap-y-2"><Label>Frequency</Label><Input value={row.frequency} disabled={disabled} onChange={(event) => changeRow({ frequency: event.target.value })} /></div>
-                <Button size="small" variant="secondary" className="self-end" disabled={disabled} onClick={() => changeLevel({ rows: level.rows.filter((_, index) => index !== rowIndex) })}>Remove</Button>
+              return <div key={`row-${rowIndex}`} className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-3">
+                <div className="grid gap-3 md:grid-cols-[1.3fr_90px_90px_1fr_100px_auto]">
+                  <div className="flex flex-col gap-y-2"><Label>Display period</Label><Input value={row.period} disabled={disabled} placeholder="Weeks 1-2" onChange={(event) => changeRow({ period: event.target.value, row_key: keyFrom(event.target.value, row.row_key || `phase-${rowIndex + 1}`) })} /></div>
+                  <div className="flex flex-col gap-y-2"><Label>Start day</Label><Input type="number" min={0} value={row.start_offset_days ?? ""} disabled={disabled} onChange={(event) => changeRow({ start_offset_days: event.target.value === "" ? null : Number(event.target.value) })} /></div>
+                  <div className="flex flex-col gap-y-2"><Label>End day</Label><Input type="number" min={0} value={row.end_offset_days ?? ""} disabled={disabled} onChange={(event) => changeRow({ end_offset_days: event.target.value === "" ? null : Number(event.target.value) })} /></div>
+                  <div className="flex flex-col gap-y-2"><Label>Amount</Label><Input value={row.amount} disabled={disabled} onChange={(event) => changeRow({ amount: event.target.value })} /></div>
+                  <div className="flex flex-col gap-y-2"><Label>Unit</Label><Select value={row.unit} disabled={disabled} onValueChange={(unit) => changeRow({ unit: unit as ResearchProtocolUnit })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content>{units.map((unit) => <Select.Item key={unit} value={unit}>{unit}</Select.Item>)}</Select.Content></Select></div>
+                  <Button size="small" variant="secondary" className="self-end" disabled={disabled} onClick={() => changeLevel({ rows: level.rows.filter((_, index) => index !== rowIndex) })}>Remove</Button>
+                </div>
+                <div className="grid gap-3 md:grid-cols-4">
+                  <div className="flex flex-col gap-y-2"><Label>Recurrence</Label><Select value={row.recurrence_type || "custom"} disabled={disabled} onValueChange={(recurrenceType) => changeRow({ recurrence_type: recurrenceType as typeof row.recurrence_type })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content>{["once", "daily", "weekly", "custom"].map((item) => <Select.Item key={item} value={item}>{item[0].toUpperCase() + item.slice(1)}</Select.Item>)}</Select.Content></Select></div>
+                  <div className="flex flex-col gap-y-2"><Label>Times per day</Label><Input type="number" min={1} max={24} value={row.times_per_day ?? ""} disabled={disabled} onChange={(event) => changeRow({ times_per_day: event.target.value === "" ? null : Number(event.target.value) })} /></div>
+                  <div className="flex flex-col gap-y-2"><Label>Suggested times</Label><Input value={(row.suggested_local_times || []).join(", ")} disabled={disabled} placeholder="08:00, 20:00" onChange={(event) => changeRow({ suggested_local_times: event.target.value.split(",").map((item) => item.trim()).filter(Boolean) })} /></div>
+                  <div className="flex flex-col gap-y-2"><Label>Customer frequency</Label><Input value={row.frequency} disabled={disabled} placeholder="Once daily" onChange={(event) => changeRow({ frequency: event.target.value })} /></div>
+                </div>
+                <div className="flex flex-col gap-y-2"><Label>Notes</Label><Textarea value={row.notes || ""} disabled={disabled} onChange={(event) => changeRow({ notes: event.target.value || null })} /></div>
               </div>
             })}
           </div>
         })}
       </div>
 
-      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+      <div id="detailed-sections" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
         <div className="flex items-start justify-between gap-x-4"><div><Text size="small" weight="plus">Detailed sections</Text><Text size="small" className="text-ui-fg-subtle">About, benefits, uses, administration, preparation, stacking, side effects, contraindications, storage, or custom content.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ sections: [...content.sections, { key: `section-${content.sections.length + 1}`, title: "", body: "", visible: true, position: content.sections.length, reference_keys: [] }] })}>Add section</Button></div>
         {content.sections.map((section, index) => {
           const change = (patch: Partial<typeof section>) => { const next = [...content.sections]; next[index] = { ...section, ...patch }; update({ sections: next }) }
@@ -120,7 +131,7 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
         })}
       </div>
 
-      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+      <div id="faqs" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
         <div className="flex items-start justify-between gap-x-4"><div><Text size="small" weight="plus">Frequently asked questions</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ faqs: [...content.faqs, { key: `faq-${content.faqs.length + 1}`, question: "", answer: "", position: content.faqs.length }] })}>Add FAQ</Button></div>
         {content.faqs.map((faq, index) => {
           const change = (patch: Partial<typeof faq>) => { const next = [...content.faqs]; next[index] = { ...faq, ...patch }; update({ faqs: next }) }

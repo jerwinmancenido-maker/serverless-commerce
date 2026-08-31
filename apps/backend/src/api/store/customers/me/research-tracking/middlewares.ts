@@ -18,6 +18,11 @@ import {
   StoreUpdateResearchPreferences,
   StoreListPurchasedSupplies,
   StoreCreateResearchRoutine,
+  StoreStartProtocolRoutine,
+  StoreCreateResearchMeasurement,
+  StoreReviseResearchMeasurement,
+  StoreTransitionResearchMeasurement,
+  StoreListResearchMeasurements,
   StoreListResearchOccurrences,
   StoreTransitionResearchRoutine,
   StoreUpdateResearchRoutine,
@@ -83,6 +88,47 @@ export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
     matcher: "/store/customers/me/research-tracking/routines",
     method: "POST",
     middlewares: [validateAndTransformBody(StoreCreateResearchRoutine)],
+  },
+  {
+    matcher:
+      "/store/customers/me/research-tracking/protocols/:id/start-routine",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreStartProtocolRoutine)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements",
+    method: "GET",
+    middlewares: [validateAndTransformQuery(StoreListResearchMeasurements, {})],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreCreateResearchMeasurement)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements/summary",
+    method: "GET",
+    middlewares: [validateAndTransformQuery(StoreListResearchMeasurements, {})],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements/chart",
+    method: "GET",
+    middlewares: [validateAndTransformQuery(StoreListResearchMeasurements, {})],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements/:id/revise",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreReviseResearchMeasurement)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements/:id/void",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreTransitionResearchMeasurement)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/measurements/:id/restore",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreTransitionResearchMeasurement)],
   },
   {
     matcher: "/store/customers/me/research-tracking/routines/:id",

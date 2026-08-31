@@ -6,8 +6,9 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { sdk } from "../../../lib/sdk"
 import { ProtocolEditorFields } from "../../compounded-products/protocol-editor-fields"
-import type { ResearchProtocolDetailResponse, ResearchProtocolMutationBody } from "../../compounded-products/research-protocol-types"
+import type { ResearchProtocolDetailResponse, ResearchProtocolMutationBody, ResearchProtocolRevision } from "../../compounded-products/research-protocol-types"
 import { CompatibleProducts } from "../compatible-products"
+import { ProductMerchandising } from "../product-merchandising"
 import { CommunityComments } from "../community-comments"
 
 const messageFromError = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback
@@ -24,6 +25,109 @@ const auditLabels: Record<string, string> = {
   product_unlinked: "Compatible product unlinked",
   primary_protocol_changed: "Primary guide changed",
   series_archived: "Protocol archived",
+}
+
+const PublishedProtocolDocument = ({
+  revision,
+}: {
+  revision: ResearchProtocolRevision
+}) => {
+  const content = revision.content
+  const visibleSections = content.sections
+    .filter((section) => section.visible)
+    .sort((left, right) => left.position - right.position)
+
+  return (
+    <div className="flex flex-col gap-y-6">
+      <div className="flex flex-col gap-y-2">
+        <Text size="large" weight="plus">
+          {content.compound_name || revision.title}
+        </Text>
+        {content.short_introduction ? (
+          <Text className="max-w-3xl text-ui-fg-subtle">
+            {content.short_introduction}
+          </Text>
+        ) : null}
+        <div className="flex flex-wrap gap-2">
+          {content.product_format ? <Badge>{content.product_format}</Badge> : null}
+          {content.category ? <Badge>{content.category}</Badge> : null}
+          {content.last_reviewed_at ? (
+            <Badge>Reviewed {content.last_reviewed_at}</Badge>
+          ) : null}
+        </div>
+      </div>
+
+      {content.protocol_levels.length ? (
+        <section className="flex flex-col gap-y-3">
+          <div>
+            <Heading level="h2">Dosage schedule</Heading>
+            <Text size="small" className="text-ui-fg-subtle">
+              Published structured schedule shown in the customer experience.
+            </Text>
+          </div>
+          {content.protocol_levels.map((level) => (
+            <div key={level.key} className="overflow-hidden rounded-lg border border-ui-border-base">
+              <div className="flex items-start justify-between gap-4 px-4 py-3">
+                <div>
+                  <Text weight="plus">{level.title}</Text>
+                  <Text size="small" className="text-ui-fg-subtle">
+                    {[level.duration, level.interval].filter(Boolean).join(" · ")}
+                  </Text>
+                </div>
+                {level.routine_enabled ? <Badge color="blue">Routine ready</Badge> : null}
+              </div>
+              {level.rows.length ? (
+                <div className="border-t border-ui-border-base">
+                  <div className="grid grid-cols-[1.2fr_1fr_1fr_1fr] gap-3 bg-ui-bg-subtle px-4 py-2">
+                    <Text size="xsmall" weight="plus">Period</Text>
+                    <Text size="xsmall" weight="plus">Amount</Text>
+                    <Text size="xsmall" weight="plus">Frequency</Text>
+                    <Text size="xsmall" weight="plus">Suggested time</Text>
+                  </div>
+                  {level.rows.map((row, index) => (
+                    <div key={row.row_key || `${level.key}-${index}`} className="grid grid-cols-[1.2fr_1fr_1fr_1fr] gap-3 border-t border-ui-border-base px-4 py-3 first:border-t-0">
+                      <Text size="small">{row.period}</Text>
+                      <Text size="small">{row.amount} {row.unit}</Text>
+                      <Text size="small">{row.frequency}</Text>
+                      <Text size="small">{row.suggested_local_times?.join(", ") || "Flexible"}</Text>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ))}
+        </section>
+      ) : null}
+
+      {content.quick_reference.length ? (
+        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {content.quick_reference.map((item) => (
+            <div key={item.key} className="rounded-lg border border-ui-border-base p-4">
+              <Text size="small" className="text-ui-fg-subtle">{item.label}</Text>
+              <Text weight="plus">{item.value}</Text>
+              {item.description ? <Text size="small">{item.description}</Text> : null}
+            </div>
+          ))}
+        </section>
+      ) : null}
+
+      {visibleSections.length ? (
+        <section className="flex flex-col gap-y-4">
+          <Heading level="h2">Preparation and guidance</Heading>
+          {visibleSections.map((section) => (
+            <div key={section.key} className="rounded-lg border border-ui-border-base p-4">
+              <Text weight="plus">{section.title}</Text>
+              <Text size="small" className="mt-2 whitespace-pre-wrap text-ui-fg-subtle">{section.body}</Text>
+            </div>
+          ))}
+        </section>
+      ) : null}
+
+      <div className="rounded-lg bg-ui-bg-subtle p-4">
+        <Text size="small">{content.disclaimer}</Text>
+      </div>
+    </div>
+  )
 }
 
 const ResearchProtocolEditorPage = () => {
@@ -110,9 +214,33 @@ const ResearchProtocolEditorPage = () => {
         <div className="flex gap-x-2"><Button asChild size="small" variant="secondary"><Link to={`/research-protocols/${protocolId}/preview`}>Preview customer view</Link></Button><Button asChild size="small" variant="secondary"><Link to="/research-protocols">All guides</Link></Button></div>
       </Container>
       <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
-        <Container className="px-6 py-4"><ProtocolEditorFields value={form} onChange={setForm} disabled={!draft} /></Container>
+        <div className="flex min-w-0 flex-col gap-y-3">
+          {draft ? (
+            <Container className="sticky top-2 z-10 flex flex-wrap gap-2 px-4 py-3">
+              {[
+                ["Overview", "#overview"],
+                ["Dosage schedule", "#dosage-schedule"],
+                ["Calculator", "#calculator"],
+                ["Guidance", "#detailed-sections"],
+                ["FAQs", "#faqs"],
+              ].map(([label, href]) => (
+                <Button key={href} asChild size="small" variant="secondary">
+                  <a href={href}>{label}</a>
+                </Button>
+              ))}
+            </Container>
+          ) : null}
+          <Container id="overview" className="scroll-mt-24 px-6 py-4">
+            {draft ? (
+              <ProtocolEditorFields value={form} onChange={setForm} />
+            ) : (
+              <PublishedProtocolDocument revision={displayedRevision} />
+            )}
+          </Container>
+        </div>
         <div className="flex flex-col gap-y-4">
           <Container className="flex flex-col gap-y-4 px-6 py-4"><CompatibleProducts protocolId={protocolId} /></Container>
+          <Container className="flex flex-col gap-y-4 px-6 py-4"><ProductMerchandising protocolId={protocolId} /></Container>
           <Container className="flex flex-col gap-y-4 px-6 py-4"><CommunityComments protocolId={protocolId} /></Container>
           <Container className="flex flex-col gap-y-4 px-6 py-4">
             <div className="flex flex-col gap-y-1"><Text size="small" leading="compact" weight="plus">Revision controls</Text><Text size="small" leading="compact" className="text-ui-fg-subtle">Published revisions are immutable. Changes require a new draft.</Text></div>

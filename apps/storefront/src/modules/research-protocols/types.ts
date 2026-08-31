@@ -9,7 +9,32 @@ export type ResearchProtocolContent = {
   last_reviewed_at: string | null
   quick_reference: Array<{ key: string; label: string; value: string; description: string | null; evidence_label: string | null; reference_keys: string[] }>
   calculator: { enabled: boolean; title: string; default_compound_mass: string | null; compound_mass_unit: "mcg" | "mg" | "g" | "IU"; default_final_volume_ml: string | null; default_target_amount: string | null; target_amount_unit: "mcg" | "mg" | "IU"; iu_per_mg: string | null; device_volume_ml: string | null; device_label: string | null; rounding_precision: number; instructions: string | null }
-  protocol_levels: Array<{ key: string; title: string; summary: string | null; duration: string | null; interval: string | null; applicability: string | null; evidence_label: string | null; reference_keys: string[]; rows: Array<{ period: string; amount: string; unit: ResearchProtocolUnit; frequency: string; notes: string | null }> }>
+  protocol_levels: Array<{
+    key: string
+    title: string
+    summary: string | null
+    duration: string | null
+    interval: string | null
+    applicability: string | null
+    evidence_label: string | null
+    reference_keys: string[]
+    routine_enabled: boolean
+    rows: Array<{
+      row_key: string | null
+      period: string
+      start_offset_days: number | null
+      end_offset_days: number | null
+      amount: string
+      unit: ResearchProtocolUnit
+      recurrence_type: "once" | "daily" | "weekly" | "custom"
+      times_per_day: number | null
+      weekdays: number[]
+      suggested_local_times: string[]
+      frequency: string
+      notes: string | null
+      reference_keys: string[]
+    }>
+  }>
   sections: Array<{ key: string; title: string; body: string; visible: boolean; position: number; reference_keys: string[] }>
   faqs: Array<{ key: string; question: string; answer: string; position: number }>
   research_purpose: string

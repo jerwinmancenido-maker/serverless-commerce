@@ -63,6 +63,13 @@ function revisionWrite(input: {
     supply_id: input.content.relations.supplyId,
     routine_id: input.content.relations.routineId,
     confirmed_log_id: input.content.relations.confirmedLogId,
+    routine_revision_id: input.content.relations.routineRevisionId,
+    protocol_revision_id: input.content.relations.protocolRevisionId,
+    profile_protocol_access_id: input.content.relations.profileProtocolAccessId,
+    measurement_entry_id: input.content.relations.measurementEntryId,
+    order_id: input.content.relations.orderId,
+    product_id: input.content.relations.productId,
+    product_variant_id: input.content.relations.productVariantId,
     prior_revision_id: input.priorRevisionId,
   }
 }

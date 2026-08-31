@@ -24,6 +24,40 @@ export type ResearchProfile = {
   updated_at: string
 }
 
+export type ResearchProtocolAccess = {
+  profile_access_id: string
+  protocol_handle: string
+  protocol_title: string
+  preserved_revision: number
+  current_revision: number
+  has_newer_revision: boolean
+  granted_at: string
+  first_viewed_at: string | null
+  last_viewed_at: string | null
+  routine_started_at: string | null
+  routine_id: string | null
+  routine_levels: Array<{
+    key: string
+    title: string
+    summary: string | null
+    duration: string | null
+    rows: Array<{
+      row_key: string
+      period: string
+      amount: string
+      unit: "mcg" | "mg" | "g" | "µL" | "mL" | "L" | "IU" | "piece"
+      frequency: string
+      recurrence_type: "once" | "daily" | "weekly" | "custom"
+      suggested_local_times: string[]
+      routine_ready: boolean
+    }>
+  }>
+  order: { id: string; display_id: string | number; created_at: string }
+  product: { id: string; title: string; thumbnail: string | null }
+  variant: { id: string; title: string | null } | null
+  access_token: string | null
+}
+
 export type ResearchPrivacyRequest = {
   request_type: "deletion"
   status: "requested" | "cancelled" | "processing" | "completed" | "rejected"
@@ -60,9 +94,74 @@ export type ResearchPrivateRecordsConfiguration = {
     current_consent: ResearchJournalConsent | null
   }
   measurements: {
-    available: false
-    allowlist_version: null
+    available: boolean
+    allowlist_version: string | null
+    consent_version: string | null
+    notice_url: string | null
+    effective_at: string | null
+    supported_metrics: Array<{
+      key: "weight" | "waist" | "body_fat"
+      units: Array<"kg" | "lb" | "cm" | "in" | "percent">
+    }>
+    current_consent: ResearchJournalConsent | null
   }
+}
+
+export type ResearchMeasurement = {
+  measurement_entry_id: string
+  metric_type: "weight" | "waist" | "body_fat"
+  status: "active" | "voided"
+  current_revision: {
+    revision_id: string
+    revision_number: number
+    measured_at: string
+    local_date: string
+    local_time: string
+    timezone: string
+    original_value: string
+    original_unit: "kg" | "lb" | "cm" | "in" | "percent"
+    normalized_value: string
+    normalized_unit: "kg" | "cm" | "percent"
+    note: string | null
+    routine_id: string | null
+    protocol_revision_id: string | null
+    profile_protocol_access_id: string | null
+    tracked_material_id: string | null
+    routine_log_id: string | null
+    created_at: string
+  }
+}
+
+export type ResearchMeasurementSummary = {
+  metric_type: "weight" | "waist" | "body_fat"
+  summary: null | {
+    starting_value: number
+    current_value: number
+    absolute_change: number
+    percentage_change: number
+    lowest_value: number
+    highest_value: number
+    measurement_count: number
+    average_weekly_change: number
+    normalized_unit: "kg" | "cm" | "percent"
+  }
+  points: Array<{
+    id: string
+    date: string
+    value: number
+    unit: "kg" | "cm" | "percent"
+    routine_id: string | null
+    protocol_revision_id: string | null
+  }>
+}
+
+export type ResearchTimelineEvent = {
+  id: string
+  type: string
+  occurred_at: string
+  title: string
+  detail: string | null
+  related_id: string
 }
 
 export type ResearchUnitProfile = {
@@ -160,6 +259,7 @@ export type ResearchOccurrence = {
   occurrence_id: string
   routine_id: string
   routine_revision_id: string
+  routine_schedule_segment_id: string | null
   label: string
   planned_quantity_base_units: number
   base_unit: ResearchBaseUnit
@@ -168,6 +268,28 @@ export type ResearchOccurrence = {
   timezone: string
   status: "scheduled" | "confirmed" | "voided"
   log_id: string | null
+}
+
+export type ResearchReplenishmentProjection = {
+  routine_id: string
+  routine_revision_id: string
+  tracked_material_id: string
+  tracked_material_label: string
+  product_variant_id: string | null
+  source_protocol_series_id: string | null
+  source_protocol_revision_id: string | null
+  source_product_id: string | null
+  source_product_handle: string | null
+  source_product_variant_id: string | null
+  current_phase: string
+  base_unit: ResearchBaseUnit
+  remaining_quantity_base_units: number
+  planned_quantity_base_units: number
+  estimated_uses_per_week: number
+  estimated_days_remaining: number | null
+  estimated_runout_at: string | null
+  urgency: "reorder_now" | "plan_reorder" | "on_track" | "not_projected"
+  calculation_basis: string
 }
 
 export type ResearchRoutineLogPreview = {
@@ -217,6 +339,13 @@ export type ResearchJournalEntry = {
     supply_id: string | null
     routine_id: string | null
     confirmed_log_id: string | null
+    routine_revision_id: string | null
+    protocol_revision_id: string | null
+    profile_protocol_access_id: string | null
+    measurement_entry_id: string | null
+    order_id: string | null
+    product_id: string | null
+    product_variant_id: string | null
     created_at: string
   }
   created_at: string
@@ -424,6 +553,21 @@ export async function retrieveResearchProfile(): Promise<ResearchProfile | null>
   return response.research_profile
 }
 
+export async function retrieveResearchProtocolAccesses(): Promise<
+  ResearchProtocolAccess[]
+> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    protocols: ResearchProtocolAccess[]
+  }>("/store/customers/me/research-tracking/protocols", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+
+  return response.protocols
+}
+
 export async function retrieveCurrentResearchDeletionRequest(): Promise<ResearchPrivacyRequest | null> {
   const headers = await getAuthHeaders()
   const response = await sdk.client.fetch<{
@@ -483,6 +627,21 @@ export async function retrieveResearchRoutines(): Promise<ResearchRoutine[]> {
   return response.routines
 }
 
+export async function retrieveResearchReplenishmentProjections(): Promise<
+  ResearchReplenishmentProjection[]
+> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    projections: ResearchReplenishmentProjection[]
+  }>("/store/customers/me/research-tracking/replenishment", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+
+  return response.projections
+}
+
 export async function retrieveResearchOccurrences(
   from: string,
   to: string,
@@ -521,6 +680,90 @@ export async function retrieveResearchPrivateRecordsConfiguration(): Promise<Res
   })
 
   return response.private_records
+}
+
+export async function retrieveResearchMeasurements(): Promise<ResearchMeasurement[]> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{ measurements: ResearchMeasurement[] }>(
+    "/store/customers/me/research-tracking/measurements?include_voided=true",
+    { method: "GET", headers, cache: "no-store" },
+  )
+  return response.measurements
+}
+
+export async function retrieveResearchMeasurementSummary(
+  metricType: "weight" | "waist" | "body_fat" = "weight",
+): Promise<ResearchMeasurementSummary> {
+  const headers = await getAuthHeaders()
+  return await sdk.client.fetch<ResearchMeasurementSummary>(
+    `/store/customers/me/research-tracking/measurements/summary?metric_type=${metricType}`,
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export async function retrieveResearchTimeline(): Promise<ResearchTimelineEvent[]> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{ timeline: ResearchTimelineEvent[] }>(
+    "/store/customers/me/research-tracking/timeline",
+    { method: "GET", headers, cache: "no-store" },
+  )
+  return response.timeline
+}
+
+export async function recordResearchMeasurementConsentAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  if (formData.get("accepted") !== "on") {
+    return { success: false, error: "Review and accept the Measurements notice." }
+  }
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/private-records/consents",
+    {
+      scope: "measurements",
+      consent_version: String(formData.get("measurement_consent_version") || ""),
+      accepted: true,
+    },
+    formData,
+  )
+}
+
+export async function createResearchMeasurementAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const optional = (name: string) => String(formData.get(name) || "").trim() || null
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/measurements",
+    {
+      metric_type: String(formData.get("metric_type") || ""),
+      value: String(formData.get("value") || ""),
+      unit: String(formData.get("unit") || ""),
+      local_date: String(formData.get("local_date") || ""),
+      local_time: String(formData.get("local_time") || ""),
+      note: optional("note"),
+      routine_id: optional("routine_id"),
+      protocol_revision_id: null,
+      profile_protocol_access_id: optional("profile_protocol_access_id"),
+      tracked_material_id: optional("tracked_material_id"),
+      routine_log_id: optional("routine_log_id"),
+      source: "customer",
+    },
+    formData,
+  )
+}
+
+export async function transitionResearchMeasurementAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const entryId = String(formData.get("measurement_entry_id") || "")
+  const operation = formData.get("operation") === "restore" ? "restore" : "void"
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/measurements/${encodeURIComponent(entryId)}/${operation}`,
+    { expected_revision_id: String(formData.get("expected_revision_id") || "") },
+    formData,
+  )
 }
 
 export async function retrieveResearchJournalEntries(input: {
@@ -600,6 +843,13 @@ function journalContentBody(formData: FormData) {
     supply_id: optional("supply_id"),
     routine_id: optional("routine_id"),
     confirmed_log_id: optional("confirmed_log_id"),
+    routine_revision_id: optional("routine_revision_id"),
+    protocol_revision_id: optional("protocol_revision_id"),
+    profile_protocol_access_id: optional("profile_protocol_access_id"),
+    measurement_entry_id: optional("measurement_entry_id"),
+    order_id: optional("order_id"),
+    product_id: optional("product_id"),
+    product_variant_id: optional("product_variant_id"),
     confirmed: formData.get("confirmed") === "on",
   }
 }
@@ -726,6 +976,25 @@ export async function createResearchRoutineAction(
     },
     formData,
     false,
+  )
+}
+
+export async function startProtocolRoutineAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const profileAccessId = String(formData.get("profile_access_id") || "")
+
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/protocols/${encodeURIComponent(profileAccessId)}/start-routine`,
+    {
+      tracked_material_id: String(formData.get("tracked_material_id") || ""),
+      protocol_level_key: String(formData.get("protocol_level_key") || ""),
+      start_date: String(formData.get("start_date") || ""),
+      local_times_by_row: {},
+      calculator_result_snapshot: null,
+    },
+    formData,
   )
 }
 

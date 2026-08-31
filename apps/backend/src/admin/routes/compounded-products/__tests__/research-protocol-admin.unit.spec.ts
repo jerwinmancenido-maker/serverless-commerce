@@ -69,7 +69,10 @@ describe("research protocol Admin", () => {
       "utf8",
     )
     expect(customerFields).toContain("Quick-reference cards")
-    expect(customerFields).toContain("Protocol levels")
+    expect(customerFields).toContain("Dosage schedule")
+    expect(customerFields).toContain("Routine enabled")
+    expect(customerFields).toContain("start_offset_days")
+    expect(customerFields).toContain("suggested_local_times")
     expect(customerFields).toContain("Calculator")
     expect(customerFields).toContain("Detailed sections")
     expect(editor).toContain("Published revisions are immutable")
@@ -160,6 +163,20 @@ describe("research protocol Admin", () => {
       ),
       "utf8",
     )
+    const profileProtocolRoute = readFileSync(
+      join(
+        srcRoot,
+        "api/store/customers/me/research-tracking/protocols/route.ts",
+      ),
+      "utf8",
+    )
+    const profileGrantStep = readFileSync(
+      join(
+        srcRoot,
+        "workflows/steps/grant-research-protocol-profile-accesses.ts",
+      ),
+      "utf8",
+    )
 
     expect(subscriber).toContain('event: "order.placed"')
     expect(bindingStep).toContain("randomBytes(32)")
@@ -171,6 +188,11 @@ describe("research protocol Admin", () => {
     expect(tokenRoute).not.toContain("customer_id")
     expect(tokenRoute).not.toContain("email")
     expect(customerRoute).toContain("customer_id: req.auth_context.actor_id")
+    expect(bindingStep).toContain("createResearchProtocolProfileAccesses")
+    expect(profileGrantStep).toContain("customer_id: input.customerId")
+    expect(profileGrantStep).toContain("order_protocol_access_id")
+    expect(profileProtocolRoute).toContain("preserved_revision")
+    expect(profileProtocolRoute).toContain("has_newer_revision")
   })
 
   it("keeps customer ideas separate from Admin protocol publication", () => {

@@ -13,14 +13,20 @@ import ResearchJournalEntry from "./models/research-journal-entry"
 import ResearchJournalEntryRevision from "./models/research-journal-entry-revision"
 import ResearchJournalMutation from "./models/research-journal-mutation"
 import ResearchJournalStateTransition from "./models/research-journal-state-transition"
+import ResearchMeasurementConsentEvent from "./models/research-measurement-consent-event"
+import ResearchMeasurementEntry from "./models/research-measurement-entry"
+import ResearchMeasurementMutation from "./models/research-measurement-mutation"
+import ResearchMeasurementRevision from "./models/research-measurement-revision"
 import ResearchPreferenceMutation from "./models/research-preference-mutation"
 import ResearchPrivacyRequest from "./models/research-privacy-request"
 import ResearchProfile from "./models/research-profile"
+import ResearchProtocolProfileAccess from "./models/research-protocol-profile-access"
 import ResearchRoutine from "./models/research-routine"
 import ResearchRoutineLog from "./models/research-routine-log"
 import ResearchRoutineLogRevision from "./models/research-routine-log-revision"
 import ResearchRoutineMutation from "./models/research-routine-mutation"
 import ResearchRoutineRevision from "./models/research-routine-revision"
+import ResearchRoutineScheduleSegment from "./models/research-routine-schedule-segment"
 import ResearchRoutineStateTransition from "./models/research-routine-state-transition"
 import ResearchSupply from "./models/research-supply"
 import ResearchSupplyActivation from "./models/research-supply-activation"
@@ -84,12 +90,41 @@ type ResearchJournalRevisionWrite = {
   supply_id: string | null
   routine_id: string | null
   confirmed_log_id: string | null
+  routine_revision_id: string | null
+  protocol_revision_id: string | null
+  profile_protocol_access_id: string | null
+  measurement_entry_id: string | null
+  order_id: string | null
+  product_id: string | null
+  product_variant_id: string | null
   prior_revision_id: string | null
 }
 
 type ResearchJournalMutationCompletion = {
   mutation_id: string
   response_payload: Record<string, unknown>
+}
+
+type ResearchMeasurementRevisionWrite = {
+  revision_number: number
+  measured_at: Date
+  local_date: Date
+  local_time: string
+  timezone: string
+  original_value: string
+  original_unit: "kg" | "lb" | "cm" | "in" | "percent"
+  normalized_value: string
+  normalized_unit: "kg" | "cm" | "percent"
+  secondary_value: string | null
+  note: string | null
+  allowlist_version: string
+  source: "customer" | "activity" | "journal"
+  routine_id: string | null
+  protocol_revision_id: string | null
+  profile_protocol_access_id: string | null
+  tracked_material_id: string | null
+  routine_log_id: string | null
+  prior_revision_id: string | null
 }
 
 type ResearchRoutineRevisionWrite = {
@@ -106,6 +141,35 @@ type ResearchRoutineRevisionWrite = {
   end_date: Date | null
   effective_from_date: Date
   superseded_revision_id: string | null
+  source_protocol_series_id?: string | null
+  source_protocol_revision_id?: string | null
+  source_protocol_level_key?: string | null
+  source_profile_access_id?: string | null
+  source_order_id?: string | null
+  source_product_id?: string | null
+  source_product_variant_id?: string | null
+  source_schedule_snapshot?: Record<string, unknown> | null
+  calculator_result_snapshot?: Record<string, unknown> | null
+  customer_modified_schedule?: boolean
+}
+
+type ResearchRoutineScheduleSegmentWrite = {
+  position: number
+  source_row_key: string | null
+  label: string
+  start_offset_days: number
+  end_offset_days: number | null
+  planned_quantity_base_units: number
+  base_unit: "microgram" | "microliter" | "piece"
+  original_amount: string
+  original_unit: "mcg" | "mg" | "g" | "µL" | "mL" | "L" | "IU" | "piece"
+  recurrence_type: "once" | "daily" | "weekly"
+  daily_interval: number | null
+  weekly_interval: number | null
+  weekdays: { values: number[] } | null
+  local_times: { values: string[] }
+  notes: string | null
+  reference_keys: { values: string[] } | null
 }
 
 type ResearchRoutineMutationStart = {
@@ -172,14 +236,20 @@ class ResearchTrackingModuleService extends MedusaService({
   ResearchJournalEntryRevision,
   ResearchJournalMutation,
   ResearchJournalStateTransition,
+  ResearchMeasurementConsentEvent,
+  ResearchMeasurementEntry,
+  ResearchMeasurementMutation,
+  ResearchMeasurementRevision,
   ResearchPreferenceMutation,
   ResearchPrivacyRequest,
   ResearchProfile,
+  ResearchProtocolProfileAccess,
   ResearchRoutine,
   ResearchRoutineLog,
   ResearchRoutineLogRevision,
   ResearchRoutineMutation,
   ResearchRoutineRevision,
+  ResearchRoutineScheduleSegment,
   ResearchRoutineStateTransition,
   ResearchSupply,
   ResearchSupplyActivation,
@@ -187,6 +257,216 @@ class ResearchTrackingModuleService extends MedusaService({
   ResearchSupplyAdjustment,
   TrackedMaterial,
 }) {
+  async beginMeasurementMutation(input: {
+    profile_id: string
+    operation: "create" | "revise" | "void" | "restore"
+    idempotency_key: string
+    request_fingerprint_sha256: string
+  }) {
+    return await this.createResearchMeasurementMutations({
+      ...input,
+      status: "processing",
+      measurement_entry_id: null,
+      measurement_revision_id: null,
+      response_payload: null,
+      error_code: null,
+      completed_at: null,
+    })
+  }
+
+  async failMeasurementMutation(input: {
+    mutationId: string
+    errorCode: string
+  }) {
+    return await this.updateResearchMeasurementMutations({
+      id: input.mutationId,
+      status: "failed",
+      error_code: input.errorCode,
+      completed_at: new Date(),
+    })
+  }
+
+  @InjectTransactionManager()
+  private async completeMeasurementMutation(
+    input: {
+      mutationId: string
+      entryId: string
+      revisionId: string | null
+      responsePayload: Record<string, unknown>
+    },
+    @MedusaContext() sharedContext: Context,
+  ) {
+    return await this.updateResearchMeasurementMutations(
+      {
+        id: input.mutationId,
+        status: "completed",
+        measurement_entry_id: input.entryId,
+        measurement_revision_id: input.revisionId,
+        response_payload: input.responsePayload,
+        error_code: null,
+        completed_at: new Date(),
+      },
+      sharedContext,
+    )
+  }
+
+  @InjectManager()
+  @InjectTransactionManager()
+  async createMeasurementWithRevision(
+    input: {
+      profileId: string
+      metricType: "weight" | "waist" | "body_fat"
+      revision: ResearchMeasurementRevisionWrite
+      mutationId: string
+    },
+    @MedusaContext() sharedContext: Context = {},
+  ) {
+    const entry = await this.createResearchMeasurementEntries(
+      {
+        profile_id: input.profileId,
+        metric_type: input.metricType,
+        status: "active",
+        current_revision_id: null,
+        voided_at: null,
+        restored_at: null,
+      },
+      sharedContext,
+    )
+    const revision = await this.createResearchMeasurementRevisions(
+      { ...input.revision, measurement_entry_id: entry.id },
+      sharedContext,
+    )
+    const updatedEntry = await this.updateResearchMeasurementEntries(
+      { id: entry.id, current_revision_id: revision.id },
+      sharedContext,
+    )
+    const responsePayload = {
+      created: true,
+      measurement_entry_id: entry.id,
+      revision_id: revision.id,
+      status: "active",
+    }
+    const mutation = await this.completeMeasurementMutation(
+      {
+        mutationId: input.mutationId,
+        entryId: entry.id,
+        revisionId: revision.id,
+        responsePayload,
+      },
+      sharedContext,
+    )
+
+    return { entry: updatedEntry, revision, mutation, responsePayload }
+  }
+
+  @InjectManager()
+  @InjectTransactionManager()
+  async reviseMeasurement(
+    input: {
+      entryId: string
+      expectedRevisionId: string
+      revision: ResearchMeasurementRevisionWrite
+      mutationId: string
+    },
+    @MedusaContext() sharedContext: Context = {},
+  ) {
+    const revision = await this.createResearchMeasurementRevisions(
+      { ...input.revision, measurement_entry_id: input.entryId },
+      sharedContext,
+    )
+    const entries = await this.updateResearchMeasurementEntries(
+      {
+        selector: {
+          id: input.entryId,
+          current_revision_id: input.expectedRevisionId,
+          status: "active",
+        },
+        data: { current_revision_id: revision.id },
+      },
+      sharedContext,
+    )
+    const entry = entries[0]
+
+    if (!entry) {
+      throw new MedusaError(
+        MedusaError.Types.CONFLICT,
+        "research_measurement_changed",
+      )
+    }
+    const responsePayload = {
+      created: false,
+      measurement_entry_id: entry.id,
+      revision_id: revision.id,
+      status: "active",
+    }
+    const mutation = await this.completeMeasurementMutation(
+      {
+        mutationId: input.mutationId,
+        entryId: entry.id,
+        revisionId: revision.id,
+        responsePayload,
+      },
+      sharedContext,
+    )
+
+    return { entry, revision, mutation, responsePayload }
+  }
+
+  @InjectManager()
+  @InjectTransactionManager()
+  async transitionMeasurement(
+    input: {
+      entryId: string
+      expectedRevisionId: string
+      expectedStatus: "active" | "voided"
+      status: "active" | "voided"
+      operation: "void" | "restore"
+      mutationId: string
+    },
+    @MedusaContext() sharedContext: Context = {},
+  ) {
+    const now = new Date()
+    const entries = await this.updateResearchMeasurementEntries(
+      {
+        selector: {
+          id: input.entryId,
+          current_revision_id: input.expectedRevisionId,
+          status: input.expectedStatus,
+        },
+        data: {
+          status: input.status,
+          voided_at: input.operation === "void" ? now : null,
+          restored_at: input.operation === "restore" ? now : null,
+        },
+      },
+      sharedContext,
+    )
+    const entry = entries[0]
+
+    if (!entry) {
+      throw new MedusaError(
+        MedusaError.Types.CONFLICT,
+        "research_measurement_changed",
+      )
+    }
+    const responsePayload = {
+      measurement_entry_id: entry.id,
+      revision_id: input.expectedRevisionId,
+      status: input.status,
+    }
+    const mutation = await this.completeMeasurementMutation(
+      {
+        mutationId: input.mutationId,
+        entryId: entry.id,
+        revisionId: input.expectedRevisionId,
+        responsePayload,
+      },
+      sharedContext,
+    )
+
+    return { entry, mutation, responsePayload }
+  }
+
   async beginJournalMutation(input: {
     profile_id: string
     operation: "create" | "revise" | "void" | "restore"
@@ -495,6 +775,8 @@ class ResearchTrackingModuleService extends MedusaService({
     input: {
       routine: ResearchRoutineWrite
       revision: ResearchRoutineRevisionWrite
+      segments?: ResearchRoutineScheduleSegmentWrite[]
+      markProfileAccessId?: string
       mutation: ResearchRoutineMutationCompletion
     },
     @MedusaContext() sharedContext: Context = {},
@@ -507,6 +789,25 @@ class ResearchTrackingModuleService extends MedusaService({
       { ...input.revision, routine_id: routine.id },
       sharedContext,
     )
+    const segments = input.segments?.length
+      ? await this.createResearchRoutineScheduleSegments(
+          input.segments.map((segment) => ({
+            ...segment,
+            routine_revision_id: revision.id,
+          })),
+          sharedContext,
+        )
+      : []
+    if (input.markProfileAccessId) {
+      await this.updateResearchProtocolProfileAccesses(
+        {
+          id: input.markProfileAccessId,
+          routine_id: routine.id,
+          routine_started_at: new Date(),
+        },
+        sharedContext,
+      )
+    }
     const updatedRoutine = await this.updateResearchRoutines(
       { id: routine.id, current_revision_id: revision.id },
       sharedContext,
@@ -526,7 +827,7 @@ class ResearchTrackingModuleService extends MedusaService({
       sharedContext,
     )
 
-    return { routine: updatedRoutine, revision, mutation, responsePayload }
+    return { routine: updatedRoutine, revision, segments, mutation, responsePayload }
   }
 
   @InjectManager()
@@ -535,6 +836,7 @@ class ResearchTrackingModuleService extends MedusaService({
     input: {
       routineId: string
       revision: ResearchRoutineRevisionWrite
+      segments?: ResearchRoutineScheduleSegmentWrite[]
       mutation: ResearchRoutineMutationCompletion
       status?: "active" | "archived"
       archivedAt?: Date | null
@@ -550,6 +852,15 @@ class ResearchTrackingModuleService extends MedusaService({
       { ...input.revision, routine_id: input.routineId },
       sharedContext,
     )
+    const segments = input.segments?.length
+      ? await this.createResearchRoutineScheduleSegments(
+          input.segments.map((segment) => ({
+            ...segment,
+            routine_revision_id: revision.id,
+          })),
+          sharedContext,
+        )
+      : []
     const routine = await this.updateResearchRoutines(
       {
         id: input.routineId,
@@ -588,7 +899,7 @@ class ResearchTrackingModuleService extends MedusaService({
         )
       : null
 
-    return { routine, revision, mutation, transition, responsePayload }
+    return { routine, revision, segments, mutation, transition, responsePayload }
   }
 
   @InjectManager()

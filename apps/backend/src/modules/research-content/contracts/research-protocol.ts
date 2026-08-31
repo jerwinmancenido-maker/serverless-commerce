@@ -68,11 +68,24 @@ const ResearchQuickReference = z.strictObject({
 })
 
 const ResearchProtocolScheduleRow = z.strictObject({
+  row_key: ProtocolKey.nullable().default(null),
   period: ShortText,
+  start_offset_days: z.number().int().min(0).max(36_500).nullable().default(null),
+  end_offset_days: z.number().int().min(0).max(36_500).nullable().default(null),
   amount: z.string().trim().min(1).max(64),
   unit: ResearchUnit,
+  recurrence_type: z
+    .enum(["once", "daily", "weekly", "custom"])
+    .default("custom"),
+  times_per_day: z.number().int().min(1).max(24).nullable().default(null),
+  weekdays: z.array(z.number().int().min(0).max(6)).max(7).default([]),
+  suggested_local_times: z
+    .array(z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/))
+    .max(24)
+    .default([]),
   frequency: ShortText,
   notes: z.string().trim().max(2_000).nullable().default(null),
+  reference_keys: z.array(ProtocolKey).max(20).default([]),
 })
 
 const ResearchProtocolLevel = z.strictObject({
@@ -84,6 +97,7 @@ const ResearchProtocolLevel = z.strictObject({
   applicability: z.string().trim().max(500).nullable().default(null),
   evidence_label: z.string().trim().max(255).nullable().default(null),
   reference_keys: z.array(ProtocolKey).max(20).default([]),
+  routine_enabled: z.boolean().default(false),
   rows: z.array(ResearchProtocolScheduleRow).max(100).default([]),
 })
 

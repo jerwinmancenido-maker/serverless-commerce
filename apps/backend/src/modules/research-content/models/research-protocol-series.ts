@@ -4,6 +4,8 @@ import ResearchProtocol from "./research-protocol"
 import ResearchProtocolAuditEvent from "./research-protocol-audit-event"
 import ResearchProtocolProductLink from "./research-protocol-product-link"
 import ResearchProtocolComment from "./research-protocol-comment"
+import ResearchProtocolMerchandisingLink from "./research-protocol-merchandising-link"
+import ResearchProtocolRecommendationEvent from "./research-protocol-recommendation-event"
 
 const ResearchProtocolSeries = model
   .define("research_protocol_series", {
@@ -25,6 +27,14 @@ const ResearchProtocolSeries = model
     comments: model.hasMany(() => ResearchProtocolComment, {
       mappedBy: "series",
     }),
+    merchandising_links: model.hasMany(
+      () => ResearchProtocolMerchandisingLink,
+      { mappedBy: "series" },
+    ),
+    recommendation_events: model.hasMany(
+      () => ResearchProtocolRecommendationEvent,
+      { mappedBy: "series" },
+    ),
   })
   .indexes([
     { on: ["protocol_key"], unique: true },

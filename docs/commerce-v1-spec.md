@@ -27,6 +27,11 @@ marketplace connection, or publication of product data.
   foundation for a future authenticated Research & Tracking account area.
 - Purchasing a product must not create a routine, log, measurement, journal
   entry, supply deduction, or claim of customer use.
+- The Founder-approved initial private progress-measurement allowlist is
+  `progress-metrics-v1` as defined in
+  `docs/research-tracking-rt-6-progress-metrics-v1.md`. Measurements remain
+  customer-created and purpose-consented; protocol access alone never creates
+  one.
 - A customer must explicitly activate tracking for an owned eligible order
   item before a private tracked material and supply may be created.
 - Merchant-authored research protocols and calculator material profiles remain

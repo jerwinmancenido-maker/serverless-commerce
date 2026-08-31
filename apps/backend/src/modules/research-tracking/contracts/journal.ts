@@ -33,6 +33,13 @@ export type ResearchJournalRelations = {
   supplyId: string | null
   routineId: string | null
   confirmedLogId: string | null
+  routineRevisionId: string | null
+  protocolRevisionId: string | null
+  profileProtocolAccessId: string | null
+  measurementEntryId: string | null
+  orderId: string | null
+  productId: string | null
+  productVariantId: string | null
 }
 
 export type ResearchJournalContentInput = {
@@ -45,6 +52,13 @@ export type ResearchJournalContentInput = {
   supplyId?: string | null
   routineId?: string | null
   confirmedLogId?: string | null
+  routineRevisionId?: string | null
+  protocolRevisionId?: string | null
+  profileProtocolAccessId?: string | null
+  measurementEntryId?: string | null
+  orderId?: string | null
+  productId?: string | null
+  productVariantId?: string | null
 }
 
 export type CreateResearchJournalInput = ResearchJournalContentInput & {
@@ -131,6 +145,13 @@ export type ResearchJournalProjection = {
     supply_id: string | null
     routine_id: string | null
     confirmed_log_id: string | null
+    routine_revision_id: string | null
+    protocol_revision_id: string | null
+    profile_protocol_access_id: string | null
+    measurement_entry_id: string | null
+    order_id: string | null
+    product_id: string | null
+    product_variant_id: string | null
     created_at: Date
   }
   created_at: Date
@@ -221,6 +242,13 @@ export function normalizeResearchJournalContent(
       supplyId: optionalId(input.supplyId),
       routineId: optionalId(input.routineId),
       confirmedLogId: optionalId(input.confirmedLogId),
+      routineRevisionId: optionalId(input.routineRevisionId),
+      protocolRevisionId: optionalId(input.protocolRevisionId),
+      profileProtocolAccessId: optionalId(input.profileProtocolAccessId),
+      measurementEntryId: optionalId(input.measurementEntryId),
+      orderId: optionalId(input.orderId),
+      productId: optionalId(input.productId),
+      productVariantId: optionalId(input.productVariantId),
     },
   }
 }
@@ -247,6 +275,13 @@ function fingerprintContent(
     content.relations.supplyId,
     content.relations.routineId,
     content.relations.confirmedLogId,
+    content.relations.routineRevisionId,
+    content.relations.protocolRevisionId,
+    content.relations.profileProtocolAccessId,
+    content.relations.measurementEntryId,
+    content.relations.orderId,
+    content.relations.productId,
+    content.relations.productVariantId,
   ])
 }
 

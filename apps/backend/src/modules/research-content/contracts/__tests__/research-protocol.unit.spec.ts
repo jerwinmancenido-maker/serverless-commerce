@@ -50,7 +50,22 @@ const validProtocol = () => ({
         applicability: "Linked format only",
         evidence_label: "Merchant reference",
         reference_keys: ["reference-one"],
-        rows: [{ period: "Weeks 1-2", amount: "200", unit: "mcg" as const, frequency: "Once daily", notes: null }],
+        routine_enabled: true,
+        rows: [{
+          row_key: "weeks-1-2",
+          period: "Weeks 1-2",
+          start_offset_days: 0,
+          end_offset_days: 13,
+          amount: "200",
+          unit: "mcg" as const,
+          recurrence_type: "daily" as const,
+          times_per_day: 1,
+          weekdays: [],
+          suggested_local_times: ["08:00"],
+          frequency: "Once daily",
+          notes: null,
+          reference_keys: ["reference-one"],
+        }],
       },
     ],
     sections: [{ key: "about", title: "About this compound", body: "Structured customer content.", visible: true, position: 0, reference_keys: ["reference-one"] }],
@@ -160,7 +175,40 @@ describe("research protocol contract", () => {
     const parsed = AdminCreateResearchProtocol.parse(validProtocol())
 
     expect(parsed.content.protocol_levels[0].rows[0].frequency).toBe("Once daily")
+    expect(parsed.content.protocol_levels[0].rows[0]).toMatchObject({
+      row_key: "weeks-1-2",
+      start_offset_days: 0,
+      end_offset_days: 13,
+      recurrence_type: "daily",
+      times_per_day: 1,
+      suggested_local_times: ["08:00"],
+    })
+    expect(parsed.content.protocol_levels[0].routine_enabled).toBe(true)
     expect(parsed.content.calculator.device_label).toBe("Metered pump")
+  })
+
+  it("keeps legacy display-only schedule rows valid", () => {
+    const input = validProtocol()
+    input.content.protocol_levels[0] = {
+      ...input.content.protocol_levels[0],
+      routine_enabled: undefined as unknown as boolean,
+      rows: [{
+        period: "Week 1",
+        amount: "100",
+        unit: "mcg",
+        frequency: "Once",
+        notes: null,
+      }] as typeof input.content.protocol_levels[0]["rows"],
+    }
+
+    const parsed = AdminCreateResearchProtocol.parse(input)
+
+    expect(parsed.content.protocol_levels[0].routine_enabled).toBe(false)
+    expect(parsed.content.protocol_levels[0].rows[0]).toMatchObject({
+      row_key: null,
+      recurrence_type: "custom",
+      suggested_local_times: [],
+    })
   })
 
   it("rejects unsupported or ambiguous quantity units", () => {

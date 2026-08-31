@@ -24,6 +24,9 @@ export const RESEARCH_PROTOCOL_AUDIT_EVENT_TYPES = [
   "primary_protocol_changed",
   "publication_readiness_evaluated",
   "series_archived",
+  "merchandising_link_created",
+  "merchandising_link_updated",
+  "merchandising_link_archived",
 ] as const
 
 export type ResearchContentStatus = (typeof RESEARCH_CONTENT_STATUSES)[number]

@@ -22,6 +22,11 @@ import {
   AdminListResearchProtocolComments,
   AdminModerateResearchProtocolComment,
 } from "../../../modules/research-content/contracts/research-protocol-comment"
+import {
+  AdminArchiveResearchProtocolMerchandisingLink,
+  AdminCreateResearchProtocolMerchandisingLink,
+  AdminUpdateResearchProtocolMerchandisingLink,
+} from "../../../modules/research-content/contracts/research-protocol-merchandising"
 
 const protocolPolicy = (
   operation: (typeof PolicyOperation)[keyof typeof PolicyOperation],
@@ -119,6 +124,36 @@ export const adminResearchProtocolMiddlewares: MiddlewareRoute[] = [
     methods: ["GET"],
     middlewares: [validateAndTransformQuery(AdminPreviewResearchProtocol, {})],
     policies: protocolPolicy(PolicyOperation.read),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/merchandising",
+    methods: ["GET"],
+    middlewares: [],
+    policies: protocolPolicy(PolicyOperation.read),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/merchandising",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminCreateResearchProtocolMerchandisingLink),
+    ],
+    policies: protocolPolicy(PolicyOperation.update),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/merchandising/:linkId",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateResearchProtocolMerchandisingLink),
+    ],
+    policies: protocolPolicy(PolicyOperation.update),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/merchandising/:linkId",
+    methods: ["DELETE"],
+    middlewares: [
+      validateAndTransformBody(AdminArchiveResearchProtocolMerchandisingLink),
+    ],
+    policies: protocolPolicy(PolicyOperation.delete),
   },
   {
     matcher: "/admin/research-protocols/:id/comments",

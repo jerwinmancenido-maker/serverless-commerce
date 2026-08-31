@@ -61,7 +61,22 @@ export type ResearchProtocolLevel = {
   applicability: string | null
   evidence_label: string | null
   reference_keys: string[]
-  rows: Array<{ period: string; amount: string; unit: ResearchProtocolUnit; frequency: string; notes: string | null }>
+  routine_enabled: boolean
+  rows: Array<{
+    row_key: string | null
+    period: string
+    start_offset_days: number | null
+    end_offset_days: number | null
+    amount: string
+    unit: ResearchProtocolUnit
+    recurrence_type: "once" | "daily" | "weekly" | "custom"
+    times_per_day: number | null
+    weekdays: number[]
+    suggested_local_times: string[]
+    frequency: string
+    notes: string | null
+    reference_keys: string[]
+  }>
 }
 
 export type ResearchProtocolSection = {
@@ -193,6 +208,35 @@ export type ResearchProtocolMutationBody = {
 
 export type ResearchProtocolProductsResponse = {
   product_links: ResearchProtocolProductLink[]
+}
+
+export type ResearchProtocolMerchandisingLink = {
+  id: string
+  product_id: string
+  product_variant_ids: string[]
+  relationship_type: string
+  placements: string[]
+  priority: number
+  status: "active" | "paused"
+  heading: string | null
+  reason: string
+  quick_add_enabled: boolean
+  hide_after_purchase: boolean
+  bundle_reference: string | null
+  promotion_reference: string | null
+  starts_at: string | null
+  ends_at: string | null
+  product?: {
+    id: string
+    title: string
+    status: string
+    thumbnail?: string | null
+    variants?: Array<{ id: string; title: string }>
+  } | null
+}
+
+export type ResearchProtocolMerchandisingResponse = {
+  merchandising_links: ResearchProtocolMerchandisingLink[]
 }
 
 export type ResearchProtocolPreviewResponse = {

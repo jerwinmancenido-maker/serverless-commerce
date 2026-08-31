@@ -8,6 +8,7 @@ const apiRoot = join(
 
 const routePaths = [
   "configuration/route.ts",
+  "protocols/route.ts",
   "profile/route.ts",
   "profile/preferences/route.ts",
   "profile/consents/route.ts",

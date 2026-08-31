@@ -43,13 +43,56 @@ export type StoreRecordResearchConsentType = z.infer<
 >
 
 export const StoreRecordResearchJournalConsent = z.strictObject({
-  scope: z.literal("journal"),
+  scope: z.enum(["journal", "measurements"]),
   consent_version: z.string().min(1),
   accepted: z.boolean(),
 })
 
 export type StoreRecordResearchJournalConsentType = z.infer<
   typeof StoreRecordResearchJournalConsent
+>
+
+const StoreMeasurementContent = z.strictObject({
+  metric_type: z.enum(["weight", "waist", "body_fat"]),
+  value: z.string().trim().min(1).max(40),
+  unit: z.enum(["kg", "lb", "cm", "in", "percent"]),
+  local_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  local_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+  note: z.string().trim().max(2_000).nullable().optional(),
+  routine_id: z.string().trim().min(1).nullable().optional(),
+  protocol_revision_id: z.string().trim().min(1).nullable().optional(),
+  profile_protocol_access_id: z.string().trim().min(1).nullable().optional(),
+  tracked_material_id: z.string().trim().min(1).nullable().optional(),
+  routine_log_id: z.string().trim().min(1).nullable().optional(),
+  source: z.enum(["customer", "activity", "journal"]).default("customer"),
+})
+
+export const StoreCreateResearchMeasurement = StoreMeasurementContent
+export const StoreReviseResearchMeasurement = StoreMeasurementContent.extend({
+  expected_revision_id: z.string().trim().min(1),
+})
+export const StoreTransitionResearchMeasurement = z.strictObject({
+  expected_revision_id: z.string().trim().min(1),
+})
+export const StoreListResearchMeasurements = z.strictObject({
+  metric_type: z.enum(["weight", "waist", "body_fat"]).optional(),
+  include_voided: z.preprocess(
+    (value) => value === "true" || value === true,
+    z.boolean().default(false),
+  ),
+})
+
+export type StoreCreateResearchMeasurementType = z.infer<
+  typeof StoreCreateResearchMeasurement
+>
+export type StoreReviseResearchMeasurementType = z.infer<
+  typeof StoreReviseResearchMeasurement
+>
+export type StoreTransitionResearchMeasurementType = z.infer<
+  typeof StoreTransitionResearchMeasurement
+>
+export type StoreListResearchMeasurementsType = z.infer<
+  typeof StoreListResearchMeasurements
 >
 
 export const StoreCloseResearchProfile = z.strictObject({
@@ -124,6 +167,23 @@ export const StoreCreateResearchRoutine = StoreRoutineSchedule.extend({
 
 export type StoreCreateResearchRoutineType = z.infer<
   typeof StoreCreateResearchRoutine
+>
+
+export const StoreStartProtocolRoutine = z.strictObject({
+  tracked_material_id: z.string().trim().min(1),
+  protocol_level_key: z.string().trim().min(1).max(120),
+  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  local_times_by_row: z
+    .record(
+      z.string().trim().min(1).max(120),
+      z.array(z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/)).min(1).max(24),
+    )
+    .default({}),
+  calculator_result_snapshot: z.record(z.string(), z.unknown()).nullable().default(null),
+})
+
+export type StoreStartProtocolRoutineType = z.infer<
+  typeof StoreStartProtocolRoutine
 >
 
 export const StoreUpdateResearchRoutine = StoreRoutineSchedule
@@ -260,6 +320,13 @@ const StoreResearchJournalContent = z.strictObject({
   supply_id: z.string().trim().min(1).nullable().optional(),
   routine_id: z.string().trim().min(1).nullable().optional(),
   confirmed_log_id: z.string().trim().min(1).nullable().optional(),
+  routine_revision_id: z.string().trim().min(1).nullable().optional(),
+  protocol_revision_id: z.string().trim().min(1).nullable().optional(),
+  profile_protocol_access_id: z.string().trim().min(1).nullable().optional(),
+  measurement_entry_id: z.string().trim().min(1).nullable().optional(),
+  order_id: z.string().trim().min(1).nullable().optional(),
+  product_id: z.string().trim().min(1).nullable().optional(),
+  product_variant_id: z.string().trim().min(1).nullable().optional(),
   confirmed: z.literal(true),
 })
 

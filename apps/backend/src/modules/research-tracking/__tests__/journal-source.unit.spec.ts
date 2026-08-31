@@ -86,13 +86,27 @@ describe("RT-6 Journal source-only architecture", () => {
     expect(middleware).toContain("journal/:id/restore")
   })
 
-  it("does not introduce Measurements collection source", () => {
+  it("registers the Founder-approved progress metrics allowlist", () => {
     const service = source("src/modules/research-tracking/service.ts")
     const middleware = source(
       "src/api/store/customers/me/research-tracking/middlewares.ts",
     )
+    const contract = source(
+      "src/modules/research-tracking/contracts/measurements.ts",
+    )
 
-    expect(service).not.toMatch(/ResearchMeasurement/)
-    expect(middleware).not.toMatch(/research-tracking\/measurements/)
+    expect(service).toContain("ResearchMeasurementEntry")
+    expect(service).toContain("ResearchMeasurementRevision")
+    expect(service).toContain("ResearchMeasurementMutation")
+    expect(service).toContain("ResearchMeasurementConsentEvent")
+    expect(middleware).toContain("research-tracking/measurements")
+    expect(contract).toContain('"weight"')
+    expect(contract).toContain('"waist"')
+    expect(contract).toContain('"body_fat"')
+    expect(contract).toContain('"kg"')
+    expect(contract).toContain('"lb"')
+    expect(contract).toContain('"cm"')
+    expect(contract).toContain('"in"')
+    expect(contract).toContain('"percent"')
   })
 })

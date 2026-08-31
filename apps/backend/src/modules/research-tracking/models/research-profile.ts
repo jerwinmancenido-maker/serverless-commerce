@@ -8,6 +8,10 @@ import ResearchJournalMutation from "./research-journal-mutation"
 import ResearchJournalStateTransition from "./research-journal-state-transition"
 import ResearchPreferenceMutation from "./research-preference-mutation"
 import ResearchPrivacyRequest from "./research-privacy-request"
+import ResearchProtocolProfileAccess from "./research-protocol-profile-access"
+import ResearchMeasurementConsentEvent from "./research-measurement-consent-event"
+import ResearchMeasurementEntry from "./research-measurement-entry"
+import ResearchMeasurementMutation from "./research-measurement-mutation"
 import ResearchRoutine from "./research-routine"
 import ResearchRoutineLog from "./research-routine-log"
 import ResearchRoutineMutation from "./research-routine-mutation"
@@ -52,6 +56,19 @@ const ResearchProfile = model.define("research_profile", {
   privacy_requests: model.hasMany(() => ResearchPrivacyRequest, {
     mappedBy: "profile",
   }),
+    protocol_accesses: model.hasMany(() => ResearchProtocolProfileAccess, {
+      mappedBy: "profile",
+    }),
+    measurement_entries: model.hasMany(() => ResearchMeasurementEntry, {
+      mappedBy: "profile",
+    }),
+    measurement_mutations: model.hasMany(() => ResearchMeasurementMutation, {
+      mappedBy: "profile",
+    }),
+    measurement_consent_events: model.hasMany(
+      () => ResearchMeasurementConsentEvent,
+      { mappedBy: "profile" },
+    ),
   routines: model.hasMany(() => ResearchRoutine, {
     mappedBy: "profile",
   }),

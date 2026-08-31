@@ -20,6 +20,7 @@ import {
   type AdminWithdrawResearchProtocol as WithdrawRequest,
 } from "../../modules/research-content/contracts/research-protocol"
 import type ResearchContentModuleService from "../../modules/research-content/service"
+import type { ResearchProtocolAuditEventType } from "../../modules/research-content/contracts/content"
 
 type ActorInput = { actorId: string }
 export type CreateResearchProtocolWorkflowInput = CreateRequest & ActorInput
@@ -390,7 +391,7 @@ export const archiveResearchProtocolSeriesStep = createStep(
 
 export const createResearchProtocolAuditEventStep = createStep(
   "create-research-protocol-audit-event",
-  async (input: { series_id: string; revision_id: string | null; product_link_id?: string | null; event_type: "series_created" | "draft_updated" | "revision_created" | "revision_published" | "revision_withdrawn" | "applicability_changed" | "product_linked" | "product_link_updated" | "product_unlinked" | "primary_protocol_changed" | "publication_readiness_evaluated" | "series_archived"; actor_id: string; reason: string | null; details?: Record<string, unknown> | null }, { container }) => {
+  async (input: { series_id: string; revision_id: string | null; product_link_id?: string | null; event_type: ResearchProtocolAuditEventType; actor_id: string; reason: string | null; details?: Record<string, unknown> | null }, { container }) => {
     requireActor(input.actor_id)
     const service = container.resolve<ResearchContentModuleService>(RESEARCH_CONTENT_MODULE)
     const event = await service.createResearchProtocolAuditEvents({ series_id: input.series_id, revision_id: input.revision_id, product_link_id: input.product_link_id || null, event_type: input.event_type, actor_id: input.actor_id, reason: input.reason, details: input.details || null })

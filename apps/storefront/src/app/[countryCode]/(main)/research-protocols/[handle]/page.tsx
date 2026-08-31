@@ -1,26 +1,52 @@
 import { retrieveCustomer } from "@lib/data/customer"
 import {
   listResearchProtocolComments,
+  listResearchProtocolRecommendations,
   retrieveResearchProtocol,
 } from "@lib/data/research-protocols"
+import { listProducts } from "@lib/data/products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ProtocolCalculator } from "@modules/research-protocols/calculator"
 import CommunityBoard from "@modules/research-protocols/community-board"
+import ProductRecommendations from "@modules/research-protocols/product-recommendations"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-type Props = { params: Promise<{ handle: string }> }
+type Props = { params: Promise<{ handle: string; countryCode: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> { const { handle } = await params; try { const { protocol } = await retrieveResearchProtocol(handle); return { title: protocol.content.compound_name || protocol.title, description: protocol.content.short_introduction || protocol.summary || undefined } } catch { return { title: "Research Protocol" } } }
 
 export default async function ResearchProtocolPage({ params }: Props) {
-  const { handle } = await params
+  const { handle, countryCode } = await params
   const protocol = await retrieveResearchProtocol(handle).then((response) => response.protocol).catch(() => null)
   if (!protocol) notFound()
-  const [commentResult, customer] = await Promise.all([
+  const [commentResult, customer, recommendationResult] = await Promise.all([
     listResearchProtocolComments(handle).catch(() => ({ comments: [], count: 0 })),
     retrieveCustomer(),
+    listResearchProtocolRecommendations({
+      handle,
+      placement: "protocol",
+      excludeProductIds: protocol.products.map((product) => product.id),
+    }).catch(() => ({ recommendations: [] })),
   ])
+  const recommendedProducts = recommendationResult.recommendations.length
+    ? await listProducts({
+        countryCode,
+        queryParams: {
+          id: recommendationResult.recommendations.map((item) => item.product_id),
+          limit: recommendationResult.recommendations.length,
+        },
+      }).then(({ response }) => response.products).catch(() => [])
+    : []
+  const recommendedProductById = new Map(
+    recommendedProducts.map((product) => [product.id, product])
+  )
+  const recommendationItems = recommendationResult.recommendations.flatMap(
+    (recommendation) => {
+      const product = recommendedProductById.get(recommendation.product_id)
+      return product ? [{ recommendation, product }] : []
+    }
+  )
   const content = protocol.content
   const sections = [...content.sections].filter((section) => section.visible).sort((a, b) => a.position - b.position)
   const faqs = [...content.faqs].sort((a, b) => a.position - b.position)
@@ -36,6 +62,7 @@ export default async function ResearchProtocolPage({ params }: Props) {
       {faqs.length ? <section className="mt-12 max-w-4xl"><h2 className="text-2xl-semi text-ui-fg-base">Frequently asked questions</h2><div className="mt-5 grid gap-3">{faqs.map((faq) => <details key={faq.key} className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-5"><summary className="cursor-pointer text-base-semi text-ui-fg-base">{faq.question}</summary><p className="mt-3 whitespace-pre-wrap text-base-regular text-ui-fg-subtle">{faq.answer}</p></details>)}</div></section> : null}
       {content.references.length ? <section className="mt-12 max-w-4xl"><h2 className="text-2xl-semi text-ui-fg-base">References and evidence</h2><ol className="mt-5 grid gap-3">{content.references.map((reference, index) => <li key={`${reference.title}-${index}`} className="rounded-rounded border border-ui-border-base p-4"><p className="text-base-semi">{reference.title}</p>{reference.customer_annotation ? <p className="mt-1 text-small-regular text-ui-fg-subtle">{reference.customer_annotation}</p> : null}{reference.url ? <a href={reference.url} target="_blank" rel="noreferrer" className="mt-2 inline-block text-small-semi text-ui-fg-interactive">Open source ↗</a> : null}</li>)}</ol></section> : null}
       {protocol.products.length ? <section className="mt-12"><h2 className="text-2xl-semi text-ui-fg-base">Related products</h2><div className="mt-4 flex flex-wrap gap-3">{protocol.products.map((product) => <LocalizedClientLink key={product.id} href={`/products/${product.handle}`} className="rounded-rounded border border-ui-border-base px-4 py-3 text-small-semi">{product.title}</LocalizedClientLink>)}</div></section> : null}
+      <ProductRecommendations handle={handle} items={recommendationItems} />
       <div className="mt-12 max-w-4xl rounded-rounded border border-ui-border-base bg-ui-bg-subtle p-5"><p className="text-small-semi">Important information</p><p className="mt-2 text-small-regular text-ui-fg-subtle">{content.disclaimer}</p></div>
       </div>
       <CommunityBoard
