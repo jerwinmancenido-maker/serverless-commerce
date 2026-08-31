@@ -266,8 +266,11 @@ export type ResearchOccurrence = {
   local_date: string
   local_time: string
   timezone: string
-  status: "scheduled" | "confirmed" | "voided"
+  status: "scheduled" | "confirmed" | "voided" | "skipped" | "rescheduled"
   log_id: string | null
+  adjustment_id: string | null
+  rescheduled_local_date: string | null
+  rescheduled_local_time: string | null
 }
 
 export type ResearchReplenishmentProjection = {
@@ -1085,6 +1088,38 @@ export async function confirmResearchRoutineLogAction(
     },
     formData,
     false,
+  )
+}
+
+export async function adjustResearchOccurrenceAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const occurrenceId = String(formData.get("occurrence_id") || "")
+  const operation = String(formData.get("operation") || "")
+
+  if (!["skip", "reschedule", "restore"].includes(operation)) {
+    return { success: false, error: "Select a valid schedule action." }
+  }
+
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/occurrences/${encodeURIComponent(occurrenceId)}/adjust`,
+    {
+      routine_id: String(formData.get("routine_id") || ""),
+      routine_revision_id: String(formData.get("routine_revision_id") || ""),
+      routine_schedule_segment_id:
+        String(formData.get("routine_schedule_segment_id") || "") || null,
+      operation,
+      planned_local_date: String(formData.get("planned_local_date") || ""),
+      planned_local_time: String(formData.get("planned_local_time") || ""),
+      rescheduled_local_date:
+        String(formData.get("rescheduled_local_date") || "") || null,
+      rescheduled_local_time:
+        String(formData.get("rescheduled_local_time") || "") || null,
+      timezone: String(formData.get("timezone") || ""),
+      note: String(formData.get("note") || "") || null,
+    },
+    formData,
   )
 }
 

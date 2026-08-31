@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  adjustResearchOccurrenceAction,
   confirmResearchRoutineLogAction,
   createResearchRoutineAction,
   mutateResearchRoutineLogAction,
@@ -437,6 +438,7 @@ function OccurrenceCard({
   occurrence,
   routine,
   submissionKey,
+  adjustmentKey,
   today,
   trackedMaterials,
 }: {
@@ -444,6 +446,7 @@ function OccurrenceCard({
   occurrence: ResearchOccurrence
   routine: ResearchRoutine
   submissionKey?: string
+  adjustmentKey?: string
   today: string
   trackedMaterials: TrackedResearchMaterial[]
 }) {
@@ -457,6 +460,12 @@ function OccurrenceCard({
   )
   const [confirmationKey, rotateConfirmationKey] =
     useRotatingSubmissionKey(submissionKey)
+  const [adjustState, adjustAction] = useActionState(
+    adjustResearchOccurrenceAction,
+    initialState,
+  )
+  const [occurrenceAdjustmentKey, rotateOccurrenceAdjustmentKey] =
+    useRotatingSubmissionKey(adjustmentKey)
   const supplies =
     trackedMaterials
       .find(
@@ -480,6 +489,25 @@ function OccurrenceCard({
       ? [researchTrackingQueryKeys.supplies.detail(previewState.preview.supply_id)]
       : []),
   ], rotateConfirmationKey)
+  useInvalidateOnSuccess(adjustState, [
+    researchTrackingQueryKeys.occurrences.list(
+      today,
+      addCalendarDays(today, 6),
+    ),
+  ], rotateOccurrenceAdjustmentKey)
+
+  const adjustmentFields = (
+    <>
+      {hiddenCommon(countryCode, occurrenceAdjustmentKey)}
+      <input type="hidden" name="occurrence_id" value={occurrence.occurrence_id} />
+      <input type="hidden" name="routine_id" value={occurrence.routine_id} />
+      <input type="hidden" name="routine_revision_id" value={occurrence.routine_revision_id} />
+      <input type="hidden" name="routine_schedule_segment_id" value={occurrence.routine_schedule_segment_id ?? ""} />
+      <input type="hidden" name="planned_local_date" value={occurrence.local_date} />
+      <input type="hidden" name="planned_local_time" value={occurrence.local_time} />
+      <input type="hidden" name="timezone" value={occurrence.timezone} />
+    </>
+  )
 
   return (
     <div className="rounded-lg border border-ui-border-base p-4">
@@ -502,6 +530,11 @@ function OccurrenceCard({
           profileForBaseUnit(occurrence.base_unit, supplies),
         )}
       </p>
+      {occurrence.status === "rescheduled" ? (
+        <p className="mt-2 text-sm text-blue-700">
+          Moved to {occurrence.rescheduled_local_date} at {occurrence.rescheduled_local_time}.
+        </p>
+      ) : null}
       {occurrence.status === "scheduled" &&
         (supplies.length ? (
           <form action={previewAction} className="mt-4 space-y-3">
@@ -643,6 +676,40 @@ function OccurrenceCard({
           <ActionButton>Confirm record</ActionButton>
         </form>
       )}
+      {occurrence.status === "scheduled" ? (
+        <div className="mt-4 grid gap-3 border-t border-ui-border-base pt-4">
+          <form action={adjustAction}>
+            {adjustmentFields}
+            <input type="hidden" name="operation" value="skip" />
+            <button type="submit" className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium">
+              Skip this occurrence
+            </button>
+          </form>
+          <details className="rounded-lg border border-ui-border-base p-3">
+            <summary className="cursor-pointer text-sm font-medium">Reschedule</summary>
+            <form action={adjustAction} className="mt-3 grid gap-3">
+              {adjustmentFields}
+              <input type="hidden" name="operation" value="reschedule" />
+              <div className="grid grid-cols-2 gap-3">
+                <input name="rescheduled_local_date" type="date" required className={inputClass} />
+                <input name="rescheduled_local_time" type="time" required className={inputClass} />
+              </div>
+              <input name="note" placeholder="Optional note" className={inputClass} />
+              <ActionButton>Save new time</ActionButton>
+            </form>
+          </details>
+          <Message state={adjustState} />
+        </div>
+      ) : occurrence.status === "skipped" || occurrence.status === "rescheduled" ? (
+        <form action={adjustAction} className="mt-4 border-t border-ui-border-base pt-4">
+          {adjustmentFields}
+          <input type="hidden" name="operation" value="restore" />
+          <button type="submit" className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium">
+            Restore original schedule
+          </button>
+          <Message state={adjustState} />
+        </form>
+      ) : null}
     </div>
   )
 }
@@ -1319,6 +1386,9 @@ function PersonalRoutinesContent({
                     routine={routine}
                     submissionKey={
                       submissionKeys.confirmations[occurrence.occurrence_id]
+                    }
+                    adjustmentKey={
+                      submissionKeys.occurrenceAdjustments[occurrence.occurrence_id]
                     }
                     today={today}
                     trackedMaterials={currentTrackedMaterials}

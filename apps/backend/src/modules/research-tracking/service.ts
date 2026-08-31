@@ -17,6 +17,7 @@ import ResearchMeasurementConsentEvent from "./models/research-measurement-conse
 import ResearchMeasurementEntry from "./models/research-measurement-entry"
 import ResearchMeasurementMutation from "./models/research-measurement-mutation"
 import ResearchMeasurementRevision from "./models/research-measurement-revision"
+import ResearchOccurrenceAdjustment from "./models/research-occurrence-adjustment"
 import ResearchPreferenceMutation from "./models/research-preference-mutation"
 import ResearchPrivacyRequest from "./models/research-privacy-request"
 import ResearchProfile from "./models/research-profile"
@@ -240,6 +241,7 @@ class ResearchTrackingModuleService extends MedusaService({
   ResearchMeasurementEntry,
   ResearchMeasurementMutation,
   ResearchMeasurementRevision,
+  ResearchOccurrenceAdjustment,
   ResearchPreferenceMutation,
   ResearchPrivacyRequest,
   ResearchProfile,

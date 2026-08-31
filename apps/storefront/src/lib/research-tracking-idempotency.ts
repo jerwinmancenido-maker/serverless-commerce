@@ -27,6 +27,7 @@ export type RoutineSubmissionKeys = {
   updates: Record<string, string>
   transitions: Record<string, string>
   confirmations: Record<string, string>
+  occurrenceAdjustments: Record<string, string>
   logMutations: Record<
     string,
     Record<ResearchLogMutationOperation, string>
@@ -117,6 +118,12 @@ export function createRoutineSubmissionKeys(
       ]),
     ),
     confirmations: Object.fromEntries(
+      occurrenceIds.map((occurrenceId) => [
+        occurrenceId,
+        createResearchSubmissionKey(createId),
+      ]),
+    ),
+    occurrenceAdjustments: Object.fromEntries(
       occurrenceIds.map((occurrenceId) => [
         occurrenceId,
         createResearchSubmissionKey(createId),

@@ -40,9 +40,10 @@ test("creates distinct keys for routine and occurrence mutations", () => {
   assert.equal(keys.updates["routine-1"], "storefront:key-2")
   assert.equal(keys.transitions["routine-1"], "storefront:key-4")
   assert.equal(keys.confirmations["occurrence-1"], "storefront:key-6")
-  assert.equal(keys.logMutations["log-1"].revise, "storefront:key-7")
-  assert.equal(keys.logMutations["log-1"].void, "storefront:key-8")
-  assert.equal(keys.logMutations["log-1"].restore, "storefront:key-9")
+  assert.equal(keys.occurrenceAdjustments["occurrence-1"], "storefront:key-7")
+  assert.equal(keys.logMutations["log-1"].revise, "storefront:key-8")
+  assert.equal(keys.logMutations["log-1"].void, "storefront:key-9")
+  assert.equal(keys.logMutations["log-1"].restore, "storefront:key-10")
   assert.equal(
     new Set([
       keys.logMutations["log-1"].revise,

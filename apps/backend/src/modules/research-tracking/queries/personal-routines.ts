@@ -288,6 +288,22 @@ export async function listOwnedResearchOccurrences(input: {
           [log.occurrence_id, { logId: log.id, status: log.status }] as const,
       ),
     )
+    const adjustments = await trackingService.listResearchOccurrenceAdjustments(
+      { profile_id: profile.id, routine_id: routine.routine_id },
+      { order: { created_at: "ASC" } },
+    )
+    const adjusted = new Map(
+      adjustments.map((adjustment) => [
+        adjustment.occurrence_id,
+        {
+          adjustmentId: adjustment.id,
+          operation: adjustment.operation,
+          rescheduledLocalDate:
+            adjustment.rescheduled_local_date?.toISOString().slice(0, 10) ?? null,
+          rescheduledLocalTime: adjustment.rescheduled_local_time,
+        },
+      ]),
+    )
     const transitions =
       (await trackingService.listResearchRoutineStateTransitions(
         { routine_id: routine.routine_id },
@@ -346,14 +362,15 @@ export async function listOwnedResearchOccurrences(input: {
             routine.archived_at?.toISOString().slice(0, 10) ?? null,
           inactiveDateRanges,
           scheduleSegments,
+          adjustedOccurrences: adjusted,
         }),
       )
     }
   }
 
   return occurrences.sort((left, right) =>
-    `${left.local_date}T${left.local_time}`.localeCompare(
-      `${right.local_date}T${right.local_time}`,
+    `${left.rescheduled_local_date ?? left.local_date}T${left.rescheduled_local_time ?? left.local_time}`.localeCompare(
+      `${right.rescheduled_local_date ?? right.local_date}T${right.rescheduled_local_time ?? right.local_time}`,
     ),
   )
 }

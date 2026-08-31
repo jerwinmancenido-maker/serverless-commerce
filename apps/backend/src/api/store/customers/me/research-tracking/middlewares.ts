@@ -23,6 +23,7 @@ import {
   StoreReviseResearchMeasurement,
   StoreTransitionResearchMeasurement,
   StoreListResearchMeasurements,
+  StoreAdjustResearchOccurrence,
   StoreListResearchOccurrences,
   StoreTransitionResearchRoutine,
   StoreUpdateResearchRoutine,
@@ -149,6 +150,11 @@ export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
     matcher: "/store/customers/me/research-tracking/occurrences",
     method: "GET",
     middlewares: [validateAndTransformQuery(StoreListResearchOccurrences, {})],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/occurrences/:id/adjust",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreAdjustResearchOccurrence)],
   },
   {
     matcher: "/store/customers/me/research-tracking/logs/preview",

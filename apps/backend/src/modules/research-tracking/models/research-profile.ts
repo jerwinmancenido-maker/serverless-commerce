@@ -12,6 +12,7 @@ import ResearchProtocolProfileAccess from "./research-protocol-profile-access"
 import ResearchMeasurementConsentEvent from "./research-measurement-consent-event"
 import ResearchMeasurementEntry from "./research-measurement-entry"
 import ResearchMeasurementMutation from "./research-measurement-mutation"
+import ResearchOccurrenceAdjustment from "./research-occurrence-adjustment"
 import ResearchRoutine from "./research-routine"
 import ResearchRoutineLog from "./research-routine-log"
 import ResearchRoutineMutation from "./research-routine-mutation"
@@ -69,6 +70,9 @@ const ResearchProfile = model.define("research_profile", {
       () => ResearchMeasurementConsentEvent,
       { mappedBy: "profile" },
     ),
+  occurrence_adjustments: model.hasMany(() => ResearchOccurrenceAdjustment, {
+    mappedBy: "profile",
+  }),
   routines: model.hasMany(() => ResearchRoutine, {
     mappedBy: "profile",
   }),

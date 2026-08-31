@@ -10,6 +10,7 @@ import {
   projectResearchOccurrences,
   validateOccurrenceRange,
 } from "../contracts/personal-routines"
+import { normalizeResearchOccurrenceAdjustment } from "../contracts/occurrence-adjustments"
 import {
   consumedRoutineMutationError,
   ROUTINE_MUTATION_KEY_CONSUMED_PREFIX,
@@ -142,6 +143,67 @@ describe("RT-5 personal routine contract", () => {
     expect(projected[0].occurrence_id).toBe(
       createOccurrenceId("rrrev_test", "2026-08-26", "08:30"),
     )
+  })
+
+  it("overlays immutable skip and reschedule events without supply changes", () => {
+    const revision = {
+      id: "rrrev_adjust",
+      routine_id: "rroutine_adjust",
+      label: "Planned record",
+      planned_quantity_base_units: 250,
+      base_unit: "microgram" as const,
+      recurrence_type: "daily" as const,
+      daily_interval: 1,
+      weekly_interval: null,
+      weekdays: [],
+      local_time: "08:30",
+      start_date: "2026-08-31",
+      end_date: null,
+      effective_from_date: "2026-08-31",
+      timezone: "Asia/Manila",
+    }
+    const occurrenceId = createOccurrenceId(revision.id, "2026-08-31", "08:30")
+    const projected = projectResearchOccurrences({
+      revision,
+      from: "2026-08-31",
+      to: "2026-08-31",
+      adjustedOccurrences: new Map([
+        [
+          occurrenceId,
+          {
+            adjustmentId: "radj_1",
+            operation: "reschedule",
+            rescheduledLocalDate: "2026-09-01",
+            rescheduledLocalTime: "09:15",
+          },
+        ],
+      ]),
+    })
+
+    expect(projected[0]).toMatchObject({
+      occurrence_id: occurrenceId,
+      status: "rescheduled",
+      adjustment_id: "radj_1",
+      rescheduled_local_date: "2026-09-01",
+      rescheduled_local_time: "09:15",
+    })
+  })
+
+  it("requires a complete new local time for rescheduling", () => {
+    expect(() =>
+      normalizeResearchOccurrenceAdjustment({
+        customerId: "cus_test",
+        activeConsentVersion: "2026-08-25.v1",
+        occurrenceId: "occ_test",
+        routineId: "routine_test",
+        routineRevisionId: "revision_test",
+        operation: "reschedule",
+        plannedLocalDate: "2026-08-31",
+        plannedLocalTime: "08:30",
+        timezone: "Asia/Manila",
+        idempotencyKey: "occurrence-adjustment-test",
+      }),
+    ).toThrow(MedusaError)
   })
 
   it("rejects occurrence ranges longer than 31 inclusive dates", () => {

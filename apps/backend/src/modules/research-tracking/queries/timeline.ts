@@ -17,7 +17,7 @@ export async function listOwnedResearchTimeline(input: {
   const service = input.container.resolve<ResearchTrackingModuleService>(
     RESEARCH_TRACKING_MODULE,
   )
-  const [accesses, routines, logs, activations, measurements, journal] =
+  const [accesses, routines, logs, adjustments, activations, measurements, journal] =
     await Promise.all([
       service.listResearchProtocolProfileAccesses(
         { profile_id: profile.id },
@@ -28,6 +28,10 @@ export async function listOwnedResearchTimeline(input: {
         { order: { created_at: "DESC" } },
       ),
       service.listResearchRoutineLogs(
+        { profile_id: profile.id },
+        { order: { created_at: "DESC" } },
+      ),
+      service.listResearchOccurrenceAdjustments(
         { profile_id: profile.id },
         { order: { created_at: "DESC" } },
       ),
@@ -87,6 +91,25 @@ export async function listOwnedResearchTimeline(input: {
       related_id: log.id,
     }),
   )
+  adjustments.forEach((adjustment) => {
+    const title =
+      adjustment.operation === "skip"
+        ? "Activity skipped"
+        : adjustment.operation === "reschedule"
+          ? "Activity rescheduled"
+          : "Original schedule restored"
+    events.push({
+      id: `occurrence-adjustment:${adjustment.id}`,
+      type: `activity_${adjustment.operation}`,
+      occurred_at: adjustment.created_at,
+      title,
+      detail:
+        adjustment.operation === "reschedule"
+          ? `${adjustment.rescheduled_local_date?.toISOString().slice(0, 10)} at ${adjustment.rescheduled_local_time}`
+          : adjustment.note,
+      related_id: adjustment.id,
+    })
+  })
   activations.forEach((activation) =>
     events.push({
       id: `supply:${activation.id}`,

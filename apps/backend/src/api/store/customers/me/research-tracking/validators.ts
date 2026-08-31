@@ -209,6 +209,29 @@ export type StoreListResearchOccurrencesType = z.infer<
   typeof StoreListResearchOccurrences
 >
 
+export const StoreAdjustResearchOccurrence = z
+  .strictObject({
+    routine_id: z.string().trim().min(1),
+    routine_revision_id: z.string().trim().min(1),
+    routine_schedule_segment_id: z.string().trim().min(1).nullable().optional(),
+    operation: z.enum(["skip", "reschedule", "restore"]),
+    planned_local_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    planned_local_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+    rescheduled_local_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+    rescheduled_local_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable().optional(),
+    timezone: z.string().trim().min(1),
+    note: z.string().trim().max(2_000).nullable().optional(),
+  })
+  .superRefine((value, context) => {
+    if (value.operation === "reschedule" && (!value.rescheduled_local_date || !value.rescheduled_local_time)) {
+      context.addIssue({ code: "custom", message: "rescheduled date and time are required" })
+    }
+  })
+
+export type StoreAdjustResearchOccurrenceType = z.infer<
+  typeof StoreAdjustResearchOccurrence
+>
+
 export const StorePreviewResearchRoutineLog = z.strictObject({
   routine_id: z.string().trim().min(1),
   routine_revision_id: z.string().trim().min(1),

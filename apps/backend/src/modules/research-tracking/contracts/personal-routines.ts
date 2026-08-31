@@ -105,8 +105,11 @@ export type ResearchOccurrence = {
   local_date: string
   local_time: string
   timezone: string
-  status: "scheduled" | "confirmed" | "voided"
+  status: "scheduled" | "confirmed" | "voided" | "skipped" | "rescheduled"
   log_id: string | null
+  adjustment_id: string | null
+  rescheduled_local_date: string | null
+  rescheduled_local_time: string | null
 }
 
 export type ResearchRoutineProjection = {
@@ -801,6 +804,15 @@ export function projectResearchOccurrences(input: {
   archivedAtDate?: string | null
   inactiveDateRanges?: Array<{ from: string; to: string | null }>
   scheduleSegments?: RoutineScheduleSegmentForProjection[]
+  adjustedOccurrences?: Map<
+    string,
+    {
+      adjustmentId: string
+      operation: "skip" | "reschedule" | "restore"
+      rescheduledLocalDate: string | null
+      rescheduledLocalTime: string | null
+    }
+  >
 }): ResearchOccurrence[] {
   const range = validateOccurrenceRange(input.from, input.to)
   const occurrences: ResearchOccurrence[] = []
@@ -825,6 +837,7 @@ export function projectResearchOccurrences(input: {
         input.revision.local_time,
       )
       const logged = input.loggedOccurrences?.get(occurrenceId) ?? null
+      const adjustment = input.adjustedOccurrences?.get(occurrenceId) ?? null
 
       occurrences.push({
         occurrence_id: occurrenceId,
@@ -837,8 +850,17 @@ export function projectResearchOccurrences(input: {
         local_date: localDate,
         local_time: input.revision.local_time,
         timezone: input.revision.timezone,
-        status: logged?.status ?? "scheduled",
+        status:
+          logged?.status ??
+          (adjustment?.operation === "skip"
+            ? "skipped"
+            : adjustment?.operation === "reschedule"
+              ? "rescheduled"
+              : "scheduled"),
         log_id: logged?.logId ?? null,
+        adjustment_id: adjustment?.adjustmentId ?? null,
+        rescheduled_local_date: adjustment?.rescheduledLocalDate ?? null,
+        rescheduled_local_time: adjustment?.rescheduledLocalTime ?? null,
       })
     }
 
@@ -893,6 +915,7 @@ export function projectResearchOccurrences(input: {
             segment.id,
           )
           const logged = input.loggedOccurrences?.get(occurrenceId) ?? null
+          const adjustment = input.adjustedOccurrences?.get(occurrenceId) ?? null
 
           occurrences.push({
             occurrence_id: occurrenceId,
@@ -905,8 +928,17 @@ export function projectResearchOccurrences(input: {
             local_date: localDate,
             local_time: localTime,
             timezone: input.revision.timezone,
-            status: logged?.status ?? "scheduled",
+            status:
+              logged?.status ??
+              (adjustment?.operation === "skip"
+                ? "skipped"
+                : adjustment?.operation === "reschedule"
+                  ? "rescheduled"
+                  : "scheduled"),
             log_id: logged?.logId ?? null,
+            adjustment_id: adjustment?.adjustmentId ?? null,
+            rescheduled_local_date: adjustment?.rescheduledLocalDate ?? null,
+            rescheduled_local_time: adjustment?.rescheduledLocalTime ?? null,
           })
         }
       }
