@@ -3,6 +3,7 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 import { awardRewardEventSafely } from "../workflows/award-reward-event"
 import { manageReferralsWorkflow } from "../workflows/manage-referrals"
+import { emitCustomerNotificationWorkflow } from "../workflows/manage-customer-notifications"
 
 type CapturedPaymentEvent = {
   id: string
@@ -85,6 +86,18 @@ export default async function awardCapturedOrderRewards({
         pending_days: Number(event.waiting_period_days),
         idempotency_key: `referral-referred:${event.id}`,
       })
+      await Promise.all([
+        event.referrer_customer_id,
+        event.referred_customer_id,
+      ].map((customerId) => emitCustomerNotificationWorkflow(container).run({ input: {
+        customer_id: customerId,
+        event_key: "reward.referral_completed",
+        source_id: `${event.id}:${customerId}`,
+        variables: {},
+        target_kind: "rewards",
+        target_id: null,
+        metadata: {},
+      } })))
     }
   } catch (error) {
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)

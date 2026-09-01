@@ -19,6 +19,7 @@ import {
 
 import { REWARDS_MODULE } from "../modules/rewards"
 import type RewardsModuleService from "../modules/rewards/service"
+import { emitCustomerNotificationWorkflow } from "./manage-customer-notifications"
 
 type ConfigureProgramInput = {
   operation: "configure_program"
@@ -169,6 +170,29 @@ function availableBalance(entries: Array<{ points: number; status: string }>) {
     .reduce((total, entry) => total + entry.points, 0)
 }
 
+async function notifyReward(
+  container: any,
+  input: {
+    customerId: string
+    eventKey: "reward.points_earned" | "reward.points_available" | "reward.points_redeemed" | "reward.points_reversed" | "reward.referral_completed"
+    sourceId: string
+    points?: number
+  },
+) {
+  await emitCustomerNotificationWorkflow(container).run({
+    input: {
+      customer_id: input.customerId,
+      event_key: input.eventKey,
+      source_id: input.sourceId,
+      variables: input.points === undefined ? {} : { points: Math.abs(input.points) },
+      target_kind: "rewards",
+      target_id: null,
+      secondary_target_id: null,
+      metadata: {},
+    },
+  })
+}
+
 const manageRewardsStep = createStep<
   RewardMutationInput,
   Record<string, unknown>,
@@ -185,6 +209,8 @@ const manageRewardsStep = createStep<
       )
       for (const entry of due) {
         await service.updateRewardLedgerEntries({ id: entry.id, status: "available" })
+        const account = await service.retrieveRewardAccount(entry.reward_account_id)
+        await notifyReward(container, { customerId: account.customer_id, eventKey: "reward.points_available", sourceId: `available:${entry.id}`, points: Number(entry.points) })
       }
       return new StepResponse({ released: due.length })
     }
@@ -494,6 +520,7 @@ const manageRewardsStep = createStep<
         id: account.id,
         lifetime_earned: Number(account.lifetime_earned) + points,
       })
+      await notifyReward(container, { customerId: input.customer_id, eventKey: "reward.points_earned", sourceId: entry.id, points })
       return new StepResponse({ account, ledger_entry: entry })
     }
 
@@ -559,6 +586,7 @@ const manageRewardsStep = createStep<
         reversal_entry_id: originalEntry?.id || null,
         admin_reason: null,
       })
+      await notifyReward(container, { customerId: input.customer_id, eventKey: "reward.points_reversed", sourceId: reversal.id, points })
       return new StepResponse({ account, ledger_entry: reversal })
     }
 
@@ -606,6 +634,7 @@ const manageRewardsStep = createStep<
         }
         reversed += Number(original.points)
       }
+      if (reversed > 0) await notifyReward(container, { customerId: input.customer_id, eventKey: "reward.points_reversed", sourceId: `reverse:${input.reversal_source_id}`, points: reversed })
       return new StepResponse({ account, reversed })
     }
 
@@ -632,6 +661,7 @@ const manageRewardsStep = createStep<
         reversal_entry_id: null,
         admin_reason: input.reason.trim(),
       })
+      await notifyReward(container, { customerId: input.customer_id, eventKey: input.points < 0 ? "reward.points_reversed" : "reward.points_earned", sourceId: entry.id, points: input.points })
       return new StepResponse({ account, ledger_entry: entry })
     }
 
@@ -742,6 +772,7 @@ const manageRewardsStep = createStep<
         reversal_entry_id: null,
         admin_reason: null,
       })
+      await notifyReward(container, { customerId: input.customer_id, eventKey: "reward.points_redeemed", sourceId: entry.id, points: input.points })
       return new StepResponse({ account, ledger_entry: entry, redemption, code })
     } catch (error) {
       if (promotionId) {

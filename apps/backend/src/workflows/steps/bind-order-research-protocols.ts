@@ -7,6 +7,8 @@ import { RESEARCH_CONTENT_MODULE } from "../../modules/research-content"
 import type ResearchContentModuleService from "../../modules/research-content/service"
 import { RESEARCH_TRACKING_MODULE } from "../../modules/research-tracking"
 import type ResearchTrackingModuleService from "../../modules/research-tracking/service"
+import { emitCustomerNotificationWorkflow } from "../manage-customer-notifications"
+import { deleteCustomerNotifications } from "../../modules/research-tracking/customer-notifications"
 
 type OrderItem = { id: string; product_id: string | null; variant_id: string | null }
 
@@ -21,6 +23,7 @@ export const bindOrderResearchProtocolsStep = createStep(
       return new StepResponse([], {
         orderAccessIds: [],
         profileAccessIds: [],
+        notificationIds: [],
       })
     }
     const existing = await service.listResearchProtocolOrderAccesses({ order_id })
@@ -41,6 +44,24 @@ export const bindOrderResearchProtocolsStep = createStep(
       }
     }
     const created = records.length ? await service.createResearchProtocolOrderAccesses(records) : []
+    const notificationIds: string[] = []
+    if (order.customer_id) {
+      for (const access of created) {
+        const { result: notification } = await emitCustomerNotificationWorkflow(container).run({
+          input: {
+            customer_id: order.customer_id,
+            event_key: "protocol.access_granted",
+            source_id: access.id,
+            variables: {},
+            target_kind: "protocol",
+            target_id: access.protocol_handle_snapshot,
+            secondary_target_id: access.id,
+            metadata: {},
+          },
+        })
+        if (notification?.id) notificationIds.push(notification.id)
+      }
+    }
     const trackingService = container.resolve<ResearchTrackingModuleService>(
       RESEARCH_TRACKING_MODULE,
     )
@@ -103,10 +124,12 @@ export const bindOrderResearchProtocolsStep = createStep(
       {
         orderAccessIds: created.map((access) => access.id),
         profileAccessIds,
+        notificationIds,
       },
     )
   },
-  async (ids: { orderAccessIds: string[]; profileAccessIds: string[] }, { container }) => {
+  async (ids: { orderAccessIds: string[]; profileAccessIds: string[]; notificationIds: string[] }, { container }) => {
+    if (ids.notificationIds.length) await deleteCustomerNotifications({ container, ids: ids.notificationIds })
     if (ids.profileAccessIds.length) {
       await container
         .resolve<ResearchTrackingModuleService>(RESEARCH_TRACKING_MODULE)

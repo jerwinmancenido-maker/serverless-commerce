@@ -36,6 +36,7 @@ import {
   createCustomerNotification,
   deleteCustomerNotifications,
 } from "../../modules/research-tracking/customer-notifications"
+import { emitCustomerNotificationWorkflow } from "../manage-customer-notifications"
 
 type CustomerInput = { customer_id: string }
 type SeriesInput = CustomerInput & { series_id: string }
@@ -379,6 +380,12 @@ export const createProtocolReplyStep = createStep(
     const subscriptions = await service.listResearchProtocolSubscriptions({
       thread_id: thread.id,
     })
+    const mentionNames = [...body.matchAll(/@([A-Za-z0-9_-]{2,40})/g)].map((match) => match[1])
+    const mentionedIdentities = mentionNames.length
+      ? await service.listResearchCommunityIdentities({ display_name: mentionNames, status: "active" })
+      : []
+    const mentionedIdentityIds = new Set(mentionedIdentities.map((item) => item.id))
+    const directReplyIdentityIds = new Set([thread.community_identity_id, parentIdentityId].filter(Boolean) as string[])
     const recipientIdentityIds = Array.from(
       new Set(
         [
@@ -387,6 +394,7 @@ export const createProtocolReplyStep = createStep(
           ...subscriptions.map((subscription) =>
             subscription.community_identity_id,
           ),
+          ...mentionedIdentities.map((mentioned) => mentioned.id),
         ].filter(Boolean) as string[],
       ),
     ).filter((identityId) => identityId !== identity.id)
@@ -398,21 +406,27 @@ export const createProtocolReplyStep = createStep(
       : []
     const notificationIds = (
       await Promise.all(
-        recipients.map((recipient) =>
-          createCustomerNotification({
-            container,
-            customerId: recipient.customer_id,
-            type: "community_reply",
-            title: "New protocol discussion reply",
-            body: `There is a new reply in “${thread.title}”.`,
-            idempotencySource: `${comment.id}:${recipient.id}`,
-            metadata: {
-              protocol_series_id: rawInput.series_id,
-              thread_id: thread.id,
+        recipients.map(async (recipient) => {
+          const eventKey = mentionedIdentityIds.has(recipient.id)
+            ? "community.mentioned"
+            : directReplyIdentityIds.has(recipient.id)
+              ? "community.reply_received"
+              : "community.followed_thread_updated"
+          const { result } = await emitCustomerNotificationWorkflow(container).run({
+            input: {
+              customer_id: recipient.customer_id,
+              event_key: eventKey,
+              source_id: `${comment.id}:${recipient.id}`,
+              variables: { thread_title: `“${thread.title}”` },
+              target_kind: "community_thread",
+              target_id: thread.id,
+              secondary_target_id: comment.id,
+              group_key: `community-thread:${thread.id}:${recipient.customer_id}`,
+              metadata: {},
             },
-            preference: "community_reply_notifications",
-          }),
-        ),
+          })
+          return result?.id || null
+        }),
       )
     ).filter(Boolean) as string[]
     return new StepResponse(comment, {
@@ -727,6 +741,8 @@ export const moderateProtocolCommunityStep = createStep(
             comment_id: input.comment_id,
           },
           preference: "community_moderation_notifications",
+          targetKind: "community_thread",
+          targetId: input.thread_id || null,
         })
       : null
     return new StepResponse(
@@ -763,11 +779,14 @@ export const resolveProtocolReportStep = createStep(
     const previous = { id: report.id, status: report.status, resolved_at: report.resolved_at, resolved_by_actor_id: report.resolved_by_actor_id }
     const updated = await service.updateResearchProtocolReports({ id: report.id, status: input.action === "resolve" ? "resolved" : "dismissed", resolved_at: new Date(), resolved_by_actor_id: actorId })
     const event = await service.createResearchProtocolModerationEvents({ series_id: rawInput.series_id, thread_id: report.thread_id, comment_id: report.comment_id, action: `report_${input.action}`, actor_id: actorId, reason: input.reason, occurred_at: new Date(), details: { report_id: report.id } })
-    return new StepResponse(updated, { previous, eventId: event.id })
+    const [reporter] = await service.listResearchCommunityIdentities({ id: report.reporter_identity_id }, { take: 1 })
+    const { result: notification } = reporter ? await emitCustomerNotificationWorkflow(container).run({ input: { customer_id: reporter.customer_id, event_key: "community.report_resolved", source_id: event.id, variables: {}, target_kind: "community_thread", target_id: report.thread_id || null, secondary_target_id: report.comment_id || null, metadata: {} } }) : { result: null }
+    return new StepResponse(updated, { previous, eventId: event.id, notificationIds: notification?.id ? [notification.id] : [] })
   },
   async (data, { container }) => {
     if (!data) return
     const service = container.resolve<ResearchContentModuleService>(RESEARCH_CONTENT_MODULE)
+    await deleteCustomerNotifications({ container, ids: data.notificationIds || [] })
     await service.updateResearchProtocolReports(data.previous)
     await service.deleteResearchProtocolModerationEvents(data.eventId)
   },

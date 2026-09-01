@@ -25,6 +25,8 @@ import { storeResearchProtocolCommunityMiddlewares } from "./store/customers/me/
 import { storeResearchProtocolRecommendationMiddlewares } from "./store/research-protocols/[handle]/recommendations/middlewares"
 import { storeCustomerSupportMiddlewares } from "./store/customers/me/support/middlewares"
 import { adminCustomerSupportMiddlewares } from "./admin/customer-support/middlewares"
+import { storeCustomerNotificationMiddlewares } from "./store/customers/me/notifications/middlewares"
+import { adminCustomerNotificationMiddlewares } from "./admin/notification-center/middlewares"
 
 const defaultErrorHandler = errorHandler()
 
@@ -34,13 +36,19 @@ export function isResearchTrackingRequest(req: MedusaRequest): boolean {
   return path.startsWith("/store/customers/me/research-tracking")
 }
 
+export function isPrivateCustomerNotificationRequest(req: MedusaRequest): boolean {
+  const path = req.originalUrl.split("?", 1)[0]
+  return path.startsWith("/store/customers/me/notifications") ||
+    path.startsWith("/store/customers/me/notification-preferences")
+}
+
 export function privateResearchTrackingErrorHandler(
   error: unknown,
   req: MedusaRequest,
   res: MedusaResponse,
   next: MedusaNextFunction,
 ) {
-  if (isResearchTrackingRequest(req)) {
+  if (isResearchTrackingRequest(req) || isPrivateCustomerNotificationRequest(req)) {
     res.setHeader("Cache-Control", "private, no-store")
   }
 
@@ -61,6 +69,7 @@ export default defineMiddlewares({
     ...adminResearchHubMiddlewares,
     ...adminResearchProtocolMiddlewares,
     ...adminCustomerSupportMiddlewares,
+    ...adminCustomerNotificationMiddlewares,
     ...storeManualPaymentProofMiddlewares,
     ...storeResearchProtocolCommentMiddlewares,
     ...storeResearchProtocolCommunityMiddlewares,
@@ -69,5 +78,6 @@ export default defineMiddlewares({
     ...storeResearchAgreementMiddlewares,
     ...storeRewardsMiddlewares,
     ...storeResearchTrackingMiddlewares,
+    ...storeCustomerNotificationMiddlewares,
   ],
 })

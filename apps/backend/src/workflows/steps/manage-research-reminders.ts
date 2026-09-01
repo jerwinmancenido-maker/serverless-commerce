@@ -7,6 +7,8 @@ import {
   type ResearchReminderPreferenceInput,
 } from "../../modules/research-tracking/contracts/reminders"
 import type ResearchTrackingModuleService from "../../modules/research-tracking/service"
+import { emitCustomerNotificationWorkflow } from "../manage-customer-notifications"
+import { deleteCustomerNotifications } from "../../modules/research-tracking/customer-notifications"
 
 async function activeProfile(
   service: ResearchTrackingModuleService,
@@ -189,45 +191,40 @@ export const scheduleResearchNotificationsStep = createStep(
     const notifications: unknown[] = []
 
     for (const candidate of input.notifications) {
-      const [existing] = await service.listResearchNotifications(
-        { idempotency_key: candidate.idempotency_key },
-        { take: 1 },
-      )
-      if (existing) {
-        notifications.push(existing)
-        continue
+      const [profile] = await service.listResearchProfiles({ id: candidate.profile_id }, { take: 1 })
+      if (!profile) continue
+      const { result: notification } = await emitCustomerNotificationWorkflow(container).run({
+        input: {
+          customer_id: profile.customer_id,
+          event_key: "research.routine_reminder",
+          source_id: candidate.idempotency_key,
+          variables: {
+            routine_title: candidate.title.replace(/^Upcoming:\s*/, ""),
+            scheduled_time: candidate.source_local_time,
+          },
+          target_kind: "research_hub_section",
+          target_id: "today",
+          secondary_target_id: candidate.routine_id,
+          scheduled_for: candidate.scheduled_for.toISOString(),
+          available_at: candidate.available_at.toISOString(),
+          group_key: null,
+          metadata: {
+            occurrence_id: candidate.occurrence_id,
+            lead_minutes: candidate.metadata.lead_minutes,
+          },
+        },
+      })
+      if (notification) {
+        createdIds.push(notification.id)
+        notifications.push(notification)
       }
-      const notification = await service.createResearchNotifications({
-        ...candidate,
-        type: "routine_reminder",
-        channel: "in_app",
-        status: "unread",
-        delivered_at: new Date(),
-        read_at: null,
-        dismissed_at: null,
-        snoozed_until: null,
-        template_version: "in-app-routine-reminder-v1",
-      })
-      await service.createResearchNotificationDeliveryAttempts({
-        notification_id: notification.id,
-        channel: "in_app",
-        status: "delivered",
-        attempted_at: new Date(),
-        provider_reference: null,
-        error_code: null,
-        detail: "Stored in the private in-app notification inbox.",
-      })
-      createdIds.push(notification.id)
-      notifications.push(notification)
     }
 
     return new StepResponse(notifications, createdIds)
   },
   async (ids, { container }) => {
     if (ids?.length) {
-      await container
-        .resolve<ResearchTrackingModuleService>(RESEARCH_TRACKING_MODULE)
-        .deleteResearchNotifications(ids)
+      await deleteCustomerNotifications({ container, ids })
     }
   },
 )

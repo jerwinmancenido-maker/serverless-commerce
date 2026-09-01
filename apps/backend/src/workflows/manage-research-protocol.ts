@@ -4,7 +4,11 @@ import {
   when,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { acquireLockStep, releaseLockStep } from "@medusajs/medusa/core-flows"
+import {
+  acquireLockStep,
+  emitEventStep,
+  releaseLockStep,
+} from "@medusajs/medusa/core-flows"
 
 import {
   createInitialResearchProtocolRevisionStep,
@@ -28,6 +32,8 @@ import {
   type UpdateResearchProtocolProductLinkWorkflowInput,
   type WithdrawResearchProtocolWorkflowInput,
 } from "./steps/manage-research-protocol"
+
+const PROTOCOL_NOTIFICATION_EVENT = "customer-notifications.protocol-revision"
 
 export const createResearchProtocolWorkflow = createWorkflow(
   "create-research-protocol",
@@ -284,6 +290,15 @@ export const publishResearchProtocolWorkflow = createWorkflow(
     createResearchProtocolAuditEventStep(auditInput).config({
       name: "create-research-protocol-published-audit-event",
     })
+    const notificationInput = transform({ input, revision }, ({ input, revision }) => ({
+      series_id: input.series_id,
+      revision_id: revision.id,
+      operation: "published" as const,
+    }))
+    emitEventStep({
+      eventName: PROTOCOL_NOTIFICATION_EVENT,
+      data: notificationInput,
+    }).config({ name: "emit-research-protocol-published-notification-event" })
     releaseLockStep(lock)
 
     return new WorkflowResponse(revision)
@@ -309,6 +324,15 @@ export const withdrawResearchProtocolWorkflow = createWorkflow(
       details: { revision: revision.revision },
     }))
     createResearchProtocolAuditEventStep(auditInput)
+    const notificationInput = transform({ input, revision }, ({ input, revision }) => ({
+      series_id: input.series_id,
+      revision_id: revision.id,
+      operation: "withdrawn" as const,
+    }))
+    emitEventStep({
+      eventName: PROTOCOL_NOTIFICATION_EVENT,
+      data: notificationInput,
+    }).config({ name: "emit-research-protocol-withdrawn-notification-event" })
     releaseLockStep(lock)
 
     return new WorkflowResponse(revision)

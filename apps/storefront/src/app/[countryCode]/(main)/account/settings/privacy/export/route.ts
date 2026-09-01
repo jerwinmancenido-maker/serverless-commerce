@@ -20,6 +20,9 @@ import {
   listSupportConversations,
   retrieveSupportConversation,
 } from "@lib/data/customer-support"
+import {
+  retrieveCustomerNotificationExport,
+} from "@lib/data/customer-notifications"
 
 export async function GET() {
   try {
@@ -34,6 +37,7 @@ export async function GET() {
       journal,
       timeline,
       replenishment,
+      customerNotifications,
     ] = await Promise.all([
       retrieveResearchAgreementStatus(),
       retrieveResearchProfile(),
@@ -45,6 +49,7 @@ export async function GET() {
       retrieveResearchJournalEntries({ limit: 10_000, offset: 0 }),
       retrieveResearchTimeline(),
       retrieveResearchReplenishmentProjections(),
+      retrieveCustomerNotificationExport(),
     ])
     const [communityIdentity, community, supportList] = await Promise.all([
       retrieveResearchCommunityIdentity().catch(() => ({ identity: null })),
@@ -81,6 +86,8 @@ export async function GET() {
         community_identity: communityIdentity.identity,
         community,
         customer_support: support,
+        notifications: customerNotifications.notifications,
+        notification_preferences: customerNotifications.preferences,
       },
       null,
       2,

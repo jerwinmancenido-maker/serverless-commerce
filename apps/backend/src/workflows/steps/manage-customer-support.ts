@@ -22,6 +22,7 @@ import {
   deleteCustomerNotifications,
 } from "../../modules/research-tracking/customer-notifications"
 import { resolveSupportConfiguration } from "../../modules/customer-support/configuration"
+import { emitCustomerNotificationWorkflow } from "../manage-customer-notifications"
 
 const cleanText = (value: string) => {
   const text = value.trim()
@@ -171,6 +172,9 @@ export const adminManageSupportStep = createStep("admin-manage-support", async (
       idempotencySource: message.id,
       metadata: { conversation_id: conversation.id },
       preference: "support_reply_notifications",
+      variables: { subject: `“${conversation.subject}”` },
+      targetKind: "support_conversation",
+      targetId: conversation.id,
     })
     return new StepResponse(message, {
       kind: "message",
@@ -206,11 +210,29 @@ export const adminManageSupportStep = createStep("admin-manage-support", async (
   }
   await service.updateSupportConversations(changes)
 
-  const created: Array<{ kind: "status_event" | "assignment" | "participant"; id: string }> = []
+  const created: Array<{ kind: "status_event" | "assignment" | "participant" | "notification"; id: string }> = []
   const reactivatedParticipants: Array<{ id: string; left_at: Date }> = []
   if (input.status && input.status !== conversation.status) {
     const event = await service.createSupportStatusEvents({ conversation_id: conversation.id, from_status: conversation.status, to_status: input.status, actor_type: "staff", actor_id: raw.actor_id, reason: input.reason, occurred_at: now })
     created.push({ kind: "status_event", id: event.id })
+    const eventKey = input.status === "resolved" || input.status === "closed"
+      ? "support.conversation_resolved"
+      : conversation.status === "resolved" || conversation.status === "closed"
+        ? "support.conversation_reopened"
+        : "support.status_changed"
+    const { result: statusNotification } = await emitCustomerNotificationWorkflow(container).run({
+      input: {
+        customer_id: conversation.customer_id,
+        event_key: eventKey,
+        source_id: event.id,
+        variables: { status: String(input.status).replaceAll("_", " ") },
+        target_kind: "support_conversation",
+        target_id: conversation.id,
+        secondary_target_id: null,
+        metadata: {},
+      },
+    })
+    if (statusNotification?.id) created.push({ kind: "notification", id: statusNotification.id })
   }
   if (
     input.assigned_to_actor_id !== undefined &&
@@ -278,8 +300,10 @@ export const adminManageSupportStep = createStep("admin-manage-support", async (
       await service.deleteSupportStatusEvents(item.id)
     } else if (item.kind === "assignment") {
       await service.deleteSupportAssignments(item.id)
-    } else {
+    } else if (item.kind === "participant") {
       await service.deleteSupportParticipants(item.id)
+    } else {
+      await deleteCustomerNotifications({ container, ids: [item.id] })
     }
   }
   for (const participant of data.reactivatedParticipants || []) {

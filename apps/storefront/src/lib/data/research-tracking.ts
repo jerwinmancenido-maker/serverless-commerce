@@ -844,13 +844,12 @@ export async function updateResearchReminderPreferencesAction(
           replenishment_reminders: formData.get("replenishment_reminders") === "on",
           progress_reminders: formData.get("progress_reminders") === "on",
           journal_prompts: formData.get("journal_prompts") === "on",
-          reward_notifications: formData.get("reward_notifications") === "on",
-          community_reply_notifications:
-            formData.get("community_reply_notifications") === "on",
-          community_moderation_notifications:
-            formData.get("community_moderation_notifications") === "on",
-          support_reply_notifications:
-            formData.get("support_reply_notifications") === "on",
+          // Retained through the legacy compatibility checkpoint. Account-wide
+          // event choices now live in Notification Settings.
+          reward_notifications: true,
+          community_reply_notifications: true,
+          community_moderation_notifications: true,
+          support_reply_notifications: true,
         },
       },
     )

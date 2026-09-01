@@ -201,7 +201,6 @@ test("gives every Research Hub mutation a rotating submission key", () => {
     "research-goals.tsx",
     "research-calculator.tsx",
     "reminder-preferences.tsx",
-    "notification-inbox.tsx",
     "replenishment.tsx",
   ]
 

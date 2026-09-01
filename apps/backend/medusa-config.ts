@@ -77,5 +77,8 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/customer-support",
     },
+    {
+      resolve: "./src/modules/customer-notifications",
+    },
   ],
 })

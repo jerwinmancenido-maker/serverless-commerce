@@ -29,7 +29,8 @@
     "catalog:assign": "medusa exec ./src/scripts/assign-product-categories.ts",
     "rewards:configure": "medusa exec ./src/scripts/configure-default-rewards.ts",
     "agreement:publish-local": "medusa exec ./src/scripts/publish-local-research-agreement.ts",
-    "support:configure-roles": "medusa exec ./src/scripts/configure-support-roles.ts"
+    "support:configure-roles": "medusa exec ./src/scripts/configure-support-roles.ts",
+    "notifications:backfill": "medusa exec ./src/scripts/backfill-customer-notifications.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",

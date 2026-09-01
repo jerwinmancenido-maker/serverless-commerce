@@ -59,10 +59,14 @@ describe("protocol access, community, and support source boundaries", () => {
     const helper = src(
       "modules/research-tracking/customer-notifications.ts",
     )
+    const delivery = src(
+      "workflows/steps/manage-customer-notifications.ts",
+    )
     expect(preference).toContain("community_reply_notifications")
     expect(preference).toContain("community_moderation_notifications")
     expect(preference).toContain("support_reply_notifications")
-    expect(helper).toContain('channel: "in_app"')
+    expect(delivery).toContain('channel: "in_app"')
     expect(helper).not.toContain('channel: "email"')
+    expect(delivery).not.toContain('channel: "email"')
   })
 })

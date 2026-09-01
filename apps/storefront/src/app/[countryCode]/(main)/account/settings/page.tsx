@@ -34,8 +34,9 @@ export default async function SettingsPage({ params }: { params: Promise<{ count
         <p className="mt-2 text-sm text-ui-fg-subtle">Saved addresses are available during checkout.</p>
         <AddressBook customer={customer} region={region} />
       </section>
-      <section className="grid gap-4 medium:grid-cols-2">
+      <section className="grid gap-4 medium:grid-cols-3">
         <div className="rounded-xl border border-ui-border-base p-5"><h2 className="font-semibold">Communication preferences</h2><p className="mt-2 text-sm text-ui-fg-subtle">Product news, SMS and routine reminders remain optional.</p><LocalizedClientLink href="/account/settings/reminders" className="mt-3 inline-block text-sm font-medium underline">Manage Research Hub reminders</LocalizedClientLink></div>
+        <div className="rounded-xl border border-ui-border-base p-5"><h2 className="font-semibold">Notifications</h2><p className="mt-2 text-sm text-ui-fg-subtle">Choose optional Support, Community, Protocol, Research Hub, and Rewards updates.</p><LocalizedClientLink href="/account/settings/notifications" className="mt-3 inline-block text-sm font-medium underline">Manage notifications</LocalizedClientLink></div>
         <div className="rounded-xl border border-ui-border-base p-5"><h2 className="font-semibold">Privacy & Data</h2><p className="mt-2 text-sm text-ui-fg-subtle">View agreements and manage private Research Hub records.</p><LocalizedClientLink href="/account/settings/privacy" className="mt-3 inline-block text-sm font-medium underline">Manage privacy and data</LocalizedClientLink></div>
       </section>
     </div>

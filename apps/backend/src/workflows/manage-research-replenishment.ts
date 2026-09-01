@@ -3,6 +3,7 @@ import { createStep, createWorkflow, StepResponse, WorkflowResponse } from "@med
 
 import { RESEARCH_TRACKING_MODULE } from "../modules/research-tracking"
 import type ResearchTrackingModuleService from "../modules/research-tracking/service"
+import { emitCustomerNotificationWorkflow } from "./manage-customer-notifications"
 
 type Input = {
   customerId: string
@@ -37,32 +38,18 @@ const manageResearchReplenishmentStep = createStep(
       : await service.createResearchReplenishmentPreferences(data)
     if (remindAt) {
       const key = `replenishment:${routine.id}:${remindAt.toISOString()}`
-      const [notification] = await service.listResearchNotifications({ idempotency_key: key }, { take: 1 })
-      if (!notification) {
-        await service.createResearchNotifications({
-          profile_id: profile.id,
-          routine_id: routine.id,
-          routine_revision_id: routine.current_revision_id,
-          occurrence_id: null,
-          type: "replenishment",
-          channel: "in_app",
-          title: "Review your supply outlook",
-          body: "Your saved replenishment reminder is ready to review.",
-          status: "scheduled",
-          scheduled_for: remindAt,
-          available_at: remindAt,
-          delivered_at: null,
-          read_at: null,
-          dismissed_at: null,
-          snoozed_until: null,
-          source_local_date: null,
-          source_local_time: null,
-          timezone: profile.timezone,
-          idempotency_key: key,
-          template_version: "in-app-replenishment-v1",
-          metadata: { routine_id: routine.id },
-        })
-      }
+      await emitCustomerNotificationWorkflow(container).run({ input: {
+        customer_id: profile.customer_id,
+        event_key: "research.replenishment_reminder",
+        source_id: key,
+        variables: {},
+        target_kind: "research_hub_section",
+        target_id: "routines",
+        secondary_target_id: routine.id,
+        scheduled_for: remindAt.toISOString(),
+        available_at: remindAt.toISOString(),
+        metadata: {},
+      } })
     }
     return new StepResponse({ preference })
   },

@@ -1,6 +1,6 @@
 "use client"
 
-import { ArchiveBox, ArrowRightOnRectangle, Beaker, ChatBubble, ChatBubbleLeftRight, Gift, User } from "@medusajs/icons"
+import { ArchiveBox, ArrowRightOnRectangle, Beaker, BellAlert, ChatBubble, ChatBubbleLeftRight, Gift, User } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"
 import { useParams, usePathname } from "next/navigation"
 
@@ -27,6 +27,7 @@ const AccountNav = ({
       : []),
     { href: "/account/orders", label: "Orders", icon: ArchiveBox },
     { href: "/account/rewards", label: "Rewards", icon: Gift },
+    { href: "/account/notifications", label: "Notifications", icon: BellAlert },
     { href: "/account/support", label: "Support", icon: ChatBubble },
     { href: "/account/settings", label: "Profile & Settings", icon: User },
   ]
