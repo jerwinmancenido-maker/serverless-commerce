@@ -5,6 +5,7 @@ import {
   RESEARCH_EVIDENCE_SCOPES,
   RESEARCH_PROTOCOL_APPLICABILITY_SCOPES,
 } from "./content"
+import { RESEARCH_PROTOCOL_ACCESS_LEVELS } from "./research-protocol-visibility"
 
 export const RESEARCH_PROTOCOL_REQUIRED_DISCLAIMER =
   "For laboratory research use only. Not for human or veterinary administration, diagnosis, treatment, or consumption."
@@ -237,6 +238,7 @@ export const AdminUnlinkResearchProtocolProduct = z.strictObject({
 
 export const AdminPreviewResearchProtocol = z.strictObject({
   revision_id: RequiredId.optional(),
+  access_level: z.enum(RESEARCH_PROTOCOL_ACCESS_LEVELS).default("admin"),
 })
 
 export type ResearchProtocolContent = z.infer<typeof ResearchProtocolContent>

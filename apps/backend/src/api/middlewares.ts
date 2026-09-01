@@ -21,7 +21,10 @@ import { storeResearchTrackingMiddlewares } from "./store/customers/me/research-
 import { storeResearchAgreementMiddlewares } from "./store/customers/me/research-agreement/middlewares"
 import { storeRewardsMiddlewares } from "./store/customers/me/rewards/middlewares"
 import { storeResearchProtocolCommentMiddlewares } from "./store/research-protocol-comments/middlewares"
+import { storeResearchProtocolCommunityMiddlewares } from "./store/customers/me/research-protocol-community/middlewares"
 import { storeResearchProtocolRecommendationMiddlewares } from "./store/research-protocols/[handle]/recommendations/middlewares"
+import { storeCustomerSupportMiddlewares } from "./store/customers/me/support/middlewares"
+import { adminCustomerSupportMiddlewares } from "./admin/customer-support/middlewares"
 
 const defaultErrorHandler = errorHandler()
 
@@ -57,8 +60,11 @@ export default defineMiddlewares({
     ...adminRewardsMiddlewares,
     ...adminResearchHubMiddlewares,
     ...adminResearchProtocolMiddlewares,
+    ...adminCustomerSupportMiddlewares,
     ...storeManualPaymentProofMiddlewares,
     ...storeResearchProtocolCommentMiddlewares,
+    ...storeResearchProtocolCommunityMiddlewares,
+    ...storeCustomerSupportMiddlewares,
     ...storeResearchProtocolRecommendationMiddlewares,
     ...storeResearchAgreementMiddlewares,
     ...storeRewardsMiddlewares,

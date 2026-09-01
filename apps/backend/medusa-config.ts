@@ -23,6 +23,9 @@ module.exports = defineConfig({
   },
   modules: [
     {
+      resolve: "@medusajs/medusa/rbac",
+    },
+    {
       resolve: "@medusajs/medusa/locking",
       options: {
         providers: [
@@ -70,6 +73,9 @@ module.exports = defineConfig({
     },
     {
       resolve: "./src/modules/rewards",
+    },
+    {
+      resolve: "./src/modules/customer-support",
     },
   ],
 })

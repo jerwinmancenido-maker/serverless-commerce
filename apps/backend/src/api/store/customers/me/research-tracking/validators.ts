@@ -254,6 +254,9 @@ export const StoreUpdateResearchReminderPreferences = z
     progress_reminders: z.boolean(),
     journal_prompts: z.boolean(),
     reward_notifications: z.boolean(),
+    community_reply_notifications: z.boolean().default(true),
+    community_moderation_notifications: z.boolean().default(true),
+    support_reply_notifications: z.boolean().default(true),
   })
   .superRefine((value, context) => {
     if (

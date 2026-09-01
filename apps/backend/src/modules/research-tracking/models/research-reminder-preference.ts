@@ -16,6 +16,9 @@ const ResearchReminderPreference = model
     progress_reminders: model.boolean().default(false),
     journal_prompts: model.boolean().default(false),
     reward_notifications: model.boolean().default(true),
+    community_reply_notifications: model.boolean().default(true),
+    community_moderation_notifications: model.boolean().default(true),
+    support_reply_notifications: model.boolean().default(true),
   })
   .indexes([{ on: ["profile_id"], unique: true }])
 

@@ -90,7 +90,8 @@ export default async function PrivacyDataPage({
             <h2 className="font-semibold">Download private records</h2>
             <p className="mt-2 text-sm leading-6 text-ui-fg-subtle">
               Download a JSON copy of your Research Hub protocols, routines,
-              progress, Journal and timeline records.
+              progress, Journal, timeline, community identity and eligible
+              discussions, and private support conversations.
             </p>
             <a
               className="mt-4 inline-flex rounded-md border border-ui-border-base px-4 py-2 text-sm font-medium"

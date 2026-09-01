@@ -3,8 +3,13 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { ProtocolCalculator } from "@modules/research-protocols/calculator"
 import type { ResearchProtocolContent } from "@modules/research-protocols/types"
 import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 
 type Props = { params: Promise<{ token: string }> }
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default async function OrderProtocolAccessPage({ params }: Props) {
   const { token } = await params

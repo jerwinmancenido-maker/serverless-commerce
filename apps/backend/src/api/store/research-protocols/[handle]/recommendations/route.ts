@@ -37,6 +37,14 @@ export async function GET(
       "Published research protocol was not found",
     )
   }
+  const [storedPolicy] = await service.listResearchProtocolVisibilityPolicies(
+    { series_id: series.id },
+    { take: 1 },
+  )
+  if (storedPolicy && !storedPolicy.public_recommendations) {
+    res.setHeader("Cache-Control", "public, max-age=60")
+    return res.json({ recommendations: [] })
+  }
   const now = new Date()
   const validatedQuery = req.validatedQuery as RecommendationQuery
   const excluded = new Set(validatedQuery.exclude_product_ids || [])

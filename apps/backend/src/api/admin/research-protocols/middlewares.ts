@@ -23,14 +23,25 @@ import {
   AdminModerateResearchProtocolComment,
 } from "../../../modules/research-content/contracts/research-protocol-comment"
 import {
+  AdminBulkModerateResearchProtocolCommunity,
+  AdminListResearchProtocolCommunity,
+  AdminModerateResearchProtocolCommunity,
+  AdminResolveResearchProtocolReport,
+  AdminUpdateResearchCommunityIdentityStatus,
+} from "../../../modules/research-content/contracts/research-protocol-community"
+import {
   AdminArchiveResearchProtocolMerchandisingLink,
   AdminCreateResearchProtocolMerchandisingLink,
   AdminUpdateResearchProtocolMerchandisingLink,
 } from "../../../modules/research-content/contracts/research-protocol-merchandising"
+import { AdminUpdateResearchProtocolVisibility } from "../../../modules/research-content/contracts/research-protocol-visibility"
 
 const protocolPolicy = (
   operation: (typeof PolicyOperation)[keyof typeof PolicyOperation],
 ) => [{ resource: "research_protocol", operation }]
+const communityPolicy = (
+  operation: (typeof PolicyOperation)[keyof typeof PolicyOperation],
+) => [{ resource: "research_community", operation }]
 
 export const adminResearchProtocolMiddlewares: MiddlewareRoute[] = [
   {
@@ -154,6 +165,60 @@ export const adminResearchProtocolMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminArchiveResearchProtocolMerchandisingLink),
     ],
     policies: protocolPolicy(PolicyOperation.delete),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/visibility",
+    methods: ["GET"],
+    middlewares: [],
+    policies: protocolPolicy(PolicyOperation.read),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/visibility",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateResearchProtocolVisibility),
+    ],
+    policies: protocolPolicy(PolicyOperation.update),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/community",
+    methods: ["GET"],
+    middlewares: [
+      validateAndTransformQuery(AdminListResearchProtocolCommunity, {}),
+    ],
+    policies: communityPolicy(PolicyOperation.read),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/community",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminModerateResearchProtocolCommunity),
+    ],
+    policies: communityPolicy(PolicyOperation.update),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/community/bulk",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminBulkModerateResearchProtocolCommunity),
+    ],
+    policies: communityPolicy(PolicyOperation.update),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/community/reports/:reportId",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminResolveResearchProtocolReport),
+    ],
+    policies: communityPolicy(PolicyOperation.update),
+  },
+  {
+    matcher: "/admin/research-protocols/:id/community/identities/:identityId",
+    methods: ["POST"],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateResearchCommunityIdentityStatus),
+    ],
+    policies: communityPolicy(PolicyOperation.update),
   },
   {
     matcher: "/admin/research-protocols/:id/comments",

@@ -12,6 +12,14 @@ import {
   retrieveTrackedResearchMaterials,
   retrieveResearchProfile,
 } from "@lib/data/research-tracking"
+import {
+  listResearchCommunityThreads,
+  retrieveResearchCommunityIdentity,
+} from "@lib/data/research-protocols"
+import {
+  listSupportConversations,
+  retrieveSupportConversation,
+} from "@lib/data/customer-support"
 
 export async function GET() {
   try {
@@ -38,6 +46,25 @@ export async function GET() {
       retrieveResearchTimeline(),
       retrieveResearchReplenishmentProjections(),
     ])
+    const [communityIdentity, community, supportList] = await Promise.all([
+      retrieveResearchCommunityIdentity().catch(() => ({ identity: null })),
+      Promise.all(
+        Array.from(new Set(protocols.map((item) => item.protocol_handle))).map(
+          async (handle) => ({
+            protocol_handle: handle,
+            ...(await listResearchCommunityThreads(handle).catch(() => ({ threads: [], count: 0 }))),
+          }),
+        ),
+      ),
+      listSupportConversations().catch(() => ({ conversations: [] })),
+    ])
+    const support = await Promise.all(
+      supportList.conversations.map((conversation) =>
+        retrieveSupportConversation(conversation.id)
+          .then((result) => result.conversation)
+          .catch(() => conversation),
+      ),
+    )
     const body = JSON.stringify(
       {
         exported_at: new Date().toISOString(),
@@ -51,6 +78,9 @@ export async function GET() {
         journal,
         timeline,
         replenishment,
+        community_identity: communityIdentity.identity,
+        community,
+        customer_support: support,
       },
       null,
       2,

@@ -246,10 +246,22 @@ export default function MyProtocols({
                     </LocalizedClientLink>
                   ) : null}
                   <LocalizedClientLink
-                    href={`/research-protocols/${protocol.protocol_handle}`}
+                    href={`/account/research-hub/my-protocols/${protocol.protocol_handle}`}
                     className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
                   >
                     View current protocol
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/account/community"
+                    className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
+                  >
+                    Open community
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href={`/account/support?protocolSeriesId=${encodeURIComponent(protocol.protocol_series_id)}`}
+                    className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
+                  >
+                    Protocol support
                   </LocalizedClientLink>
                   <LocalizedClientLink
                     href={`/account/orders/details/${protocol.order.id}`}

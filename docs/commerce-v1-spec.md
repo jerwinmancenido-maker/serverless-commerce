@@ -43,9 +43,20 @@ marketplace connection, or publication of product data.
 - Only authenticated Admin actors with Research Protocol update permission may
   publish, withdraw, archive, or moderate protocol content. Customer community
   comments are separate records and can never mutate a protocol revision.
-- Signed-in customers may submit protocol ideas, recommendations, questions,
-  and general comments. New submissions are private until an Admin approves
-  them; rejected and hidden comments remain unavailable through the Store API.
+- Public protocol pages are previews. Complete schedules, calculator defaults,
+  preparation, procedure, and order-preserved revisions default to verified
+  purchaser access and are projected by the backend.
+- Eligible signed-in customers may submit protocol topics and replies using a
+  separate private alias. New submissions are private until an Admin approves
+  them; rejected and hidden content remains unavailable through customer APIs.
+- Protocol community pages are protected and are not search-indexed. Community
+  content cannot modify protocol revisions.
+- Private customer support is separate from community discussion. Customers
+  may explicitly attach an owned order or protocol, but Research Hub private
+  records are never attached automatically. Staff-only notes are never returned
+  to customers.
+- `docs/research-protocol-access-contract.md` controls protocol visibility,
+  purchaser entitlement, community privacy, and private support boundaries.
 - Calculator results are deterministic transformations of the values entered by
   the customer and the protocol revision's configured conversion rules. They
   must not use private customer tracking data to personalize recommendations

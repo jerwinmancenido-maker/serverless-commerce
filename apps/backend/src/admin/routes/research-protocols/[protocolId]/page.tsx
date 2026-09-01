@@ -9,7 +9,8 @@ import { ProtocolEditorFields } from "../../compounded-products/protocol-editor-
 import type { ResearchProtocolDetailResponse, ResearchProtocolMutationBody, ResearchProtocolRevision } from "../../compounded-products/research-protocol-types"
 import { CompatibleProducts } from "../compatible-products"
 import { ProductMerchandising } from "../product-merchandising"
-import { CommunityComments } from "../community-comments"
+import { CommunityModeration } from "../community-moderation"
+import { ProtocolVisibility } from "../protocol-visibility"
 
 const messageFromError = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback
 
@@ -241,7 +242,8 @@ const ResearchProtocolEditorPage = () => {
         <div className="flex flex-col gap-y-4">
           <Container className="flex flex-col gap-y-4 px-6 py-4"><CompatibleProducts protocolId={protocolId} /></Container>
           <Container className="flex flex-col gap-y-4 px-6 py-4"><ProductMerchandising protocolId={protocolId} /></Container>
-          <Container className="flex flex-col gap-y-4 px-6 py-4"><CommunityComments protocolId={protocolId} /></Container>
+          <Container className="flex flex-col gap-y-4 px-6 py-4"><ProtocolVisibility protocolId={protocolId} content={displayedRevision.content} /></Container>
+          <Container className="flex flex-col gap-y-4 px-6 py-4"><CommunityModeration protocolId={protocolId} compact /></Container>
           <Container className="flex flex-col gap-y-4 px-6 py-4">
             <div className="flex flex-col gap-y-1"><Text size="small" leading="compact" weight="plus">Revision controls</Text><Text size="small" leading="compact" className="text-ui-fg-subtle">Published revisions are immutable. Changes require a new draft.</Text></div>
             <div className="flex flex-col gap-y-2"><Label>Decision reason</Label><Input value={decisionReason} onChange={(event) => setDecisionReason(event.target.value)} placeholder={draft ? "Why this revision is being published" : "Why a new revision is needed"} /></div>

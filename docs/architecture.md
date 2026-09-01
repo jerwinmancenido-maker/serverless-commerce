@@ -26,10 +26,10 @@ of production reliability.
   custom BOM module owns unit metadata, validation, explanatory availability,
   and audit snapshots. It does not own a parallel inventory ledger.
 - Later custom modules may own marketplace mapping.
-- A future `researchContent` module may own versioned, published, product-linked
+- The `researchContent` module owns versioned, published, product-linked
   research protocols, calculator material profiles, and evidence scope. It
   must link to Medusa products or variants without duplicating them.
-- A future `researchTracking` module may own private, customer-created tracking
+- The `researchTracking` module owns private, customer-created tracking
   records. It must not duplicate customer, product, order, payment,
   fulfillment, or commerce-inventory ownership.
 - `researchContent` publication permission and private `researchTracking`
@@ -37,6 +37,15 @@ of production reliability.
 - `researchContent` also owns moderated protocol community comments. Customer
   submissions enter a pending state; Admin moderation is required before the
   Store API exposes them, and comments never become protocol revision content.
+- `researchContent` enforces field-level public/member/purchaser/Admin
+  projections. Public protocol APIs never return the complete published JSON by
+  default, and protected community responses use private aliases.
+- The separate `customerSupport` module owns private customer-to-staff
+  conversations, customer-visible messages, staff-only notes, assignments,
+  attachments, and status audit events. Support records never share a table or
+  API response with protocol community or Research Hub private records.
+- `docs/research-protocol-access-contract.md` defines the canonical access,
+  community, and support boundaries.
 - The storefront consumes the Medusa Store API through the official JS SDK.
 - The preserved Drizzle code is read-only migration reference and is excluded
   from the npm workspace.
@@ -92,3 +101,8 @@ configuration. Provider credentials must remain outside Git.
 - Do not persist calculator inputs or outputs by default, or convert calculator
   results into routines, logs, carts, or orders. Published protocol calculator
   configuration remains part of the immutable research-content revision.
+- Do not expose full protocol content or community identities through a public
+  Store API response.
+- Do not attach Journal, routine, measurement, reminder, timeline, or saved
+  calculator data to customer support automatically.
+- Do not use community threads as private customer support conversations.

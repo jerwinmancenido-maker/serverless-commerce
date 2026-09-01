@@ -1,6 +1,6 @@
 "use client"
 
-import { ArchiveBox, ArrowRightOnRectangle, Beaker, Gift, User } from "@medusajs/icons"
+import { ArchiveBox, ArrowRightOnRectangle, Beaker, ChatBubble, ChatBubbleLeftRight, Gift, User } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"
 import { useParams, usePathname } from "next/navigation"
 
@@ -20,10 +20,14 @@ const AccountNav = ({
   const items = [
     { href: "/account", label: "Home", icon: User, exact: true },
     ...(researchTrackingAvailable
-      ? [{ href: "/account/research-hub", label: "Research Hub", icon: Beaker }]
+      ? [
+          { href: "/account/research-hub", label: "Research Hub", icon: Beaker },
+          { href: "/account/community", label: "Community", icon: ChatBubbleLeftRight },
+        ]
       : []),
     { href: "/account/orders", label: "Orders", icon: ArchiveBox },
     { href: "/account/rewards", label: "Rewards", icon: Gift },
+    { href: "/account/support", label: "Support", icon: ChatBubble },
     { href: "/account/settings", label: "Profile & Settings", icon: User },
   ]
 

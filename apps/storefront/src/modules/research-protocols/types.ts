@@ -48,3 +48,33 @@ export type ResearchProtocolContent = {
   references: Array<{ reference_key: string | null; title: string; authors: string | null; published_at: string | null; url: string | null; doi: string | null; evidence_type: string | null; supported_claim: string | null; customer_annotation: string | null }>
   disclaimer: string
 }
+
+export type PublicResearchProtocolContent = Pick<
+  ResearchProtocolContent,
+  | "compound_name"
+  | "short_introduction"
+  | "product_format"
+  | "category"
+  | "research_use_label"
+  | "last_reviewed_at"
+  | "quick_reference"
+  | "sections"
+  | "faqs"
+  | "references"
+  | "disclaimer"
+> &
+  Partial<
+    Pick<
+      ResearchProtocolContent,
+      | "calculator"
+      | "protocol_levels"
+      | "research_purpose"
+      | "intended_application"
+      | "explicit_exclusions"
+      | "reference_quantities"
+      | "materials_and_equipment"
+      | "preparation_and_handling"
+      | "research_procedure"
+      | "storage_and_disposal"
+    >
+  >

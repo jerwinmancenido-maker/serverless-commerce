@@ -15,6 +15,9 @@ export type ResearchReminderPreferenceInput = {
   progress_reminders: boolean
   journal_prompts: boolean
   reward_notifications: boolean
+  community_reply_notifications?: boolean
+  community_moderation_notifications?: boolean
+  support_reply_notifications?: boolean
 }
 
 export function normalizeReminderPreference(
@@ -59,6 +62,11 @@ export function normalizeReminderPreference(
 
   return {
     ...input,
+    community_reply_notifications:
+      input.community_reply_notifications ?? true,
+    community_moderation_notifications:
+      input.community_moderation_notifications ?? true,
+    support_reply_notifications: input.support_reply_notifications ?? true,
     lead_minutes: { values: leadMinutes },
     quiet_hours_start: input.quiet_hours_enabled
       ? input.quiet_hours_start ?? null

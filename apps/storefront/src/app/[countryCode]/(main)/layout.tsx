@@ -8,6 +8,8 @@ import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import Footer from "@modules/layout/templates/footer"
 import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
+import SupportPanel from "@modules/layout/components/support-panel"
+import { retrieveSupportConfiguration } from "@lib/data/customer-support"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -15,6 +17,9 @@ export const metadata: Metadata = {
 
 export default async function PageLayout(props: { children: React.ReactNode }) {
   const customer = await retrieveCustomer()
+  const supportConfiguration = await retrieveSupportConfiguration()
+    .then((result) => result.configuration)
+    .catch(() => null)
   const cart = await retrieveCart()
   let shippingOptions: StoreCartShippingOption[] = []
 
@@ -39,6 +44,12 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
         />
       )}
       {props.children}
+      {supportConfiguration ? (
+        <SupportPanel
+          signedIn={Boolean(customer)}
+          configuration={supportConfiguration}
+        />
+      ) : null}
       <Footer />
     </>
   )

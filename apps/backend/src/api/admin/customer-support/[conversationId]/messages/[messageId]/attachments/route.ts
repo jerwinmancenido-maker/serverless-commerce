@@ -1,0 +1,32 @@
+import type {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+import { uploadSupportAttachmentWorkflow } from "../../../../../../../workflows/manage-support-attachment"
+
+type UploadedRequest = AuthenticatedMedusaRequest & {
+  file?: { originalname: string; mimetype: string; buffer: Buffer }
+}
+
+export async function POST(req: UploadedRequest, res: MedusaResponse) {
+  if (!req.file) {
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, "Attachment is required")
+  }
+  const { result } = await uploadSupportAttachmentWorkflow(req.scope).run({
+    input: {
+      actorType: "staff",
+      actorId: req.auth_context.actor_id,
+      conversationId: req.params.conversationId,
+      messageId: req.params.messageId,
+      file: {
+        fileName: req.file.originalname,
+        mimeType: req.file.mimetype,
+        contentBase64: req.file.buffer.toString("base64"),
+      },
+    },
+  })
+  res.setHeader("Cache-Control", "private, no-store")
+  res.status(201).json({ attachment: result })
+}

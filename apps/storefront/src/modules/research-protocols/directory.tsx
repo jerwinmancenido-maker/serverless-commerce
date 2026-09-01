@@ -112,8 +112,8 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
                 {protocol.content.category ? <span className="rounded-full bg-ui-bg-subtle px-3 py-1 text-small-regular text-ui-fg-subtle">{protocol.content.category}</span> : null}
               </div>
               <h2 className="mt-4 text-xl-semi text-ui-fg-base">{protocol.content.compound_name || protocol.title}</h2>
-              <p className="mt-2 text-small-regular text-ui-fg-subtle">{protocol.content.short_introduction || protocol.summary || protocol.content.research_purpose}</p>
-              <p className="mt-5 text-small-semi text-ui-fg-interactive">View protocol</p>
+              <p className="mt-2 text-small-regular text-ui-fg-subtle">{protocol.content.short_introduction || protocol.summary || "View the public research protocol preview."}</p>
+              <p className="mt-5 text-small-semi text-ui-fg-interactive">View preview</p>
             </LocalizedClientLink>
           ))}
         </div>

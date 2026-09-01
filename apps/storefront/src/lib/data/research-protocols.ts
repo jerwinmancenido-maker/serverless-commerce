@@ -2,7 +2,11 @@
 
 import { sdk } from "@lib/config"
 import { getAuthHeaders } from "@lib/data/cookies"
-import { ResearchProtocolContent } from "@modules/research-protocols/types"
+import { revalidatePath } from "next/cache"
+import {
+  PublicResearchProtocolContent,
+  ResearchProtocolContent,
+} from "@modules/research-protocols/types"
 
 export type StoreResearchProtocol = {
   handle: string
@@ -11,8 +15,15 @@ export type StoreResearchProtocol = {
   summary: string | null
   published_at: string | null
   updated_at: string
-  content: ResearchProtocolContent
+  content: PublicResearchProtocolContent
   products: Array<{ id: string; title: string; handle: string; thumbnail?: string | null }>
+  access: {
+    full_protocol: "purchaser"
+    community: "member" | "purchaser"
+    community_count_visible?: boolean
+  }
+  search_indexable?: boolean
+  recommendations_enabled?: boolean
 }
 
 export const listResearchProtocols = async () => sdk.client.fetch<{ protocols: StoreResearchProtocol[]; count: number }>("/store/research-protocols", { method: "GET", cache: "no-store" })
@@ -158,4 +169,273 @@ export async function submitResearchProtocolComment(
           : "Your comment could not be submitted.",
     }
   }
+}
+
+export type CustomerResearchProtocol = {
+  handle: string
+  title: string
+  summary: string | null
+  revision: number
+  updated_at: string
+  access_level: "member" | "purchaser"
+  purchaser: boolean
+  content: ResearchProtocolContent
+  community: { read_scope: "member" | "purchaser"; post_scope: "member" | "purchaser" }
+}
+
+export type ResearchCommunityIdentity = {
+  display_name: string
+  show_verified_badge: boolean
+  status: "active" | "suspended"
+}
+
+export type ResearchCommunityThread = {
+  id: string
+  title: string
+  kind: "idea" | "recommendation" | "question" | "general"
+  status: "pending" | "approved" | "rejected" | "hidden"
+  is_pinned: boolean
+  is_locked: boolean
+  is_answered: boolean
+  submitted_at: string
+  last_activity_at: string
+  reply_count: number
+  followed: boolean
+  owned_by_customer: boolean
+  author: { alias: string; verified_customer: boolean }
+  preview: null | { id: string; body: string; edited_at: string | null; removed: boolean }
+}
+
+export type ResearchCommunityComment = {
+  id: string
+  parent_comment_id: string | null
+  kind: "idea" | "recommendation" | "question" | "general"
+  body: string
+  status: "pending" | "approved" | "rejected" | "hidden"
+  submitted_at: string
+  edited_at: string | null
+  removed: boolean
+  owned_by_customer: boolean
+  author: { alias: string; verified_customer: boolean }
+  reactions: { helpful: number; like: number }
+  customer_reaction: "helpful" | "like" | null
+}
+
+export type ResearchCommunityThreadDetail = ResearchCommunityThread & {
+  comments: ResearchCommunityComment[]
+}
+
+export type ResearchCommunityReport = {
+  id: string
+  reason: "spam" | "privacy" | "harassment" | "misleading" | "other"
+  status: "open" | "resolved" | "dismissed"
+  reported_at: string
+  resolved_at: string | null
+}
+
+export const retrieveCustomerResearchProtocol = async (handle: string) => {
+  const headers = await getAuthHeaders()
+  return sdk.client.fetch<{ protocol: CustomerResearchProtocol }>(
+    `/store/customers/me/research-protocols/${encodeURIComponent(handle)}`,
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export const retrieveResearchCommunityIdentity = async () => {
+  const headers = await getAuthHeaders()
+  return sdk.client.fetch<{ identity: ResearchCommunityIdentity | null }>(
+    "/store/customers/me/research-protocol-community/identity",
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export const listResearchCommunityThreads = async (handle: string) => {
+  const headers = await getAuthHeaders()
+  return sdk.client.fetch<{ threads: ResearchCommunityThread[]; count: number }>(
+    `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/threads`,
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export const listResearchCommunityReports = async (handle: string) => {
+  const headers = await getAuthHeaders()
+  return sdk.client.fetch<{ reports: ResearchCommunityReport[] }>(
+    `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/reports`,
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export const retrieveResearchCommunityThread = async (handle: string, threadId: string) => {
+  const headers = await getAuthHeaders()
+  return sdk.client.fetch<{ thread: ResearchCommunityThreadDetail; notice: string }>(
+    `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/threads/${encodeURIComponent(threadId)}`,
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export type CommunityActionState = { success: boolean; error: string | null }
+const communityState = (error?: unknown): CommunityActionState =>
+  error
+    ? { success: false, error: error instanceof Error ? error.message : "The community action could not be completed." }
+    : { success: true, error: null }
+const communityPath = (countryCode: string, suffix = "") =>
+  `/${countryCode}/account/community${suffix}`
+
+export async function updateResearchCommunityIdentityAction(
+  _state: CommunityActionState,
+  formData: FormData,
+): Promise<CommunityActionState> {
+  try {
+    await sdk.client.fetch("/store/customers/me/research-protocol-community/identity", {
+      method: "POST",
+      headers: await getAuthHeaders(),
+      body: {
+        display_name: String(formData.get("display_name") || ""),
+        show_verified_badge: formData.get("show_verified_badge") === "on",
+      },
+    })
+    revalidatePath(communityPath(String(formData.get("country_code") || "ph")), "layout")
+    return communityState()
+  } catch (error) {
+    return communityState(error)
+  }
+}
+
+export async function createResearchCommunityThreadAction(
+  _state: CommunityActionState,
+  formData: FormData,
+): Promise<CommunityActionState> {
+  const handle = String(formData.get("protocol_handle") || "")
+  const countryCode = String(formData.get("country_code") || "ph")
+  try {
+    await sdk.client.fetch(
+      `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/threads`,
+      {
+        method: "POST",
+        headers: await getAuthHeaders(),
+        body: {
+          protocol_handle: handle,
+          kind: String(formData.get("kind") || "question"),
+          title: String(formData.get("title") || ""),
+          body: String(formData.get("body") || ""),
+        },
+      },
+    )
+    revalidatePath(communityPath(countryCode), "page")
+    return communityState()
+  } catch (error) {
+    return communityState(error)
+  }
+}
+
+export async function createResearchCommunityReplyAction(
+  _state: CommunityActionState,
+  formData: FormData,
+): Promise<CommunityActionState> {
+  const handle = String(formData.get("protocol_handle") || "")
+  const threadId = String(formData.get("thread_id") || "")
+  const countryCode = String(formData.get("country_code") || "ph")
+  try {
+    await sdk.client.fetch(
+      `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/threads/${encodeURIComponent(threadId)}/replies`,
+      {
+        method: "POST",
+        headers: await getAuthHeaders(),
+        body: {
+          body: String(formData.get("body") || ""),
+          parent_comment_id: String(formData.get("parent_comment_id") || "") || null,
+        },
+      },
+    )
+    revalidatePath(communityPath(countryCode, `/${handle}/${threadId}`), "page")
+    return communityState()
+  } catch (error) {
+    return communityState(error)
+  }
+}
+
+export async function reactResearchCommunityCommentAction(formData: FormData) {
+  const handle = String(formData.get("protocol_handle") || "")
+  const threadId = String(formData.get("thread_id") || "")
+  const commentId = String(formData.get("comment_id") || "")
+  const active = formData.get("active") === "true"
+  await sdk.client.fetch(
+    `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/comments/${encodeURIComponent(commentId)}/reaction`,
+    {
+      method: active ? "DELETE" : "POST",
+      headers: await getAuthHeaders(),
+      ...(active ? {} : { body: { reaction: String(formData.get("reaction") || "helpful") } }),
+    },
+  )
+  revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+}
+
+export async function followResearchCommunityThreadAction(formData: FormData) {
+  const handle = String(formData.get("protocol_handle") || "")
+  const threadId = String(formData.get("thread_id") || "")
+  await sdk.client.fetch(
+    `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/threads/${encodeURIComponent(threadId)}/subscription`,
+    {
+      method: "POST",
+      headers: await getAuthHeaders(),
+      body: { subscribed: formData.get("subscribed") !== "true" },
+    },
+  )
+  revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+}
+
+export async function reportResearchCommunityContentAction(
+  _state: CommunityActionState,
+  formData: FormData,
+): Promise<CommunityActionState> {
+  const handle = String(formData.get("protocol_handle") || "")
+  const threadId = String(formData.get("thread_id") || "")
+  try {
+    await sdk.client.fetch(
+      `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/reports`,
+      {
+        method: "POST",
+        headers: await getAuthHeaders(),
+        body: {
+          thread_id: threadId,
+          comment_id: formData.get("comment_id") ? String(formData.get("comment_id")) : null,
+          reason: String(formData.get("reason") || "other"),
+          details: String(formData.get("details") || "") || null,
+        },
+      },
+    )
+    return communityState()
+  } catch (error) {
+    return communityState(error)
+  }
+}
+
+export async function editResearchCommunityCommentAction(
+  _state: CommunityActionState,
+  formData: FormData,
+): Promise<CommunityActionState> {
+  const handle = String(formData.get("protocol_handle") || "")
+  const threadId = String(formData.get("thread_id") || "")
+  const commentId = String(formData.get("comment_id") || "")
+  try {
+    await sdk.client.fetch(
+      `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/comments/${encodeURIComponent(commentId)}/edit`,
+      { method: "POST", headers: await getAuthHeaders(), body: { body: String(formData.get("body") || "") } },
+    )
+    revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+    return communityState()
+  } catch (error) {
+    return communityState(error)
+  }
+}
+
+export async function removeResearchCommunityCommentAction(formData: FormData) {
+  const handle = String(formData.get("protocol_handle") || "")
+  const threadId = String(formData.get("thread_id") || "")
+  const commentId = String(formData.get("comment_id") || "")
+  await sdk.client.fetch(
+    `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/comments/${encodeURIComponent(commentId)}/remove`,
+    { method: "POST", headers: await getAuthHeaders(), body: {} },
+  )
+  revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
 }

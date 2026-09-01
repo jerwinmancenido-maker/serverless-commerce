@@ -332,11 +332,14 @@ export type ResearchReminderPreferences = {
   progress_reminders: boolean
   journal_prompts: boolean
   reward_notifications: boolean
+  community_reply_notifications: boolean
+  community_moderation_notifications: boolean
+  support_reply_notifications: boolean
 }
 
 export type ResearchNotification = {
   id: string
-  type: "routine_reminder" | "daily_summary" | "weekly_summary" | "replenishment" | "progress" | "journal_prompt" | "reward"
+  type: "routine_reminder" | "daily_summary" | "weekly_summary" | "replenishment" | "progress" | "journal_prompt" | "reward" | "community_reply" | "community_moderation" | "support_reply"
   channel: "in_app" | "email" | "browser_push" | "mobile_push"
   title: string
   body: string
@@ -842,6 +845,12 @@ export async function updateResearchReminderPreferencesAction(
           progress_reminders: formData.get("progress_reminders") === "on",
           journal_prompts: formData.get("journal_prompts") === "on",
           reward_notifications: formData.get("reward_notifications") === "on",
+          community_reply_notifications:
+            formData.get("community_reply_notifications") === "on",
+          community_moderation_notifications:
+            formData.get("community_moderation_notifications") === "on",
+          support_reply_notifications:
+            formData.get("support_reply_notifications") === "on",
         },
       },
     )

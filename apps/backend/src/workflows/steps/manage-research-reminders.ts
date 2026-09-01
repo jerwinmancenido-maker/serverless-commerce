@@ -77,6 +77,10 @@ export const updateReminderPreferencesStep = createStep(
             progress_reminders: prior.progress_reminders,
             journal_prompts: prior.journal_prompts,
             reward_notifications: prior.reward_notifications,
+            community_reply_notifications: prior.community_reply_notifications,
+            community_moderation_notifications:
+              prior.community_moderation_notifications,
+            support_reply_notifications: prior.support_reply_notifications,
           }
         : null,
     })

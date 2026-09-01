@@ -28,7 +28,8 @@
     "catalog:categories": "medusa exec ./src/scripts/configure-peptide-category-taxonomy.ts",
     "catalog:assign": "medusa exec ./src/scripts/assign-product-categories.ts",
     "rewards:configure": "medusa exec ./src/scripts/configure-default-rewards.ts",
-    "agreement:publish-local": "medusa exec ./src/scripts/publish-local-research-agreement.ts"
+    "agreement:publish-local": "medusa exec ./src/scripts/publish-local-research-agreement.ts",
+    "support:configure-roles": "medusa exec ./src/scripts/configure-support-roles.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",

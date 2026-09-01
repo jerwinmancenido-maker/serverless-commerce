@@ -23,6 +23,9 @@ const defaultPreferences = {
   progress_reminders: false,
   journal_prompts: false,
   reward_notifications: true,
+  community_reply_notifications: true,
+  community_moderation_notifications: true,
+  support_reply_notifications: true,
 }
 
 export async function GET(
