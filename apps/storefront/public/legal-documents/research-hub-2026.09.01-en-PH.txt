@@ -1,0 +1,107 @@
+# Research Hub Agreement
+
+Version: 2026.09.01
+Effective date: 1 September 2026
+Service: Research Compounds / pepstacklabs.com
+
+> This Agreement applies when you activate or use My Protocols, Routines, Progress, Journal, Timeline, calculators, community features, rewards, or related Research Hub functions. It supplements the Terms of Service and Privacy Policy.
+
+## 1. Purpose of the Research Hub
+
+The Research Hub is a customer workspace for organizing order-linked research protocol references and user-entered records. It can display exact protocol revisions, routines, activity logs, measurements, graphs, journal entries, timelines, rewards, and related products. It is not a medical record system, telemedicine service, prescribing service, or substitute for independent professional and laboratory judgment.
+
+## 2. Eligibility and activation
+
+You must be at least 18 years old, have an authenticated account, and affirmatively accept the current Terms, Privacy Policy, and this Agreement. Materially updated documents may require renewed acceptance before Research Hub access resumes.
+
+## 3. My Protocols and order entitlements
+
+When an eligible product is purchased, the account may receive an entitlement to the exact protocol revision associated with that order and variant. The order-linked revision remains identifiable even if a later revision is published. An entitlement provides access to information; it does not transfer ownership, regulatory authorization, or permission for unlawful use.
+
+## 4. QR links
+
+Receipts or order pages may contain a QR code or link using an opaque access token. The destination identifies the order-linked protocol revision without placing the customer name or order number in the URL. Keep the link private. A person who receives a valid link may be able to open the destination until the link expires, is revoked, or access is otherwise restricted.
+
+## 5. Protocol content and units
+
+Protocols may include quick-reference facts, structured levels, preparation information, storage information, references, evidence labels, calculators, and explanatory sections. Administrator-published content is versioned and separate from community comments.
+
+Values expressed in mcg, mg, mL, IU, concentration, spray, pump, vial, or another unit must retain their explicit unit and conversion context. Do not assume that mass, volume, concentration, delivery units, or device outputs are interchangeable. Verify source material, formula inputs, final volume, device calibration, and intended research method independently.
+
+## 6. Calculators
+
+Calculators provide arithmetic based on the values you enter and the published configuration. They do not independently validate product identity, purity, final volume, unit equivalence, device calibration, or suitability. Review all inputs and outputs before relying on a calculation. Calculator results are not medical advice or an approved instruction.
+
+## 7. Routines and activity logs
+
+You may create a routine from an entitled protocol or build a personal routine. A routine is an organizational record, not a prescription or direction from the operator. You control its name, schedule, activities, notes, start and end dates, and active or archived status.
+
+When you log an activity, the Hub records the time, routine or protocol relationship, information you enter, and relevant audit details. Correct mistakes using the available edit, correction, or deletion controls. Where an audit trail is required, the correction is recorded without silently rewriting prior history.
+
+## 8. Progress and measurements
+
+You may record measurements such as weight and other fields enabled by the service. Graphs show changes in the data you entered over time. A graph does not establish causation, efficacy, safety, diagnosis, or a relationship between a product and an outcome.
+
+Enter the unit with every measurement and use a consistent method when comparing records. The Hub may calculate summaries or differences, but you remain responsible for checking the source entries and interpretation.
+
+## 9. Journal
+
+The Journal is a private account workspace for notes, observations, tags, and attachments supported by the feature. Do not enter another person’s data without authority, unnecessary sensitive information, access credentials, or information you are not prepared to store under this Agreement and the Privacy Policy.
+
+Journal content is not automatically published to a community feature and is not used as protocol content. If a future feature proposes a different use, it must clearly explain the change and obtain any permission required by law.
+
+## 10. Timeline
+
+The Timeline may combine permitted account events such as protocol entitlement, routine creation, activity logs, measurements, journal entries, rewards, and order-linked events. It is an organizational chronology and may omit delayed, deleted, restricted, or unsupported events.
+
+## 11. Community board
+
+The community board allows signed-in customers to submit ideas, recommendations, and questions. Customer content never modifies or publishes an administrator protocol. Submissions may be pending, approved, rejected, hidden, or removed under moderation rules.
+
+Do not submit private health information, another person’s data, unsupported regulatory claims, unlawful instructions, harassment, spam, impersonation, or infringing content. Approved comments remain clearly labeled as community contributions.
+
+## 12. Rewards
+
+The Hub may award configurable points for eligible purchases, onboarding, journal activity, measurements, routines, or other defined events. Current rates, caps, minimum redemption, and point value appear in the Rewards area. Points are promotional benefits and may be reversed for a refund, cancellation, chargeback, duplicate event, abuse, or error.
+
+Rewards are designed to encourage use of available account tools. They do not prove product effectiveness or validate the substance of a journal, measurement, or community submission.
+
+## 13. Related products and replenishment
+
+The Hub or a protocol page may display related products, supplies, formats, or replenishment options based on administrator-configured product links, protocol compatibility, category, placement, purchase history, or availability. These placements are commercial recommendations. They do not establish that a product is necessary, approved, safe, or suitable for a particular person or purpose.
+
+## 14. Privacy and customer control
+
+The Privacy Policy explains how Research Hub information is processed. Private journals, measurements, routines, and timelines are limited to the authenticated account and authorized service operations. Account Settings provides available access, export, correction, deletion, consent-history, and account-lifecycle controls.
+
+Some records cannot be immediately erased where retention is required for completed transactions, security, fraud prevention, immutable agreement evidence, regulatory obligations, or legal claims. Retained records remain restricted to those purposes.
+
+## 15. Acceptable use
+
+You must not use the Research Hub to:
+
+- misrepresent a protocol, calculation, graph, community comment, or recommendation as regulatory approval or professional advice;
+- access another person’s account, protocol entitlement, journal, measurements, or QR link without authority;
+- upload malicious code, scrape private information, evade controls, or disrupt the service;
+- submit unlawful, deceptive, infringing, harassing, or privacy-invasive material; or
+- manipulate rewards, duplicate activity, or create false records to obtain benefits.
+
+## 16. Availability and changes
+
+Research Hub features may change, be corrected, or become temporarily unavailable for maintenance, security, legal, or operational reasons. We may withdraw a protocol from future access when necessary for integrity or legal compliance while preserving an appropriate traceability record.
+
+## 17. No guaranteed outcome
+
+The operator does not guarantee a research result, personal outcome, weight change, routine completion, reward, recommendation, or uninterrupted access. You are responsible for reviewing the evidence, deciding what to record, and obtaining independent advice appropriate to your lawful activity.
+
+## 18. Ending use
+
+You may stop using the Research Hub at any time and may use Account Settings for available export, correction, and account-lifecycle requests. Ending use does not automatically remove records that must be retained under the Terms, Privacy Policy, or applicable law.
+
+## 19. Changes and acceptance evidence
+
+Material changes receive a new version and effective date. The service records the accepted versions and SHA-256 digests, acceptance time, source, and locale. Continued access may require affirmative acceptance of the new bundle.
+
+## 20. Contact
+
+Use Account Settings or the official support channel displayed in your account, checkout, order confirmation, or receipt for Research Hub, privacy, agreement, or access questions.

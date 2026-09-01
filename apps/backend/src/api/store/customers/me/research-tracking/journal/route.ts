@@ -8,7 +8,11 @@ import {
   getResearchTrackingCustomerConfiguration,
 } from "../../../../../../modules/research-tracking/config"
 import { listOwnedResearchJournalEntries } from "../../../../../../modules/research-tracking/queries/journal"
+import { RESEARCH_TRACKING_MODULE } from "../../../../../../modules/research-tracking"
+import type ResearchTrackingModuleService from "../../../../../../modules/research-tracking/service"
 import { manageResearchJournalEntryWorkflow } from "../../../../../../workflows/manage-research-journal-entry"
+import { awardRewardEventSafely } from "../../../../../../workflows/award-reward-event"
+import { evaluateAndAwardResearchGoals } from "../../../../../../workflows/evaluate-and-award-research-goals"
 import type {
   StoreCreateResearchJournalEntryType,
   StoreListResearchJournalEntriesType,
@@ -35,7 +39,42 @@ export async function GET(
     includeVoided: req.validatedQuery.include_voided,
   })
 
-  res.json({ journal_entries: entries, count })
+  const service = req.scope.resolve<ResearchTrackingModuleService>(
+    RESEARCH_TRACKING_MODULE,
+  )
+  const [profile] = await service.listResearchProfiles(
+    { customer_id: req.auth_context.actor_id },
+    { take: 1 },
+  )
+  const attachments = profile
+    ? await service.listResearchJournalAttachments(
+        { profile_id: profile.id, status: "active" },
+        { order: { uploaded_at: "DESC" } },
+      )
+    : []
+  const attachmentsByEntry = new Map<string, typeof attachments>()
+  for (const attachment of attachments) {
+    const current = attachmentsByEntry.get(attachment.journal_entry_id) ?? []
+    current.push(attachment)
+    attachmentsByEntry.set(attachment.journal_entry_id, current)
+  }
+  const serializedEntries = entries.map((entry) => ({
+    ...entry,
+    attachments: (attachmentsByEntry.get(entry.journal_entry_id) ?? []).map(
+      (attachment) => ({
+        id: attachment.id,
+        journal_entry_id: attachment.journal_entry_id,
+        journal_revision_id: attachment.journal_revision_id,
+        file_name: attachment.file_name,
+        mime_type: attachment.mime_type,
+        size_bytes: attachment.size_bytes,
+        scan_status: attachment.scan_status,
+        uploaded_at: attachment.uploaded_at,
+      }),
+    ),
+  }))
+
+  res.json({ journal_entries: serializedEntries, count })
 }
 
 export async function POST(
@@ -91,6 +130,26 @@ export async function POST(
       idempotencyKey,
     ),
   })
+  if (result.created) {
+    await awardRewardEventSafely(req.scope, {
+      customer_id: customerId,
+      event_type: "first_journal",
+      source_type: "first_journal",
+      source_id: idempotencyKey,
+      idempotency_key: `first-journal:${idempotencyKey}`,
+    })
+    await awardRewardEventSafely(req.scope, {
+      customer_id: customerId,
+      event_type: "journal_daily",
+      source_type: "journal_daily",
+      source_id: body.local_date,
+      idempotency_key: `journal-daily:${customerId}:${body.local_date}`,
+    })
+    await evaluateAndAwardResearchGoals(req.scope, {
+      customerId,
+      today: body.local_date,
+    })
+  }
 
   res.status(result.created ? 201 : 200).json(result)
 }

@@ -68,5 +68,8 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/research-tracking",
     },
+    {
+      resolve: "./src/modules/rewards",
+    },
   ],
 })

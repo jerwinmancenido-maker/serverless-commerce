@@ -6,6 +6,9 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework/http"
+import multer from "multer"
+
+import { JOURNAL_ATTACHMENT_MAX_BYTES } from "../../../../../workflows/steps/manage-research-journal-attachment"
 
 import {
   StoreCancelResearchDeletion,
@@ -37,6 +40,13 @@ import {
   StoreListResearchJournalEntries,
   StoreReviseResearchJournalEntry,
   StoreTransitionResearchJournalEntry,
+  StoreMutateResearchNotification,
+  StoreUpdateResearchReminderPreferences,
+  StoreCreateCalculationSnapshot,
+  StoreMutateCalculationSnapshot,
+  StoreCreatePersonalGoal,
+  StoreMutatePersonalGoal,
+  StoreMutateResearchReplenishment,
 } from "./validators"
 import { setResearchPrivateNoStore } from "./utils"
 
@@ -49,10 +59,62 @@ function setResearchTrackingPrivateCache(
   next()
 }
 
+const journalAttachmentUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    files: 1,
+    fileSize: JOURNAL_ATTACHMENT_MAX_BYTES,
+  },
+})
+
 export const storeResearchTrackingMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/store/customers/me/research-tracking*",
     middlewares: [setResearchTrackingPrivateCache],
+  },
+  {
+    matcher:
+      "/store/customers/me/research-tracking/journal/:id/attachments",
+    method: "POST",
+    middlewares: [journalAttachmentUpload.single("attachment")],
+  },
+  {
+    matcher:
+      "/store/customers/me/research-tracking/replenishment/:id/action",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreMutateResearchReplenishment)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/goals",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreCreatePersonalGoal)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/goals/:id/action",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreMutatePersonalGoal)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/calculations",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreCreateCalculationSnapshot)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/calculations/:id/action",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreMutateCalculationSnapshot)],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/reminders/preferences",
+    method: "POST",
+    middlewares: [
+      validateAndTransformBody(StoreUpdateResearchReminderPreferences),
+    ],
+  },
+  {
+    matcher: "/store/customers/me/research-tracking/notifications/:id/action",
+    method: "POST",
+    middlewares: [validateAndTransformBody(StoreMutateResearchNotification)],
   },
   {
     matcher: "/store/customers/me/research-tracking/journal",

@@ -1,0 +1,120 @@
+# Terms of Service
+
+Version: 2026.09.01
+Effective date: 1 September 2026
+Service: Research Compounds / pepstacklabs.com
+
+> Please read these Terms before creating an account, placing an order, or using the Research Hub. The Privacy Policy explains how personal data is handled. The Research Hub Agreement applies to Research Hub features.
+
+## 1. Scope and acceptance
+
+These Terms govern the Research Compounds storefront, customer accounts, orders, payments, product information, Research Hub, research protocols, calculators, community features, rewards, and related services. “We,” “us,” and “our” refer to the operator identified in the storefront, checkout, receipt, and official customer-support channels. “You” refers to the person or organization using the services.
+
+By creating an account, placing an order, or selecting the acceptance checkbox, you confirm that you have read and agree to these Terms, the Privacy Policy, and, when applicable, the Research Hub Agreement.
+
+## 2. Research-use product position
+
+Products identified as research compounds are offered for lawful laboratory, analytical, in-vitro, or other independently authorized research activities. Unless a product page expressly displays a current and verifiable authorization, we do not represent that a product is registered, evaluated, cleared, or approved by the Philippine Food and Drug Administration for human or veterinary administration, consumption, diagnosis, treatment, cure, mitigation, or prevention of disease.
+
+Product names, research summaries, protocols, calculators, graphs, community comments, and customer routines are informational research tools. They do not create a medical relationship or constitute medical advice, prescribing, an approved indication, or proof of safety or efficacy.
+
+## 3. Regulatory availability
+
+Listings and orders remain subject to Philippine law, product classification, licensing, registration, notification, import, labeling, advertising, distribution, and sale requirements. We may restrict a listing, request reasonable information, decline or cancel an order, suspend fulfillment, recall a product, or refund an affected transaction when reasonably necessary for regulatory, safety, fraud, shipping, product-integrity, or intended-use reasons.
+
+## 4. Eligibility and customer responsibilities
+
+You confirm that you are at least 18 years old, have legal capacity to contract, and will use the services and purchased products only for lawful purposes. If you act for an organization, you confirm that you are authorized to bind it.
+
+For research compound orders, you also confirm that you will:
+
+- use the product only for lawful research, analytical, or laboratory work;
+- maintain appropriate training, facilities, controls, protective equipment, storage, and disposal arrangements;
+- review the label, available certificate of analysis, safety information, lot details, and applicable law before handling;
+- independently verify product identity, concentration, units, methods, compatibility, hazards, and waste handling; and
+- avoid representing the product as an approved drug, food, supplement, cosmetic, device, or other regulated health product without all required authorization.
+
+## 5. Product information and units
+
+We aim to present product identity, format, net content, lot information, storage information, and available analytical records accurately. Website information may be corrected as research data or product details change. A certificate of analysis applies only to the identified lot and test scope and is not a pharmaceutical release certificate or clinical assurance.
+
+You must confirm that the selected format, strength, unit, concentration, and research method fit your lawful research purpose. Values expressed in mcg, mg, mL, IU, concentration, spray, pump, vial, or another unit are not interchangeable unless an explicit and independently verified conversion basis is provided.
+
+## 6. Accounts and security
+
+You must provide accurate information, protect your credentials, and promptly report suspected unauthorized access. We may request proportionate identity, affiliation, intended-use, fraud-prevention, payment, or delivery verification. You are responsible for activity performed through your account except to the extent caused by our failure to apply reasonable security.
+
+## 7. Orders, prices, payment, and taxes
+
+An order is an offer to purchase. An automated confirmation acknowledges receipt but does not guarantee acceptance or fulfillment. We may correct an obvious price, stock, tax, shipping, or description error before fulfillment and will provide cancellation or refund options where appropriate.
+
+Prices are displayed in Philippine pesos unless stated otherwise. Taxes, shipping charges, and other fees will be shown before confirmation where reasonably determinable. Manual QR or other reviewed payment methods are not final until payment is authorized and recorded.
+
+## 8. Shipping and product integrity
+
+Available delivery methods, estimated timelines, geographic limits, and any temperature-handling information are shown during checkout or order processing. Estimates are not guarantees. You must provide a complete address and reachable contact number and inspect the parcel promptly after delivery.
+
+Report visible transit damage, wrong or missing items, suspected tampering, or material nonconformity through the official support channel shown in your account or receipt. Include the order number, photographs, label and lot details, and a clear description. Do not handle or use a product that appears damaged, contaminated, mislabeled, or materially different from the order.
+
+## 9. Cancellations, returns, replacements, and refunds
+
+You may request cancellation before fulfillment begins. A change-of-mind request after packing or carrier handoff may be declined where permitted by law. Research materials that are temperature-sensitive or susceptible to contamination cannot automatically be restocked.
+
+Nothing in these Terms removes rights or remedies that cannot lawfully be waived. For a defective, damaged, expired, counterfeit, wrong, short, or materially nonconforming product, available remedies may include replacement, refund, or another remedy required by applicable Philippine law. Damage caused by improper customer storage, handling, alteration, or use may not qualify, subject to applicable law and available evidence.
+
+## 10. Research protocols and QR access
+
+An eligible order may grant access to an exact published protocol revision through the customer account, receipt, or opaque QR link. The revision is preserved for traceability. Protocol access does not change the product’s regulatory status or authorize a use that is not lawful.
+
+## 11. Research Hub and customer records
+
+The Research Hub may allow you to create routines, activity logs, measurements, journal entries, graphs, and timelines. These are user-directed records. You remain responsible for the information you enter and for deciding whether it is appropriate to record. The Research Hub Agreement contains additional rules for these features.
+
+## 12. Rewards and promotions
+
+Rewards points are promotional benefits, not cash, deposits, property, stored value, or legal tender. Current earning rates, redemption value, minimum redemption, exclusions, and expiry rules are shown in the rewards area. We may change those settings prospectively after appropriate notice.
+
+Points may be reversed for refunds, cancellations, chargebacks, duplicate awards, abuse, or error correction. Points cannot be transferred, sold, or exchanged for cash unless required by law.
+
+## 13. Community content
+
+Customer comments, questions, ideas, and recommendations are separate from administrator-published protocols. Submission does not guarantee publication. We may approve, reject, hide, or remove content for relevance, safety, privacy, illegality, impersonation, infringement, spam, harassment, unsupported claims, or other violations.
+
+You retain ownership of your content and grant us a non-exclusive, worldwide, royalty-free license to host, format, display, and moderate it for operating the services. Do not submit confidential information, another person’s personal data, or content you lack authority to share.
+
+## 14. Prohibited conduct
+
+You must not:
+
+- misrepresent product authorization, analytical results, identity, affiliation, or intended use;
+- circumvent purchase limits, geographic restrictions, account controls, payment review, or regulatory safeguards;
+- resell, relabel, manufacture, import, distribute, advertise, or sponsor regulated products without required authorization;
+- upload unlawful, deceptive, malicious, infringing, harassing, or privacy-invasive material;
+- scrape, reverse engineer, disrupt, probe, or misuse the services except where law expressly permits; or
+- treat calculations, protocols, graphs, or community content as a substitute for independent professional or laboratory judgment.
+
+## 15. Intellectual property
+
+The services, excluding customer content and third-party material, are owned by or licensed to the operator and protected by applicable intellectual-property law. You receive a limited, revocable, non-transferable right to use the services for their intended lawful purpose. No trademark or proprietary right is transferred.
+
+## 16. Disclaimers and liability
+
+To the extent permitted by law, the services are provided on an “as available” basis. Research summaries, calculators, protocols, recommendations, community content, and graphs may contain limitations or errors and must be independently verified. We do not guarantee a research outcome, experimental result, commercial suitability, or fitness for an unlawful or undisclosed purpose.
+
+No disclaimer or limitation excludes a right or responsibility that Philippine law does not allow to be excluded, including liability arising from fraud, willful misconduct, gross negligence, unlawful personal-data processing, or another non-waivable statutory obligation.
+
+## 17. Suspension and termination
+
+We may suspend or terminate access when reasonably necessary to address a material breach, fraud, security risk, unlawful activity, regulatory direction, or risk to another person. Where appropriate, we will provide notice and a reasonable opportunity to respond. Termination does not erase completed orders, immutable acceptance records, legally required records, accrued rights, or obligations that naturally survive termination.
+
+## 18. Changes and versioning
+
+Material changes will receive a new version and effective date and may be communicated through the site, account, or email. Where renewed acceptance is required, access to the affected function may pause until acceptance is recorded.
+
+## 19. Governing law and disputes
+
+These Terms are governed by the laws of the Republic of the Philippines without limiting mandatory consumer, privacy, or regulatory protections. The parties should first attempt good-faith resolution through the official support channel. Nothing prevents a person from using a remedy or filing a complaint with a competent agency or court.
+
+## 20. Contact
+
+Use the official support channel displayed in your storefront account, checkout, order confirmation, or receipt. The operating entity, business details, and any required regulatory information will be displayed through those official channels and may be updated without changing the substantive version of these Terms.

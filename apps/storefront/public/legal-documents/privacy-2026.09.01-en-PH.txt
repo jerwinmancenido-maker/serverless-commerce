@@ -1,0 +1,123 @@
+# Privacy Policy
+
+Version: 2026.09.01
+Effective date: 1 September 2026
+Service: Research Compounds / pepstacklabs.com
+
+> This Policy explains how personal data is collected, used, stored, shared, and protected when you use the storefront, customer account, Research Hub, research protocols, rewards, community features, and related services.
+
+## 1. Data controller and contact
+
+The operator identified in the storefront, checkout, receipt, and official customer-support channels is the personal information controller for the processing described in this Policy. Privacy requests may be submitted through Account Settings or the official support channel shown in your account or receipt.
+
+## 2. Philippine privacy framework
+
+We process personal data in accordance with the Data Privacy Act of 2012, its implementing rules, applicable issuances of the National Privacy Commission, and other applicable Philippine law. This Policy does not reduce rights that cannot lawfully be waived.
+
+## 3. Data we collect
+
+Depending on the feature used, we may collect:
+
+- account and identity data, including name, email, mobile number, account identifiers, and authentication records;
+- address, delivery, order, invoice, payment-reference, refund, and customer-support data;
+- product and protocol entitlement data, including order-linked protocol revision and opaque QR access records;
+- Research Hub data you choose to enter, including routines, activity logs, measurements, weight records, journal entries, notes, and timelines;
+- agreement records, including document versions, SHA-256 digests, acceptance time, locale, and acceptance source;
+- rewards data, including earning, adjustment, redemption, reversal, and balance entries;
+- community submissions and moderation history;
+- device, browser, IP address, session, cookie, security, diagnostic, and audit data; and
+- communications, requests, complaints, and records necessary to respond to you.
+
+We do not require you to place sensitive personal data in free-text fields. Avoid entering another person’s data or information that is unnecessary for the feature.
+
+## 4. How we collect data
+
+We collect data directly from you, automatically from your device and service activity, from transactions and fulfillment events, and from service providers that support payment, delivery, hosting, security, communications, analytics, and customer support. Where data comes from another source, we use it only when there is an appropriate lawful basis.
+
+## 5. Purposes of processing
+
+We process personal data to:
+
+- create and secure accounts and record agreement acceptance;
+- process orders, payments, fulfillment, returns, refunds, and support;
+- deliver product- and order-linked protocol access and QR links;
+- operate Research Hub routines, measurements, graphs, journals, and timelines;
+- operate rewards, redemptions, reversals, and fraud controls;
+- moderate community submissions;
+- maintain safety, security, availability, diagnostics, audit trails, and legal records;
+- comply with tax, consumer, privacy, regulatory, court, and law-enforcement obligations; and
+- improve services and communicate material operational or policy changes.
+
+## 6. Lawful bases
+
+Depending on the activity, processing may be necessary to perform a contract, take requested pre-contract steps, comply with a legal obligation, protect legitimate interests that do not override your rights, establish or defend legal claims, protect vital interests, or act on valid consent where consent is the appropriate basis.
+
+Acceptance of the Terms or Research Hub Agreement is not automatically consent for every privacy purpose. Optional consent is requested separately when Philippine law requires it and may be withdrawn prospectively without affecting prior lawful processing.
+
+## 7. Research Hub information
+
+Research Hub records are private to the authenticated account except where you deliberately submit content to a community feature or request a permitted export or sharing action. Research Hub information is not automatically added from a protocol; you decide what to record.
+
+Measurements, weight entries, routines, journals, and timelines can reveal personal or sensitive information depending on what you enter. We apply access controls and purpose limitation to these records. Do not use another person’s information without authority.
+
+## 8. Agreement and audit records
+
+We preserve the exact accepted document versions and digests, acceptance source, time, and relevant locale. These records support contract administration, privacy accountability, dispute handling, and system integrity. Published agreement versions and acceptance records may be immutable, but corrections or later withdrawals are recorded as new events rather than silently rewriting history.
+
+## 9. QR and protocol access
+
+Order-linked protocol access uses an opaque token rather than exposing an order number or customer identity in the URL. Access and security events may be logged. Anyone who receives a valid link may be able to open its destination, so do not share it unless you intend to provide access.
+
+## 10. Rewards and recommendations
+
+We process order and activity events to award, adjust, redeem, or reverse configurable rewards. Recommendations may use the current protocol, linked product, category, prior purchase, or placement rules. Recommendations are not based on private journal text or measurements unless a future feature clearly explains the use and obtains any required permission.
+
+## 11. Cookies and similar technology
+
+We use cookies and similar technology needed for authentication, cart operation, security, preferences, and service delivery. Optional analytics or marketing technologies will be controlled through an appropriate notice or preference mechanism where required. Blocking essential cookies may prevent account, cart, or checkout functions from working.
+
+## 12. Sharing and service providers
+
+We may share necessary data with providers supporting hosting, databases, authentication, email, communications, fraud prevention, payment review, shipping, returns, analytics, customer support, and professional advice. Providers receive only the access reasonably necessary for their role and are subject to applicable contractual and security requirements.
+
+We may also disclose data where required by law, a valid government request, court order, regulatory process, safety need, corporate transaction, or legal-claims process. We do not sell private Research Hub journal or measurement data.
+
+## 13. Cross-border processing
+
+Some providers may process data outside the Philippines. Where this occurs, we apply appropriate contractual, organizational, and technical safeguards and remain accountable as required by Philippine law.
+
+## 14. Retention
+
+We retain data only as long as reasonably necessary for the purpose collected, including service delivery, tax and accounting, consumer protection, regulatory records, fraud prevention, security, dispute resolution, and legal claims. Retention periods vary by record type. When retention is no longer required, data is securely deleted or anonymized.
+
+Account deletion does not always erase records that must be retained by law or that are necessary for completed transactions, immutable agreement evidence, fraud prevention, or legal claims. Any retained data remains restricted to those purposes.
+
+## 15. Security
+
+We use reasonable organizational, physical, and technical safeguards, including access controls, authentication, transport protection, logging, least-privilege practices, backups, and incident-response procedures appropriate to the data and risk. No system is completely secure; protect your credentials and promptly report suspected misuse.
+
+## 16. Your rights
+
+Subject to applicable law, you may request access, correction, objection, erasure or blocking, data portability, information about processing, and withdrawal of optional consent. You may also lodge a complaint with the National Privacy Commission and seek applicable remedies.
+
+Account Settings provides available privacy controls, data export, and account-lifecycle requests. We may need to verify identity before acting and may retain evidence of the request and response.
+
+## 17. Children
+
+The services are not intended for children. We do not knowingly create customer accounts for persons under 18. If you believe a child’s data was submitted, contact us through the official privacy or support channel.
+
+## 18. Automated decisions
+
+Fraud, security, eligibility, rewards, or recommendation rules may assist operational decisions. Where a decision produces a legal or similarly significant effect and applicable law requires safeguards, we will provide appropriate information and a way to request human review.
+
+## 19. Data incidents
+
+We assess suspected personal-data incidents and notify affected individuals and the National Privacy Commission when required. Notices will describe the incident, likely consequences, protective steps, and contact channel to the extent appropriate and lawful.
+
+## 20. Changes to this Policy
+
+Material changes receive a new version and effective date and may require renewed acknowledgement or consent where applicable. Prior versions and acceptance evidence are preserved for accountability.
+
+## 21. Contact and complaints
+
+Submit a privacy request through Account Settings or the official contact shown in your account, checkout, order confirmation, or receipt. If you are not satisfied with our response, you may contact the National Privacy Commission or another competent Philippine authority.

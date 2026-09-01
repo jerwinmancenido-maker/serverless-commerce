@@ -36,6 +36,22 @@ export type ResearchProtocolAccess = {
   last_viewed_at: string | null
   routine_started_at: string | null
   routine_id: string | null
+  protocol_series_id: string
+  protocol_revision_id: string
+  calculator: null | {
+    enabled: boolean
+    title: string
+    default_compound_mass: string | null
+    compound_mass_unit: "mcg" | "mg" | "g" | "IU"
+    default_final_volume_ml: string | null
+    default_target_amount: string | null
+    target_amount_unit: "mcg" | "mg" | "IU"
+    iu_per_mg: string | null
+    device_volume_ml: string | null
+    device_label: string | null
+    rounding_precision: number
+    instructions: string | null
+  }
   routine_levels: Array<{
     key: string
     title: string
@@ -56,6 +72,35 @@ export type ResearchProtocolAccess = {
   product: { id: string; title: string; thumbnail: string | null }
   variant: { id: string; title: string | null } | null
   access_token: string | null
+}
+
+export type ResearchCalculationSnapshot = {
+  id: string
+  mode: "quick" | "protocol" | "compare"
+  title: string
+  protocol_revision_id: string | null
+  profile_protocol_access_id: string | null
+  routine_id: string | null
+  journal_entry_id: string | null
+  input: Record<string, unknown>
+  result: Record<string, unknown>
+  unit_context: Record<string, unknown>
+  saved_at: string
+}
+
+export type ResearchPersonalGoal = {
+  id: string
+  title: string
+  goal_type: "routine_completions" | "journal_days" | "measurements" | "routine_streak"
+  target_count: number
+  current_count: number
+  progress_percent: number
+  period: "weekly" | "monthly" | "ongoing"
+  routine_id: string | null
+  starts_on: string
+  ends_on: string | null
+  status: "active" | "completed" | "archived"
+  achieved: boolean
 }
 
 export type ResearchPrivacyRequest = {
@@ -273,6 +318,39 @@ export type ResearchOccurrence = {
   rescheduled_local_time: string | null
 }
 
+export type ResearchReminderPreferences = {
+  id?: string
+  enabled: boolean
+  timezone: string
+  lead_minutes: number[]
+  quiet_hours_enabled: boolean
+  quiet_hours_start: string | null
+  quiet_hours_end: string | null
+  daily_summary: boolean
+  weekly_summary: boolean
+  replenishment_reminders: boolean
+  progress_reminders: boolean
+  journal_prompts: boolean
+  reward_notifications: boolean
+}
+
+export type ResearchNotification = {
+  id: string
+  type: "routine_reminder" | "daily_summary" | "weekly_summary" | "replenishment" | "progress" | "journal_prompt" | "reward"
+  channel: "in_app" | "email" | "browser_push" | "mobile_push"
+  title: string
+  body: string
+  status: "scheduled" | "unread" | "read" | "snoozed" | "dismissed" | "failed"
+  available_at: string
+  delivered_at: string | null
+  read_at: string | null
+  snoozed_until: string | null
+  occurrence_id: string | null
+  source_local_date: string | null
+  source_local_time: string | null
+  timezone: string
+}
+
 export type ResearchReplenishmentProjection = {
   routine_id: string
   routine_revision_id: string
@@ -292,6 +370,7 @@ export type ResearchReplenishmentProjection = {
   estimated_days_remaining: number | null
   estimated_runout_at: string | null
   urgency: "reorder_now" | "plan_reorder" | "on_track" | "not_projected"
+  default_replenishment_snooze_days: number
   calculation_basis: string
 }
 
@@ -355,6 +434,18 @@ export type ResearchJournalEntry = {
   updated_at: string
   voided_at: string | null
   restored_at: string | null
+  attachments: ResearchJournalAttachment[]
+}
+
+export type ResearchJournalAttachment = {
+  id: string
+  journal_entry_id: string
+  journal_revision_id: string | null
+  file_name: string
+  mime_type: "image/jpeg" | "image/png" | "application/pdf"
+  size_bytes: number
+  scan_status: "pending" | "unavailable" | "clean" | "quarantined"
+  uploaded_at: string
 }
 
 export type ResearchRoutineLogMutationPreview = {
@@ -571,6 +662,31 @@ export async function retrieveResearchProtocolAccesses(): Promise<
   return response.protocols
 }
 
+export async function retrieveResearchCalculationSnapshots(): Promise<
+  ResearchCalculationSnapshot[]
+> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    calculations: ResearchCalculationSnapshot[]
+  }>("/store/customers/me/research-tracking/calculations", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+  return response.calculations
+}
+
+export async function retrieveResearchPersonalGoals(): Promise<{
+  goals: ResearchPersonalGoal[]
+  streaks: { routine: number }
+}> {
+  return sdk.client.fetch("/store/customers/me/research-tracking/goals", {
+    method: "GET",
+    headers: await getAuthHeaders(),
+    cache: "no-store",
+  })
+}
+
 export async function retrieveCurrentResearchDeletionRequest(): Promise<ResearchPrivacyRequest | null> {
   const headers = await getAuthHeaders()
   const response = await sdk.client.fetch<{
@@ -645,6 +761,21 @@ export async function retrieveResearchReplenishmentProjections(): Promise<
   return response.projections
 }
 
+export async function mutateResearchReplenishmentAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const routineId = String(formData.get("routine_id") || "")
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/replenishment/${encodeURIComponent(routineId)}/action`,
+    {
+      action: String(formData.get("action") || "dismiss"),
+      remind_at: String(formData.get("remind_at") || "") || null,
+    },
+    formData,
+  )
+}
+
 export async function retrieveResearchOccurrences(
   from: string,
   to: string,
@@ -658,6 +789,101 @@ export async function retrieveResearchOccurrences(
   )
 
   return response.occurrences
+}
+
+export async function retrieveResearchReminderPreferences(): Promise<ResearchReminderPreferences> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{
+    preferences: ResearchReminderPreferences
+  }>("/store/customers/me/research-tracking/reminders/preferences", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  })
+  return response.preferences
+}
+
+export async function retrieveResearchNotifications(): Promise<{
+  notifications: ResearchNotification[]
+  unread_count: number
+}> {
+  const headers = await getAuthHeaders()
+  return await sdk.client.fetch(
+    "/store/customers/me/research-tracking/notifications",
+    { method: "GET", headers, cache: "no-store" },
+  )
+}
+
+export async function updateResearchReminderPreferencesAction(
+  _state: ResearchTrackingActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const leadMinutes = formData
+    .getAll("lead_minutes")
+    .map(Number)
+    .filter((value) => Number.isInteger(value))
+  try {
+    const headers = await getAuthHeaders()
+    await sdk.client.fetch(
+      "/store/customers/me/research-tracking/reminders/preferences",
+      {
+        method: "POST",
+        headers,
+        body: {
+          enabled: formData.get("enabled") === "on",
+          timezone: String(formData.get("timezone") || "Asia/Manila"),
+          lead_minutes: leadMinutes.length ? leadMinutes : [30],
+          quiet_hours_enabled: formData.get("quiet_hours_enabled") === "on",
+          quiet_hours_start: String(formData.get("quiet_hours_start") || "") || null,
+          quiet_hours_end: String(formData.get("quiet_hours_end") || "") || null,
+          daily_summary: formData.get("daily_summary") === "on",
+          weekly_summary: formData.get("weekly_summary") === "on",
+          replenishment_reminders: formData.get("replenishment_reminders") === "on",
+          progress_reminders: formData.get("progress_reminders") === "on",
+          journal_prompts: formData.get("journal_prompts") === "on",
+          reward_notifications: formData.get("reward_notifications") === "on",
+        },
+      },
+    )
+    revalidatePath(`/${String(formData.get("country_code") || "ph")}/account`)
+    return { success: true, error: null }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Reminder preferences could not be saved.",
+    }
+  }
+}
+
+export async function mutateResearchNotificationAction(
+  _state: ResearchTrackingActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const notificationId = String(formData.get("notification_id") || "")
+  const action = String(formData.get("action") || "")
+  let snoozedUntil: string | null = null
+  if (action === "snooze") {
+    const minutes = Number(formData.get("snooze_minutes") || 30)
+    snoozedUntil = new Date(Date.now() + minutes * 60_000).toISOString()
+  }
+  try {
+    const headers = await getAuthHeaders()
+    await sdk.client.fetch(
+      `/store/customers/me/research-tracking/notifications/${encodeURIComponent(notificationId)}/action`,
+      {
+        method: "POST",
+        headers,
+        body: { action, snoozed_until: snoozedUntil },
+      },
+    )
+    revalidatePath(`/${String(formData.get("country_code") || "ph")}/account`)
+    return { success: true, error: null }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Notification could not be updated.",
+    }
+  }
 }
 
 export async function retrieveResearchRoutineLogs(): Promise<
@@ -911,6 +1137,71 @@ export async function transitionResearchJournalEntryAction(
   )
 }
 
+export async function uploadResearchJournalAttachmentAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const entryId = String(formData.get("journal_entry_id") || "")
+  const attachment = formData.get("attachment")
+  if (!(attachment instanceof File) || !attachment.size) {
+    return { success: false, error: "Choose a PNG, JPEG, or PDF file." }
+  }
+  if (attachment.size > 10 * 1024 * 1024) {
+    return { success: false, error: "Attachment must not exceed 10 MiB." }
+  }
+  if (!["image/jpeg", "image/png", "application/pdf"].includes(attachment.type)) {
+    return { success: false, error: "Only PNG, JPEG, and PDF files are supported." }
+  }
+  const body = new FormData()
+  body.set("attachment", attachment, attachment.name)
+  try {
+    const headers = await getAuthHeaders()
+    await sdk.client.fetch(
+      `/store/customers/me/research-tracking/journal/${encodeURIComponent(entryId)}/attachments`,
+      {
+        method: "POST",
+        headers: {
+          ...headers,
+          "content-type": null,
+        },
+        body,
+      },
+    )
+    revalidatePath(
+      `/${String(formData.get("country_code") || "ph")}/account`,
+      "layout",
+    )
+    return { success: true, error: null }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Attachment could not be uploaded.",
+    }
+  }
+}
+
+export async function removeResearchJournalAttachmentAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/journal-attachments/${encodeURIComponent(String(formData.get("attachment_id") || ""))}/remove`,
+    {},
+    formData,
+  )
+}
+
+export async function retrieveResearchJournalAttachmentUrl(
+  attachmentId: string,
+): Promise<string> {
+  const headers = await getAuthHeaders()
+  const response = await sdk.client.fetch<{ url: string }>(
+    `/store/customers/me/research-tracking/journal-attachments/${encodeURIComponent(attachmentId)}/file`,
+    { method: "GET", headers, cache: "no-store" },
+  )
+  return response.url
+}
+
 function researchQuantityFromForm(
   formData: FormData,
   displayField: string,
@@ -1119,6 +1410,91 @@ export async function adjustResearchOccurrenceAction(
       timezone: String(formData.get("timezone") || ""),
       note: String(formData.get("note") || "") || null,
     },
+    formData,
+  )
+}
+
+export async function saveResearchCalculationAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const nullable = (name: string) => String(formData.get(name) || "").trim() || null
+  const mode = String(formData.get("mode") || "quick")
+  if (!["quick", "protocol", "compare"].includes(mode)) {
+    return { success: false, error: "Select a valid calculator mode." }
+  }
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/calculations",
+    {
+      idempotency_key: String(formData.get("idempotency_key") || ""),
+      mode,
+      title: String(formData.get("title") || "Saved calculation"),
+      protocol_series_id: nullable("protocol_series_id"),
+      protocol_revision_id: nullable("protocol_revision_id"),
+      profile_protocol_access_id: nullable("profile_protocol_access_id"),
+      routine_id: nullable("routine_id"),
+      journal_entry_id: nullable("journal_entry_id"),
+      input: {
+        compound_mass: String(formData.get("compound_mass") || ""),
+        compound_mass_unit: String(formData.get("compound_mass_unit") || "mg"),
+        final_volume_ml: String(formData.get("final_volume_ml") || ""),
+        target_amount: String(formData.get("target_amount") || ""),
+        target_amount_unit: String(formData.get("target_amount_unit") || "mcg"),
+        comparison_target_amount: nullable("comparison_target_amount"),
+        iu_per_mg: nullable("iu_per_mg"),
+        device_volume_ml: nullable("device_volume_ml"),
+        device_label: nullable("device_label"),
+        rounding_precision: Number(formData.get("rounding_precision") || 2),
+      },
+    },
+    formData,
+  )
+}
+
+export async function mutateResearchCalculationAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const id = String(formData.get("calculation_id") || "")
+  const nullable = (name: string) => String(formData.get(name) || "").trim() || null
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/calculations/${encodeURIComponent(id)}/action`,
+    {
+      action: String(formData.get("action") || "archive"),
+      routine_id: nullable("routine_id"),
+      journal_entry_id: nullable("journal_entry_id"),
+    },
+    formData,
+  )
+}
+
+export async function createResearchPersonalGoalAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  return runResearchMutation(
+    "/store/customers/me/research-tracking/goals",
+    {
+      title: String(formData.get("title") || ""),
+      goal_type: String(formData.get("goal_type") || "routine_completions"),
+      target_count: Number(formData.get("target_count") || 1),
+      period: String(formData.get("period") || "weekly"),
+      routine_id: String(formData.get("routine_id") || "") || null,
+      starts_on: String(formData.get("starts_on") || ""),
+      ends_on: String(formData.get("ends_on") || "") || null,
+    },
+    formData,
+  )
+}
+
+export async function mutateResearchPersonalGoalAction(
+  _state: ResearchTrackingActionState = initialActionState,
+  formData: FormData,
+): Promise<ResearchTrackingActionState> {
+  const id = String(formData.get("goal_id") || "")
+  return runResearchMutation(
+    `/store/customers/me/research-tracking/goals/${encodeURIComponent(id)}/action`,
+    { action: String(formData.get("action") || "archive") },
     formData,
   )
 }

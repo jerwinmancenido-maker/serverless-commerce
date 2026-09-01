@@ -13,7 +13,7 @@ export const RESEARCH_DEFAULT_TIMEZONE = "Asia/Manila"
 export const RESEARCH_IDEMPOTENCY_KEY_MIN_LENGTH = 8
 export const RESEARCH_IDEMPOTENCY_KEY_MAX_LENGTH = 128
 
-const consentVersionPattern = /^\d{4}-\d{2}-\d{2}\.v[1-9]\d*$/
+const consentVersionPattern = /^(?:\d{4}-\d{2}-\d{2}\.v[1-9]\d*|\d{4}\.\d{2}\.\d{2})$/
 const sha256Pattern = /^[a-f0-9]{64}$/
 const idempotencyKeyPattern = /^[A-Za-z0-9._:-]+$/
 
@@ -148,7 +148,7 @@ export function normalizeResearchConsentVersion(value: string): string {
   const normalized = value.trim()
 
   if (!consentVersionPattern.test(normalized)) {
-    invalid("consent version must use YYYY-MM-DD.vN")
+    invalid("consent version must use YYYY-MM-DD.vN or YYYY.MM.DD")
   }
 
   return normalized

@@ -21,6 +21,10 @@ import ResearchSupplyActivation from "./research-supply-activation"
 import ResearchSupplyActivationRequest from "./research-supply-activation-request"
 import ResearchSupplyAdjustment from "./research-supply-adjustment"
 import TrackedMaterial from "./tracked-material"
+import ResearchCalculationSnapshot from "./research-calculation-snapshot"
+import ResearchPersonalGoal from "./research-personal-goal"
+import ResearchJournalAttachment from "./research-journal-attachment"
+import ResearchReplenishmentPreference from "./research-replenishment-preference"
 
 const ResearchProfile = model.define("research_profile", {
   id: model.id().primaryKey(),
@@ -99,6 +103,19 @@ const ResearchProfile = model.define("research_profile", {
     {
       mappedBy: "profile",
     },
+  ),
+  calculation_snapshots: model.hasMany(() => ResearchCalculationSnapshot, {
+    mappedBy: "profile",
+  }),
+  personal_goals: model.hasMany(() => ResearchPersonalGoal, {
+    mappedBy: "profile",
+  }),
+  journal_attachments: model.hasMany(() => ResearchJournalAttachment, {
+    mappedBy: "profile",
+  }),
+  replenishment_preferences: model.hasMany(
+    () => ResearchReplenishmentPreference,
+    { mappedBy: "profile" },
   ),
 })
 

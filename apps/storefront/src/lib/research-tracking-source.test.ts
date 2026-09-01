@@ -21,7 +21,10 @@ test("gates Research & Tracking navigation on server activation", () => {
     "utf8",
   )
 
-  assert.match(navigationSource, /researchTrackingAvailable &&/)
+  assert.match(
+    navigationSource,
+    /researchTrackingAvailable[\s\S]*account\/research-hub/,
+  )
   assert.match(pageSource, /!configuration\.available[\s\S]*notFound\(\)/)
 })
 
@@ -150,20 +153,137 @@ test("keeps the Journal authenticated, private, SDK-backed, and revisioned", () 
   assert.doesNotMatch(accountSource, /\["Journal",/)
   assert.match(journalSource, /name="expected_revision_id"/)
   assert.match(journalSource, /name="confirmed"/)
+  assert.match(
+    journalSource,
+    /name="attachment_id"[\s\S]*name="idempotency_key"/,
+  )
   assert.match(journalSource, /disabled while this profile is closed/i)
   assert.match(actionSource, /retrieveResearchJournalEntries/)
   assert.match(actionSource, /retrieveResearchPrivateRecordsConfiguration/)
   assert.match(actionSource, /recordResearchJournalConsentAction/)
   assert.match(actionSource, /sdk\.client\.fetch/)
+  assert.match(
+    actionSource,
+    /journal\/\$\{encodeURIComponent\(entryId\)\}\/attachments[\s\S]*"content-type": null/,
+  )
   assert.match(actionSource, /cache: "no-store"/)
-  assert.match(journalSource, /Journal privacy choice/)
-  assert.match(accountSource, /current_consent\?\.is_current === true/)
-  assert.match(journalSource, /current_consent\?\.is_current === true/)
-  assert.match(journalSource, /useRotateConsumedKey\(consentState/)
-  assert.match(journalSource, /idempotencyKey=\{consentKey\}/)
+  assert.doesNotMatch(journalSource, /Journal privacy choice/)
+  assert.doesNotMatch(accountSource, /Journal privacy choice/)
+  assert.match(journalSource, /canMutate/)
+  assert.doesNotMatch(journalSource, /useRotateConsumedKey\(consentState/)
   assert.match(journalSource, /Page \{currentPage\} of \{totalPages\}/)
   assert.doesNotMatch(
     journalSource,
     /localStorage|sessionStorage|indexedDB|document\.cookie|analytics/i,
   )
+})
+
+test("shows and preserves saved calculator attachments", () => {
+  const calculatorSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/research-calculator.tsx",
+    ),
+    "utf8",
+  )
+
+  assert.match(calculatorSource, /defaultValue=\{item\.routine_id \|\| ""\}/)
+  assert.match(
+    calculatorSource,
+    /defaultValue=\{item\.journal_entry_id \|\| ""\}/,
+  )
+  assert.match(calculatorSource, /Attached to/)
+  assert.match(calculatorSource, /Calculation updated\./)
+})
+
+test("gives every Research Hub mutation a rotating submission key", () => {
+  const componentNames = [
+    "research-goals.tsx",
+    "research-calculator.tsx",
+    "reminder-preferences.tsx",
+    "notification-inbox.tsx",
+    "replenishment.tsx",
+  ]
+
+  for (const componentName of componentNames) {
+    const source = readFileSync(
+      join(
+        sourceRoot,
+        "src/modules/account/components/research-tracking",
+        componentName,
+      ),
+      "utf8",
+    )
+    assert.match(source, /useResearchSubmissionKey/)
+    assert.match(source, /name="idempotency_key"/)
+  }
+})
+
+test("keeps agreement and privacy controls out of the working Research Hub", () => {
+  const hubSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-tracking/index.tsx",
+    ),
+    "utf8",
+  )
+  const privacySource = readFileSync(
+    join(
+      sourceRoot,
+      "src/app/[countryCode]/(main)/account/settings/privacy/page.tsx",
+    ),
+    "utf8",
+  )
+  const signupSource = readFileSync(
+    join(sourceRoot, "src/modules/account/components/register/index.tsx"),
+    "utf8",
+  )
+
+  assert.doesNotMatch(hubSource, /Journal privacy choice/)
+  assert.match(privacySource, /PrivacyCard/)
+  assert.match(privacySource, /Download my records/)
+  assert.match(privacySource, /These controls do not affect rewards/)
+  assert.match(signupSource, /agreement_accepted/)
+  assert.match(signupSource, /marketing_opt_in/)
+  assert.match(signupSource, /href=\{agreement\?\.terms_url/)
+  assert.match(signupSource, /href=\{agreement\?\.privacy_url/)
+  assert.match(signupSource, /href=\{agreement\?\.research_hub_url/)
+  assert.doesNotMatch(signupSource, /LocalizedClientLink/)
+})
+
+test("uses task-oriented account navigation and an editable rewards destination", () => {
+  const navigationSource = readFileSync(
+    join(sourceRoot, "src/modules/account/components/account-nav/index.tsx"),
+    "utf8",
+  )
+  const researchHubNavigationSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/modules/account/components/research-hub-nav/index.tsx",
+    ),
+    "utf8",
+  )
+  const rewardsSource = readFileSync(
+    join(
+      sourceRoot,
+      "src/app/[countryCode]/(main)/account/rewards/page.tsx",
+    ),
+    "utf8",
+  )
+
+  for (const label of [
+    "Home",
+    "Research Hub",
+    "Orders",
+    "Rewards",
+    "Profile & Settings",
+  ]) {
+    assert.match(navigationSource, new RegExp(label.replace("&", "&")))
+  }
+  assert.doesNotMatch(navigationSource, /href: "\/account\/addresses"/)
+  assert.match(researchHubNavigationSource, /flex-wrap/)
+  assert.match(researchHubNavigationSource, /small:flex-nowrap/)
+  assert.match(rewardsSource, /Getting started/)
+  assert.match(rewardsSource, /Points history/)
+  assert.match(rewardsSource, /RewardsRedemption/)
 })

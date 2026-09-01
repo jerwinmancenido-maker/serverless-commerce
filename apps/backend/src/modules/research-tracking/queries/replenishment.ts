@@ -3,6 +3,7 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 import { RESEARCH_TRACKING_MODULE } from ".."
 import type ResearchTrackingModuleService from "../service"
+import { classifyReplenishmentUrgency } from "../contracts/replenishment"
 import { retrieveResearchProfileForRead } from "./personal-routines"
 
 type Segment = {
@@ -37,6 +38,7 @@ type ReplenishmentProjection = {
   estimated_days_remaining: number | null
   estimated_runout_at: string | null
   urgency: "not_projected" | "reorder_now" | "plan_reorder" | "on_track"
+  default_replenishment_snooze_days: number
   calculation_basis: string
 }
 
@@ -66,6 +68,30 @@ function usesPerWeek(segment: Segment) {
   return 0
 }
 
+export function legacyRevisionSegment(revision: {
+  planned_quantity_base_units: number
+  base_unit: string
+  recurrence_type: "once" | "daily" | "weekly"
+  daily_interval: number | null
+  weekly_interval: number | null
+  weekdays: { values: number[] } | null
+  local_time: string
+}): Segment {
+  return {
+    id: `${revision.recurrence_type}-legacy-schedule`,
+    label: "Current schedule",
+    start_offset_days: 0,
+    end_offset_days: null,
+    planned_quantity_base_units: revision.planned_quantity_base_units,
+    base_unit: revision.base_unit,
+    recurrence_type: revision.recurrence_type,
+    daily_interval: revision.daily_interval,
+    weekly_interval: revision.weekly_interval,
+    weekdays: revision.weekdays,
+    local_times: { values: [revision.local_time] },
+  }
+}
+
 export async function listOwnedResearchReplenishmentProjections(input: {
   container: MedusaContainer
   customerId: string
@@ -84,8 +110,33 @@ export async function listOwnedResearchReplenishmentProjections(input: {
   )
   const now = input.now || new Date()
   const projections: ReplenishmentProjection[] = []
+  const preferences = await service.listResearchReplenishmentPreferences({
+    profile_id: profile.id,
+  })
+  const [hubSettings] = await service.listResearchHubSettings(
+    { setting_key: "global" },
+    { take: 1 },
+  )
+  const reorderNowDays = Number(hubSettings?.reorder_now_days ?? 14)
+  const planReorderDays = Math.max(
+    reorderNowDays,
+    Number(hubSettings?.plan_reorder_days ?? 30),
+  )
+  const defaultReplenishmentSnoozeDays = Number(
+    hubSettings?.default_replenishment_snooze_days ?? 7,
+  )
+  const hiddenRoutineIds = new Set(
+    preferences
+      .filter(
+        (item) =>
+          item.state === "dismissed" ||
+          (item.state === "snoozed" && item.remind_at && item.remind_at > now),
+      )
+      .map((item) => item.routine_id),
+  )
 
   for (const routine of routines) {
+    if (hiddenRoutineIds.has(routine.id)) continue
     if (!routine.current_revision_id) continue
     const revision = await service.retrieveResearchRoutineRevision(
       routine.current_revision_id,
@@ -97,10 +148,13 @@ export async function listOwnedResearchReplenishmentProjections(input: {
       tracked_material_id: material.id,
       status: "active",
     })
-    const segments = (await service.listResearchRoutineScheduleSegments(
+    const storedSegments = (await service.listResearchRoutineScheduleSegments(
       { routine_revision_id: revision.id },
       { order: { position: "ASC" } },
     )) as unknown as Segment[]
+    const segments = storedSegments.length
+      ? storedSegments
+      : [legacyRevisionSegment(revision as unknown as Parameters<typeof legacyRevisionSegment>[0])]
     const elapsedDays = Math.max(
       0,
       calendarDaysBetween(revision.start_date, now),
@@ -127,14 +181,11 @@ export async function listOwnedResearchReplenishmentProjections(input: {
       estimatedDaysRemaining === null
         ? null
         : new Date(now.getTime() + estimatedDaysRemaining * 86_400_000)
-    const urgency =
-      estimatedDaysRemaining === null
-        ? "not_projected"
-        : estimatedDaysRemaining <= 14
-          ? "reorder_now"
-          : estimatedDaysRemaining <= 30
-            ? "plan_reorder"
-            : "on_track"
+    const urgency = classifyReplenishmentUrgency({
+      estimatedDaysRemaining,
+      reorderNowDays,
+      planReorderDays,
+    })
 
     projections.push({
       routine_id: routine.id,
@@ -154,6 +205,7 @@ export async function listOwnedResearchReplenishmentProjections(input: {
       estimated_days_remaining: estimatedDaysRemaining,
       estimated_runout_at: estimatedRunoutAt?.toISOString() || null,
       urgency,
+      default_replenishment_snooze_days: defaultReplenishmentSnoozeDays,
       calculation_basis:
         "Estimated from the current routine phase and private tracked supply balance.",
     })

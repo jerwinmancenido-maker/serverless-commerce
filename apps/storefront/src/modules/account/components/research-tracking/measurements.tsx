@@ -2,7 +2,6 @@
 
 import {
   createResearchMeasurementAction,
-  recordResearchMeasurementConsentAction,
   transitionResearchMeasurementAction,
   type ResearchMeasurement,
   type ResearchMeasurementSummary,
@@ -11,6 +10,7 @@ import {
   type ResearchProtocolAccess,
   type ResearchRoutine,
   type ResearchTrackingActionState,
+  type ResearchTimelineEvent,
   type TrackedResearchMaterial,
 } from "@lib/data/research-tracking"
 import { useActionState, useState } from "react"
@@ -31,6 +31,7 @@ type Props = {
   }
   summary: ResearchMeasurementSummary
   trackedMaterials: TrackedResearchMaterial[]
+  timeline: ResearchTimelineEvent[]
 }
 
 const initialState: ResearchTrackingActionState = { success: false, error: null }
@@ -59,7 +60,13 @@ function StateMessage({ state }: { state: ResearchTrackingActionState }) {
   )
 }
 
-function TrendChart({ summary }: { summary: ResearchMeasurementSummary }) {
+function TrendChart({
+  summary,
+  target,
+}: {
+  summary: ResearchMeasurementSummary
+  target: number | null
+}) {
   if (summary.points.length < 2) {
     return (
       <div className="flex h-52 items-center justify-center rounded-lg bg-ui-bg-subtle text-sm text-ui-fg-subtle">
@@ -70,11 +77,13 @@ function TrendChart({ summary }: { summary: ResearchMeasurementSummary }) {
   const values = summary.points.map((point) => point.value)
   const min = Math.min(...values)
   const max = Math.max(...values)
-  const span = max - min || 1
+  const chartMin = target === null ? min : Math.min(min, target)
+  const chartMax = target === null ? max : Math.max(max, target)
+  const chartSpan = chartMax - chartMin || 1
   const points = summary.points
     .map((point, index) => {
       const x = (index / (summary.points.length - 1)) * 100
-      const y = 90 - ((point.value - min) / span) * 75
+      const y = 90 - ((point.value - chartMin) / chartSpan) * 75
       return `${x},${y}`
     })
     .join(" ")
@@ -83,10 +92,22 @@ function TrendChart({ summary }: { summary: ResearchMeasurementSummary }) {
     <div className="rounded-lg bg-ui-bg-subtle p-4">
       <svg viewBox="0 0 100 100" role="img" aria-label="Weight trend" className="h-52 w-full" preserveAspectRatio="none">
         <line x1="0" y1="90" x2="100" y2="90" stroke="currentColor" className="text-ui-border-base" vectorEffect="non-scaling-stroke" />
+        {target !== null && (
+          <line
+            x1="0"
+            y1={90 - ((target - chartMin) / chartSpan) * 75}
+            x2="100"
+            y2={90 - ((target - chartMin) / chartSpan) * 75}
+            stroke="currentColor"
+            className="text-emerald-600"
+            strokeDasharray="4 3"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
         <polyline points={points} fill="none" stroke="currentColor" className="text-blue-600" strokeWidth="2" vectorEffect="non-scaling-stroke" />
         {summary.points.map((point, index) => {
           const x = (index / (summary.points.length - 1)) * 100
-          const y = 90 - ((point.value - min) / span) * 75
+          const y = 90 - ((point.value - chartMin) / chartSpan) * 75
           return <circle key={point.id} cx={x} cy={y} r="1.7" className="fill-blue-600" />
         })}
       </svg>
@@ -94,31 +115,12 @@ function TrendChart({ summary }: { summary: ResearchMeasurementSummary }) {
         <span>{summary.points[0].date}</span>
         <span>{summary.points.at(-1)?.date}</span>
       </div>
+      {target !== null && (
+        <p className="mt-2 text-xs text-emerald-700">
+          Dashed line: personal comparison target {target} {summary.points[0].unit}
+        </p>
+      )}
     </div>
-  )
-}
-
-function Consent({ configuration, countryCode, submissionKey }: Pick<Props, "configuration" | "countryCode"> & { submissionKey: string }) {
-  const [state, action] = useActionState(recordResearchMeasurementConsentAction, initialState)
-  return (
-    <form action={action} className="space-y-4 rounded-xl border border-ui-border-base bg-white p-5">
-      <input type="hidden" name="country_code" value={countryCode} />
-      <input type="hidden" name="idempotency_key" value={submissionKey} />
-      <input type="hidden" name="measurement_consent_version" value={configuration.consent_version ?? ""} />
-      <h3 className="font-semibold">Turn on Measurements</h3>
-      <p className="text-sm leading-6 text-ui-fg-subtle">
-        Record weight, waist circumference, and body-fat percentage in your private profile.
-      </p>
-      <label className="flex items-start gap-3 text-sm leading-6">
-        <input type="checkbox" name="accepted" required className="mt-1" />
-        <span>
-          I reviewed and accept the Measurements notice.
-          {configuration.notice_url ? <a className="ml-1 underline" href={configuration.notice_url} target="_blank" rel="noreferrer">Read notice</a> : null}
-        </span>
-      </label>
-      <StateMessage state={state} />
-      <SubmitButton>Enable measurements</SubmitButton>
-    </form>
   )
 }
 
@@ -126,7 +128,29 @@ export default function Measurements(props: Props) {
   const [metric, setMetric] = useState<"weight" | "waist" | "body_fat">("weight")
   const [createState, createAction] = useActionState(createResearchMeasurementAction, initialState)
   const units = metric === "weight" ? ["kg", "lb"] : metric === "waist" ? ["cm", "in"] : ["percent"]
-  const currentConsent = props.configuration.current_consent?.is_current
+  const [range, setRange] = useState<"30" | "90" | "all">("90")
+  const [targetText, setTargetText] = useState("")
+  const cutoff = range === "all" ? null : new Date(Date.now() - Number(range) * 86_400_000)
+  const filteredPoints = props.summary.points.filter(
+    (point) => !cutoff || new Date(`${point.date}T23:59:59`) >= cutoff,
+  )
+  const filteredSummary = { ...props.summary, points: filteredPoints }
+  const target = targetText.trim() && Number.isFinite(Number(targetText)) ? Number(targetText) : null
+  const milestones = props.timeline
+    .filter((event) => ["protocol", "routine", "measurement", "goal"].some((value) => event.type.includes(value)))
+    .filter((event) => !cutoff || new Date(event.occurred_at) >= cutoff)
+    .slice(0, 6)
+
+  function exportCsv() {
+    const rows = ["date,value,unit", ...filteredPoints.map((point) => `${point.date},${point.value},${point.unit}`)]
+    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement("a")
+    anchor.href = url
+    anchor.download = `research-progress-${new Date().toISOString().slice(0, 10)}.csv`
+    anchor.click()
+    URL.revokeObjectURL(url)
+  }
 
   return (
     <section className="mt-10" data-testid="measurements">
@@ -138,13 +162,24 @@ export default function Measurements(props: Props) {
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">Measurements could not be loaded.</div>
       ) : !props.configuration.available ? (
         <div className="rounded-xl border border-ui-border-base bg-white p-5 text-sm text-ui-fg-subtle">Measurements are not enabled in this environment.</div>
-      ) : !currentConsent ? (
-        <Consent configuration={props.configuration} countryCode={props.countryCode} submissionKey={props.submissionKeys.consent} />
       ) : (
         <div className="grid gap-5 large:grid-cols-[minmax(0,1fr)_22rem]">
           <div className="space-y-5">
             {props.summary.summary ? (
               <div className="rounded-xl border border-ui-border-base bg-white p-5">
+                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+                  <div className="flex flex-wrap items-end gap-3">
+                    <label className="text-xs font-medium">Date range
+                      <select className={`mt-1 ${inputClass}`} value={range} onChange={(event) => setRange(event.target.value as typeof range)}>
+                        <option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="all">All time</option>
+                      </select>
+                    </label>
+                    <label className="text-xs font-medium">Comparison target (optional)
+                      <input className={`mt-1 ${inputClass}`} inputMode="decimal" value={targetText} onChange={(event) => setTargetText(event.target.value)} placeholder={props.summary.summary.current_value.toString()} />
+                    </label>
+                  </div>
+                  <button type="button" onClick={exportCsv} className="rounded-lg border border-ui-border-base bg-white px-3 py-2 text-xs font-medium">Export CSV</button>
+                </div>
                 <div className="grid grid-cols-2 gap-3 medium:grid-cols-4">
                   {[
                     ["Current", props.summary.summary.current_value],
@@ -158,9 +193,17 @@ export default function Measurements(props: Props) {
                     </div>
                   ))}
                 </div>
-                <div className="mt-4"><TrendChart summary={props.summary} /></div>
+                <div className="mt-4"><TrendChart summary={filteredSummary} target={target} /></div>
+                {milestones.length > 0 && (
+                  <div className="mt-4 border-t border-ui-border-base pt-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-ui-fg-muted">Timeline markers</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {milestones.map((event) => <span key={event.id} className="rounded-full bg-ui-bg-subtle px-3 py-1 text-xs">{new Date(event.occurred_at).toLocaleDateString("en-PH")} · {event.title}</span>)}
+                    </div>
+                  </div>
+                )}
               </div>
-            ) : <TrendChart summary={props.summary} />}
+            ) : <TrendChart summary={filteredSummary} target={target} />}
             <div className="rounded-xl border border-ui-border-base bg-white p-5">
               <h3 className="font-semibold">Recent entries</h3>
               <div className="mt-3 divide-y divide-ui-border-base">

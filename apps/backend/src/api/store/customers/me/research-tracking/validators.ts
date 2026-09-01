@@ -1,4 +1,12 @@
 import { z } from "@medusajs/framework/zod"
+export {
+  StoreCreateCalculationSnapshot,
+  StoreMutateCalculationSnapshot,
+} from "../../../../../modules/research-tracking/contracts/calculations"
+export {
+  StoreCreatePersonalGoal,
+  StoreMutatePersonalGoal,
+} from "../../../../../modules/research-tracking/contracts/goals"
 
 import { RESEARCH_BASE_UNITS } from "../../../../../lib/research-quantity"
 import {
@@ -232,6 +240,52 @@ export type StoreAdjustResearchOccurrenceType = z.infer<
   typeof StoreAdjustResearchOccurrence
 >
 
+export const StoreUpdateResearchReminderPreferences = z
+  .strictObject({
+    enabled: z.boolean(),
+    timezone: z.string().trim().min(1).max(100),
+    lead_minutes: z.array(z.number().int().min(0).max(10_080)).min(1).max(5),
+    quiet_hours_enabled: z.boolean(),
+    quiet_hours_start: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable().optional(),
+    quiet_hours_end: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable().optional(),
+    daily_summary: z.boolean(),
+    weekly_summary: z.boolean(),
+    replenishment_reminders: z.boolean(),
+    progress_reminders: z.boolean(),
+    journal_prompts: z.boolean(),
+    reward_notifications: z.boolean(),
+  })
+  .superRefine((value, context) => {
+    if (
+      value.quiet_hours_enabled &&
+      (!value.quiet_hours_start || !value.quiet_hours_end)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "quiet hours start and end are required",
+      })
+    }
+  })
+
+export type StoreUpdateResearchReminderPreferencesType = z.infer<
+  typeof StoreUpdateResearchReminderPreferences
+>
+
+export const StoreMutateResearchNotification = z
+  .strictObject({
+    action: z.enum(["read", "dismiss", "snooze"]),
+    snoozed_until: z.iso.datetime().nullable().optional(),
+  })
+  .superRefine((value, context) => {
+    if (value.action === "snooze" && !value.snoozed_until) {
+      context.addIssue({ code: "custom", message: "snoozed_until is required" })
+    }
+  })
+
+export type StoreMutateResearchNotificationType = z.infer<
+  typeof StoreMutateResearchNotification
+>
+
 export const StorePreviewResearchRoutineLog = z.strictObject({
   routine_id: z.string().trim().min(1),
   routine_revision_id: z.string().trim().min(1),
@@ -375,4 +429,13 @@ export const StoreTransitionResearchJournalEntry = z.strictObject({
 
 export type StoreTransitionResearchJournalEntryType = z.infer<
   typeof StoreTransitionResearchJournalEntry
+>
+
+export const StoreMutateResearchReplenishment = z.strictObject({
+  action: z.enum(["remind", "dismiss", "restore"]),
+  remind_at: z.iso.datetime().nullable().optional(),
+})
+
+export type StoreMutateResearchReplenishmentType = z.infer<
+  typeof StoreMutateResearchReplenishment
 >

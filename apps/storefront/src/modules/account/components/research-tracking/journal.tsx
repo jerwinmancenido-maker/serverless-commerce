@@ -2,9 +2,11 @@
 
 import {
   createResearchJournalEntryAction,
-  recordResearchJournalConsentAction,
+  removeResearchJournalAttachmentAction,
+  retrieveResearchJournalAttachmentUrl,
   reviseResearchJournalEntryAction,
   transitionResearchJournalEntryAction,
+  uploadResearchJournalAttachmentAction,
   type ResearchJournalEntry,
   type ResearchPrivateRecordsConfiguration,
   type ResearchRoutine,
@@ -132,6 +134,121 @@ function Confirmation() {
         my account.
       </span>
     </label>
+  )
+}
+
+function JournalAttachments({
+  canMutate,
+  countryCode,
+  entry,
+}: {
+  canMutate: boolean
+  countryCode: string
+  entry: ResearchJournalEntry
+}) {
+  const [uploadState, uploadAction] = useActionState(
+    uploadResearchJournalAttachmentAction,
+    initialState,
+  )
+  const [removeState, removeAction] = useActionState(
+    removeResearchJournalAttachmentAction,
+    initialState,
+  )
+  const [removeSubmissionKey, rotateRemoveSubmissionKey] =
+    useRotatingSubmissionKey()
+  useRotateConsumedKey(removeState, rotateRemoveSubmissionKey)
+  const [openingId, setOpeningId] = useState<string | null>(null)
+  const [openError, setOpenError] = useState<string | null>(null)
+
+  async function openAttachment(attachmentId: string) {
+    setOpeningId(attachmentId)
+    setOpenError(null)
+    try {
+      const url = await retrieveResearchJournalAttachmentUrl(attachmentId)
+      window.open(url, "_blank", "noopener,noreferrer")
+    } catch (error) {
+      setOpenError(
+        error instanceof Error ? error.message : "Attachment could not be opened.",
+      )
+    } finally {
+      setOpeningId(null)
+    }
+  }
+
+  return (
+    <div className="mt-4 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h4 className="text-sm font-medium">Private attachments</h4>
+          <p className="mt-1 text-xs leading-5 text-ui-fg-muted">
+            PNG, JPEG, or PDF up to 10 MiB. Files are private to this account.
+            Automated malware scanning is not configured in this environment.
+          </p>
+        </div>
+      </div>
+      {entry.attachments.length ? (
+        <ul className="mt-3 space-y-2">
+          {entry.attachments.map((attachment) => (
+            <li
+              key={attachment.id}
+              className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-white px-3 py-2 text-sm"
+            >
+              <div className="min-w-0">
+                <p className="truncate font-medium">{attachment.file_name}</p>
+                <p className="text-xs text-ui-fg-muted">
+                  {(attachment.size_bytes / 1024).toFixed(1)} KiB · scan {attachment.scan_status}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="rounded-md border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium"
+                  disabled={openingId === attachment.id}
+                  onClick={() => openAttachment(attachment.id)}
+                >
+                  {openingId === attachment.id ? "Opening…" : "Open"}
+                </button>
+                {canMutate && (
+                  <form action={removeAction}>
+                    <input type="hidden" name="country_code" value={countryCode} />
+                    <input type="hidden" name="attachment_id" value={attachment.id} />
+                    <input type="hidden" name="idempotency_key" value={removeSubmissionKey} />
+                    <button
+                      type="submit"
+                      className="rounded-md border border-rose-200 bg-white px-3 py-1.5 text-xs font-medium text-rose-700"
+                    >
+                      Remove
+                    </button>
+                  </form>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-3 text-xs text-ui-fg-muted">No attachments.</p>
+      )}
+      {canMutate && entry.status === "active" && (
+        <form action={uploadAction} className="mt-3 flex flex-wrap items-end gap-3">
+          <input type="hidden" name="country_code" value={countryCode} />
+          <input type="hidden" name="journal_entry_id" value={entry.journal_entry_id} />
+          <label className="min-w-0 flex-1 text-xs font-medium">
+            Add a file
+            <input
+              className="mt-1 block w-full text-xs"
+              type="file"
+              name="attachment"
+              accept="image/png,image/jpeg,application/pdf"
+              required
+            />
+          </label>
+          <SubmitButton>Upload</SubmitButton>
+        </form>
+      )}
+      <ActionMessage state={uploadState} />
+      <ActionMessage state={removeState} />
+      {openError && <p className="mt-2 text-sm text-rose-700">{openError}</p>}
+    </div>
   )
 }
 
@@ -297,6 +414,12 @@ function JournalEntryCard({
         {revision.note}
       </p>
 
+      <JournalAttachments
+        canMutate={canMutate}
+        countryCode={countryCode}
+        entry={entry}
+      />
+
       {canMutate && entry.status === "active" && (
         <details className="mt-4 rounded-lg border border-ui-border-base p-3">
           <summary className="cursor-pointer text-sm font-medium">
@@ -408,8 +531,8 @@ function JournalEntryCard({
 
 export default function Journal({
   canMutate,
-  configuration,
-  consentSubmissionKey,
+  configuration: _configuration,
+  consentSubmissionKey: _consentSubmissionKey,
   countryCode,
   entries,
   entryCount,
@@ -426,22 +549,12 @@ export default function Journal({
     createResearchJournalEntryAction,
     initialState,
   )
-  const [consentState, consentAction] = useActionState(
-    recordResearchJournalConsentAction,
-    initialState,
-  )
   const [createKey, rotateCreateKey] = useRotatingSubmissionKey(
     submissionKeys.create,
   )
-  const [consentKey, rotateConsentKey] = useRotatingSubmissionKey(
-    consentSubmissionKey,
-  )
   useRotateConsumedKey(createState, rotateCreateKey)
-  useRotateConsumedKey(consentState, rotateConsentKey)
   const currentPage = Math.floor(offset / limit) + 1
   const totalPages = Math.max(1, Math.ceil(entryCount / limit))
-  const currentJournalConsent =
-    configuration.current_consent?.is_current === true
 
   return (
     <section className="mt-10" data-testid="research-journal">
@@ -455,81 +568,6 @@ export default function Journal({
           descriptive records only and are not medical advice or clinical
           interpretation.
         </p>
-      </div>
-
-      <div className={`${cardClass} mb-5`}>
-        <h3 className="text-base font-semibold">Journal privacy choice</h3>
-        {!configuration.available ? (
-          <p className="mt-2 text-sm leading-6 text-ui-fg-subtle">
-            Journal changes are not currently available. Existing entries remain
-            readable when your account data can be verified.
-          </p>
-        ) : currentJournalConsent ? (
-          <div className="mt-2">
-            <p className="text-sm leading-6 text-ui-fg-subtle">
-              Journal consent version {configuration.consent_version} is
-              current.
-            </p>
-            <form action={consentAction} className="mt-3 space-y-3">
-              <HiddenContext
-                countryCode={countryCode}
-                idempotencyKey={consentKey}
-              />
-              <input
-                type="hidden"
-                name="journal_consent_version"
-                value={configuration.consent_version ?? ""}
-              />
-              <input type="hidden" name="consent_action" value="withdraw" />
-              <label className="flex items-start gap-3 text-sm leading-6 text-ui-fg-subtle">
-                <input
-                  className="mt-1"
-                  type="checkbox"
-                  name="confirm_withdrawal"
-                  required
-                />
-                <span>
-                  Disable new Journal entries and changes. Existing entries
-                  remain readable in this account.
-                </span>
-              </label>
-              <ActionMessage state={consentState} />
-              <SubmitButton>Disable Journal changes</SubmitButton>
-            </form>
-          </div>
-        ) : (
-          <form action={consentAction} className="mt-3 space-y-3">
-            <HiddenContext
-              countryCode={countryCode}
-              idempotencyKey={consentKey}
-            />
-            <input
-              type="hidden"
-              name="journal_consent_version"
-              value={configuration.consent_version ?? ""}
-            />
-            <input type="hidden" name="consent_action" value="accept" />
-            <label className="flex items-start gap-3 text-sm leading-6 text-ui-fg-subtle">
-              <input className="mt-1" type="checkbox" name="accepted" required />
-              <span>
-                I choose to store private Journal entries under notice version
-                {" "}{configuration.consent_version}.{" "}
-                {configuration.notice_url && (
-                  <a
-                    className="font-medium text-ui-fg-base underline"
-                    href={configuration.notice_url}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    Read the Journal notice
-                  </a>
-                )}
-              </span>
-            </label>
-            <ActionMessage state={consentState} />
-            <SubmitButton>Enable Journal changes</SubmitButton>
-          </form>
-        )}
       </div>
 
       {!runtimeReady ? (

@@ -4,6 +4,7 @@ import {
   recordResearchProtocolRecommendationEvent,
   type ResearchProtocolRecommendation,
 } from "@lib/data/research-protocols"
+import { addToCart } from "@lib/data/cart"
 import { getProductPrice } from "@lib/util/get-product-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
@@ -32,12 +33,16 @@ export default function ProductRecommendations({
   handle,
   items,
   eyebrow = "Product recommendations",
+  countryCode,
 }: {
   handle: string
   items: ResearchRecommendationItem[]
   eyebrow?: string
+  countryCode: string
 }) {
   const [dismissed, setDismissed] = useState<string[]>([])
+  const [adding, setAdding] = useState<string | null>(null)
+  const [cartMessage, setCartMessage] = useState<string | null>(null)
   const visibleItems = useMemo(
     () => items.filter(({ recommendation }) => !dismissed.includes(recommendation.id)),
     [dismissed, items]
@@ -119,6 +124,29 @@ export default function ProductRecommendations({
                     {cheapestPrice.calculated_price}
                   </p>
                 ) : null}
+                {recommendation.product_variant_ids.length === 1 && recommendation.quick_add_enabled ? (
+                  <button
+                    type="button"
+                    disabled={adding === recommendation.id}
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-rounded bg-ui-button-inverted px-4 py-2 text-small-semi text-ui-fg-on-inverted hover:bg-ui-button-inverted-hover disabled:opacity-50"
+                    onClick={async () => {
+                      setAdding(recommendation.id)
+                      setCartMessage(null)
+                      try {
+                        const variantId = recommendation.product_variant_ids[0]
+                        await addToCart({ variantId, quantity: 1, countryCode })
+                        await recordResearchProtocolRecommendationEvent({ handle, recommendation, eventType: "add_to_cart", productVariantId: variantId })
+                        setCartMessage(`${product.title} was added to your cart.`)
+                      } catch (error) {
+                        setCartMessage(error instanceof Error ? error.message : "This item could not be added.")
+                      } finally {
+                        setAdding(null)
+                      }
+                    }}
+                  >
+                    {adding === recommendation.id ? "Adding…" : "Add exact variant"}
+                  </button>
+                ) : (
                 <LocalizedClientLink
                   href={`/products/${product.handle}`}
                   className="mt-4 inline-flex w-full items-center justify-center rounded-rounded bg-ui-button-inverted px-4 py-2 text-small-semi text-ui-fg-on-inverted hover:bg-ui-button-inverted-hover"
@@ -130,16 +158,15 @@ export default function ProductRecommendations({
                     }).catch(() => undefined)
                   }}
                 >
-                  {recommendation.product_variant_ids.length === 1 &&
-                  recommendation.quick_add_enabled
-                    ? "View and add"
-                    : "Choose options"}
+                  Choose options
                 </LocalizedClientLink>
+                )}
               </div>
             </article>
           )
         })}
       </div>
+      {cartMessage && <p className="mt-2 text-small-regular text-ui-fg-subtle" aria-live="polite">{cartMessage}</p>}
     </section>
   )
 }

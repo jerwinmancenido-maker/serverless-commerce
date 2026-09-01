@@ -17,6 +17,7 @@ import {
   setAuthToken,
   setPendingCustomer,
 } from "./cookies"
+import { acceptResearchAgreement } from "./research-agreement"
 
 export type CustomerAuthState =
   | { state: "error"; error: string }
@@ -83,6 +84,23 @@ export async function signup(
   formData: FormData
 ): Promise<CustomerAuthState> {
   const password = formData.get("password") as string
+  const confirmPassword = formData.get("confirm_password") as string
+  const agreementAccepted = formData.get("agreement_accepted") === "on"
+  const agreementBundleId = formData.get("agreement_bundle_id") as string
+  const agreementIdempotencyKey = formData.get(
+    "agreement_idempotency_key"
+  ) as string
+  const referralCode = String(formData.get("referral_code") || "").trim()
+
+  if (!agreementAccepted || !agreementBundleId) {
+    return {
+      state: "error",
+      error: "Review and accept the account agreement to continue.",
+    }
+  }
+  if (password !== confirmPassword) {
+    return { state: "error", error: "Passwords do not match." }
+  }
   const customerForm = {
     email: formData.get("email") as string,
     first_name: formData.get("first_name") as string,
@@ -111,7 +129,13 @@ export async function signup(
   // Persist the extra signup fields. The customer record is created during
   // login, which is deferred until after email verification when the backend
   // requires it.
-  await setPendingCustomer(customerForm)
+  await setPendingCustomer({
+    ...customerForm,
+    agreement_bundle_id: agreementBundleId,
+    agreement_idempotency_key: agreementIdempotencyKey,
+    agreement_locale: "en-PH",
+    referral_code: referralCode || undefined,
+  })
 
   // Continue by logging in. The login response tells us whether the backend
   // requires email verification — we don't need a storefront-side flag.
@@ -158,7 +182,7 @@ async function completeLogin(
     typeof result === "object" &&
     "verification_required" in result &&
     result.verification_required
-  ) {
+) {
     try {
       await requestVerificationEmail(email, result.token)
     } catch {
@@ -186,8 +210,9 @@ async function completeLogin(
     .then(() => true)
     .catch(() => false)
 
+  const pending = await getPendingCustomer()
+
   if (!customerExists) {
-    const pending = await getPendingCustomer()
 
     try {
       await sdk.store.customer.create(
@@ -209,10 +234,38 @@ async function completeLogin(
       return { state: "error", error: String(error) }
     }
 
-    await removePendingCustomer()
   }
 
   await setAuthToken(token)
+
+  if (pending?.agreement_bundle_id && pending.agreement_idempotency_key) {
+    try {
+      await acceptResearchAgreement({
+        agreement_bundle_id: pending.agreement_bundle_id,
+        acceptance_source: "signup",
+        locale: pending.agreement_locale || "en-PH",
+        idempotency_key: pending.agreement_idempotency_key,
+        authorization: `Bearer ${token}`,
+      })
+    } catch {
+      return {
+        state: "error",
+        error:
+          "Your account was created, but setup is incomplete. Sign in again to finish setup.",
+      }
+    }
+  }
+
+  if (pending?.referral_code) {
+    await sdk.client
+      .fetch("/store/customers/me/rewards/referrals/claim", {
+        method: "POST",
+        headers: { authorization: `Bearer ${token}` },
+        body: { code: pending.referral_code },
+      })
+      .catch(() => null)
+  }
+  if (pending) await removePendingCustomer()
 
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)
@@ -301,6 +354,10 @@ export const addCustomerAddress = async (
   return sdk.store.customer
     .createAddress(address, {}, headers)
     .then(async () => {
+      await sdk.client.fetch(
+        "/store/customers/me/rewards/achievements/address",
+        { method: "POST", headers }
+      ).catch(() => null)
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
       return { success: true, error: null }

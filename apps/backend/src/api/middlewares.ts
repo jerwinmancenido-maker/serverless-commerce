@@ -13,9 +13,15 @@ import { adminCompoundedProductPresentationMiddlewares } from "./admin/compounde
 import { adminCompoundCatalogMiddlewares } from "./admin/compounded-product/families/middlewares"
 import { adminManualPaymentProofMiddlewares } from "./admin/manual-payment-proofs/middlewares"
 import { adminResearchProtocolMiddlewares } from "./admin/research-protocols/middlewares"
+import { adminResearchAgreementMiddlewares } from "./admin/research-agreements/middlewares"
+import { adminRewardsMiddlewares } from "./admin/rewards/middlewares"
+import { adminResearchHubMiddlewares } from "./admin/research-hub/middlewares"
 import { storeManualPaymentProofMiddlewares } from "./store/customers/me/orders/[id]/manual-payment-proof/middlewares"
 import { storeResearchTrackingMiddlewares } from "./store/customers/me/research-tracking/middlewares"
+import { storeResearchAgreementMiddlewares } from "./store/customers/me/research-agreement/middlewares"
+import { storeRewardsMiddlewares } from "./store/customers/me/rewards/middlewares"
 import { storeResearchProtocolCommentMiddlewares } from "./store/research-protocol-comments/middlewares"
+import { storeResearchProtocolRecommendationMiddlewares } from "./store/research-protocols/[handle]/recommendations/middlewares"
 
 const defaultErrorHandler = errorHandler()
 
@@ -47,9 +53,15 @@ export default defineMiddlewares({
     ...adminCompoundedProductProductMiddlewares,
     ...adminCompoundedProductPresentationMiddlewares,
     ...adminManualPaymentProofMiddlewares,
+    ...adminResearchAgreementMiddlewares,
+    ...adminRewardsMiddlewares,
+    ...adminResearchHubMiddlewares,
     ...adminResearchProtocolMiddlewares,
     ...storeManualPaymentProofMiddlewares,
     ...storeResearchProtocolCommentMiddlewares,
+    ...storeResearchProtocolRecommendationMiddlewares,
+    ...storeResearchAgreementMiddlewares,
+    ...storeRewardsMiddlewares,
     ...storeResearchTrackingMiddlewares,
   ],
 })

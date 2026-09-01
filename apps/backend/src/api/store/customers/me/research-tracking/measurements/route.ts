@@ -3,6 +3,8 @@ import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/frame
 import { getResearchTrackingCustomerConfiguration } from "../../../../../../modules/research-tracking/config"
 import { listOwnedResearchMeasurements } from "../../../../../../modules/research-tracking/queries/measurements"
 import { manageResearchMeasurementWorkflow } from "../../../../../../workflows/manage-research-measurement"
+import { awardRewardEventSafely } from "../../../../../../workflows/award-reward-event"
+import { evaluateAndAwardResearchGoals } from "../../../../../../workflows/evaluate-and-award-research-goals"
 import type {
   StoreCreateResearchMeasurementType,
   StoreListResearchMeasurementsType,
@@ -59,5 +61,33 @@ export async function POST(
     },
     context: createResearchWorkflowContext(customerId, "measurement-create", idempotencyKey),
   })
+  if (result.created) {
+    await awardRewardEventSafely(req.scope, {
+      customer_id: customerId,
+      event_type: "first_measurement",
+      source_type: "first_measurement",
+      source_id: idempotencyKey,
+      idempotency_key: `first-measurement:${idempotencyKey}`,
+    })
+    const measurementDate = new Date(
+      `${req.validatedBody.local_date}T00:00:00.000Z`,
+    )
+    const monday = new Date(measurementDate)
+    monday.setUTCDate(
+      measurementDate.getUTCDate() - ((measurementDate.getUTCDay() + 6) % 7),
+    )
+    const weekFrom = monday.toISOString().slice(0, 10)
+    await awardRewardEventSafely(req.scope, {
+      customer_id: customerId,
+      event_type: "measurement_weekly",
+      source_type: "measurement_weekly",
+      source_id: `${req.validatedBody.metric_type}:${weekFrom}`,
+      idempotency_key: `measurement-weekly:${customerId}:${req.validatedBody.metric_type}:${weekFrom}`,
+    })
+    await evaluateAndAwardResearchGoals(req.scope, {
+      customerId,
+      today: req.validatedBody.local_date,
+    })
+  }
   res.status(result.created ? 201 : 200).json(result)
 }

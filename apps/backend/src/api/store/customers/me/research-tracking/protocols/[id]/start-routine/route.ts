@@ -5,6 +5,7 @@ import type {
 
 import { getResearchTrackingCustomerConfiguration } from "../../../../../../../../modules/research-tracking/config"
 import { startProtocolDerivedRoutineWorkflow } from "../../../../../../../../workflows/start-protocol-derived-routine"
+import { awardRewardEventSafely } from "../../../../../../../../workflows/award-reward-event"
 import type { StoreStartProtocolRoutineType } from "../../../validators"
 import {
   createResearchWorkflowContext,
@@ -46,6 +47,22 @@ export async function POST(
       idempotencyKey,
     ),
   })
+  await awardRewardEventSafely(req.scope, {
+    customer_id: customerId,
+    event_type: "first_protocol_review",
+    source_type: "first_protocol_review",
+    source_id: req.params.id,
+    idempotency_key: `first-protocol-review:${req.params.id}`,
+  })
+  if (result.created) {
+    await awardRewardEventSafely(req.scope, {
+      customer_id: customerId,
+      event_type: "first_routine",
+      source_type: "first_routine",
+      source_id: idempotencyKey,
+      idempotency_key: `first-routine:${idempotencyKey}`,
+    })
+  }
 
   res.status(result.created ? 201 : 200).json(result)
 }

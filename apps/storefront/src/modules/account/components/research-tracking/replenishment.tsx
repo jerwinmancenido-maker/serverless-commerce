@@ -1,5 +1,13 @@
-import type { ResearchReplenishmentProjection } from "@lib/data/research-tracking"
+"use client"
+
+import { addToCart } from "@lib/data/cart"
+import {
+  mutateResearchReplenishmentAction,
+  type ResearchReplenishmentProjection,
+} from "@lib/data/research-tracking"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useResearchSubmissionKey } from "./use-research-submission-key"
+import { useActionState, useState, useTransition } from "react"
 
 const urgencyLabels = {
   reorder_now: ["Reorder soon", "bg-amber-50 text-amber-800"],
@@ -11,9 +19,11 @@ const urgencyLabels = {
 export default function Replenishment({
   projections,
   runtimeReady,
+  countryCode,
 }: {
   projections: ResearchReplenishmentProjection[]
   runtimeReady: boolean
+  countryCode: string
 }) {
   if (!runtimeReady) {
     return (
@@ -84,10 +94,82 @@ export default function Replenishment({
                   View product
                 </LocalizedClientLink>
               ) : null}
+              <ReplenishmentActions projection={projection} countryCode={countryCode} />
             </article>
           )
         })}
       </div>
     </section>
+  )
+}
+
+function ReplenishmentActions({
+  projection,
+  countryCode,
+}: {
+  projection: ResearchReplenishmentProjection
+  countryCode: string
+}) {
+  const [state, action] = useActionState(mutateResearchReplenishmentAction, {
+    success: false,
+    error: null,
+  })
+  const submissionKey = useResearchSubmissionKey(state)
+  const [isAdding, startAdding] = useTransition()
+  const [cartMessage, setCartMessage] = useState<string | null>(null)
+  const variantId =
+    projection.source_product_variant_id || projection.product_variant_id
+  const snoozeDays = Math.max(
+    1,
+    projection.default_replenishment_snooze_days || 7,
+  )
+  const remindAt = new Date(Date.now() + snoozeDays * 86_400_000).toISOString()
+  return (
+    <div className="mt-4 border-t border-ui-border-base pt-4">
+      <div className="flex flex-wrap gap-2">
+        {variantId && (
+          <button
+            type="button"
+            disabled={isAdding}
+            className="rounded-lg bg-ui-fg-base px-3 py-2 text-sm font-medium text-ui-bg-base disabled:opacity-50"
+            onClick={() =>
+              startAdding(async () => {
+                setCartMessage(null)
+                try {
+                  await addToCart({ variantId, quantity: 1, countryCode })
+                  setCartMessage("Exact product variant added to cart.")
+                } catch (error) {
+                  setCartMessage(
+                    error instanceof Error ? error.message : "Could not add this variant.",
+                  )
+                }
+              })
+            }
+          >
+            {isAdding ? "Adding…" : "Add exact variant"}
+          </button>
+        )}
+        <form action={action}>
+          <input type="hidden" name="country_code" value={countryCode} />
+          <input type="hidden" name="idempotency_key" value={submissionKey} />
+          <input type="hidden" name="routine_id" value={projection.routine_id} />
+          <input type="hidden" name="action" value="remind" />
+          <input type="hidden" name="remind_at" value={remindAt} />
+          <button className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium">Remind in {snoozeDays} days</button>
+        </form>
+        <form action={action}>
+          <input type="hidden" name="country_code" value={countryCode} />
+          <input type="hidden" name="idempotency_key" value={submissionKey} />
+          <input type="hidden" name="routine_id" value={projection.routine_id} />
+          <input type="hidden" name="action" value="dismiss" />
+          <button className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium">Dismiss</button>
+        </form>
+      </div>
+      {(state.error || state.success || cartMessage) && (
+        <p className={`mt-2 text-xs ${state.error ? "text-ui-fg-error" : "text-emerald-700"}`}>
+          {state.error || cartMessage || "Supply reminder updated."}
+        </p>
+      )}
+    </div>
   )
 }

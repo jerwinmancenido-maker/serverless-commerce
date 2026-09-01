@@ -145,6 +145,11 @@ export async function GET(
         routine_started_at: access.routine_started_at,
         routine_id: access.routine_id,
         routine_levels: routineLevels,
+        protocol_series_id: access.protocol_series_id,
+        protocol_revision_id: access.protocol_revision_id,
+        calculator: parsedContent?.success
+          ? parsedContent.data.calculator
+          : null,
         order: {
           id: access.order_id,
           display_id: order?.display_id ?? access.order_id,

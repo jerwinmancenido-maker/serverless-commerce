@@ -8,7 +8,13 @@ import {
 } from "@medusajs/framework/utils"
 
 import ResearchConsentEvent from "./models/research-consent-event"
+import ResearchCalculationSnapshot from "./models/research-calculation-snapshot"
+import ResearchPersonalGoal from "./models/research-personal-goal"
+import ResearchJournalAttachment from "./models/research-journal-attachment"
+import ResearchAgreementAcceptance from "./models/research-agreement-acceptance"
+import ResearchAgreementBundle from "./models/research-agreement-bundle"
 import ResearchJournalConsentEvent from "./models/research-journal-consent-event"
+import ResearchHubSetting from "./models/research-hub-setting"
 import ResearchJournalEntry from "./models/research-journal-entry"
 import ResearchJournalEntryRevision from "./models/research-journal-entry-revision"
 import ResearchJournalMutation from "./models/research-journal-mutation"
@@ -18,6 +24,8 @@ import ResearchMeasurementEntry from "./models/research-measurement-entry"
 import ResearchMeasurementMutation from "./models/research-measurement-mutation"
 import ResearchMeasurementRevision from "./models/research-measurement-revision"
 import ResearchOccurrenceAdjustment from "./models/research-occurrence-adjustment"
+import ResearchNotification from "./models/research-notification"
+import ResearchNotificationDeliveryAttempt from "./models/research-notification-delivery-attempt"
 import ResearchPreferenceMutation from "./models/research-preference-mutation"
 import ResearchPrivacyRequest from "./models/research-privacy-request"
 import ResearchProfile from "./models/research-profile"
@@ -29,6 +37,8 @@ import ResearchRoutineMutation from "./models/research-routine-mutation"
 import ResearchRoutineRevision from "./models/research-routine-revision"
 import ResearchRoutineScheduleSegment from "./models/research-routine-schedule-segment"
 import ResearchRoutineStateTransition from "./models/research-routine-state-transition"
+import ResearchReminderPreference from "./models/research-reminder-preference"
+import ResearchReplenishmentPreference from "./models/research-replenishment-preference"
 import ResearchSupply from "./models/research-supply"
 import ResearchSupplyActivation from "./models/research-supply-activation"
 import ResearchSupplyActivationRequest from "./models/research-supply-activation-request"
@@ -231,8 +241,14 @@ type MutateResearchRoutineLogWrite = {
 }
 
 class ResearchTrackingModuleService extends MedusaService({
+  ResearchAgreementAcceptance,
+  ResearchAgreementBundle,
+  ResearchCalculationSnapshot,
+  ResearchPersonalGoal,
+  ResearchJournalAttachment,
   ResearchConsentEvent,
   ResearchJournalConsentEvent,
+  ResearchHubSetting,
   ResearchJournalEntry,
   ResearchJournalEntryRevision,
   ResearchJournalMutation,
@@ -242,6 +258,8 @@ class ResearchTrackingModuleService extends MedusaService({
   ResearchMeasurementMutation,
   ResearchMeasurementRevision,
   ResearchOccurrenceAdjustment,
+  ResearchNotification,
+  ResearchNotificationDeliveryAttempt,
   ResearchPreferenceMutation,
   ResearchPrivacyRequest,
   ResearchProfile,
@@ -253,6 +271,8 @@ class ResearchTrackingModuleService extends MedusaService({
   ResearchRoutineRevision,
   ResearchRoutineScheduleSegment,
   ResearchRoutineStateTransition,
+  ResearchReminderPreference,
+  ResearchReplenishmentPreference,
   ResearchSupply,
   ResearchSupplyActivation,
   ResearchSupplyActivationRequest,

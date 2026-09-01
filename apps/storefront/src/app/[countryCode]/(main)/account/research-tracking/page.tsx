@@ -8,12 +8,15 @@ import {
   retrievePurchasedItemCandidates,
   retrieveResearchProfile,
   retrieveResearchProtocolAccesses,
+  retrieveResearchCalculationSnapshots,
+  retrieveResearchPersonalGoals,
   retrieveResearchJournalEntries,
   retrieveResearchPrivateRecordsConfiguration,
   retrieveResearchMeasurements,
   retrieveResearchMeasurementSummary,
   retrieveResearchTimeline,
   retrieveResearchOccurrences,
+  retrieveResearchNotifications,
   retrieveResearchRoutineLogs,
   retrieveResearchRoutines,
   retrieveResearchReplenishmentProjections,
@@ -28,7 +31,10 @@ import {
   type ResearchTimelineEvent,
   type ResearchProfile,
   type ResearchProtocolAccess,
+  type ResearchCalculationSnapshot,
+  type ResearchPersonalGoal,
   type ResearchOccurrence,
+  type ResearchNotification,
   type ResearchRoutine,
   type ResearchRoutineLog,
   type ResearchReplenishmentProjection,
@@ -47,6 +53,7 @@ import {
 } from "@lib/data/research-protocols"
 import { listProducts } from "@lib/data/products"
 import type { ResearchRecommendationItem } from "@modules/research-protocols/product-recommendations"
+import { retrieveRewardsSummary, type RewardsSummary } from "@lib/data/rewards"
 
 export const metadata: Metadata = {
   title: "Research & Tracking",
@@ -110,7 +117,13 @@ function addCalendarDays(localDate: string, days: number): string {
 async function loadProtocolRecommendations(input: {
   countryCode: string
   handle: string
-  placement: "my_protocols" | "dashboard"
+  placement:
+    | "my_protocols"
+    | "dashboard"
+    | "today"
+    | "calendar"
+    | "replenishment"
+    | "after_activity"
   excludedProductIds: string[]
 }): Promise<ResearchRecommendationItem[]> {
   const recommendationResult = await listResearchProtocolRecommendations({
@@ -145,10 +158,34 @@ export default async function ResearchTrackingPage({
   searchParams,
 }: {
   params: Promise<{ countryCode: string }>
-  searchParams: Promise<{ journalPage?: string }>
+  searchParams: Promise<{
+    calendarDate?: string
+    journalPage?: string
+    section?: string
+  }>
 }) {
   const { countryCode } = await params
-  const requestedJournalPage = Number((await searchParams).journalPage ?? "1")
+  const resolvedSearchParams = await searchParams
+  const requestedJournalPage = Number(resolvedSearchParams.journalPage ?? "1")
+  const section = [
+    "overview",
+    "today",
+    "calendar",
+    "protocols",
+    "routines",
+    "calculator",
+    "progress",
+    "journal",
+    "timeline",
+    "rewards",
+  ].includes(resolvedSearchParams.section || "")
+    ? resolvedSearchParams.section as "overview" | "today" | "calendar" | "protocols" | "routines" | "calculator" | "progress" | "journal" | "timeline" | "rewards"
+    : "overview"
+  const requestedCalendarDate = /^\d{4}-\d{2}-\d{2}$/.test(
+    resolvedSearchParams.calendarDate || "",
+  )
+    ? resolvedSearchParams.calendarDate!
+    : null
   const journalPage =
     Number.isInteger(requestedJournalPage) && requestedJournalPage > 0
       ? requestedJournalPage
@@ -159,6 +196,10 @@ export default async function ResearchTrackingPage({
   let profile: ResearchProfile | null = null
   let privacyRequest: ResearchPrivacyRequest | null = null
   let protocolAccesses: ResearchProtocolAccess[] = []
+  let calculations: ResearchCalculationSnapshot[] = []
+  let goals: ResearchPersonalGoal[] = []
+  let routineStreak = 0
+  let rewards: RewardsSummary | null = null
   let protocolRuntimeReady = true
   let runtimeReady = true
   let purchasedItems: PurchasedItemCandidate[] = []
@@ -166,8 +207,11 @@ export default async function ResearchTrackingPage({
   let purchasedRuntimeReady = true
   let routines: ResearchRoutine[] = []
   let occurrences: ResearchOccurrence[] = []
+  let notifications: ResearchNotification[] = []
+  let notificationUnreadCount = 0
   let routineLogs: ResearchRoutineLog[] = []
   let routineToday = localDateInTimezone(new Date(), "Asia/Manila")
+  let calendarAnchor = routineToday
   let routineRuntimeReady = true
   let replenishmentProjections: ResearchReplenishmentProjection[] = []
   let replenishmentRuntimeReady = true
@@ -189,6 +233,10 @@ export default async function ResearchTrackingPage({
     items: ResearchRecommendationItem[]
   } | null = null
   let dashboardRecommendations: {
+    handle: string
+    items: ResearchRecommendationItem[]
+  } | null = null
+  let contextRecommendations: {
     handle: string
     items: ResearchRecommendationItem[]
   } | null = null
@@ -231,14 +279,31 @@ export default async function ResearchTrackingPage({
 
     if (profile) {
       try {
+        const [goalResult, rewardResult] = await Promise.all([
+          retrieveResearchPersonalGoals(),
+          retrieveRewardsSummary().catch(() => null),
+        ])
+        goals = goalResult.goals
+        routineStreak = goalResult.streaks.routine
+        rewards = rewardResult
+      } catch {
+        goals = []
+      }
+      try {
         protocolAccesses = await retrieveResearchProtocolAccesses()
+        calculations = await retrieveResearchCalculationSnapshots()
 
         const newestProtocol = protocolAccesses[0]
         if (newestProtocol) {
           const excludedProductIds = Array.from(
             new Set(protocolAccesses.map((access) => access.product.id)),
           )
-          const [myProtocolItems, dashboardItems] = await Promise.all([
+          const contextPlacement = section === "today"
+            ? "today"
+            : section === "calendar"
+              ? "calendar"
+              : "replenishment"
+          const [myProtocolItems, dashboardItems, contextItems] = await Promise.all([
             loadProtocolRecommendations({
               countryCode,
               handle: newestProtocol.protocol_handle,
@@ -251,6 +316,12 @@ export default async function ResearchTrackingPage({
               placement: "dashboard",
               excludedProductIds,
             }),
+            loadProtocolRecommendations({
+              countryCode,
+              handle: newestProtocol.protocol_handle,
+              placement: contextPlacement,
+              excludedProductIds,
+            }),
           ])
           myProtocolsRecommendations = {
             handle: newestProtocol.protocol_handle,
@@ -259,6 +330,10 @@ export default async function ResearchTrackingPage({
           dashboardRecommendations = {
             handle: newestProtocol.protocol_handle,
             items: dashboardItems,
+          }
+          contextRecommendations = {
+            handle: newestProtocol.protocol_handle,
+            items: contextItems,
           }
         }
       } catch {
@@ -289,10 +364,33 @@ export default async function ResearchTrackingPage({
 
         if (profile.status === "active") {
           routineToday = localDateInTimezone(new Date(), profile.timezone)
-          occurrences = await retrieveResearchOccurrences(
-            routineToday,
-            addCalendarDays(routineToday, 6),
+          calendarAnchor = requestedCalendarDate ?? routineToday
+          const calendarDate = new Date(`${calendarAnchor}T00:00:00.000Z`)
+          const calendarStart = new Date(
+            Date.UTC(
+              calendarDate.getUTCFullYear(),
+              calendarDate.getUTCMonth(),
+              1,
+            ),
           )
+          const calendarEnd = new Date(
+            Date.UTC(
+              calendarDate.getUTCFullYear(),
+              calendarDate.getUTCMonth() + 1,
+              0,
+            ),
+          )
+          occurrences = await retrieveResearchOccurrences(
+            section === "calendar"
+              ? calendarStart.toISOString().slice(0, 10)
+              : routineToday,
+            section === "calendar"
+              ? calendarEnd.toISOString().slice(0, 10)
+              : addCalendarDays(routineToday, 6),
+          )
+          const notificationResult = await retrieveResearchNotifications()
+          notifications = notificationResult.notifications
+          notificationUnreadCount = notificationResult.unread_count
         }
       } catch {
         routineRuntimeReady = false
@@ -305,10 +403,16 @@ export default async function ResearchTrackingPage({
 
   return (
     <ResearchTracking
+      section={section}
       configuration={configuration}
       countryCode={countryCode}
       profile={profile}
       protocolAccesses={protocolAccesses}
+      calculations={calculations}
+      calculationSubmissionKey={randomUUID()}
+      goals={goals}
+      routineStreak={routineStreak}
+      rewards={rewards}
       protocolRuntimeReady={protocolRuntimeReady}
       protocolRoutineKeys={Object.fromEntries(
         protocolAccesses.map((access) => [access.profile_access_id, randomUUID()]),
@@ -321,6 +425,8 @@ export default async function ResearchTrackingPage({
       purchasedItems={purchasedItems}
       purchasedRuntimeReady={purchasedRuntimeReady}
       occurrences={occurrences}
+      notifications={notifications}
+      notificationUnreadCount={notificationUnreadCount}
       journalEntries={journalEntries}
       journalCount={journalCount}
       journalLimit={journalLimit}
@@ -356,6 +462,7 @@ export default async function ResearchTrackingPage({
       replenishmentProjections={replenishmentProjections}
       replenishmentRuntimeReady={replenishmentRuntimeReady}
       routineToday={routineToday}
+      calendarAnchor={calendarAnchor}
       routineRuntimeReady={routineRuntimeReady}
       routines={routines}
       routineSubmissionKeys={createRoutineSubmissionKeys(
@@ -369,6 +476,7 @@ export default async function ResearchTrackingPage({
       trackedMaterials={trackedMaterials}
       myProtocolsRecommendations={myProtocolsRecommendations}
       dashboardRecommendations={dashboardRecommendations}
+      contextRecommendations={contextRecommendations}
     />
   )
 }

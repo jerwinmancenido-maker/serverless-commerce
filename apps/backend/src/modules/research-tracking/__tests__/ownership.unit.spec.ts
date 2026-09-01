@@ -8,6 +8,7 @@ import {
   normalizeRecordResearchConsentInput,
   normalizeResearchIdempotencyKey,
   normalizeResearchNoticeSha256,
+  normalizeResearchConsentVersion,
   normalizeResearchTimezone,
   normalizeRequestResearchProfileDeletionInput,
   normalizeUpdateResearchProfilePreferencesInput,
@@ -95,6 +96,10 @@ describe("research tracking ownership contract", () => {
 
   it("normalizes a notice digest to lowercase", () => {
     expect(normalizeResearchNoticeSha256("A".repeat(64))).toBe(noticeSha256)
+  })
+
+  it("accepts the unified agreement date version", () => {
+    expect(normalizeResearchConsentVersion("2026.09.01")).toBe("2026.09.01")
   })
 
   it("keeps the consent notice digest out of workflow projections", () => {

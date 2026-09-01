@@ -12,12 +12,15 @@ import {
   type ResearchTrackingActionState,
   type ResearchTrackingConfiguration,
   type ResearchOccurrence,
+  type ResearchNotification,
   type ResearchJournalEntry,
   type ResearchPrivateRecordsConfiguration,
   type ResearchRoutine,
   type ResearchRoutineLog,
   type ResearchReplenishmentProjection,
   type ResearchProtocolAccess,
+  type ResearchCalculationSnapshot,
+  type ResearchPersonalGoal,
   type ResearchMeasurement,
   type ResearchMeasurementSummary,
   type ResearchTimelineEvent,
@@ -39,15 +42,27 @@ import MyProtocols from "./my-protocols"
 import Measurements from "./measurements"
 import ActivityTimeline from "./activity-timeline"
 import Replenishment from "./replenishment"
+import ResearchCalendar from "./research-calendar"
+import ResearchToday from "./research-today"
+import ResearchCalculator from "./research-calculator"
+import ResearchGoals from "./research-goals"
+import type { RewardsSummary } from "@lib/data/rewards"
 import ProductRecommendations, {
   type ResearchRecommendationItem,
 } from "@modules/research-protocols/product-recommendations"
 
 type ResearchTrackingProps = {
+  section?: "overview" | "today" | "calendar" | "protocols" | "routines" | "calculator" | "progress" | "journal" | "timeline" | "rewards"
+  calendarAnchor: string
   configuration: ResearchTrackingConfiguration
   countryCode: string
   profile: ResearchProfile | null
   protocolAccesses: ResearchProtocolAccess[]
+  calculations: ResearchCalculationSnapshot[]
+  calculationSubmissionKey: string
+  goals: ResearchPersonalGoal[]
+  routineStreak: number
+  rewards: RewardsSummary | null
   protocolRuntimeReady: boolean
   protocolRoutineKeys: Record<string, string>
   privateRecords: ResearchPrivateRecordsConfiguration
@@ -56,6 +71,8 @@ type ResearchTrackingProps = {
   purchasedItems: PurchasedItemCandidate[]
   purchasedRuntimeReady: boolean
   occurrences: ResearchOccurrence[]
+  notifications: ResearchNotification[]
+  notificationUnreadCount: number
   journalEntries: ResearchJournalEntry[]
   journalCount: number
   journalLimit: number
@@ -91,6 +108,10 @@ type ResearchTrackingProps = {
     items: ResearchRecommendationItem[]
   } | null
   dashboardRecommendations: {
+    handle: string
+    items: ResearchRecommendationItem[]
+  } | null
+  contextRecommendations: {
     handle: string
     items: ResearchRecommendationItem[]
   } | null
@@ -147,7 +168,7 @@ function HiddenMutationKey({ value }: { value: string }) {
   return <input type="hidden" name="idempotency_key" value={value} />
 }
 
-function OptInCard({
+export function OptInCard({
   configuration,
   countryCode,
   idempotencyKey,
@@ -224,7 +245,7 @@ function OptInCard({
   )
 }
 
-function PreferencesCard({
+export function PreferencesCard({
   countryCode,
   idempotencyKey,
   profile,
@@ -277,7 +298,7 @@ function PreferencesCard({
   )
 }
 
-function ConsentCard({
+export function ConsentCard({
   configuration,
   countryCode,
   idempotencyKey,
@@ -347,7 +368,7 @@ function ConsentCard({
   )
 }
 
-function PrivacyCard({
+export function PrivacyCard({
   countryCode,
   idempotencyKeys,
   profile,
@@ -458,18 +479,27 @@ function PrivacyCard({
 }
 
 export default function ResearchTracking({
+  section = "overview",
+  calendarAnchor,
   configuration,
   countryCode,
   profile,
   protocolAccesses,
+  calculations,
+  calculationSubmissionKey,
+  goals,
+  routineStreak,
+  rewards,
   protocolRuntimeReady,
   protocolRoutineKeys,
   privateRecords,
-  privacyRequest,
+  privacyRequest: _privacyRequest,
   purchasedActivationKeys,
   purchasedItems,
   purchasedRuntimeReady,
   occurrences,
+  notifications,
+  notificationUnreadCount,
   journalEntries,
   journalCount,
   journalLimit,
@@ -491,10 +521,11 @@ export default function ResearchTracking({
   routines,
   routineSubmissionKeys,
   runtimeReady,
-  submissionKeys,
+  submissionKeys: _submissionKeys,
   trackedMaterials,
   myProtocolsRecommendations,
   dashboardRecommendations,
+  contextRecommendations,
 }: ResearchTrackingProps) {
   return (
     <div className="w-full" data-testid="research-tracking-page">
@@ -502,11 +533,10 @@ export default function ResearchTracking({
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
           Private customer workspace
         </p>
-        <h1 className="mt-2 text-2xl-semi">Research & Tracking</h1>
+        <h1 className="mt-2 text-2xl-semi">Research Hub</h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-ui-fg-subtle">
-          Organize research materials and future customer-created records. This
-          area does not provide medical advice, treatment plans, or product-use
-          recommendations.
+          Your purchased protocols, routines, progress and private observations
+          in one place.
         </p>
       </div>
 
@@ -521,37 +551,20 @@ export default function ResearchTracking({
             later.
           </p>
         </div>
-      ) : profile ? (
-        <div className="grid grid-cols-1 gap-5 large:grid-cols-2">
-          <PreferencesCard
-            countryCode={countryCode}
-            idempotencyKey={submissionKeys.preferencesUpdate}
-            profile={profile}
-          />
-          <ConsentCard
-            configuration={configuration}
-            countryCode={countryCode}
-            idempotencyKey={submissionKeys.consentRenewal}
-            profile={profile}
-          />
-          <div className="large:col-span-2">
-            <PrivacyCard
-              countryCode={countryCode}
-              idempotencyKeys={submissionKeys}
-              profile={profile}
-              privacyRequest={privacyRequest}
-            />
-          </div>
+      ) : !profile ? (
+        <div className={cardClass}>
+          <h2 className="text-lg font-semibold">Finish account setup</h2>
+          <p className="mt-2 text-sm text-ui-fg-subtle">
+            Complete the one-time account agreement to activate your private
+            Research Hub.
+          </p>
+          <a className="mt-4 inline-block text-sm font-medium underline" href={`/${countryCode}/account/complete-setup`}>
+            Continue setup
+          </a>
         </div>
-      ) : (
-        <OptInCard
-          configuration={configuration}
-          countryCode={countryCode}
-          idempotencyKey={submissionKeys.profileCreate}
-        />
-      )}
+      ) : null}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && (section === "overview" || section === "protocols") && (
         <MyProtocols
           protocols={protocolAccesses}
           runtimeReady={protocolRuntimeReady}
@@ -561,15 +574,16 @@ export default function ResearchTracking({
         />
       )}
 
-      {runtimeReady && profile && myProtocolsRecommendations?.items.length ? (
+      {runtimeReady && profile && section === "protocols" && myProtocolsRecommendations?.items.length ? (
         <ProductRecommendations
           handle={myProtocolsRecommendations.handle}
+          countryCode={countryCode}
           items={myProtocolsRecommendations.items}
           eyebrow="For your protocols"
         />
       ) : null}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && section === "overview" && (
         <ProductsAndSupplies
           configuration={configuration}
           countryCode={countryCode}
@@ -581,7 +595,50 @@ export default function ResearchTracking({
         />
       )}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && section === "today" && (
+        <ResearchToday
+          countryCode={countryCode}
+          occurrences={occurrences}
+          routines={routines}
+          today={routineToday}
+          trackedMaterials={trackedMaterials}
+          notifications={notifications}
+          notificationUnreadCount={notificationUnreadCount}
+        />
+      )}
+
+      {runtimeReady && profile && section === "calendar" && (
+        <ResearchCalendar
+          anchorDate={calendarAnchor}
+          countryCode={countryCode}
+          occurrences={occurrences}
+          today={routineToday}
+        />
+      )}
+
+      {runtimeReady && profile && section === "calculator" && (
+        <ResearchCalculator
+          countryCode={countryCode}
+          protocols={protocolAccesses}
+          routines={routines}
+          journalEntries={journalEntries}
+          calculations={calculations}
+          submissionKey={calculationSubmissionKey}
+        />
+      )}
+
+      {runtimeReady && profile && section === "rewards" && (
+        <ResearchGoals
+          countryCode={countryCode}
+          today={routineToday}
+          goals={goals}
+          routineStreak={routineStreak}
+          routines={routines}
+          rewards={rewards}
+        />
+      )}
+
+      {runtimeReady && profile && (section === "overview" || section === "progress") && (
         <Measurements
           configuration={privateRecords.measurements}
           countryCode={countryCode}
@@ -593,29 +650,41 @@ export default function ResearchTracking({
           submissionKeys={measurementSubmissionKeys}
           summary={measurementSummary}
           trackedMaterials={trackedMaterials}
+          timeline={timeline}
         />
       )}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && section === "timeline" && (
         <ActivityTimeline events={timeline} runtimeReady={timelineRuntimeReady} />
       )}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && section === "overview" && (
         <Replenishment
           projections={replenishmentProjections}
           runtimeReady={replenishmentRuntimeReady}
+          countryCode={countryCode}
         />
       )}
 
-      {runtimeReady && profile && dashboardRecommendations?.items.length ? (
+      {runtimeReady && profile && section === "overview" && dashboardRecommendations?.items.length ? (
         <ProductRecommendations
           handle={dashboardRecommendations.handle}
           items={dashboardRecommendations.items}
           eyebrow="Supply and reorder options"
+          countryCode={countryCode}
         />
       ) : null}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && ["today", "calendar"].includes(section) && contextRecommendations?.items.length ? (
+        <ProductRecommendations
+          handle={contextRecommendations.handle}
+          items={contextRecommendations.items}
+          eyebrow={section === "today" ? "Useful for today" : "Related products and supplies"}
+          countryCode={countryCode}
+        />
+      ) : null}
+
+      {runtimeReady && profile && (section === "overview" || section === "routines") && (
         <PersonalRoutines
           canMutate={
             profile.status === "active" &&
@@ -632,7 +701,7 @@ export default function ResearchTracking({
         />
       )}
 
-      {runtimeReady && profile && (
+      {runtimeReady && profile && section === "journal" && (
         <Journal
           canMutate={
             profile.status === "active" &&
@@ -654,6 +723,12 @@ export default function ResearchTracking({
           timezone={profile.timezone}
           trackedMaterials={trackedMaterials}
         />
+      )}
+
+      {runtimeReady && profile && (
+        <p className="mt-8 border-t border-ui-border-base pt-5 text-sm text-ui-fg-subtle">
+          Your Research Hub records are private. <a className="underline" href={`/${countryCode}/account/settings/privacy`}>Manage privacy and data settings.</a>
+        </p>
       )}
 
     </div>

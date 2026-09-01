@@ -82,6 +82,10 @@ export type PendingCustomer = {
   first_name?: string
   last_name?: string
   phone?: string
+  agreement_bundle_id?: string
+  agreement_idempotency_key?: string
+  agreement_locale?: string
+  referral_code?: string
 }
 
 // During the email verification flow the customer record isn't created until
