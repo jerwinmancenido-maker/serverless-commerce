@@ -8,20 +8,26 @@ import OnboardingCta from "@modules/order/components/onboarding-cta"
 import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
+import ManualPaymentProof from "@modules/order/components/manual-payment-proof"
+import type { ManualPaymentProofResponse } from "@lib/data/manual-payment"
 import { HttpTypes } from "@medusajs/types"
 import { listOrderResearchProtocols } from "@lib/data/research-protocols"
 import { ResearchProtocolAccess } from "@modules/order/components/research-protocol-access"
 
 type OrderCompletedTemplateProps = {
   order: HttpTypes.StoreOrder
+  manualPaymentProof?: ManualPaymentProofResponse | null
 }
 
 export default async function OrderCompletedTemplate({
   order,
+  manualPaymentProof,
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
   const countryCode = order.shipping_address?.country_code || "ph"
-  const protocolAccesses = await listOrderResearchProtocols(order.id).then((response) => response.research_protocols).catch(() => [])
+  const protocolAccesses = await listOrderResearchProtocols(order.id)
+    .then((response) => response.research_protocols)
+    .catch(() => [])
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
 
@@ -47,8 +53,17 @@ export default async function OrderCompletedTemplate({
           <Items order={order} />
           <CartTotals totals={order} />
           <ShippingDetails order={order} />
+          {manualPaymentProof ? (
+            <ManualPaymentProof
+              orderId={order.id}
+              initial={manualPaymentProof}
+            />
+          ) : null}
           <PaymentDetails order={order} />
-          <ResearchProtocolAccess accesses={protocolAccesses} countryCode={countryCode} />
+          <ResearchProtocolAccess
+            accesses={protocolAccesses}
+            countryCode={countryCode}
+          />
           <Help />
         </div>
       </div>

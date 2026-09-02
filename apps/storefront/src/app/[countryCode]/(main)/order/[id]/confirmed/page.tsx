@@ -1,4 +1,5 @@
 import { retrieveOrder } from "@lib/data/orders"
+import { retrieveManualPaymentProof } from "@lib/data/manual-payment"
 import OrderCompletedTemplate from "@modules/order/templates/order-completed-template"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -19,5 +20,14 @@ export default async function OrderConfirmedPage(props: Props) {
     return notFound()
   }
 
-  return <OrderCompletedTemplate order={order} />
+  const manualPaymentProof = await retrieveManualPaymentProof(order.id).catch(
+    () => null
+  )
+
+  return (
+    <OrderCompletedTemplate
+      order={order}
+      manualPaymentProof={manualPaymentProof}
+    />
+  )
 }
