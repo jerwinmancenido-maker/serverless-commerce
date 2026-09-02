@@ -83,14 +83,35 @@ export async function submitManualPaymentProof(
   body.set("proof", proof, proof.name)
 
   try {
-    const headers = await getAuthHeaders()
-    const response = await sdk.client.fetch<{
+    const backendUrl =
+      process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const authHeaders = await getAuthHeaders()
+    const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+
+    const res = await fetch(
+      `${backendUrl}/store/customers/me/orders/${orderId}/manual-payment-proof`,
+      {
+        method: "POST",
+        headers: {
+          ...authHeaders,
+          ...(publishableKey ? { "x-publishable-api-key": publishableKey } : {}),
+        },
+        body,
+      },
+    )
+
+    if (!res.ok) {
+      const errJson = (await res.json().catch(() => null)) as
+        | { message?: string }
+        | null
+      throw new Error(
+        errJson?.message || "Payment proof could not be submitted",
+      )
+    }
+
+    const response = (await res.json()) as {
       manual_payment_proof: StoreManualPaymentProof
-    }>(`/store/customers/me/orders/${orderId}/manual-payment-proof`, {
-      method: "POST",
-      headers,
-      body,
-    })
+    }
 
     revalidatePath("/account/orders", "layout")
 
