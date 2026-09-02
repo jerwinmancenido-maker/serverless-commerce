@@ -4,7 +4,7 @@ import PaymentWrapper from "@modules/checkout/components/payment-wrapper"
 import CheckoutForm from "@modules/checkout/templates/checkout-form"
 import CheckoutSummary from "@modules/checkout/templates/checkout-summary"
 import { Metadata } from "next"
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { storeConfig } from "@lib/store-config"
 
 export const metadata: Metadata = {
@@ -14,16 +14,16 @@ export const metadata: Metadata = {
 export default async function Checkout(props: {
   params: Promise<{ countryCode: string }>
 }) {
+  const { countryCode } = await props.params
   const cart = await retrieveCart()
 
-  if (!cart) {
-    return notFound()
+  if (!cart || !cart.items?.length) {
+    redirect(`/${countryCode}/cart`)
   }
 
   const customer = await retrieveCustomer()
 
   if (storeConfig.customerAccountsRequired && !customer) {
-    const { countryCode } = await props.params
     redirect(`/${countryCode}/account`)
   }
 
