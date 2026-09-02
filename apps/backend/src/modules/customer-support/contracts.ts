@@ -16,6 +16,13 @@ export const StoreCreateSupportReply = z.strictObject({
   body: z.string().trim().min(3).max(10_000),
   client_request_id: z.string().trim().min(8).max(100).optional(),
 })
+export const StorePostThreadMessage = z.strictObject({
+  body: z.string().trim().min(1).max(10_000),
+  client_request_id: z.string().trim().min(8).max(100).optional(),
+  order_id: z.string().trim().min(1).max(255).nullable().optional(),
+  protocol_series_id: z.string().trim().min(1).max(255).nullable().optional(),
+  category: z.enum(SUPPORT_CATEGORIES).optional(),
+})
 export const StoreMutateSupportConversation = z.strictObject({ action: z.enum(["close", "reopen"]) })
 export const StoreMarkSupportRead = z.strictObject({
   conversation_id: z.string().trim().min(1).max(255).optional(),
@@ -96,6 +103,7 @@ export const AdminUpsertSupportSavedResponse = z.strictObject({
 
 export type StoreCreateSupportConversation = z.infer<typeof StoreCreateSupportConversation>
 export type StoreCreateSupportReply = z.infer<typeof StoreCreateSupportReply>
+export type StorePostThreadMessage = z.infer<typeof StorePostThreadMessage>
 export type StoreMutateSupportConversation = z.infer<typeof StoreMutateSupportConversation>
 export type StoreMarkSupportRead = z.infer<typeof StoreMarkSupportRead>
 export type AdminUpdateSupportConversation = z.infer<typeof AdminUpdateSupportConversation>
@@ -131,6 +139,17 @@ export const parseStoreCreateSupportReplyPayload = (
   StoreCreateSupportReply.parse({
     body: input.body,
     client_request_id: input.client_request_id,
+  })
+
+export const parseStorePostThreadMessagePayload = (
+  input: StorePostThreadMessage,
+) =>
+  StorePostThreadMessage.parse({
+    body: input.body,
+    client_request_id: input.client_request_id,
+    order_id: input.order_id,
+    protocol_series_id: input.protocol_series_id,
+    category: input.category,
   })
 
 export const parseStoreMutateSupportConversationPayload = (

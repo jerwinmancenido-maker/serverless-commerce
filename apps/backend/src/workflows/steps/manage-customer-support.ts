@@ -10,9 +10,11 @@ import {
   AdminUpdateSupportConversation,
   StoreCreateSupportConversation,
   StoreCreateSupportReply,
+  StorePostThreadMessage,
   StoreMutateSupportConversation,
   parseStoreCreateSupportConversationPayload,
   parseStoreCreateSupportReplyPayload,
+  parseStorePostThreadMessagePayload,
   parseStoreMutateSupportConversationPayload,
 } from "../../modules/customer-support/contracts"
 import type CustomerSupportModuleService from "../../modules/customer-support/service"
@@ -310,4 +312,219 @@ export const adminManageSupportStep = createStep("admin-manage-support", async (
     await service.updateSupportParticipants(participant)
   }
   await service.updateSupportConversations(data.prior)
+})
+
+export type PostThreadMessageInput = StorePostThreadMessage & { customer_id: string }
+export const postThreadMessageStep = createStep("post-thread-message", async (raw: PostThreadMessageInput, { container }) => {
+  const input = parseStorePostThreadMessagePayload(raw)
+  const service = container.resolve<CustomerSupportModuleService>(CUSTOMER_SUPPORT_MODULE)
+  const { settings, categories } = await resolveSupportConfiguration(container)
+  if (!settings.support_enabled) {
+    throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Customer support is currently unavailable")
+  }
+  const recent = await service.listSupportMessages(
+    { sender_type: "customer", sender_id: raw.customer_id },
+    { take: 100, order: { sent_at: "DESC" } },
+  )
+  const hourAgo = Date.now() - 3_600_000
+  if (recent.filter((item) => new Date(item.sent_at).getTime() >= hourAgo).length >= settings.customer_message_limit_per_hour) {
+    throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Support message limit reached. Try again later.")
+  }
+  const now = new Date()
+  let [conversation] = await service.listSupportConversations(
+    { customer_id: raw.customer_id },
+    { order: { last_activity_at: "DESC" }, take: 1 },
+  )
+  let isNew = false
+  if (!conversation) {
+    isNew = true
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
+    const { data: customers } = await query.graph({
+      entity: "customer",
+      fields: ["id", "first_name", "last_name"],
+      filters: { id: raw.customer_id },
+      pagination: { take: 1 },
+    })
+    const firstName = customers?.[0]?.first_name || "Customer"
+    const categoryKey = input.category || "other"
+    const category = categories.find((item: any) => item.key === categoryKey)
+    conversation = await service.createSupportConversations({
+      customer_id: raw.customer_id,
+      client_request_id: input.client_request_id || null,
+      subject: `Chat — ${firstName}`,
+      category: categoryKey,
+      status: "new",
+      priority: category?.default_priority || "normal",
+      order_id: input.order_id || null,
+      protocol_series_id: input.protocol_series_id || null,
+      assigned_to_actor_id: null,
+      opened_at: now,
+      last_activity_at: now,
+      latest_customer_message_at: now,
+      latest_staff_message_at: null,
+      first_staff_response_at: null,
+      resolved_at: null,
+      closed_at: null,
+    })
+    await service.createSupportParticipants({
+      conversation_id: conversation.id,
+      participant_type: "customer",
+      participant_id: raw.customer_id,
+      joined_at: now,
+      last_read_at: now,
+      last_notified_at: null,
+      left_at: null,
+    })
+    await service.createSupportStatusEvents({
+      conversation_id: conversation.id,
+      from_status: null,
+      to_status: "new",
+      actor_type: "customer",
+      actor_id: raw.customer_id,
+      reason: null,
+      occurred_at: now,
+    })
+  } else {
+    await service.updateSupportConversations({
+      id: conversation.id,
+      status: "open",
+      closed_at: null,
+      resolved_at: null,
+      last_activity_at: now,
+      latest_customer_message_at: now,
+    })
+  }
+  if (input.client_request_id) {
+    const [existing] = await service.listSupportMessages(
+      {
+        conversation_id: conversation.id,
+        sender_type: "customer",
+        client_request_id: input.client_request_id,
+      },
+      { take: 1 },
+    )
+    if (existing) {
+      return new StepResponse({ conversation, message: existing }, null)
+    }
+  }
+  const message = await service.createSupportMessages({
+    conversation_id: conversation.id,
+    sender_type: "customer",
+    sender_id: raw.customer_id,
+    body: cleanText(input.body),
+    client_request_id: input.client_request_id || null,
+    sent_at: now,
+    edited_at: null,
+  })
+  let acknowledgement = null
+  if (isNew && settings.auto_acknowledgement_enabled) {
+    acknowledgement = await service.createSupportMessages({
+      conversation_id: conversation.id,
+      sender_type: "system",
+      sender_id: "automatic-acknowledgement",
+      body: cleanText(settings.auto_acknowledgement_text),
+      client_request_id: null,
+      sent_at: now,
+      edited_at: null,
+    })
+  }
+  return new StepResponse({ conversation, message, acknowledgement }, { messageId: message.id })
+}, async (data, { container }) => {
+  if (data?.messageId) {
+    const service = container.resolve<CustomerSupportModuleService>(CUSTOMER_SUPPORT_MODULE)
+    await service.deleteSupportMessages(data.messageId)
+  }
+})
+
+export type EnsureSupportThreadInput = { customer_id: string }
+export const ensureSupportThreadStep = createStep("ensure-support-thread", async (raw: EnsureSupportThreadInput, { container }) => {
+  const service = container.resolve<CustomerSupportModuleService>(CUSTOMER_SUPPORT_MODULE)
+  const customerId = raw.customer_id
+  const now = new Date()
+
+  let [conversation] = await service.listSupportConversations(
+    { customer_id: customerId },
+    { order: { last_activity_at: "DESC" }, take: 1 },
+  )
+
+  if (!conversation) {
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
+    const { data: customers } = await query.graph({
+      entity: "customer",
+      fields: ["id", "first_name", "last_name"],
+      filters: { id: customerId },
+      pagination: { take: 1 },
+    })
+    const firstName = customers?.[0]?.first_name || "Customer"
+    const { categories } = await resolveSupportConfiguration(container)
+    const defaultCategory = categories?.[0]?.key || "other"
+
+    conversation = await service.createSupportConversations({
+      customer_id: customerId,
+      client_request_id: null,
+      subject: `Chat — ${firstName}`,
+      category: defaultCategory,
+      status: "new",
+      priority: "normal",
+      order_id: null,
+      protocol_series_id: null,
+      assigned_to_actor_id: null,
+      opened_at: now,
+      last_activity_at: now,
+      latest_customer_message_at: null,
+      latest_staff_message_at: null,
+      first_staff_response_at: null,
+      resolved_at: null,
+      closed_at: null,
+    })
+
+    await service.createSupportParticipants({
+      conversation_id: conversation.id,
+      participant_type: "customer",
+      participant_id: customerId,
+      joined_at: now,
+      last_read_at: now,
+      last_notified_at: null,
+      left_at: null,
+    })
+  } else {
+    const [participant] = await service.listSupportParticipants(
+      {
+        conversation_id: conversation.id,
+        participant_type: "customer",
+        participant_id: customerId,
+      },
+      { take: 1 },
+    )
+    if (participant) {
+      await service.updateSupportParticipants({
+        id: participant.id,
+        last_read_at: now,
+      })
+    }
+  }
+
+  const messages = await service.listSupportMessages(
+    { conversation_id: conversation.id },
+    { order: { sent_at: "ASC" }, take: 250 },
+  )
+  const attachments = await service.listSupportAttachments({
+    conversation_id: conversation.id,
+    status: "active",
+  })
+
+  const [staffParticipant] = await service.listSupportParticipants(
+    {
+      conversation_id: conversation.id,
+      participant_type: "staff",
+    },
+    { order: { last_read_at: "DESC" }, take: 1 },
+  )
+
+  return new StepResponse({
+    conversation,
+    messages,
+    attachments,
+    staff_last_read_at: staffParticipant?.last_read_at || null,
+  })
 })

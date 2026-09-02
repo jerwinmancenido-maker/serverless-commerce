@@ -9,7 +9,7 @@ describe("presentation-only product creation", () => {
 
     expect(source).toContain("<Label>Product format</Label>")
     expect(source).toContain("Add product format")
-    expect(source).toContain("Product format is optional for a draft")
+    expect(source).toContain("Physical format such as Vial, Nasal Spray, Oral, or Topical")
     expect(source).not.toContain("<Label>Presentation</Label>")
     expect(source).not.toContain("Add presentation")
     expect(source).toContain("compound_family_id: null")
