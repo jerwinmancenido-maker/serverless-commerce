@@ -347,8 +347,12 @@ const CompoundedProductsPage = () => {
   }, [selectedStockLocationId, stockLocationsQuery.data?.stock_locations])
 
   useEffect(() => {
-    if (!pricingCurrencyCode && currencies.length === 1) {
-      setPricingCurrencyCode(currencies[0])
+    if (!pricingCurrencyCode) {
+      if (currencies.includes("PHP")) {
+        setPricingCurrencyCode("PHP")
+      } else if (currencies.length > 0) {
+        setPricingCurrencyCode(currencies[0])
+      }
     }
   }, [currencies, pricingCurrencyCode])
 
@@ -381,16 +385,18 @@ const CompoundedProductsPage = () => {
         const next: Record<string, VariantDraft> = {}
 
         result.matrix.rows.forEach((row) => {
-          next[row.key] = next[row.key] || {
-            sku: "",
-            priceAmount: "",
+          const existing = current[row.key]
+          next[row.key] = {
+            sku: existing?.sku ?? "",
+            priceAmount: existing?.priceAmount ?? "",
             currencyCode:
+              existing?.currencyCode ||
               pricingCurrencyCode ||
-              (currencies.length === 1 ? currencies[0] : ""),
-            imageUrls: [],
-            manageInventory: true,
-            allowBackorder: false,
-            configuredValues: {},
+              (currencies.includes("PHP") ? "PHP" : currencies[0] || "PHP"),
+            imageUrls: existing?.imageUrls ?? [],
+            manageInventory: existing?.manageInventory ?? true,
+            allowBackorder: existing?.allowBackorder ?? false,
+            configuredValues: existing?.configuredValues ?? {},
           }
         })
 
@@ -555,12 +561,13 @@ const CompoundedProductsPage = () => {
         activated.current_revision.fingerprint !==
           preview.configuration_fingerprint
       ) {
+        const freshPresentationKey = `product_${crypto.randomUUID().replace(/-/g, "")}`
         const configuration = await sdk.client.fetch<PresentationListItem>(
           "/admin/compounded-product/presentations",
           {
             method: "POST",
             body: {
-              key: `product_${submissionKey.replace(/-/g, "")}`,
+              key: freshPresentationKey,
               snapshot: directSnapshot,
             },
           },
@@ -643,10 +650,12 @@ const CompoundedProductsPage = () => {
       )
       navigate(`/compounded-products/${response.result.product_id}`)
     },
-    onError: (error) =>
+    onError: (error) => {
+      setSubmissionKey(newSubmissionKey())
       toast.error(
         messageFromError(error, "Product draft could not be created"),
-      ),
+      )
+    },
   })
 
   const updateVariant = (rowKey: string, patch: Partial<VariantDraft>) => {
@@ -880,14 +889,7 @@ const CompoundedProductsPage = () => {
               </Select.Content>
             </Select>
             <Text size="xsmall" className="text-ui-fg-subtle">
-              Choose the physical product format, such as Vial, Nasal Spray,
-              Oral, or Topical. Add future formats without leaving this page.
-            </Text>
-          </div>
-          <div className="mt-3 rounded-lg border border-ui-border-base bg-ui-bg-subtle px-3 py-2">
-            <Text size="xsmall" className="text-ui-fg-subtle">
-              Product format is optional for a draft and required before
-              publication.
+              Physical format such as Vial, Nasal Spray, Oral, or Topical.
             </Text>
           </div>
           <div className="mt-3 flex flex-col gap-y-2">

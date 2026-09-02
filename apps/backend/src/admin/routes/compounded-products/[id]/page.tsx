@@ -1,4 +1,4 @@
-import { ChevronDownMini, ChevronUpMini, Spinner } from "@medusajs/icons"
+import { ChevronDownMini, ChevronUpMini, PencilSquare, Spinner } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -14,10 +14,11 @@ import {
   toast,
 } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { sdk } from "../../../lib/sdk"
+import { CompoundedProductEditDrawer } from "./compounded-product-edit-drawer"
 import type {
   ComponentProfile,
   ComponentProfilesResponse,
@@ -247,6 +248,37 @@ const CompoundedProductReadinessPage = () => {
     [availabilityQuery.data?.variants],
   )
 
+  const bottleneckAnalysis = useMemo(() => {
+    if (!availabilityQuery.data?.variants || availabilityQuery.data.variants.length === 0) {
+      return null
+    }
+
+    let limitingTitle: string | null = null
+    let lowestStock = Infinity
+    let highestStock = 0
+
+    availabilityQuery.data.variants.forEach((v) => {
+      if (v.status === "calculated") {
+        if (v.calculated_stock < lowestStock) {
+          lowestStock = v.calculated_stock
+          limitingTitle = v.limiting_components?.[0]?.inventory_item_title || null
+        }
+        if (v.calculated_stock > highestStock) {
+          highestStock = v.calculated_stock
+        }
+      }
+    })
+
+    if (limitingTitle && lowestStock <= 20 && highestStock >= lowestStock + 20) {
+      return {
+        limitingComponent: limitingTitle,
+        lowestStock,
+        highestStock,
+      }
+    }
+    return null
+  }, [availabilityQuery.data?.variants])
+
   useEffect(() => {
     const locations = stockLocationsQuery.data?.stock_locations || []
 
@@ -256,6 +288,102 @@ const CompoundedProductReadinessPage = () => {
       setSelectedStockLocationId(locations[0]?.id || "")
     }
   }, [selectedStockLocationId, stockLocationsQuery.data?.stock_locations])
+
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false)
+  const [editingPriceVariantId, setEditingPriceVariantId] = useState<string | null>(null)
+  const [editingPriceAmount, setEditingPriceAmount] = useState("")
+  const [isSavingPrice, setIsSavingPrice] = useState(false)
+
+  const quickPublishMutation = useMutation({
+    mutationFn: (action: "publish" | "withdraw") =>
+      sdk.client.fetch<PublicationChangeResponse>(
+        `/admin/compounded-product/products/${id}/publication`,
+        {
+          method: "POST",
+          body: {
+            action,
+            reason:
+              action === "publish"
+                ? "Published from product details header"
+                : "Withdrawn to draft from product details header",
+          },
+        },
+      ),
+    onSuccess: ({ accepted, reasons }) => {
+      if (accepted) {
+        queryClient.invalidateQueries({
+          queryKey: ["compounded-product-native-product", id],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ["compounded-product-readiness", id],
+        })
+        toast.success("Product publication status updated")
+      } else {
+        toast.error(
+          reasons?.join(", ") || "Failed to update publication status",
+        )
+      }
+    },
+    onError: (error) =>
+      toast.error(
+        messageFromError(error, "Failed to update publication status"),
+      ),
+  })
+
+  const handleSavePrice = async (variantId: string) => {
+    const numericAmount = parseFloat(editingPriceAmount)
+    if (isNaN(numericAmount) || numericAmount < 0) {
+      toast.error("Please enter a valid price amount")
+      return
+    }
+    setIsSavingPrice(true)
+    try {
+      await sdk.admin.product.updateVariant(id, variantId, {
+        prices: [
+          {
+            currency_code: "php",
+            amount: numericAmount,
+          },
+        ],
+      })
+      toast.success("Price updated successfully")
+      setEditingPriceVariantId(null)
+      queryClient.invalidateQueries({
+        queryKey: ["compounded-product-native-product", id],
+      })
+    } catch (err) {
+      toast.error(messageFromError(err, "Failed to update price"))
+    } finally {
+      setIsSavingPrice(false)
+    }
+  }
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const uploadMediaMutation = useMutation({
+    mutationFn: async (files: File[]) => {
+      const oversized = files.find((file) => file.size > 10 * 1024 * 1024)
+      if (oversized) {
+        throw new Error(`${oversized.name} exceeds the 10 MB upload limit`)
+      }
+      const response = await sdk.admin.upload.create({ files })
+      const existingImages = (product.images || []).map((img) => ({
+        url: img.url,
+      }))
+      const newImages = response.files.map((f) => ({ url: f.url }))
+      return sdk.admin.product.update(product.id, {
+        images: [...existingImages, ...newImages],
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["compounded-product-native-product", id],
+      })
+      toast.success("Images uploaded successfully")
+    },
+    onError: (err) => {
+      toast.error(messageFromError(err, "Failed to upload product images"))
+    },
+  })
 
   const recipeMutation = useMutation({
     mutationFn: ({
@@ -524,36 +652,133 @@ const CompoundedProductReadinessPage = () => {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Container className="flex items-start justify-between gap-x-4 px-6 py-4">
-        <div className="flex flex-col gap-y-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <Heading>{product.title}</Heading>
-            <Badge color={product.status === "published" ? "green" : "grey"}>
-              {product.status}
-            </Badge>
+      {/* Telemetry Hero Header */}
+      <Container className="flex flex-col gap-y-4 px-6 py-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div className="flex flex-col gap-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xl">🧪</span>
+              <Heading>{product.title}</Heading>
+              <Select
+                value={product.status === "published" ? "publish" : "withdraw"}
+                onValueChange={(val) => {
+                  if (val === "publish" || val === "withdraw") {
+                    quickPublishMutation.mutate(val)
+                  }
+                }}
+                disabled={quickPublishMutation.isPending}
+              >
+                <Select.Trigger className="h-7 w-32 border-0 bg-transparent shadow-none p-0">
+                  <Badge
+                    color={product.status === "published" ? "green" : "grey"}
+                    className="cursor-pointer hover:opacity-80 transition-opacity font-semibold"
+                  >
+                    ● {product.status === "published" ? "Published" : "Draft"} ▾
+                  </Badge>
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Item value="published">● Published</Select.Item>
+                  <Select.Item value="draft">○ Draft / Hidden</Select.Item>
+                </Select.Content>
+              </Select>
+            </div>
+            <Text size="small" className="text-ui-fg-subtle">
+              Manage this product's storefront identity, variants, stock capacity,
+              BOM recipes, and publication readiness.
+            </Text>
           </div>
-          <Text size="small" className="text-ui-fg-subtle">
-            Manage this product's storefront identity, variants, stock capacity,
-            BOM recipes, and publication readiness.
-          </Text>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              size="small"
+              onClick={() => setEditDrawerOpen(true)}
+              className="inline-flex items-center gap-1.5"
+            >
+              <PencilSquare className="size-3.5" />
+              Edit Product
+            </Button>
+            {product.handle && (
+              <Button asChild size="small" variant="secondary">
+                <a
+                  href={`http://localhost:8000/ph/products/${product.handle}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5"
+                >
+                  View in Storefront ↗
+                </a>
+              </Button>
+            )}
+            <Button asChild size="small" variant="transparent" className="text-ui-fg-subtle hover:text-ui-fg-base text-xs">
+              <Link to={`/products/${product.id}?view=advanced`}>
+                Advanced Medusa details ↗
+              </Link>
+            </Button>
+          </div>
         </div>
-        <Button asChild size="small" variant="secondary">
-          <Link to={`/products/${product.id}?view=advanced`}>
-            Advanced Medusa details
-          </Link>
-        </Button>
+
+        {/* Telemetry Operational Strip */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t border-ui-border-base pt-3 mt-1">
+          <div className="flex items-center gap-2.5 rounded-lg bg-ui-bg-subtle p-2.5">
+            <span className="text-base">📦</span>
+            <div>
+              <Text size="xsmall" className="text-ui-fg-subtle">Sellable Capacity</Text>
+              <Text size="small" weight="plus" className="text-emerald-700">
+                {availabilityQuery.data?.variants?.length
+                  ? `${Math.max(...availabilityQuery.data.variants.map((v) => v.calculated_stock || 0), 0)} Units Available`
+                  : "—"}
+              </Text>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 rounded-lg bg-ui-bg-subtle p-2.5">
+            <span className="text-base">💰</span>
+            <div>
+              <Text size="xsmall" className="text-ui-fg-subtle">Base Price</Text>
+              <Text size="small" weight="plus">
+                {formatVariantPrices(product.variants?.[0]?.prices)}
+              </Text>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 rounded-lg bg-ui-bg-subtle p-2.5">
+            <span className="text-base">⚠️</span>
+            <div>
+              <Text size="xsmall" className="text-ui-fg-subtle">Stock Bottleneck</Text>
+              <Text
+                size="small"
+                weight="plus"
+                className={bottleneckAnalysis ? "text-amber-700 truncate max-w-[180px]" : "text-ui-fg-subtle"}
+                title={bottleneckAnalysis?.limitingComponent}
+              >
+                {bottleneckAnalysis
+                  ? `${bottleneckAnalysis.limitingComponent} (${bottleneckAnalysis.lowestStock})`
+                  : "None (Balanced)"}
+              </Text>
+            </div>
+          </div>
+        </div>
       </Container>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <Container className="flex flex-col gap-y-5 px-6 py-4">
-          <div className="flex flex-col gap-y-1">
-            <Text size="small" weight="plus">
-              Product overview
-            </Text>
-            <Text size="small" className="text-ui-fg-subtle">
-              Customer-facing catalog information used by the peptide
-              storefront.
-            </Text>
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-y-1">
+              <Text size="small" weight="plus">
+                Product overview
+              </Text>
+              <Text size="small" className="text-ui-fg-subtle">
+                Customer-facing catalog information used by the peptide
+                storefront.
+              </Text>
+            </div>
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => setEditDrawerOpen(true)}
+              className="inline-flex items-center gap-1.5"
+            >
+              <PencilSquare className="size-3.5" />
+              Edit Overview
+            </Button>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             <div className="flex flex-col gap-y-1">
@@ -596,14 +821,40 @@ const CompoundedProductReadinessPage = () => {
         </Container>
 
         <Container className="flex flex-col gap-y-4 px-6 py-4">
-          <div className="flex flex-col gap-y-1">
-            <Text size="small" weight="plus">
-              Product media
-            </Text>
-            <Text size="small" className="text-ui-fg-subtle">
-              {product.images?.length || 0} image
-              {product.images?.length === 1 ? "" : "s"}
-            </Text>
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              const files = Array.from(e.target.files || [])
+              if (files.length) {
+                uploadMediaMutation.mutate(files)
+              }
+              e.target.value = ""
+            }}
+          />
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-y-1">
+              <Text size="small" weight="plus">
+                Product media
+              </Text>
+              <Text size="small" className="text-ui-fg-subtle">
+                {product.images?.length || 0} image
+                {product.images?.length === 1 ? "" : "s"}
+              </Text>
+            </div>
+            {product.images?.length ? (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => fileInputRef.current?.click()}
+                isLoading={uploadMediaMutation.isPending}
+              >
+                + Add photos
+              </Button>
+            ) : null}
           </div>
           {product.images?.length ? (
             <div className="grid grid-cols-3 gap-2">
@@ -617,10 +868,18 @@ const CompoundedProductReadinessPage = () => {
               ))}
             </div>
           ) : (
-            <div className="flex min-h-28 items-center justify-center rounded-lg border border-dashed border-ui-border-base">
+            <div className="flex min-h-28 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-ui-border-base p-4">
               <Text size="small" className="text-ui-fg-subtle">
                 No product images yet
               </Text>
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => fileInputRef.current?.click()}
+                isLoading={uploadMediaMutation.isPending}
+              >
+                + Upload Images
+              </Button>
             </div>
           )}
         </Container>
@@ -657,13 +916,33 @@ const CompoundedProductReadinessPage = () => {
             </Select>
           </div>
         </div>
+        {bottleneckAnalysis && (
+          <div className="rounded-xl border border-amber-200 bg-amber-50/90 p-4 text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-start gap-3">
+              <span className="text-base leading-none">⚠️</span>
+              <div>
+                <span className="font-bold">Inventory Bottleneck Detected</span>
+                <p className="mt-1 text-amber-800 leading-relaxed">
+                  Component <strong>"{bottleneckAnalysis.limitingComponent}"</strong> is capping kit capacity to{" "}
+                  <strong className="underline">{bottleneckAnalysis.lowestStock} units</strong>, while{" "}
+                  <strong>{bottleneckAnalysis.highestStock} units</strong> of other variants are available. Restock accessories to unlock full sales capacity.
+                </p>
+              </div>
+            </div>
+            <Button asChild size="small" variant="secondary" className="border-amber-300 bg-white hover:bg-amber-100/60 shrink-0">
+              <Link to={`/inventory?q=${encodeURIComponent(bottleneckAnalysis.limitingComponent)}`}>
+                Restock in Inventory →
+              </Link>
+            </Button>
+          </div>
+        )}
         <div className="overflow-hidden rounded-lg border border-ui-border-base">
           <div className="hidden gap-3 border-b border-ui-border-base bg-ui-bg-subtle px-4 py-2 md:grid md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_140px_minmax(0,1fr)]">
             <Text size="xsmall" className="text-ui-fg-subtle">
               Variant
             </Text>
             <Text size="xsmall" className="text-ui-fg-subtle">
-              Price
+              Price (Click to edit)
             </Text>
             <Text size="xsmall" className="text-ui-fg-subtle">
               Calculated stock
@@ -687,7 +966,7 @@ const CompoundedProductReadinessPage = () => {
                   <div className="flex min-w-0 items-center gap-x-1">
                     <Text
                       size="xsmall"
-                      className="truncate text-ui-fg-subtle"
+                      className="truncate max-w-[200px] text-ui-fg-subtle font-mono"
                       title={variant.sku || undefined}
                     >
                       {variant.sku || "SKU will be generated"}
@@ -701,7 +980,57 @@ const CompoundedProductReadinessPage = () => {
                     ) : null}
                   </div>
                 </div>
-                <Text size="small">{formatVariantPrices(variant.prices)}</Text>
+                <div className="flex items-center">
+                  {editingPriceVariantId === variant.id ? (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-ui-fg-subtle">₱</span>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        className="h-7 w-24 text-xs font-semibold px-1.5"
+                        value={editingPriceAmount}
+                        onChange={(e) => setEditingPriceAmount(e.target.value)}
+                        autoFocus
+                      />
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        disabled={isSavingPrice}
+                        onClick={() => handleSavePrice(variant.id)}
+                        className="size-7 p-0 flex items-center justify-center font-bold text-emerald-600"
+                      >
+                        ✓
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="transparent"
+                        disabled={isSavingPrice}
+                        onClick={() => setEditingPriceVariantId(null)}
+                        className="size-7 p-0 flex items-center justify-center text-ui-fg-muted"
+                      >
+                        ✕
+                      </Button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const currentPrice = variant.prices?.[0]?.amount ?? 0
+                        setEditingPriceAmount(String(currentPrice))
+                        setEditingPriceVariantId(variant.id)
+                      }}
+                      className="group inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-ui-bg-subtle text-left transition-colors"
+                      title="Click to edit price"
+                    >
+                      <Text size="small" weight="plus" className="text-ui-fg-base">
+                        {formatVariantPrices(variant.prices)}
+                      </Text>
+                      <span className="text-xs text-ui-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                        ✎
+                      </span>
+                    </button>
+                  )}
+                </div>
                 <div className="flex items-center">
                   {!selectedStockLocationId ? (
                     <Text size="small" className="text-ui-fg-subtle">
@@ -716,9 +1045,9 @@ const CompoundedProductReadinessPage = () => {
                       Calculating…
                     </Text>
                   ) : availability?.status === "calculated" ? (
-                    <Text size="small" weight="plus">
-                      {availability.calculated_stock}
-                    </Text>
+                    <Badge color={availability.calculated_stock > 15 ? "green" : "orange"}>
+                      ● {availability.calculated_stock} {availability.calculated_stock > 15 ? "In stock" : "Low stock"}
+                    </Badge>
                   ) : (
                     <Badge color="grey">No recipe</Badge>
                   )}
@@ -1355,6 +1684,22 @@ const CompoundedProductReadinessPage = () => {
           </Drawer.Footer>
         </Drawer.Content>
       </Drawer>
+
+      <CompoundedProductEditDrawer
+        open={editDrawerOpen}
+        onOpenChange={setEditDrawerOpen}
+        product={product}
+        compoundFormatId={readiness.registration.compound_format_id || null}
+        compoundFormats={compoundFormatsQuery.data?.formats || []}
+        onSuccess={() => {
+          queryClient.invalidateQueries({
+            queryKey: ["compounded-product-native-product", id],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["compounded-product-readiness", id],
+          })
+        }}
+      />
     </div>
   )
 }

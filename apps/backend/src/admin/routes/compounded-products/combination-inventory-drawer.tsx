@@ -3,12 +3,14 @@ import type { HttpTypes } from "@medusajs/types"
 import {
   Badge,
   Button,
+  Checkbox,
   Drawer,
   IconButton,
   Input,
   Label,
   Select,
   Text,
+  toast,
 } from "@medusajs/ui"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
@@ -20,6 +22,10 @@ import {
   inferRecipeAxisRoles,
   withInferredRecipeAxisRoles,
 } from "./combination-recipe-adapter"
+import {
+  CustomKitTemplateModal,
+  type CustomKitTemplate,
+} from "./custom-kit-template-modal"
 import type { DirectVariationAxis } from "./direct-variation-snapshot"
 import type { DirectRecipeConfiguration } from "./direct-recipe-rules"
 import type {
@@ -103,11 +109,12 @@ const ComponentRows = ({
         availabilityComponents,
         component.inventory_item_id,
       )
+      const currentAmount = parseFloat(component.required_display_amount || "1") || 1
 
       return (
         <div
           key={`${component.inventory_item_id}-${index}`}
-          className="rounded-lg border border-ui-border-base p-3"
+          className="rounded-lg border border-ui-border-base p-3 bg-white shadow-2xs"
         >
           <div className="flex items-start justify-between gap-3">
             <button
@@ -140,19 +147,37 @@ const ComponentRows = ({
               <Trash />
             </IconButton>
           </div>
-          <div className="mt-2 grid grid-cols-[minmax(0,1fr)_8rem] items-end gap-2">
+          <div className="mt-2 flex items-center justify-between gap-2 border-t border-ui-border-base pt-2">
             <Text size="xsmall" className="text-ui-fg-subtle">
               {profile
                 ? classificationLabel[profile.classification]
                 : "Inventory item"}
             </Text>
-            <div>
-              <Text size="xsmall" className="mb-1 text-ui-fg-subtle">
-                Quantity
+            <div className="flex items-center gap-1.5">
+              <Text size="xsmall" className="text-ui-fg-subtle mr-1">
+                Qty:
               </Text>
+              <button
+                type="button"
+                disabled={currentAmount <= 1}
+                onClick={() => {
+                  const val = Math.max(1, currentAmount - 1)
+                  onChange(
+                    components.map((c, i) =>
+                      i === index
+                        ? { ...c, required_display_amount: String(val) }
+                        : c,
+                    ),
+                  )
+                }}
+                className="size-6 flex items-center justify-center rounded border border-ui-border-base bg-white text-xs hover:bg-ui-bg-subtle disabled:opacity-40"
+              >
+                −
+              </button>
               <Input
                 aria-label={`Required amount for ${item?.title || component.inventory_item_id}`}
                 inputMode="decimal"
+                className="h-6 w-12 text-center text-xs font-semibold px-1"
                 value={component.required_display_amount}
                 onChange={(event) =>
                   onChange(
@@ -167,6 +192,46 @@ const ComponentRows = ({
                   )
                 }
               />
+              <button
+                type="button"
+                onClick={() => {
+                  const val = currentAmount + 1
+                  onChange(
+                    components.map((c, i) =>
+                      i === index
+                        ? { ...c, required_display_amount: String(val) }
+                        : c,
+                    ),
+                  )
+                }}
+                className="size-6 flex items-center justify-center rounded border border-ui-border-base bg-white text-xs hover:bg-ui-bg-subtle"
+              >
+                +
+              </button>
+              <div className="flex items-center gap-1 ml-1">
+                {[1, 5, 10, 20].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() =>
+                      onChange(
+                        components.map((c, i) =>
+                          i === index
+                            ? { ...c, required_display_amount: String(preset) }
+                            : c,
+                        ),
+                      )
+                    }
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium border ${
+                      currentAmount === preset
+                        ? "bg-zinc-900 text-white border-zinc-900"
+                        : "bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-100"
+                    }`}
+                  >
+                    {preset}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -221,12 +286,84 @@ export const CombinationInventoryDrawer = ({
   const [pageIndex, setPageIndex] = useState(0)
   const pageSize = 8
 
+  // Multi-select batch selection state for the item picker
+  const [selectedBatch, setSelectedBatch] = useState<Map<string, number>>(
+    new Map(),
+  )
+
+  // Custom Kit Template Manager state
+  const [templateModalOpen, setTemplateModalOpen] = useState(false)
+  const [savedTemplates, setSavedTemplates] = useState<CustomKitTemplate[]>(
+    () => {
+      try {
+        const raw = localStorage.getItem("pepstack_kit_templates_v1")
+        if (raw) return JSON.parse(raw)
+      } catch {}
+      return [
+        {
+          id: "subq_starter",
+          name: "SubQ Injection Kit",
+          items: [
+            {
+              inventory_item_id: "bac_water",
+              title: "BAC Water 10 mL",
+              sku: "BAC-10ML",
+              quantity: 1,
+            },
+            {
+              inventory_item_id: "syringe",
+              title: "1 cc Syringe",
+              sku: "SYR-1CC",
+              quantity: 10,
+            },
+            {
+              inventory_item_id: "alcohol_pad",
+              title: "Alcohol Pad",
+              sku: "ALC-PAD",
+              quantity: 10,
+            },
+          ],
+        },
+        {
+          id: "reconstitution_starter",
+          name: "BAC Reconstitution Only",
+          items: [
+            {
+              inventory_item_id: "bac_water",
+              title: "BAC Water 10 mL",
+              sku: "BAC-10ML",
+              quantity: 1,
+            },
+          ],
+        },
+      ]
+    },
+  )
+
+  const saveTemplate = (template: CustomKitTemplate) => {
+    const next = [...savedTemplates, template]
+    setSavedTemplates(next)
+    try {
+      localStorage.setItem("pepstack_kit_templates_v1", JSON.stringify(next))
+    } catch {}
+  }
+
+  const deleteTemplate = (id: string) => {
+    const next = savedTemplates.filter((t) => t.id !== id)
+    setSavedTemplates(next)
+    try {
+      localStorage.setItem("pepstack_kit_templates_v1", JSON.stringify(next))
+    } catch {}
+    toast.info("Template removed")
+  }
+
   useEffect(() => {
     if (open) {
       setDraft(cloneConfiguration(inferredConfiguration))
       setTarget(null)
       setSearch("")
       setPageIndex(0)
+      setSelectedBatch(new Map())
     }
   }, [inferredConfiguration, open, row?.key])
 
@@ -243,6 +380,32 @@ export const CombinationInventoryDrawer = ({
         : null,
     [axes, draft, row, rows, snapshot],
   )
+
+  // Initialize selected batch when entering item picker
+  useEffect(() => {
+    if (target && contents) {
+      const map = new Map<string, number>()
+      if (target.componentIndex !== null) {
+        const currentList =
+          target.group === "finishedProduct"
+            ? contents.finishedProduct
+            : target.group === "includedSupplies"
+              ? contents.includedSupplies
+              : contents.packaging
+        const existing = currentList[target.componentIndex]
+        if (existing) {
+          map.set(
+            existing.inventory_item_id,
+            parseFloat(existing.required_display_amount || "1") || 1,
+          )
+        }
+      }
+      setSelectedBatch(map)
+    } else {
+      setSelectedBatch(new Map())
+    }
+  }, [target, contents])
+
   const selectedInventoryIds = useMemo(
     () =>
       Array.from(
@@ -250,6 +413,7 @@ export const CombinationInventoryDrawer = ({
       ),
     [contents?.all],
   )
+
   const profilesQuery = useQuery({
     queryKey: ["bom-component-profiles", "combination-inventory-drawer"],
     queryFn: () =>
@@ -257,6 +421,7 @@ export const CombinationInventoryDrawer = ({
         "/admin/bom/component-profiles",
       ),
   })
+
   const profileByInventoryId = useMemo(
     () =>
       new Map(
@@ -267,6 +432,7 @@ export const CombinationInventoryDrawer = ({
       ),
     [profilesQuery.data?.component_profiles],
   )
+
   const selectedInventoryQuery = useQuery({
     queryKey: [
       "inventory-items",
@@ -280,6 +446,13 @@ export const CombinationInventoryDrawer = ({
         limit: selectedInventoryIds.length,
       }),
   })
+
+  // Full inventory query for template builder
+  const allSuppliesInventoryQuery = useQuery({
+    queryKey: ["inventory-items", "all-supplies-template-manager"],
+    queryFn: () => sdk.admin.inventoryItem.list({ limit: 100 }),
+  })
+
   const inventoryById = useMemo(
     () =>
       new Map(
@@ -290,9 +463,11 @@ export const CombinationInventoryDrawer = ({
       ),
     [selectedInventoryQuery.data?.inventory_items],
   )
+
   const targetClassification = target
     ? classificationByGroup[target.group]
     : null
+
   const selectableProfileIds = useMemo(
     () =>
       (profilesQuery.data?.component_profiles || [])
@@ -300,6 +475,7 @@ export const CombinationInventoryDrawer = ({
         .map((profile) => profile.inventory_item_id),
     [profilesQuery.data?.component_profiles, targetClassification],
   )
+
   const inventoryQuery = useQuery({
     queryKey: [
       "inventory-items",
@@ -319,6 +495,42 @@ export const CombinationInventoryDrawer = ({
       }),
     placeholderData: keepPreviousData,
   })
+
+  // Extract Net Content / Dosage string from current combination row (e.g. "50 mg", "10 mg")
+  const netContentMatch = useMemo(() => {
+    if (!row?.title) return null
+    const match = row.title.match(/(\d+(?:\.\d+)?)\s*(mg|mcg|g|ml|iu)?/i)
+    return match ? match[0].trim() : null
+  }, [row?.title])
+
+  // Sort inventory items so items matching dosage appear at top when choosing finished vial
+  const sortedInventoryItems = useMemo(() => {
+    const items = [...(inventoryQuery.data?.inventory_items || [])]
+    if (target?.group === "finishedProduct" && netContentMatch) {
+      const needle = netContentMatch.toLowerCase()
+      const numPart = netContentMatch.match(/\d+(?:\.\d+)?/)?.[0]
+      items.sort((a, b) => {
+        const aTitle = (a.title || "").toLowerCase()
+        const bTitle = (b.title || "").toLowerCase()
+        const aSku = (a.sku || "").toLowerCase()
+        const bSku = (b.sku || "").toLowerCase()
+
+        const aMatch =
+          aTitle.includes(needle) ||
+          aSku.includes(needle) ||
+          Boolean(numPart && (aTitle.includes(numPart) || aSku.includes(numPart)))
+        const bMatch =
+          bTitle.includes(needle) ||
+          bSku.includes(needle) ||
+          Boolean(numPart && (bTitle.includes(numPart) || bSku.includes(numPart)))
+
+        if (aMatch && !bMatch) return -1
+        if (!aMatch && bMatch) return 1
+        return 0
+      })
+    }
+    return items
+  }, [inventoryQuery.data?.inventory_items, target?.group, netContentMatch])
 
   const updateGroup = (
     group: ComponentGroup,
@@ -356,7 +568,28 @@ export const CombinationInventoryDrawer = ({
     }))
   }
 
-  const selectInventoryItem = (inventoryItemId: string) => {
+  // Multi-select batch handlers
+  const handleToggleBatchItem = (
+    itemId: string,
+    checked: boolean,
+    defaultQty = 1,
+  ) => {
+    const next = new Map(selectedBatch)
+    if (checked) {
+      next.set(itemId, next.get(itemId) || defaultQty)
+    } else {
+      next.delete(itemId)
+    }
+    setSelectedBatch(next)
+  }
+
+  const handleUpdateBatchQty = (itemId: string, qty: number) => {
+    const next = new Map(selectedBatch)
+    next.set(itemId, Math.max(1, qty))
+    setSelectedBatch(next)
+  }
+
+  const applySelectedBatch = () => {
     if (!target || !contents) return
 
     const current =
@@ -366,23 +599,82 @@ export const CombinationInventoryDrawer = ({
           ? contents.includedSupplies
           : contents.packaging
     const next = [...current]
-    const component = {
-      inventory_item_id: inventoryItemId,
-      required_display_amount: "1",
-    }
 
-    if (target.componentIndex === null) {
-      if (!current.some((item) => item.inventory_item_id === inventoryItemId)) {
-        next.push(component)
+    selectedBatch.forEach((qty, inventoryItemId) => {
+      const existingIndex = next.findIndex(
+        (item) => item.inventory_item_id === inventoryItemId,
+      )
+      const component = {
+        inventory_item_id: inventoryItemId,
+        required_display_amount: String(qty),
       }
-    } else {
-      next[target.componentIndex] = component
-    }
+
+      if (target.componentIndex !== null) {
+        next[target.componentIndex] = component
+      } else if (existingIndex >= 0) {
+        next[existingIndex] = component
+      } else {
+        if (target.group === "finishedProduct") {
+          next[0] = component
+        } else {
+          next.push(component)
+        }
+      }
+    })
 
     updateGroup(target.group, next)
+    toast.success(
+      `Added ${selectedBatch.size} item${selectedBatch.size === 1 ? "" : "s"} to ${classificationLabel[targetClassification!]}`,
+    )
     setTarget(null)
+    setSelectedBatch(new Map())
     setSearch("")
     setPageIndex(0)
+  }
+
+  // Quick Kit Template application
+  const applyTemplate = (template: CustomKitTemplate) => {
+    if (!contents) return
+    const allInventory = allSuppliesInventoryQuery.data?.inventory_items || []
+    const current = [...contents.includedSupplies]
+
+    let mappedCount = 0
+    template.items.forEach((tmplItem) => {
+      const match = allInventory.find(
+        (inv) =>
+          inv.id === tmplItem.inventory_item_id ||
+          (tmplItem.sku &&
+            inv.sku?.toLowerCase().includes(tmplItem.sku.toLowerCase())) ||
+          (tmplItem.title &&
+            inv.title?.toLowerCase().includes(tmplItem.title.toLowerCase())),
+      )
+      if (match) {
+        mappedCount++
+        const existingIdx = current.findIndex(
+          (i) => i.inventory_item_id === match.id,
+        )
+        const component = {
+          inventory_item_id: match.id,
+          required_display_amount: String(tmplItem.quantity),
+        }
+        if (existingIdx >= 0) {
+          current[existingIdx] = component
+        } else {
+          current.push(component)
+        }
+      }
+    })
+
+    updateGroup("includedSupplies", current)
+    if (mappedCount > 0) {
+      toast.success(
+        `Applied "${template.name}" (${mappedCount} supplies mapped)`,
+      )
+    } else {
+      toast.info(
+        `Applied "${template.name}". Please ensure supplies exist in Inventory.`,
+      )
+    }
   }
 
   const complete = contents ? combinationComponentsAreComplete(contents) : false
@@ -412,51 +704,175 @@ export const CombinationInventoryDrawer = ({
                     Choose {classificationLabel[targetClassification!]}
                   </Text>
                   <Text size="xsmall" className="text-ui-fg-subtle">
-                    Search classified Medusa Inventory items. Availability is
-                    calculated after you apply complete contents.
+                    Select items and set consumption quantities. Availability is
+                    calculated after applying complete contents.
                   </Text>
                 </div>
                 <Button
                   size="small"
                   variant="secondary"
-                  onClick={() => setTarget(null)}
+                  onClick={() => {
+                    setTarget(null)
+                    setSelectedBatch(new Map())
+                  }}
                 >
                   Back
                 </Button>
               </div>
+
               <Input
                 aria-label="Search inventory items"
-                placeholder="Search inventory items"
+                placeholder="Search inventory items by title or SKU..."
                 value={search}
                 onChange={(event) => {
                   setSearch(event.target.value)
                   setPageIndex(0)
                 }}
               />
+
               <div className="mt-3 flex flex-col divide-y divide-ui-border-base rounded-lg border border-ui-border-base bg-ui-bg-base">
-                {(inventoryQuery.data?.inventory_items || []).map((item) => {
+                {sortedInventoryItems.map((item) => {
                   const profile = profileByInventoryId.get(item.id)
+                  const isChecked = selectedBatch.has(item.id)
+                  const currentQty = selectedBatch.get(item.id) || 1
+
+                  const isRecommended = Boolean(
+                    target?.group === "finishedProduct" &&
+                      netContentMatch &&
+                      ((item.title || "")
+                        .toLowerCase()
+                        .includes(netContentMatch.toLowerCase()) ||
+                        (item.sku || "")
+                          .toLowerCase()
+                          .includes(netContentMatch.toLowerCase()) ||
+                        (netContentMatch.match(/\d+(?:\.\d+)?/)?.[0] &&
+                          ((item.title || "").toLowerCase().includes(
+                            netContentMatch.match(/\d+(?:\.\d+)?/)![0],
+                          ) ||
+                            (item.sku || "").toLowerCase().includes(
+                              netContentMatch.match(/\d+(?:\.\d+)?/)![0],
+                            )))),
+                  )
 
                   return (
-                    <button
+                    <div
                       key={item.id}
-                      type="button"
-                      className="flex items-center justify-between gap-3 p-3 text-left hover:bg-ui-bg-base-hover"
-                      onClick={() => selectInventoryItem(item.id)}
+                      className={`flex items-center justify-between gap-3 p-3 transition-colors ${
+                        isChecked
+                          ? "bg-ui-bg-subtle"
+                          : "hover:bg-ui-bg-base-hover"
+                      }`}
                     >
-                      <span className="min-w-0">
-                        <Text size="small" weight="plus" className="truncate">
-                          {item.title || "Untitled inventory item"}
-                        </Text>
-                        <Text size="xsmall" className="text-ui-fg-subtle">
-                          {item.sku || "No SKU"} ·{" "}
-                          {profile?.display_unit || "unit"}
-                        </Text>
-                      </span>
-                      <Badge>
-                        {classificationLabel[targetClassification!]}
-                      </Badge>
-                    </button>
+                      <label className="flex items-center gap-3 cursor-pointer min-w-0 flex-1">
+                        <Checkbox
+                          checked={isChecked}
+                          onCheckedChange={(checked) =>
+                            handleToggleBatchItem(
+                              item.id,
+                              Boolean(checked),
+                              currentQty,
+                            )
+                          }
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <Text
+                              size="small"
+                              weight="plus"
+                              className="truncate"
+                            >
+                              {item.title || "Untitled inventory item"}
+                            </Text>
+                            {isRecommended && (
+                              <Badge color="green" size="small">
+                                ⭐ Recommended ({netContentMatch})
+                              </Badge>
+                            )}
+                          </div>
+                          <Text size="xsmall" className="text-ui-fg-subtle">
+                            {item.sku || "No SKU"} ·{" "}
+                            {profile?.display_unit || "unit"}
+                          </Text>
+                        </div>
+                      </label>
+
+                      {/* Inline quantity stepper with presets */}
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <div className="flex items-center gap-1">
+                          <span className="text-[11px] text-ui-fg-subtle font-medium">
+                            Qty:
+                          </span>
+                          <button
+                            type="button"
+                            disabled={currentQty <= 1}
+                            onClick={() =>
+                              handleUpdateBatchQty(item.id, currentQty - 1)
+                            }
+                            className="size-6 flex items-center justify-center rounded border border-ui-border-base bg-white text-xs hover:bg-ui-bg-subtle disabled:opacity-40"
+                          >
+                            −
+                          </button>
+                          <Input
+                            type="number"
+                            min="1"
+                            className="h-6 w-12 text-center text-xs font-semibold px-1"
+                            value={currentQty}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value, 10)
+                              handleUpdateBatchQty(
+                                item.id,
+                                isNaN(val) || val < 1 ? 1 : val,
+                              )
+                              if (!isChecked) {
+                                handleToggleBatchItem(
+                                  item.id,
+                                  true,
+                                  isNaN(val) || val < 1 ? 1 : val,
+                                )
+                              }
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleUpdateBatchQty(item.id, currentQty + 1)
+                              if (!isChecked) {
+                                handleToggleBatchItem(
+                                  item.id,
+                                  true,
+                                  currentQty + 1,
+                                )
+                              }
+                            }}
+                            className="size-6 flex items-center justify-center rounded border border-ui-border-base bg-white text-xs hover:bg-ui-bg-subtle"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {[1, 5, 10, 20].map((preset) => (
+                            <button
+                              key={preset}
+                              type="button"
+                              onClick={() => {
+                                handleUpdateBatchQty(item.id, preset)
+                                if (!isChecked) {
+                                  handleToggleBatchItem(item.id, true, preset)
+                                }
+                              }}
+                              className={`px-1.5 py-0.5 rounded text-[10px] font-medium border ${
+                                currentQty === preset && isChecked
+                                  ? "bg-zinc-900 text-white border-zinc-900"
+                                  : "bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-100"
+                              }`}
+                            >
+                              {preset}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   )
                 })}
                 {!inventoryQuery.isLoading &&
@@ -468,6 +884,7 @@ export const CombinationInventoryDrawer = ({
                   </Text>
                 ) : null}
               </div>
+
               {totalCandidateCount > pageSize ? (
                 <div className="mt-3 flex items-center justify-between">
                   <Text size="xsmall" className="text-ui-fg-subtle">
@@ -493,36 +910,75 @@ export const CombinationInventoryDrawer = ({
                   </div>
                 </div>
               ) : null}
+
+              {/* Sticky Batch Action Bar */}
+              <div className="sticky bottom-0 mt-4 flex items-center justify-between rounded-lg border border-ui-border-base bg-ui-bg-base p-3 shadow-md">
+                <div className="flex items-center gap-2">
+                  <Badge color={selectedBatch.size > 0 ? "green" : "grey"}>
+                    {selectedBatch.size} item
+                    {selectedBatch.size === 1 ? "" : "s"} selected
+                  </Badge>
+                  {selectedBatch.size > 0 && (
+                    <Text size="xsmall" className="text-ui-fg-subtle">
+                      (
+                      {Array.from(selectedBatch.values()).reduce(
+                        (a, b) => a + b,
+                        0,
+                      )}{" "}
+                      total units)
+                    </Text>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    onClick={() => {
+                      setSelectedBatch(new Map())
+                      setTarget(null)
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="small"
+                    disabled={selectedBatch.size === 0}
+                    onClick={applySelectedBatch}
+                  >
+                    Add Selected Items →
+                  </Button>
+                </div>
+              </div>
             </div>
           ) : (
             <>
-              {inferredRoles.needsManualReview ? (
+              {axes.length > 2 ? (
                 <details className="rounded-lg border border-ui-border-base p-3">
-                  <summary className="cursor-pointer text-ui-fg-base">
+                  <summary className="cursor-pointer text-sm font-medium">
                     Advanced inventory mapping
                   </summary>
-                  <Text size="xsmall" className="mt-1 text-ui-fg-subtle">
-                    Choose which product option identifies the vial and which
-                    identifies optional included items.
-                  </Text>
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                    <div className="flex flex-col gap-y-1">
-                      <Label>Finished product grouped by</Label>
+                    <div>
+                      <Label htmlFor="finished-product-axis">
+                        Finished product option
+                      </Label>
                       <Select
-                        value={draft.finishedProductAxisId || "none"}
+                        value={
+                          draft.finishedProductAxisId ||
+                          inferredRoles.finishedProductAxisId ||
+                          ""
+                        }
                         onValueChange={(value) =>
                           setDraft((current) => ({
                             ...current,
-                            finishedProductAxisId:
-                              value === "none" ? "" : value,
+                            finishedProductAxisId: value || null,
                           }))
                         }
                       >
-                        <Select.Trigger>
-                          <Select.Value placeholder="Choose product option" />
+                        <Select.Trigger id="finished-product-axis">
+                          <Select.Value placeholder="Select option" />
                         </Select.Trigger>
                         <Select.Content>
-                          <Select.Item value="none">Not configured</Select.Item>
                           {axes.map((axis) => (
                             <Select.Item key={axis.id} value={axis.id}>
                               {axis.name.trim() || "Unnamed option"}
@@ -531,22 +987,27 @@ export const CombinationInventoryDrawer = ({
                         </Select.Content>
                       </Select>
                     </div>
-                    <div className="flex flex-col gap-y-1">
-                      <Label>Included items grouped by</Label>
+                    <div>
+                      <Label htmlFor="included-supply-axis">
+                        Included item option
+                      </Label>
                       <Select
-                        value={draft.includedSupplyAxisId || "none"}
+                        value={
+                          draft.includedSupplyAxisId ||
+                          inferredRoles.includedSupplyAxisId ||
+                          ""
+                        }
                         onValueChange={(value) =>
                           setDraft((current) => ({
                             ...current,
-                            includedSupplyAxisId: value === "none" ? "" : value,
+                            includedSupplyAxisId: value || null,
                           }))
                         }
                       >
-                        <Select.Trigger>
-                          <Select.Value placeholder="Choose product option" />
+                        <Select.Trigger id="included-supply-axis">
+                          <Select.Value placeholder="Select option" />
                         </Select.Trigger>
                         <Select.Content>
-                          <Select.Item value="none">Not configured</Select.Item>
                           {axes.map((axis) => (
                             <Select.Item key={axis.id} value={axis.id}>
                               {axis.name.trim() || "Unnamed option"}
@@ -582,7 +1043,7 @@ export const CombinationInventoryDrawer = ({
                     1
                       ? ""
                       : "s"}{" "}
-                    with {contents.scopes.finishedProduct.axisLabel}: {" "}
+                    with {contents.scopes.finishedProduct.axisLabel}:{" "}
                     {contents.scopes.finishedProduct.valueLabel}.
                   </Text>
                 ) : null}
@@ -612,6 +1073,65 @@ export const CombinationInventoryDrawer = ({
                     the same inclusion.
                   </Text>
                 </div>
+
+                {/* Quick Kit Templates Section */}
+                <div className="mb-3 rounded-lg border border-dashed border-ui-border-base bg-ui-bg-subtle p-2.5">
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs">⚡</span>
+                      <Text
+                        size="xsmall"
+                        weight="plus"
+                        className="text-ui-fg-muted uppercase tracking-wider text-[10px]"
+                      >
+                        Quick Inclusion Templates
+                      </Text>
+                    </div>
+                    <Button
+                      size="small"
+                      variant="transparent"
+                      onClick={() => setTemplateModalOpen(true)}
+                      className="text-xs text-ui-fg-interactive hover:underline p-0 h-auto font-medium"
+                    >
+                      + Create New Kit Template
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {savedTemplates.map((template) => (
+                      <div
+                        key={template.id}
+                        className="group relative inline-flex items-center"
+                      >
+                        <Button
+                          size="small"
+                          variant="secondary"
+                          onClick={() => applyTemplate(template)}
+                          className="text-xs font-medium py-1 px-2.5 h-auto bg-white border border-ui-border-base hover:bg-ui-bg-subtle shadow-2xs"
+                        >
+                          ⚡ {template.name} ({template.items.length} items)
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteTemplate(template.id)
+                          }}
+                          className="ml-1 text-ui-fg-muted opacity-0 group-hover:opacity-100 hover:text-ui-fg-error transition-opacity text-xs"
+                          title="Delete template"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                    {!savedTemplates.length && (
+                      <Text size="xsmall" className="text-ui-fg-subtle italic">
+                        No templates saved yet. Click "+ Create New Kit Template"
+                        to save reusable supply bundles.
+                      </Text>
+                    )}
+                  </div>
+                </div>
+
                 {contents?.scopes.includedSupply ? (
                   <Text
                     size="xsmall"
@@ -623,7 +1143,7 @@ export const CombinationInventoryDrawer = ({
                     {contents.scopes.includedSupply.sharedCombinationCount === 1
                       ? ""
                       : "s"}{" "}
-                    with {contents.scopes.includedSupply.axisLabel}: {" "}
+                    with {contents.scopes.includedSupply.axisLabel}:{" "}
                     {contents.scopes.includedSupply.valueLabel}.
                   </Text>
                 ) : null}
@@ -721,6 +1241,15 @@ export const CombinationInventoryDrawer = ({
           </Button>
         </Drawer.Footer>
       </Drawer.Content>
+
+      <CustomKitTemplateModal
+        open={templateModalOpen}
+        onOpenChange={setTemplateModalOpen}
+        inventoryItems={allSuppliesInventoryQuery.data?.inventory_items || []}
+        onSaveTemplate={saveTemplate}
+      />
     </Drawer>
   )
 }
+
+export default CombinationInventoryDrawer

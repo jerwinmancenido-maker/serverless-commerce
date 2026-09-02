@@ -5,7 +5,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
-import { Editor } from "@tiptap/core";
+import { Editor, Extension } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import {
   ArrowUturnLeft,
@@ -39,6 +39,54 @@ const MAX_DESCRIPTION_LENGTH = 20_000;
 const DEFAULT_TEXT_COLOR = "#111827";
 const DEFAULT_HIGHLIGHT_COLOR = "#fef08a";
 
+const FontSize = Extension.create({
+  name: "fontSize",
+  addOptions() {
+    return {
+      types: ["textStyle"],
+    };
+  },
+  addGlobalAttributes() {
+    return [
+      {
+        types: this.options.types,
+        attributes: {
+          fontSize: {
+            default: null,
+            parseHTML: (element) =>
+              element.style.fontSize?.replace(/['"]+/g, ""),
+            renderHTML: (attributes) => {
+              if (!attributes.fontSize) {
+                return {};
+              }
+              return {
+                style: `font-size: ${attributes.fontSize}`,
+              };
+            },
+          },
+        },
+      },
+    ];
+  },
+  addCommands() {
+    return {
+      setFontSize:
+        (fontSize: string) =>
+        ({ chain }: { chain: any }) => {
+          return chain().setMark("textStyle", { fontSize }).run();
+        },
+      unsetFontSize:
+        () =>
+        ({ chain }: { chain: any }) => {
+          return chain()
+            .setMark("textStyle", { fontSize: null })
+            .removeEmptyTextStyle()
+            .run();
+        },
+    };
+  },
+});
+
 const ProductDescriptionEditor = ({
   value,
   onChange,
@@ -69,6 +117,7 @@ const ProductDescriptionEditor = ({
           link: false,
         }),
         TextStyle,
+        FontSize,
         Color,
         Underline,
         Highlight.configure({ multicolor: true }),
@@ -96,7 +145,7 @@ const ProductDescriptionEditor = ({
       editorProps: {
         attributes: {
           class:
-            "min-h-44 px-4 py-3 outline-none text-ui-fg-base text-small [&_.is-editor-empty:first-child]:before:pointer-events-none [&_.is-editor-empty:first-child]:before:float-left [&_.is-editor-empty:first-child]:before:h-0 [&_.is-editor-empty:first-child]:before:text-ui-fg-muted [&_.is-editor-empty:first-child]:before:content-[attr(data-placeholder)] [&_blockquote]:my-3 [&_blockquote]:border-l-4 [&_blockquote]:border-ui-border-strong [&_blockquote]:pl-4 [&_blockquote]:italic [&_h2]:text-large [&_h2]:font-semibold [&_h3]:font-semibold [&_img]:my-3 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md [&_img]:object-contain [&_li]:ml-5 [&_ol]:list-decimal [&_p]:mb-2 [&_ul]:list-disc",
+            "min-h-[340px] px-4 py-3 outline-none text-ui-fg-base text-small [&_.is-editor-empty:first-child]:before:pointer-events-none [&_.is-editor-empty:first-child]:before:float-left [&_.is-editor-empty:first-child]:before:h-0 [&_.is-editor-empty:first-child]:before:text-ui-fg-muted [&_.is-editor-empty:first-child]:before:content-[attr(data-placeholder)] [&_blockquote]:my-3 [&_blockquote]:border-l-4 [&_blockquote]:border-ui-border-strong [&_blockquote]:pl-4 [&_blockquote]:italic [&_h2]:text-large [&_h2]:font-semibold [&_h3]:font-semibold [&_img]:my-3 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md [&_img]:object-contain [&_li]:ml-5 [&_ol]:list-decimal [&_p]:mb-2 [&_ul]:list-disc",
           "aria-label": "Product description",
         },
       },
@@ -255,6 +304,36 @@ const ProductDescriptionEditor = ({
               <Select.Item value="paragraph">Normal</Select.Item>
               <Select.Item value="heading-2">Heading</Select.Item>
               <Select.Item value="heading-3">Subheading</Select.Item>
+            </Select.Content>
+          </Select>
+
+          <Select
+            value={
+              (editor?.getAttributes("textStyle")?.fontSize as string) ||
+              "14px"
+            }
+            onValueChange={(nextSize) => {
+              if (!editor) return;
+              if (nextSize === "14px") {
+                (editor.chain().focus() as any).unsetFontSize?.().run();
+              } else {
+                (editor.chain().focus() as any).setFontSize?.(nextSize).run();
+              }
+            }}
+          >
+            <Select.Trigger
+              aria-label="Font size"
+              className="mr-1 w-24 border-0 bg-transparent shadow-none"
+            >
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value="12px">12px Small</Select.Item>
+              <Select.Item value="14px">14px Body</Select.Item>
+              <Select.Item value="16px">16px Medium</Select.Item>
+              <Select.Item value="18px">18px Large</Select.Item>
+              <Select.Item value="20px">20px X-Large</Select.Item>
+              <Select.Item value="24px">24px 2X-Large</Select.Item>
             </Select.Content>
           </Select>
 
@@ -435,3 +514,4 @@ const ProductDescriptionEditor = ({
 };
 
 export { ProductDescriptionEditor };
+export default ProductDescriptionEditor;
