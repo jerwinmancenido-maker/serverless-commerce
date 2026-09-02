@@ -611,6 +611,24 @@ const CompoundedProductsPage = () => {
         throw new Error("Product configuration changed before save")
       }
 
+      if (product.typeId) {
+        try {
+          await sdk.client.fetch(
+            "/admin/compounded-product/governed-product-types",
+            {
+              method: "POST",
+              body: {
+                presentation_id: activated.presentation.id,
+                product_type_id: product.typeId,
+                reason: "Automatically linked during product draft creation",
+              },
+            },
+          )
+        } catch {
+          // Ignore if mapping already exists or is active
+        }
+      }
+
       return sdk.client.fetch<CreateDraftResponse>(
         "/admin/compounded-product/products",
         {
