@@ -202,7 +202,7 @@ export const prepareCompoundedProductDraftStep = createStep(
     }
 
     if (request.product.type_id) {
-      const [classificationMapping] =
+      let [classificationMapping] =
         await service.listGovernedProductTypeMappings(
           {
             product_type_id: request.product.type_id,
@@ -213,10 +213,42 @@ export const prepareCompoundedProductDraftStep = createStep(
         )
 
       if (!classificationMapping) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "The selected product type is not governed by this presentation",
+        const [existing] = await service.listGovernedProductTypeMappings(
+          {
+            product_type_id: request.product.type_id,
+            presentation_id: revision.presentation_id,
+          },
+          { take: 1 },
         )
+
+        if (existing && existing.status !== "archived") {
+          const updated = await service.updateGovernedProductTypeMappings({
+            id: existing.id,
+            status: "active",
+            activated_at: new Date(),
+            updated_by_actor_id: request.actorId || "system",
+          })
+          classificationMapping = Array.isArray(updated) ? updated[0] : updated
+        } else if (!existing) {
+          const now = new Date()
+          classificationMapping =
+            await service.createGovernedProductTypeMappings({
+              product_type_id: request.product.type_id,
+              presentation_id: revision.presentation_id,
+              status: "active",
+              reason: "Automatically linked during product draft creation",
+              created_by_actor_id: request.actorId || "system",
+              updated_by_actor_id: request.actorId || "system",
+              activated_at: now,
+              deactivated_at: null,
+              archived_at: null,
+            })
+        } else {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "The selected product type is not governed by this presentation",
+          )
+        }
       }
     }
     const prepared = prepareCompoundedProductDraft({
