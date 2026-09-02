@@ -21,6 +21,10 @@ type MobileActionsProps = {
   isAdding?: boolean
   show: boolean
   optionsDisabled: boolean
+  quantity: number
+  onQuantityChange: (qty: number) => void
+  maxQty: number
+  totalPrice: string | null
 }
 
 const MobileActions: React.FC<MobileActionsProps> = ({
@@ -33,6 +37,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   isAdding,
   show,
   optionsDisabled,
+  quantity,
+  onQuantityChange,
+  maxQty,
+  totalPrice,
 }) => {
   const { state, open, close } = useToggleState()
 
@@ -63,72 +71,106 @@ const MobileActions: React.FC<MobileActionsProps> = ({
           as={Fragment}
           show={show}
           enter="ease-in-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+          enterFrom="opacity-0 translate-y-4"
+          enterTo="opacity-100 translate-y-0"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 translate-y-0"
+          leaveTo="opacity-0 translate-y-4"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+            className="bg-white/95 backdrop-blur-md flex flex-col gap-y-2.5 p-3.5 w-full border-t border-zinc-200/90 shadow-2xl safe-area-pb"
             data-testid="mobile-actions"
           >
-            <div className="flex items-center gap-x-2">
-              <span data-testid="mobile-title">{product.title}</span>
-              <span>—</span>
-              {selectedPrice ? (
-                <div className="flex items-end gap-x-2 text-ui-fg-base">
-                  {selectedPrice.price_type === "sale" && (
-                    <p>
-                      <span className="line-through text-small-regular">
-                        {selectedPrice.original_price}
-                      </span>
-                    </p>
-                  )}
-                  <span
-                    className={clx({
-                      "text-ui-fg-interactive":
-                        selectedPrice.price_type === "sale",
-                    })}
-                  >
+            <div className="flex items-center justify-between px-1">
+              <div className="min-w-0 pr-2">
+                <span className="text-xs font-semibold text-zinc-900 truncate block" data-testid="mobile-title">
+                  {product.title}
+                </span>
+                <span className="text-[11px] text-zinc-500">
+                  {variant && Object.values(options).length > 0
+                    ? Object.values(options).join(" · ")
+                    : "Select options"}
+                </span>
+              </div>
+              {selectedPrice && (
+                <div className="text-right shrink-0">
+                  <span className="text-sm font-bold text-zinc-900">
                     {selectedPrice.calculated_price}
                   </span>
                 </div>
-              ) : (
-                <div></div>
               )}
             </div>
-            <div className={clx("grid grid-cols-2 w-full gap-x-4", {
-              "!grid-cols-1": isSimple
-            })}>
-              {!isSimple && <Button
-                onClick={open}
-                variant="secondary"
-                className="w-full"
-                data-testid="mobile-actions-button"
+
+            {/* Quantity stepper + Add to cart row */}
+            <div className="flex items-center gap-2.5 w-full">
+              {/* Compact quantity stepper */}
+              <div className="flex h-11 items-center rounded-xl border border-zinc-200 bg-white px-1.5 shadow-xs shrink-0">
+                <button
+                  type="button"
+                  id="mobile-qty-decrement"
+                  disabled={quantity <= 1 || optionsDisabled}
+                  onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
+                  className="size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-lg leading-none"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+                <span
+                  className="w-7 text-center text-sm font-semibold text-zinc-900"
+                  data-testid="mobile-quantity-display"
+                >
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  id="mobile-qty-increment"
+                  disabled={quantity >= maxQty || optionsDisabled}
+                  onClick={() => onQuantityChange(Math.min(maxQty, quantity + 1))}
+                  className="size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-lg leading-none"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+
+              <div
+                className={clx("flex gap-x-2.5 flex-1", {
+                  "!flex-col": !isSimple,
+                })}
               >
-                <div className="flex items-center justify-between w-full">
-                  <span>
-                    {variant
-                      ? Object.values(options).join(" / ")
-                      : "Select Options"}
-                  </span>
-                  <ChevronDown />
-                </div>
-              </Button>}
-              <Button
-                onClick={handleAddToCart}
-                disabled={!inStock || !variant}
-                className="w-full"
-                isLoading={isAdding}
-                data-testid="mobile-cart-button"
-              >
-                {!variant
-                  ? "Select variant"
-                  : !inStock
-                  ? "Out of stock"
-                  : "Add to cart"}
-              </Button>
+                {!isSimple && (
+                  <Button
+                    onClick={open}
+                    variant="secondary"
+                    className="h-11 rounded-xl text-xs font-medium border-zinc-200 hover:bg-zinc-50"
+                    data-testid="mobile-actions-button"
+                  >
+                    <div className="flex items-center justify-between w-full px-1">
+                      <span className="truncate">
+                        {variant && Object.values(options).length > 0
+                          ? Object.values(options).join(" / ")
+                          : "Select Options"}
+                      </span>
+                      <ChevronDown className="h-4 w-4 shrink-0 opacity-60 ml-1" />
+                    </div>
+                  </Button>
+                )}
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={!inStock || !variant}
+                  className="h-11 rounded-xl text-xs font-semibold bg-zinc-900 text-white hover:bg-zinc-800 flex-1"
+                  isLoading={isAdding}
+                  data-testid="mobile-cart-button"
+                >
+                  {!variant
+                    ? "Select variant"
+                    : !inStock
+                    ? "Out of stock"
+                    : totalPrice
+                    ? `Add to cart — ${totalPrice}`
+                    : "Add to cart"}
+                </Button>
+              </div>
             </div>
           </div>
         </Transition>
