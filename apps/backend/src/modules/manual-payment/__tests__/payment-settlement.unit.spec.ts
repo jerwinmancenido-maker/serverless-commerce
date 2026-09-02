@@ -86,4 +86,53 @@ describe("manual payment settlement contract", () => {
       errorCategory: null,
     })
   })
+
+  it("normalizes a proof_approved_after_capture terminal event", () => {
+    expect(
+      normalizeManualPaymentSettlementEvent({
+        ...validAttempt,
+        eventType: "proof_approved_after_capture",
+        status: "captured",
+        paymentId: "pay_test",
+        captureId: "cap_test",
+      }),
+    ).toEqual({
+      ...validAttempt,
+      eventType: "proof_approved_after_capture",
+      status: "captured",
+      paymentId: "pay_test",
+      captureId: "cap_test",
+      errorCategory: null,
+    })
+  })
+
+  it("normalizes an authorization_confirmed event", () => {
+    expect(
+      normalizeManualPaymentSettlementEvent({
+        ...validAttempt,
+        eventType: "authorization_confirmed",
+        status: "authorized",
+        paymentId: "pay_test",
+      }),
+    ).toEqual({
+      ...validAttempt,
+      eventType: "authorization_confirmed",
+      status: "authorized",
+      paymentId: "pay_test",
+      captureId: null,
+      errorCategory: null,
+    })
+  })
+
+  it("rejects non-failed events when an errorCategory is supplied", () => {
+    expect(() =>
+      normalizeManualPaymentSettlementEvent({
+        ...validAttempt,
+        eventType: "authorization_confirmed",
+        status: "authorized",
+        paymentId: "pay_test",
+        errorCategory: "internal_error",
+      }),
+    ).toThrow("only settlement_failed can include an error category")
+  })
 })

@@ -39,6 +39,16 @@ export const adminManualPaymentProofMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    matcher: "/admin/manual-payment-proofs/:id/settle",
+    methods: ["POST"],
+    policies: [
+      {
+        resource: "manual_payment_proof",
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
     matcher: "/admin/manual-payment-proofs/:id",
     methods: ["GET"],
     policies: [

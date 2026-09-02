@@ -17,6 +17,8 @@ import type {
   ManualPaymentProof,
   ManualPaymentProofDetailsResponse,
   ManualPaymentProofReviewResponse,
+  ManualPaymentProofSettleResponse,
+  ManualPaymentSettlementStatus,
 } from "./types"
 
 type ReviewDrawerProps = {
@@ -29,11 +31,19 @@ function formatDate(value: string | null) {
   return value ? new Date(value).toLocaleString() : "—"
 }
 
-function statusColor(status: ManualPaymentProof["status"]) {
+function proofStatusColor(status: ManualPaymentProof["status"]) {
   if (status === "approved") return "green" as const
   if (status === "rejected") return "red" as const
   if (status === "expired") return "grey" as const
   return "orange" as const
+}
+
+function settlementStatusColor(status?: ManualPaymentSettlementStatus) {
+  if (status === "captured") return "green" as const
+  if (status === "authorized") return "blue" as const
+  if (status === "authorizing" || status === "capturing") return "orange" as const
+  if (status === "failed") return "red" as const
+  return "grey" as const
 }
 
 export const ManualPaymentProofReviewDrawer = ({
@@ -52,28 +62,43 @@ export const ManualPaymentProofReviewDrawer = ({
     enabled: open && Boolean(proof?.id),
   })
   const currentProof = detailsQuery.data?.manual_payment_proof ?? proof
+  const settlement = detailsQuery.data?.settlement
 
   useEffect(() => {
     setRejectionReason(currentProof?.rejection_reason ?? "")
   }, [currentProof?.id, currentProof?.rejection_reason])
 
-  const reviewMutation = useMutation({
-    mutationFn: (input: {
-      decision: "approved" | "rejected"
-      reason?: string
-    }) =>
+  const rejectMutation = useMutation({
+    mutationFn: (input: { reason: string }) =>
       sdk.client.fetch<ManualPaymentProofReviewResponse>(
         `/admin/manual-payment-proofs/${proof?.id}/review`,
-        { method: "POST", body: input },
+        { method: "POST", body: { decision: "rejected", reason: input.reason } },
       ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["manual-payment-proofs"],
       })
-      toast.success("Payment proof review saved")
+      toast.success("Payment proof rejected")
     },
     onError: (error) => {
-      toast.error(error.message || "Payment proof review failed")
+      toast.error(error.message || "Payment proof rejection failed")
+    },
+  })
+
+  const settleMutation = useMutation({
+    mutationFn: () =>
+      sdk.client.fetch<ManualPaymentProofSettleResponse>(
+        `/admin/manual-payment-proofs/${proof?.id}/settle`,
+        { method: "POST" },
+      ),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["manual-payment-proofs"],
+      })
+      toast.success(`Payment approved and settled (${data.settlement_status})`)
+    },
+    onError: (error) => {
+      toast.error(error.message || "Payment settlement failed")
     },
   })
 
@@ -98,8 +123,10 @@ export const ManualPaymentProofReviewDrawer = ({
       return
     }
 
-    reviewMutation.mutate({ decision: "rejected", reason })
+    rejectMutation.mutate({ reason })
   }
+
+  const isPendingAction = rejectMutation.isPending || settleMutation.isPending
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -115,9 +142,14 @@ export const ManualPaymentProofReviewDrawer = ({
           ) : currentProof ? (
             <div className="flex flex-col gap-4 px-6 py-4">
               <div className="flex items-center justify-between gap-3">
-                <Badge color={statusColor(currentProof.status)}>
-                  {currentProof.status}
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge color={proofStatusColor(currentProof.status)}>
+                    Proof: {currentProof.status}
+                  </Badge>
+                  <Badge color={settlementStatusColor(settlement?.status || currentProof.settlement_status)}>
+                    Settlement: {settlement?.status || currentProof.settlement_status || "not_started"}
+                  </Badge>
+                </div>
                 <Button
                   size="small"
                   variant="secondary"
@@ -207,6 +239,20 @@ export const ManualPaymentProofReviewDrawer = ({
                 </Text>
               </div>
 
+              {settlement?.payment_id ? (
+                <div className="rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3 space-y-1">
+                  <Text size="xsmall" className="text-ui-fg-muted uppercase font-semibold tracking-wider">
+                    Medusa Financial State
+                  </Text>
+                  <div className="text-xs text-ui-fg-base">
+                    <div>Payment ID: <span className="font-mono">{settlement.payment_id}</span></div>
+                    {settlement.capture_id ? (
+                      <div>Capture ID: <span className="font-mono">{settlement.capture_id}</span></div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
               <div className="flex flex-col gap-2">
                 <Text size="small" leading="compact" weight="plus">
                   Audit history
@@ -253,10 +299,9 @@ export const ManualPaymentProofReviewDrawer = ({
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-warning"
+                    className="text-ui-fg-subtle"
                   >
-                    This records the proof decision only. Payment authorization
-                    and capture are not yet connected.
+                    Approving and capturing triggers financial authorization and capture for the full order amount in Medusa.
                   </Text>
                 </div>
               ) : null}
@@ -277,7 +322,7 @@ export const ManualPaymentProofReviewDrawer = ({
               <Button
                 size="small"
                 variant="secondary"
-                disabled={reviewMutation.isPending}
+                disabled={isPendingAction}
               >
                 Close
               </Button>
@@ -287,19 +332,20 @@ export const ManualPaymentProofReviewDrawer = ({
                 <Button
                   size="small"
                   variant="secondary"
-                  disabled={reviewMutation.isPending}
+                  disabled={isPendingAction}
+                  isLoading={rejectMutation.isPending}
                   onClick={reject}
                 >
                   Reject proof
                 </Button>
                 <Button
                   size="small"
-                  isLoading={reviewMutation.isPending}
-                  onClick={() =>
-                    reviewMutation.mutate({ decision: "approved" })
-                  }
+                  variant="primary"
+                  isLoading={settleMutation.isPending}
+                  disabled={isPendingAction}
+                  onClick={() => settleMutation.mutate()}
                 >
-                  Approve proof
+                  Approve and capture payment
                 </Button>
               </>
             ) : null}

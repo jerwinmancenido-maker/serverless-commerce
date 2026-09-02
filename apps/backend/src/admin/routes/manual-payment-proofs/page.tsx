@@ -104,8 +104,7 @@ const ManualPaymentProofsPage = () => {
         <div className="px-6 py-4">
           <Heading>Manual QR payment proofs</Heading>
           <Text size="small" leading="compact" className="text-ui-fg-subtle">
-            Review customer uploads. Proof approval does not yet authorize or
-            capture payment.
+            Review customer uploads and settle payments with one-click authorization and capture.
           </Text>
         </div>
         {proofQuery.isError ? (
