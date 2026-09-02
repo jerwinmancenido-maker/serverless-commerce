@@ -16,19 +16,24 @@ export const setProviderReviewMarkerStep = createStep(
     // Fetch current session data to preserve non-provider fields
     const { data: sessions } = await query.graph({
       entity: "payment_session",
-      fields: ["id", "data", "status"],
+      fields: ["id", "data", "status", "currency_code", "amount"],
       filters: { id: input.paymentSessionId },
       pagination: { take: 1 },
     })
 
     const session = sessions?.[0]
     const priorData = session?.data ?? {}
+    const currencyCode = session?.currency_code || "php"
+    const amount = session?.amount ?? 0
 
     // Set the trusted approved marker that the Manual QR provider checks
     await paymentModule.updatePaymentSession({
       id: input.paymentSessionId,
+      currency_code: currencyCode,
+      amount: amount,
       data: {
         ...priorData,
+        manual_qr_review_status: "approved",
         _provider_review_approved: true,
       },
     })
@@ -36,15 +41,22 @@ export const setProviderReviewMarkerStep = createStep(
     return new StepResponse(
       { paymentSessionId: input.paymentSessionId },
       // Compensation input: restore original data
-      { paymentSessionId: input.paymentSessionId, priorData },
+      {
+        paymentSessionId: input.paymentSessionId,
+        currencyCode,
+        amount,
+        priorData,
+      },
     )
   },
   // Compensation: restore previous session data
-  async ({ paymentSessionId, priorData }, { container }) => {
+  async ({ paymentSessionId, currencyCode, amount, priorData }, { container }) => {
     const paymentModule = container.resolve(Modules.PAYMENT)
     try {
       await paymentModule.updatePaymentSession({
         id: paymentSessionId,
+        currency_code: currencyCode,
+        amount: amount,
         data: priorData,
       })
     } catch {

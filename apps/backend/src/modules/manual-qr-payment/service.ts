@@ -129,7 +129,8 @@ class ManualQrPaymentProviderService extends AbstractPaymentProvider<ManualQrPay
     return {
       data,
       status:
-        data.manual_qr_review_status === "approved"
+        data.manual_qr_review_status === "approved" ||
+        data._provider_review_approved === true
           ? PaymentSessionStatus.AUTHORIZED
           : PaymentSessionStatus.PENDING_AUTHORIZATION,
     }
@@ -140,7 +141,10 @@ class ManualQrPaymentProviderService extends AbstractPaymentProvider<ManualQrPay
   ): Promise<CapturePaymentOutput> {
     const data = paymentData(input)
 
-    if (data.manual_qr_review_status !== "approved") {
+    if (
+      data.manual_qr_review_status !== "approved" &&
+      data._provider_review_approved !== true
+    ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Manual QR payment cannot be captured before proof approval",

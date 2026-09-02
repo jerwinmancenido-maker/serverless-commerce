@@ -1,7 +1,10 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
 import { MANUAL_PAYMENT_MODULE } from "../../modules/manual-payment"
-import { normalizeManualPaymentSettlementEvent } from "../../modules/manual-payment/contracts/payment-settlement"
+import {
+  normalizeManualPaymentSettlementEvent,
+  toManualPaymentSettlementEventDml,
+} from "../../modules/manual-payment/contracts/payment-settlement"
 import type ManualPaymentModuleService from "../../modules/manual-payment/service"
 
 export type ConfirmCaptureAndFinalizeInput = {
@@ -71,7 +74,7 @@ export const confirmCaptureAndFinalizeStep = createStep(
     })
 
     await service.createManualPaymentSettlementEvents({
-      ...captureEvent,
+      ...toManualPaymentSettlementEventDml(captureEvent),
       occurred_at: now,
     })
 

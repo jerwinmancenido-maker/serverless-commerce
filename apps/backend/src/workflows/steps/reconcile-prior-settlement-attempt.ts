@@ -10,6 +10,7 @@ export type ReconcileResult = {
   terminalResult: TerminalSettlementResult | null
   paymentId: string | null
   captureId: string | null
+  attemptCount: number
 }
 
 export type TerminalSettlementResult = {
@@ -42,6 +43,7 @@ export const reconcilePriorSettlementAttemptStep = createStep(
         terminalResult: null,
         paymentId: null,
         captureId: null,
+        attemptCount: 0,
       } as ReconcileResult)
     }
 
@@ -68,6 +70,7 @@ export const reconcilePriorSettlementAttemptStep = createStep(
           },
           paymentId: existing.payment_id,
           captureId: existing.capture_id,
+          attemptCount: existing.attempt_count ?? 0,
         } as ReconcileResult)
       }
     }
@@ -79,6 +82,7 @@ export const reconcilePriorSettlementAttemptStep = createStep(
       terminalResult: null,
       paymentId: existing.payment_id,
       captureId: null,
+      attemptCount: existing.attempt_count ?? 0,
     } as ReconcileResult)
   },
 )

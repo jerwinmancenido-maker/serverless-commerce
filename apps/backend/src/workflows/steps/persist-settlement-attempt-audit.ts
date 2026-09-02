@@ -1,6 +1,9 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { MANUAL_PAYMENT_MODULE } from "../../modules/manual-payment"
-import { normalizeManualPaymentSettlementEvent } from "../../modules/manual-payment/contracts/payment-settlement"
+import {
+  normalizeManualPaymentSettlementEvent,
+  toManualPaymentSettlementEventDml,
+} from "../../modules/manual-payment/contracts/payment-settlement"
 import type ManualPaymentModuleService from "../../modules/manual-payment/service"
 import type { ValidatedProofForSettlement } from "./validate-proof-for-settlement"
 import type { ReconcileResult } from "./reconcile-prior-settlement-attempt"
@@ -25,18 +28,19 @@ export const persistSettlementAttemptAuditStep = createStep(
     // Upsert the settlement projection
     let settlement: { id: string }
     if (input.reconcile.existingSettlementId) {
-      ;[settlement] = await service.updateManualPaymentSettlements({
+      const updated = await service.updateManualPaymentSettlements({
         id: input.reconcile.existingSettlementId,
         status: "authorizing",
         current_attempt_id: input.attemptId,
-        attempt_count: { $increment: 1 } as any,
+        attempt_count: (input.reconcile.attemptCount ?? 0) + 1,
         requested_at: now,
         last_attempted_by_actor_id: input.actorId,
         last_error_category: null,
         failed_at: null,
       })
+      settlement = Array.isArray(updated) ? updated[0] : updated
     } else {
-      settlement = await service.createManualPaymentSettlements({
+      const created = await service.createManualPaymentSettlements({
         proof_id: input.proofId,
         proof_revision: input.proofRevision,
         payment_session_id: input.paymentSessionId,
@@ -47,6 +51,7 @@ export const persistSettlementAttemptAuditStep = createStep(
         requested_at: now,
         last_attempted_by_actor_id: input.actorId,
       })
+      settlement = Array.isArray(created) ? created[0] : created
     }
 
     // Write immutable audit event
@@ -65,7 +70,7 @@ export const persistSettlementAttemptAuditStep = createStep(
     })
 
     await service.createManualPaymentSettlementEvents({
-      ...eventInput,
+      ...toManualPaymentSettlementEventDml(eventInput),
       occurred_at: now,
     })
 
@@ -110,7 +115,7 @@ export const persistSettlementAttemptAuditStep = createStep(
       })
 
       await service.createManualPaymentSettlementEvents({
-        ...failureEvent,
+        ...toManualPaymentSettlementEventDml(failureEvent),
         occurred_at: now,
       })
     } catch {

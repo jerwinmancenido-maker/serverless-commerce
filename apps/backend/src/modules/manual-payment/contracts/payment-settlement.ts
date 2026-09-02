@@ -139,3 +139,21 @@ export function normalizeManualPaymentSettlementEvent(
     errorCategory,
   }
 }
+
+export function toManualPaymentSettlementEventDml(
+  event: ManualPaymentSettlementEventInput,
+) {
+  return {
+    attempt_id: event.attemptId,
+    proof_id: event.proofId,
+    proof_revision: event.proofRevision,
+    payment_session_id: event.paymentSessionId,
+    order_id: event.orderId,
+    actor_id: event.actorId,
+    event_type: event.eventType,
+    status: event.status,
+    payment_id: event.paymentId ?? null,
+    capture_id: event.captureId ?? null,
+    error_category: event.errorCategory ?? null,
+  }
+}
