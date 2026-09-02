@@ -527,30 +527,39 @@ const CompoundedProductsPage = () => {
       }
 
       const variants = preview.matrix.rows.map((row) => {
-        const draft = variantDrafts[row.key]
-
-        if (Boolean(draft.priceAmount) !== Boolean(draft.currencyCode)) {
-          throw new Error(
-            `Price and currency must both be set for ${row.title}`,
-          )
+        const draft = variantDrafts[row.key] || {
+          sku: "",
+          priceAmount: "",
+          currencyCode:
+            pricingCurrencyCode ||
+            (currencies.includes("PHP") ? "PHP" : currencies[0] || "PHP"),
+          imageUrls: [],
+          manageInventory: true,
+          allowBackorder: false,
+          configuredValues: {},
         }
+
+        const effectiveCurrency =
+          draft.currencyCode ||
+          pricingCurrencyCode ||
+          (currencies.includes("PHP") ? "PHP" : currencies[0] || "PHP")
 
         return {
           matrix_row_key: row.key,
-          sku: draft.sku,
+          sku: draft.sku || "",
           prices:
-            draft.priceAmount && draft.currencyCode
+            draft.priceAmount
               ? [
                   {
                     amount: draft.priceAmount,
-                    currency_code: draft.currencyCode.toLowerCase(),
+                    currency_code: effectiveCurrency.toLowerCase(),
                   },
                 ]
               : [],
-          image_urls: draft.imageUrls,
-          manage_inventory: draft.manageInventory,
-          allow_backorder: draft.allowBackorder,
-          configured_values: draft.configuredValues,
+          image_urls: draft.imageUrls || [],
+          manage_inventory: draft.manageInventory ?? true,
+          allow_backorder: draft.allowBackorder ?? false,
+          configured_values: draft.configuredValues || {},
         }
       })
 
@@ -665,7 +674,9 @@ const CompoundedProductsPage = () => {
         ...(current[rowKey] || {
           sku: "",
           priceAmount: "",
-          currencyCode: "",
+          currencyCode:
+            pricingCurrencyCode ||
+            (currencies.includes("PHP") ? "PHP" : currencies[0] || "PHP"),
           imageUrls: [],
           manageInventory: true,
           allowBackorder: false,
