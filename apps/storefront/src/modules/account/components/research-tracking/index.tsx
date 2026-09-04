@@ -860,7 +860,7 @@ export default function ResearchTracking({
                     Open calendar →
                   </LocalizedClientLink>
                 </div>
-                <AdherenceHeatmap occurrences={occurrences} today={routineToday} />
+                <AdherenceHeatmap occurrences={occurrences} today={routineToday} timeline={timeline} />
               </div>
             </div>
 

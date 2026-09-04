@@ -40,17 +40,52 @@ type Props = {
   timeline: ResearchTimelineEvent[]
 }
 
-type Metric = "weight" | "waist" | "body_fat"
+type Metric =
+  | "weight"
+  | "waist"
+  | "body_fat"
+  | "blood_pressure_systolic"
+  | "blood_pressure_diastolic"
+  | "fasting_glucose"
+  | "resting_hr"
 type Range = "30" | "90" | "all"
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────
 
 const initialState: ResearchTrackingActionState = { success: false, error: null }
 
 const METRIC_LABELS: Record<Metric, string> = {
   weight: "Weight",
   waist: "Waist",
-  body_fat: "Body Fat",
+  body_fat: "Body Fat %",
+  blood_pressure_systolic: "BP Systolic",
+  blood_pressure_diastolic: "BP Diastolic",
+  fasting_glucose: "Fasting Glucose",
+  resting_hr: "Resting HR",
+}
+
+// Units available per metric for the log form
+const METRIC_UNITS: Record<Metric, string[]> = {
+  weight: ["kg", "lb"],
+  waist: ["cm", "in"],
+  body_fat: ["percent"],
+  blood_pressure_systolic: ["mmHg"],
+  blood_pressure_diastolic: ["mmHg"],
+  fasting_glucose: ["mg_dL", "mmol_L"],
+  resting_hr: ["bpm"],
+}
+
+// Display label for unit abbreviations
+const UNIT_DISPLAY: Record<string, string> = {
+  percent: "%",
+  mmHg: "mmHg",
+  mg_dL: "mg/dL",
+  mmol_L: "mmol/L",
+  bpm: "bpm",
+  kg: "kg",
+  lb: "lb",
+  cm: "cm",
+  in: "in",
 }
 
 function MetricIcon({
@@ -62,16 +97,7 @@ function MetricIcon({
 }) {
   if (metric === "weight") {
     return (
-      <svg
-        className={className}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
         <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
         <path d="M7 21h10" />
@@ -82,16 +108,7 @@ function MetricIcon({
   }
   if (metric === "waist") {
     return (
-      <svg
-        className={className}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4Z" />
         <path d="m14.5 5.5-2.5 2.5" />
         <path d="m11.5 8.5-1.5 1.5" />
@@ -99,17 +116,23 @@ function MetricIcon({
       </svg>
     )
   }
+  if (metric === "resting_hr" || metric === "blood_pressure_systolic" || metric === "blood_pressure_diastolic") {
+    return (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+      </svg>
+    )
+  }
+  if (metric === "fasting_glucose") {
+    return (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
+      </svg>
+    )
+  }
+  // body_fat fallback
   return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   )
@@ -557,8 +580,7 @@ function InlineLogForm({
 }) {
   const [metric, setMetric] = useState<Metric>("weight")
   const [state, action] = useActionState(createResearchMeasurementAction, initialState)
-  const units =
-    metric === "weight" ? ["kg", "lb"] : metric === "waist" ? ["cm", "in"] : ["percent"]
+  const units = METRIC_UNITS[metric] ?? ["kg"]
 
   const now = new Date()
   const localDate = now.toISOString().slice(0, 10)
@@ -586,10 +608,11 @@ function InlineLogForm({
         <input type="hidden" name="country_code" value={countryCode} />
         <input type="hidden" name="idempotency_key" value={submissionKeys.create} />
 
-        {/* Metric switcher pills inside form */}
         <div>
           <p className="mb-2 text-xs font-medium text-ui-fg-muted">What are you logging?</p>
-          <div className="flex flex-wrap gap-2">
+          {/* Row 1: Body composition */}
+          <p className="mb-1.5 text-[10px] uppercase tracking-widest text-ui-fg-muted">Body</p>
+          <div className="mb-3 flex flex-wrap gap-2">
             {(["weight", "waist", "body_fat"] as Metric[]).map((m) => (
               <button
                 key={m}
@@ -598,6 +621,25 @@ function InlineLogForm({
                 className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-sm font-medium transition-all ${
                   m === metric
                     ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                    : "border-ui-border-base bg-white text-ui-fg-subtle hover:text-ui-fg-base"
+                }`}
+              >
+                <MetricIcon metric={m} className="h-4 w-4" />
+                <span>{METRIC_LABELS[m]}</span>
+              </button>
+            ))}
+          </div>
+          {/* Row 2: Vitals */}
+          <p className="mb-1.5 text-[10px] uppercase tracking-widest text-ui-fg-muted">Vitals</p>
+          <div className="flex flex-wrap gap-2">
+            {(["blood_pressure_systolic", "blood_pressure_diastolic", "fasting_glucose", "resting_hr"] as Metric[]).map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => setMetric(m)}
+                className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-sm font-medium transition-all ${
+                  m === metric
+                    ? "border-rose-400 bg-rose-50 text-rose-700"
                     : "border-ui-border-base bg-white text-ui-fg-subtle hover:text-ui-fg-base"
                 }`}
               >
@@ -626,7 +668,7 @@ function InlineLogForm({
             <select name="unit" key={metric} className={`mt-1.5 ${inputCls}`}>
               {units.map((u) => (
                 <option key={u} value={u}>
-                  {u === "percent" ? "%" : u}
+                  {UNIT_DISPLAY[u] ?? u}
                 </option>
               ))}
             </select>

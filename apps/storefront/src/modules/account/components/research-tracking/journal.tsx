@@ -58,6 +58,175 @@ function createClientSubmissionKey(): string {
   return createResearchSubmissionKey(() => globalThis.crypto.randomUUID())
 }
 
+// ─── Rating & tag helpers (encode into note prefix, no backend change) ────────
+
+const RATING_PREFIX_RE = /^\[ratings:M(\d)E(\d)A(\d)\]\n?/
+const TAG_PREFIX_RE = /^\[tags:([^\]]+)\]\n?/
+
+type Ratings = { mood: number; energy: number; appetite: number }
+type Tag = "observation" | "side-effect" | "lab" | "photo-note"
+
+const TAG_LABELS: Record<Tag, string> = {
+  observation: "Observation",
+  "side-effect": "Side Effect",
+  lab: "Lab Result",
+  "photo-note": "Photo Note",
+}
+
+const TAG_COLORS: Record<Tag, string> = {
+  observation: "border-blue-200 bg-blue-50 text-blue-700",
+  "side-effect": "border-rose-200 bg-rose-50 text-rose-700",
+  lab: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  "photo-note": "border-amber-200 bg-amber-50 text-amber-700",
+}
+
+function encodeNotePrefix(note: string, ratings: Ratings, tags: Tag[]): string {
+  let prefix = ""
+  if (ratings.mood || ratings.energy || ratings.appetite) {
+    prefix += `[ratings:M${ratings.mood}E${ratings.energy}A${ratings.appetite}]\n`
+  }
+  if (tags.length) {
+    prefix += `[tags:${tags.join(",")}]\n`
+  }
+  return prefix + note
+}
+
+function parseNotePrefix(raw: string): {
+  note: string
+  ratings: Ratings | null
+  tags: Tag[]
+} {
+  let rest = raw
+  let ratings: Ratings | null = null
+  let tags: Tag[] = []
+
+  const ratingMatch = RATING_PREFIX_RE.exec(rest)
+  if (ratingMatch) {
+    ratings = {
+      mood: parseInt(ratingMatch[1], 10),
+      energy: parseInt(ratingMatch[2], 10),
+      appetite: parseInt(ratingMatch[3], 10),
+    }
+    rest = rest.slice(ratingMatch[0].length)
+  }
+
+  const tagMatch = TAG_PREFIX_RE.exec(rest)
+  if (tagMatch) {
+    tags = tagMatch[1].split(",").filter((t) => Object.keys(TAG_LABELS).includes(t)) as Tag[]
+    rest = rest.slice(tagMatch[0].length)
+  }
+
+  return { note: rest, ratings, tags }
+}
+
+// ─── RatingInput ────────────────────────────────────────────────────────────
+
+const RATING_EMOJI: Record<string, string[]> = {
+  mood:     ["😞", "😔", "😐", "🙂", "😄"],
+  energy:   ["🪫", "😴", "⚡", "🔋", "🚀"],
+  appetite: ["🚫", "😶", "🍽️", "😋", "🤤"],
+}
+
+function RatingInput({
+  label,
+  name,
+  value,
+  onChange,
+}: {
+  label: string
+  name: string
+  value: number
+  onChange: (v: number) => void
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-20 shrink-0 text-xs font-medium text-ui-fg-subtle">{label}</span>
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            type="button"
+            aria-label={`${label} ${n} of 5`}
+            onClick={() => onChange(n)}
+            className={`flex h-8 w-8 items-center justify-center rounded-lg border text-base transition-all ${
+              value === n
+                ? "border-indigo-400 bg-indigo-50 shadow-sm"
+                : "border-ui-border-base bg-white hover:border-indigo-200"
+            }`}
+          >
+            {RATING_EMOJI[name]?.[n - 1] ?? n}
+          </button>
+        ))}
+      </div>
+      {value > 0 && (
+        <span className="text-xs text-ui-fg-muted">{value}/5</span>
+      )}
+    </div>
+  )
+}
+
+// ─── TagSelector ─────────────────────────────────────────────────────────────
+
+function TagSelector({
+  selected,
+  onChange,
+}: {
+  selected: Tag[]
+  onChange: (tags: Tag[]) => void
+}) {
+  function toggle(tag: Tag) {
+    onChange(
+      selected.includes(tag)
+        ? selected.filter((t) => t !== tag)
+        : [...selected, tag],
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {(Object.keys(TAG_LABELS) as Tag[]).map((tag) => (
+        <button
+          key={tag}
+          type="button"
+          aria-pressed={selected.includes(tag)}
+          onClick={() => toggle(tag)}
+          className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${
+            selected.includes(tag)
+              ? TAG_COLORS[tag]
+              : "border-ui-border-base bg-white text-ui-fg-muted hover:border-ui-fg-muted"
+          }`}
+        >
+          {TAG_LABELS[tag]}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ─── RatingDisplay ────────────────────────────────────────────────────────────
+
+function RatingDisplay({ ratings }: { ratings: Ratings }) {
+  const items = [
+    { label: "Mood",     value: ratings.mood,     emoji: "😐" },
+    { label: "Energy",   value: ratings.energy,   emoji: "⚡" },
+    { label: "Appetite", value: ratings.appetite, emoji: "🍽️" },
+  ]
+  return (
+    <div className="mt-2 flex flex-wrap gap-2">
+      {items.map(({ label, value, emoji }) =>
+        value > 0 ? (
+          <span
+            key={label}
+            className="inline-flex items-center gap-1 rounded-full border border-indigo-100 bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700"
+          >
+            {emoji} {label} {value}/5
+          </span>
+        ) : null,
+      )}
+    </div>
+  )
+}
+
 function useRotatingSubmissionKey(initialKey?: string) {
   const [submissionKey, setSubmissionKey] = useState(
     () => initialKey ?? createClientSubmissionKey(),
@@ -453,9 +622,30 @@ function JournalEntryCard({
           )}
         </div>
       </div>
-      <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-6">
-        {revision.note}
-      </p>
+      {/* Parse and display ratings + tags from note prefix */}
+      {(() => {
+        const { note, ratings, tags } = parseNotePrefix(revision.note)
+        return (
+          <>
+            {(ratings || tags.length > 0) && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {ratings && <RatingDisplay ratings={ratings} />}
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${TAG_COLORS[tag]}`}
+                  >
+                    {TAG_LABELS[tag]}
+                  </span>
+                ))}
+              </div>
+            )}
+            <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-6">
+              {note}
+            </p>
+          </>
+        )
+      })()}
 
       <JournalAttachments
         canMutate={canMutate}
@@ -651,6 +841,8 @@ export default function Journal({
   const totalPages = Math.max(1, Math.ceil(entryCount / limit))
   const [showForm, setShowForm] = useState(false)
   const [advanced, setAdvanced] = useState(false)
+  const [pendingRatings, setPendingRatings] = useState<Ratings>({ mood: 0, energy: 0, appetite: 0 })
+  const [pendingTags, setPendingTags] = useState<Tag[]>([])
 
   const now = new Date()
   const localDate = now.toISOString().slice(0, 10)
@@ -695,7 +887,22 @@ export default function Journal({
               New entries are disabled while this profile is closed or consent is outdated.
             </div>
           ) : (
-            <form action={createAction} className="space-y-4 p-5">
+            <form
+              action={createAction}
+              className="space-y-4 p-5"
+              onSubmit={(e) => {
+                // Encode ratings + tags into the note field before submit
+                const form = e.currentTarget
+                const noteEl = form.elements.namedItem("note") as HTMLTextAreaElement
+                if (noteEl) {
+                  noteEl.value = encodeNotePrefix(
+                    noteEl.value,
+                    pendingRatings,
+                    pendingTags,
+                  )
+                }
+              }}
+            >
               <HiddenContext countryCode={countryCode} idempotencyKey={createKey} />
               <input type="hidden" name="timezone" value={timezone} />
 
@@ -710,6 +917,35 @@ export default function Journal({
                   placeholder="What did you observe today? Side effects, how you felt, dose timing&#x2026;"
                 />
               </label>
+
+              {/* ── Ratings ────────────────────────────────────────── */}
+              <div className="space-y-2 rounded-xl border border-ui-border-base/60 bg-ui-bg-subtle/50 p-4">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-ui-fg-muted">How are you feeling?</p>
+                <RatingInput
+                  label="Mood"
+                  name="mood"
+                  value={pendingRatings.mood}
+                  onChange={(v) => setPendingRatings((r) => ({ ...r, mood: v }))}
+                />
+                <RatingInput
+                  label="Energy"
+                  name="energy"
+                  value={pendingRatings.energy}
+                  onChange={(v) => setPendingRatings((r) => ({ ...r, energy: v }))}
+                />
+                <RatingInput
+                  label="Appetite"
+                  name="appetite"
+                  value={pendingRatings.appetite}
+                  onChange={(v) => setPendingRatings((r) => ({ ...r, appetite: v }))}
+                />
+              </div>
+
+              {/* ── Tags ───────────────────────────────────────────── */}
+              <div>
+                <p className="mb-2 text-xs font-medium text-ui-fg-muted">Entry type</p>
+                <TagSelector selected={pendingTags} onChange={setPendingTags} />
+              </div>
 
               <button
                 type="button"

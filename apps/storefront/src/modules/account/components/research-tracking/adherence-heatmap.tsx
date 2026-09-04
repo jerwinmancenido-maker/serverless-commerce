@@ -1,11 +1,12 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import type { ResearchOccurrence } from "@lib/data/research-tracking"
+import type { ResearchOccurrence, ResearchTimelineEvent } from "@lib/data/research-tracking"
 
 type Props = {
   occurrences: ResearchOccurrence[]
   today: string
+  timeline?: ResearchTimelineEvent[]
 }
 
 function addDays(dateStr: string, days: number) {
@@ -25,8 +26,9 @@ function formatLabel(dateStr: string) {
 const WEEKS = 12
 const DAYS = WEEKS * 7
 
-export default function AdherenceHeatmap({ occurrences, today }: Props) {
+export default function AdherenceHeatmap({ occurrences, today, timeline = [] }: Props) {
   const [tooltip, setTooltip] = useState<{ date: string; confirmed: number; total: number } | null>(null)
+  const [milestoneTooltip, setMilestoneTooltip] = useState<{ weekCol: number; label: string } | null>(null)
 
   // Build start date (12 weeks ago, aligned to Monday)
   const startDate = useMemo(() => {
@@ -78,6 +80,58 @@ export default function AdherenceHeatmap({ occurrences, today }: Props) {
   const weekDayLabels = ["M", "W", "F"]
   const weekDayRows = [0, 2, 4] // Mon=0, Wed=2, Fri=4
 
+  // Milestone events within the heatmap window (protocol start / dose escalation)
+  const milestones = useMemo(() => {
+    const relevant = timeline.filter((e) => {
+      const date = e.occurred_at.slice(0, 10)
+      return date >= startDate && date <= today
+    })
+    return relevant.map((e) => {
+      const date = e.occurred_at.slice(0, 10)
+      const dayIndex = Math.floor(
+        (new Date(`${date}T00:00:00.000Z`).getTime() -
+          new Date(`${startDate}T00:00:00.000Z`).getTime()) /
+          86_400_000,
+      )
+      return { weekCol: Math.floor(dayIndex / 7), label: e.title, date }
+    })
+  }, [timeline, startDate, today])
+
+  // Streak counter
+  const { currentStreak, longestStreak, adherenceRate } = useMemo(() => {
+    const pastDates = cells.filter((d) => d <= today)
+    let cur = 0
+    let longest = 0
+    let run = 0
+    let totalConfirmed = 0
+    let totalScheduled = 0
+
+    for (const date of pastDates) {
+      const data = byDate.get(date)
+      if (data && data.total > 0) {
+        totalScheduled += data.total
+        totalConfirmed += data.confirmed
+        if (data.confirmed > 0) {
+          run++
+          if (run > longest) longest = run
+        } else {
+          run = 0
+        }
+      }
+    }
+    // current streak — count backwards from today
+    for (let i = pastDates.length - 1; i >= 0; i--) {
+      const data = byDate.get(pastDates[i])
+      if (data && data.confirmed > 0) {
+        cur++
+      } else if (data && data.total > 0) {
+        break
+      }
+    }
+    const rate = totalScheduled > 0 ? Math.round((totalConfirmed / totalScheduled) * 100) : 0
+    return { currentStreak: cur, longestStreak: longest, adherenceRate: rate }
+  }, [cells, byDate, today])
+
   function cellColor(date: string) {
     if (date > today) return "bg-ui-bg-base border border-dashed border-ui-border-base"
     const data = byDate.get(date)
@@ -97,19 +151,44 @@ export default function AdherenceHeatmap({ occurrences, today }: Props) {
   )
 
   return (
-    <div className="space-y-2">
-      {/* Month labels */}
-      <div className="flex pl-6 gap-0" style={{ display: "grid", gridTemplateColumns: `24px repeat(${WEEKS}, 1fr)` }}>
+    <div className="space-y-3">
+      {/* Month labels row — with milestone pin markers above */}
+      <div style={{ display: "grid", gridTemplateColumns: `24px repeat(${WEEKS}, 1fr)` }}>
         <div />
         {Array.from({ length: WEEKS }, (_, w) => {
-          const label = monthLabels.find((m) => m.weekCol === w)
+          const monthLabel = monthLabels.find((m) => m.weekCol === w)
+          const milestonesInWeek = milestones.filter((m) => m.weekCol === w)
           return (
-            <div key={w} className="text-[10px] text-ui-fg-muted truncate">
-              {label?.label ?? ""}
+            <div key={w} className="relative flex flex-col items-start">
+              {/* Milestone pin(s) */}
+              {milestonesInWeek.map((ms, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className="absolute -top-1 left-1/2 -translate-x-1/2 text-indigo-500 hover:text-indigo-700 focus:outline-none"
+                  aria-label={ms.label}
+                  onMouseEnter={() => setMilestoneTooltip({ weekCol: w, label: ms.label })}
+                  onMouseLeave={() => setMilestoneTooltip(null)}
+                  onClick={() => setMilestoneTooltip((prev) => prev?.weekCol === w ? null : { weekCol: w, label: ms.label })}
+                >
+                  {/* Downward triangle pin */}
+                  <svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true">
+                    <polygon points="4,0 8,8 0,8" fill="currentColor" />
+                  </svg>
+                </button>
+              ))}
+              <span className="text-[10px] text-ui-fg-muted truncate">{monthLabel?.label ?? ""}</span>
             </div>
           )
         })}
       </div>
+
+      {/* Milestone tooltip */}
+      {milestoneTooltip && (
+        <div className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-800 shadow-sm">
+          📍 {milestoneTooltip.label}
+        </div>
+      )}
 
       {/* Grid */}
       <div
@@ -142,7 +221,7 @@ export default function AdherenceHeatmap({ occurrences, today }: Props) {
         ))}
       </div>
 
-      {/* Tooltip */}
+      {/* Dose tooltip */}
       {tooltip && (
         <div className="rounded-lg border border-ui-border-base bg-white px-3 py-2 text-xs shadow-md">
           <span className="font-semibold text-ui-fg-base">{formatLabel(tooltip.date)}</span>
@@ -163,6 +242,25 @@ export default function AdherenceHeatmap({ occurrences, today }: Props) {
           ))}
         </div>
         <span>More</span>
+      </div>
+
+      {/* Streak counter */}
+      <div className="mt-3 grid grid-cols-3 gap-3 rounded-xl border border-ui-border-base bg-ui-bg-subtle/50 p-3">
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-lg font-bold text-indigo-600">{currentStreak}</span>
+          <span className="text-[10px] text-ui-fg-muted">Current streak</span>
+          <span className="text-[9px] text-ui-fg-muted">days</span>
+        </div>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-lg font-bold text-emerald-600">{longestStreak}</span>
+          <span className="text-[10px] text-ui-fg-muted">Best streak</span>
+          <span className="text-[9px] text-ui-fg-muted">days</span>
+        </div>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-lg font-bold text-ui-fg-base">{adherenceRate}%</span>
+          <span className="text-[10px] text-ui-fg-muted">Adherence</span>
+          <span className="text-[9px] text-ui-fg-muted">12 weeks</span>
+        </div>
       </div>
     </div>
   )
