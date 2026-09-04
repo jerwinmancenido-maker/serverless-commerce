@@ -109,13 +109,13 @@ export default function ResearchCalendar({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
-            Personal schedule
+            Protocol Schedule
           </p>
           <h2 id="research-calendar-title" className="mt-2 text-xl font-semibold">
-            Calendar
+            Research & Protocol Calendar
           </h2>
           <p className="mt-2 text-sm text-ui-fg-subtle">
-            Schedule changes affect this personal calendar only. Warehouse inventory is unchanged.
+            Calendar adjustments reflect personal tracking. Warehouse orders and deliveries remain unaffected.
           </p>
         </div>
         <div className="flex flex-wrap gap-2" aria-label="Calendar view">

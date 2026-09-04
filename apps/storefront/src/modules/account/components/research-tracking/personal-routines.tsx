@@ -49,6 +49,7 @@ import {
   useRef,
   useState,
 } from "react"
+import PostDoseCheckIn from "./post-dose-check-in"
 import { useFormStatus } from "react-dom"
 
 type PersonalRoutinesProps = {
@@ -273,13 +274,12 @@ function CreateRoutineCard({
   return (
     <form action={action} className={`${cardClass} space-y-4`}>
       {hiddenCommon(countryCode, submissionKey)}
-      <h3 className="text-base font-semibold">Create a personal routine</h3>
+      <h3 className="text-base font-semibold">Create New Routine Schedule</h3>
       <p className="text-sm leading-6 text-ui-fg-subtle">
-        Enter your own neutral organization details. The store does not suggest
-        quantities, schedules, routes, or intended outcomes.
+        Define your protocol parameters, target dosage, and recurring schedule below.
       </p>
       <label className="block text-sm font-medium">
-        Tracked material
+        Compound / Product
         <select
           name="tracked_material_id"
           required
@@ -291,7 +291,7 @@ function CreateRoutineCard({
           className={`${inputClass} mt-2`}
         >
           <option value="" disabled>
-            Select a tracked material
+            Select a compound / product
           </option>
           {trackedMaterials.map((material) => (
             <option
@@ -304,7 +304,7 @@ function CreateRoutineCard({
         </select>
       </label>
       <label className="block text-sm font-medium">
-        Routine label
+        Routine Name
         <input
           name="label"
           required
@@ -314,7 +314,7 @@ function CreateRoutineCard({
       </label>
       <div className="grid grid-cols-1 gap-3 small:grid-cols-2">
         <label className="block text-sm font-medium">
-          Planned material quantity
+          Target Dose Amount
           <input
             name="planned_quantity_display_units"
             type="number"
@@ -353,7 +353,7 @@ function CreateRoutineCard({
       )}
       <div className="grid grid-cols-1 gap-3 small:grid-cols-2">
         <label className="block text-sm font-medium">
-          Recurrence
+          Frequency
           <select
             name="recurrence_type"
             defaultValue="once"
@@ -365,7 +365,7 @@ function CreateRoutineCard({
           </select>
         </label>
         <label className="block text-sm font-medium">
-          Local time
+          Administration Time
           <input
             name="local_time"
             type="time"
@@ -376,7 +376,7 @@ function CreateRoutineCard({
       </div>
       <div className="grid grid-cols-1 gap-3 small:grid-cols-2">
         <label className="block text-sm font-medium">
-          Daily interval (1–30)
+          Repeat Every (Days)
           <input
             name="daily_interval"
             type="number"
@@ -387,7 +387,7 @@ function CreateRoutineCard({
           />
         </label>
         <label className="block text-sm font-medium">
-          Weekly interval (1–12)
+          Repeat Every (Weeks)
           <input
             name="weekly_interval"
             type="number"
@@ -399,7 +399,7 @@ function CreateRoutineCard({
         </label>
       </div>
       <fieldset className="space-y-2">
-        <legend className="text-sm font-medium">Weekly weekdays</legend>
+        <legend className="text-sm font-medium">Days of the Week</legend>
         <div className="flex flex-wrap gap-3 text-sm">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
             (day, index) => (
@@ -428,7 +428,7 @@ function CreateRoutineCard({
       </div>
       <input type="hidden" name="effective_from_date" value={today} />
       <Message state={state} />
-      <ActionButton>Create routine</ActionButton>
+      <ActionButton>Create Routine Schedule</ActionButton>
     </form>
   )
 }
@@ -524,7 +524,7 @@ function OccurrenceCard({
         </span>
       </div>
       <p className="mt-3 text-sm">
-        Planned material quantity:{" "}
+        Planned Dose Amount:{" "}
         {formatResearchQuantity(
           occurrence.planned_quantity_base_units,
           profileForBaseUnit(occurrence.base_unit, supplies),
@@ -570,7 +570,7 @@ function OccurrenceCard({
               value={occurrence.base_unit}
             />
             <label className="block text-sm font-medium">
-              Private supply
+              Linked Supply / Vial
               <select
                 name="supply_id"
                 required
@@ -578,7 +578,7 @@ function OccurrenceCard({
                 className={`${inputClass} mt-2`}
               >
                 <option value="" disabled>
-                  Select a supply
+                  Select an available supply
                 </option>
                 {supplies.map((supply) => (
                   <option key={supply.supply_id} value={supply.supply_id}>
@@ -593,12 +593,12 @@ function OccurrenceCard({
             {previewState.error && (
               <p className="text-sm text-red-600">{previewState.error}</p>
             )}
-            <ActionButton>Review record</ActionButton>
+            <ActionButton>Confirm Dose</ActionButton>
           </form>
         ) : (
           <p className="mt-4 text-sm text-amber-700">
             No active supply with the matching unit is available. Add or restore
-            a compatible supply before recording this occurrence.
+            a compatible supply before logging this dose.
           </p>
         ))}
       {previewState.preview && (
@@ -669,12 +669,20 @@ function OccurrenceCard({
               className="mt-1"
             />
             <span>
-              I reviewed this private research record and supply change.
+              I confirm this protocol administration and supply deduction.
             </span>
           </label>
           <Message state={confirmState} />
-          <ActionButton>Confirm record</ActionButton>
+          <ActionButton>Confirm & Log Dose</ActionButton>
         </form>
+      )}
+      {(confirmState.success || occurrence.status === "confirmed") && (
+        <PostDoseCheckIn
+          countryCode={countryCode}
+          occurrence={occurrence}
+          routine={routine}
+          today={today}
+        />
       )}
       {occurrence.status === "scheduled" ? (
         <div className="mt-4 grid gap-3 border-t border-ui-border-base pt-4">
@@ -682,11 +690,11 @@ function OccurrenceCard({
             {adjustmentFields}
             <input type="hidden" name="operation" value="skip" />
             <button type="submit" className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium">
-              Skip this occurrence
+              Skip Dose
             </button>
           </form>
           <details className="rounded-lg border border-ui-border-base p-3">
-            <summary className="cursor-pointer text-sm font-medium">Reschedule</summary>
+            <summary className="cursor-pointer text-sm font-medium">Reschedule Dose</summary>
             <form action={adjustAction} className="mt-3 grid gap-3">
               {adjustmentFields}
               <input type="hidden" name="operation" value="reschedule" />
@@ -695,7 +703,7 @@ function OccurrenceCard({
                 <input name="rescheduled_local_time" type="time" required className={inputClass} />
               </div>
               <input name="note" placeholder="Optional note" className={inputClass} />
-              <ActionButton>Save new time</ActionButton>
+              <ActionButton>Save New Schedule</ActionButton>
             </form>
           </details>
           <Message state={adjustState} />
@@ -705,7 +713,7 @@ function OccurrenceCard({
           {adjustmentFields}
           <input type="hidden" name="operation" value="restore" />
           <button type="submit" className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium">
-            Restore original schedule
+            Restore Original Schedule
           </button>
           <Message state={adjustState} />
         </form>
@@ -860,7 +868,7 @@ function RoutineEditForm({
         <input type="hidden" name="routine_id" value={routine.routine_id} />
         <input type="hidden" name="effective_from_date" value={today} />
         <label className="block text-sm font-medium small:col-span-2">
-          Routine label
+          Routine Name
           <input
             name="label"
             required
@@ -870,7 +878,7 @@ function RoutineEditForm({
           />
         </label>
         <label className="block text-sm font-medium">
-          Planned material quantity
+          Target Dose Amount
           <input
             name="planned_quantity_display_units"
             type="number"
@@ -923,7 +931,7 @@ function RoutineEditForm({
           </select>
         </label>
         <label className="block text-sm font-medium">
-          Recurrence
+          Frequency
           <select
             name="recurrence_type"
             defaultValue={schedule.recurrence_type}
@@ -935,7 +943,7 @@ function RoutineEditForm({
           </select>
         </label>
         <label className="block text-sm font-medium">
-          Local time
+          Administration Time
           <input
             name="local_time"
             type="time"
@@ -945,7 +953,7 @@ function RoutineEditForm({
           />
         </label>
         <label className="block text-sm font-medium">
-          Daily interval
+          Repeat Every (Days)
           <input
             name="daily_interval"
             type="number"
@@ -956,7 +964,7 @@ function RoutineEditForm({
           />
         </label>
         <label className="block text-sm font-medium">
-          Weekly interval
+          Repeat Every (Weeks)
           <input
             name="weekly_interval"
             type="number"
@@ -967,7 +975,7 @@ function RoutineEditForm({
           />
         </label>
         <fieldset className="space-y-2 small:col-span-2">
-          <legend className="text-sm font-medium">Weekly weekdays</legend>
+          <legend className="text-sm font-medium">Days of the Week</legend>
           <div className="flex flex-wrap gap-3 text-sm">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
               (day, index) => (
@@ -1005,7 +1013,7 @@ function RoutineEditForm({
         </label>
         <div className="space-y-2 small:col-span-2">
           <Message state={state} />
-          <ActionButton>Save routine revision</ActionButton>
+          <ActionButton>Save Routine Changes</ActionButton>
         </div>
       </form>
     </details>
@@ -1068,7 +1076,7 @@ function LogMutationForm({
         {needsSupply && (
           <>
             <label className="block text-sm font-medium">
-              Private supply
+              Dose Supply / Vial
               <select
                 name="supply_id"
                 required
@@ -1087,7 +1095,7 @@ function LogMutationForm({
               </select>
             </label>
             <label className="block text-sm font-medium">
-              Confirmed quantity
+              Confirmed Dose Amount
               <input
                 key={selectedSupplyId}
                 name="confirmed_quantity_display_units"
@@ -1112,7 +1120,9 @@ function LogMutationForm({
         {previewState.error && (
           <p className="text-sm text-red-600">{previewState.error}</p>
         )}
-        <ActionButton>Review {operation}</ActionButton>
+        <ActionButton>
+          Review {operation === "revise" ? "Adjustment" : operation === "void" ? "Void" : "Restore"}
+        </ActionButton>
       </form>
       {previewState.preview && (
         <form
@@ -1170,10 +1180,12 @@ function LogMutationForm({
               required
               className="mt-1"
             />
-            <span>I reviewed this record and every supply balance change.</span>
+            <span>I confirm this dose record and supply adjustment.</span>
           </label>
           <Message state={mutationState} />
-          <ActionButton>Confirm {operation}</ActionButton>
+          <ActionButton>
+            Confirm {operation === "revise" ? "Adjustment" : operation === "void" ? "Void" : "Restore"}
+          </ActionButton>
         </form>
       )}
     </div>
@@ -1234,7 +1246,7 @@ function RoutineLogCard({
           {log.operation}
         </p>
         <p className="mt-2 text-sm">
-          Recorded material quantity:{" "}
+          Administered Dose:{" "}
           {formatResearchQuantity(
             log.confirmed_quantity_base_units,
             profileForSupply(log.supply_id, log.base_unit, supplies),
@@ -1348,91 +1360,127 @@ function PersonalRoutinesContent({
     >
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
-          Private organization
+          Protocol Management
         </p>
         <h2 id="personal-routines-title" className="mt-2 text-lg font-semibold">
-          Today & Personal Routines
+          Protocol Regimens & Setup
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-ui-fg-subtle">
-          Customer-authored schedules and review-first records. This area does
-          not provide medical guidance or store recommendations.
+          Configure recurring dosing schedules and review your administration history.
         </p>
         {isRefreshing && (
           <p className="mt-2 text-xs text-ui-fg-muted" aria-live="polite">
-            Refreshing private routine data…
+            Updating schedule data…
           </p>
         )}
       </div>
       {!canMutate && (
         <div className={`${cardClass} bg-ui-bg-subtle text-sm`}>
-          Personal routines and records are read-only. An active profile with
-          current consent is required to create or change them.
+          Routines are currently in read-only mode. An active verified profile is
+          required to create or modify schedules.
         </div>
       )}
       {canMutate && (
-        <div className="grid grid-cols-1 gap-5 large:grid-cols-2">
-          <div className={`${cardClass} space-y-3`}>
-            <h3 className="text-base font-semibold">Today and upcoming</h3>
-            {currentOccurrences.length ? (
-              currentOccurrences.map((occurrence) => {
-                const routine = currentRoutines.find(
-                  (item) => item.routine_id === occurrence.routine_id,
-                )
-                return routine ? (
-                  <OccurrenceCard
-                    key={occurrence.occurrence_id}
-                    countryCode={countryCode}
-                    occurrence={occurrence}
-                    routine={routine}
-                    submissionKey={
-                      submissionKeys.confirmations[occurrence.occurrence_id]
-                    }
-                    adjustmentKey={
-                      submissionKeys.occurrenceAdjustments[occurrence.occurrence_id]
-                    }
-                    today={today}
-                    trackedMaterials={currentTrackedMaterials}
-                  />
-                ) : null
-              })
-            ) : (
-              <p className="text-sm text-ui-fg-subtle">
-                {currentRoutines.length > 0 &&
-                currentRoutines.every((routine) => routine.status === "archived")
-                  ? "All personal routines are archived. Resume a routine to project future records."
-                  : "No scheduled records in this seven-day view."}
-              </p>
-            )}
-          </div>
+        <div className="space-y-5">
           <CreateRoutineCard
             countryCode={countryCode}
             idempotencyKey={submissionKeys.create}
             trackedMaterials={currentTrackedMaterials}
             today={today}
           />
+
+          {currentOccurrences.length > 0 && (
+            <details className={`${cardClass} group space-y-3`}>
+              <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-ui-fg-subtle hover:text-ui-fg-base">
+                <span className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-blue-500" />
+                  <span>Pending Doses Quick Log ({currentOccurrences.length})</span>
+                </span>
+                <span className="text-xs text-ui-fg-muted font-normal">
+                  Quick dose confirmation
+                </span>
+              </summary>
+              <div className="mt-3 space-y-3 border-t border-ui-border-base pt-3">
+                {currentOccurrences.map((occurrence) => {
+                  const routine = currentRoutines.find(
+                    (item) => item.routine_id === occurrence.routine_id,
+                  )
+                  return routine ? (
+                    <OccurrenceCard
+                      key={occurrence.occurrence_id}
+                      countryCode={countryCode}
+                      occurrence={occurrence}
+                      routine={routine}
+                      submissionKey={
+                        submissionKeys.confirmations[occurrence.occurrence_id]
+                      }
+                      adjustmentKey={
+                        submissionKeys.occurrenceAdjustments[occurrence.occurrence_id]
+                      }
+                      today={today}
+                      trackedMaterials={currentTrackedMaterials}
+                    />
+                  ) : null
+                })}
+              </div>
+            </details>
+          )}
         </div>
       )}
+      {(() => {
+        const activeRoutines = currentRoutines.filter((r) => r.status === "active")
+        const archivedRoutines = currentRoutines.filter((r) => r.status === "archived")
+
+        return (
+          <>
+            <div className={`${cardClass} space-y-3`}>
+              <h3 className="text-base font-semibold">
+                Active Routines {activeRoutines.length ? `(${activeRoutines.length})` : ""}
+              </h3>
+              {activeRoutines.length ? (
+                activeRoutines.map((routine) => (
+                  <RoutineTransitionRow
+                    key={routine.routine_id}
+                    canMutate={canMutate}
+                    countryCode={countryCode}
+                    idempotencyKey={submissionKeys.transitions[routine.routine_id]}
+                    updateIdempotencyKey={submissionKeys.updates[routine.routine_id]}
+                    routine={routine}
+                    trackedMaterials={currentTrackedMaterials}
+                    today={today}
+                  />
+                ))
+              ) : (
+                <p className="text-sm text-ui-fg-subtle">No active routines configured.</p>
+              )}
+            </div>
+
+            {archivedRoutines.length > 0 && (
+              <details className={`${cardClass} space-y-3`}>
+                <summary className="cursor-pointer text-sm font-semibold text-ui-fg-subtle hover:text-ui-fg-base">
+                  Archived Routines ({archivedRoutines.length})
+                </summary>
+                <div className="mt-3 space-y-3 border-t border-ui-border-base pt-3">
+                  {archivedRoutines.map((routine) => (
+                    <RoutineTransitionRow
+                      key={routine.routine_id}
+                      canMutate={canMutate}
+                      countryCode={countryCode}
+                      idempotencyKey={submissionKeys.transitions[routine.routine_id]}
+                      updateIdempotencyKey={submissionKeys.updates[routine.routine_id]}
+                      routine={routine}
+                      trackedMaterials={currentTrackedMaterials}
+                      today={today}
+                    />
+                  ))}
+                </div>
+              </details>
+            )}
+          </>
+        )
+      })()}
       <div className={`${cardClass} space-y-3`}>
-        <h3 className="text-base font-semibold">Your routines</h3>
-        {currentRoutines.length ? (
-          currentRoutines.map((routine) => (
-            <RoutineTransitionRow
-              key={routine.routine_id}
-              canMutate={canMutate}
-              countryCode={countryCode}
-              idempotencyKey={submissionKeys.transitions[routine.routine_id]}
-              updateIdempotencyKey={submissionKeys.updates[routine.routine_id]}
-              routine={routine}
-              trackedMaterials={currentTrackedMaterials}
-              today={today}
-            />
-          ))
-        ) : (
-          <p className="text-sm text-ui-fg-subtle">No personal routines yet.</p>
-        )}
-      </div>
-      <div className={`${cardClass} space-y-3`}>
-        <h3 className="text-base font-semibold">Private routine records</h3>
+        <h3 className="text-base font-semibold">Administration History & Logs</h3>
         {currentLogs.length ? (
           currentLogs.map((log) => {
             const routine = currentRoutines.find(
@@ -1453,7 +1501,7 @@ function PersonalRoutinesContent({
           })
         ) : (
           <p className="text-sm text-ui-fg-subtle">
-            No private routine records yet.
+            No administration logs recorded yet.
           </p>
         )}
       </div>

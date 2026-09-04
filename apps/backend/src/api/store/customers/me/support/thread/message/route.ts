@@ -19,6 +19,6 @@ export async function POST(req: AuthenticatedMedusaRequest<StorePostThreadMessag
       sent_at: result.message.sent_at,
       attachments: [],
     },
-    acknowledgement_id: result.acknowledgement?.id || null,
+    acknowledgement_id: (result as any)?.acknowledgement?.id || null,
   })
 }

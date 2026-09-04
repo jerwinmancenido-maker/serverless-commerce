@@ -226,7 +226,7 @@ export const prepareCompoundedProductDraftStep = createStep(
             id: existing.id,
             status: "active",
             activated_at: new Date(),
-            updated_by_actor_id: request.actorId || "system",
+            updated_by_actor_id: actorId || "system",
           })
           classificationMapping = Array.isArray(updated) ? updated[0] : updated
         } else if (!existing) {
@@ -237,8 +237,8 @@ export const prepareCompoundedProductDraftStep = createStep(
               presentation_id: revision.presentation_id,
               status: "active",
               reason: "Automatically linked during product draft creation",
-              created_by_actor_id: request.actorId || "system",
-              updated_by_actor_id: request.actorId || "system",
+              created_by_actor_id: actorId || "system",
+              updated_by_actor_id: actorId || "system",
               activated_at: now,
               deactivated_at: null,
               archived_at: null,

@@ -70,12 +70,12 @@ export const listProducts = async ({
           offset,
           region_id: region?.id,
           fields:
-            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,*variants.options,*categories,+metadata,+tags,",
+            "*images,*variants.calculated_price,+variants.inventory_quantity,*variants.images,*variants.options,*categories,+metadata,+tags,",
           ...queryParams,
         },
         headers,
         next,
-        cache: "force-cache",
+        cache: process.env.NODE_ENV === "development" ? "no-store" : "force-cache",
       }
     )
     .then(({ products, count }) => {

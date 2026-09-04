@@ -17,12 +17,26 @@ type Props = {
 const Register = ({ setCurrentView, agreement }: Props) => {
   const [message, formAction] = useActionState(signup, null)
   const searchParams = useSearchParams()
+  const isCheckoutRedirect = searchParams.get("redirect") === "checkout"
 
   return (
     <div
       className="max-w-sm flex flex-col items-center"
       data-testid="register-page"
     >
+      {isCheckoutRedirect && (
+        <div
+          className="w-full mb-6 rounded-rounded border border-amber-300 bg-amber-50 p-4 text-center text-small-regular text-amber-900"
+          data-testid="checkout-register-notice"
+        >
+          <p className="font-semibold text-amber-950 mb-1">
+            🔒 Account Required for Clinical Checkout
+          </p>
+          <p>
+            Create an account to verify formulation protocols and proceed to compound checkout.
+          </p>
+        </div>
+      )}
       <h1 className="text-large-semi uppercase mb-6">
         Create your account
       </h1>

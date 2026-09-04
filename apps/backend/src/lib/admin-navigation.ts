@@ -5,8 +5,11 @@ export const ROUTINE_HIDDEN_ADMIN_PATHS = [
   "/app/customer-groups",
 ] as const
 
-export const routineAdminNavigationCss = ROUTINE_HIDDEN_ADMIN_PATHS.map(
-  (path) => `a[href="${path}"] { display: none !important; }`,
+export const routineAdminNavigationCss = ROUTINE_HIDDEN_ADMIN_PATHS.flatMap(
+  (path) => [
+    `a[href="${path}"] { display: none !important; }`,
+    `li:has(a[href="${path}"]) { display: none !important; }`,
+  ],
 ).join("\n")
 
 export const routineAdminNavigationPlugin = () => ({

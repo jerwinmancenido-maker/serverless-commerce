@@ -10,20 +10,196 @@ import {
   type ResearchTrackingActionState,
 } from "@lib/data/research-tracking"
 import { calculateProtocol } from "@modules/research-protocols/calculate-protocol"
+import SyringeVisualizer from "./syringe-visualizer"
 import { useResearchSubmissionKey } from "./use-research-submission-key"
-import { useActionState, useCallback, useEffect, useMemo, useState } from "react"
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { useFormStatus } from "react-dom"
 
-const initialState: ResearchTrackingActionState = { success: false, error: null }
-const inputClass = "mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+// ─── constants ───────────────────────────────────────────────────────────────
 
-function SaveButton({ disabled }: { disabled: boolean }) {
-  const { pending } = useFormStatus()
-  return <button disabled={pending || disabled} className="rounded-lg bg-ui-fg-base px-4 py-2 text-sm font-medium text-ui-bg-base disabled:opacity-50">{pending ? "Saving…" : "Save calculation"}</button>
+const initialState: ResearchTrackingActionState = { success: false, error: null }
+
+// ─── tiny helpers ─────────────────────────────────────────────────────────────
+
+const fmt = (value: number | null | undefined, precision: number) =>
+  value == null || !Number.isFinite(value)
+    ? "—"
+    : Number(value.toFixed(precision)).toString()
+
+/** Safe typed read from Record<string, unknown> */
+const rget = (rec: Record<string, unknown> | undefined, key: string) =>
+  rec?.[key] as string | number | null | undefined
+// ─── sub-components ───────────────────────────────────────────────────────────
+
+/** Pill mode switcher */
+function ModeTab({
+  value: _value,
+  active,
+  disabled,
+  onClick,
+  children,
+}: {
+  value: string
+  active: boolean
+  disabled?: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      className={[
+        "px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
+        active
+          ? "bg-ui-fg-base text-ui-bg-base shadow-sm"
+          : "text-ui-fg-subtle hover:text-ui-fg-base",
+        disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer",
+      ].join(" ")}
+    >
+      {children}
+    </button>
+  )
 }
 
-const resultText = (value: number | null | undefined, precision: number) =>
-  value == null || !Number.isFinite(value) ? "—" : Number(value.toFixed(precision)).toString()
+/** Slider + synced numeric input */
+function SliderInput({
+  label,
+  unit,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+}: {
+  label: string
+  unit: string
+  value: string
+  onChange: (v: string) => void
+  min: number
+  max: number
+  step: number
+}) {
+  const numVal = parseFloat(value) || 0
+  const pct = Math.max(0, Math.min(100, ((numVal - min) / (max - min)) * 100))
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-widest text-ui-fg-muted">
+          {label}
+        </span>
+        <div className="flex items-center gap-1.5">
+          <input
+            type="number"
+            inputMode="decimal"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="w-20 rounded-lg border border-ui-border-base bg-white px-2 py-1 text-right text-sm font-semibold tabular-nums focus:outline-none focus:ring-2 focus:ring-ui-fg-base/20"
+          />
+          <span className="text-xs font-medium text-ui-fg-subtle">{unit}</span>
+        </div>
+      </div>
+      <div className="relative h-1.5 w-full rounded-full bg-ui-border-base">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full bg-ui-fg-base transition-all duration-150"
+          style={{ width: `${pct}%` }}
+        />
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={numVal}
+          onChange={(e) => onChange(e.target.value)}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+        />
+      </div>
+      <div className="flex justify-between text-[10px] text-ui-fg-muted">
+        <span>
+          {min} {unit}
+        </span>
+        <span>
+          {max} {unit}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+/** Color-coded result card */
+const RESULT_COLORS: Record<string, string> = {
+  blue: "from-blue-50 to-blue-100/60 border-blue-200/70 text-blue-700",
+  indigo: "from-indigo-50 to-indigo-100/60 border-indigo-200/70 text-indigo-700",
+  violet: "from-violet-50 to-violet-100/60 border-violet-200/70 text-violet-700",
+  emerald: "from-emerald-50 to-emerald-100/60 border-emerald-200/70 text-emerald-700",
+}
+
+function ResultCard({
+  label,
+  value,
+  color,
+  dim,
+}: {
+  label: string
+  value: string
+  color: keyof typeof RESULT_COLORS
+  dim?: boolean
+}) {
+  const prevRef = useRef(value)
+  const [bump, setBump] = useState(false)
+
+  useEffect(() => {
+    if (value !== prevRef.current) {
+      prevRef.current = value
+      setBump(true)
+      const t = setTimeout(() => setBump(false), 300)
+      return () => clearTimeout(t)
+    }
+  }, [value])
+
+  return (
+    <div
+      className={[
+        "rounded-xl border bg-gradient-to-br p-4 transition-all duration-300",
+        RESULT_COLORS[color],
+        dim ? "opacity-50" : "",
+        bump ? "scale-[1.03]" : "scale-100",
+      ].join(" ")}
+    >
+      <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">
+        {label}
+      </p>
+      <p className="mt-1 text-2xl font-bold tabular-nums">{value}</p>
+    </div>
+  )
+}
+
+/** Save button with pending state */
+function SaveButton({ disabled }: { disabled: boolean }) {
+  const { pending } = useFormStatus()
+  return (
+    <button
+      disabled={pending || disabled}
+      className="rounded-lg bg-ui-fg-base px-5 py-2.5 text-sm font-semibold text-ui-bg-base transition-opacity disabled:opacity-40"
+    >
+      {pending ? "Saving…" : "Save Calculation"}
+    </button>
+  )
+}
+
+// ─── main calculator ──────────────────────────────────────────────────────────
 
 export default function ResearchCalculator({
   countryCode,
@@ -32,6 +208,9 @@ export default function ResearchCalculator({
   journalEntries,
   calculations,
   submissionKey,
+  initialMass,
+  initialUnit,
+  initialName,
 }: {
   countryCode: string
   protocols: ResearchProtocolAccess[]
@@ -39,27 +218,45 @@ export default function ResearchCalculator({
   journalEntries: ResearchJournalEntry[]
   calculations: ResearchCalculationSnapshot[]
   submissionKey: string
+  initialMass?: string
+  initialUnit?: string
+  initialName?: string
 }) {
   const availableProtocols = protocols.filter((item) => item.calculator?.enabled)
   const [mode, setMode] = useState<"quick" | "protocol" | "compare">(
-    availableProtocols.length ? "protocol" : "quick",
+    initialMass ? "quick" : availableProtocols.length ? "protocol" : "quick",
   )
-  const [accessId, setAccessId] = useState(availableProtocols[0]?.profile_access_id || "")
-  const protocol = availableProtocols.find((item) => item.profile_access_id === accessId) || null
+  const [accessId, setAccessId] = useState(
+    availableProtocols[0]?.profile_access_id || "",
+  )
+  const protocol =
+    availableProtocols.find((item) => item.profile_access_id === accessId) || null
   const config = protocol?.calculator
-  const [mass, setMass] = useState("")
-  const [massUnit, setMassUnit] = useState<"mcg" | "mg" | "g" | "IU">("mg")
+
+  // primary inputs
+  const [mass, setMass] = useState(initialMass || "")
+  const [massUnit, setMassUnit] = useState<"mcg" | "mg" | "g" | "IU">(
+    (initialUnit as "mcg" | "mg" | "g" | "IU") || "mg",
+  )
   const [volume, setVolume] = useState("")
   const [target, setTarget] = useState("")
   const [targetUnit, setTargetUnit] = useState<"mcg" | "mg" | "IU">("mcg")
   const [comparisonTarget, setComparisonTarget] = useState("")
+
+  // advanced inputs
+  const [showAdvanced, setShowAdvanced] = useState(false)
   const [iuPerMg, setIuPerMg] = useState("")
   const [deviceVolume, setDeviceVolume] = useState("")
   const [deviceLabel, setDeviceLabel] = useState("Device units")
   const [precision, setPrecision] = useState(2)
-  const [saveState, saveAction] = useActionState(saveResearchCalculationAction, initialState)
+
+  const [saveState, saveAction] = useActionState(
+    saveResearchCalculationAction,
+    initialState,
+  )
   const saveSubmissionKey = useResearchSubmissionKey(saveState, submissionKey)
 
+  // load protocol defaults
   useEffect(() => {
     if (!config || mode === "quick") return
     setMass(config.default_compound_mass || "")
@@ -86,79 +283,728 @@ export default function ResearchCalculator({
       }),
     [deviceVolume, iuPerMg, mass, massUnit, targetUnit, volume],
   )
+
   const result = useMemo(() => calculate(target), [calculate, target])
   const comparison = useMemo(
-    () => mode === "compare" && comparisonTarget ? calculate(comparisonTarget) : null,
+    () =>
+      mode === "compare" && comparisonTarget ? calculate(comparisonTarget) : null,
     [calculate, comparisonTarget, mode],
   )
   const canSave = Boolean(result && (mode !== "compare" || comparison))
 
-  return <section className="mt-10 space-y-5" data-testid="research-hub-calculator">
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">Explicit save only</p>
-      <h2 className="mt-2 text-xl font-semibold">Calculator</h2>
-      <p className="mt-2 max-w-3xl text-sm leading-6 text-ui-fg-subtle">Calculate concentration, volume, device units and container uses. Inputs remain in this browser until you choose Save calculation.</p>
-    </div>
-    <div className="rounded-xl border border-ui-border-base bg-white p-5">
-      <div className="grid gap-4 small:grid-cols-3">
-        <label className="text-sm font-medium">Mode<select className={inputClass} value={mode} onChange={(event) => setMode(event.target.value as typeof mode)}><option value="quick">Quick</option><option value="protocol" disabled={!availableProtocols.length}>Protocol defaults</option><option value="compare" disabled={!availableProtocols.length}>Compare targets</option></select></label>
-        {mode !== "quick" ? <label className="text-sm font-medium small:col-span-2">Protocol revision<select className={inputClass} value={accessId} onChange={(event) => setAccessId(event.target.value)}>{availableProtocols.map((item) => <option key={item.profile_access_id} value={item.profile_access_id}>{item.protocol_title} · revision {item.preserved_revision}</option>)}</select></label> : null}
+  // slider ranges — fall back to sensible defaults
+  const massMin = 0.1
+  const massMax = config ? Math.max(50, Number(config.default_compound_mass || 10) * 5) : 50
+  const volMin = 0.5
+  const volMax = config ? Math.max(10, Number(config.default_final_volume_ml || 2) * 5) : 10
+  const tgtMin = 10
+  const tgtMax = config ? Math.max(2000, Number(config.default_target_amount || 250) * 8) : 2000
+
+  return (
+    <section className="mt-10 space-y-6" data-testid="research-hub-calculator">
+      {/* Header */}
+      <div>
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-ui-fg-muted">
+          Reconstitution Tool
+        </p>
+        <h2 className="mt-1 text-xl font-bold">Reconstitution Calculator</h2>
+        <p className="mt-1 max-w-2xl text-sm leading-6 text-ui-fg-subtle">
+          Calculate concentration, volume, and device measurements. Inputs persist
+          locally — results are only saved when you choose{" "}
+          <span className="font-medium text-ui-fg-base">Save Calculation</span>.
+        </p>
       </div>
-      {config?.instructions && mode !== "quick" ? <p className="mt-4 rounded-lg bg-ui-bg-subtle p-3 text-sm text-ui-fg-subtle">{config.instructions}</p> : null}
-      <div className="mt-5 grid gap-4 small:grid-cols-2 medium:grid-cols-4">
-        <label className="text-sm font-medium">Compound mass<input required inputMode="decimal" className={inputClass} value={mass} onChange={(event) => setMass(event.target.value)} /></label>
-        <label className="text-sm font-medium">Mass unit<select className={inputClass} value={massUnit} onChange={(event) => setMassUnit(event.target.value as typeof massUnit)}><option>mcg</option><option>mg</option><option>g</option><option>IU</option></select></label>
-        <label className="text-sm font-medium">Final volume (mL)<input required inputMode="decimal" className={inputClass} value={volume} onChange={(event) => setVolume(event.target.value)} /></label>
-        <label className="text-sm font-medium">Target amount<input required inputMode="decimal" className={inputClass} value={target} onChange={(event) => setTarget(event.target.value)} /></label>
-        <label className="text-sm font-medium">Target unit<select className={inputClass} value={targetUnit} onChange={(event) => setTargetUnit(event.target.value as typeof targetUnit)}><option>mcg</option><option>mg</option><option>IU</option></select></label>
-        {mode === "compare" ? <label className="text-sm font-medium">Comparison target<input required inputMode="decimal" className={inputClass} value={comparisonTarget} onChange={(event) => setComparisonTarget(event.target.value)} /></label> : null}
-        <label className="text-sm font-medium">IU per mg (when needed)<input inputMode="decimal" className={inputClass} value={iuPerMg} onChange={(event) => setIuPerMg(event.target.value)} /></label>
-        <label className="text-sm font-medium">mL per device unit<input inputMode="decimal" className={inputClass} value={deviceVolume} onChange={(event) => setDeviceVolume(event.target.value)} /></label>
+
+      {initialMass && (
+        <div className="flex items-center gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50/80 px-4 py-2.5 text-xs text-indigo-950">
+          <svg className="h-4 w-4 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          <span>
+            <strong className="font-semibold">Vial Pre-loaded:</strong> Reconstituting{" "}
+            <span className="font-semibold">{initialName || "Tracked Compound"}</span> with initial mass of{" "}
+            <span className="font-semibold">{initialMass} {initialUnit || "mg"}</span>.
+          </span>
+        </div>
+      )}
+
+      {/* Main card */}
+      <div className="overflow-hidden rounded-2xl border border-ui-border-base bg-white shadow-sm">
+        {/* Mode + protocol bar */}
+        <div className="flex flex-col gap-3 border-b border-ui-border-base bg-ui-bg-subtle px-5 py-4 small:flex-row small:items-center small:justify-between">
+          {/* Pill switcher */}
+          <div className="flex items-center gap-1 rounded-full border border-ui-border-base bg-white px-1 py-1 w-fit">
+            <ModeTab
+              value="quick"
+              active={mode === "quick"}
+              onClick={() => setMode("quick")}
+            >
+              Quick
+            </ModeTab>
+            <ModeTab
+              value="protocol"
+              active={mode === "protocol"}
+              disabled={!availableProtocols.length}
+              onClick={() => setMode("protocol")}
+            >
+              Protocol Defaults
+            </ModeTab>
+            <ModeTab
+              value="compare"
+              active={mode === "compare"}
+              disabled={!availableProtocols.length}
+              onClick={() => setMode("compare")}
+            >
+              Compare Targets
+            </ModeTab>
+          </div>
+
+          {/* Protocol selector */}
+          {mode !== "quick" && availableProtocols.length > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-ui-fg-muted whitespace-nowrap">
+                Protocol
+              </span>
+              <select
+                value={accessId}
+                onChange={(e) => setAccessId(e.target.value)}
+                className="rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ui-fg-base/20 max-w-xs"
+              >
+                {availableProtocols.map((item) => (
+                  <option
+                    key={item.profile_access_id}
+                    value={item.profile_access_id}
+                  >
+                    {item.protocol_title} · Rev {item.preserved_revision}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Protocol instructions banner */}
+        {config?.instructions && mode !== "quick" && (
+          <div className="border-b border-ui-border-base bg-blue-50/60 px-5 py-3">
+            <p className="text-xs leading-5 text-blue-700">{config.instructions}</p>
+          </div>
+        )}
+
+        {/* Two-panel body */}
+        <div className="grid small:grid-cols-[1fr_1.1fr]">
+          {/* Left: inputs */}
+          <div className="space-y-6 border-b border-ui-border-base p-5 small:border-b-0 small:border-r">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+              Input Parameters
+            </p>
+
+            {/* Compound mass */}
+            <div className="space-y-1">
+              <SliderInput
+                label="Compound Mass"
+                unit={massUnit}
+                value={mass}
+                onChange={setMass}
+                min={massMin}
+                max={massMax}
+                step={0.1}
+              />
+              {mode === "quick" && (
+                <div className="pt-1">
+                  <label className="text-[10px] font-semibold uppercase tracking-widest text-ui-fg-muted">
+                    Mass Unit
+                  </label>
+                  <select
+                    value={massUnit}
+                    onChange={(e) =>
+                      setMassUnit(e.target.value as typeof massUnit)
+                    }
+                    className="mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-sm focus:outline-none"
+                  >
+                    <option>mcg</option>
+                    <option>mg</option>
+                    <option>g</option>
+                    <option>IU</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Final volume */}
+            <SliderInput
+              label="Final Volume"
+              unit="mL"
+              value={volume}
+              onChange={setVolume}
+              min={volMin}
+              max={volMax}
+              step={0.1}
+            />
+
+            {/* Target dose */}
+            <div className="space-y-1">
+              <SliderInput
+                label="Target Dose"
+                unit={targetUnit}
+                value={target}
+                onChange={setTarget}
+                min={tgtMin}
+                max={tgtMax}
+                step={mode === "quick" ? 10 : 1}
+              />
+              {mode === "quick" && (
+                <div className="pt-1">
+                  <label className="text-[10px] font-semibold uppercase tracking-widest text-ui-fg-muted">
+                    Target Unit
+                  </label>
+                  <select
+                    value={targetUnit}
+                    onChange={(e) =>
+                      setTargetUnit(e.target.value as typeof targetUnit)
+                    }
+                    className="mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-sm focus:outline-none"
+                  >
+                    <option>mcg</option>
+                    <option>mg</option>
+                    <option>IU</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Compare target */}
+            {mode === "compare" && (
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                  Comparison Target ({targetUnit})
+                </label>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  value={comparisonTarget}
+                  onChange={(e) => setComparisonTarget(e.target.value)}
+                  placeholder="e.g. 500"
+                  className="mt-2 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ui-fg-base/20"
+                />
+              </div>
+            )}
+
+            {/* Advanced toggle */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowAdvanced((v) => !v)}
+                className="flex items-center gap-1.5 text-xs font-semibold text-ui-fg-muted transition-colors hover:text-ui-fg-base"
+              >
+                <span
+                  className={`transition-transform duration-200 ${showAdvanced ? "rotate-90" : ""}`}
+                >
+                  ›
+                </span>
+                Advanced parameters
+              </button>
+              {showAdvanced && (
+                <div className="mt-3 space-y-3 rounded-xl border border-ui-border-base bg-ui-bg-subtle p-4">
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                      IU per mg (when needed)
+                    </label>
+                    <input
+                      inputMode="decimal"
+                      className="mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+                      value={iuPerMg}
+                      onChange={(e) => setIuPerMg(e.target.value)}
+                      placeholder="e.g. 1000"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                      mL per device unit
+                    </label>
+                    <input
+                      inputMode="decimal"
+                      className="mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+                      value={deviceVolume}
+                      onChange={(e) => setDeviceVolume(e.target.value)}
+                      placeholder="e.g. 0.1"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                      Device label
+                    </label>
+                    <input
+                      className="mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+                      value={deviceLabel}
+                      onChange={(e) => setDeviceLabel(e.target.value)}
+                      placeholder="e.g. U-100 Insulin Syringe"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                      Decimal precision
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={6}
+                      className="mt-1 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+                      value={precision}
+                      onChange={(e) => setPrecision(Number(e.target.value))}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: live results + save */}
+          <div className="flex flex-col justify-between p-5">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                Live Results
+              </p>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <ResultCard
+                  label="Concentration"
+                  value={`${fmt(result?.concentrationMgPerMl, precision)} mg/mL`}
+                  color="blue"
+                  dim={!result}
+                />
+                <ResultCard
+                  label="Volume"
+                  value={`${fmt(result?.volumeMl, precision)} mL`}
+                  color="indigo"
+                  dim={!result}
+                />
+                <ResultCard
+                  label={deviceLabel}
+                  value={fmt(result?.deviceMeasurements, precision)}
+                  color="violet"
+                  dim={!result}
+                />
+                <ResultCard
+                  label="Uses per Container"
+                  value={fmt(result?.usesPerContainer, precision)}
+                  color="emerald"
+                  dim={!result}
+                />
+              </div>
+
+              {/* Compare mode results */}
+              {mode === "compare" && comparison && (
+                <div className="mt-4 rounded-xl border border-ui-border-base bg-ui-bg-subtle p-4">
+                  <p className="text-xs font-bold text-ui-fg-muted">
+                    Comparison — {comparisonTarget || "—"} {targetUnit}
+                  </p>
+                  <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                    <span className="text-ui-fg-subtle">Volume</span>
+                    <span className="font-semibold tabular-nums">
+                      {fmt(comparison.volumeMl, precision)} mL
+                    </span>
+                    <span className="text-ui-fg-subtle">{deviceLabel}</span>
+                    <span className="font-semibold tabular-nums">
+                      {fmt(comparison.deviceMeasurements, precision)}
+                    </span>
+                    <span className="text-ui-fg-subtle">Uses</span>
+                    <span className="font-semibold tabular-nums">
+                      {fmt(comparison.usesPerContainer, precision)}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Interactive Syringe Visualizer */}
+              {result && (
+                <div className="mt-5">
+                  <SyringeVisualizer
+                    volumeMl={result.volumeMl}
+                    deviceMeasurements={result.deviceMeasurements}
+                    deviceLabel={deviceLabel}
+                    compoundName={initialName || protocol?.protocol_title}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Save form */}
+            <form
+              action={saveAction}
+              className="mt-6 space-y-3 border-t border-ui-border-base pt-5"
+            >
+              {/* hidden fields */}
+              <input type="hidden" name="country_code" value={countryCode} />
+              <input type="hidden" name="idempotency_key" value={saveSubmissionKey} />
+              <input type="hidden" name="mode" value={mode} />
+              <input
+                type="hidden"
+                name="protocol_series_id"
+                value={protocol?.protocol_series_id || ""}
+              />
+              <input
+                type="hidden"
+                name="protocol_revision_id"
+                value={protocol?.protocol_revision_id || ""}
+              />
+              <input
+                type="hidden"
+                name="profile_protocol_access_id"
+                value={protocol?.profile_access_id || ""}
+              />
+              <input type="hidden" name="compound_mass" value={mass} />
+              <input type="hidden" name="compound_mass_unit" value={massUnit} />
+              <input type="hidden" name="final_volume_ml" value={volume} />
+              <input type="hidden" name="target_amount" value={target} />
+              <input type="hidden" name="target_amount_unit" value={targetUnit} />
+              <input
+                type="hidden"
+                name="comparison_target_amount"
+                value={mode === "compare" ? comparisonTarget : ""}
+              />
+              <input type="hidden" name="iu_per_mg" value={iuPerMg} />
+              <input type="hidden" name="device_volume_ml" value={deviceVolume} />
+              <input type="hidden" name="device_label" value={deviceLabel} />
+              <input type="hidden" name="rounding_precision" value={precision} />
+
+              <p className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+                Save this calculation
+              </p>
+              <input
+                name="title"
+                required
+                maxLength={120}
+                placeholder="Calculation name"
+                className="w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ui-fg-base/20"
+                defaultValue={
+                  initialName
+                    ? `${initialName} Reconstitution`
+                    : protocol
+                      ? `${protocol.protocol_title} calculation`
+                      : "Quick calculation"
+                }
+              />
+              <div className="grid grid-cols-2 gap-2">
+                <select
+                  name="routine_id"
+                  className="rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm focus:outline-none"
+                >
+                  <option value="">No routine</option>
+                  {routines.map((item) => (
+                    <option key={item.routine_id} value={item.routine_id}>
+                      {item.current_revision.label}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="journal_entry_id"
+                  className="rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm focus:outline-none"
+                >
+                  <option value="">No journal entry</option>
+                  {journalEntries.map((item) => (
+                    <option key={item.journal_entry_id} value={item.journal_entry_id}>
+                      {item.current_revision.title || item.current_revision.local_date}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-center gap-3">
+                <SaveButton disabled={!canSave} />
+                {!canSave && (
+                  <p className="text-xs text-amber-600">
+                    Enter valid positive values to save.
+                  </p>
+                )}
+                {saveState.error && (
+                  <p className="text-xs text-red-600">{saveState.error}</p>
+                )}
+                {saveState.success && (
+                  <p className="text-xs font-medium text-emerald-600">
+                    ✓ Calculation saved
+                  </p>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      <div className="mt-5 grid gap-3 small:grid-cols-2 medium:grid-cols-4">
-        <Result label="Concentration" value={`${resultText(result?.concentrationMgPerMl, precision)} mg/mL`} />
-        <Result label="Volume" value={`${resultText(result?.volumeMl, precision)} mL`} />
-        <Result label={deviceLabel} value={resultText(result?.deviceMeasurements, precision)} />
-        <Result label="Uses per container" value={resultText(result?.usesPerContainer, precision)} />
-      </div>
-      {mode === "compare" ? <div className="mt-4 rounded-lg border border-ui-border-base p-4"><p className="text-sm font-semibold">Comparison target: {comparisonTarget || "—"} {targetUnit}</p><p className="mt-2 text-sm text-ui-fg-subtle">Volume {resultText(comparison?.volumeMl, precision)} mL · {deviceLabel} {resultText(comparison?.deviceMeasurements, precision)} · uses per container {resultText(comparison?.usesPerContainer, precision)}</p></div> : null}
-      <form action={saveAction} className="mt-6 grid gap-4 border-t border-ui-border-base pt-5 small:grid-cols-3">
-        <input type="hidden" name="country_code" value={countryCode} />
-        <input type="hidden" name="idempotency_key" value={saveSubmissionKey} />
-        <input type="hidden" name="mode" value={mode} />
-        <input type="hidden" name="protocol_series_id" value={protocol?.protocol_series_id || ""} />
-        <input type="hidden" name="protocol_revision_id" value={protocol?.protocol_revision_id || ""} />
-        <input type="hidden" name="profile_protocol_access_id" value={protocol?.profile_access_id || ""} />
-        <input type="hidden" name="compound_mass" value={mass} />
-        <input type="hidden" name="compound_mass_unit" value={massUnit} />
-        <input type="hidden" name="final_volume_ml" value={volume} />
-        <input type="hidden" name="target_amount" value={target} />
-        <input type="hidden" name="target_amount_unit" value={targetUnit} />
-        <input type="hidden" name="comparison_target_amount" value={mode === "compare" ? comparisonTarget : ""} />
-        <input type="hidden" name="iu_per_mg" value={iuPerMg} />
-        <input type="hidden" name="device_volume_ml" value={deviceVolume} />
-        <input type="hidden" name="device_label" value={deviceLabel} />
-        <input type="hidden" name="rounding_precision" value={precision} />
-        <label className="text-sm font-medium">Name<input name="title" required maxLength={120} className={inputClass} defaultValue={protocol ? `${protocol.protocol_title} calculation` : "Quick calculation"} /></label>
-        <label className="text-sm font-medium">Attach to routine (optional)<select name="routine_id" className={inputClass}><option value="">Not attached</option>{routines.map((item) => <option key={item.routine_id} value={item.routine_id}>{item.current_revision.label}</option>)}</select></label>
-        <label className="text-sm font-medium">Attach to Journal entry (optional)<select name="journal_entry_id" className={inputClass}><option value="">Not attached</option>{journalEntries.map((item) => <option key={item.journal_entry_id} value={item.journal_entry_id}>{item.current_revision.title || item.current_revision.local_date}</option>)}</select></label>
-        <div className="small:col-span-3 flex items-center gap-3"><SaveButton disabled={!canSave} />{!canSave ? <p className="text-sm text-amber-700">Enter valid positive values before saving.</p> : null}{saveState.error ? <p className="text-sm text-red-600">{saveState.error}</p> : null}{saveState.success ? <p className="text-sm text-emerald-700">Calculation saved.</p> : null}</div>
-      </form>
-    </div>
-    <SavedCalculations countryCode={countryCode} calculations={calculations} routines={routines} journalEntries={journalEntries} />
-  </section>
+
+      {/* Saved calculations history */}
+      <SavedCalculations
+        countryCode={countryCode}
+        calculations={calculations}
+        routines={routines}
+        journalEntries={journalEntries}
+      />
+    </section>
+  )
 }
 
-function Result({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-lg bg-ui-bg-subtle p-4"><p className="text-xs text-ui-fg-subtle">{label}</p><p className="mt-1 text-lg font-semibold">{value}</p></div>
-}
+// ─── saved calculations ───────────────────────────────────────────────────────
 
-function SavedCalculations({ countryCode, calculations, routines, journalEntries }: { countryCode: string; calculations: ResearchCalculationSnapshot[]; routines: ResearchRoutine[]; journalEntries: ResearchJournalEntry[] }) {
+function SavedCalculations({
+  countryCode,
+  calculations,
+  routines,
+  journalEntries,
+}: {
+  countryCode: string
+  calculations: ResearchCalculationSnapshot[]
+  routines: ResearchRoutine[]
+  journalEntries: ResearchJournalEntry[]
+}) {
   const [state, action] = useActionState(mutateResearchCalculationAction, initialState)
   const submissionKey = useResearchSubmissionKey(state)
-  return <div className="rounded-xl border border-ui-border-base bg-white p-5"><h3 className="text-base font-semibold">Saved calculations</h3>{calculations.length ? <div className="mt-4 space-y-3">{calculations.map((item) => {
-    const attachedRoutine = routines.find((routine) => routine.routine_id === item.routine_id)
-    const attachedJournalEntry = journalEntries.find((entry) => entry.journal_entry_id === item.journal_entry_id)
-    return <details key={item.id} className="rounded-lg border border-ui-border-base p-4"><summary className="cursor-pointer"><span className="font-medium">{item.title}</span><span className="ml-2 text-xs text-ui-fg-muted">{item.mode} · {new Date(item.saved_at).toLocaleString("en-PH")}</span></summary>{attachedRoutine || attachedJournalEntry ? <p className="mt-3 text-sm text-ui-fg-subtle">Attached to {attachedRoutine ? `routine ${attachedRoutine.current_revision.label}` : ""}{attachedRoutine && attachedJournalEntry ? " and " : ""}{attachedJournalEntry ? `Journal entry ${attachedJournalEntry.current_revision.title || attachedJournalEntry.current_revision.local_date}` : ""}.</p> : <p className="mt-3 text-sm text-ui-fg-muted">Not attached to a routine or Journal entry.</p>}<pre className="mt-3 overflow-auto rounded-lg bg-ui-bg-subtle p-3 text-xs">{JSON.stringify({ input: item.input, result: item.result, units: item.unit_context }, null, 2)}</pre><form action={action} className="mt-3 flex flex-wrap items-end gap-2"><input type="hidden" name="country_code" value={countryCode} /><input type="hidden" name="idempotency_key" value={submissionKey} /><input type="hidden" name="calculation_id" value={item.id} /><select name="routine_id" defaultValue={item.routine_id || ""} className={inputClass}><option value="">Routine…</option>{routines.map((routine) => <option key={routine.routine_id} value={routine.routine_id}>{routine.current_revision.label}</option>)}</select><select name="journal_entry_id" defaultValue={item.journal_entry_id || ""} className={inputClass}><option value="">Journal entry…</option>{journalEntries.map((entry) => <option key={entry.journal_entry_id} value={entry.journal_entry_id}>{entry.current_revision.title || entry.current_revision.local_date}</option>)}</select><button name="action" value="attach" className="rounded-lg border border-ui-border-base px-3 py-2 text-sm">Save attachment</button><button name="action" value="archive" className="rounded-lg border border-ui-border-base px-3 py-2 text-sm text-red-600">Archive</button></form></details>
-  })}</div> : <p className="mt-2 text-sm text-ui-fg-subtle">Nothing saved yet. Calculator inputs are not persisted automatically.</p>}{state.error ? <p className="mt-3 text-sm text-red-600">{state.error}</p> : null}{state.success ? <p className="mt-3 text-sm text-emerald-700">Calculation updated.</p> : null}</div>
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-ui-fg-muted">
+          Saved Calculations
+        </p>
+        <span className="rounded-full bg-ui-bg-subtle px-2 py-0.5 text-xs font-semibold text-ui-fg-subtle">
+          {calculations.length}
+        </span>
+      </div>
+
+      {calculations.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-ui-border-base bg-ui-bg-subtle p-6 text-center">
+          <p className="text-sm text-ui-fg-subtle">No calculations saved yet.</p>
+          <p className="mt-1 text-xs text-ui-fg-muted">
+            Calculator inputs are not persisted automatically — use Save Calculation above.
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        {calculations.map((item) => {
+          const attachedRoutine = routines.find(
+            (r) => r.routine_id === item.routine_id,
+          )
+          const attachedEntry = journalEntries.find(
+            (e) => e.journal_entry_id === item.journal_entry_id,
+          )
+          return (
+            <HistoryCard
+              key={item.id}
+              item={item}
+              countryCode={countryCode}
+              submissionKey={submissionKey}
+              action={action}
+              routines={routines}
+              journalEntries={journalEntries}
+              attachedRoutine={attachedRoutine}
+              attachedEntry={attachedEntry}
+            />
+          )
+        })}
+      </div>
+
+      {state.error && (
+        <p className="text-xs text-red-600">{state.error}</p>
+      )}
+      {state.success && (
+        <p className="text-xs font-medium text-emerald-600">
+          ✓ Calculation updated.
+        </p>
+      )}
+    </div>
+  )
+}
+
+function HistoryCard({
+  item,
+  countryCode,
+  submissionKey,
+  action,
+  routines,
+  journalEntries,
+  attachedRoutine,
+  attachedEntry,
+}: {
+  item: ResearchCalculationSnapshot
+  countryCode: string
+  submissionKey: string
+  action: (payload: FormData) => void
+  routines: ResearchRoutine[]
+  journalEntries: ResearchJournalEntry[]
+  attachedRoutine: ResearchRoutine | undefined
+  attachedEntry: ResearchJournalEntry | undefined
+}) {
+  const [expanded, setExpanded] = useState(false)
+
+  const savedDate = new Date(item.saved_at).toLocaleString("en-PH", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  })
+
+  const concRaw = rget(item.result, "concentrationMgPerMl")
+  const concValue = concRaw != null ? `${concRaw} mg/mL` : null
+  const volRaw = rget(item.result, "volumeMl")
+  const volValue = volRaw != null ? `${volRaw} mL` : null
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-ui-border-base bg-white shadow-sm">
+      {/* Header row */}
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="flex w-full items-center justify-between px-5 py-4 text-left transition-colors hover:bg-ui-bg-subtle"
+      >
+        <div>
+          <p className="text-sm font-semibold">{item.title}</p>
+          <p className="mt-0.5 text-xs text-ui-fg-muted">
+            {item.mode} · {savedDate}
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          {/* Quick result preview chips */}
+          {concValue && (
+            <span className="hidden rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700 small:inline-block">
+              {concValue}
+            </span>
+          )}
+          {volValue && (
+            <span className="hidden rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 small:inline-block">
+              {volValue}
+            </span>
+          )}
+          {(attachedRoutine || attachedEntry) && (
+            <span className="hidden rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 small:inline-block">
+              Attached
+            </span>
+          )}
+          <span
+            className={`text-ui-fg-muted transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+          >
+            ⌄
+          </span>
+        </div>
+      </button>
+
+      {/* Expanded detail */}
+      {expanded && (
+        <div className="border-t border-ui-border-base px-5 pb-5 pt-4 space-y-4">
+          {/* Input summary */}
+          <div className="grid grid-cols-3 gap-2 rounded-xl bg-ui-bg-subtle p-3 text-xs">
+            <div>
+              <p className="text-ui-fg-muted">Compound mass</p>
+              <p className="font-semibold">
+                {String(rget(item.input, "compound_mass") ?? "—")}{" "}
+                {String(rget(item.unit_context, "compound_mass_unit") ?? "")}
+              </p>
+            </div>
+            <div>
+              <p className="text-ui-fg-muted">Final volume</p>
+              <p className="font-semibold">{String(rget(item.input, "final_volume_ml") ?? "—")} mL</p>
+            </div>
+            <div>
+              <p className="text-ui-fg-muted">Target dose</p>
+              <p className="font-semibold">
+                {String(rget(item.input, "target_amount") ?? "—")}{" "}
+                {String(rget(item.unit_context, "target_amount_unit") ?? "")}
+              </p>
+            </div>
+          </div>
+
+          {/* Results summary */}
+          <div className="grid grid-cols-4 gap-2">
+            <ResultCard
+              label="Conc."
+              value={`${rget(item.result, "concentrationMgPerMl") ?? "—"} mg/mL`}
+              color="blue"
+            />
+            <ResultCard
+              label="Volume"
+              value={`${rget(item.result, "volumeMl") ?? "—"} mL`}
+              color="indigo"
+            />
+            <ResultCard
+              label={String(rget(item.unit_context, "device_label") ?? "Device")}
+              value={String(rget(item.result, "deviceMeasurements") ?? "—")}
+              color="violet"
+            />
+            <ResultCard
+              label="Uses"
+              value={String(rget(item.result, "usesPerContainer") ?? "—")}
+              color="emerald"
+            />
+          </div>
+
+          {/* Attachments */}
+          {attachedRoutine || attachedEntry ? (
+            <p className="text-xs text-ui-fg-subtle">
+              Attached to{" "}
+              {attachedRoutine ? (
+                <span className="font-medium text-ui-fg-base">
+                  {attachedRoutine.current_revision.label}
+                </span>
+              ) : null}
+              {attachedRoutine && attachedEntry ? " and " : ""}
+              {attachedEntry ? (
+                <span className="font-medium text-ui-fg-base">
+                  {attachedEntry.current_revision.title ||
+                    attachedEntry.current_revision.local_date}
+                </span>
+              ) : null}
+            </p>
+          ) : (
+            <p className="text-xs text-ui-fg-muted">
+              Not attached to a routine or journal entry.
+            </p>
+          )}
+
+          {/* Edit attachment + archive */}
+          <form
+            action={action}
+            className="flex flex-wrap items-end gap-2 border-t border-ui-border-base pt-4"
+          >
+            <input type="hidden" name="country_code" value={countryCode} />
+            <input type="hidden" name="idempotency_key" value={submissionKey} />
+            <input type="hidden" name="calculation_id" value={item.id} />
+            <select
+              name="routine_id"
+              defaultValue={item.routine_id || ""}
+              className="rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+            >
+              <option value="">Routine…</option>
+              {routines.map((r) => (
+                <option key={r.routine_id} value={r.routine_id}>
+                  {r.current_revision.label}
+                </option>
+              ))}
+            </select>
+            <select
+              name="journal_entry_id"
+              defaultValue={item.journal_entry_id || ""}
+              className="rounded-lg border border-ui-border-base bg-white px-3 py-2 text-sm"
+            >
+              <option value="">Journal entry…</option>
+              {journalEntries.map((e) => (
+                <option key={e.journal_entry_id} value={e.journal_entry_id}>
+                  {e.current_revision.title || e.current_revision.local_date}
+                </option>
+              ))}
+            </select>
+            <button
+              name="action"
+              value="attach"
+              className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium transition-colors hover:bg-ui-bg-subtle"
+            >
+              Save attachment
+            </button>
+            <button
+              name="action"
+              value="archive"
+              className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+            >
+              Archive
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
+  )
 }

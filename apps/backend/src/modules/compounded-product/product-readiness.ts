@@ -39,12 +39,11 @@ export function compoundedProductRecipeIsReady(input: {
   recipeComponents: Array<{ inventory_item_id: string }>
   profiledInventoryItemIds: Set<string>
 }) {
-  return (
-    !input.manageInventory ||
-    (input.recipeComponents.length > 0 &&
-      input.recipeComponents.every((component) =>
-        input.profiledInventoryItemIds.has(component.inventory_item_id),
-      ))
+  if (!input.manageInventory || input.recipeComponents.length === 0) {
+    return true
+  }
+  return input.recipeComponents.every((component) =>
+    input.profiledInventoryItemIds.has(component.inventory_item_id),
   )
 }
 

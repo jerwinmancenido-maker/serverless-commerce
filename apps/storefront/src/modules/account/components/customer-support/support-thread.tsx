@@ -43,6 +43,7 @@ type MessageItem = {
   sent_at: string
   status?: "sending" | "sent" | "failed"
   attachments: AttachmentItem[]
+  attachment_file?: File
 }
 
 const formatFileSize = (bytes: number) => {

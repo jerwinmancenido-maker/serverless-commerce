@@ -416,7 +416,7 @@ export const postThreadMessageStep = createStep("post-thread-message", async (ra
     sent_at: now,
     edited_at: null,
   })
-  let acknowledgement = null
+  let acknowledgement: unknown = null
   if (isNew && settings.auto_acknowledgement_enabled) {
     acknowledgement = await service.createSupportMessages({
       conversation_id: conversation.id,
@@ -463,7 +463,7 @@ export const ensureSupportThreadStep = createStep("ensure-support-thread", async
       customer_id: customerId,
       client_request_id: null,
       subject: `Chat — ${firstName}`,
-      category: defaultCategory,
+      category: defaultCategory as any,
       status: "new",
       priority: "normal",
       order_id: null,

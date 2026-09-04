@@ -70,187 +70,296 @@ export default async function ResearchProtocolPage({ params }: Props) {
     .sort((a, b) => a.position - b.position)
   const faqs = [...content.faqs].sort((a, b) => a.position - b.position)
 
+  // Emoji icons for quick-reference card keys
+  const qrIcons: Record<string, string> = {
+    target_solvent: "🧪",
+    diluent_ratio: "💧",
+    lyophilized_storage: "❄️",
+    liquid_stability: "🔬",
+    reconstitution: "⚗️",
+    purity: "✅",
+    molecular_weight: "⚖️",
+  }
+
   return (
     <div>
+      {/* ── Hero ── */}
       <div className="border-b border-ui-border-base bg-ui-bg-subtle">
-        <div className="content-container py-12 small:py-16">
-          <p className="text-small-semi uppercase tracking-wider text-ui-fg-interactive">
-            {content.research_use_label}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
+        <div className="content-container py-10 small:py-14">
+
+          {/* Research-use badge */}
+          {content.research_use_label ? (
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xsmall-semi uppercase tracking-wider"
+              style={{
+                backgroundColor: "rgb(254 243 199)",
+                color: "rgb(146 64 14)",
+                border: "1px solid rgb(253 230 138)",
+              }}
+            >
+              ⚠️ {content.research_use_label}
+            </span>
+          ) : null}
+
+          {/* Compound name + format badge */}
+          <div className="mt-4 flex flex-wrap items-center gap-3">
             <h1 className="text-3xl-semi text-ui-fg-base">
               {content.compound_name || protocol.title}
             </h1>
             {content.product_format ? (
-              <span className="rounded-full bg-ui-bg-base px-3 py-1 text-small-semi">
+              <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-semi text-ui-fg-subtle">
                 {content.product_format}
               </span>
             ) : null}
           </div>
-          <p className="mt-4 max-w-3xl text-base-regular text-ui-fg-subtle">
-            {content.short_introduction || protocol.summary}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3 text-small-regular text-ui-fg-subtle">
-            <span>Revision {protocol.revision}</span>
+
+          {/* Short introduction */}
+          {(content.short_introduction || protocol.summary) ? (
+            <p className="mt-4 max-w-3xl text-base-regular leading-relaxed text-ui-fg-subtle">
+              {content.short_introduction || protocol.summary}
+            </p>
+          ) : null}
+
+          {/* Metadata chips */}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-regular text-ui-fg-subtle">
+              Revision {protocol.revision}
+            </span>
             {content.last_reviewed_at ? (
-              <span>Reviewed {content.last_reviewed_at}</span>
+              <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-regular text-ui-fg-subtle">
+                Reviewed {content.last_reviewed_at}
+              </span>
             ) : null}
-            {content.category ? <span>{content.category}</span> : null}
+            {content.category ? (
+              <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-regular text-ui-fg-subtle">
+                {content.category}
+              </span>
+            ) : null}
           </div>
         </div>
       </div>
+
+      {/* ── Main content (full-width, no sidebar) ── */}
       <main className="content-container py-10 small:py-14">
+
+        {/* Back breadcrumb */}
         <LocalizedClientLink
           href="/research-protocols"
-          className="text-small-semi text-ui-fg-interactive"
+          className="text-small-semi text-ui-fg-interactive hover:underline"
         >
           ← Back to protocol directory
         </LocalizedClientLink>
-        <div className="mt-8 grid gap-8 large:grid-cols-[minmax(0,1fr)_360px]">
-          <div className="min-w-0">
-            {content.quick_reference.length ? (
-              <section className="grid gap-3 small:grid-cols-2 large:grid-cols-3">
-                {content.quick_reference.map((item) => (
-                  <div
-                    key={item.key}
-                    className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-5"
+
+        {/* ── Quick-reference cards ── */}
+        {content.quick_reference.length ? (
+          <section className="mt-8 grid gap-4 small:grid-cols-2 large:grid-cols-4">
+            {content.quick_reference.map((item) => {
+              const icon = qrIcons[item.key] ?? "📋"
+              return (
+                <div
+                  key={item.key}
+                  className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-5"
+                  style={{ borderLeft: "3px solid rgb(99 102 241)" }}
+                >
+                  <p className="flex items-center gap-1.5 text-xsmall-semi uppercase tracking-wide text-ui-fg-subtle">
+                    <span aria-hidden="true">{icon}</span>
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-xl-semi text-ui-fg-base">
+                    {item.value}
+                  </p>
+                  {item.description ? (
+                    <p className="mt-1.5 text-small-regular text-ui-fg-subtle">
+                      {item.description}
+                    </p>
+                  ) : null}
+                </div>
+              )
+            })}
+          </section>
+        ) : null}
+
+        {/* ── Content sections ── */}
+        {sections.map((section) => (
+          <section key={section.key} className="mt-12 max-w-3xl">
+            <h2 className="text-2xl-semi text-ui-fg-base">{section.title}</h2>
+            <div className="mt-2 h-px bg-ui-border-base" />
+            <p className="mt-4 whitespace-pre-wrap text-base-regular leading-relaxed text-ui-fg-subtle">
+              {section.body}
+            </p>
+          </section>
+        ))}
+
+        {/* ── FAQ accordion ── */}
+        {faqs.length ? (
+          <section className="mt-12 max-w-3xl">
+            <h2 className="text-2xl-semi text-ui-fg-base">
+              Frequently asked questions
+            </h2>
+            <div className="mt-2 h-px bg-ui-border-base" />
+            <div className="mt-5 grid gap-3">
+              {faqs.map((faq) => (
+                <details
+                  key={faq.key}
+                  className="group rounded-rounded border border-ui-border-base bg-ui-bg-base p-5 open:bg-ui-bg-subtle"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-base-semi text-ui-fg-base">
+                    {faq.question}
+                    <span className="shrink-0 text-ui-fg-muted transition-transform group-open:rotate-180" aria-hidden="true">
+                      ▾
+                    </span>
+                  </summary>
+                  <p className="mt-3 whitespace-pre-wrap text-base-regular leading-relaxed text-ui-fg-subtle">
+                    {faq.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* ── References & evidence ── */}
+        {content.references.length ? (
+          <section className="mt-12 max-w-3xl">
+            <h2 className="text-2xl-semi text-ui-fg-base">
+              References & evidence
+            </h2>
+            <div className="mt-2 h-px bg-ui-border-base" />
+            <ol className="mt-5 grid gap-4">
+              {content.references.map((reference, index) => (
+                <li
+                  key={reference.reference_key || `${reference.title}-${index}`}
+                  className="flex gap-4 rounded-rounded border border-ui-border-base bg-ui-bg-base p-4"
+                >
+                  <span
+                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xsmall-semi text-white"
+                    style={{ backgroundColor: "rgb(99 102 241)" }}
+                    aria-hidden="true"
                   >
-                    <p className="text-small-semi uppercase tracking-wide text-ui-fg-subtle">
-                      {item.label}
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-base-semi text-ui-fg-base">
+                      {reference.title}
                     </p>
-                    <p className="mt-2 text-large-semi text-ui-fg-base">
-                      {item.value}
-                    </p>
-                    {item.description ? (
-                      <p className="mt-2 text-small-regular text-ui-fg-subtle">
-                        {item.description}
+                    {reference.customer_annotation ? (
+                      <p className="mt-1 text-small-regular text-ui-fg-subtle">
+                        {reference.customer_annotation}
                       </p>
                     ) : null}
+                    {reference.url ? (
+                      <a
+                        href={reference.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 inline-flex items-center gap-1 rounded-md border border-ui-border-base bg-ui-bg-subtle px-3 py-1 text-small-semi text-ui-fg-interactive transition-colors hover:bg-ui-bg-base"
+                      >
+                        Open source ↗
+                      </a>
+                    ) : null}
                   </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ) : null}
+
+        {/* ── Applicable compounds ── */}
+        {protocol.products.length ? (
+          <section className="mt-12 max-w-3xl">
+            <h2 className="text-2xl-semi text-ui-fg-base">
+              Applicable compounds
+            </h2>
+            <div className="mt-2 h-px bg-ui-border-base" />
+            <p className="mt-3 text-small-regular text-ui-fg-subtle">
+              This protocol applies to the following compounds.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {protocol.products.map((product) => (
+                <LocalizedClientLink
+                  key={product.id}
+                  href={`/products/${product.handle}`}
+                  className="inline-flex items-center gap-2 rounded-rounded border border-ui-border-base bg-ui-bg-base px-4 py-2.5 text-small-semi transition-colors hover:border-ui-border-interactive hover:bg-ui-bg-subtle"
+                >
+                  {product.title}
+                  <span aria-hidden="true" className="text-ui-fg-muted">→</span>
+                </LocalizedClientLink>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* ── Product recommendations ── */}
+        <ProductRecommendations
+          handle={handle}
+          items={recommendationItems}
+          countryCode={countryCode}
+        />
+
+        {/* ── Disclaimer ── */}
+        <div className="mt-12 max-w-3xl rounded-rounded border border-ui-border-base bg-ui-bg-subtle p-5">
+          <p className="text-small-semi text-ui-fg-base">Important information</p>
+          <p className="mt-2 text-small-regular text-ui-fg-subtle">
+            {content.disclaimer}
+          </p>
+        </div>
+
+        {/* ── Full Protocol Access CTA (replaces sidebar) ── */}
+        <div
+          className="mt-12 overflow-hidden rounded-rounded"
+          style={{ backgroundColor: "rgb(17 24 39)" }}
+        >
+          <div className="flex flex-col gap-8 p-8 small:flex-row small:items-center small:justify-between">
+            <div className="min-w-0">
+              <p
+                className="text-small-semi uppercase tracking-wider"
+                style={{ color: "rgb(165 180 252)" }}
+              >
+                Research Hub
+              </p>
+              <h2 className="mt-2 text-2xl-semi text-white">
+                Unlock full protocol access
+              </h2>
+              <ul className="mt-4 grid gap-2">
+                {[
+                  "Complete dosage schedules & titration steps",
+                  "Reconstitution calculator with custom defaults",
+                  "Protected community discussion & research observations",
+                ].map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-start gap-2 text-small-regular"
+                    style={{ color: "rgb(209 213 219)" }}
+                  >
+                    <span
+                      className="mt-0.5 shrink-0"
+                      style={{ color: "rgb(129 140 248)" }}
+                      aria-hidden="true"
+                    >
+                      ✓
+                    </span>
+                    {feature}
+                  </li>
                 ))}
-              </section>
-            ) : null}
-            {sections.map((section) => (
-              <section key={section.key} className="mt-12 max-w-4xl">
-                <h2 className="text-2xl-semi text-ui-fg-base">
-                  {section.title}
-                </h2>
-                <p className="mt-4 whitespace-pre-wrap text-base-regular text-ui-fg-subtle">
-                  {section.body}
-                </p>
-              </section>
-            ))}
-            {faqs.length ? (
-              <section className="mt-12 max-w-4xl">
-                <h2 className="text-2xl-semi text-ui-fg-base">
-                  Frequently asked questions
-                </h2>
-                <div className="mt-5 grid gap-3">
-                  {faqs.map((faq) => (
-                    <details
-                      key={faq.key}
-                      className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-5"
-                    >
-                      <summary className="cursor-pointer text-base-semi text-ui-fg-base">
-                        {faq.question}
-                      </summary>
-                      <p className="mt-3 whitespace-pre-wrap text-base-regular text-ui-fg-subtle">
-                        {faq.answer}
-                      </p>
-                    </details>
-                  ))}
-                </div>
-              </section>
-            ) : null}
-            {content.references.length ? (
-              <section className="mt-12 max-w-4xl">
-                <h2 className="text-2xl-semi text-ui-fg-base">
-                  References and evidence
-                </h2>
-                <ol className="mt-5 grid gap-3">
-                  {content.references.map((reference, index) => (
-                    <li
-                      key={reference.reference_key || `${reference.title}-${index}`}
-                      className="rounded-rounded border border-ui-border-base p-4"
-                    >
-                      <p className="text-base-semi">{reference.title}</p>
-                      {reference.customer_annotation ? (
-                        <p className="mt-1 text-small-regular text-ui-fg-subtle">
-                          {reference.customer_annotation}
-                        </p>
-                      ) : null}
-                      {reference.url ? (
-                        <a
-                          href={reference.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mt-2 inline-block text-small-semi text-ui-fg-interactive"
-                        >
-                          Open source ↗
-                        </a>
-                      ) : null}
-                    </li>
-                  ))}
-                </ol>
-              </section>
-            ) : null}
-            {protocol.products.length ? (
-              <section className="mt-12">
-                <h2 className="text-2xl-semi text-ui-fg-base">
-                  Applicable products
-                </h2>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {protocol.products.map((product) => (
-                    <LocalizedClientLink
-                      key={product.id}
-                      href={`/products/${product.handle}`}
-                      className="rounded-rounded border border-ui-border-base px-4 py-3 text-small-semi"
-                    >
-                      {product.title}
-                    </LocalizedClientLink>
-                  ))}
-                </div>
-              </section>
-            ) : null}
-            <ProductRecommendations
-              handle={handle}
-              items={recommendationItems}
-              countryCode={countryCode}
-            />
-            <div className="mt-12 max-w-4xl rounded-rounded border border-ui-border-base bg-ui-bg-subtle p-5">
-              <p className="text-small-semi">Important information</p>
-              <p className="mt-2 text-small-regular text-ui-fg-subtle">
-                {content.disclaimer}
+              </ul>
+              <p
+                className="mt-4 text-xsmall-regular"
+                style={{ color: "rgb(156 163 175)" }}
+              >
+                Available to customers with an eligible purchase.
               </p>
             </div>
-          </div>
-          <aside className="large:sticky large:top-24 large:self-start">
-            <div className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-5">
-              <h2 className="text-xl-semi text-ui-fg-base">
-                Full protocol access
-              </h2>
-              <p className="mt-2 text-small-regular text-ui-fg-subtle">
-                Complete schedules, calculator defaults, preparation details,
-                and protected community discussion are available in Research
-                Hub with an eligible product.
-              </p>
+            <div className="shrink-0">
               <LocalizedClientLink
                 href="/account/research-hub"
-                className="mt-4 inline-block rounded-md bg-ui-button-inverted px-4 py-2 text-small-semi text-ui-fg-on-inverted"
+                className="inline-flex items-center gap-2 rounded-rounded px-6 py-3 text-base-semi text-white transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "rgb(99 102 241)" }}
               >
                 Open Research Hub
+                <span aria-hidden="true">→</span>
               </LocalizedClientLink>
             </div>
-            <div className="mt-4 rounded-rounded border border-ui-border-base bg-ui-bg-subtle p-5">
-              <h2 className="text-base-semi text-ui-fg-base">
-                Community discussion
-              </h2>
-              <p className="mt-2 text-small-regular text-ui-fg-subtle">
-                Community discussion is separate from the official protocol and
-                is available only to eligible signed-in customers.
-              </p>
-            </div>
-          </aside>
+          </div>
         </div>
       </main>
     </div>

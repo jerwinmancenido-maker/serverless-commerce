@@ -162,6 +162,9 @@ export default async function ResearchTrackingPage({
     calendarDate?: string
     journalPage?: string
     section?: string
+    mass?: string
+    unit?: string
+    name?: string
   }>
 }) {
   const { countryCode } = await params
@@ -171,6 +174,8 @@ export default async function ResearchTrackingPage({
     "overview",
     "today",
     "calendar",
+    "schedule",
+    "supplies",
     "protocols",
     "routines",
     "calculator",
@@ -179,13 +184,18 @@ export default async function ResearchTrackingPage({
     "timeline",
     "rewards",
   ].includes(resolvedSearchParams.section || "")
-    ? resolvedSearchParams.section as "overview" | "today" | "calendar" | "protocols" | "routines" | "calculator" | "progress" | "journal" | "timeline" | "rewards"
+    ? resolvedSearchParams.section as "overview" | "today" | "calendar" | "schedule" | "supplies" | "protocols" | "routines" | "calculator" | "progress" | "journal" | "timeline" | "rewards"
     : "overview"
   const requestedCalendarDate = /^\d{4}-\d{2}-\d{2}$/.test(
     resolvedSearchParams.calendarDate || "",
   )
     ? resolvedSearchParams.calendarDate!
     : null
+  const calculatorParams = {
+    mass: typeof resolvedSearchParams.mass === "string" ? resolvedSearchParams.mass : undefined,
+    unit: typeof resolvedSearchParams.unit === "string" ? resolvedSearchParams.unit : undefined,
+    name: typeof resolvedSearchParams.name === "string" ? resolvedSearchParams.name : undefined,
+  }
   const journalPage =
     Number.isInteger(requestedJournalPage) && requestedJournalPage > 0
       ? requestedJournalPage
@@ -380,11 +390,12 @@ export default async function ResearchTrackingPage({
               0,
             ),
           )
+          const isMonthView = section === "calendar" || section === "routines" || section === "schedule" || section === "overview"
           occurrences = await retrieveResearchOccurrences(
-            section === "calendar"
+            isMonthView
               ? calendarStart.toISOString().slice(0, 10)
               : routineToday,
-            section === "calendar"
+            isMonthView
               ? calendarEnd.toISOString().slice(0, 10)
               : addCalendarDays(routineToday, 6),
           )
@@ -410,6 +421,7 @@ export default async function ResearchTrackingPage({
       protocolAccesses={protocolAccesses}
       calculations={calculations}
       calculationSubmissionKey={randomUUID()}
+      calculatorParams={calculatorParams}
       goals={goals}
       routineStreak={routineStreak}
       rewards={rewards}

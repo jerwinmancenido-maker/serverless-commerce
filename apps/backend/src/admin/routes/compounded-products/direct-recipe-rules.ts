@@ -133,6 +133,10 @@ export const buildDirectRecipeRules = (input: {
     startPosition: 0,
     includeEmpty: false,
   })
+
+  if (!finishedRules.length) {
+    return []
+  }
   const includedSupplyRules = matchedRules({
     kind: "variation_value",
     axisId: input.configuration.includedSupplyAxisId,

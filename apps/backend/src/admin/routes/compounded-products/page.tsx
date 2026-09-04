@@ -11,6 +11,7 @@ import {
   Select,
   Table,
   Text,
+  Textarea,
   toast,
 } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -62,6 +63,7 @@ import type {
 
 const emptyProduct = {
   title: "",
+  subtitle: "",
   handle: "",
   description: "",
   typeId: "",
@@ -650,6 +652,7 @@ const CompoundedProductsPage = () => {
               : null,
             product: {
               title: product.title,
+              subtitle: product.subtitle.trim() || null,
               compound_family_id: null,
               compound_format_id: compoundFormatId || null,
               description: product.description || null,
@@ -863,7 +866,7 @@ const CompoundedProductsPage = () => {
         <BuilderSection
           eyebrow="Step 1"
           title="Product information"
-          description="Customer-facing product name and description."
+          description="Customer-facing product name and presentation format."
         >
           <div className="flex flex-col gap-y-2">
             <Label htmlFor="product-title">Product name *</Label>
@@ -882,6 +885,25 @@ const CompoundedProductsPage = () => {
               }}
               placeholder="Enter product name"
             />
+          </div>
+          <div className="mt-3 flex flex-col gap-y-2">
+            <Label htmlFor="product-subtitle">Short description</Label>
+            <Textarea
+              id="product-subtitle"
+              value={product.subtitle}
+              onChange={(event) =>
+                setProduct((current) => ({
+                  ...current,
+                  subtitle: event.target.value,
+                }))
+              }
+              placeholder="e.g. Dual GIP/GLP-1 receptor agonist · Lyophilized"
+              className="resize-none"
+              rows={3}
+            />
+            <Text size="xsmall" className="text-ui-fg-subtle">
+              Shown directly below the product name on the storefront.
+            </Text>
           </div>
           <div className="mt-3 flex flex-col gap-y-2">
             <div className="flex items-center justify-between gap-3">
@@ -920,18 +942,6 @@ const CompoundedProductsPage = () => {
             <Text size="xsmall" className="text-ui-fg-subtle">
               Physical format such as Vial, Nasal Spray, Oral, or Topical.
             </Text>
-          </div>
-          <div className="mt-3 flex flex-col gap-y-2">
-            <Label htmlFor="product-description">Description</Label>
-            <ProductDescriptionEditor
-              value={product.description}
-              onChange={(description) =>
-                setProduct((current) => ({
-                  ...current,
-                  description,
-                }))
-              }
-            />
           </div>
         </BuilderSection>
 
@@ -1016,6 +1026,22 @@ const CompoundedProductsPage = () => {
           )}
         </BuilderSection>
       </div>
+
+      <BuilderSection
+        eyebrow="Description"
+        title="Product description"
+        description="Product description and information displayed on your online store."
+      >
+        <ProductDescriptionEditor
+          value={product.description}
+          onChange={(description) =>
+            setProduct((current) => ({
+              ...current,
+              description,
+            }))
+          }
+        />
+      </BuilderSection>
 
       <BuilderSection
         eyebrow="Step 3"
@@ -1140,26 +1166,10 @@ const CompoundedProductsPage = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Badge
-              color={configuredRecipeCoverageComplete ? "green" : "orange"}
-            >
-              {configuredRecipeCoverageComplete
-                ? "Inventory ready"
-                : "Inventory setup incomplete"}
-            </Badge>
+            <Badge color="green">Ready to save draft</Badge>
             <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              {configuredRecipeRowCount}/{preview.matrix.rows.length}{" "}
-              combinations configured
+              {preview.matrix.resultingVariantCount} sellable combinations
             </Text>
-            {configuredAvailabilityQuery.isFetching ? (
-              <Spinner className="text-ui-fg-muted" />
-            ) : null}
-            {configuredAvailabilityQuery.error ? (
-              <Text size="small" leading="compact" className="text-ui-fg-error">
-                Stock preview is temporarily unavailable for configured
-                combinations.
-              </Text>
-            ) : null}
           </div>
 
           <div className="overflow-x-auto rounded-lg border border-ui-border-base">
@@ -1172,9 +1182,6 @@ const CompoundedProductsPage = () => {
                     </Table.HeaderCell>
                   ))}
                   <Table.HeaderCell>Photo</Table.HeaderCell>
-                  <Table.HeaderCell>Inventory contents</Table.HeaderCell>
-                  <Table.HeaderCell>Calculated stock</Table.HeaderCell>
-                  <Table.HeaderCell>Limiting component</Table.HeaderCell>
                   <Table.HeaderCell>Price</Table.HeaderCell>
                   <Table.HeaderCell>SKU</Table.HeaderCell>
                 </Table.Row>
@@ -1216,85 +1223,6 @@ const CompoundedProductsPage = () => {
                               : "Add photo"}
                           </Button>
                         </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        {directSnapshot
-                          ? (() => {
-                              const contents = componentsForCombination({
-                                configuration: effectiveRecipeConfiguration,
-                                axes: directVariationAxes,
-                                snapshot: directSnapshot,
-                                row,
-                                rows: preview.matrix.rows,
-                              })
-                              const itemCount = contents.all.length
-                              const ready =
-                                combinationComponentsAreComplete(contents)
-
-                              return (
-                                <div className="flex min-w-44 items-center gap-2">
-                                  <Badge color={ready ? "green" : "orange"}>
-                                    {ready ? "Ready" : "Needs setup"}
-                                  </Badge>
-                                  <Text
-                                    size="xsmall"
-                                    className="text-ui-fg-subtle"
-                                  >
-                                    {ready
-                                      ? `${itemCount} item${itemCount === 1 ? "" : "s"}`
-                                      : contents.finishedProduct.length
-                                        ? "Check quantities"
-                                        : "Finished product required"}
-                                  </Text>
-                                  <Button
-                                    size="small"
-                                    variant="secondary"
-                                    onClick={() =>
-                                      setInventoryContentsRowKey(row.key)
-                                    }
-                                  >
-                                    {itemCount ? "Edit" : "Configure"}
-                                  </Button>
-                                </div>
-                              )
-                            })()
-                          : null}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div className="flex min-w-48 flex-col gap-y-1">
-                          <Text size="small" leading="compact" weight="plus">
-                            {availability?.calculated_stock ?? "—"}
-                          </Text>
-                          {availability?.components.length ? (
-                            <Text
-                              size="xsmall"
-                              leading="compact"
-                              className="text-ui-fg-subtle"
-                            >
-                              {availability.components
-                                .map(
-                                  (component) =>
-                                    `${component.inventory_item_title}: ${component.capacity}`,
-                                )
-                                .join(" · ")}
-                            </Text>
-                          ) : null}
-                        </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Text
-                          size="small"
-                          leading="compact"
-                          className="min-w-40"
-                        >
-                          {availability?.limiting_components.length
-                            ? availability.limiting_components
-                                .map(
-                                  (component) => component.inventory_item_title,
-                                )
-                                .join(", ")
-                            : "—"}
-                        </Text>
                       </Table.Cell>
                       <Table.Cell>
                         <Input

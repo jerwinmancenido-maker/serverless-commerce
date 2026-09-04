@@ -13,14 +13,14 @@ export const authorizeSettlementSessionStep = createStep(
 
     // Check if there is already an active (uncanceled) payment for this session
     const [existingPayment] = await paymentModule.listPayments(
-      { payment_session_id: input.paymentSessionId, canceled_at: null },
+      { payment_session_id: input.paymentSessionId, canceled_at: null as any },
       { take: 1 },
     )
 
     if (existingPayment?.id) {
       return new StepResponse(
         { paymentId: existingPayment.id },
-        { paymentId: null }, // Don't cancel an existing pre-authorized payment
+        { paymentId: null as string | null }, // Don't cancel an existing pre-authorized payment
       )
     }
 
@@ -36,7 +36,10 @@ export const authorizeSettlementSessionStep = createStep(
       )
     }
 
-    return new StepResponse({ paymentId: payment.id }, { paymentId: payment.id })
+    return new StepResponse(
+      { paymentId: payment.id },
+      { paymentId: payment.id as string | null },
+    )
   },
   async (compensationInput, { container }) => {
     if (compensationInput?.paymentId) {

@@ -22,24 +22,30 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
   const filteredOptions = (option.values ?? []).map((v) => v.value)
 
   return (
-    <div className="flex flex-col gap-y-3">
-      <span className="text-sm">Select {title}</span>
+    <div className="flex flex-col gap-y-2">
+      <div className="flex items-center justify-between text-xs">
+        <span className="font-semibold text-zinc-800 tracking-tight">{title}</span>
+        {current && (
+          <span className="text-zinc-400 font-medium">{current}</span>
+        )}
+      </div>
       <div
-        className="flex flex-wrap justify-between gap-2"
+        className="flex flex-wrap gap-2"
         data-testid={dataTestId}
       >
         {filteredOptions.map((v) => {
+          const isSelected = v === current
           return (
             <button
               onClick={() => updateOption(option.id, v)}
               key={v}
               className={clx(
-                "h-11 rounded-xl px-4 py-2.5 text-xs font-medium transition-all duration-150 flex-1 min-w-[100px] flex items-center justify-center border",
+                "h-9 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all duration-150 flex items-center justify-center border",
                 {
-                  "bg-zinc-900 text-white border-zinc-900 shadow-xs font-semibold ring-1 ring-zinc-900":
-                    v === current,
-                  "bg-white text-zinc-700 border-zinc-200/90 hover:border-zinc-400 hover:bg-zinc-50/80":
-                    v !== current,
+                  "bg-zinc-900 text-white border-zinc-900 shadow-xs font-semibold ring-1 ring-zinc-900/5":
+                    isSelected,
+                  "bg-white text-zinc-700 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50/80":
+                    !isSelected,
                 }
               )}
               disabled={disabled}

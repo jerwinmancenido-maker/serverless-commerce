@@ -678,7 +678,9 @@ export const CombinationInventoryDrawer = ({
   }
 
   const complete = contents ? combinationComponentsAreComplete(contents) : false
-  const missingProductVial = !contents?.finishedProduct.length
+  const missingProductVial =
+    Boolean(contents?.scopes.finishedProduct) &&
+    (contents?.finishedProduct.length || 0) === 0
   const totalCandidateCount = inventoryQuery.data?.count || 0
   const hasPreviousPage = pageIndex > 0
   const hasNextPage = (pageIndex + 1) * pageSize < totalCandidateCount
@@ -691,8 +693,8 @@ export const CombinationInventoryDrawer = ({
             Inventory contents — {row?.title || "Combination"}
           </Drawer.Title>
           <Drawer.Description>
-            Choose what this combination consumes. Warehouse stock is not
-            changed until an order is processed.
+            Configure the physical inventory items required to assemble and ship
+            this combination.
           </Drawer.Description>
         </Drawer.Header>
         <Drawer.Body className="flex flex-col gap-y-5 overflow-auto p-4">
@@ -971,7 +973,7 @@ export const CombinationInventoryDrawer = ({
                         onValueChange={(value) =>
                           setDraft((current) => ({
                             ...current,
-                            finishedProductAxisId: value || null,
+                            finishedProductAxisId: value || "",
                           }))
                         }
                       >
@@ -1000,7 +1002,7 @@ export const CombinationInventoryDrawer = ({
                         onValueChange={(value) =>
                           setDraft((current) => ({
                             ...current,
-                            includedSupplyAxisId: value || null,
+                            includedSupplyAxisId: value || "",
                           }))
                         }
                       >

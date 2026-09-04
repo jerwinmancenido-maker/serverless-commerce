@@ -20,15 +20,20 @@ describe("admin compounded product edit and telemetry overhaul", () => {
   })
 
   it("integrates edit drawer, status toggle, inline price editing, and bottleneck restock button into product details", () => {
-    const pageSource = readFileSync(
-      join(adminRoot, "compounded-products/[id]/page.tsx"),
-      "utf8",
-    )
+    const pageSource =
+      readFileSync(
+        join(adminRoot, "compounded-products/[id]/page.tsx"),
+        "utf8",
+      ) +
+      readFileSync(
+        join(adminRoot, "compounded-products/[id]/product-ops-sidebar.tsx"),
+        "utf8",
+      )
 
-    // Edit Product triggers
-    expect(pageSource).toContain("CompoundedProductEditDrawer")
-    expect(pageSource).toContain("Edit Product")
-    expect(pageSource).toContain("Edit Overview")
+    // Unified Details & Media editor
+    expect(pageSource).toContain("Details & Media")
+    expect(pageSource).toContain("Edit Details")
+    expect(pageSource).toContain("startEditingMetadata")
 
     // Publication toggle dropdown
     expect(pageSource).toContain("publicationMutation")

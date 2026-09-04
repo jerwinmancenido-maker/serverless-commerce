@@ -95,8 +95,7 @@ const GlobalSupportDock = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  // Don't render floating dock if already on the dedicated support routes to avoid redundancy
-  const isOnSupportPage = location.pathname.startsWith("/customer-support")
+  // Poll for open/active support conversations across all admin pages
 
   // Poll for open/active support conversations across all admin pages
   const inboxQuery = useQuery({
@@ -179,7 +178,9 @@ const GlobalSupportDock = () => {
           ? `[card:protocol:${attachedCard.handle}:${attachedCard.title}:${attachedCard.duration}]`
           : attachedCard.type === "product"
           ? `[card:product:${attachedCard.variantId}:${attachedCard.title}:${attachedCard.price}:${attachedCard.handle}]`
-          : `[card:promo:${attachedCard.code}:${attachedCard.title}:${attachedCard.description}]`
+          : attachedCard.type === "promo"
+          ? `[card:promo:${attachedCard.code}:${attachedCard.title}:${attachedCard.description}]`
+          : `[card:order:${attachedCard.displayId}:${attachedCard.total}:${attachedCard.status}:${attachedCard.orderId}]`
         : ""
       const fullBody = [replyText.trim(), cardTag].filter(Boolean).join("\n")
       if (!fullBody && !attachedFile) throw new Error("Empty message")
@@ -242,10 +243,6 @@ const GlobalSupportDock = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
   }, [detailQuery.data?.messages.length, isOpen])
-
-  if (isOnSupportPage) {
-    return null
-  }
 
   const content = (
     <div className="fixed bottom-5 right-5 z-[99999] flex flex-col items-end font-sans">
@@ -399,7 +396,7 @@ const GlobalSupportDock = () => {
                       ))}
 
                       {/* Attached Files in Message */}
-                      {detailQuery.data.attachments
+                      {detailQuery.data?.attachments
                         ?.filter((a) => a.message_id === msg.id)
                         .map((attachment) => (
                           <button
@@ -421,7 +418,7 @@ const GlobalSupportDock = () => {
                 })}
 
                 {/* Customer Typing Indicator */}
-                {detailQuery.data.customer_typing && (
+                {detailQuery.data?.customer_typing && (
                   <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-[11px] font-semibold text-emerald-800 animate-pulse w-fit">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
                     Customer is typing…
@@ -466,9 +463,15 @@ const GlobalSupportDock = () => {
                       ? "🔬 Attached Protocol:"
                       : attachedCard.type === "product"
                       ? "🧪 Attached Product:"
-                      : "🎁 Attached Promo:"}
+                      : attachedCard.type === "promo"
+                      ? "🎁 Attached Promo:"
+                      : "📦 Attached Order:"}
                   </span>
-                  <span className="truncate font-medium">{attachedCard.title}</span>
+                  <span className="truncate font-medium">
+                    {attachedCard.type === "order"
+                      ? `Order #${attachedCard.displayId} (${attachedCard.total})`
+                      : attachedCard.title}
+                  </span>
                 </div>
                 <button
                   type="button"

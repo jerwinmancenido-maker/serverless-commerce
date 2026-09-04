@@ -3,6 +3,7 @@ import { z } from "@medusajs/framework/zod"
 import { MANUAL_PAYMENT_PROOF_STATUSES } from "../../../modules/manual-payment/contracts/payment-proof"
 
 export const AdminListManualPaymentProofs = z.object({
+  order_id: z.string().optional(),
   status: z.enum(MANUAL_PAYMENT_PROOF_STATUSES).optional(),
   limit: z.preprocess(
     (value) => (typeof value === "string" ? Number(value) : value),

@@ -12,7 +12,6 @@ import { HttpTypes } from "@medusajs/types"
 import ProductActionsWrapper from "./product-actions-wrapper"
 
 import { listResearchProtocols } from "@lib/data/research-protocols"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -45,18 +44,38 @@ const ProductTemplate = async ({
 
   return (
     <>
+    <div className="relative w-full overflow-hidden">
+      {/* Ambient Drifting Laboratory Aurora Mesh Motion Background */}
       <div
-        className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
+        className="absolute inset-0 pointer-events-none -z-10 overflow-hidden"
+        aria-hidden="true"
+      >
+        {/* Soft Indigo / Blue Drifting Orb */}
+        <div className="absolute -top-32 -left-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-br from-indigo-200/35 via-sky-200/25 to-transparent blur-3xl animate-aurora-drift" />
+
+        {/* Translucent Cyan / Teal Counter-Drifting Orb */}
+        <div className="absolute top-1/4 -right-28 w-[34rem] h-[34rem] rounded-full bg-gradient-to-bl from-teal-100/35 via-sky-100/25 to-transparent blur-3xl animate-aurora-reverse" />
+
+        {/* Soft Lavender / Pearl Pulsing Center Orb */}
+        <div className="absolute -bottom-16 left-1/3 w-[26rem] h-[26rem] rounded-full bg-gradient-to-tr from-purple-100/30 via-slate-100/20 to-transparent blur-3xl animate-aurora-pulse" />
+
+        {/* Subtle Laboratory Coordinate Grid Matrix */}
+        <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:32px_32px] opacity-35 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_95%)]" />
+      </div>
+
+      {/* 1. Hero 2-Column Section */}
+      <div
+        className="content-container flex flex-col small:flex-row small:items-start gap-x-12 py-10 relative"
         data-testid="product-container"
       >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
-        </div>
-        <div className="block w-full relative">
+        {/* Left Column: Product Media Gallery */}
+        <div className="w-full small:w-1/2 relative">
           <ImageGallery images={images} productTitle={product.title} />
         </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
+
+        {/* Right Column: Sticky Buy Box */}
+        <div className="flex flex-col small:sticky small:top-24 w-full small:w-1/2 py-4 gap-y-4">
+          <ProductInfo product={product} mode="header" />
           <ProductOnboardingCta />
           <Suspense
             fallback={
@@ -69,40 +88,18 @@ const ProductTemplate = async ({
           >
             <ProductActionsWrapper id={product.id} region={region} />
           </Suspense>
-
-          {linkedProtocol && (
-            <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 via-white to-sky-50/40 p-4 shadow-xs">
-              <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-lg shadow-sm">
-                  🔬
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="rounded-full bg-indigo-100/90 border border-indigo-200 px-2 py-0.5 text-[10px] font-bold text-indigo-900 uppercase tracking-wide">
-                    Verified Research Protocol
-                  </span>
-                  <h4 className="mt-1 text-xs font-bold text-zinc-900 leading-snug">
-                    {linkedProtocol.title}
-                  </h4>
-                  <p className="mt-1 text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
-                    {linkedProtocol.summary ||
-                      "Verified reconstitution ratios, solvent compatibility, storage parameters, and laboratory guidelines."}
-                  </p>
-                  <div className="mt-2.5">
-                    <LocalizedClientLink
-                      href={`/research-protocols/${linkedProtocol.handle}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-700 hover:text-indigo-900 transition-colors"
-                    >
-                      Study Protocol & Guide ↗
-                    </LocalizedClientLink>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
+    </div>
+
+      {/* 2. Scientific & Compliance Workspace (Below the Fold, Full Width) */}
+      <div id="scientific-workspace" className="content-container py-12 border-t border-zinc-200 mt-6">
+        <ProductTabs product={product} linkedProtocol={linkedProtocol} />
+      </div>
+
+      {/* 3. Level 3 Upsell: Synergistic Research Compounds */}
       <div
-        className="content-container my-16 small:my-32"
+        className="content-container my-16 small:my-24"
         data-testid="related-products-container"
       >
         <Suspense fallback={<SkeletonRelatedProducts />}>

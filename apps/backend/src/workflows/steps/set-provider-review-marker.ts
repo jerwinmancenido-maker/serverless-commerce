@@ -50,7 +50,11 @@ export const setProviderReviewMarkerStep = createStep(
     )
   },
   // Compensation: restore previous session data
-  async ({ paymentSessionId, currencyCode, amount, priorData }, { container }) => {
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+    const { paymentSessionId, currencyCode, amount, priorData } = compensationData
     const paymentModule = container.resolve(Modules.PAYMENT)
     try {
       await paymentModule.updatePaymentSession({

@@ -7,8 +7,6 @@ import {
   createDataTableColumnHelper,
   DataTable,
   type DataTablePaginationState,
-  Heading,
-  Select,
   Text,
   useDataTable,
 } from "@medusajs/ui"
@@ -16,6 +14,10 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
+import { EmptyState } from "../../components/empty-state"
+import { FilterPillGroup } from "../../components/filter-pill-group"
+import { KpiCard } from "../../components/kpi-card"
+import { PageHeader } from "../../components/page-header"
 import { sdk } from "../../lib/sdk"
 import type {
   ResearchProtocolListResponse,
@@ -43,15 +45,33 @@ const statusDetails = (protocol: ResearchProtocolSeries) => {
   return { label: "Draft", color: "orange" as const }
 }
 
+const readinessDetails = (protocol: ResearchProtocolSeries) => {
+  const latest = protocol.revisions[0]
+  const readiness = latest?.readiness
+
+  if (!readiness) {
+    return { label: "Unchecked", color: "grey" as const }
+  }
+
+  if (readiness.is_ready) {
+    return { label: "Ready", color: "green" as const }
+  }
+
+  return {
+    label: readiness.reasons[0]?.replaceAll("_", " ") || "Needs review",
+    color: "orange" as const,
+  }
+}
+
 const ResearchProtocolsPage = () => {
   const [pagination, setPagination] = useState<DataTablePaginationState>({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   })
-  const [status, setStatus] = useState<ResearchProtocolStatus | "all">("all")
-  const [linkStatus, setLinkStatus] = useState<"all" | "linked" | "unlinked">("all")
+  const [activeFilter, setActiveFilter] = useState("all")
+
   const protocolsQuery = useQuery({
-    queryKey: ["research-protocols", "all", pagination, status, linkStatus],
+    queryKey: ["research-protocols", "all", pagination],
     queryFn: () =>
       sdk.client.fetch<ResearchProtocolListResponse>(
         "/admin/research-protocols",
@@ -59,97 +79,157 @@ const ResearchProtocolsPage = () => {
           query: {
             limit: pagination.pageSize,
             offset: pagination.pageIndex * pagination.pageSize,
-            status: status === "all" ? undefined : status,
-            link_status: linkStatus === "all" ? undefined : linkStatus,
           },
         },
       ),
     placeholderData: keepPreviousData,
   })
+
+  const rawProtocols = protocolsQuery.data?.protocols || []
+
+  // Compute KPIs
+  const kpis = useMemo(() => {
+    const total = protocolsQuery.data?.count ?? rawProtocols.length
+    const published = rawProtocols.filter(
+      (p) => p.revisions.some((r) => r.status === "published"),
+    ).length
+    const draft = rawProtocols.filter(
+      (p) => !p.revisions.some((r) => r.status === "published"),
+    ).length
+    const totalLinked = rawProtocols.reduce(
+      (acc, p) => acc + (p.compatible_products?.length || 0),
+      0,
+    )
+
+    return { total, published, draft, totalLinked }
+  }, [rawProtocols, protocolsQuery.data?.count])
+
+  // Filter based on active filter pill
+  const filteredProtocols = useMemo(() => {
+    if (activeFilter === "published") {
+      return rawProtocols.filter((p) =>
+        p.revisions.some((r) => r.status === "published"),
+      )
+    }
+    if (activeFilter === "draft") {
+      return rawProtocols.filter(
+        (p) => !p.revisions.some((r) => r.status === "published"),
+      )
+    }
+    if (activeFilter === "linked") {
+      return rawProtocols.filter(
+        (p) => (p.compatible_products?.length || 0) > 0,
+      )
+    }
+    if (activeFilter === "unlinked") {
+      return rawProtocols.filter(
+        (p) => (p.compatible_products?.length || 0) === 0,
+      )
+    }
+    return rawProtocols
+  }, [rawProtocols, activeFilter])
+
   const columns = useMemo(
     () => [
       columnHelper.display({
         id: "protocol",
-        header: "Protocol",
+        header: "Protocol Title & Handle",
         cell: ({ row }) => {
-          const protocol = row.original
-          const current = protocol.revisions[0]
-
+          const latest = row.original.revisions[0]
           return (
-            <div className="flex min-w-0 flex-col gap-y-0.5 py-1">
+            <div className="flex min-w-0 flex-col gap-0.5 py-1">
               <Link
-                to={`/research-protocols/${protocol.id}`}
-                className="text-ui-fg-interactive outline-none hover:underline focus-visible:shadow-borders-interactive-with-focus"
+                className="w-fit font-semibold hover:text-ui-fg-interactive text-xs inline-flex items-center gap-1.5"
+                to={`/research-protocols/${row.original.id}`}
               >
-                <Text size="small" weight="plus">
-                  {current?.title || protocol.protocol_key}
-                </Text>
+                <span>🔬</span>
+                <span>{latest?.title || row.original.handle}</span>
               </Link>
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                {protocol.protocol_key}
-              </Text>
+              <span className="font-mono text-[10px] text-ui-fg-subtle">
+                {row.original.handle}
+              </span>
             </div>
           )
         },
       }),
       columnHelper.display({
-        id: "products",
+        id: "compatible_products",
         header: "Compatible products",
-        cell: ({ row }) => <Text size="small">{row.original.product_links.length}</Text>,
+        cell: ({ row }) => {
+          const count = row.original.compatible_products?.length || 0
+          return count > 0 ? (
+            <Badge size="small" color="blue" className="font-mono text-[11px]">
+              💊 {count} {count === 1 ? "product" : "products"}
+            </Badge>
+          ) : (
+            <span className="text-ui-fg-muted text-xs italic">None</span>
+          )
+        },
       }),
       columnHelper.display({
         id: "status",
         header: "Status",
         cell: ({ row }) => {
-          const details = statusDetails(row.original)
-          return <Badge color={details.color}>{details.label}</Badge>
+          const status = statusDetails(row.original)
+          return (
+            <Badge size="small" color={status.color}>
+              {status.label}
+            </Badge>
+          )
         },
       }),
       columnHelper.display({
-        id: "revision",
+        id: "latest_revision",
         header: "Latest revision",
         cell: ({ row }) => (
-          <Text size="small">
-            {row.original.revisions[0]
-              ? `r${row.original.revisions[0].revision}`
-              : "—"}
-          </Text>
+          <span className="font-mono text-xs text-ui-fg-subtle">
+            r{row.original.revisions[0]?.revision_number || 1}
+          </span>
         ),
       }),
       columnHelper.display({
         id: "readiness",
-        header: "Publication readiness",
+        header: "Readiness Check",
         cell: ({ row }) => {
-          const latest = row.original.revisions[0]
-          const content = latest?.content
-          const ready = Boolean(latest?.title && content?.intended_application && content?.research_purpose && content?.explicit_exclusions && content?.preparation_and_handling && content?.research_procedure && content?.storage_and_disposal && content?.references.length)
-          return <Badge color={ready ? "green" : "orange"}>{ready ? "Ready" : "Needs content"}</Badge>
+          const readiness = readinessDetails(row.original)
+          return (
+            <Badge size="small" color={readiness.color} className="capitalize text-[10px]">
+              {readiness.label}
+            </Badge>
+          )
         },
       }),
-      columnHelper.accessor("updated_at", {
+      columnHelper.display({
+        id: "updated_at",
         header: "Updated",
-        cell: ({ getValue }) => (
-          <Text size="small">
-            {new Date(getValue()).toLocaleDateString()}
-          </Text>
-        ),
+        cell: ({ row }) => {
+          const latest = row.original.revisions[0]
+          return (
+            <span className="text-xs text-ui-fg-subtle">
+              {new Date(latest?.updated_at || row.original.updated_at).toLocaleDateString("en-PH")}
+            </span>
+          )
+        },
       }),
       columnHelper.display({
         id: "actions",
         header: "",
         cell: ({ row }) => (
-          <Button asChild size="small" variant="secondary">
-            <Link to={`/research-protocols/${row.original.id}/preview`}>
-              Preview
-            </Link>
-          </Button>
+          <div className="flex justify-end">
+            <Button asChild size="small" variant="secondary" className="h-7 text-xs">
+              <Link to={`/research-protocols/${row.original.id}/preview`}>
+                Preview
+              </Link>
+            </Button>
+          </div>
         ),
       }),
     ],
     [],
   )
+
   const table = useDataTable({
-    data: protocolsQuery.data?.protocols || [],
+    data: filteredProtocols,
     columns,
     getRowId: (protocol) => protocol.id,
     rowCount: protocolsQuery.data?.count || 0,
@@ -161,92 +241,103 @@ const ResearchProtocolsPage = () => {
   })
 
   return (
-    <Container className="divide-y p-0">
-      <div className="flex items-start justify-between gap-x-4 px-6 py-4">
-        <div className="flex flex-col gap-y-1">
-          <Heading>Research protocols</Heading>
-          <Text size="small" className="text-ui-fg-subtle">
-            Manage independent, versioned laboratory research guides. Link
-            compatible products when needed.
-          </Text>
-        </div>
-        <Button asChild size="small">
-          <Link to="/research-protocols/new"><Plus />Add protocol</Link>
-        </Button>
+    <div className="flex flex-col gap-4 pb-8">
+      {/* 1. Standard PageHeader */}
+      <PageHeader
+        breadcrumbs={[
+          { label: "Products", href: "/products" },
+          { label: "Research Protocols" },
+        ]}
+        title="Research Protocols"
+        subtitle="Manage independent, versioned clinical research guides, dosage routines, and linked peptide products."
+        actions={
+          <Button asChild size="small" className="h-8 text-xs inline-flex items-center gap-1">
+            <Link to="/research-protocols/new">
+              <Plus /> Add protocol
+            </Link>
+          </Button>
+        }
+      />
+
+      {/* 2. KPI Metrics Bar */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          title="Total Protocols"
+          value={kpis.total}
+          icon="🔬"
+          status="neutral"
+          subtext="Standardized dosing guides"
+        />
+        <KpiCard
+          title="Published & Live"
+          value={kpis.published}
+          icon="✅"
+          status="healthy"
+          subtext="Available on storefront"
+        />
+        <KpiCard
+          title="Draft / In Review"
+          value={kpis.draft}
+          icon="📝"
+          status={kpis.draft > 0 ? "warning" : "healthy"}
+          subtext="Unpublished revisions"
+        />
+        <KpiCard
+          title="Product Links"
+          value={kpis.totalLinked}
+          icon="💊"
+          status="info"
+          subtext="Cross-catalog associations"
+        />
       </div>
-      {protocolsQuery.isError ? (
-        <Text size="small" className="text-ui-fg-error px-6 py-4">
-          Research protocols could not be loaded.
-        </Text>
-      ) : !protocolsQuery.isLoading &&
-        status === "all" &&
-        protocolsQuery.data?.count === 0 ? (
-        <div className="flex min-h-80 flex-col items-center justify-center gap-y-4 px-6 py-12 text-center">
-          <div className="bg-ui-bg-component flex size-12 items-center justify-center rounded-full border border-ui-border-base">
-            <BookOpen className="text-ui-fg-muted" />
-          </div>
-          <div className="flex max-w-lg flex-col gap-y-1">
-            <Text size="small" weight="plus">
-              No research protocols yet
-            </Text>
-            <Text size="small" className="text-ui-fg-subtle">
-              Create a structured laboratory research guide now. You can link
-              compatible products later. Drafts remain private until published.
-            </Text>
-          </div>
-          <Button asChild size="small"><Link to="/research-protocols/new">Add protocol</Link></Button>
+
+      {/* 3. Main Data Container */}
+      <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base">
+        {/* Filter Pills Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-ui-bg-subtle/20 border-b border-ui-border-base">
+          <FilterPillGroup
+            items={[
+              { id: "all", label: "All Protocols", count: kpis.total },
+              { id: "published", label: "Published", count: kpis.published, badgeColor: "green" },
+              { id: "draft", label: "Draft", count: kpis.draft, badgeColor: "orange" },
+              { id: "linked", label: "Linked Products", count: kpis.totalLinked },
+              { id: "unlinked", label: "Unlinked" },
+            ]}
+            selectedId={activeFilter}
+            onSelect={(id) => setActiveFilter(id)}
+          />
         </div>
-      ) : (
-        <DataTable instance={table}>
-          <DataTable.Toolbar>
-            <div className="flex items-center gap-2">
-              <Text size="small" className="text-ui-fg-subtle">
-                Status
-              </Text>
-              <Select
-                value={status}
-                onValueChange={(value) => {
-                  setStatus(value as ResearchProtocolStatus | "all")
-                  setPagination((current) => ({ ...current, pageIndex: 0 }))
-                }}
-              >
-                <Select.Trigger className="w-40">
-                  <Select.Value />
-                </Select.Trigger>
-                <Select.Content>
-                  <Select.Item value="all">All statuses</Select.Item>
-                  <Select.Item value="draft">Draft</Select.Item>
-                  <Select.Item value="published">Published</Select.Item>
-                  <Select.Item value="withdrawn">Withdrawn</Select.Item>
-                </Select.Content>
-              </Select>
-              <Select
-                value={linkStatus}
-                onValueChange={(value) => {
-                  setLinkStatus(value as typeof linkStatus)
-                  setPagination((current) => ({ ...current, pageIndex: 0 }))
-                }}
-              >
-                <Select.Trigger className="w-44"><Select.Value /></Select.Trigger>
-                <Select.Content>
-                  <Select.Item value="all">All product links</Select.Item>
-                  <Select.Item value="linked">Linked protocols</Select.Item>
-                  <Select.Item value="unlinked">Unlinked protocols</Select.Item>
-                </Select.Content>
-              </Select>
-            </div>
-          </DataTable.Toolbar>
-          <DataTable.Table />
-          <DataTable.Pagination />
-        </DataTable>
-      )}
-    </Container>
+
+        {protocolsQuery.isError ? (
+          <div className="p-6 text-center">
+            <Text size="small" className="text-ui-fg-error">
+              Research protocols could not be loaded.
+            </Text>
+          </div>
+        ) : null}
+
+        {!protocolsQuery.isLoading && filteredProtocols.length === 0 ? (
+          <EmptyState
+            icon="🔬"
+            title={rawProtocols.length === 0 ? "No research protocols yet" : "No research protocols found"}
+            description="No protocols match the selected filter. Create a new protocol or switch filters."
+            actionLabel="Show All Protocols"
+            onAction={() => setActiveFilter("all")}
+          />
+        ) : (
+          <DataTable instance={table}>
+            <DataTable.Table />
+            <DataTable.Pagination />
+          </DataTable>
+        )}
+      </Container>
+    </div>
   )
 }
 
 export const config = defineRouteConfig({
   label: "Research Protocols",
-  icon: BookOpen,
+  nested: "/products",
 })
 
 export default ResearchProtocolsPage

@@ -41,7 +41,7 @@ export async function POST(req: AuthenticatedMedusaRequest, res: MedusaResponse)
   const smartReplies = await generateSmartReplies({
     subject: conversation.subject,
     category: conversation.category,
-    customerName,
+    customerName: (customerName || undefined) as string | undefined,
     messages: messages.map((m) => ({ sender_type: m.sender_type, body: m.body })),
   })
 

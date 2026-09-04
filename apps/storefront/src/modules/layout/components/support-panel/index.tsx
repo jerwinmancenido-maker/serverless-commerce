@@ -154,6 +154,7 @@ export default function SupportPanel({
   const [isSearching, setIsSearching] = useState(false)
   const [isOnline, setIsOnline] = useState(true)
   const [nudge, setNudge] = useState(false)
+  const [, startTransition] = useTransition()
   const panelRef = useRef<HTMLElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -778,7 +779,7 @@ function MessengerInput({
   orderId: string | null
   onSendOptimistic: (msg: MessageItem) => void
   onSent: () => void
-  onError: (err: string | null) => void
+  onError: (err: string | null, clientRequestId?: string) => void
 }) {
   const [text, setText] = useState("")
   const [file, setFile] = useState<File | null>(null)

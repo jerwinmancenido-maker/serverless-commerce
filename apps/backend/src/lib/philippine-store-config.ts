@@ -65,3 +65,13 @@ export function selectPreferredRecord<T extends { name: string }>(
     records[0]
   )
 }
+
+/**
+ * Builds the official public J&T Express Philippines tracking URL.
+ * Example bill / waybill: "781234567890" -> https://www.jtexpress.ph/index/query/gzquery.html?bills=781234567890
+ */
+export function buildJntTrackingUrl(trackingNumber: string): string {
+  const sanitized = trackingNumber.trim()
+  if (!sanitized) return "https://www.jtexpress.ph/trajectoryQuery"
+  return `https://www.jtexpress.ph/index/query/gzquery.html?bills=${encodeURIComponent(sanitized)}`
+}

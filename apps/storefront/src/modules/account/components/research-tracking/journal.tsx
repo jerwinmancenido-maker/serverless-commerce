@@ -47,7 +47,6 @@ const initialState: ResearchTrackingActionState = {
   error: null,
 }
 
-const cardClass = "rounded-xl border border-ui-border-base bg-white p-5"
 const inputClass =
   "w-full rounded-lg border border-ui-border-base bg-white px-3 py-2.5 text-sm outline-none focus:border-ui-fg-base disabled:bg-ui-bg-subtle"
 
@@ -392,22 +391,66 @@ function JournalEntryCard({
   )
   useRotateConsumedKey(reviseState, rotateReviseKey)
   useRotateConsumedKey(transitionState, rotateTransitionKey)
+  const [confirmingTransition, setConfirmingTransition] = useState(false)
   const revision = entry.current_revision
+
+  const linkedMaterial = trackedMaterials.find(
+    (m) => m.tracked_material_id === revision.tracked_material_id,
+  )
+  const linkedSupply = trackedMaterials
+    .flatMap((m) => m.supplies.map((s) => ({ ...s, materialLabel: m.label })))
+    .find((s) => s.supply_id === revision.supply_id)
+  const linkedRoutine = routines.find(
+    (r) => r.routine_id === revision.routine_id,
+  )
+  const linkedLog = logs.find((l) => l.log_id === revision.confirmed_log_id)
+  const isVoided = entry.status === "voided"
 
   return (
     <article
       className={`rounded-lg border border-ui-border-base p-4 ${
-        entry.status === "voided" ? "bg-ui-bg-subtle opacity-75" : "bg-white"
+        isVoided ? "bg-ui-bg-subtle opacity-75" : "bg-white"
       }`}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold">
-            {revision.title || "Untitled research note"}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-semibold">
+              {revision.title || "Untitled research note"}
+            </h3>
+            {isVoided && (
+              <span className="rounded-md bg-ui-bg-subtle px-1.5 py-0.5 text-[10px] font-medium text-ui-fg-muted">
+                Voided
+              </span>
+            )}
+          </div>
           <p className="mt-1 text-xs text-ui-fg-muted">
             {revision.local_date} at {revision.local_time} · Revision {revision.revision_number} · {entry.status}
           </p>
+          {(linkedMaterial || linkedSupply || linkedRoutine || linkedLog) && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              {linkedMaterial && (
+                <span className="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700">
+                  Compound: {linkedMaterial.label}
+                </span>
+              )}
+              {linkedSupply && (
+                <span className="inline-flex items-center rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+                  Vial: {linkedSupply.lot_number ? `Lot ${linkedSupply.lot_number}` : `Supply ${linkedSupply.supply_id.slice(-6)}`}
+                </span>
+              )}
+              {linkedRoutine && (
+                <span className="inline-flex items-center rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700">
+                  Routine: {linkedRoutine.current_revision.label}
+                </span>
+              )}
+              {linkedLog && (
+                <span className="inline-flex items-center rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+                  Dose: {linkedLog.local_date}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-6">
@@ -498,32 +541,83 @@ function JournalEntryCard({
       )}
 
       {canMutate && (
-        <form action={transitionAction} className="mt-4 space-y-3">
-          <HiddenContext
-            countryCode={countryCode}
-            idempotencyKey={transitionKey}
-          />
-          <input
-            type="hidden"
-            name="journal_entry_id"
-            value={entry.journal_entry_id}
-          />
-          <input
-            type="hidden"
-            name="expected_revision_id"
-            value={revision.revision_id}
-          />
-          <input
-            type="hidden"
-            name="operation"
-            value={entry.status === "active" ? "void" : "restore"}
-          />
-          <Confirmation />
-          <ActionMessage state={transitionState} />
-          <SubmitButton>
-            {entry.status === "active" ? "Void entry" : "Restore entry"}
-          </SubmitButton>
-        </form>
+        <div className="mt-4 border-t border-ui-border-base pt-3">
+          {!confirmingTransition ? (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setConfirmingTransition(true)}
+                className={`text-xs underline underline-offset-2 transition-colors ${
+                  isVoided
+                    ? "text-indigo-600 hover:text-indigo-700"
+                    : "text-ui-fg-muted hover:text-rose-600"
+                }`}
+              >
+                {isVoided ? "Restore entry" : "Void entry"}
+              </button>
+            </div>
+          ) : (
+            <div
+              className={`rounded-xl border p-4 ${
+                isVoided
+                  ? "border-indigo-200 bg-indigo-50/60"
+                  : "border-rose-200 bg-rose-50/60"
+              }`}
+            >
+              <p
+                className={`text-xs font-medium ${
+                  isVoided ? "text-indigo-900" : "text-rose-800"
+                }`}
+              >
+                {isVoided
+                  ? "Restore this voided research note?"
+                  : "Void this research note? This entry will be archived."}
+              </p>
+              <form action={transitionAction} className="mt-3 space-y-3">
+                <HiddenContext
+                  countryCode={countryCode}
+                  idempotencyKey={transitionKey}
+                />
+                <input
+                  type="hidden"
+                  name="journal_entry_id"
+                  value={entry.journal_entry_id}
+                />
+                <input
+                  type="hidden"
+                  name="expected_revision_id"
+                  value={revision.revision_id}
+                />
+                <input
+                  type="hidden"
+                  name="operation"
+                  value={isVoided ? "restore" : "void"}
+                />
+                <Confirmation />
+                <ActionMessage state={transitionState} />
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setConfirmingTransition(false)}
+                    className="rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-base hover:bg-ui-bg-subtle"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className={`rounded-lg px-3 py-1.5 text-xs font-medium text-white transition-colors disabled:opacity-50 ${
+                      isVoided
+                        ? "bg-indigo-600 hover:bg-indigo-700"
+                        : "bg-rose-600 hover:bg-rose-700"
+                    }`}
+                  >
+                    {isVoided ? "Confirm Restore" : "Confirm Void"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+        </div>
       )}
     </article>
   )
@@ -555,156 +649,202 @@ export default function Journal({
   useRotateConsumedKey(createState, rotateCreateKey)
   const currentPage = Math.floor(offset / limit) + 1
   const totalPages = Math.max(1, Math.ceil(entryCount / limit))
+  const [showForm, setShowForm] = useState(false)
+  const [advanced, setAdvanced] = useState(false)
+
+  const now = new Date()
+  const localDate = now.toISOString().slice(0, 10)
+  const localTime = now.toTimeString().slice(0, 5)
+
+  const inputCls =
+    "w-full rounded-xl border border-ui-border-base bg-white px-4 py-3 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 disabled:bg-ui-bg-subtle"
 
   return (
-    <section className="mt-10" data-testid="research-journal">
-      <div className="mb-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
-          Private account record
-        </p>
-        <h2 className="mt-1 text-lg font-semibold">Journal</h2>
-        <p className="mt-1 max-w-2xl text-sm leading-6 text-ui-fg-subtle">
-          Keep private research observations in your account. Entries are
-          descriptive records only and are not medical advice or clinical
-          interpretation.
-        </p>
-      </div>
+    <section className="mt-6 space-y-6" data-testid="research-journal">
 
-      {!runtimeReady ? (
-        <div className={`${cardClass} border-sky-200 bg-sky-50 text-sm text-sky-900`}>
-          Journal records are temporarily unavailable. No changes can be made
-          until the current account data can be verified.
-        </div>
+      {/* ── New entry trigger / form ──────────────────────────────── */}
+      {!showForm ? (
+        <button
+          type="button"
+          onClick={() => setShowForm(true)}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-ui-border-base py-4 text-sm font-medium text-ui-fg-subtle transition-colors hover:border-indigo-400 hover:text-indigo-600"
+        >
+          <span className="text-lg">&#x270F;&#xFE0F;</span> Write a Journal Note
+        </button>
       ) : (
-        <div className="grid grid-cols-1 gap-5 large:grid-cols-2">
-          <div className={cardClass}>
-            <h3 className="text-base font-semibold">New journal entry</h3>
-            {!canMutate ? (
-              <p className="mt-3 text-sm leading-6 text-ui-fg-subtle">
-                Existing entries remain visible, but new entries and changes
-                are disabled while this profile is closed or its account
-                consent is outdated.
-              </p>
-            ) : (
-              <form action={createAction} className="mt-4 space-y-4">
-                <HiddenContext
-                  countryCode={countryCode}
-                  idempotencyKey={createKey}
-                />
-                <input type="hidden" name="timezone" value={timezone} />
-                <div className="grid grid-cols-1 gap-3 medium:grid-cols-2">
-                  <label className="text-sm font-medium">
-                    Local date
-                    <input
-                      className={`mt-1 ${inputClass}`}
-                      type="date"
-                      name="local_date"
-                      required
-                    />
-                  </label>
-                  <label className="text-sm font-medium">
-                    Local time
-                    <input
-                      className={`mt-1 ${inputClass}`}
-                      type="time"
-                      name="local_time"
-                      required
-                    />
-                  </label>
-                </div>
-                <label className="block text-sm font-medium">
-                  Title (optional)
-                  <input
-                    className={`mt-1 ${inputClass}`}
-                    type="text"
-                    name="title"
-                    maxLength={120}
-                  />
-                </label>
-                <label className="block text-sm font-medium">
-                  Research note
-                  <textarea
-                    className={`mt-1 resize-y ${inputClass}`}
-                    name="note"
-                    rows={7}
-                    maxLength={4000}
-                    required
-                  />
-                </label>
-                <RelationFields
-                  logs={logs}
-                  routines={routines}
-                  trackedMaterials={trackedMaterials}
-                />
-                <Confirmation />
-                <ActionMessage state={createState} />
-                <SubmitButton>Store journal entry</SubmitButton>
-              </form>
-            )}
+        <div className="overflow-hidden rounded-2xl border border-ui-border-base bg-white">
+          <div className="flex items-center justify-between border-b border-ui-border-base px-5 py-4">
+            <div>
+              <h3 className="font-semibold text-ui-fg-base">New Journal Entry</h3>
+              <p className="mt-0.5 text-xs text-ui-fg-muted">Private &#x2014; visible only to you</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setShowForm(false); setAdvanced(false) }}
+              className="flex h-7 w-7 items-center justify-center rounded-full text-ui-fg-muted hover:bg-ui-bg-subtle"
+              aria-label="Close"
+            >
+              &#x2715;
+            </button>
           </div>
 
-          <div className={cardClass}>
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h3 className="text-base font-semibold">Journal timeline</h3>
-                <p className="mt-1 text-xs text-ui-fg-muted">
-                  {entryCount} {entryCount === 1 ? "entry" : "entries"}
-                </p>
-              </div>
+          {!runtimeReady ? (
+            <div className="p-5 text-sm text-amber-700">Journal records are temporarily unavailable.</div>
+          ) : !canMutate ? (
+            <div className="p-5 text-sm leading-6 text-ui-fg-subtle">
+              New entries are disabled while this profile is closed or consent is outdated.
             </div>
-            {entries.length === 0 ? (
-              <div className="mt-5 rounded-lg bg-ui-bg-subtle p-5 text-sm leading-6 text-ui-fg-subtle">
-                No journal entries have been stored yet.
-              </div>
-            ) : (
-              <div className="mt-5 space-y-3">
-                {entries.map((entry) => (
-                  <JournalEntryCard
-                    key={entry.journal_entry_id}
-                    canMutate={canMutate}
-                    countryCode={countryCode}
-                    entry={entry}
-                    keys={submissionKeys.byEntry[entry.journal_entry_id]}
-                    logs={logs}
-                    routines={routines}
-                    trackedMaterials={trackedMaterials}
-                  />
-                ))}
-              </div>
-            )}
-            {entryCount > 0 && (
-              <nav
-                aria-label="Journal pages"
-                className="mt-4 flex items-center justify-between border-t border-ui-border-base pt-4 text-sm"
+          ) : (
+            <form action={createAction} className="space-y-4 p-5">
+              <HiddenContext countryCode={countryCode} idempotencyKey={createKey} />
+              <input type="hidden" name="timezone" value={timezone} />
+
+              <label className="block text-sm font-medium text-ui-fg-subtle">
+                Research note
+                <textarea
+                  className={`mt-1.5 resize-y ${inputCls}`}
+                  name="note"
+                  rows={5}
+                  maxLength={4000}
+                  required
+                  placeholder="What did you observe today? Side effects, how you felt, dose timing&#x2026;"
+                />
+              </label>
+
+              <button
+                type="button"
+                onClick={() => setAdvanced((v) => !v)}
+                className="text-xs font-medium text-indigo-600 underline underline-offset-2"
               >
-                {currentPage > 1 ? (
-                  <Link
-                    className="font-medium underline"
-                    href={`/${countryCode}/account/research-tracking?journalPage=${currentPage - 1}`}
-                  >
-                    Previous
-                  </Link>
-                ) : (
-                  <span />
-                )}
-                <span className="text-ui-fg-muted">
-                  Page {currentPage} of {totalPages}
-                </span>
-                {currentPage < totalPages ? (
-                  <Link
-                    className="font-medium underline"
-                    href={`/${countryCode}/account/research-tracking?journalPage=${currentPage + 1}`}
-                  >
-                    Next
-                  </Link>
-                ) : (
-                  <span />
-                )}
-              </nav>
-            )}
-          </div>
+                {advanced ? "Hide advanced fields &#x2191;" : "Add title, date &#x26; links &#x2193;"}
+              </button>
+
+              {advanced && (
+                <div className="space-y-4 rounded-xl border border-ui-border-base/60 bg-ui-bg-subtle/40 p-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className="text-sm font-medium text-ui-fg-subtle">
+                      Local date
+                      <input className={`mt-1.5 ${inputCls}`} type="date" name="local_date" defaultValue={localDate} required />
+                    </label>
+                    <label className="text-sm font-medium text-ui-fg-subtle">
+                      Local time
+                      <input className={`mt-1.5 ${inputCls}`} type="time" name="local_time" defaultValue={localTime} required />
+                    </label>
+                  </div>
+                  <label className="block text-sm font-medium text-ui-fg-subtle">
+                    Title (optional)
+                    <input className={`mt-1.5 ${inputCls}`} type="text" name="title" maxLength={120} placeholder="e.g. Week 3 check-in" />
+                  </label>
+                  <RelationFields logs={logs} routines={routines} trackedMaterials={trackedMaterials} />
+                </div>
+              )}
+
+              <Confirmation />
+              <ActionMessage state={createState} />
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-ui-fg-base py-3 text-sm font-semibold text-ui-bg-base transition-opacity hover:opacity-80"
+              >
+                Store Journal Entry
+              </button>
+            </form>
+          )}
         </div>
       )}
+
+      {/* ── Journal timeline ───────────────────────────────────────── */}
+      <div className="rounded-2xl border border-ui-border-base bg-white p-5">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">Research Journal</p>
+            <h3 className="mt-0.5 text-base font-semibold text-ui-fg-base">All entries</h3>
+          </div>
+          <span className="rounded-full bg-ui-bg-subtle px-2.5 py-0.5 text-xs text-ui-fg-muted">
+            {entryCount} {entryCount === 1 ? "entry" : "entries"}
+          </span>
+        </div>
+
+        {!runtimeReady ? (
+          <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+            Journal records are temporarily unavailable.
+          </div>
+        ) : entries.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 py-10 text-center">
+            <svg
+              className="h-12 w-12 text-indigo-300"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+              <path d="M6 6h10" />
+              <path d="M6 10h10" />
+              <path d="M6 14h6" />
+            </svg>
+            <p className="text-sm font-medium text-ui-fg-subtle">No journal entries yet.</p>
+            <p className="max-w-xs text-xs text-ui-fg-muted">
+              Use your journal to record observations, side effects, how you felt after a dose, or any research notes.
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowForm(true)}
+              className="mt-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+            >
+              Write your first entry &#x2192;
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {entries.map((entry) => (
+              <JournalEntryCard
+                key={entry.journal_entry_id}
+                canMutate={canMutate}
+                countryCode={countryCode}
+                entry={entry}
+                keys={submissionKeys.byEntry[entry.journal_entry_id]}
+                logs={logs}
+                routines={routines}
+                trackedMaterials={trackedMaterials}
+              />
+            ))}
+          </div>
+        )}
+
+        {entryCount > 0 && (
+          <nav
+            aria-label="Journal pages"
+            className="mt-5 flex items-center justify-between border-t border-ui-border-base pt-4"
+          >
+            {currentPage > 1 ? (
+              <Link
+                className="flex items-center gap-1 rounded-xl border border-ui-border-base px-3 py-1.5 text-xs font-medium hover:bg-ui-bg-subtle"
+                href={`/${countryCode}/account/research-tracking?journalPage=${currentPage - 1}`}
+              >
+                &#x2190; Previous
+              </Link>
+            ) : (
+              <span />
+            )}
+            <span className="text-xs text-ui-fg-muted">Page {currentPage} of {totalPages}</span>
+            {currentPage < totalPages ? (
+              <Link
+                className="flex items-center gap-1 rounded-xl border border-ui-border-base px-3 py-1.5 text-xs font-medium hover:bg-ui-bg-subtle"
+                href={`/${countryCode}/account/research-tracking?journalPage=${currentPage + 1}`}
+              >
+                Next &#x2192;
+              </Link>
+            ) : (
+              <span />
+            )}
+          </nav>
+        )}
+      </div>
     </section>
   )
 }
+
+

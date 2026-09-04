@@ -30,7 +30,8 @@ import type { ReactNode } from "react";
 import { sdk } from "../../lib/sdk";
 
 type ProductDescriptionEditorProps = {
-  value: string;
+  value?: string;
+  initialContent?: string;
   onChange: (value: string) => void;
 };
 
@@ -89,15 +90,17 @@ const FontSize = Extension.create({
 
 const ProductDescriptionEditor = ({
   value,
+  initialContent,
   onChange,
 }: ProductDescriptionEditorProps) => {
+  const content = value ?? initialContent ?? "";
   const imageInputId = useId();
   const onChangeRef = useRef(onChange);
   const editorElementRef = useRef<HTMLDivElement>(null);
   const [editor, setEditor] = useState<Editor | null>(null);
   const [, setEditorRevision] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  const [descriptionLength, setDescriptionLength] = useState(value.length);
+  const [descriptionLength, setDescriptionLength] = useState(content.length);
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -141,7 +144,7 @@ const ProductDescriptionEditor = ({
           },
         }),
       ],
-      content: value || "<p></p>",
+      content: content || "<p></p>",
       editorProps: {
         attributes: {
           class:
@@ -171,9 +174,9 @@ const ProductDescriptionEditor = ({
 
     const currentHtml = editor.isEmpty ? "" : editor.getHTML();
 
-    if (value !== currentHtml) {
+    if (value !== undefined && value !== currentHtml) {
       editor.commands.setContent(value || "<p></p>", { emitUpdate: false });
-      setDescriptionLength(value.length);
+      setDescriptionLength((value || "").length);
     }
   }, [editor, value]);
 

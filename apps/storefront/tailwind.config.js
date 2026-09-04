@@ -137,6 +137,24 @@ module.exports = {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(0)" },
         },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(6px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "aurora-drift": {
+          "0%, 100%": { transform: "translate(0px, 0px) scale(1)" },
+          "33%": { transform: "translate(30px, -20px) scale(1.08)" },
+          "66%": { transform: "translate(-20px, 25px) scale(0.95)" },
+        },
+        "aurora-reverse": {
+          "0%, 100%": { transform: "translate(0px, 0px) scale(1)" },
+          "33%": { transform: "translate(-25px, 20px) scale(1.05)" },
+          "66%": { transform: "translate(20px, -15px) scale(0.92)" },
+        },
+        "aurora-pulse": {
+          "0%, 100%": { opacity: "0.25", transform: "scale(1)" },
+          "50%": { opacity: "0.45", transform: "scale(1.15)" },
+        },
       },
       animation: {
         ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
@@ -152,6 +170,10 @@ module.exports = {
         enter: "enter 200ms ease-out",
         "slide-in": "slide-in 1.2s cubic-bezier(.41,.73,.51,1.02)",
         leave: "leave 150ms ease-in forwards",
+        fadeIn: "fadeIn 0.35s ease-out forwards",
+        "aurora-drift": "aurora-drift 22s ease-in-out infinite",
+        "aurora-reverse": "aurora-reverse 26s ease-in-out infinite",
+        "aurora-pulse": "aurora-pulse 9s ease-in-out infinite",
       },
     },
   },

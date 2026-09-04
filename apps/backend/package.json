@@ -30,7 +30,8 @@
     "rewards:configure": "medusa exec ./src/scripts/configure-default-rewards.ts",
     "agreement:publish-local": "medusa exec ./src/scripts/publish-local-research-agreement.ts",
     "support:configure-roles": "medusa exec ./src/scripts/configure-support-roles.ts",
-    "notifications:backfill": "medusa exec ./src/scripts/backfill-customer-notifications.ts"
+    "notifications:backfill": "medusa exec ./src/scripts/backfill-customer-notifications.ts",
+    "promo:launch": "medusa exec ./src/scripts/configure-launch-promotions.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",
@@ -57,6 +58,7 @@
     "multer": "^2.2.0",
     "react-i18next": "13.5.0",
     "react-router-dom": "7.18.2",
+    "recharts": "^3.10.1",
     "zod": "4.2.0"
   },
   "devDependencies": {

@@ -64,6 +64,15 @@ export const ManualPaymentProofReviewDrawer = ({
   const currentProof = detailsQuery.data?.manual_payment_proof ?? proof
   const settlement = detailsQuery.data?.settlement
 
+  const fileQuery = useQuery({
+    queryKey: ["manual-payment-proofs", "file", proof?.id],
+    queryFn: () =>
+      sdk.client.fetch<{ url: string }>(
+        `/admin/manual-payment-proofs/${proof?.id}/file`,
+      ),
+    enabled: open && Boolean(proof?.id),
+  })
+
   useEffect(() => {
     setRejectionReason(currentProof?.rejection_reason ?? "")
   }, [currentProof?.id, currentProof?.rejection_reason])
@@ -102,19 +111,6 @@ export const ManualPaymentProofReviewDrawer = ({
     },
   })
 
-  const fileMutation = useMutation({
-    mutationFn: () =>
-      sdk.client.fetch<{ url: string }>(
-        `/admin/manual-payment-proofs/${proof?.id}/file`,
-      ),
-    onSuccess: ({ url }) => {
-      window.open(url, "_blank", "noopener,noreferrer")
-    },
-    onError: (error) => {
-      toast.error(error.message || "Payment proof file could not be opened")
-    },
-  })
-
   const reject = () => {
     const reason = rejectionReason.trim()
 
@@ -130,9 +126,9 @@ export const ManualPaymentProofReviewDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="sm:max-w-lg">
         <Drawer.Header>
-          <Drawer.Title>Review Manual QR proof</Drawer.Title>
+          <Drawer.Title>Review Manual QR Proof</Drawer.Title>
         </Drawer.Header>
         <Drawer.Body className="flex-1 overflow-auto p-0">
           {detailsQuery.isLoading ? (
@@ -141,6 +137,7 @@ export const ManualPaymentProofReviewDrawer = ({
             </div>
           ) : currentProof ? (
             <div className="flex flex-col gap-4 px-6 py-4">
+              {/* Status Badges & Quick Link */}
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Badge color={proofStatusColor(currentProof.status)}>
@@ -150,22 +147,50 @@ export const ManualPaymentProofReviewDrawer = ({
                     Settlement: {settlement?.status || currentProof.settlement_status || "not_started"}
                   </Badge>
                 </div>
-                <Button
-                  size="small"
-                  variant="secondary"
-                  isLoading={fileMutation.isPending}
-                  onClick={() => fileMutation.mutate()}
-                >
-                  View proof file
-                </Button>
+                {fileQuery.data?.url && (
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    onClick={() => window.open(fileQuery.data!.url, "_blank", "noopener,noreferrer")}
+                  >
+                    View Original File ↗
+                  </Button>
+                )}
               </div>
+
+              {/* Embedded Proof Inspector */}
+              {fileQuery.data?.url && (
+                <div className="rounded-xl border border-ui-border-base bg-zinc-50 dark:bg-zinc-950 p-2 overflow-hidden flex flex-col items-center">
+                  <img
+                    src={fileQuery.data.url}
+                    alt="Payment Proof Slip"
+                    className="max-h-64 object-contain rounded-lg shadow-xs"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none"
+                    }}
+                  />
+                  <div className="flex items-center justify-between w-full mt-2 pt-2 border-t border-ui-border-base px-1">
+                    <span className="text-[11px] text-ui-fg-muted font-mono truncate max-w-[220px]">
+                      📄 {currentProof.file_name} · {Math.ceil(currentProof.size_bytes / 1024)} KB
+                    </span>
+                    <a
+                      href={fileQuery.data.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-ui-fg-interactive hover:underline flex items-center gap-1 font-medium"
+                    >
+                      Open Fullscreen ↗
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1">
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-subtle"
+                    className="text-ui-fg-subtle text-xs"
                   >
                     Order
                   </Text>
@@ -173,7 +198,7 @@ export const ManualPaymentProofReviewDrawer = ({
                     asChild
                     size="small"
                     variant="transparent"
-                    className="justify-start p-0"
+                    className="justify-start p-0 text-xs font-mono font-medium"
                   >
                     <Link to={`/orders/${currentProof.order_id}`}>
                       {currentProof.order_id}
@@ -184,7 +209,7 @@ export const ManualPaymentProofReviewDrawer = ({
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-subtle"
+                    className="text-ui-fg-subtle text-xs"
                   >
                     Customer
                   </Text>
@@ -192,7 +217,7 @@ export const ManualPaymentProofReviewDrawer = ({
                     asChild
                     size="small"
                     variant="transparent"
-                    className="justify-start p-0"
+                    className="justify-start p-0 text-xs font-mono font-medium"
                   >
                     <Link to={`/customers/${currentProof.customer_id}`}>
                       {currentProof.customer_id}
@@ -203,11 +228,11 @@ export const ManualPaymentProofReviewDrawer = ({
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-subtle"
+                    className="text-ui-fg-subtle text-xs"
                   >
                     Revision
                   </Text>
-                  <Text size="small" leading="compact" weight="plus">
+                  <Text size="small" leading="compact" weight="plus" className="text-xs">
                     {currentProof.revision}
                   </Text>
                 </div>
@@ -215,70 +240,56 @@ export const ManualPaymentProofReviewDrawer = ({
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-subtle"
+                    className="text-ui-fg-subtle text-xs"
                   >
                     Submitted
                   </Text>
-                  <Text size="small" leading="compact" weight="plus">
+                  <Text size="small" leading="compact" weight="plus" className="text-xs">
                     {formatDate(currentProof.submitted_at)}
                   </Text>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <Text
-                  size="small"
-                  leading="compact"
-                  className="text-ui-fg-subtle"
-                >
-                  File
-                </Text>
-                <Text size="small" leading="compact" weight="plus">
-                  {currentProof.file_name} ·{" "}
-                  {Math.ceil(currentProof.size_bytes / 1024)} KB
-                </Text>
-              </div>
-
               {settlement?.payment_id ? (
                 <div className="rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3 space-y-1">
-                  <Text size="xsmall" className="text-ui-fg-muted uppercase font-semibold tracking-wider">
+                  <Text size="xsmall" className="text-ui-fg-muted uppercase font-semibold tracking-wider text-[10px]">
                     Medusa Financial State
                   </Text>
-                  <div className="text-xs text-ui-fg-base">
-                    <div>Payment ID: <span className="font-mono">{settlement.payment_id}</span></div>
+                  <div className="text-xs text-ui-fg-base space-y-0.5">
+                    <div>Payment ID: <span className="font-mono text-ui-fg-subtle">{settlement.payment_id}</span></div>
                     {settlement.capture_id ? (
-                      <div>Capture ID: <span className="font-mono">{settlement.capture_id}</span></div>
+                      <div>Capture ID: <span className="font-mono text-ui-fg-subtle">{settlement.capture_id}</span></div>
                     ) : null}
                   </div>
                 </div>
               ) : null}
 
               <div className="flex flex-col gap-2">
-                <Text size="small" leading="compact" weight="plus">
-                  Audit history
+                <Text size="small" leading="compact" weight="plus" className="text-xs font-semibold uppercase tracking-wider text-ui-fg-muted">
+                  Audit History
                 </Text>
                 {detailsQuery.data?.events.map((event) => (
                   <div
                     key={event.id}
-                    className="bg-ui-bg-component shadow-elevation-card-rest rounded-md px-4 py-3"
+                    className="bg-ui-bg-subtle border border-ui-border-base rounded-lg px-3 py-2 text-xs"
                   >
-                    <Text size="small" leading="compact" weight="plus">
+                    <Text size="small" leading="compact" weight="plus" className="text-xs">
                       {event.event_type} · revision {event.revision}
                     </Text>
                     <Text
-                      size="small"
+                      size="xsmall"
                       leading="compact"
-                      className="text-ui-fg-subtle"
+                      className="text-ui-fg-subtle text-[11px]"
                     >
                       {formatDate(event.occurred_at)} · {event.actor_id}
                     </Text>
                     {event.reason ? (
                       <Text
-                        size="small"
+                        size="xsmall"
                         leading="compact"
-                        className="text-ui-fg-subtle"
+                        className="text-ui-fg-muted text-[11px] mt-1 italic"
                       >
-                        {event.reason}
+                        "{event.reason}"
                       </Text>
                     ) : null}
                   </div>
@@ -286,22 +297,24 @@ export const ManualPaymentProofReviewDrawer = ({
               </div>
 
               {currentProof.status === "pending" ? (
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="manual-payment-rejection-reason">
-                    Rejection reason
+                <div className="flex flex-col gap-2 pt-2 border-t border-ui-border-base">
+                  <Label htmlFor="manual-payment-rejection-reason" className="text-xs font-semibold">
+                    Rejection Reason
                   </Label>
                   <Textarea
                     id="manual-payment-rejection-reason"
                     value={rejectionReason}
                     onChange={(event) => setRejectionReason(event.target.value)}
-                    placeholder="Required only when rejecting"
+                    placeholder="Required only when rejecting proof slip…"
+                    className="text-xs resize-none"
+                    rows={2}
                   />
                   <Text
-                    size="small"
+                    size="xsmall"
                     leading="compact"
-                    className="text-ui-fg-subtle"
+                    className="text-ui-fg-subtle text-[11px]"
                   >
-                    Approving and capturing triggers financial authorization and capture for the full order amount in Medusa.
+                    Approving triggers native financial authorization and capture for the full order amount in Medusa.
                   </Text>
                 </div>
               ) : null}
@@ -323,6 +336,7 @@ export const ManualPaymentProofReviewDrawer = ({
                 size="small"
                 variant="secondary"
                 disabled={isPendingAction}
+                className="h-8 text-xs"
               >
                 Close
               </Button>
@@ -335,8 +349,9 @@ export const ManualPaymentProofReviewDrawer = ({
                   disabled={isPendingAction}
                   isLoading={rejectMutation.isPending}
                   onClick={reject}
+                  className="h-8 text-xs"
                 >
-                  Reject proof
+                  Reject Proof
                 </Button>
                 <Button
                   size="small"
@@ -344,8 +359,9 @@ export const ManualPaymentProofReviewDrawer = ({
                   isLoading={settleMutation.isPending}
                   disabled={isPendingAction}
                   onClick={() => settleMutation.mutate()}
+                  className="h-8 text-xs"
                 >
-                  Approve and capture payment
+                  Approve and Capture Payment
                 </Button>
               </>
             ) : null}

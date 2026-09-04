@@ -24,7 +24,7 @@ export default async function Checkout(props: {
   const customer = await retrieveCustomer()
 
   if (storeConfig.customerAccountsRequired && !customer) {
-    redirect(`/${countryCode}/account`)
+    redirect(`/${countryCode}/account?redirect=checkout`)
   }
 
   return (

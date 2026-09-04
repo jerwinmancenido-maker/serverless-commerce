@@ -64,3 +64,9 @@ export const AdminGetBuildableProducts = z.strictObject({
 export type AdminGetBuildableProductsType = z.infer<
   typeof AdminGetBuildableProducts
 >
+
+export const AdminGetReorderAlerts = z.strictObject({
+  location_id: z.string().trim().min(1),
+})
+
+export type AdminGetReorderAlertsType = z.infer<typeof AdminGetReorderAlerts>

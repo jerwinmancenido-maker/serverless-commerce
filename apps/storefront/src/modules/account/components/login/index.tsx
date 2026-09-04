@@ -3,6 +3,7 @@ import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import Input from "@modules/common/components/input"
+import { useSearchParams } from "next/navigation"
 import { useActionState } from "react"
 
 type Props = {
@@ -11,12 +12,27 @@ type Props = {
 
 const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useActionState(login, null)
+  const searchParams = useSearchParams()
+  const isCheckoutRedirect = searchParams.get("redirect") === "checkout"
 
   return (
     <div
       className="max-w-sm w-full flex flex-col items-center"
       data-testid="login-page"
     >
+      {isCheckoutRedirect && (
+        <div
+          className="w-full mb-6 rounded-rounded border border-amber-300 bg-amber-50 p-4 text-center text-small-regular text-amber-900"
+          data-testid="checkout-login-notice"
+        >
+          <p className="font-semibold text-amber-950 mb-1">
+            🔒 Account Required for Clinical Checkout
+          </p>
+          <p>
+            Please sign in or create an account to verify formulation protocols and complete your compound order.
+          </p>
+        </div>
+      )}
       <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
       <p className="text-center text-base-regular text-ui-fg-base mb-8">
         Sign in to access an enhanced shopping experience.

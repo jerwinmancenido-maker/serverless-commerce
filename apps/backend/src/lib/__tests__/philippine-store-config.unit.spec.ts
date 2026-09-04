@@ -73,4 +73,14 @@ describe("Philippine store configuration", () => {
       ])?.id
     ).toBe("legacy")
   })
+
+  it("builds the official J&T Philippines tracking URL", () => {
+    const { buildJntTrackingUrl } = require("../philippine-store-config")
+    expect(buildJntTrackingUrl("781234567890")).toBe(
+      "https://www.jtexpress.ph/index/query/gzquery.html?bills=781234567890"
+    )
+    expect(buildJntTrackingUrl("  ")).toBe(
+      "https://www.jtexpress.ph/trajectoryQuery"
+    )
+  })
 })

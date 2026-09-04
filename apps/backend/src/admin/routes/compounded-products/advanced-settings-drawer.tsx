@@ -74,11 +74,11 @@ export const AdvancedSettingsDrawer = ({
   onOpenChange: (open: boolean) => void
   handle: string
   onHandleChange: (value: string) => void
-  typeId: string
-  onTypeChange: (value: string) => void
+  typeId?: string
+  onTypeChange?: (value: string) => void
   collectionId: string
   onCollectionChange: (value: string) => void
-  productTypes: ReferenceItem[]
+  productTypes?: ReferenceItem[]
   collections: ReferenceItem[]
   salesChannels: ReferenceItem[]
   selectedSalesChannelIds: string[]
@@ -111,24 +111,6 @@ export const AdvancedSettingsDrawer = ({
             placeholder="generated-from-product-title"
           />
         </div>
-
-        {productTypes.length ? (
-          <div className="flex flex-col gap-y-2">
-            <Label>Product type</Label>
-            <Select value={typeId || undefined} onValueChange={onTypeChange}>
-              <Select.Trigger>
-                <Select.Value placeholder="No product type" />
-              </Select.Trigger>
-              <Select.Content>
-                {productTypes.map((item) => (
-                  <Select.Item key={item.id} value={item.id}>
-                    {item.label}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-          </div>
-        ) : null}
 
         {collections.length ? (
           <div className="flex flex-col gap-y-2">

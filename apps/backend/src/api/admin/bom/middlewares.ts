@@ -7,6 +7,7 @@ import {
 import {
   AdminGetBuildableProducts,
   AdminGetBomAvailability,
+  AdminGetReorderAlerts,
   AdminSetComponentProfile,
 } from "./validators"
 
@@ -28,6 +29,13 @@ export const adminBomMiddlewares: MiddlewareRoute[] = [
     methods: ["GET"],
     middlewares: [
       validateAndTransformQuery(AdminGetBuildableProducts, {}),
+    ],
+  },
+  {
+    matcher: "/admin/bom/reorder-alerts",
+    methods: ["GET"],
+    middlewares: [
+      validateAndTransformQuery(AdminGetReorderAlerts, {}),
     ],
   },
 ]

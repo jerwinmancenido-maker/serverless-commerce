@@ -41,7 +41,19 @@ const NewResearchProtocolPage = () => {
             Create a versioned laboratory guide now. You can link compatible products later.
           </Text>
         </div>
-        <Button asChild size="small" variant="secondary"><Link to="/research-protocols">Cancel</Link></Button>
+        <div className="flex items-center gap-x-2">
+          <Button asChild size="small" variant="secondary">
+            <Link to="/research-protocols">Cancel</Link>
+          </Button>
+          <Button
+            size="small"
+            isLoading={createMutation.isPending}
+            disabled={!protocolKey.trim() || !form.title.trim()}
+            onClick={() => createMutation.mutate()}
+          >
+            Create draft
+          </Button>
+        </div>
       </Container>
       <Container className="flex flex-col gap-y-6 px-6 py-4">
         <div className="flex flex-col gap-y-2">
@@ -52,16 +64,6 @@ const NewResearchProtocolPage = () => {
           </Text>
         </div>
         <ProtocolEditorFields value={form} onChange={setForm} />
-        <div className="flex justify-end">
-          <Button
-            size="small"
-            isLoading={createMutation.isPending}
-            disabled={!protocolKey.trim() || !form.title.trim()}
-            onClick={() => createMutation.mutate()}
-          >
-            Create draft
-          </Button>
-        </div>
       </Container>
     </div>
   )

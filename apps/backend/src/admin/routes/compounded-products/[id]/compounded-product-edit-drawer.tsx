@@ -7,6 +7,7 @@ import {
   Label,
   Select,
   Text,
+  Textarea,
   toast,
 } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
@@ -95,7 +96,7 @@ export const CompoundedProductEditDrawer = ({
         title: title.trim(),
         subtitle: subtitle.trim() || undefined,
         description: description.trim() || undefined,
-        category_ids: selectedCategoryIds,
+        categories: selectedCategoryIds.map((id) => ({ id })),
       })
 
       // 2. Update Compounded Format if changed
@@ -121,7 +122,7 @@ export const CompoundedProductEditDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="max-w-2xl overflow-y-auto">
+      <Drawer.Content className="max-w-4xl overflow-y-auto">
         <Drawer.Header>
           <Heading level="h2">Edit Compounded Product</Heading>
           <Text size="small" className="text-ui-fg-subtle">
@@ -142,11 +143,13 @@ export const CompoundedProductEditDrawer = ({
 
           <div className="flex flex-col gap-y-1.5">
             <Label htmlFor="edit-product-subtitle">Subtitle</Label>
-            <Input
+            <Textarea
               id="edit-product-subtitle"
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="e.g. Analytical grade pentadecapeptide"
+              className="resize-none"
+              rows={3}
             />
           </div>
 

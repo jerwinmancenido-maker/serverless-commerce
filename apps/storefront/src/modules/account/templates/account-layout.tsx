@@ -20,8 +20,8 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({
 }) => {
   return (
     <div className="flex-1 small:py-12" data-testid="account-page">
-      <div className="flex-1 content-container h-full max-w-5xl mx-auto bg-white flex flex-col">
-        <div className="grid grid-cols-1  small:grid-cols-[240px_1fr] py-12">
+      <div className="flex-1 account-container h-full mx-auto bg-white flex flex-col">
+        <div className="grid grid-cols-1 gap-x-8 small:grid-cols-[240px_1fr] lg:gap-x-12 xl:gap-x-16 py-12">
           <div>
             {customer && (
               <AccountNav

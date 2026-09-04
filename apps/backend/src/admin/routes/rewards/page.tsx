@@ -1,4 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { Sparkles } from "@medusajs/icons"
 import { Button, Container, Heading, Input, Label, Select, Text, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
@@ -195,6 +196,9 @@ const RewardsAdminPage = () => {
   )
 }
 
-export const config = defineRouteConfig({ label: "Rewards" })
+export const config = defineRouteConfig({
+  label: "Rewards & Referrals",
+  nested: "/promotions",
+})
 
 export default RewardsAdminPage

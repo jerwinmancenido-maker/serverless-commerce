@@ -260,6 +260,4 @@ const ResearchHubSettingsPage = () => {
   )
 }
 
-export const config = defineRouteConfig({ label: "Research Hub settings" })
-
 export default ResearchHubSettingsPage

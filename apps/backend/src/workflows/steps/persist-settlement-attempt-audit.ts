@@ -89,6 +89,9 @@ export const persistSettlementAttemptAuditStep = createStep(
   },
   // Compensation: write a settlement_failed audit event (never delete)
   async (compensationInput, { container }) => {
+    if (!compensationInput) {
+      return
+    }
     const service = container.resolve<ManualPaymentModuleService>(MANUAL_PAYMENT_MODULE)
     const now = new Date()
 

@@ -11,13 +11,16 @@ export const acquireSettlementLockStep = createStep(
     const lockingModule = container.resolve(Modules.LOCKING)
     const lockKey = `manual-payment-settlement:${input.paymentSessionId}`
 
-    await lockingModule.acquire(lockKey, { timeout: 10_000 })
+    await lockingModule.acquire(lockKey, { expire: 10 })
 
     return new StepResponse({ lockKey }, { lockKey })
   },
-  async ({ lockKey }, { container }) => {
+  async (compensationData, { container }) => {
+    if (!compensationData?.lockKey) {
+      return
+    }
     const lockingModule = container.resolve(Modules.LOCKING)
-    await lockingModule.release(lockKey).catch(() => {
+    await lockingModule.release(compensationData.lockKey).catch(() => {
       // Best-effort release — lock will expire naturally
     })
   },

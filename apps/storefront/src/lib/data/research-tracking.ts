@@ -1379,6 +1379,10 @@ export async function confirmResearchRoutineLogAction(
     return { success: false, error: "Review and confirm this private record." }
   }
 
+  const shouldRefresh =
+    formData.get("refresh_page") === "true" ||
+    formData.get("refresh_page") === "on"
+
   return runResearchMutation(
     "/store/customers/me/research-tracking/logs",
     {
@@ -1386,7 +1390,7 @@ export async function confirmResearchRoutineLogAction(
       preview_token: String(formData.get("preview_token") || ""),
     },
     formData,
-    false,
+    shouldRefresh,
   )
 }
 

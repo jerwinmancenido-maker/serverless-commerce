@@ -171,120 +171,149 @@ export default function MyProtocols({
   trackedMaterials,
 }: MyProtocolsProps) {
   return (
-    <section className="mt-10" data-testid="my-protocols">
-      <div className="mb-4 flex items-end justify-between gap-4">
+    <section className="mt-8" data-testid="my-protocols">
+      <div className="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold">My Protocols</h2>
-          <p className="mt-1 text-sm text-ui-fg-subtle">
-            Exact protocol revisions preserved from your eligible orders.
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
+            Protocol Revisions
+          </p>
+          <h2 className="mt-1 text-xl font-bold tracking-tight text-ui-fg-base">
+            My Protocols
+          </h2>
+          <p className="mt-0.5 text-sm text-ui-fg-subtle">
+            Exact protocol revisions preserved from your verified orders.
           </p>
         </div>
-        <span className="rounded-full bg-ui-bg-subtle px-3 py-1 text-xs font-medium">
-          {protocols.length} available
+        <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-ui-border-base bg-white px-3 py-1 text-xs font-medium text-ui-fg-subtle shadow-2xs">
+          <span className="size-1.5 rounded-full bg-emerald-500" />
+          {protocols.length} {protocols.length === 1 ? "protocol" : "protocols"} available
         </span>
       </div>
 
       {!runtimeReady ? (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-5 text-sm text-amber-900">
           Protocol access could not be verified right now. Please try again later.
         </div>
       ) : protocols.length ? (
-        <div className="grid gap-4 large:grid-cols-2">
-          {protocols.map((protocol) => (
-            <article
-              key={protocol.profile_access_id}
-              className="overflow-hidden rounded-xl border border-ui-border-base bg-white"
-            >
-              <div className="flex gap-4 p-5">
-                <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ui-bg-subtle">
-                  {protocol.product.thumbnail ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={protocol.product.thumbnail}
-                      alt=""
-                      className="size-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-xs text-ui-fg-muted">No image</span>
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-base font-semibold">
-                    {protocol.protocol_title}
-                  </p>
-                  <p className="mt-1 text-sm text-ui-fg-subtle">
-                    {protocol.product.title}
-                    {protocol.variant?.title ? ` · ${protocol.variant.title}` : ""}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full bg-ui-bg-subtle px-2.5 py-1">
-                      Preserved revision {protocol.preserved_revision}
-                    </span>
-                    {protocol.has_newer_revision ? (
-                      <span className="rounded-full bg-blue-50 px-2.5 py-1 text-blue-700">
-                        Revision {protocol.current_revision} available
-                      </span>
+        <div className="grid gap-5 large:grid-cols-2">
+          {protocols.map((protocol) => {
+            const isCurrent = !protocol.has_newer_revision
+
+            return (
+              <article
+                key={protocol.profile_access_id}
+                className={`group overflow-hidden rounded-2xl border border-ui-border-base bg-white shadow-xs transition-all duration-200 hover:shadow-md ${
+                  isCurrent ? "border-l-4 border-l-emerald-500" : "border-l-4 border-l-blue-500"
+                }`}
+              >
+                <div className="flex gap-4 p-5">
+                  <div className="flex size-18 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-ui-bg-subtle shadow-2xs">
+                    {protocol.product.thumbnail ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={protocol.product.thumbnail}
+                        alt=""
+                        className="size-full object-cover"
+                      />
                     ) : (
-                      <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-emerald-700">
-                        Current
+                      <span
+                        className="flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-lg font-bold tracking-tight text-white shadow-xs"
+                        aria-hidden="true"
+                      >
+                        {(protocol.protocol_title || protocol.product.title || "").slice(0, 2).toUpperCase()}
                       </span>
                     )}
                   </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base font-bold tracking-tight text-ui-fg-base">
+                      {protocol.protocol_title}
+                    </p>
+                    <p className="mt-1 text-sm text-ui-fg-subtle line-clamp-1">
+                      {protocol.product.title}
+                      {protocol.variant?.title ? ` · ${protocol.variant.title}` : ""}
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                      <span className="rounded-md border border-ui-border-base/70 bg-ui-bg-subtle px-2 py-0.5 font-medium text-ui-fg-subtle">
+                        Preserved rev. {protocol.preserved_revision}
+                      </span>
+                      {protocol.has_newer_revision ? (
+                        <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-blue-700">
+                          Rev. {protocol.current_revision} available
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
+                          <span className="size-1.5 rounded-full bg-emerald-500" />
+                          Current
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="border-t border-ui-border-base px-5 py-4">
-                <p className="text-xs text-ui-fg-muted">
-                  Order {protocol.order.display_id} · {new Date(protocol.order.created_at).toLocaleDateString("en-PH")}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="border-t border-ui-border-base bg-ui-bg-subtle/30 px-5 py-4">
+                  <p className="text-xs font-medium text-ui-fg-muted">
+                    Order {protocol.order.display_id} · {new Date(protocol.order.created_at).toLocaleDateString("en-PH", { year: "numeric", month: "short", day: "numeric" })}
+                  </p>
+                  {/* Primary action */}
                   {protocol.access_token ? (
                     <LocalizedClientLink
                       href={`/research-protocol-access/${protocol.access_token}`}
-                      className="rounded-lg bg-ui-fg-base px-3 py-2 text-sm font-medium text-ui-bg-base"
+                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-ui-fg-base px-4 py-2.5 text-sm font-semibold text-ui-bg-base shadow-xs transition-colors hover:bg-ui-fg-subtle"
                     >
                       View preserved protocol
+                      <span aria-hidden="true">→</span>
                     </LocalizedClientLink>
                   ) : null}
+
+                  {/* Secondary action */}
                   <LocalizedClientLink
                     href={`/account/research-hub/my-protocols/${protocol.protocol_handle}`}
-                    className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
+                    className="mt-2 flex w-full items-center justify-center rounded-xl border border-ui-border-base bg-white px-4 py-2 text-sm font-medium text-ui-fg-base shadow-2xs transition-colors hover:bg-ui-bg-subtle"
                   >
                     View current protocol
                   </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/account/community"
-                    className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
-                  >
-                    Open community
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href={`/account/support?protocolSeriesId=${encodeURIComponent(protocol.protocol_series_id)}`}
-                    className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
-                  >
-                    Protocol support
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href={`/account/orders/details/${protocol.order.id}`}
-                    className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
-                  >
-                    View order
-                  </LocalizedClientLink>
+
+                  {/* Tertiary actions — collapsed by default */}
+                  <details className="mt-2.5 group">
+                    <summary className="cursor-pointer list-none text-xs font-medium text-ui-fg-subtle hover:text-ui-fg-base hover:underline">
+                      More options ▾
+                    </summary>
+                    <div className="mt-2.5 flex flex-wrap gap-2">
+                      <LocalizedClientLink
+                        href="/account/community"
+                        className="rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-base shadow-2xs hover:bg-ui-bg-subtle"
+                      >
+                        Community
+                      </LocalizedClientLink>
+                      <LocalizedClientLink
+                        href={`/account/support?protocolSeriesId=${encodeURIComponent(protocol.protocol_series_id)}`}
+                        className="rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-base shadow-2xs hover:bg-ui-bg-subtle"
+                      >
+                        Protocol support
+                      </LocalizedClientLink>
+                      <LocalizedClientLink
+                        href={`/account/orders/details/${protocol.order.id}`}
+                        className="rounded-lg border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-base shadow-2xs hover:bg-ui-bg-subtle"
+                      >
+                        View order
+                      </LocalizedClientLink>
+                    </div>
+                  </details>
+                  <div className="mt-4">
+                    <ProtocolRoutineForm
+                      protocol={protocol}
+                      countryCode={countryCode}
+                      submissionKey={submissionKeys[protocol.profile_access_id] ?? ""}
+                      trackedMaterials={trackedMaterials}
+                    />
+                  </div>
                 </div>
-                <div className="mt-4">
-                  <ProtocolRoutineForm
-                    protocol={protocol}
-                    countryCode={countryCode}
-                    submissionKey={submissionKeys[protocol.profile_access_id] ?? ""}
-                    trackedMaterials={trackedMaterials}
-                  />
-                </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            )
+          })}
         </div>
       ) : (
-        <div className="rounded-xl border border-ui-border-base bg-white p-5">
-          <p className="text-sm font-medium">No protocols linked yet</p>
+        <div className="rounded-2xl border border-ui-border-base bg-white p-8 text-center shadow-xs">
+          <p className="text-base font-semibold text-ui-fg-base">No protocols linked yet</p>
           <p className="mt-1 text-sm text-ui-fg-subtle">
             Eligible purchases will appear here with their preserved revision.
           </p>

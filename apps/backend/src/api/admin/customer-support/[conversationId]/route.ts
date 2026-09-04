@@ -59,7 +59,7 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
     ? [rawCustomer.first_name, rawCustomer.last_name].filter(Boolean).join(" ") || rawCustomer.email
     : "Customer"
 
-  const totalSpent = (orders || []).reduce((acc: number, o: any) => acc + (Number(o.total) || 0), 0)
+  const totalSpent = ((orders as any[]) || []).reduce((acc: number, o: any) => acc + (Number(o.total) || 0), 0)
 
   res.setHeader("Cache-Control", "private, no-store")
   res.json({
@@ -71,7 +71,7 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
           name: customerName,
           email: rawCustomer.email,
           created_at: rawCustomer.created_at,
-          orders_count: (orders || []).length,
+          orders_count: ((orders as any[]) || []).length,
           total_spent: totalSpent,
           recent_orders: orders || [],
         }
@@ -102,16 +102,16 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
       to_status: e.to_status,
       actor_type: e.actor_type,
       actor_id: e.actor_id,
-      actor_name: e.actor_type === "staff" ? (staffMap[e.actor_id] || "Staff") : customerName,
+      actor_name: e.actor_type === "staff" ? (e.actor_id ? staffMap[e.actor_id] || "Staff" : "Staff") : customerName,
       reason: e.reason,
       occurred_at: e.occurred_at,
     })),
     assignments: assignments.map((a) => ({
       id: a.id,
       assigned_to_actor_id: a.assigned_to_actor_id,
-      assigned_to_name: staffMap[a.assigned_to_actor_id] || "Staff",
+      assigned_to_name: a.assigned_to_actor_id ? staffMap[a.assigned_to_actor_id] || "Staff" : "Staff",
       assigned_by_actor_id: a.assigned_by_actor_id,
-      assigned_by_name: staffMap[a.assigned_by_actor_id] || "Staff",
+      assigned_by_name: a.assigned_by_actor_id ? staffMap[a.assigned_by_actor_id] || "Staff" : "Staff",
       assigned_at: a.assigned_at,
     })),
     attachments: attachments.map((item) => ({

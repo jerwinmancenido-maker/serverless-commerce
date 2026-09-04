@@ -4,19 +4,18 @@ import { join } from "node:path"
 const routeRoot = join(__dirname, "..")
 
 describe("combination inventory workflow", () => {
-  it("keeps inventory contents inside the Step 4 combinations table", () => {
+  it("streamlines Step 4 combinations table by focusing on pricing, photos, and SKUs", () => {
     const source = readFileSync(join(routeRoot, "page.tsx"), "utf8")
 
     expect(source).toContain('eyebrow="Step 4"')
-    expect(source).toContain(
-      "<Table.HeaderCell>Inventory contents</Table.HeaderCell>",
-    )
-    expect(source).toContain("<CombinationInventoryDrawer")
+    expect(source).toContain("<Table.HeaderCell>Price</Table.HeaderCell>")
+    expect(source).toContain("<Table.HeaderCell>SKU</Table.HeaderCell>")
     expect(source).not.toContain('title="Inventory recipes"')
     expect(source).not.toContain('eyebrow="Step 5"')
     expect(source).not.toContain(
       "Every product combination needs one finished-product inventory item.",
     )
+    expect(source).not.toContain("Finished product required")
   })
 
   it("uses merchant language and an inline inventory picker", () => {
@@ -49,9 +48,6 @@ describe("combination inventory workflow", () => {
 
     expect(source).toContain("completeRowsForAvailability")
     expect(source).toContain("matrix_rows: completeAvailabilityRows.map")
-    expect(source).toContain(
-      "Stock preview is temporarily unavailable for configured",
-    )
     expect(source).not.toContain("configuredAvailabilityQuery.refetch()")
   })
 })

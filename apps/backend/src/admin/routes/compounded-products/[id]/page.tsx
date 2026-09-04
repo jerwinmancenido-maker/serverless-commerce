@@ -1,4 +1,14 @@
-import { ChevronDownMini, ChevronUpMini, PencilSquare, Spinner } from "@medusajs/icons"
+import {
+  ArrowPath,
+  ArrowUpRightOnBox,
+  CheckCircle,
+  ChevronDownMini,
+  ChevronUpMini,
+  EllipsisHorizontal,
+  PencilSquare,
+  Spinner,
+  Trash,
+} from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -6,11 +16,16 @@ import {
   Container,
   Copy,
   Drawer,
+  DropdownMenu,
   Heading,
+  IconButton,
   Input,
   Label,
+  Prompt,
   Select,
+  Tabs,
   Text,
+  Textarea,
   toast,
 } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -18,7 +33,12 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { sdk } from "../../../lib/sdk"
-import { CompoundedProductEditDrawer } from "./compounded-product-edit-drawer"
+import { AdminCard } from "../../../components/admin-card"
+import { PageHeader } from "../../../components/page-header"
+import { ProductOpsSidebar } from "./product-ops-sidebar"
+import { VariantBomMatrix } from "./variant-bom-matrix"
+import ProductDescriptionEditor from "../product-description-editor"
+import { loadAllAdminPages } from "../../../lib/load-all-pages"
 import type {
   ComponentProfile,
   ComponentProfilesResponse,
@@ -147,8 +167,22 @@ const CompoundedProductReadinessPage = () => {
     queryFn: () =>
       sdk.admin.product.retrieve(id, {
         fields:
-          "+metadata,+categories.*,+images.*,+sales_channels.*,+variants.*,+variants.prices.*,+variants.options.*",
+          "+metadata,+categories.*,+images.*,+sales_channels.*,+variants.*,+variants.prices.*,+variants.options.*,+options.*",
       }),
+  })
+  const categoriesQuery = useQuery({
+    queryKey: ["product-categories", "compounded-product-page"],
+    queryFn: () =>
+      loadAllAdminPages({
+        loadPage: async (limit, offset) => {
+          const page = await sdk.admin.productCategory.list({ limit, offset })
+          return { items: page.product_categories, count: page.count }
+        },
+      }),
+  })
+  const salesChannelsQuery = useQuery({
+    queryKey: ["sales-channels", "compounded-product-page"],
+    queryFn: () => sdk.admin.salesChannel.list({ limit: 50 }),
   })
   const compoundFormatsQuery = useQuery({
     queryKey: ["compound-product-formats", "merchant-product-details"],
@@ -258,7 +292,7 @@ const CompoundedProductReadinessPage = () => {
     let highestStock = 0
 
     availabilityQuery.data.variants.forEach((v) => {
-      if (v.status === "calculated") {
+      if (v.status === "calculated" && v.calculated_stock !== null) {
         if (v.calculated_stock < lowestStock) {
           lowestStock = v.calculated_stock
           limitingTitle = v.limiting_components?.[0]?.inventory_item_title || null
@@ -289,46 +323,26 @@ const CompoundedProductReadinessPage = () => {
     }
   }, [selectedStockLocationId, stockLocationsQuery.data?.stock_locations])
 
-  const [editDrawerOpen, setEditDrawerOpen] = useState(false)
   const [editingPriceVariantId, setEditingPriceVariantId] = useState<string | null>(null)
   const [editingPriceAmount, setEditingPriceAmount] = useState("")
   const [isSavingPrice, setIsSavingPrice] = useState(false)
 
-  const quickPublishMutation = useMutation({
-    mutationFn: (action: "publish" | "withdraw") =>
-      sdk.client.fetch<PublicationChangeResponse>(
-        `/admin/compounded-product/products/${id}/publication`,
-        {
-          method: "POST",
-          body: {
-            action,
-            reason:
-              action === "publish"
-                ? "Published from product details header"
-                : "Withdrawn to draft from product details header",
-          },
-        },
-      ),
-    onSuccess: ({ accepted, reasons }) => {
-      if (accepted) {
-        queryClient.invalidateQueries({
-          queryKey: ["compounded-product-native-product", id],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ["compounded-product-readiness", id],
-        })
-        toast.success("Product publication status updated")
-      } else {
-        toast.error(
-          reasons?.join(", ") || "Failed to update publication status",
-        )
-      }
-    },
-    onError: (error) =>
-      toast.error(
-        messageFromError(error, "Failed to update publication status"),
-      ),
-  })
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleDeleteProduct = async () => {
+    if (!product) return
+    setIsDeleting(true)
+    try {
+      await sdk.admin.product.delete(product.id)
+      toast.success("Product deleted successfully")
+      navigate("/compounded-products")
+    } catch (err) {
+      toast.error(messageFromError(err, "Failed to delete product"))
+      setIsDeleting(false)
+      setIsDeleteDialogOpen(false)
+    }
+  }
 
   const handleSavePrice = async (variantId: string) => {
     const numericAmount = parseFloat(editingPriceAmount)
@@ -355,6 +369,188 @@ const CompoundedProductReadinessPage = () => {
       toast.error(messageFromError(err, "Failed to update price"))
     } finally {
       setIsSavingPrice(false)
+    }
+  }
+
+  // Active Workspace Tab
+  const [activeTab, setActiveTab] = useState("variants")
+
+  // In-Page Direct Editing: Metadata
+  const [isEditingMetadata, setIsEditingMetadata] = useState(false)
+  const [editTitle, setEditTitle] = useState("")
+  const [editSubtitle, setEditSubtitle] = useState("")
+  const [editHandle, setEditHandle] = useState("")
+  const [editFormatId, setEditFormatId] = useState("")
+  const [editCategoryIds, setEditCategoryIds] = useState<string[]>([])
+  const [editSalesChannelIds, setEditSalesChannelIds] = useState<string[]>([])
+  const [isSavingMetadata, setIsSavingMetadata] = useState(false)
+
+  // In-Page Direct Editing: Product Description
+  const [isEditingDescription, setIsEditingDescription] = useState(false)
+  const [liveDescription, setLiveDescription] = useState("")
+  const [isSavingDescription, setIsSavingDescription] = useState(false)
+
+  const startEditingMetadata = () => {
+    if (!product) return
+    setEditTitle(product.title || "")
+    setEditSubtitle(product.subtitle || "")
+    setEditHandle(product.handle || "")
+    setEditFormatId(readiness?.registration?.compound_format_id || "")
+    setEditCategoryIds((product.categories || []).map((c) => c.id))
+    setEditSalesChannelIds((product.sales_channels || []).map((sc) => sc.id))
+    setIsEditingMetadata(true)
+  }
+
+  const handleToggleCategory = (catId: string) => {
+    setEditCategoryIds((current) =>
+      current.includes(catId)
+        ? current.filter((id) => id !== catId)
+        : [...current, catId],
+    )
+  }
+
+  const handleToggleSalesChannel = (channelId: string) => {
+    setEditSalesChannelIds((current) =>
+      current.includes(channelId)
+        ? current.filter((id) => id !== channelId)
+        : [...current, channelId],
+    )
+  }
+
+  const handleSaveMetadata = async () => {
+    if (!editTitle.trim()) {
+      toast.error("Product name is required")
+      return
+    }
+    setIsSavingMetadata(true)
+    try {
+      await sdk.admin.product.update(id, {
+        title: editTitle.trim(),
+        subtitle: editSubtitle.trim() || null,
+        handle: editHandle.trim() || undefined,
+        categories: editCategoryIds.map((cid) => ({ id: cid })),
+        sales_channels: editSalesChannelIds.map((scid) => ({ id: scid })),
+      })
+
+      if (
+        editFormatId &&
+        editFormatId !== readiness?.registration?.compound_format_id
+      ) {
+        await sdk.client.fetch(
+          `/admin/compounded-product/products/${id}/format`,
+          {
+            method: "POST",
+            body: { format_id: editFormatId },
+          },
+        )
+      }
+
+      toast.success("Product details updated successfully")
+      setIsEditingMetadata(false)
+      queryClient.invalidateQueries({
+        queryKey: ["compounded-product-native-product", id],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["compounded-product-readiness", id],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["compound-product-formats"],
+      })
+    } catch (err) {
+      toast.error(messageFromError(err, "Failed to update product details"))
+    } finally {
+      setIsSavingMetadata(false)
+    }
+  }
+
+  const startEditingDescription = () => {
+    if (!product) return
+    setLiveDescription(product.description || "")
+    setIsEditingDescription(true)
+  }
+
+  const handleSaveDescription = async () => {
+    setIsSavingDescription(true)
+    try {
+      await sdk.admin.product.update(id, {
+        description: liveDescription.trim() || undefined,
+      })
+      toast.success("Product description saved successfully")
+      setIsEditingDescription(false)
+      queryClient.invalidateQueries({
+        queryKey: ["compounded-product-native-product", id],
+      })
+    } catch (err) {
+      toast.error(messageFromError(err, "Failed to save description"))
+    } finally {
+      setIsSavingDescription(false)
+    }
+  }
+
+  // Compliance & Safety Configuration (Store-wide defaults + product overrides)
+  const complianceDefaults = useMemo(
+    () => ({
+      storage_and_handling:
+        "Store lyophilized compound at -20°C in a dry environment protected from light. Once reconstituted with Bacteriostatic Water, keep refrigerated at 2°C–8°C and use within 28 days for maximum stability. Avoid repeated freeze-thaw cycles.",
+      intended_use:
+        "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human, clinical, veterinary, therapeutic, or household administration.",
+      terms_of_sale:
+        "Purchaser must be an authorized investigator or institutional buyer aged 18+. Purchase constitutes agreement to handle all materials strictly according to standard biosafety and chemical safety protocols.",
+      disclaimer:
+        "This investigational chemical has not been evaluated or approved by the Philippine Food and Drug Administration (FDA) for the treatment, cure, or diagnosis of any disease or condition.",
+      packaging_options:
+        "Dispatched in sterile crimped vials with tamper-evident security caps. Available as standalone vials, with USP Bacteriostatic Water, or as Complete SubQ assembly kits with sterile administration supplies.",
+    }),
+    [],
+  )
+
+  const currentCompliance = useMemo(
+    () => ((productQuery.data?.product?.metadata?.compliance as Record<string, string>) || {}),
+    [productQuery.data?.product?.metadata?.compliance],
+  )
+
+  const [isEditingCompliance, setIsEditingCompliance] = useState(false)
+  const [isSavingCompliance, setIsSavingCompliance] = useState(false)
+  const [editStorageHandling, setEditStorageHandling] = useState("")
+  const [editIntendedUse, setEditIntendedUse] = useState("")
+  const [editTermsOfSale, setEditTermsOfSale] = useState("")
+  const [editDisclaimer, setEditDisclaimer] = useState("")
+  const [editPackagingOptions, setEditPackagingOptions] = useState("")
+
+  const startEditingCompliance = () => {
+    setEditStorageHandling(currentCompliance.storage_and_handling || "")
+    setEditIntendedUse(currentCompliance.intended_use || "")
+    setEditTermsOfSale(currentCompliance.terms_of_sale || "")
+    setEditDisclaimer(currentCompliance.disclaimer || "")
+    setEditPackagingOptions(currentCompliance.packaging_options || "")
+    setIsEditingCompliance(true)
+  }
+
+  const handleSaveCompliance = async () => {
+    setIsSavingCompliance(true)
+    try {
+      const updatedCompliance: Record<string, string> = {}
+      if (editStorageHandling.trim()) updatedCompliance.storage_and_handling = editStorageHandling.trim()
+      if (editIntendedUse.trim()) updatedCompliance.intended_use = editIntendedUse.trim()
+      if (editTermsOfSale.trim()) updatedCompliance.terms_of_sale = editTermsOfSale.trim()
+      if (editDisclaimer.trim()) updatedCompliance.disclaimer = editDisclaimer.trim()
+      if (editPackagingOptions.trim()) updatedCompliance.packaging_options = editPackagingOptions.trim()
+
+      await sdk.admin.product.update(id, {
+        metadata: {
+          ...(productQuery.data?.product?.metadata || {}),
+          compliance: Object.keys(updatedCompliance).length > 0 ? updatedCompliance : null,
+        },
+      })
+      toast.success("Compliance & Safety settings saved")
+      setIsEditingCompliance(false)
+      queryClient.invalidateQueries({
+        queryKey: ["compounded-product-native-product", id],
+      })
+    } catch (err) {
+      toast.error(messageFromError(err, "Failed to save compliance settings"))
+    } finally {
+      setIsSavingCompliance(false)
     }
   }
 
@@ -426,8 +622,16 @@ const CompoundedProductReadinessPage = () => {
         delete next[variables.variantId]
         return next
       })
-      await queryClient.invalidateQueries({
-        queryKey: ["compounded-product-readiness", id],
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["compounded-product-readiness", id],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["bom-location-availability"],
+        }),
+      ])
+      await queryClient.refetchQueries({
+        queryKey: ["bom-location-availability"],
       })
     },
     onError: (error) =>
@@ -649,773 +853,770 @@ const CompoundedProductReadinessPage = () => {
       return next
     })
   }
+  const sellableCapacity = availabilityQuery.data?.variants?.length
+    ? `${Math.max(...availabilityQuery.data.variants.map((v) => v.calculated_stock || 0), 0)} Units`
+    : "—"
+  const basePriceFormatted = formatVariantPrices(product.variants?.[0]?.prices || null)
 
   return (
-    <div className="flex flex-col gap-y-4">
-      {/* Telemetry Hero Header */}
-      <Container className="flex flex-col gap-y-4 px-6 py-4">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="flex flex-col gap-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xl">🧪</span>
-              <Heading>{product.title}</Heading>
-              <Select
-                value={product.status === "published" ? "publish" : "withdraw"}
-                onValueChange={(val) => {
-                  if (val === "publish" || val === "withdraw") {
-                    quickPublishMutation.mutate(val)
-                  }
-                }}
-                disabled={quickPublishMutation.isPending}
-              >
-                <Select.Trigger className="h-7 w-32 border-0 bg-transparent shadow-none p-0">
-                  <Badge
-                    color={product.status === "published" ? "green" : "grey"}
-                    className="cursor-pointer hover:opacity-80 transition-opacity font-semibold"
-                  >
-                    ● {product.status === "published" ? "Published" : "Draft"} ▾
-                  </Badge>
-                </Select.Trigger>
-                <Select.Content>
-                  <Select.Item value="published">● Published</Select.Item>
-                  <Select.Item value="draft">○ Draft / Hidden</Select.Item>
-                </Select.Content>
-              </Select>
-            </div>
-            <Text size="small" className="text-ui-fg-subtle">
-              Manage this product's storefront identity, variants, stock capacity,
-              BOM recipes, and publication readiness.
-            </Text>
+    <div className="flex flex-col gap-y-3 pb-8">
+      {/* 1. Standard Page Header with Breadcrumbs and Quick Actions */}
+      <PageHeader
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-base">🧪</span>
+            <span className="truncate">{product.title}</span>
+            <Copy content={product.id} className="text-ui-fg-muted hover:text-ui-fg-subtle" />
           </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
+        }
+        breadcrumbs={[
+          { label: "Products", href: "/products" },
+          { label: "Compounded Products", href: "/compounded-products" },
+          { label: product.title },
+        ]}
+        backHref="/compounded-products"
+        subtitle="Manage this product's storefront identity, variants, stock capacity, BOM recipes, and publication readiness."
+        badge={
+          product.status === "published" ? null : readiness.ready ? (
+            <Badge
+              color="blue"
               size="small"
-              onClick={() => setEditDrawerOpen(true)}
-              className="inline-flex items-center gap-1.5"
+              className="cursor-pointer hover:opacity-80 transition-opacity font-medium"
+              onClick={() => setPublicationDrawerOpen(true)}
+              title="Click to review and publish product"
             >
-              <PencilSquare className="size-3.5" />
-              Edit Product
-            </Button>
-            {product.handle && (
-              <Button asChild size="small" variant="secondary">
-                <a
-                  href={`http://localhost:8000/ph/products/${product.handle}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5"
-                >
-                  View in Storefront ↗
-                </a>
-              </Button>
-            )}
-            <Button asChild size="small" variant="transparent" className="text-ui-fg-subtle hover:text-ui-fg-base text-xs">
-              <Link to={`/products/${product.id}?view=advanced`}>
-                Advanced Medusa details ↗
-              </Link>
-            </Button>
-          </div>
-        </div>
-
-        {/* Telemetry Operational Strip */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t border-ui-border-base pt-3 mt-1">
-          <div className="flex items-center gap-2.5 rounded-lg bg-ui-bg-subtle p-2.5">
-            <span className="text-base">📦</span>
-            <div>
-              <Text size="xsmall" className="text-ui-fg-subtle">Sellable Capacity</Text>
-              <Text size="small" weight="plus" className="text-emerald-700">
-                {availabilityQuery.data?.variants?.length
-                  ? `${Math.max(...availabilityQuery.data.variants.map((v) => v.calculated_stock || 0), 0)} Units Available`
-                  : "—"}
-              </Text>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 rounded-lg bg-ui-bg-subtle p-2.5">
-            <span className="text-base">💰</span>
-            <div>
-              <Text size="xsmall" className="text-ui-fg-subtle">Base Price</Text>
-              <Text size="small" weight="plus">
-                {formatVariantPrices(product.variants?.[0]?.prices)}
-              </Text>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 rounded-lg bg-ui-bg-subtle p-2.5">
-            <span className="text-base">⚠️</span>
-            <div>
-              <Text size="xsmall" className="text-ui-fg-subtle">Stock Bottleneck</Text>
-              <Text
-                size="small"
-                weight="plus"
-                className={bottleneckAnalysis ? "text-amber-700 truncate max-w-[180px]" : "text-ui-fg-subtle"}
-                title={bottleneckAnalysis?.limitingComponent}
-              >
-                {bottleneckAnalysis
-                  ? `${bottleneckAnalysis.limitingComponent} (${bottleneckAnalysis.lowestStock})`
-                  : "None (Balanced)"}
-              </Text>
-            </div>
-          </div>
-        </div>
-      </Container>
-
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
-        <Container className="flex flex-col gap-y-5 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-y-1">
-              <Text size="small" weight="plus">
-                Product overview
-              </Text>
-              <Text size="small" className="text-ui-fg-subtle">
-                Customer-facing catalog information used by the peptide
-                storefront.
-              </Text>
-            </div>
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => setEditDrawerOpen(true)}
-              className="inline-flex items-center gap-1.5"
-            >
-              <PencilSquare className="size-3.5" />
-              Edit Overview
-            </Button>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="flex flex-col gap-y-1">
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                Product format
-              </Text>
-              <Text size="small" weight="plus">
-                {compoundFormat?.name || "Not assigned"}
-              </Text>
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                Categories
-              </Text>
-              <Text size="small" weight="plus">
-                {product.categories
-                  ?.map((category) => category.name)
-                  .join(", ") || "Not assigned"}
-              </Text>
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                Sales channels
-              </Text>
-              <Text size="small" weight="plus">
-                {product.sales_channels
-                  ?.map((channel) => channel.name)
-                  .join(", ") || "Not assigned"}
-              </Text>
-            </div>
-          </div>
-          <div className="flex flex-col gap-y-1 border-t border-ui-border-base pt-4">
-            <Text size="xsmall" className="text-ui-fg-subtle">
-              Description
-            </Text>
-            <Text size="small" className="whitespace-pre-wrap">
-              {product.description || "No description yet."}
-            </Text>
-          </div>
-        </Container>
-
-        <Container className="flex flex-col gap-y-4 px-6 py-4">
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/*"
-            multiple
-            onChange={(e) => {
-              const files = Array.from(e.target.files || [])
-              if (files.length) {
-                uploadMediaMutation.mutate(files)
-              }
-              e.target.value = ""
-            }}
-          />
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-y-1">
-              <Text size="small" weight="plus">
-                Product media
-              </Text>
-              <Text size="small" className="text-ui-fg-subtle">
-                {product.images?.length || 0} image
-                {product.images?.length === 1 ? "" : "s"}
-              </Text>
-            </div>
-            {product.images?.length ? (
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={() => fileInputRef.current?.click()}
-                isLoading={uploadMediaMutation.isPending}
-              >
-                + Add photos
-              </Button>
-            ) : null}
-          </div>
-          {product.images?.length ? (
-            <div className="grid grid-cols-3 gap-2">
-              {product.images.slice(0, 6).map((image, index) => (
-                <img
-                  key={image.id || image.url}
-                  src={image.url}
-                  alt={`${product.title} product image ${index + 1}`}
-                  className="aspect-square w-full rounded-md border border-ui-border-base object-cover"
-                />
-              ))}
-            </div>
+              ● Ready to Publish
+            </Badge>
           ) : (
-            <div className="flex min-h-28 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-ui-border-base p-4">
-              <Text size="small" className="text-ui-fg-subtle">
-                No product images yet
-              </Text>
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={() => fileInputRef.current?.click()}
-                isLoading={uploadMediaMutation.isPending}
-              >
-                + Upload Images
-              </Button>
-            </div>
-          )}
-        </Container>
-      </div>
-
-      <Container className="flex flex-col gap-y-4 px-6 py-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div className="flex flex-col gap-y-1">
-            <Text size="small" weight="plus">
-              Variants, prices, and calculated stock
-            </Text>
-            <Text size="small" className="text-ui-fg-subtle">
-              Calculated stock is the lowest component capacity at the selected
-              location. Physical stock remains managed in Inventory.
-            </Text>
-          </div>
-          <div className="min-w-64">
-            <Select
-              value={selectedStockLocationId || undefined}
-              onValueChange={setSelectedStockLocationId}
+            <Badge
+              color="orange"
+              size="small"
+              className="cursor-pointer hover:opacity-80 transition-opacity font-medium"
+              onClick={() => setPublicationDrawerOpen(true)}
+              title="Click to review missing publication checks"
             >
-              <Select.Trigger>
-                <Select.Value placeholder="Select stock location" />
-              </Select.Trigger>
-              <Select.Content>
-                {(stockLocationsQuery.data?.stock_locations || []).map(
-                  (location) => (
-                    <Select.Item key={location.id} value={location.id}>
-                      {location.name}
-                    </Select.Item>
-                  ),
-                )}
-              </Select.Content>
-            </Select>
-          </div>
-        </div>
-        {bottleneckAnalysis && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50/90 p-4 text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-            <div className="flex items-start gap-3">
-              <span className="text-base leading-none">⚠️</span>
-              <div>
-                <span className="font-bold">Inventory Bottleneck Detected</span>
-                <p className="mt-1 text-amber-800 leading-relaxed">
-                  Component <strong>"{bottleneckAnalysis.limitingComponent}"</strong> is capping kit capacity to{" "}
-                  <strong className="underline">{bottleneckAnalysis.lowestStock} units</strong>, while{" "}
-                  <strong>{bottleneckAnalysis.highestStock} units</strong> of other variants are available. Restock accessories to unlock full sales capacity.
-                </p>
-              </div>
-            </div>
-            <Button asChild size="small" variant="secondary" className="border-amber-300 bg-white hover:bg-amber-100/60 shrink-0">
-              <Link to={`/inventory?q=${encodeURIComponent(bottleneckAnalysis.limitingComponent)}`}>
-                Restock in Inventory →
-              </Link>
-            </Button>
-          </div>
-        )}
-        <div className="overflow-hidden rounded-lg border border-ui-border-base">
-          <div className="hidden gap-3 border-b border-ui-border-base bg-ui-bg-subtle px-4 py-2 md:grid md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_140px_minmax(0,1fr)]">
-            <Text size="xsmall" className="text-ui-fg-subtle">
-              Variant
-            </Text>
-            <Text size="xsmall" className="text-ui-fg-subtle">
-              Price (Click to edit)
-            </Text>
-            <Text size="xsmall" className="text-ui-fg-subtle">
-              Calculated stock
-            </Text>
-            <Text size="xsmall" className="text-ui-fg-subtle">
-              Limiting item
-            </Text>
-          </div>
-          {(product.variants || []).map((variant) => {
-            const availability = availabilityByVariantId.get(variant.id)
+              ● Draft ({readiness.blockers.length} check{readiness.blockers.length === 1 ? "" : "s"} pending)
+            </Badge>
+          )
+        }
+        actions={
+          <DropdownMenu>
+            <DropdownMenu.Trigger asChild>
+              <IconButton size="small" variant="secondary" className="size-7" title="More Actions">
+                <EllipsisHorizontal className="size-4" />
+              </IconButton>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content align="end" className="w-56">
+              {product.handle && product.status === "published" ? (
+                <DropdownMenu.Item asChild className="gap-x-2">
+                  <a
+                    href={`http://localhost:8000/ph/products/${product.handle}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ArrowUpRightOnBox className="size-4 text-ui-fg-subtle" />
+                    <span>View on Storefront</span>
+                  </a>
+                </DropdownMenu.Item>
+              ) : (
+                <DropdownMenu.Item disabled className="gap-x-2 opacity-50 cursor-not-allowed">
+                  <ArrowUpRightOnBox className="size-4 text-ui-fg-muted" />
+                  <span>View on Storefront (Draft)</span>
+                </DropdownMenu.Item>
+              )}
 
-            return (
-              <div
-                key={variant.id}
-                className="grid gap-3 border-b border-ui-border-base px-4 py-3 last:border-b-0 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_140px_minmax(0,1fr)]"
+              <DropdownMenu.Separator />
+
+              {product.status === "published" ? (
+                <DropdownMenu.Item
+                  className="gap-x-2"
+                  onClick={() => setPublicationDrawerOpen(true)}
+                >
+                  <ArrowPath className="size-4 text-ui-fg-subtle" />
+                  <span>Withdraw to Draft</span>
+                </DropdownMenu.Item>
+              ) : (
+                <DropdownMenu.Item
+                  className="gap-x-2"
+                  onClick={() => setPublicationDrawerOpen(true)}
+                >
+                  <CheckCircle className="size-4 text-emerald-600" />
+                  <span>{readiness.ready ? "Publish Product" : "Review Readiness Checks"}</span>
+                </DropdownMenu.Item>
+              )}
+
+              <DropdownMenu.Separator />
+
+              <DropdownMenu.Item
+                className="gap-x-2 text-ui-fg-error hover:bg-ui-bg-error-hover"
+                onClick={() => setIsDeleteDialogOpen(true)}
               >
-                <div className="flex flex-col gap-y-1">
-                  <Text size="small" weight="plus">
-                    {variant.title || "Untitled variant"}
-                  </Text>
-                  <div className="flex min-w-0 items-center gap-x-1">
-                    <Text
-                      size="xsmall"
-                      className="truncate max-w-[200px] text-ui-fg-subtle font-mono"
-                      title={variant.sku || undefined}
-                    >
-                      {variant.sku || "SKU will be generated"}
-                    </Text>
-                    {variant.sku ? (
-                      <Copy
-                        content={variant.sku}
-                        variant="mini"
-                        className="shrink-0 text-ui-fg-muted"
-                      />
-                    ) : null}
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  {editingPriceVariantId === variant.id ? (
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-ui-fg-subtle">₱</span>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        className="h-7 w-24 text-xs font-semibold px-1.5"
-                        value={editingPriceAmount}
-                        onChange={(e) => setEditingPriceAmount(e.target.value)}
-                        autoFocus
-                      />
+                <Trash className="size-4 text-ui-fg-error" />
+                <span>Delete Product</span>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu>
+        }
+      />
+
+      {/* 2. Main 2-Column Responsive Workspace */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px] gap-4 items-start mt-1">
+        {/* Left Column: Interactive Workspace Tabs */}
+        <div className="flex flex-col gap-y-3 min-w-0">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs.List className="w-full justify-start border-b border-ui-border-base mb-3 gap-2">
+              <Tabs.Trigger value="variants" className="gap-2 text-xs py-1.5">
+                <span>📦</span> Variants & Inventory
+              </Tabs.Trigger>
+              <Tabs.Trigger value="catalog" className="gap-2 text-xs py-1.5">
+                <span>📝</span> Details & Media
+              </Tabs.Trigger>
+              <Tabs.Trigger value="protocols" className="gap-2 text-xs py-1.5">
+                <span>🔬</span> Research Protocols
+                <Badge
+                  size="small"
+                  color={
+                    (researchProtocolsQuery.data?.protocols || []).some((p) =>
+                      p.revisions.some((r) => r.status === "published"),
+                    )
+                      ? "green"
+                      : "grey"
+                  }
+                >
+                  {researchProtocolsQuery.data?.count || 0}
+                </Badge>
+              </Tabs.Trigger>
+            </Tabs.List>
+
+            {/* Tab 1: Variants & BOM */}
+            <Tabs.Content value="variants">
+              <VariantBomMatrix
+                product={product}
+                readiness={readiness}
+                availabilityByVariantId={availabilityByVariantId}
+                availabilityQuery={availabilityQuery}
+                stockLocations={stockLocationsQuery.data?.stock_locations || []}
+                selectedStockLocationId={selectedStockLocationId}
+                setSelectedStockLocationId={setSelectedStockLocationId}
+                stockLocationsQuery={stockLocationsQuery}
+                editingPriceVariantId={editingPriceVariantId}
+                setEditingPriceVariantId={setEditingPriceVariantId}
+                editingPriceAmount={editingPriceAmount}
+                setEditingPriceAmount={setEditingPriceAmount}
+                isSavingPrice={isSavingPrice}
+                handleSavePrice={handleSavePrice}
+                recipes={recipes}
+                setRecipes={setRecipes}
+                expandedRecipeIds={expandedRecipeIds}
+                toggleRecipe={toggleRecipe}
+                seedRecipeRows={seedRecipeRows}
+                updateRecipe={updateRecipe}
+                recipeMutation={recipeMutation}
+                profileByInventoryId={profileByInventoryId}
+                inventoryById={inventoryById}
+                profiles={profiles}
+                formatVariantPrices={formatVariantPrices}
+              />
+            </Tabs.Content>
+
+            {/* Tab 2: Catalog Information & Media */}
+            <Tabs.Content value="catalog" className="flex flex-col gap-y-4">
+              {/* Top Row: Format & Categories + Media Cards */}
+              <div className="grid gap-4 md:grid-cols-2">
+                {/* Product Details Card (In-Page Direct Editing) */}
+                <AdminCard
+                  title="Product Details"
+                  subtitle="Basic product details, web link, categories, and sales channels."
+                  headerAction={
+                    isEditingMetadata ? (
+                      <div className="flex items-center gap-1.5">
+                        <Button
+                          size="small"
+                          variant="secondary"
+                          onClick={() => setIsEditingMetadata(false)}
+                          disabled={isSavingMetadata}
+                          className="h-7 text-xs"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="primary"
+                          onClick={handleSaveMetadata}
+                          isLoading={isSavingMetadata}
+                          className="h-7 text-xs"
+                        >
+                          Save Details
+                        </Button>
+                      </div>
+                    ) : (
                       <Button
                         size="small"
                         variant="secondary"
-                        disabled={isSavingPrice}
-                        onClick={() => handleSavePrice(variant.id)}
-                        className="size-7 p-0 flex items-center justify-center font-bold text-emerald-600"
+                        onClick={startEditingMetadata}
+                        className="h-7 text-xs inline-flex items-center gap-1.5"
                       >
-                        ✓
+                        <PencilSquare className="size-3" />
+                        Edit Details
                       </Button>
-                      <Button
-                        size="small"
-                        variant="transparent"
-                        disabled={isSavingPrice}
-                        onClick={() => setEditingPriceVariantId(null)}
-                        className="size-7 p-0 flex items-center justify-center text-ui-fg-muted"
-                      >
-                        ✕
-                      </Button>
-                    </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const currentPrice = variant.prices?.[0]?.amount ?? 0
-                        setEditingPriceAmount(String(currentPrice))
-                        setEditingPriceVariantId(variant.id)
-                      }}
-                      className="group inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-ui-bg-subtle text-left transition-colors"
-                      title="Click to edit price"
-                    >
-                      <Text size="small" weight="plus" className="text-ui-fg-base">
-                        {formatVariantPrices(variant.prices)}
-                      </Text>
-                      <span className="text-xs text-ui-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
-                        ✎
-                      </span>
-                    </button>
-                  )}
-                </div>
-                <div className="flex items-center">
-                  {!selectedStockLocationId ? (
-                    <Text size="small" className="text-ui-fg-subtle">
-                      —
-                    </Text>
-                  ) : availabilityQuery.isError ? (
-                    <Text size="small" className="text-ui-fg-error">
-                      Unavailable
-                    </Text>
-                  ) : availabilityQuery.isLoading ? (
-                    <Text size="small" className="text-ui-fg-subtle">
-                      Calculating…
-                    </Text>
-                  ) : availability?.status === "calculated" ? (
-                    <Badge color={availability.calculated_stock > 15 ? "green" : "orange"}>
-                      ● {availability.calculated_stock} {availability.calculated_stock > 15 ? "In stock" : "Low stock"}
-                    </Badge>
-                  ) : (
-                    <Badge color="grey">No recipe</Badge>
-                  )}
-                </div>
-                <Text size="small" className="text-ui-fg-subtle">
-                  {selectedStockLocationId && !availabilityQuery.isError
-                    ? availability?.limiting_components
-                        .map((component) => component.inventory_item_title)
-                        .join(", ") || "No limiting item"
-                    : "—"}
-                </Text>
-              </div>
-            )
-          })}
-        </div>
-        {availabilityQuery.isError ? (
-          <Text size="small" className="text-ui-fg-error">
-            Calculated stock could not be loaded for this location.
-          </Text>
-        ) : null}
-        {stockLocationsQuery.isError ? (
-          <Text size="small" className="text-ui-fg-error">
-            Stock locations could not be loaded.
-          </Text>
-        ) : null}
-      </Container>
-
-      <Container className="flex flex-col gap-y-4 px-6 py-4">
-        <div className="flex flex-col gap-y-1">
-          <Text size="small" weight="plus">
-            Inventory recipes
-          </Text>
-          <Text size="small" className="text-ui-fg-subtle">
-            Add Product generates these links from the selected finished item,
-            Inclusion supplies, and common packaging. You can review or revise
-            them here before the variant appears on an order.
-          </Text>
-        </div>
-
-        {!profiles.length ? (
-          <Text size="small" className="text-ui-fg-warning">
-            No component profiles are configured. Open the required Inventory
-            items and configure Component and receiving before defining recipes.
-          </Text>
-        ) : null}
-
-        {readiness.variants.map((variant) => {
-          const rows = recipes[variant.id]
-          const editing = Boolean(rows)
-          const expanded = expandedRecipeIds.has(variant.id) || editing
-          const componentCount = variant.recipe_components.length
-
-          return (
-            <div
-              key={variant.id}
-              className="overflow-hidden rounded-lg border border-ui-border-base"
-            >
-              <div className="flex items-center justify-between gap-x-4 px-4 py-3">
-                <div className="flex min-w-0 flex-1 flex-col gap-y-1">
-                  <div className="flex min-w-0 items-center gap-x-2">
-                    <Text size="small" weight="plus" className="truncate">
-                      {variant.title}
-                    </Text>
-                    <Badge color={variant.recipe_ready ? "green" : "orange"}>
-                      {variant.recipe_ready ? "Ready" : "Required"}
-                    </Badge>
-                  </div>
-                  <div className="flex min-w-0 items-center gap-x-1">
-                    <Text size="xsmall" className="truncate text-ui-fg-subtle">
-                      {componentCount} component
-                      {componentCount === 1 ? "" : "s"} ·{" "}
-                      {variant.manage_inventory
-                        ? "Managed inventory"
-                        : "Inventory not managed"}{" "}
-                      · {variant.sku || "No SKU"}
-                    </Text>
-                    {variant.sku ? (
-                      <Copy
-                        content={variant.sku}
-                        variant="mini"
-                        className="shrink-0 text-ui-fg-muted"
-                      />
-                    ) : null}
-                  </div>
-                </div>
-                <Button
-                  size="small"
-                  variant="transparent"
-                  onClick={() => toggleRecipe(variant.id)}
-                  disabled={editing}
-                >
-                  {expanded ? "Hide" : "View"}
-                  {expanded ? <ChevronUpMini /> : <ChevronDownMini />}
-                </Button>
-              </div>
-
-              {expanded && !editing ? (
-                <div className="flex flex-col gap-y-3 border-t border-ui-border-base px-4 py-3">
-                  {variant.recipe_components.length ? (
-                    variant.recipe_components.map((component) => {
-                      const profile = profileByInventoryId.get(
-                        component.inventory_item_id,
-                      )
-                      const item = inventoryById.get(
-                        component.inventory_item_id,
-                      )
-                      const displayAmount = profile
-                        ? component.required_quantity /
-                          profile.base_units_per_display_unit
-                        : component.required_quantity
-
-                      return (
-                        <Text key={component.inventory_item_id} size="small">
-                          {item?.title || component.inventory_item_id}:{" "}
-                          {displayAmount}{" "}
-                          {profile?.display_unit ||
-                            profile?.base_unit ||
-                            "base units"}
-                        </Text>
-                      )
-                    })
-                  ) : (
-                    <Text size="small" className="text-ui-fg-subtle">
-                      No active native inventory-kit links.
-                    </Text>
-                  )}
-                  <Button
-                    size="small"
-                    variant="secondary"
-                    disabled={!variant.manage_inventory || !profiles.length}
-                    onClick={() => {
-                      setExpandedRecipeIds((current) =>
-                        new Set(current).add(variant.id),
-                      )
-                      setRecipes((current) => ({
-                        ...current,
-                        [variant.id]: seedRecipeRows(variant.id),
-                      }))
-                    }}
-                  >
-                    {variant.recipe_components.length
-                      ? "Edit recipe"
-                      : "Add recipe"}
-                  </Button>
-                </div>
-              ) : editing ? (
-                <div className="flex flex-col gap-y-4 border-t border-ui-border-base px-4 py-3">
-                  {rows.map((row, index) => {
-                    const selectedProfile = profileByInventoryId.get(
-                      row.inventoryItemId,
                     )
+                  }
+                  contentClassName="p-4"
+                >
+                  {isEditingMetadata ? (
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-1">
+                        <Label className="text-[11px] text-ui-fg-subtle">Product Name *</Label>
+                        <Input
+                          size="small"
+                          className="h-8 text-xs font-medium"
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          placeholder="e.g. Phase 8 GHK-Cu Acceptance"
+                          autoFocus
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <Label className="text-[11px] text-ui-fg-subtle">Short description</Label>
+                        <Textarea
+                          className="text-xs resize-none"
+                          rows={2}
+                          value={editSubtitle}
+                          onChange={(e) => setEditSubtitle(e.target.value)}
+                          placeholder="e.g. Dual GIP/GLP-1 receptor agonist · Lyophilized peptide"
+                        />
+                        <span className="text-[10px] text-ui-fg-muted">Shown below the product name on the storefront.</span>
+                      </div>
 
-                    return (
-                      <div
-                        key={`${variant.id}-${index}`}
-                        className="grid gap-3 rounded-lg border border-ui-border-base p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,220px)_auto]"
-                      >
-                        <div className="flex flex-col gap-y-2">
-                          <Label>Component inventory item</Label>
-                          <Select
-                            value={row.inventoryItemId || undefined}
-                            onValueChange={(inventoryItemId) =>
-                              updateRecipe(variant.id, index, {
-                                inventoryItemId,
-                                requiredDisplayAmount: "",
-                              })
-                            }
-                          >
-                            <Select.Trigger>
-                              <Select.Value placeholder="Select configured component" />
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="flex flex-col gap-1">
+                          <Label className="text-[11px] text-ui-fg-subtle">Product Format</Label>
+                          <Select value={editFormatId || undefined} onValueChange={setEditFormatId}>
+                            <Select.Trigger className="h-8 text-xs">
+                              <Select.Value placeholder="Select product format" />
                             </Select.Trigger>
                             <Select.Content>
-                              {profiles.map((profile) => (
-                                <Select.Item
-                                  key={profile.inventory_item_id}
-                                  value={profile.inventory_item_id}
-                                >
-                                  {inventoryById.get(profile.inventory_item_id)
-                                    ?.title || profile.inventory_item_id}
+                              {(compoundFormatsQuery.data?.formats || []).map((f) => (
+                                <Select.Item key={f.id} value={f.id} className="text-xs">
+                                  {f.name}
                                 </Select.Item>
                               ))}
                             </Select.Content>
                           </Select>
                         </div>
-                        <div className="flex flex-col gap-y-2">
-                          <Label>
-                            Required amount
-                            {selectedProfile
-                              ? ` (${selectedProfile.display_unit})`
-                              : ""}
-                          </Label>
+                        <div className="flex flex-col gap-1">
+                          <Label className="text-[11px] text-ui-fg-subtle">Storefront Link (URL Slug)</Label>
                           <Input
-                            inputMode="decimal"
-                            value={row.requiredDisplayAmount}
-                            onChange={(event) =>
-                              updateRecipe(variant.id, index, {
-                                requiredDisplayAmount: event.target.value,
-                              })
-                            }
+                            size="small"
+                            className="h-8 text-xs font-mono"
+                            value={editHandle}
+                            onChange={(e) => setEditHandle(e.target.value)}
+                            placeholder="e.g. phase-8-ghk-cu"
                           />
                         </div>
-                        <Button
-                          size="small"
-                          variant="secondary"
-                          onClick={() =>
-                            setRecipes((current) => ({
-                              ...current,
-                              [variant.id]: (current[variant.id] || []).filter(
-                                (_item, rowIndex) => rowIndex !== index,
-                              ),
-                            }))
-                          }
-                        >
-                          Remove
-                        </Button>
                       </div>
-                    )
-                  })}
-                  <div className="flex flex-wrap gap-2">
+
+                      <div className="flex flex-col gap-1">
+                        <Label className="text-[11px] text-ui-fg-subtle">Categories (Click to toggle)</Label>
+                        <div className="flex flex-wrap gap-1.5 mt-0.5">
+                          {(categoriesQuery.data?.items || []).map((cat) => {
+                            const active = editCategoryIds.includes(cat.id)
+                            return (
+                              <button
+                                key={cat.id}
+                                type="button"
+                                onClick={() => handleToggleCategory(cat.id)}
+                                className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
+                                  active
+                                    ? "bg-ui-bg-base border-ui-border-strong text-ui-fg-base font-medium shadow-sm ring-1 ring-ui-border-base"
+                                    : "bg-ui-bg-subtle/50 border-ui-border-base text-ui-fg-muted hover:text-ui-fg-subtle"
+                                }`}
+                              >
+                                {cat.name} {active ? "✓" : "+"}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <Label className="text-[11px] text-ui-fg-subtle">Sales Channels (Click to toggle)</Label>
+                        <div className="flex flex-wrap gap-1.5 mt-0.5">
+                          {(salesChannelsQuery.data?.sales_channels || []).map((sc) => {
+                            const active = editSalesChannelIds.includes(sc.id)
+                            return (
+                              <button
+                                key={sc.id}
+                                type="button"
+                                onClick={() => handleToggleSalesChannel(sc.id)}
+                                className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
+                                  active
+                                    ? "bg-ui-bg-base border-ui-border-strong text-ui-fg-base font-medium shadow-sm ring-1 ring-ui-border-base"
+                                    : "bg-ui-bg-subtle/50 border-ui-border-base text-ui-fg-muted hover:text-ui-fg-subtle"
+                                }`}
+                              >
+                                {sc.name} {active ? "✓" : "+"}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {product.subtitle && (
+                        <div className="flex flex-col gap-y-0.5 sm:col-span-2">
+                          <Text size="xsmall" className="text-ui-fg-subtle">
+                            Short description
+                          </Text>
+                          <Text size="small" className="text-ui-fg-base leading-relaxed">
+                            {product.subtitle}
+                          </Text>
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-y-0.5">
+                        <Text size="xsmall" className="text-ui-fg-subtle">
+                          Product format
+                        </Text>
+                        <Text size="small" weight="plus">
+                          {compoundFormat?.name || "Not assigned"}
+                        </Text>
+                      </div>
+                      <div className="flex flex-col gap-y-0.5">
+                        <Text size="xsmall" className="text-ui-fg-subtle">
+                          Storefront Link (URL Slug)
+                        </Text>
+                        <Text size="small" weight="plus" className="truncate font-mono text-xs">
+                          {product.handle || "Not set"}
+                        </Text>
+                      </div>
+                      <div className="flex flex-col gap-y-0.5 sm:col-span-2">
+                        <Text size="xsmall" className="text-ui-fg-subtle">
+                          Categories
+                        </Text>
+                        <div className="flex flex-wrap gap-1 mt-0.5">
+                          {product.categories?.length ? (
+                            product.categories.map((c) => (
+                              <Badge key={c.id} size="small" color="grey">
+                                {c.name}
+                              </Badge>
+                            ))
+                          ) : (
+                            <Text size="small" className="text-ui-fg-muted">Not assigned</Text>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-y-0.5 sm:col-span-2">
+                        <Text size="xsmall" className="text-ui-fg-subtle">
+                          Sales channels
+                        </Text>
+                        <div className="flex flex-wrap gap-1 mt-0.5">
+                          {product.sales_channels?.length ? (
+                            product.sales_channels.map((sc) => (
+                              <Badge key={sc.id} size="small" color="blue">
+                                {sc.name}
+                              </Badge>
+                            ))
+                          ) : (
+                            <Text size="small" className="text-ui-fg-muted">Not assigned</Text>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </AdminCard>
+
+                {/* Product Media Card */}
+                <AdminCard
+                  title="Product Media"
+                  subtitle={`${product.images?.length || 0} image${product.images?.length === 1 ? "" : "s"}`}
+                  headerAction={
+                    product.images?.length ? (
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => fileInputRef.current?.click()}
+                        isLoading={uploadMediaMutation.isPending}
+                        className="h-7 text-xs"
+                      >
+                        + Add Photo
+                      </Button>
+                    ) : null
+                  }
+                  contentClassName="p-4"
+                >
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || [])
+                      if (files.length) {
+                        uploadMediaMutation.mutate(files)
+                      }
+                      e.target.value = ""
+                    }}
+                  />
+
+                  {product.images?.length ? (
+                    <div className="grid grid-cols-3 gap-2">
+                      {product.images.slice(0, 6).map((image, index) => (
+                        <img
+                          key={image.id || image.url}
+                          src={image.url}
+                          alt={`${product.title} image ${index + 1}`}
+                          className="aspect-square w-full rounded border border-ui-border-base object-cover"
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex min-h-24 flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-ui-border-base p-4 text-center">
+                      <Text size="xsmall" className="text-ui-fg-subtle">
+                        No product images uploaded yet.
+                      </Text>
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => fileInputRef.current?.click()}
+                        isLoading={uploadMediaMutation.isPending}
+                        className="h-7 text-xs"
+                      >
+                        + Upload Images
+                      </Button>
+                    </div>
+                  )}
+                </AdminCard>
+              </div>
+
+              {/* Product Description Card (In-Page Live Editor) */}
+              <AdminCard
+                title="Product Description"
+                subtitle="Product description, usage guide, and details displayed to customers on your online store."
+                badge={<Badge color="grey" size="small">Customer-Facing</Badge>}
+                headerAction={
+                  isEditingDescription ? (
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => setIsEditingDescription(false)}
+                        disabled={isSavingDescription}
+                        className="h-7 text-xs"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="primary"
+                        onClick={handleSaveDescription}
+                        isLoading={isSavingDescription}
+                        className="h-7 text-xs"
+                      >
+                        Save Description
+                      </Button>
+                    </div>
+                  ) : (
                     <Button
                       size="small"
                       variant="secondary"
-                      onClick={() =>
-                        setRecipes((current) => ({
-                          ...current,
-                          [variant.id]: [
-                            ...(current[variant.id] || []),
-                            {
-                              inventoryItemId: "",
-                              requiredDisplayAmount: "",
-                            },
-                          ],
-                        }))
-                      }
+                      onClick={startEditingDescription}
+                      className="h-7 text-xs inline-flex items-center gap-1.5"
                     >
-                      Add component
+                      <PencilSquare className="size-3" />
+                      Edit Description
                     </Button>
-                    <Button
-                      size="small"
-                      isLoading={recipeMutation.isPending}
-                      onClick={() =>
-                        recipeMutation.mutate({ variantId: variant.id, rows })
-                      }
-                    >
-                      Save recipe
-                    </Button>
+                  )
+                }
+                contentClassName="p-6"
+              >
+                {isEditingDescription ? (
+                  <div className="flex flex-col gap-3">
+                    <ProductDescriptionEditor
+                      value={liveDescription}
+                      onChange={setLiveDescription}
+                    />
+                  </div>
+                ) : product.description ? (
+                  <div
+                    className="text-ui-fg-base text-sm leading-relaxed max-w-none [&_p]:mb-3 [&_p]:leading-relaxed [&_h2]:text-base [&_h2]:font-semibold [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-ui-fg-base [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:mt-3 [&_h3]:mb-1.5 [&_h3]:text-ui-fg-base [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_blockquote]:border-l-2 [&_blockquote]:border-ui-border-strong [&_blockquote]:pl-3.5 [&_blockquote]:italic [&_blockquote]:my-3 [&_img]:rounded-md [&_img]:border [&_img]:border-ui-border-base [&_img]:my-3 [&_img]:max-h-96"
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+                ) : (
+                  <div className="flex min-h-32 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-ui-border-base p-6 text-center">
+                    <Text size="small" className="text-ui-fg-subtle">
+                      No description configured yet.
+                    </Text>
                     <Button
                       size="small"
                       variant="secondary"
-                      onClick={() =>
-                        setRecipes((current) => {
-                          const next = { ...current }
-                          delete next[variant.id]
-                          return next
-                        })
-                      }
+                      onClick={startEditingDescription}
+                      className="h-7 text-xs inline-flex items-center gap-1.5"
                     >
-                      Cancel
+                      <PencilSquare className="size-3" />
+                      Add Description
+                    </Button>
+                  </div>
+                )}
+              </AdminCard>
+
+              {/* Compliance & Safety Disclaimers Card */}
+              <AdminCard
+                title="Compliance & Safety Disclaimers"
+                subtitle="Manage product-level overrides for the 5 compliance & safety disclaimers shown on the storefront. Leave fields blank to inherit store-wide research defaults."
+                headerAction={
+                  isEditingCompliance ? (
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => setIsEditingCompliance(false)}
+                        disabled={isSavingCompliance}
+                        className="h-7 text-xs"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="primary"
+                        onClick={handleSaveCompliance}
+                        isLoading={isSavingCompliance}
+                        className="h-7 text-xs"
+                      >
+                        Save Compliance
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      onClick={startEditingCompliance}
+                      className="h-7 text-xs inline-flex items-center gap-1.5"
+                    >
+                      <PencilSquare className="size-3" />
+                      Edit Compliance
+                    </Button>
+                  )
+                }
+                contentClassName="p-4"
+              >
+                {isEditingCompliance ? (
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-ui-fg-base flex items-center gap-1.5">
+                          <span>📦</span> Storage & Handling
+                        </Label>
+                        <span className="text-[10px] text-ui-fg-muted">Leave empty to use store default</span>
+                      </div>
+                      <Textarea
+                        value={editStorageHandling}
+                        onChange={(e) => setEditStorageHandling(e.target.value)}
+                        placeholder={complianceDefaults.storage_and_handling}
+                        rows={2}
+                        className="text-xs"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-ui-fg-base flex items-center gap-1.5">
+                          <span>🔬</span> Intended Use
+                        </Label>
+                        <span className="text-[10px] text-ui-fg-muted">Leave empty to use store default</span>
+                      </div>
+                      <Textarea
+                        value={editIntendedUse}
+                        onChange={(e) => setEditIntendedUse(e.target.value)}
+                        placeholder={complianceDefaults.intended_use}
+                        rows={2}
+                        className="text-xs"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-ui-fg-base flex items-center gap-1.5">
+                          <span>📄</span> Terms of Sale
+                        </Label>
+                        <span className="text-[10px] text-ui-fg-muted">Leave empty to use store default</span>
+                      </div>
+                      <Textarea
+                        value={editTermsOfSale}
+                        onChange={(e) => setEditTermsOfSale(e.target.value)}
+                        placeholder={complianceDefaults.terms_of_sale}
+                        rows={2}
+                        className="text-xs"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-ui-fg-base flex items-center gap-1.5">
+                          <span>⚠️</span> Disclaimer
+                        </Label>
+                        <span className="text-[10px] text-ui-fg-muted">Leave empty to use store default</span>
+                      </div>
+                      <Textarea
+                        value={editDisclaimer}
+                        onChange={(e) => setEditDisclaimer(e.target.value)}
+                        placeholder={complianceDefaults.disclaimer}
+                        rows={2}
+                        className="text-xs"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-ui-fg-base flex items-center gap-1.5">
+                          <span>📦</span> Packaging Options
+                        </Label>
+                        <span className="text-[10px] text-ui-fg-muted">Leave empty to use store default</span>
+                      </div>
+                      <Textarea
+                        value={editPackagingOptions}
+                        onChange={(e) => setEditPackagingOptions(e.target.value)}
+                        placeholder={complianceDefaults.packaging_options}
+                        rows={2}
+                        className="text-xs"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {[
+                      {
+                        key: "storage_and_handling",
+                        label: "Storage & Handling",
+                        icon: "📦",
+                        value: currentCompliance.storage_and_handling || complianceDefaults.storage_and_handling,
+                        isCustom: !!currentCompliance.storage_and_handling,
+                      },
+                      {
+                        key: "intended_use",
+                        label: "Intended Use",
+                        icon: "🔬",
+                        value: currentCompliance.intended_use || complianceDefaults.intended_use,
+                        isCustom: !!currentCompliance.intended_use,
+                      },
+                      {
+                        key: "terms_of_sale",
+                        label: "Terms of Sale",
+                        icon: "📄",
+                        value: currentCompliance.terms_of_sale || complianceDefaults.terms_of_sale,
+                        isCustom: !!currentCompliance.terms_of_sale,
+                      },
+                      {
+                        key: "disclaimer",
+                        label: "Disclaimer",
+                        icon: "⚠️",
+                        value: currentCompliance.disclaimer || complianceDefaults.disclaimer,
+                        isCustom: !!currentCompliance.disclaimer,
+                      },
+                      {
+                        key: "packaging_options",
+                        label: "Packaging Options",
+                        icon: "📦",
+                        value: currentCompliance.packaging_options || complianceDefaults.packaging_options,
+                        isCustom: !!currentCompliance.packaging_options,
+                      },
+                    ].map((item) => (
+                      <div key={item.key} className="rounded-lg border border-ui-border-base p-3 bg-ui-bg-subtle/40 flex flex-col justify-between gap-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-ui-fg-base flex items-center gap-1.5">
+                            <span>{item.icon}</span> {item.label}
+                          </span>
+                          <Badge size="small" color={item.isCustom ? "purple" : "grey"}>
+                            {item.isCustom ? "Custom" : "Store Default"}
+                          </Badge>
+                        </div>
+                        <Text size="small" className="text-ui-fg-subtle text-xs leading-relaxed line-clamp-3">
+                          {item.value}
+                        </Text>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </AdminCard>
+            </Tabs.Content>
+
+            {/* Tab 3: Research Protocols */}
+            <Tabs.Content value="protocols">
+              <AdminCard
+                title="Research Protocols & Reference Standards"
+                subtitle={
+                  researchProtocolsQuery.isError
+                    ? "Protocol status could not be loaded."
+                    : `${researchProtocolsQuery.data?.count || 0} versioned research reference(s) for this compound.`
+                }
+                badge={
+                  !researchProtocolsQuery.isError ? (
+                    <Badge
+                      color={
+                        (researchProtocolsQuery.data?.protocols || []).some((p) =>
+                          p.revisions.some((r) => r.status === "published"),
+                        )
+                          ? "green"
+                          : "orange"
+                      }
+                      size="small"
+                    >
+                      {(researchProtocolsQuery.data?.protocols || []).some((p) =>
+                        p.revisions.some((r) => r.status === "published"),
+                      )
+                        ? "Published Reference Available"
+                        : "No Published Protocol"}
+                    </Badge>
+                  ) : null
+                }
+                headerAction={
+                  <div className="flex items-center gap-2">
+                    <Button asChild size="small" variant="secondary" className="h-7 text-xs">
+                      <Link to="/research-protocols/new">+ Add protocol</Link>
+                    </Button>
+                    <Button asChild size="small" variant="secondary" className="h-7 text-xs">
+                      <Link to="/research-protocols">Link existing protocol</Link>
+                    </Button>
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-y-3">
+                  <Text size="xsmall" className="text-ui-fg-subtle leading-relaxed">
+                    Research protocols define clinical standards, dosing guidance, reconstitution instructions,
+                    and verified third-party laboratory Certificates of Analysis (COA) for this peptide.
+                  </Text>
+
+                  <div className="flex items-center justify-between p-3 rounded-lg border border-ui-border-base bg-ui-bg-subtle/30 text-xs">
+                    <div>
+                      <span className="font-semibold text-ui-fg-base">Manage protocols</span>
+                      <p className="text-ui-fg-subtle text-[11px] mt-0.5">
+                        Configure customer-facing research instructions and disclaimer consent bundles.
+                      </p>
+                    </div>
+                    <Button asChild size="small" variant="secondary" className="h-7 text-xs">
+                      <Link to="/research-protocols">Open Protocol Manager →</Link>
                     </Button>
                   </div>
                 </div>
-              ) : null}
-            </div>
-          )
-        })}
-      </Container>
-
-      <Container className="flex items-center justify-between gap-x-4 px-6 py-4">
-        <div className="flex min-w-0 flex-col gap-y-1">
-          <div className="flex flex-wrap items-center gap-x-2">
-            <Text size="small" weight="plus">
-              Research protocols
-            </Text>
-            {!researchProtocolsQuery.isError ? (
-              <Badge
-                color={
-                  (researchProtocolsQuery.data?.protocols || []).some(
-                    (protocol) =>
-                      protocol.revisions.some(
-                        (revision) => revision.status === "published",
-                      ),
-                  )
-                    ? "green"
-                    : "orange"
-                }
-              >
-                {(researchProtocolsQuery.data?.protocols || []).some(
-                  (protocol) =>
-                    protocol.revisions.some(
-                      (revision) => revision.status === "published",
-                    ),
-                )
-                  ? "Published reference available"
-                  : "No published protocol"}
-              </Badge>
-            ) : null}
-          </div>
-          <Text size="small" className="truncate text-ui-fg-subtle">
-            {researchProtocolsQuery.isError
-              ? "Protocol status could not be loaded."
-              : `${researchProtocolsQuery.data?.count || 0} versioned research reference${researchProtocolsQuery.data?.count === 1 ? "" : "s"} for this product.`}
-          </Text>
+              </AdminCard>
+            </Tabs.Content>
+          </Tabs>
         </div>
-        <div className="flex shrink-0 gap-x-2">
-          <Button asChild size="small" variant="secondary">
-            <Link to="/research-protocols/new">Add protocol</Link>
-          </Button>
-          <Button asChild size="small" variant="secondary">
-            <Link to="/research-protocols">Link existing protocol</Link>
-          </Button>
-          <Button asChild size="small" variant="secondary">
-            <Link to="/research-protocols">Manage protocols</Link>
-          </Button>
+
+        {/* Right Column: Sticky Advanced Operations Sidebar */}
+        <div className="sticky top-4 flex flex-col gap-y-3" aria-label="Advanced operations">
+          <ProductOpsSidebar
+            product={product}
+            readiness={readiness}
+            bottleneckAnalysis={bottleneckAnalysis}
+            sellableCapacity={sellableCapacity}
+            basePriceFormatted={basePriceFormatted}
+            onOpenPublicationDrawer={() => setPublicationDrawerOpen(true)}
+            onOpenClassificationDrawer={() => setClassificationDrawerOpen(true)}
+            onOpenAuditDrawer={() => setAuditDrawerOpen(true)}
+          />
         </div>
-      </Container>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Container className="flex items-center justify-between gap-x-4 px-6 py-4">
-          <div className="flex min-w-0 flex-col gap-y-1">
-            <Text size="small" weight="plus">
-              Publication readiness
-            </Text>
-            <Text size="small" className="truncate text-ui-fg-subtle">
-              {readiness.ready
-                ? "All configured checks pass."
-                : `${readiness.blockers.length} issue${readiness.blockers.length === 1 ? "" : "s"} must be resolved.`}
-            </Text>
-          </div>
-          <div className="flex shrink-0 items-center gap-x-2">
-            <Badge color={readiness.ready ? "green" : "orange"}>
-              {readiness.ready ? "Ready" : "Needs attention"}
-            </Badge>
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => setPublicationDrawerOpen(true)}
-            >
-              Manage
-            </Button>
-          </div>
-        </Container>
-
-        <Container className="flex items-center justify-between gap-x-4 px-6 py-4">
-          <div className="flex min-w-0 flex-col gap-y-1">
-            <Text size="small" weight="plus">
-              Advanced operations
-            </Text>
-            <Text size="small" className="truncate text-ui-fg-subtle">
-              Classification changes and immutable audit records.
-            </Text>
-          </div>
-          <div className="flex shrink-0 gap-x-2">
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => setClassificationDrawerOpen(true)}
-            >
-              Classification
-            </Button>
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => setAuditDrawerOpen(true)}
-            >
-              Audit history
-            </Button>
-          </div>
-        </Container>
       </div>
 
       <Drawer
@@ -1685,21 +1886,26 @@ const CompoundedProductReadinessPage = () => {
         </Drawer.Content>
       </Drawer>
 
-      <CompoundedProductEditDrawer
-        open={editDrawerOpen}
-        onOpenChange={setEditDrawerOpen}
-        product={product}
-        compoundFormatId={readiness.registration.compound_format_id || null}
-        compoundFormats={compoundFormatsQuery.data?.formats || []}
-        onSuccess={() => {
-          queryClient.invalidateQueries({
-            queryKey: ["compounded-product-native-product", id],
-          })
-          queryClient.invalidateQueries({
-            queryKey: ["compounded-product-readiness", id],
-          })
-        }}
-      />
+      <Prompt open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <Prompt.Content>
+          <Prompt.Header>
+            <Prompt.Title>Delete Compounded Product</Prompt.Title>
+            <Prompt.Description>
+              Are you sure you want to delete &ldquo;{product?.title}&rdquo;? This will permanently remove the product, its variants, and associated inventory configurations. This action cannot be undone.
+            </Prompt.Description>
+          </Prompt.Header>
+          <Prompt.Footer>
+            <Prompt.Cancel disabled={isDeleting}>Cancel</Prompt.Cancel>
+            <Prompt.Action
+              variant="danger"
+              onClick={handleDeleteProduct}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete Product"}
+            </Prompt.Action>
+          </Prompt.Footer>
+        </Prompt.Content>
+      </Prompt>
     </div>
   )
 }

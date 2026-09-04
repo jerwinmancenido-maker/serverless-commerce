@@ -5,6 +5,10 @@ import type {
   ResearchNotification,
   ResearchRoutine,
   TrackedResearchMaterial,
+  ResearchRoutineLog,
+  ResearchMeasurement,
+  ResearchJournalEntry,
+  PurchasedItemCandidate,
 } from "@lib/data/research-tracking"
 import {
   defaultResearchUnitProfile,
@@ -15,6 +19,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 import ResearchOccurrenceActions from "./research-occurrence-actions"
 import NotificationInbox from "./notification-inbox"
+import PostDoseCheckIn from "./post-dose-check-in"
 
 function unitProfile(
   occurrence: ResearchOccurrence,
@@ -51,6 +56,13 @@ export default function ResearchToday({
   trackedMaterials,
   notifications,
   notificationUnreadCount,
+  logs,
+  measurements,
+  journalEntries,
+  timezone,
+  measurementSubmissionKey,
+  journalSubmissionKey,
+  purchasedItems,
 }: {
   countryCode: string
   occurrences: ResearchOccurrence[]
@@ -59,6 +71,13 @@ export default function ResearchToday({
   trackedMaterials: TrackedResearchMaterial[]
   notifications: ResearchNotification[]
   notificationUnreadCount: number
+  logs?: ResearchRoutineLog[]
+  measurements?: ResearchMeasurement[]
+  journalEntries?: ResearchJournalEntry[]
+  timezone?: string
+  measurementSubmissionKey?: string
+  journalSubmissionKey?: string
+  purchasedItems?: PurchasedItemCandidate[]
 }) {
   const todayOccurrences = occurrences
     .filter((occurrence) => {
@@ -74,6 +93,10 @@ export default function ResearchToday({
     (occurrence) => occurrence.status === "confirmed",
   ).length
 
+  const unactivatedPurchases = (purchasedItems || []).filter(
+    (p) => p.added_to_tracking_at === null && p.eligibility === "eligible",
+  )
+
   return (
     <section className="space-y-6" aria-labelledby="research-today-title">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -88,21 +111,51 @@ export default function ResearchToday({
             {today} · {completed} of {todayOccurrences.length} completed
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <LocalizedClientLink
             href={`/account/research-hub?section=calendar&calendarDate=${today}`}
-            className="rounded-lg border border-ui-border-base bg-white px-4 py-2 text-sm font-medium"
+            className="inline-flex items-center justify-center rounded-lg border border-ui-border-base bg-white px-4 py-2.5 min-h-[44px] text-sm font-semibold hover:bg-ui-bg-subtle transition-colors touch-manipulation w-full sm:w-auto text-center"
           >
             Open calendar
           </LocalizedClientLink>
           <LocalizedClientLink
             href="/account/research-hub?section=calculator"
-            className="rounded-lg bg-ui-fg-base px-4 py-2 text-sm font-medium text-ui-bg-base"
+            className="inline-flex items-center justify-center rounded-lg bg-ui-fg-base px-4 py-2.5 min-h-[44px] text-sm font-semibold text-ui-bg-base hover:bg-ui-fg-subtle transition-colors touch-manipulation w-full sm:w-auto text-center"
           >
             Quick calculator
           </LocalizedClientLink>
         </div>
       </div>
+
+      {unactivatedPurchases.length > 0 && (
+        <div className="rounded-xl border border-indigo-200 bg-indigo-50/70 p-4 shadow-xs">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg bg-indigo-600 p-2 text-white shrink-0">
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-indigo-950">
+                  {unactivatedPurchases.length === 1
+                    ? `New Compound Received: ${unactivatedPurchases[0].label}`
+                    : `${unactivatedPurchases.length} New Compounds Received`}
+                </p>
+                <p className="mt-0.5 text-xs text-indigo-800 leading-relaxed">
+                  Order #{unactivatedPurchases[0].order_display_id} is fulfilled. Activate your vial to track inventory, calculate reconstitution, and set up your dosing protocol.
+                </p>
+              </div>
+            </div>
+            <LocalizedClientLink
+              href="/account/research-hub?section=supplies"
+              className="inline-flex shrink-0 items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 min-h-[44px] text-xs font-semibold text-white transition-colors hover:bg-indigo-700 touch-manipulation w-full sm:w-auto"
+            >
+              Activate & Setup Vial →
+            </LocalizedClientLink>
+          </div>
+        </div>
+      )}
 
       {todayOccurrences.length ? (
         <div className="grid grid-cols-1 gap-4 large:grid-cols-2">
@@ -121,6 +174,13 @@ export default function ResearchToday({
             const remaining = matchingSupplies.reduce(
               (total, supply) => total + supply.remaining_quantity_base_units,
               0,
+            )
+            const matchingLog = logs?.find(
+              (item) =>
+                item.routine_id === occurrence.routine_id &&
+                item.local_date ===
+                  (occurrence.rescheduled_local_date ?? occurrence.local_date) &&
+                item.status === "confirmed",
             )
             const profile = unitProfile(occurrence, material)
 
@@ -169,7 +229,26 @@ export default function ResearchToday({
                 <ResearchOccurrenceActions
                   countryCode={countryCode}
                   occurrence={occurrence}
+                  routine={routine}
+                  supplies={matchingSupplies}
+                  today={today}
+                  unitProfile={profile}
                 />
+
+                {occurrence.status === "confirmed" && (
+                  <PostDoseCheckIn
+                    countryCode={countryCode}
+                    occurrence={occurrence}
+                    routine={routine}
+                    log={matchingLog}
+                    today={today}
+                    timezone={timezone}
+                    measurements={measurements}
+                    journalEntries={journalEntries}
+                    initialMeasurementKey={measurementSubmissionKey}
+                    initialJournalKey={journalSubmissionKey}
+                  />
+                )}
               </article>
             )
           })}
