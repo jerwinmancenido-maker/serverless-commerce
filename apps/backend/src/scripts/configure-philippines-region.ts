@@ -104,6 +104,7 @@ export default async function configurePhilippinesRegion({
           currency_code: currencyCode,
           countries: [countryCode],
           payment_providers: paymentProviders,
+          automatic_taxes: false,
         },
       },
     })
@@ -122,6 +123,7 @@ export default async function configurePhilippinesRegion({
               systemPaymentProviderId,
               manualQrPaymentProviderId,
             ],
+            automatic_taxes: false,
           },
         ],
       },
