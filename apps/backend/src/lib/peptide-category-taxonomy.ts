@@ -83,4 +83,11 @@ export const PEPTIDE_CATEGORY_TAXONOMY: PeptideCategoryDefinition[] = [
       "Customer-facing research supplies and accessories that are not peptide compounds.",
     rank: 10,
   },
+  {
+    name: "Multi-Compound Research Bundles",
+    handle: "multi-compound-research-bundles",
+    description:
+      "Curated multi-compound synergy stacks and dual/triple peptide research bundles with volume savings.",
+    rank: 11,
+  },
 ]

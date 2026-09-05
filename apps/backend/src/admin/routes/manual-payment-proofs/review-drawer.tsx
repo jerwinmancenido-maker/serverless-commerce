@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Spinner } from "@medusajs/icons"
+import {
+  ArrowUpRightOnBox,
+  DocumentText,
+  MagnifyingGlass,
+  Spinner,
+} from "@medusajs/icons"
 import {
   Badge,
   Button,
@@ -52,6 +57,7 @@ export const ManualPaymentProofReviewDrawer = ({
   onOpenChange,
 }: ReviewDrawerProps) => {
   const [rejectionReason, setRejectionReason] = useState("")
+  const [isZoomed, setIsZoomed] = useState(false)
   const queryClient = useQueryClient()
   const detailsQuery = useQuery({
     queryKey: ["manual-payment-proofs", "details", proof?.id],
@@ -153,34 +159,58 @@ export const ManualPaymentProofReviewDrawer = ({
                     variant="secondary"
                     onClick={() => window.open(fileQuery.data!.url, "_blank", "noopener,noreferrer")}
                   >
-                    View Original File ↗
+                    View Original
+                    <ArrowUpRightOnBox className="ml-1 h-3.5 w-3.5 text-slate-500" />
                   </Button>
                 )}
               </div>
 
-              {/* Embedded Proof Inspector */}
+              {/* Embedded Proof Inspector with Zoom Toggle */}
               {fileQuery.data?.url && (
-                <div className="rounded-xl border border-ui-border-base bg-zinc-50 dark:bg-zinc-950 p-2 overflow-hidden flex flex-col items-center">
-                  <img
-                    src={fileQuery.data.url}
-                    alt="Payment Proof Slip"
-                    className="max-h-64 object-contain rounded-lg shadow-xs"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = "none"
-                    }}
-                  />
-                  <div className="flex items-center justify-between w-full mt-2 pt-2 border-t border-ui-border-base px-1">
-                    <span className="text-[11px] text-ui-fg-muted font-mono truncate max-w-[220px]">
-                      📄 {currentProof.file_name} · {Math.ceil(currentProof.size_bytes / 1024)} KB
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-2 overflow-hidden flex flex-col items-center">
+                  <div
+                    className={`w-full overflow-auto rounded-lg transition-all ${
+                      isZoomed ? "max-h-[500px] cursor-zoom-out bg-white p-2" : "max-h-64 cursor-zoom-in flex justify-center"
+                    }`}
+                    onClick={() => setIsZoomed(!isZoomed)}
+                    title={isZoomed ? "Click to minimize view" : "Click to zoom receipt"}
+                  >
+                    <img
+                      src={fileQuery.data.url}
+                      alt="Payment Proof Slip"
+                      className={`object-contain rounded shadow-xs transition-transform duration-150 ${
+                        isZoomed ? "w-full max-w-none scale-105" : "max-h-64"
+                      }`}
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none"
+                      }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between w-full mt-2 pt-2 border-t border-slate-200 px-1 text-[11px]">
+                    <span className="text-slate-500 font-mono truncate max-w-[200px] flex items-center gap-1">
+                      <DocumentText className="h-3 w-3 shrink-0 text-slate-400" />
+                      <span className="truncate">{currentProof.file_name}</span>
+                      <span>· {Math.ceil(currentProof.size_bytes / 1024)} KB</span>
                     </span>
-                    <a
-                      href={fileQuery.data.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] text-ui-fg-interactive hover:underline flex items-center gap-1 font-medium"
-                    >
-                      Open Fullscreen ↗
-                    </a>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsZoomed(!isZoomed)}
+                        className="text-slate-600 hover:text-slate-900 flex items-center gap-1 font-medium bg-white px-2 py-0.5 rounded border border-slate-200"
+                      >
+                        <MagnifyingGlass className="h-3 w-3" />
+                        {isZoomed ? "Reset Zoom" : "Zoom Receipt"}
+                      </button>
+                      <a
+                        href={fileQuery.data.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-emerald-700 hover:underline flex items-center gap-0.5 font-medium"
+                      >
+                        Fullscreen
+                        <ArrowUpRightOnBox className="h-3 w-3" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}

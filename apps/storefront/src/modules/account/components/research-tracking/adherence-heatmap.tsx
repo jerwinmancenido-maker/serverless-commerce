@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { MapPin } from "@medusajs/icons"
 import type { ResearchOccurrence, ResearchTimelineEvent } from "@lib/data/research-tracking"
 
 type Props = {
@@ -185,8 +186,9 @@ export default function AdherenceHeatmap({ occurrences, today, timeline = [] }: 
 
       {/* Milestone tooltip */}
       {milestoneTooltip && (
-        <div className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-800 shadow-sm">
-          📍 {milestoneTooltip.label}
+        <div className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-800 shadow-sm flex items-center gap-1.5">
+          <MapPin className="h-3.5 w-3.5 text-indigo-700 shrink-0" />
+          <span>{milestoneTooltip.label}</span>
         </div>
       )}
 

@@ -13,6 +13,7 @@ import {
 import type { PurchasedActivationSubmissionKeys } from "@lib/research-tracking-idempotency"
 import { formatResearchQuantity } from "@lib/research-quantity"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import { useActionState, useEffect, useState, useTransition } from "react"
 import { useFormStatus } from "react-dom"
 
@@ -72,7 +73,7 @@ function StartTrackingButton({ className = "" }: { className?: string }) {
     <button
       type="submit"
       disabled={pending}
-      className={`inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 min-h-[44px] text-xs font-semibold text-white transition-colors hover:bg-indigo-700 touch-manipulation disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`inline-flex items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 min-h-[44px] text-xs font-semibold text-white transition-colors hover:bg-emerald-800 touch-manipulation disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     >
       {pending ? "Activating Vial…" : "Register & Activate Vial"}
     </button>
@@ -110,8 +111,8 @@ function ReplenishButton({
   if (!variantId && productHandle) {
     return (
       <LocalizedClientLink
-        href={`/products/${productHandle}`}
-        className={`inline-flex items-center justify-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50/80 px-3.5 py-2 min-h-[40px] text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition-colors touch-manipulation ${className}`}
+        href={`/products/${getCanonicalProductSlug(productHandle)}`}
+        className={`inline-flex items-center justify-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50/80 px-3.5 py-2 min-h-[40px] text-xs font-semibold text-emerald-800 hover:bg-emerald-100 transition-colors touch-manipulation ${className}`}
       >
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -144,7 +145,7 @@ function ReplenishButton({
         className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 min-h-[40px] text-xs font-semibold transition-all touch-manipulation shadow-2xs disabled:opacity-50 w-full sm:w-auto ${
           status === "success"
             ? "bg-emerald-600 text-white"
-            : "bg-indigo-600 text-white hover:bg-indigo-700"
+            : "bg-emerald-700 text-white hover:bg-emerald-800"
         }`}
       >
         {isPending ? (
@@ -204,10 +205,10 @@ function ActionableCandidateCard({
   const { mass, unit } = extractCompoundDetails(candidate)
 
   return (
-    <div className="rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50/70 via-white to-white p-4.5 shadow-xs">
-      <div className="flex flex-wrap items-start justify-between gap-2 border-b border-indigo-100 pb-3">
+    <div className="rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50/40 via-white to-white p-4.5 shadow-xs">
+      <div className="flex flex-wrap items-start justify-between gap-2 border-b border-emerald-100 pb-3">
         <div className="flex items-start gap-3">
-          <div className="rounded-lg bg-indigo-600 p-2 text-white shrink-0">
+          <div className="rounded-lg bg-emerald-700 p-2 text-white shrink-0">
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
@@ -225,7 +226,7 @@ function ActionableCandidateCard({
             </div>
           </div>
         </div>
-        <span className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-700">
+        <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800">
           Ready for Activation
         </span>
       </div>
@@ -253,7 +254,7 @@ function ActionableCandidateCard({
                 href="/account/research-hub?section=schedule"
                 className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-emerald-300 bg-white px-3.5 py-2 min-h-[40px] text-xs font-semibold text-emerald-800 transition-colors hover:bg-emerald-50 touch-manipulation w-full sm:w-auto"
               >
-                <span>Dosing Schedule →</span>
+                <span>Research Schedule →</span>
               </LocalizedClientLink>
             </div>
           </div>
@@ -275,12 +276,12 @@ function ActionableCandidateCard({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs text-ui-fg-subtle">
-                  Activate this delivered compound to add it to your active inventory for dose logging and reconstitution math.
+                  Review private tracking details. Purchases are never added automatically. Activate this delivered compound to add it to your active inventory for research tracking and reconstitution math.
                 </p>
                 {candidate.initial_quantity_base_units && candidate.base_unit && (
                   <p className="mt-1 text-xs font-medium text-ui-fg-base">
                     Verified Quantity:{" "}
-                    <span className="font-semibold text-indigo-700">
+                    <span className="font-semibold text-emerald-800">
                       {formatResearchQuantity(
                         candidate.initial_quantity_base_units,
                         {
@@ -302,7 +303,7 @@ function ActionableCandidateCard({
                     type="checkbox"
                     name="confirm_tracking"
                     required
-                    className="h-4 w-4 rounded border-ui-border-base text-indigo-600 focus:ring-indigo-600"
+                    className="h-4 w-4 rounded border-ui-border-base text-emerald-700 focus:ring-emerald-700"
                   />
                   <span>Confirm receipt</span>
                 </label>
@@ -409,11 +410,11 @@ export default function ProductsAndSupplies({
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
             Physical Inventory
           </p>
-          <h2 id="products-and-supplies-title" className="mt-1 text-xl font-bold tracking-tight text-ui-fg-base">
-            Tracked Vials & Supplies
+          <h2 id="products-and-supplies-title" className="mt-1 text-xl font-bold tracking-tight text-slate-900">
+            Vials &amp; Stability Inventory
           </h2>
-          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-ui-fg-subtle">
-            Manage your physical vials, monitor remaining dose levels, and calculate reconstitution dilution.
+          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-slate-500">
+            Track active reference vials, 28-day reconstituted liquid stability countdowns, and storage temperatures.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -443,7 +444,7 @@ export default function ProductsAndSupplies({
             No tracking change was made. Please try again later.
           </p>
           <a
-            href={`/${countryCode}/account/research-tracking`}
+            href={`/${countryCode}/account/research-hub`}
             className="mt-3 inline-block text-sm font-medium underline"
           >
             Retry
@@ -454,7 +455,7 @@ export default function ProductsAndSupplies({
           {/* Actionable Purchases Banner (Only renders when there is an actual eligible purchase waiting) */}
           {actionablePurchases.length > 0 && (
             <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-indigo-700">
+              <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Delivered Compound Ready to Activate ({actionablePurchases.length})
               </p>
               <div className="space-y-3">
@@ -542,26 +543,86 @@ export default function ProductsAndSupplies({
                                 ? "bg-amber-500"
                                 : "bg-rose-500"
 
+                          const addedAt = new Date(supply.added_to_tracking_at).getTime()
+                          const daysElapsed = Math.max(0, Math.floor((Date.now() - addedAt) / 86400000))
+                          const stabilityDaysRemaining = Math.max(0, 28 - daysElapsed)
+                          const stabilityPct = Math.max(0, Math.min(100, Math.round((stabilityDaysRemaining / 28) * 100)))
+
+                          const stabilityStatus =
+                            stabilityDaysRemaining > 10
+                              ? {
+                                  label: "Optimal Viability",
+                                  badge: `${stabilityDaysRemaining}d remaining`,
+                                  barColor: "bg-emerald-500",
+                                  badgeClass: "border-emerald-200 bg-emerald-50 text-emerald-800",
+                                }
+                              : stabilityDaysRemaining > 0
+                                ? {
+                                    label: "Expiring Soon",
+                                    badge: `${stabilityDaysRemaining}d remaining`,
+                                    barColor: "bg-amber-500",
+                                    badgeClass: "border-amber-200 bg-amber-50 text-amber-800",
+                                  }
+                                : {
+                                    label: "Degradation Warning",
+                                    badge: "Past 28d viability",
+                                    barColor: "bg-rose-500",
+                                    badgeClass: "border-rose-200 bg-rose-50 text-rose-800",
+                                  }
+
                           return (
                             <div
                               key={supply.supply_id}
                               className="rounded-lg border border-ui-border-base bg-ui-bg-subtle/30 p-4"
                             >
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-ui-fg-base">
-                                  Vial #{sIdx + 1}
-                                </span>
-                                <span className="font-medium text-ui-fg-subtle">
-                                  {formatResearchQuantity(remaining, supply)} / {formatResearchQuantity(initial, supply)} ({pct}%)
-                                </span>
+                              {/* Meter 1: Volume remaining */}
+                              <div>
+                                <div className="flex items-center justify-between text-xs">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-semibold text-ui-fg-base">
+                                      Vial #{sIdx + 1}
+                                    </span>
+                                    <span className="text-[11px] text-ui-fg-muted">· Liquid Volume</span>
+                                  </div>
+                                  <span className="font-medium text-ui-fg-subtle">
+                                    {formatResearchQuantity(remaining, supply)} / {formatResearchQuantity(initial, supply)} ({pct}%)
+                                  </span>
+                                </div>
+                                <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-ui-border-base">
+                                  <div
+                                    className={`h-full transition-all duration-300 ${barColor}`}
+                                    style={{ width: `${pct}%` }}
+                                  />
+                                </div>
                               </div>
 
-                              {/* Progress bar */}
-                              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-ui-border-base">
-                                <div
-                                  className={`h-full transition-all duration-300 ${barColor}`}
-                                  style={{ width: `${pct}%` }}
-                                />
+                              {/* Meter 2: Physical 28-day stability & degradation gauge */}
+                              <div className="mt-3.5 rounded-lg border border-ui-border-base/70 bg-white p-3">
+                                <div className="flex flex-wrap items-center justify-between gap-1 text-xs">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-ui-fg-muted">
+                                      28-Day Stability Window
+                                    </span>
+                                    <span className="text-[11px] text-ui-fg-subtle">
+                                      · Day {Math.min(28, daysElapsed + 1)} of 28
+                                    </span>
+                                  </div>
+                                  <span
+                                    className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${stabilityStatus.badgeClass}`}
+                                  >
+                                    {stabilityStatus.label} ({stabilityStatus.badge})
+                                  </span>
+                                </div>
+                                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-ui-border-base">
+                                  <div
+                                    className={`h-full transition-all duration-300 ${stabilityStatus.barColor}`}
+                                    style={{ width: `${stabilityPct}%` }}
+                                  />
+                                </div>
+                                <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-ui-fg-subtle">
+                                  <span>Cold-Chain Buffer: 2°C – 8°C Protected</span>
+                                  <span>Solvent: Bacteriostatic 0.9% Preservation</span>
+                                </div>
                               </div>
 
                               {/* Batch & Dates */}
@@ -632,7 +693,7 @@ export default function ProductsAndSupplies({
                                     href="/account/research-hub?section=schedule"
                                     className="inline-flex items-center justify-center gap-1 rounded-lg border border-ui-border-base bg-white px-3 py-2 min-h-[40px] text-xs font-medium text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle transition-colors touch-manipulation w-full sm:w-auto"
                                   >
-                                    <span>Dosing Schedule →</span>
+                                    <span>Research Schedule →</span>
                                   </LocalizedClientLink>
                                   {!isLowSupply && (
                                     <ReplenishButton
@@ -685,13 +746,24 @@ export default function ProductsAndSupplies({
                 })}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-ui-border-base bg-ui-bg-subtle p-8 text-center">
-                <p className="text-sm font-medium text-ui-fg-base">No active vials in storage</p>
-                <p className="mt-1 text-xs text-ui-fg-subtle">
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/70 p-8 text-center flex flex-col items-center justify-center gap-y-3">
+                <p className="text-sm font-semibold text-slate-900">No active vials in storage</p>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
                   {totalArchivedVials > 0
                     ? "All registered vials are currently in archive. You can restore vials below."
-                    : "Delivered orders with research compounds will appear above for activation."}
+                    : "Delivered orders with research compounds will appear here for 28-day stability activation."}
                 </p>
+                {totalArchivedVials === 0 && (
+                  <div className="mt-2">
+                    <LocalizedClientLink
+                      href="/store"
+                      className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition-colors shadow-xs"
+                    >
+                      <span>Explore Compound Catalog</span>
+                      <span aria-hidden="true">&rarr;</span>
+                    </LocalizedClientLink>
+                  </div>
+                )}
               </div>
             )}
 
@@ -783,7 +855,7 @@ export default function ProductsAndSupplies({
                                     <button
                                       type="button"
                                       onClick={() => handleRestoreVial(sup.supply_id)}
-                                      className="text-[11px] font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+                                      className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 transition-colors"
                                     >
                                       Restore to Active Storage ↑
                                     </button>

@@ -1,9 +1,13 @@
 import { Metadata } from "next"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import {
+  resolveProductHandle,
+  getCanonicalProductSlug,
+} from "@lib/util/product-handles"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -38,7 +42,7 @@ export async function generateStaticParams() {
       .flatMap((countryData) =>
         countryData.products.map((product) => ({
           countryCode: countryData.country,
-          handle: product.handle,
+          handle: getCanonicalProductSlug(product.handle),
         }))
       )
       .filter((param) => param.handle)
@@ -78,14 +82,18 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const resolvedHandle = resolveProductHandle(handle)
+
   const product = await listProducts({
     countryCode: params.countryCode,
-    queryParams: { handle },
+    queryParams: { handle: resolvedHandle },
   }).then(({ response }) => response.products[0])
 
   if (!product) {
     notFound()
   }
+
+  const canonicalSlug = getCanonicalProductSlug(product.handle)
 
   return {
     title: product.title,
@@ -94,6 +102,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title: product.title,
       description: `${product.title}`,
       images: product.thumbnail ? [product.thumbnail] : [],
+    },
+    alternates: {
+      canonical: `/${params.countryCode}/products/${canonicalSlug}`,
     },
   }
 }
@@ -109,13 +120,24 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
+  const resolvedHandle = resolveProductHandle(params.handle)
+
   const pricedProduct = await listProducts({
     countryCode: params.countryCode,
-    queryParams: { handle: params.handle },
+    queryParams: { handle: resolvedHandle },
   }).then(({ response }) => response.products[0])
 
   if (!pricedProduct) {
     notFound()
+  }
+
+  // Canonical redirect: If accessed via internal DB handle or outdated alias, redirect to canonical slug
+  const canonicalSlug = getCanonicalProductSlug(pricedProduct.handle)
+  if (params.handle.toLowerCase().trim() !== canonicalSlug) {
+    const query = selectedVariantId
+      ? `?v_id=${encodeURIComponent(selectedVariantId)}`
+      : ""
+    permanentRedirect(`/${params.countryCode}/products/${canonicalSlug}${query}`)
   }
 
   const images = getImagesForVariant(pricedProduct, selectedVariantId)

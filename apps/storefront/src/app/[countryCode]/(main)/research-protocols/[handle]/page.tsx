@@ -1,12 +1,171 @@
 import {
   listResearchProtocolRecommendations,
   retrieveResearchProtocol,
+  type StoreResearchProtocol,
 } from "@lib/data/research-protocols"
+import {
+  getCompoundProtocol,
+  type CompoundAnalyticalProtocol,
+} from "@lib/data/compound-protocols"
 import { listProducts } from "@lib/data/products"
+import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ProductRecommendations from "@modules/research-protocols/product-recommendations"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+
+function adaptCompoundToStoreProtocol(
+  analytical: CompoundAnalyticalProtocol,
+  handle: string
+): StoreResearchProtocol {
+  return {
+    handle,
+    revision: 1,
+    title: `${analytical.compoundName} Analytical Protocol`,
+    summary: analytical.subtitle,
+    published_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    products: analytical.handles.map((h) => ({
+      id: `prod_${h}`,
+      title: analytical.compoundName,
+      handle: h,
+      thumbnail: null,
+    })),
+    access: {
+      full_protocol: "purchaser",
+      community: "member",
+    },
+    search_indexable: true,
+    recommendations_enabled: false,
+    content: {
+      compound_name: analytical.compoundName,
+      short_introduction: analytical.subtitle,
+      product_format: "Lyophilized Analytical Standard",
+      category: analytical.category,
+      research_use_label: "In-Vitro Laboratory Protocol",
+      last_reviewed_at: "September 2026",
+      quick_reference: [
+        {
+          key: "target_solvent",
+          label: "Target Solvent",
+          value: "Bacteriostatic Water USP",
+          description: "0.9% Benzyl Alcohol preserved water",
+          evidence_label: null,
+          reference_keys: [],
+        },
+        {
+          key: "diluent_ratio",
+          label: "Diluent Ratio",
+          value: `${analytical.reconstitution.defaultDiluentMl.toFixed(1)} mL / ${analytical.reconstitution.defaultVialNetMg} mg`,
+          description: `Target concentration: ${analytical.reconstitution.resultingConcentrationMgPerMl.toFixed(1)} mg/mL`,
+          evidence_label: null,
+          reference_keys: [],
+        },
+        {
+          key: "lyophilized_storage",
+          label: "Lyophilized Storage",
+          value: "-20°C Desiccated",
+          description: "24-month sealed stability standard",
+          evidence_label: null,
+          reference_keys: [],
+        },
+        {
+          key: "liquid_stability",
+          label: "Reconstituted Stability",
+          value: "2°C–8°C Refrigerated",
+          description: "Use within 28 days; protect from light",
+          evidence_label: null,
+          reference_keys: [],
+        },
+        {
+          key: "purity",
+          label: "Purity Release Spec",
+          value: analytical.purityStandard.split("(")[0].trim(),
+          description: "HPLC analytical release standard",
+          evidence_label: null,
+          reference_keys: [],
+        },
+        {
+          key: "cadence",
+          label: "Analytical Cadence",
+          value: analytical.dosing.standardDoseDisplay,
+          description: analytical.dosing.cadence,
+          evidence_label: null,
+          reference_keys: [],
+        },
+      ],
+      sections: [
+        {
+          key: "preparation",
+          title: "Reconstitution & Handling Protocol",
+          body: `${analytical.reconstitution.dissolutionMethod}\n\nHandling Standard: ${analytical.reconstitution.handlingRule}`,
+          visible: true,
+          position: 1,
+          reference_keys: [],
+        },
+        {
+          key: "dosing_schedule",
+          title: "Calibrated Titration & Dosing Roadmap",
+          body: analytical.dosing.titrationSteps
+            .map(
+              (s) =>
+                `• ${s.stage} (${s.timeframe}): ${s.doseDisplay} — Cadence: ${s.cadence}\n  Focus: ${s.focus}${
+                  s.notes ? `\n  Notes: ${s.notes}` : ""
+                }`
+            )
+            .join("\n\n"),
+          visible: true,
+          position: 2,
+          reference_keys: [],
+        },
+        {
+          key: "storage",
+          title: "Storage & Stability Guidelines",
+          body: `Lyophilized Standard: ${analytical.storage.lyophilized}\nReconstituted Solution: ${
+            analytical.storage.reconstituted
+          }\nProtection: ${
+            analytical.storage.lightProtection
+              ? "Protect from direct ultraviolet light."
+              : "Standard analytical laboratory storage."
+          }`,
+          visible: true,
+          position: 3,
+          reference_keys: [],
+        },
+      ],
+      faqs: [
+        {
+          key: "reconstitution_faq",
+          question: `How should ${analytical.compoundName} be reconstituted?`,
+          answer: analytical.reconstitution.dissolutionMethod,
+          position: 1,
+        },
+        {
+          key: "half_life_faq",
+          question: `What is the estimated laboratory half-life of ${analytical.compoundName}?`,
+          answer: `${analytical.compoundName} displays an estimated half-life of ${analytical.dosing.halfLife}. Typical study protocols run for ${analytical.dosing.typicalProtocolDuration} followed by a washout period of ${analytical.dosing.washoutPeriod}.`,
+          position: 2,
+        },
+      ],
+      references: [
+        {
+          reference_key: "ref-1",
+          title: `${analytical.compoundName} Analytical Profile & High-Performance Liquid Chromatography Assay Standard`,
+          authors: "PepStack Analytical Bioresearch Registry",
+          published_at: "2026",
+          url: null,
+          doi: null,
+          evidence_type: "HPLC Monograph",
+          supported_claim:
+            "Standardized peptide sequence, molecular purity, and handling guidelines.",
+          customer_annotation:
+            "Authoritative reference dossier for research laboratory use.",
+        },
+      ],
+      disclaimer: analytical.disclaimer,
+    },
+  }
+}
 
 type Props = { params: Promise<{ handle: string; countryCode: string }> }
 
@@ -24,15 +183,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           : undefined,
     }
   } catch {
-    return { title: "Research Protocol" }
+    const analytical = getCompoundProtocol(handle)
+    return {
+      title: `${analytical.compoundName} Protocol | Research Protocols`,
+      description: analytical.subtitle,
+    }
   }
 }
 
 export default async function ResearchProtocolPage({ params }: Props) {
   const { handle, countryCode } = await params
-  const protocol = await retrieveResearchProtocol(handle)
+  let protocol: StoreResearchProtocol | null = await retrieveResearchProtocol(handle)
     .then((response) => response.protocol)
     .catch(() => null)
+
+  if (!protocol) {
+    const analytical = getCompoundProtocol(handle)
+    if (analytical) {
+      protocol = adaptCompoundToStoreProtocol(analytical, handle)
+    }
+  }
+
   if (!protocol) notFound()
 
   const recommendationResult = protocol.recommendations_enabled
@@ -70,15 +241,14 @@ export default async function ResearchProtocolPage({ params }: Props) {
     .sort((a, b) => a.position - b.position)
   const faqs = [...content.faqs].sort((a, b) => a.position - b.position)
 
-  // Emoji icons for quick-reference card keys
-  const qrIcons: Record<string, string> = {
-    target_solvent: "🧪",
-    diluent_ratio: "💧",
-    lyophilized_storage: "❄️",
-    liquid_stability: "🔬",
-    reconstitution: "⚗️",
-    purity: "✅",
-    molecular_weight: "⚖️",
+  const qrLabels: Record<string, string> = {
+    target_solvent: "Solvent",
+    diluent_ratio: "Ratio",
+    lyophilized_storage: "Storage",
+    liquid_stability: "Stability",
+    reconstitution: "Preparation",
+    purity: "Specifications",
+    molecular_weight: "Mass",
   }
 
   return (
@@ -97,7 +267,8 @@ export default async function ResearchProtocolPage({ params }: Props) {
                 border: "1px solid rgb(253 230 138)",
               }}
             >
-              ⚠️ {content.research_use_label}
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-600" />
+              {content.research_use_label}
             </span>
           ) : null}
 
@@ -152,24 +323,25 @@ export default async function ResearchProtocolPage({ params }: Props) {
 
         {/* ── Quick-reference cards ── */}
         {content.quick_reference.length ? (
-          <section className="mt-8 grid gap-4 small:grid-cols-2 large:grid-cols-4">
+          <section className="mt-8 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {content.quick_reference.map((item) => {
-              const icon = qrIcons[item.key] ?? "📋"
+              const tag = qrLabels[item.key] ?? "Parameter"
               return (
                 <div
                   key={item.key}
-                  className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-5"
-                  style={{ borderLeft: "3px solid rgb(99 102 241)" }}
+                  className="rounded-xl border border-ui-border-base bg-white p-4 sm:p-5 border-l-4 border-l-emerald-500 shadow-xs flex flex-col justify-between"
                 >
-                  <p className="flex items-center gap-1.5 text-xsmall-semi uppercase tracking-wide text-ui-fg-subtle">
-                    <span aria-hidden="true">{icon}</span>
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-xl-semi text-ui-fg-base">
-                    {item.value}
-                  </p>
+                  <div>
+                    <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-ui-fg-subtle">
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      {item.label || tag}
+                    </p>
+                    <p className="mt-1.5 text-base sm:text-lg font-bold text-ui-fg-base tracking-tight leading-snug">
+                      {item.value}
+                    </p>
+                  </div>
                   {item.description ? (
-                    <p className="mt-1.5 text-small-regular text-ui-fg-subtle">
+                    <p className="mt-2 text-xs text-ui-fg-subtle leading-relaxed line-clamp-2">
                       {item.description}
                     </p>
                   ) : null}
@@ -232,8 +404,7 @@ export default async function ResearchProtocolPage({ params }: Props) {
                   className="flex gap-4 rounded-rounded border border-ui-border-base bg-ui-bg-base p-4"
                 >
                   <span
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xsmall-semi text-white"
-                    style={{ backgroundColor: "rgb(99 102 241)" }}
+                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xsmall-semi text-white"
                     aria-hidden="true"
                   >
                     {index + 1}
@@ -278,7 +449,7 @@ export default async function ResearchProtocolPage({ params }: Props) {
               {protocol.products.map((product) => (
                 <LocalizedClientLink
                   key={product.id}
-                  href={`/products/${product.handle}`}
+                  href={`/products/${getCanonicalProductSlug(product.handle)}`}
                   className="inline-flex items-center gap-2 rounded-rounded border border-ui-border-base bg-ui-bg-base px-4 py-2.5 text-small-semi transition-colors hover:border-ui-border-interactive hover:bg-ui-bg-subtle"
                 >
                   {product.title}
@@ -304,36 +475,31 @@ export default async function ResearchProtocolPage({ params }: Props) {
           </p>
         </div>
 
-        {/* ── Full Protocol Access CTA (replaces sidebar) ── */}
-        <div
-          className="mt-12 overflow-hidden rounded-rounded"
-          style={{ backgroundColor: "rgb(17 24 39)" }}
-        >
-          <div className="flex flex-col gap-8 p-8 small:flex-row small:items-center small:justify-between">
-            <div className="min-w-0">
-              <p
-                className="text-small-semi uppercase tracking-wider"
-                style={{ color: "rgb(165 180 252)" }}
-              >
-                Research Hub
-              </p>
-              <h2 className="mt-2 text-2xl-semi text-white">
-                Unlock full protocol access
+        {/* ── Full Protocol Access CTA ── */}
+        <div className="mt-12 overflow-hidden rounded-2xl border border-emerald-200/90 bg-gradient-to-r from-emerald-50/80 via-teal-50/40 to-white p-6 small:p-8 shadow-xs">
+          <div className="flex flex-col gap-6 medium:flex-row medium:items-center medium:justify-between">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-600" />
+                <p className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+                  Customer Research Hub
+                </p>
+              </div>
+              <h2 className="mt-2 text-xl font-bold text-slate-900 small:text-2xl">
+                Unlock Full Protocol &amp; Titration Schedules
               </h2>
               <ul className="mt-4 grid gap-2">
                 {[
                   "Complete dosage schedules & titration steps",
-                  "Reconstitution calculator with custom defaults",
-                  "Protected community discussion & research observations",
+                  "Automated dose calendar & routine tracking",
+                  "Private vial hub & encrypted research journal",
                 ].map((feature) => (
                   <li
                     key={feature}
-                    className="flex items-start gap-2 text-small-regular"
-                    style={{ color: "rgb(209 213 219)" }}
+                    className="flex items-start gap-2 text-sm text-slate-700"
                   >
                     <span
-                      className="mt-0.5 shrink-0"
-                      style={{ color: "rgb(129 140 248)" }}
+                      className="mt-0.5 shrink-0 font-bold text-emerald-600"
                       aria-hidden="true"
                     >
                       ✓
@@ -342,18 +508,14 @@ export default async function ResearchProtocolPage({ params }: Props) {
                   </li>
                 ))}
               </ul>
-              <p
-                className="mt-4 text-xsmall-regular"
-                style={{ color: "rgb(156 163 175)" }}
-              >
-                Available to customers with an eligible purchase.
+              <p className="mt-4 text-xs text-slate-500">
+                Automatically unlocked for customers with a verified compound order.
               </p>
             </div>
             <div className="shrink-0">
               <LocalizedClientLink
                 href="/account/research-hub"
-                className="inline-flex items-center gap-2 rounded-rounded px-6 py-3 text-base-semi text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: "rgb(99 102 241)" }}
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition-colors hover:bg-emerald-500"
               >
                 Open Research Hub
                 <span aria-hidden="true">→</span>

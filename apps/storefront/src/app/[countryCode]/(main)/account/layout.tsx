@@ -7,6 +7,7 @@ import {
   retrieveActiveResearchAgreement,
   retrieveResearchAgreementStatus,
 } from "@lib/data/research-agreement"
+import { retrieveCustomerNotificationUnreadCount } from "@lib/data/customer-notifications"
 
 export default async function AccountPageLayout({
   children,
@@ -25,12 +26,18 @@ export default async function AccountPageLayout({
         .then((configuration) => configuration.available)
         .catch(() => false)
     : false
+  const unreadNotificationsCount = customer
+    ? await retrieveCustomerNotificationUnreadCount()
+        .then((res) => res.unread_count)
+        .catch(() => 0)
+    : 0
 
   return (
     <AccountLayout
       customer={customer}
       researchTrackingAvailable={researchTrackingAvailable}
       setupRequired={Boolean(agreementStatus?.setup_required)}
+      unreadNotificationsCount={unreadNotificationsCount}
     >
       {customer ? children : <LoginTemplate agreement={agreement} />}
       {/* TODO: Re-add Toaster component when needed */}

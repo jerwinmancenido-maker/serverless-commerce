@@ -6,6 +6,7 @@ import {
 } from "@lib/data/research-protocols"
 import { addToCart } from "@lib/data/cart"
 import { getProductPrice } from "@lib/util/get-product-price"
+import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
 import type { HttpTypes } from "@medusajs/types"
@@ -148,7 +149,7 @@ export default function ProductRecommendations({
                   </button>
                 ) : (
                 <LocalizedClientLink
-                  href={`/products/${product.handle}`}
+                  href={`/products/${getCanonicalProductSlug(product.handle)}`}
                   className="mt-4 inline-flex w-full items-center justify-center rounded-rounded bg-ui-button-inverted px-4 py-2 text-small-semi text-ui-fg-on-inverted hover:bg-ui-button-inverted-hover"
                   onClick={() => {
                     void recordResearchProtocolRecommendationEvent({

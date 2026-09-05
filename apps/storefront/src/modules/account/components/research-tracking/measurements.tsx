@@ -54,6 +54,15 @@ type Range = "30" | "90" | "all"
 
 const initialState: ResearchTrackingActionState = { success: false, error: null }
 
+function escapeCsv(val: string | number | null | undefined): string {
+  if (val == null) return ""
+  const str = String(val)
+  if (str.includes(",") || str.includes("\"") || str.includes("\n") || str.includes("\r")) {
+    return `"${str.replace(/"/g, '""')}"`
+  }
+  return str
+}
+
 const METRIC_LABELS: Record<Metric, string> = {
   weight: "Weight",
   waist: "Waist",
@@ -332,7 +341,7 @@ function TrendChart({
     target !== null ? 90 - ((target - chartMin) / span) * 78 : null
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50/60 to-white p-1">
+    <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50/60 to-white p-1">
       <svg
         viewBox="0 0 100 100"
         role="img"
@@ -368,7 +377,7 @@ function TrendChart({
             y1={targetY}
             x2="100"
             y2={targetY}
-            stroke="#10b981"
+            stroke="#3b82f6"
             strokeDasharray="4 3"
             vectorEffect="non-scaling-stroke"
           />
@@ -378,14 +387,14 @@ function TrendChart({
         <polyline
           points={linePoints}
           fill="none"
-          stroke="#6366f1"
+          stroke="#2563eb"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
           vectorEffect="non-scaling-stroke"
         />
 
-        {/* Data points — green if confirmed dose that day, indigo otherwise */}
+        {/* Data points — sapphire blue if confirmed dose that day, deep blue otherwise */}
         {pts.map((point, index) => {
           const { x, y } = toXY(point.value, index)
           const isDoseDay = confirmedDates.has(point.date)
@@ -395,12 +404,12 @@ function TrendChart({
               cx={x}
               cy={y}
               r="2.2"
-              fill={isDoseDay ? "#22c55e" : "#6366f1"}
+              fill={isDoseDay ? "#3b82f6" : "#2563eb"}
               vectorEffect="non-scaling-stroke"
             >
               <title>
                 {formatDate(point.date)}: {point.value} {point.unit}
-                {isDoseDay ? " · ✅ Dose confirmed" : ""}
+                {isDoseDay ? " · Dose confirmed" : ""}
               </title>
             </circle>
           )
@@ -416,7 +425,7 @@ function TrendChart({
       {/* Legend */}
       <div className="mt-2 flex items-center gap-4 px-2 text-[10px] text-ui-fg-muted">
         <div className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full bg-indigo-500" />
+          <span className="inline-block h-2 w-2 rounded-full bg-emerald-600" />
           Measurement
         </div>
         <div className="flex items-center gap-1.5">
@@ -468,7 +477,7 @@ function MeasurementRow({
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-indigo-100 bg-indigo-50 text-indigo-600">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
           <MetricIcon metric={measurement.metric_type as Metric} className="h-4 w-4" />
         </span>
         <div>
@@ -490,12 +499,12 @@ function MeasurementRow({
           {(linkedMaterial || linkedRoutine) && (
             <div className="mt-1 flex flex-wrap items-center gap-1.5">
               {linkedMaterial && (
-                <span className="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
+                <span className="inline-flex items-center rounded-md border border-emerald-200 bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
                   Compound: {linkedMaterial.label}
                 </span>
               )}
               {linkedRoutine && (
-                <span className="inline-flex items-center rounded-md border border-violet-200 bg-violet-50 px-1.5 py-0.5 text-[10px] font-medium text-violet-700">
+                <span className="inline-flex items-center rounded-md border border-teal-200 bg-teal-50 px-1.5 py-0.5 text-[10px] font-medium text-teal-700">
                   Routine: {linkedRoutine.current_revision.label}
                 </span>
               )}
@@ -540,7 +549,7 @@ function MeasurementRow({
                   type="submit"
                   className={`rounded-lg px-3 py-1.5 text-xs font-medium text-white ${
                     isVoided
-                      ? "bg-indigo-600 hover:bg-indigo-700"
+                      ? "bg-emerald-600 hover:bg-emerald-700"
                       : "bg-rose-600 hover:bg-rose-700"
                   }`}
                 >
@@ -554,7 +563,7 @@ function MeasurementRow({
             type="button"
             onClick={() => setConfirming(true)}
             className={`text-xs underline underline-offset-2 ${
-              isVoided ? "text-indigo-600" : "text-ui-fg-muted hover:text-rose-600"
+              isVoided ? "text-emerald-600" : "text-ui-fg-muted hover:text-rose-600"
             }`}
           >
             {isVoided ? "Restore" : "Void"}
@@ -587,7 +596,7 @@ function InlineLogForm({
   const localTime = now.toTimeString().slice(0, 5)
 
   const inputCls =
-    "w-full rounded-xl border border-ui-border-base bg-white px-4 py-3 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+    "w-full rounded-xl border border-ui-border-base bg-white px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
 
   return (
     <div className="overflow-hidden rounded-2xl border border-ui-border-base bg-white">
@@ -620,7 +629,7 @@ function InlineLogForm({
                 onClick={() => setMetric(m)}
                 className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-sm font-medium transition-all ${
                   m === metric
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                    ? "border-emerald-500 bg-emerald-50 text-emerald-700"
                     : "border-ui-border-base bg-white text-ui-fg-subtle hover:text-ui-fg-base"
                 }`}
               >
@@ -639,7 +648,7 @@ function InlineLogForm({
                 onClick={() => setMetric(m)}
                 className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-sm font-medium transition-all ${
                   m === metric
-                    ? "border-rose-400 bg-rose-50 text-rose-700"
+                    ? "border-emerald-500 bg-emerald-50 text-emerald-700"
                     : "border-ui-border-base bg-white text-ui-fg-subtle hover:text-ui-fg-base"
                 }`}
               >
@@ -786,15 +795,28 @@ export default function Measurements(props: Props) {
   ) as Metric[]
 
   function exportCsv() {
-    const rows = [
-      "date,value,unit",
-      ...filteredPoints.map((p) => `${p.date},${p.value},${p.unit}`),
-    ]
-    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" })
+    const header = ["Date", "Metric", "Value", "Unit", "Revision", "Status", "Note", "Routine ID", "Tracked Material ID"]
+    const rows = props.measurements.map((m) => {
+        const rev = m.current_revision
+        return [
+          escapeCsv(rev.local_date),
+          escapeCsv(METRIC_LABELS[m.metric_type as Metric] ?? m.metric_type),
+          escapeCsv(rev.original_value),
+          escapeCsv(UNIT_DISPLAY[rev.original_unit] ?? rev.original_unit),
+          escapeCsv(rev.revision_number),
+          escapeCsv(m.status),
+          escapeCsv(rev.note ?? ""),
+          escapeCsv(rev.routine_id ?? ""),
+          escapeCsv(rev.tracked_material_id ?? ""),
+        ].join(",")
+      })
+
+    const csvContent = [header.join(","), ...rows].join("\r\n")
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `research-progress-${new Date().toISOString().slice(0, 10)}.csv`
+    a.download = `research-measurements-${metric}-${new Date().toISOString().slice(0, 10)}.csv`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -824,11 +846,11 @@ export default function Measurements(props: Props) {
 
       {/* ── Hero stat card ─────────────────────────────────────────── */}
       {s && (
-        <div className="overflow-hidden rounded-2xl border border-ui-border-base bg-white">
-          <div className="border-b border-ui-border-base bg-gradient-to-r from-indigo-50 to-white px-6 py-5">
+        <div className="overflow-hidden rounded-2xl border border-ui-border-base bg-white shadow-2xs">
+          <div className="border-b border-ui-border-base bg-gradient-to-r from-emerald-50/70 via-white to-white px-6 py-5">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-indigo-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-600">
                   Progress Summary
                 </p>
                 <p className="mt-1 text-2xl font-bold text-ui-fg-base">
@@ -922,13 +944,18 @@ export default function Measurements(props: Props) {
               value={targetText}
               onChange={(e) => setTargetText(e.target.value)}
               placeholder="Target…"
-              className="w-24 rounded-xl border border-ui-border-base bg-white px-3 py-1.5 text-xs outline-none focus:border-indigo-500"
+              className="w-24 rounded-xl border border-ui-border-base bg-white px-3 py-1.5 text-xs outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-200"
             />
             <button
               type="button"
               onClick={exportCsv}
-              className="rounded-xl border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium hover:bg-ui-bg-subtle"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-ui-border-base bg-white px-3 py-1.5 text-xs font-semibold text-ui-fg-base hover:border-emerald-300 hover:bg-emerald-50/50 hover:text-emerald-700 transition-colors shadow-2xs"
             >
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
               Export CSV
             </button>
           </div>
@@ -966,7 +993,7 @@ export default function Measurements(props: Props) {
         <button
           type="button"
           onClick={() => setShowLogForm(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-ui-border-base py-4 text-sm font-medium text-ui-fg-subtle transition-colors hover:border-indigo-400 hover:text-indigo-600"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-ui-border-base py-4 text-sm font-medium text-ui-fg-subtle transition-colors hover:border-emerald-400 hover:text-emerald-600"
         >
           <span className="text-lg">+</span> Log a Measurement
         </button>
@@ -991,7 +1018,7 @@ export default function Measurements(props: Props) {
         {props.measurements.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-8 text-center">
             <svg
-              className="h-12 w-12 text-indigo-300"
+              className="h-12 w-12 text-emerald-300"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -1009,7 +1036,7 @@ export default function Measurements(props: Props) {
             <button
               type="button"
               onClick={() => setShowLogForm(true)}
-              className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
             >
               Log your first entry →
             </button>
@@ -1050,7 +1077,7 @@ export default function Measurements(props: Props) {
             <ol className="space-y-3">
               {milestones.map((event) => (
                 <li key={event.id} className="flex items-start gap-3">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-indigo-400" />
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-400" />
                   <div>
                     <p className="text-sm font-medium capitalize text-ui-fg-base">
                       {event.title}

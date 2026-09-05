@@ -46,18 +46,20 @@ const Login = ({ setCurrentView }: Props) => {
           Please verify your email, then sign in.
         </div>
       )}
-      <form className="w-full" action={formAction}>
+      <form id="customer-login-form" name="customer-login" className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
           <Input
+            id="email"
             label="Email"
             name="email"
             type="email"
             title="Enter a valid email address."
-            autoComplete="email"
+            autoComplete="username"
             required
             data-testid="email-input"
           />
           <Input
+            id="password"
             label="Password"
             name="password"
             type="password"

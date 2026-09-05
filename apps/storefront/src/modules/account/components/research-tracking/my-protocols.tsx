@@ -2,6 +2,7 @@
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
+import { getCompoundProtocol } from "@lib/data/compound-protocols"
 import type { ResearchProtocolAccess } from "@lib/data/research-tracking"
 import {
   startProtocolRoutineAction,
@@ -163,6 +164,39 @@ function ProtocolRoutineForm({
   )
 }
 
+function ProtocolThumbnail({
+  thumbnail,
+  title,
+}: {
+  thumbnail?: string | null
+  title?: string | null
+}) {
+  const [imgError, setImgError] = useState(false)
+
+  if (!thumbnail || imgError) {
+    return (
+      <span
+        className="flex h-11 w-11 shrink-0 aspect-square items-center justify-center rounded-lg bg-gradient-to-br from-emerald-600 to-slate-800 text-xs font-bold tracking-tight text-white shadow-xs"
+        aria-hidden="true"
+      >
+        {(title || "").slice(0, 2).toUpperCase()}
+      </span>
+    )
+  }
+
+  return (
+    <div className="relative flex h-11 w-11 shrink-0 aspect-square items-center justify-center overflow-hidden rounded-lg border border-ui-border-base bg-white p-1 shadow-2xs">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={thumbnail}
+        alt={title || "Compound reference vial"}
+        onError={() => setImgError(true)}
+        className="h-full w-full max-h-full max-w-full object-contain"
+      />
+    </div>
+  )
+}
+
 export default function MyProtocols({
   protocols,
   runtimeReady,
@@ -185,7 +219,7 @@ export default function MyProtocols({
           </p>
         </div>
         <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-ui-border-base bg-white px-3 py-1 text-xs font-medium text-ui-fg-subtle shadow-2xs">
-          <span className="size-1.5 rounded-full bg-emerald-500" />
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           {protocols.length} {protocols.length === 1 ? "protocol" : "protocols"} available
         </span>
       </div>
@@ -198,32 +232,23 @@ export default function MyProtocols({
         <div className="grid gap-5 large:grid-cols-2">
           {protocols.map((protocol) => {
             const isCurrent = !protocol.has_newer_revision
+            const analyticalProtocol = getCompoundProtocol(
+              protocol.protocol_handle || protocol.product.title || protocol.protocol_title
+            )
+            const recon = analyticalProtocol.reconstitution
 
             return (
               <article
                 key={protocol.profile_access_id}
-                className={`group overflow-hidden rounded-2xl border border-ui-border-base bg-white shadow-xs transition-all duration-200 hover:shadow-md ${
-                  isCurrent ? "border-l-4 border-l-emerald-500" : "border-l-4 border-l-blue-500"
+                className={`group overflow-hidden rounded-2xl border border-ui-border-base bg-white shadow-xs transition-all duration-200 hover:shadow-md hover:border-emerald-300/80 ${
+                  isCurrent ? "border-l-4 border-l-emerald-500" : "border-l-4 border-l-amber-500"
                 }`}
               >
                 <div className="flex gap-4 p-5">
-                  <div className="flex size-18 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-ui-bg-subtle shadow-2xs">
-                    {protocol.product.thumbnail ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={protocol.product.thumbnail}
-                        alt=""
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <span
-                        className="flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-lg font-bold tracking-tight text-white shadow-xs"
-                        aria-hidden="true"
-                      >
-                        {(protocol.protocol_title || protocol.product.title || "").slice(0, 2).toUpperCase()}
-                      </span>
-                    )}
-                  </div>
+                  <ProtocolThumbnail
+                    thumbnail={protocol.product.thumbnail}
+                    title={protocol.protocol_title || protocol.product.title}
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="text-base font-bold tracking-tight text-ui-fg-base">
                       {protocol.protocol_title}
@@ -232,23 +257,69 @@ export default function MyProtocols({
                       {protocol.product.title}
                       {protocol.variant?.title ? ` · ${protocol.variant.title}` : ""}
                     </p>
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                       <span className="rounded-md border border-ui-border-base/70 bg-ui-bg-subtle px-2 py-0.5 font-medium text-ui-fg-subtle">
                         Preserved rev. {protocol.preserved_revision}
                       </span>
                       {protocol.has_newer_revision ? (
-                        <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 font-semibold text-blue-700">
+                        <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-amber-800">
                           Rev. {protocol.current_revision} available
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
-                          <span className="size-1.5 rounded-full bg-emerald-500" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                           Current
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
+
+                {/* Analytical Reconstitution & Dilution Specification Bar */}
+                <div className="mx-5 mb-4 rounded-xl border border-emerald-200/80 bg-emerald-50/40 p-3.5 text-xs">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-100 pb-2">
+                    <span className="font-semibold text-emerald-950">
+                      Reconstitution & Dilution Ratios
+                    </span>
+                    <span className="rounded-md border border-emerald-300/80 bg-white px-2 py-0.5 text-[10px] font-medium text-emerald-800 shadow-2xs">
+                      28-Day Stability Window (2°C – 8°C)
+                    </span>
+                  </div>
+
+                  <div className="mt-2.5 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-3">
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-ui-fg-muted">Solvent Type</span>
+                      <p className="font-medium text-ui-fg-base truncate" title={recon.solvent}>
+                        BAC Water 0.9% Preserved
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-ui-fg-muted">Standard Ratio</span>
+                      <p className="font-semibold text-emerald-800">
+                        {recon.defaultDiluentMl} mL per {recon.defaultVialNetMg} mg vial
+                      </p>
+                    </div>
+                    <div className="col-span-2 sm:col-span-1">
+                      <span className="text-[10px] uppercase tracking-wider text-ui-fg-muted">Target Yield</span>
+                      <p className="font-semibold text-ui-fg-base">
+                        {recon.resultingConcentrationMgPerMl} mg/mL ({recon.resultingConcentrationMgPerMl * 1000} mcg/mL)
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-emerald-100/70 pt-2.5">
+                    <p className="text-[10px] text-ui-fg-subtle">
+                      {analyticalProtocol.storage.reconstituted}
+                    </p>
+                    <LocalizedClientLink
+                      href={`/account/research-hub?section=calculator&mass=${recon.defaultVialNetMg}&unit=mg&name=${encodeURIComponent(protocol.protocol_title)}`}
+                      className="inline-flex items-center gap-1 rounded-md bg-emerald-700 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-emerald-800 transition-colors"
+                    >
+                      <span>Calculate Reconstitution →</span>
+                    </LocalizedClientLink>
+                  </div>
+                </div>
+
                 <div className="border-t border-ui-border-base bg-ui-bg-subtle/30 px-5 py-4">
                   <p className="text-xs font-medium text-ui-fg-muted">
                     Order {protocol.order.display_id} · {new Date(protocol.order.created_at).toLocaleDateString("en-PH", { year: "numeric", month: "short", day: "numeric" })}
@@ -312,11 +383,34 @@ export default function MyProtocols({
           })}
         </div>
       ) : (
-        <div className="rounded-2xl border border-ui-border-base bg-white p-8 text-center shadow-xs">
-          <p className="text-base font-semibold text-ui-fg-base">No protocols linked yet</p>
-          <p className="mt-1 text-sm text-ui-fg-subtle">
-            Eligible purchases will appear here with their preserved revision.
-          </p>
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/70 p-8 text-center flex flex-col items-center justify-center gap-y-3">
+          <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-800">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 2v7.31a2 2 0 0 1-.37 1.17l-5.26 7.89A2 2 0 0 0 6 21.5h12a2 2 0 0 0 1.63-3.13l-5.26-7.89A2 2 0 0 1 14 9.31V2" />
+              <path d="M8.5 2h7M7 16h10" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-base font-bold text-slate-900">No protocols linked yet</p>
+            <p className="mt-1 text-sm text-slate-500 max-w-md mx-auto">
+              Preserved reference monographs and reconstitution dosing protocols will automatically bind here upon verified compound delivery.
+            </p>
+          </div>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+            <LocalizedClientLink
+              href="/store"
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition-colors shadow-xs"
+            >
+              <span>Explore Compound Catalog</span>
+              <span aria-hidden="true">&rarr;</span>
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/research-library#protocols"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:border-emerald-300 hover:text-emerald-800 transition-colors shadow-2xs"
+            >
+              <span>Browse Public Protocols</span>
+            </LocalizedClientLink>
+          </div>
         </div>
       )}
     </section>

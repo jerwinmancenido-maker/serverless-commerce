@@ -1,5 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { CurrencyDollar } from "@medusajs/icons"
+import { CurrencyDollar, DocumentText } from "@medusajs/icons"
 import {
   Badge,
   Container,
@@ -95,8 +95,9 @@ const ManualPaymentProofsPage = () => {
         header: "Proof slip",
         cell: ({ row, getValue }) => (
           <div className="flex flex-col gap-0.5">
-            <span className="text-xs font-medium text-ui-fg-base truncate max-w-[200px]">
-              📄 {getValue()}
+            <span className="text-xs font-medium text-ui-fg-base truncate max-w-[200px] flex items-center gap-1">
+              <DocumentText className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+              <span className="truncate">{getValue()}</span>
             </span>
             <span className="text-[10px] text-ui-fg-muted font-mono">
               {Math.ceil(row.original.size_bytes / 1024)} KB

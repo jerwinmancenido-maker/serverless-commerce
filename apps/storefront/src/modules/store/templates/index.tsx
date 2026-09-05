@@ -1,13 +1,13 @@
 import { Suspense } from "react"
-
 import { OptionValueIds } from "@lib/util/product-option-filters"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
-import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-
+import { listCategories } from "@lib/data/categories"
+import CatalogHeader from "@modules/store/components/catalog-header"
+import CatalogToolbar from "@modules/store/components/catalog-toolbar"
 import PaginatedProducts from "./paginated-products"
 
-const StoreTemplate = ({
+export default async function StoreTemplate({
   sortBy,
   page,
   countryCode,
@@ -17,31 +17,33 @@ const StoreTemplate = ({
   page?: string
   countryCode: string
   optionValueIds?: OptionValueIds
-}) => {
+}) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
 
+  const categories = await listCategories()
+
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1 data-testid="store-page-title">All products</h1>
-        </div>
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            countryCode={countryCode}
-            optionValueIds={optionValueIds}
-          />
-        </Suspense>
-      </div>
+    <div className="content-container py-8 max-w-7xl mx-auto px-4 sm:px-6 min-h-[70vh]">
+      <CatalogHeader
+        title="Analytical Reference Compounds & Reagents"
+        description="High-purity lyophilized research peptides and biochemical reference standards. Cold-chain insulated packaging with temperature monitoring dispatched nationwide."
+        badge="LABORATORY REFERENCE CATALOG"
+      />
+
+      <CatalogToolbar
+        sortBy={sort}
+        categories={categories || []}
+      />
+
+      <Suspense fallback={<SkeletonProductGrid />}>
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          countryCode={countryCode}
+          optionValueIds={optionValueIds}
+        />
+      </Suspense>
     </div>
   )
 }
-
-export default StoreTemplate

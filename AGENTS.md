@@ -156,6 +156,7 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 - **Backend routing is file-based.** A store endpoint is `src/api/store/<path>/route.ts` exporting `GET`/`POST`/etc. Don't add a router or register routes manually.
 - **Business logic belongs in workflows**, not in route handlers. Routes resolve and run a workflow; workflows compose steps.
 - Adding a task to `turbo.json` requires declaring its `outputs`, or Turbo will cache nothing/the wrong thing.
+- **Autonomous Subagent Auto-Login**: When browser subagents navigate to test or inspect pages on local endpoints (`:8000`, `:3000`, `:3001`) and encounter a `/login` redirect or expired session, the subagent must automatically detect the login form, fill the development credentials, submit the form, and seamlessly proceed with its task without halting.
 
 ## Common Mistakes
 

@@ -13,6 +13,7 @@ import DeleteButton from "@modules/common/components/delete-button"
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
@@ -27,8 +28,40 @@ const CartDropdown = ({
   >(undefined)
   const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
 
-  const open = () => setCartDropdownOpen(true)
-  const close = () => setCartDropdownOpen(false)
+  const open = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("pepstack:header-popover-opened", { detail: "cart" })
+      )
+    }
+    setCartDropdownOpen(true)
+  }
+
+  const close = () => {
+    if (activeTimer) {
+      clearTimeout(activeTimer)
+      setActiveTimer(undefined)
+    }
+    setCartDropdownOpen(false)
+  }
+
+  // Listen for other header popovers opening to maintain mutual exclusivity
+  useEffect(() => {
+    const handleOtherPopover = (event: Event) => {
+      const customEvent = event as CustomEvent<string>
+      if (customEvent.detail !== "cart") {
+        close()
+      }
+    }
+
+    window.addEventListener("pepstack:header-popover-opened", handleOtherPopover)
+    return () => {
+      window.removeEventListener(
+        "pepstack:header-popover-opened",
+        handleOtherPopover
+      )
+    }
+  }, [])
 
   const totalItems =
     cartState?.items?.reduce((acc, item) => {
@@ -49,9 +82,18 @@ const CartDropdown = ({
   const openAndCancel = () => {
     if (activeTimer) {
       clearTimeout(activeTimer)
+      setActiveTimer(undefined)
     }
 
     open()
+  }
+
+  const handleMouseLeave = () => {
+    if (activeTimer) {
+      clearTimeout(activeTimer)
+    }
+    const timer = setTimeout(close, 120)
+    setActiveTimer(timer)
   }
 
   // Clean up the timer when the component unmounts
@@ -75,9 +117,9 @@ const CartDropdown = ({
 
   return (
     <div
-      className="h-full z-50"
+      className="h-full z-50 relative"
       onMouseEnter={openAndCancel}
-      onMouseLeave={close}
+      onMouseLeave={handleMouseLeave}
     >
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
@@ -99,15 +141,27 @@ const CartDropdown = ({
         >
           <PopoverPanel
             static
-            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[420px] text-ui-fg-base"
+            className="hidden small:block absolute top-[calc(100%+8px)] right-0 bg-white border border-slate-200/90 rounded-2xl shadow-2xl w-[420px] text-slate-800 overflow-hidden z-50 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
             data-testid="nav-cart-dropdown"
           >
-            <div className="p-4 flex items-center justify-center">
-              <h3 className="text-large-semi">Cart</h3>
+            <div className="p-4 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900">Research Cart</h3>
+                <span className="rounded-full bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
+                  {totalItems} {totalItems === 1 ? "Item" : "Items"}
+                </span>
+              </div>
+              <LocalizedClientLink
+                href="/cart"
+                onClick={close}
+                className="text-xs font-medium text-slate-500 hover:text-emerald-700 transition-colors"
+              >
+                View full cart &rarr;
+              </LocalizedClientLink>
             </div>
             {cartState && cartState.items?.length ? (
               <>
-                <div className="overflow-y-scroll max-h-[402px] px-4 grid grid-cols-1 gap-y-8 no-scrollbar p-px">
+                <div className="overflow-y-scroll max-h-[380px] p-3 flex flex-col gap-y-2.5 no-scrollbar">
                   {cartState.items
                     .sort((a, b) => {
                       return (a.created_at ?? "") > (b.created_at ?? "")
@@ -116,13 +170,14 @@ const CartDropdown = ({
                     })
                     .map((item) => (
                       <div
-                        className="grid grid-cols-[122px_1fr] gap-x-4"
+                        className="grid grid-cols-[72px_1fr] gap-x-3 p-2.5 rounded-xl border border-slate-100 hover:border-slate-200 bg-white transition-colors"
                         key={item.id}
                         data-testid="cart-item"
                       >
                         <LocalizedClientLink
-                          href={`/products/${item.product_handle}`}
-                          className="w-24"
+                          href={`/products/${getCanonicalProductSlug(item.product_handle)}`}
+                          className="w-[72px] aspect-square rounded-lg border border-slate-200/70 overflow-hidden bg-slate-50 flex items-center justify-center p-1"
+                          onClick={close}
                         >
                           <Thumbnail
                             thumbnail={item.thumbnail}
@@ -130,31 +185,19 @@ const CartDropdown = ({
                             size="square"
                           />
                         </LocalizedClientLink>
-                        <div className="flex flex-col justify-between flex-1">
-                          <div className="flex flex-col flex-1">
-                            <div className="flex items-start justify-between">
-                              <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
-                                <h3 className="text-base-regular overflow-hidden text-ellipsis">
-                                  <LocalizedClientLink
-                                    href={`/products/${item.product_handle}`}
-                                    data-testid="product-link"
-                                  >
-                                    {item.title}
-                                  </LocalizedClientLink>
-                                </h3>
-                                <LineItemOptions
-                                  variant={item.variant}
-                                  data-testid="cart-item-variant"
-                                  data-value={item.variant}
-                                />
-                                <span
-                                  data-testid="cart-item-quantity"
-                                  data-value={item.quantity}
+                        <div className="flex flex-col justify-between flex-1 min-w-0">
+                          <div>
+                            <div className="flex items-start justify-between gap-2">
+                              <h4 className="text-xs font-bold text-slate-900 truncate">
+                                <LocalizedClientLink
+                                  href={`/products/${getCanonicalProductSlug(item.product_handle)}`}
+                                  data-testid="product-link"
+                                  onClick={close}
                                 >
-                                  Quantity: {item.quantity}
-                                </span>
-                              </div>
-                              <div className="flex justify-end">
+                                  {item.title}
+                                </LocalizedClientLink>
+                              </h4>
+                              <div className="text-right shrink-0">
                                 <LineItemPrice
                                   item={item}
                                   style="tight"
@@ -162,25 +205,41 @@ const CartDropdown = ({
                                 />
                               </div>
                             </div>
+                            <div className="mt-0.5">
+                              <LineItemOptions
+                                variant={item.variant}
+                                data-testid="cart-item-variant"
+                                data-value={item.variant}
+                              />
+                            </div>
                           </div>
-                          <DeleteButton
-                            id={item.id}
-                            className="mt-1"
-                            data-testid="cart-item-remove-button"
-                          >
-                            Remove
-                          </DeleteButton>
+                          <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100/80 text-[11px] text-slate-500">
+                            <span
+                              data-testid="cart-item-quantity"
+                              data-value={item.quantity}
+                              className="font-medium"
+                            >
+                              Qty: {item.quantity}
+                            </span>
+                            <DeleteButton
+                              id={item.id}
+                              className="text-slate-400 hover:text-rose-600 transition-colors text-[11px]"
+                              data-testid="cart-item-remove-button"
+                            >
+                              Remove
+                            </DeleteButton>
+                          </div>
                         </div>
                       </div>
                     ))}
                 </div>
-                <div className="p-4 flex flex-col gap-y-4 text-small-regular">
-                  <div className="flex items-center justify-between">
-                    <span className="text-ui-fg-base font-semibold">
+                <div className="p-4 flex flex-col gap-y-3 bg-slate-50/70 border-t border-slate-100">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-600 font-medium">
                       Subtotal
                     </span>
                     <span
-                      className="text-large-semi"
+                      className="text-base font-bold text-slate-900 font-mono"
                       data-testid="cart-subtotal"
                       data-value={subtotal}
                     >
@@ -190,32 +249,40 @@ const CartDropdown = ({
                       })}
                     </span>
                   </div>
-                  <LocalizedClientLink href="/cart" passHref>
-                    <Button
-                      className="w-full"
-                      size="large"
+                  <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span>Cold-chain dispatched from Metro Manila &middot; J&amp;T Express</span>
+                  </div>
+                  <LocalizedClientLink href="/cart" onClick={close} className="w-full">
+                    <button
+                      type="button"
+                      className="w-full h-11 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 text-xs cursor-pointer"
                       data-testid="go-to-cart-button"
                     >
-                      Go to cart
-                    </Button>
+                      <span>Proceed to Cart &amp; Reconstitution</span>
+                      <span>&rarr;</span>
+                    </button>
                   </LocalizedClientLink>
                 </div>
               </>
             ) : (
-              <div>
-                <div className="flex py-16 flex-col gap-y-4 items-center justify-center">
-                  <div className="bg-gray-900 text-small-regular flex items-center justify-center w-6 h-6 rounded-full text-white">
-                    <span>0</span>
-                  </div>
-                  <span>Your shopping bag is empty.</span>
-                  <div>
-                    <LocalizedClientLink href="/store">
-                      <>
-                        <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
-                      </>
-                    </LocalizedClientLink>
-                  </div>
+              <div className="p-8 flex flex-col items-center justify-center text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 mb-3 border border-slate-200/80">
+                  <svg className="w-6 h-6 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.375A4.5 4.5 0 008.25 21h7.5A4.5 4.5 0 0019 14.375l-4.091-3.966a2.25 2.25 0 01-.659-1.591V3.104" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3.104h7.5M9.75 14.25h4.5" />
+                  </svg>
+                </div>
+                <h4 className="text-sm font-bold text-slate-900">Your Research Cart is Empty</h4>
+                <p className="text-xs text-slate-500 mt-1 max-w-[240px]">
+                  No compounds or reconstitution supplies currently added.
+                </p>
+                <div className="mt-4">
+                  <LocalizedClientLink href="/store" onClick={close}>
+                    <span className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-xs transition-all">
+                      Browse Research Compounds &rarr;
+                    </span>
+                  </LocalizedClientLink>
                 </div>
               </div>
             )}

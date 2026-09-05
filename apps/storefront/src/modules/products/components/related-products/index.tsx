@@ -33,7 +33,7 @@ export default async function RelatedProducts({
   }
   queryParams.is_giftcard = false
 
-  const products = await listProducts({
+  let products = await listProducts({
     queryParams,
     countryCode,
   }).then(({ response }) => {
@@ -42,18 +42,33 @@ export default async function RelatedProducts({
     )
   })
 
+  // Fallback: If no products in the exact same category, fetch catalog compounds
+  if (!products.length && region?.id) {
+    products = await listProducts({
+      queryParams: { region_id: region.id, is_giftcard: false, limit: 4 },
+      countryCode,
+    }).then(({ response }) => {
+      return response.products.filter(
+        (responseProduct) => responseProduct.id !== product.id
+      )
+    })
+  }
+
   if (!products.length) {
     return null
   }
 
   return (
     <div className="product-page-constraint">
-      <div className="flex flex-col items-center text-center mb-16">
-        <span className="text-base-regular text-gray-600 mb-6">
-          Related products
+      <div className="flex flex-col items-center text-center mb-12">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full inline-block mb-2">
+          Synergistic Research Compounds
         </span>
-        <p className="text-2xl-regular text-ui-fg-base max-w-lg">
-          You might also want to check out these products.
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          Frequently Paired Reference Standards
+        </h3>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-lg">
+          Complementary lyophilized compounds, solvent accessories, and analytical supplies.
         </p>
       </div>
 

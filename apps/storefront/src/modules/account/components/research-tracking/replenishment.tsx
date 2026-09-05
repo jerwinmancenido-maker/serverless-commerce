@@ -6,6 +6,7 @@ import {
   type ResearchReplenishmentProjection,
 } from "@lib/data/research-tracking"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import { useResearchSubmissionKey } from "./use-research-submission-key"
 import { useActionState, useState, useTransition } from "react"
 
@@ -88,7 +89,7 @@ export default function Replenishment({
               </p>
               {projection.source_product_handle ? (
                 <LocalizedClientLink
-                  href={`/products/${projection.source_product_handle}`}
+                  href={`/products/${getCanonicalProductSlug(projection.source_product_handle)}`}
                   className="mt-4 inline-flex rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
                 >
                   View product

@@ -158,7 +158,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 <Button
                   onClick={handleAddToCart}
                   disabled={!inStock || !variant}
-                  className="h-11 rounded-xl text-xs font-semibold bg-zinc-900 text-white hover:bg-zinc-800 flex-1"
+                  className="h-11 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-xs flex-1"
                   isLoading={isAdding}
                   data-testid="mobile-cart-button"
                 >

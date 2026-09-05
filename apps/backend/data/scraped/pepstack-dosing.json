@@ -1,0 +1,568 @@
+[
+  {
+    "id": 1,
+    "slug": "5-amino-1mq-inj",
+    "name": "5-Amino-1MQ",
+    "delivery_method": "Inj",
+    "short_description": "5-Amino-1MQ is an experimental NNMT-inhibitor research compound. Human dosing has not been established; this page separates mouse studies from a community-reported subcutaneous vial protocol.",
+    "sort_order": 0,
+    "category_slugs": [
+      "anti-aging",
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 82,
+    "slug": "adamax-1032-10mg-nasal",
+    "name": "ADAMAX 1032",
+    "delivery_method": "Nasal",
+    "short_description": "ADAMAX 1032 is an experimental Semax-related analogue sold here as a 10 mg nasal research set. No clinical dose is established; this page uses a clearly labeled community nasal protocol and pump-calibration math.",
+    "sort_order": 10,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 73,
+    "slug": "aicar-inj",
+    "name": "AICAR",
+    "delivery_method": "Inj",
+    "short_description": "AICAR (acadesine / AICA-riboside) is an AMPK-pathway research compound with human IV pharmacokinetic data and a separate community-reported subcutaneous research protocol.",
+    "sort_order": 0,
+    "category_slugs": [
+      "cellular-energy-mitochondrial-research",
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 4,
+    "slug": "aod-9604-inj",
+    "name": "AOD-9604",
+    "delivery_method": "Inj",
+    "short_description": "AOD-9604 is a modified growth-hormone fragment studied mainly by oral and IV routes. The practical SubQ schedule below is a community protocol, not an approved or clinically validated SubQ regimen.",
+    "sort_order": 30,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 5,
+    "slug": "ara-290-inj",
+    "name": "ARA-290",
+    "delivery_method": "Inj",
+    "short_description": "ARA-290 (cibinetide) is an investigational erythropoietin-derived peptide studied in small human trials. The SubQ tier cards reproduce published 1–8 mg daily study arms and separate them from community vial preparation.",
+    "sort_order": 40,
+    "category_slugs": [
+      "immune"
+    ]
+  },
+  {
+    "id": 8,
+    "slug": "bpc-157-inj",
+    "name": "BPC-157",
+    "delivery_method": "Inj",
+    "short_description": "BPC-157 is an experimental peptide with predominantly animal evidence. The SubQ tier cards below reproduce a community protocol and are not a human clinical dosing standard.",
+    "sort_order": 70,
+    "category_slugs": [
+      "injury-recovery"
+    ]
+  },
+  {
+    "id": 12,
+    "slug": "cagrilinitide-inj",
+    "name": "Cagrilintide",
+    "delivery_method": "Inj",
+    "short_description": "Cagrilintide is an investigational long-acting amylin analogue studied by once-weekly subcutaneous injection. Tier cards reproduce published Phase 2 monotherapy arms; research-vial mixing is shown separately.",
+    "sort_order": 110,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 71,
+    "slug": "cjc-1295-no-dac-ipamorelin-blend-inj",
+    "name": " CJC-1295 (No DAC) + Ipamorelin Blend",
+    "delivery_method": "Inj",
+    "short_description": "A fixed 1:1 CJC-1295 (no DAC) + Ipamorelin blend with a community SubQ protocol. Human component studies used different molecules/routes and do not validate the fixed blend.",
+    "sort_order": 0,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 84,
+    "slug": "cuv100-ghk-cu-50mg-kpv-50mg-inj",
+    "name": "CUV100: GHK-Cu + KPV",
+    "delivery_method": "Inj",
+    "short_description": "Fixed 1:1 research blend containing 50 mg GHK-Cu and 50 mg KPV. The protocol below preserves the exact equal-mass ratio and documents a conservative community-derived SubQ range; no controlled trial has evaluated this finished blend.",
+    "sort_order": 85,
+    "category_slugs": [
+      "immune",
+      "injury-recovery",
+      "skin-topical-research"
+    ]
+  },
+  {
+    "id": 83,
+    "slug": "dihexa-10mg-nasal",
+    "name": "DIHEXA",
+    "delivery_method": "Nasal",
+    "short_description": "Experimental HGF/c-Met-modulating research compound presented in a nasal-format kit. Published evidence is preclinical; the practical nasal schedule below is a clearly labeled community protocol, not an approved medical dose or a result established in human clinical trials.",
+    "sort_order": 90,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 80,
+    "slug": "dsip-5mg-inj",
+    "name": "DSIP",
+    "delivery_method": "Inj",
+    "short_description": "DSIP (emideltide) is an experimental sleep-related peptide. Human studies used short IV protocols; the SubQ tiers below are community-reported and kept separate.",
+    "sort_order": 95,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 20,
+    "slug": "epithalon-inj",
+    "name": "Epithalon",
+    "delivery_method": "Inj",
+    "short_description": "Epithalon (Epitalon/AEDG) is an experimental tetrapeptide with community SubQ cycles. Human injectable dose evidence is not robust; the four cards map the source-reported 5–10 mg/day for 10–20 days.",
+    "sort_order": 190,
+    "category_slugs": [
+      "anti-aging"
+    ]
+  },
+  {
+    "id": 21,
+    "slug": "ghk-cu-inj",
+    "name": "GHK-Cu",
+    "delivery_method": "Inj",
+    "short_description": "Injectable GHK-Cu is an experimental copper-peptide research format. Human evidence is strongest for topical use; the SubQ tiers below are community-reported and not clinically validated.",
+    "sort_order": 200,
+    "category_slugs": [
+      "anti-aging",
+      "injury-recovery",
+      "skin-topical-research"
+    ]
+  },
+  {
+    "id": 78,
+    "slug": "ghk-cu-topical-serums",
+    "name": "GHK-Cu Topical Serums",
+    "delivery_method": "Topical",
+    "short_description": "Compare GHK-Cu Regular for daily renewal, Pro for intensive copper-peptide care, and Ultra for advanced multi-peptide smoothing and firmness support.",
+    "sort_order": 201,
+    "category_slugs": [
+      "anti-aging",
+      "skin-topical-research"
+    ]
+  },
+  {
+    "id": 22,
+    "slug": "ghrp-2-inj",
+    "name": "GHRP-2",
+    "delivery_method": "Inj",
+    "short_description": "Synthetic ghrelin-receptor agonist studied for growth-hormone release. Human research includes acute diagnostic and infusion studies, while the SubQ schedule below is a clearly labeled community protocol rather than an approved chronic regimen.",
+    "sort_order": 210,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 23,
+    "slug": "ghrp-6-inj",
+    "name": "GHRP-6",
+    "delivery_method": "Inj",
+    "short_description": "GHRP-6 is an experimental growth-hormone secretagogue. Human studies used acute IV exposure; the SubQ three-times-daily tiers below are community-derived.",
+    "sort_order": 220,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 24,
+    "slug": "glow-inj",
+    "name": "GLOW",
+    "delivery_method": "Inj",
+    "short_description": "GLOW70 is a fixed 70 mg 5:1:1 blend of GHK-Cu, TB-500, and BPC-157. The exact-blend SubQ protocol is community-derived; no human trial validates the combination.",
+    "sort_order": 230,
+    "category_slugs": [
+      "anti-aging",
+      "injury-recovery",
+      "skin-topical-research"
+    ]
+  },
+  {
+    "id": 25,
+    "slug": "glp1-s-semaglutide-inj",
+    "name": "GLP1-S: Semaglutide",
+    "delivery_method": "Inj",
+    "short_description": "Semaglutide is an approved once-weekly SubQ medicine in specific ready-to-use products. Tier cards use the current Wegovy label; research-vial BAC math is kept separate.",
+    "sort_order": 240,
+    "category_slugs": [
+      "glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 26,
+    "slug": "glp2-t-tirzepatide-inj",
+    "name": "GLP2-T: Tirzepatide",
+    "delivery_method": "Inj",
+    "short_description": "Tirzepatide is an approved once-weekly SubQ medicine in ready-to-use products. Tier cards follow the current Zepbound label; research-vial BAC math is separate.",
+    "sort_order": 250,
+    "category_slugs": [
+      "glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 27,
+    "slug": "glp3-r-retatrutide-inj",
+    "name": "GLP3-R: Retatrutide",
+    "delivery_method": "Inj",
+    "short_description": "Retatrutide is an investigational once-weekly triple agonist. Tier cards reproduce published Phase 2 and official Phase 3 study tracks; research-vial BAC math is separate.",
+    "sort_order": 260,
+    "category_slugs": [
+      "glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 28,
+    "slug": "glutathione-inj",
+    "name": "Glutathione",
+    "delivery_method": "Inj",
+    "short_description": "Glutathione antioxidant research record with human intravenous and intranasal studies. The linked product is injection-format, while no validated SubQ schedule was found; the detailed nasal trial protocol is included only as route-specific evidence.",
+    "sort_order": 270,
+    "category_slugs": [
+      "cellular-energy-mitochondrial-research"
+    ]
+  },
+  {
+    "id": 77,
+    "slug": "hgh-191aa-15iu",
+    "name": "HGH 191AA (Somatropin) 15 IU",
+    "delivery_method": "Inj",
+    "short_description": "Somatropin 15 IU research vial with an official-label reference range shown for comparison. The vial strength is not itself a dose, and equivalence to an approved branded formulation must be verified before any clinical interpretation.",
+    "sort_order": 0,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 76,
+    "slug": "hgh-191aa-somatropin-24-iu-inj",
+    "name": "HGH 191AA (Somatropin) 24 IU",
+    "delivery_method": "Inj",
+    "short_description": "Somatropin 24 IU research vial with an official-label reference range shown for comparison. The vial strength is not itself a dose, and equivalence to an approved branded formulation must be verified before any clinical interpretation.",
+    "sort_order": 0,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 74,
+    "slug": "hmg-human-menopausal-gonadotropin-inj",
+    "name": "HMG (Human Menopausal Gonadotropin) ",
+    "delivery_method": "Inj",
+    "short_description": "Menotropins research product labeled 75 IU FSH activity plus 75 IU LH activity. The practical reference below follows the FDA-labeled MENOPUR SubQ protocol, but dosing is in International Units and cannot be safely entered into this portal’s milligram-only tier cards.",
+    "sort_order": 0,
+    "category_slugs": [
+      "hormonal"
+    ]
+  },
+  {
+    "id": 30,
+    "slug": "igf-1-lr3-inj",
+    "name": "IGF-1 LR3",
+    "delivery_method": "Inj",
+    "short_description": "Modified long-acting IGF-1 analog supplied as a 1 mg research vial. The SubQ tiers summarize community protocols from 20 to 100 micrograms daily; controlled human dosing and long-term safety are not established.",
+    "sort_order": 290,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 31,
+    "slug": "ipamorelin-inj",
+    "name": "Ipamorelin",
+    "delivery_method": "Inj",
+    "short_description": "Ipamorelin is an experimental growth-hormone secretagogue. Human studies used IV exposure; the practical SubQ tiers below are community/practitioner protocols.",
+    "sort_order": 300,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 32,
+    "slug": "kisspeptin-inj",
+    "name": "Kisspeptin",
+    "delivery_method": "Inj",
+    "short_description": "Kisspeptin pathway research record with community SubQ tiers for kisspeptin-10. Human studies confirm reproductive-hormone activity, but kisspeptin-10 and kisspeptin-54, intravenous and SubQ exposure, and different product strengths must not be treated as interchangeable.",
+    "sort_order": 310,
+    "category_slugs": [
+      "hormonal"
+    ]
+  },
+  {
+    "id": 33,
+    "slug": "klow-inj",
+    "name": "KLOW",
+    "delivery_method": "Inj",
+    "short_description": "KLOW80 is a fixed 80 mg 5:1:1:1 blend of GHK-Cu, KPV, BPC-157, and TB-500. The exact-blend SubQ protocol is community-derived.",
+    "sort_order": 320,
+    "category_slugs": [
+      "anti-aging",
+      "immune",
+      "injury-recovery"
+    ]
+  },
+  {
+    "id": 34,
+    "slug": "kpv-inj",
+    "name": "KPV",
+    "delivery_method": "Inj",
+    "short_description": "KPV is an experimental alpha-MSH-derived tripeptide. The SubQ protocol below is community/practitioner-reported; FDA found no human exposure data by any route.",
+    "sort_order": 330,
+    "category_slugs": [
+      "immune",
+      "injury-recovery"
+    ]
+  },
+  {
+    "id": 37,
+    "slug": "lemon-bottle-inj",
+    "name": "Lemon Bottle",
+    "delivery_method": "Inj",
+    "short_description": "Unapproved fat-dissolving injectable marketed for subcutaneous mesotherapy. Distributor protocols exist, but regulators report unproven efficacy, serious injury risk, and unreliable ingredient identity; no safe customer reminder tier can be established.",
+    "sort_order": 360,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 38,
+    "slug": "lipo-b-inj",
+    "name": "LIPO-B",
+    "delivery_method": "Inj",
+    "short_description": "LIPO-B is a non-standardized compounded lipotropic name. This page documents common SubQ volume-based community practice while making clear that the exact quantitative formula, concentration, and finished-product label must be verified first.",
+    "sort_order": 370,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 39,
+    "slug": "lipo-c-inj",
+    "name": "LIPO-C",
+    "delivery_method": "Inj",
+    "short_description": "LIPO-C is a non-standardized compounded lipotropic name. This page documents common SubQ volume-based community practice while making clear that the exact quantitative formula, concentration, and finished-product label must be verified first.",
+    "sort_order": 380,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 40,
+    "slug": "lipo-c-plus-inj",
+    "name": "LIPO-C+",
+    "delivery_method": "Inj",
+    "short_description": "LIPO-C+ is a non-standardized compounded lipotropic name. This page documents common SubQ volume-based community practice while making clear that the exact quantitative formula, concentration, and finished-product label must be verified first.",
+    "sort_order": 390,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 41,
+    "slug": "lipo-mino-mix-inj",
+    "name": "LIPO-Mino-Mix",
+    "delivery_method": "Inj",
+    "short_description": "LIPO-Mino-Mix is a non-standardized compounded lipotropic name. This page documents common SubQ volume-based community practice while making clear that the exact quantitative formula, concentration, and finished-product label must be verified first.",
+    "sort_order": 400,
+    "category_slugs": [
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 42,
+    "slug": "lipo-shredder-inj",
+    "name": "LIPO Shredder",
+    "delivery_method": "Inj",
+    "short_description": "LIPO Shredder is a non-standardized compounded lipotropic name. This page documents common SubQ volume-based community practice while making clear that the exact quantitative formula, concentration, and finished-product label must be verified first.",
+    "sort_order": 410,
+    "category_slugs": [
+      "energy-cognition",
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 48,
+    "slug": "mots-c-inj",
+    "name": "MOTS-C",
+    "delivery_method": "Inj",
+    "short_description": "MOTS-C is an experimental mitochondrial-derived peptide. SubQ tiers are community-derived; published efficacy studies are animal IP models rather than human SubQ trials.",
+    "sort_order": 470,
+    "category_slugs": [
+      "anti-aging",
+      "cellular-energy-mitochondrial-research",
+      "non-glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 49,
+    "slug": "nad-inj",
+    "name": "NAD",
+    "delivery_method": "Inj",
+    "short_description": "NAD+ is a coenzyme, not a peptide. The SubQ schedules below are community/pharmacy-reported; published direct human evidence is mainly IV and does not validate SubQ efficacy.",
+    "sort_order": 480,
+    "category_slugs": [
+      "anti-aging",
+      "cellular-energy-mitochondrial-research"
+    ]
+  },
+  {
+    "id": 81,
+    "slug": "pe-22-28-5mg-inj",
+    "name": "PE-22-28",
+    "delivery_method": "Inj",
+    "short_description": "PE-22-28 is a shortened spadin/sortilin-derived TREK-1 ligand with mouse intraperitoneal evidence and speculative community SubQ tiers. No human dose is established.",
+    "sort_order": 500,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 75,
+    "slug": "pinealon-nasal",
+    "name": "Pinealon",
+    "delivery_method": "Nasal",
+    "short_description": "Pinealon (EDR) has limited older human evidence using oral capsules. Intranasal use is community-derived; this record documents the linked 10 mg nasal research configuration without presenting it as clinically validated dosing.",
+    "sort_order": 0,
+    "category_slugs": [
+      "anti-aging",
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 55,
+    "slug": "pt-141-inj",
+    "name": "PT-141",
+    "delivery_method": "Inj",
+    "short_description": "PT-141 (bremelanotide) has an FDA-approved ready-to-use SubQ comparator and published human dose-ranging arms. Research-vial reconstitution is separate arithmetic.",
+    "sort_order": 540,
+    "category_slugs": [
+      "hormonal"
+    ]
+  },
+  {
+    "id": 85,
+    "slug": "rtt60-retatrutide-20mg-tirzepatide-40mg-inj",
+    "name": "RTT60: Retatrutide + Tirzepatide",
+    "delivery_method": "Inj",
+    "short_description": "RTT60 is a fixed 60 mg research blend containing 20 mg retatrutide and 40 mg tirzepatide. The weekly tier cards show exact 1:2 blend arithmetic and low-range community exposures; no clinical study supports combining these overlapping incretin agonists.",
+    "sort_order": 575,
+    "category_slugs": [
+      "glp1-weight-loss"
+    ]
+  },
+  {
+    "id": 56,
+    "slug": "selank-inj",
+    "name": "Selank",
+    "delivery_method": "Nasal",
+    "short_description": "Selank is a tuftsin-derived synthetic heptapeptide studied primarily by the intranasal route. This record separates the registered Russian 0.15% nasal-drop instructions from historical clinical ranges and from calculation-only use of PepStack’s standalone 10 mg vial, included 5 mL BAC, and nominal 0.1 mL-per-spray device.",
+    "sort_order": 550,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 86,
+    "slug": "selank-semax-blend-nasal",
+    "name": "Selank + Semax Blend",
+    "delivery_method": "Nasal",
+    "short_description": "A 1:1 intranasal research blend containing 10 mg Selank and 10 mg Semax. With the included 5 mL BAC and nominal 0.1 mL spray device, each spray contains 0.2 mg Selank plus 0.2 mg Semax. Blend-specific controlled human dosing has not been established.",
+    "sort_order": 555,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 57,
+    "slug": "semax-inj",
+    "name": "Semax",
+    "delivery_method": "Nasal",
+    "short_description": "Semax has registered Russian intranasal 0.1% and 1% formulations with indication-specific protocols. This record focuses on nasal administration and keeps routine cognitive research separate from acute-stroke hospital dosing.",
+    "sort_order": 560,
+    "category_slugs": [
+      "energy-cognition"
+    ]
+  },
+  {
+    "id": 62,
+    "slug": "snap-8-topical",
+    "name": "SNAP-8",
+    "delivery_method": "Topical",
+    "short_description": "SNAP-8 (Acetyl Octapeptide-3) is a topical cosmetic peptide ingredient. Human evidence is limited to specific finished or multi-ingredient formulations and does not establish a universal concentration or finished-product claim.",
+    "sort_order": 610,
+    "category_slugs": [
+      "anti-aging",
+      "skin-topical-research"
+    ]
+  },
+  {
+    "id": 63,
+    "slug": "ss-31-inj",
+    "name": "SS-31",
+    "delivery_method": "Inj",
+    "short_description": "SS-31 (elamipretide) has an FDA-approved ready-to-use SubQ product for Barth syndrome and separate community low-dose protocols. Research-vial BAC math is not the approved formulation.",
+    "sort_order": 620,
+    "category_slugs": [
+      "cellular-energy-mitochondrial-research"
+    ]
+  },
+  {
+    "id": 66,
+    "slug": "tesamorelin-inj",
+    "name": "Tesamorelin",
+    "delivery_method": "Inj",
+    "short_description": "Tesamorelin has FDA-approved SubQ formulations with exact but non-interchangeable preparation. Tier cards separate FDA and legacy human doses from community research-vial math.",
+    "sort_order": 650,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 79,
+    "slug": "tesamorelin-10mg-ipamorelin-5mg-inj",
+    "name": "Tesamorelin 10 mg + Ipamorelin 5 mg",
+    "delivery_method": "Inj",
+    "short_description": "TI15 is a fixed 2:1 blend containing 10 mg tesamorelin and 5 mg ipamorelin. The four SubQ tiers use independently recalculated total-blend arithmetic and clearly state the amount of each component.",
+    "sort_order": 651,
+    "category_slugs": [
+      "hormonal",
+      "muscle-building"
+    ]
+  },
+  {
+    "id": 68,
+    "slug": "thymosin-alpha-1-ta1-inj",
+    "name": "Thymosin Alpha-1: TA1",
+    "delivery_method": "Inj",
+    "short_description": "Thymosin Alpha-1 (thymalfasin) has official and human SubQ protocols. Exact formulation and concentration matter; the common 5 mg/mL research-vial mix exceeds FDA-identified solubility/study-strength boundaries.",
+    "sort_order": 670,
+    "category_slugs": [
+      "immune"
+    ]
+  }
+]

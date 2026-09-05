@@ -140,10 +140,10 @@ function SliderInput({
 
 /** Color-coded result card */
 const RESULT_COLORS: Record<string, string> = {
-  blue: "from-blue-50 to-blue-100/60 border-blue-200/70 text-blue-700",
-  indigo: "from-indigo-50 to-indigo-100/60 border-indigo-200/70 text-indigo-700",
-  violet: "from-violet-50 to-violet-100/60 border-violet-200/70 text-violet-700",
-  emerald: "from-emerald-50 to-emerald-100/60 border-emerald-200/70 text-emerald-700",
+  blue: "from-slate-50 to-slate-100/70 border-slate-200 text-slate-800",
+  indigo: "from-teal-50 to-teal-100/70 border-teal-200 text-teal-800",
+  violet: "from-emerald-50 to-emerald-100/70 border-emerald-200 text-emerald-800",
+  emerald: "from-emerald-50/90 to-teal-50/70 border-emerald-300 text-emerald-700",
 }
 
 function ResultCard({
@@ -249,6 +249,7 @@ export default function ResearchCalculator({
   const [deviceVolume, setDeviceVolume] = useState("")
   const [deviceLabel, setDeviceLabel] = useState("Device units")
   const [precision, setPrecision] = useState(2)
+  const [copiedSummary, setCopiedSummary] = useState(false)
 
   const [saveState, saveAction] = useActionState(
     saveResearchCalculationAction,
@@ -292,6 +293,29 @@ export default function ResearchCalculator({
   )
   const canSave = Boolean(result && (mode !== "compare" || comparison))
 
+  const handleCopySummary = useCallback(() => {
+    if (!result) return
+    const compound = initialName || protocol?.protocol_title || "Research Compound"
+    const text = [
+      `[Research Protocol Formulation Summary]`,
+      `Compound: ${compound}`,
+      `Reconstitution Mass: ${mass} ${massUnit}`,
+      `Diluent: ${volume} mL (Bacteriostatic 0.9% Benzyl Alcohol Water)`,
+      `Final Concentration: ${fmt(result.concentrationMgPerMl, precision)} mg/mL`,
+      `Target Unit Dose: ${target} ${targetUnit}`,
+      `Syringe Draw Volume: ${fmt(result.volumeMl, precision)} mL (${fmt(result.deviceMeasurements, precision)} Units on ${deviceLabel})`,
+      `Estimated Viable Yield: ${fmt(result.usesPerContainer, precision)} doses`,
+      `Cold-Chain Viability: Store refrigerated at 2°C – 8°C (36°F – 46°F). Maximum analytical viability: 28 days post-reconstitution.`,
+    ].join("\n")
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopiedSummary(true)
+        setTimeout(() => setCopiedSummary(false), 2500)
+      })
+    }
+  }, [result, initialName, protocol, mass, massUnit, volume, precision, target, targetUnit, deviceLabel])
+
   // slider ranges — fall back to sensible defaults
   const massMin = 0.1
   const massMax = config ? Math.max(50, Number(config.default_compound_mass || 10) * 5) : 50
@@ -316,8 +340,8 @@ export default function ResearchCalculator({
       </div>
 
       {initialMass && (
-        <div className="flex items-center gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50/80 px-4 py-2.5 text-xs text-indigo-950">
-          <svg className="h-4 w-4 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <div className="flex items-center gap-2.5 rounded-xl border border-emerald-200 bg-emerald-50/80 px-4 py-2.5 text-xs text-emerald-950">
+          <svg className="h-4 w-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
           </svg>
           <span>
@@ -625,6 +649,70 @@ export default function ResearchCalculator({
                   />
                 </div>
               )}
+
+              {/* Stoichiometry & Formula Card */}
+              {result && (
+                <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50/40 p-3.5 text-xs text-slate-700">
+                  <div className="flex items-center justify-between gap-2 border-b border-emerald-100 pb-2">
+                    <span className="font-semibold text-emerald-950">Stoichiometry & Yield Formula</span>
+                    <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100/70 px-1.5 py-0.5 rounded">C = M / V</span>
+                  </div>
+                  <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-600">
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Concentration Yield:</span>
+                      <span className="font-mono">{mass} {massUnit} ÷ {volume} mL = </span>
+                      <span className="font-bold text-emerald-800">{fmt(result.concentrationMgPerMl, precision)} mg/mL</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Target Unit Draw:</span>
+                      <span className="font-mono">{target} {targetUnit} ÷ {fmt(result.concentrationMgPerMl, precision)} = </span>
+                      <span className="font-bold text-emerald-800">{fmt(result.volumeMl, precision)} mL</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Copy Formulation Summary to Clipboard */}
+              {result && (
+                <div className="mt-3 flex items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={handleCopySummary}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-ui-border-base bg-white px-3 py-1.5 text-xs font-semibold text-ui-fg-base hover:border-emerald-400 hover:bg-emerald-50/50 hover:text-emerald-700 transition-colors shadow-2xs"
+                  >
+                    {copiedSummary ? (
+                      <>
+                        <svg className="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        <span className="text-emerald-700">Copied Formulation Summary</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="h-3.5 w-3.5 text-ui-fg-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                        <span>Copy Formulation Summary</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* 28-Day Stability & Cold-Chain Advisory Banner */}
+              <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-teal-200/80 bg-gradient-to-r from-teal-50/80 to-emerald-50/50 p-3.5 text-xs text-teal-950">
+                <svg className="h-4 w-4 shrink-0 text-teal-600 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <div>
+                  <p className="font-semibold text-teal-900">28-Day Cold-Chain Stability Advisory</p>
+                  <p className="mt-0.5 text-[11px] leading-relaxed text-teal-800">
+                    Reconstituted solutions utilizing Bacteriostatic 0.9% Benzyl Alcohol Water must be stored refrigerated between 2°C – 8°C (36°F – 46°F). To prevent peptide degradation, conclude analytical research within 28 days of reconstitution. Protect from direct light.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Save form */}
@@ -862,12 +950,12 @@ function HistoryCard({
         <div className="flex items-center gap-3">
           {/* Quick result preview chips */}
           {concValue && (
-            <span className="hidden rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700 small:inline-block">
+            <span className="hidden rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 small:inline-block">
               {concValue}
             </span>
           )}
           {volValue && (
-            <span className="hidden rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 small:inline-block">
+            <span className="hidden rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-700 small:inline-block">
               {volValue}
             </span>
           )}

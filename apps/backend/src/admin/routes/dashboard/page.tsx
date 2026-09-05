@@ -1,5 +1,20 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { SquaresPlus } from "@medusajs/icons"
+import {
+  ArchiveBox,
+  ArrowPath,
+  ArrowUpRightMini,
+  Beaker,
+  BellAlert,
+  ChatBubbleLeftRight,
+  CheckCircleSolid,
+  Component,
+  CreditCard,
+  CurrencyDollar,
+  ExclamationCircle,
+  Sparkles,
+  SquaresPlus,
+  Tag,
+} from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Badge, Button, Container, DatePicker, Heading, Text } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
@@ -372,6 +387,7 @@ function cardSubtext(
 
 const QUICK_ACTIONS = [
   { label: "Review Proofs", to: "/manual-payment-proofs" },
+  { label: "Research Bundles", to: "/bundles" },
   { label: "Support Queue", to: "/customer-support" },
   { label: "New Compound", to: "/compounded-products" },
   { label: "Rewards Program", to: "/rewards" },
@@ -550,6 +566,17 @@ const DashboardPage = () => {
   const belowThresholdCount = reorderQuery.data?.below_threshold_count ?? null
   const outOfStockCount = reorderQuery.data?.out_of_stock_count ?? null
 
+  const handleRefreshAll = () => {
+    ordersQuery.refetch()
+    packReadyQuery.refetch()
+    proofsQuery.refetch()
+    supportCountQuery.refetch()
+    protocolsQuery.refetch()
+    reorderQuery.refetch()
+    recentOrdersQuery.refetch()
+    supportFeedQuery.refetch()
+  }
+
   // ── 9. Recent orders feed ────────────────────────────────────────────────
   const recentOrdersQuery = useQuery({
     queryKey: ["dashboard-recent-orders"],
@@ -593,46 +620,87 @@ const DashboardPage = () => {
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col gap-y-3 pb-8">
-
-      {/* 1. Header */}
-      <PageHeader
-        breadcrumbs={[
-          { label: "Dashboard", href: "/dashboard" },
-          { label: "Founder Operations" },
-        ]}
-        title="Operations Dashboard"
-        subtitle="Real-time revenue telemetry, fulfillment dispatch readiness, and inventory bottleneck alerts."
-        actions={
-          <div className="flex items-center gap-2">
-            <Badge size="small" color="grey" className="font-mono text-[11px]">
-              Auto-refreshes 30s
-            </Badge>
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => {
-                ordersQuery.refetch()
-                packReadyQuery.refetch()
-                proofsQuery.refetch()
-                supportCountQuery.refetch()
-                protocolsQuery.refetch()
-                reorderQuery.refetch()
-                recentOrdersQuery.refetch()
-                supportFeedQuery.refetch()
-              }}
-              className="h-7 text-xs inline-flex items-center gap-1.5"
-            >
-              ↻ Refresh
-            </Button>
+    <div className="flex flex-col gap-y-5 pb-10">
+      {/* 1. Executive Founder Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 border border-emerald-200/80">
+              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Verified Founder Operations
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-600 border border-slate-200">
+              Storefront Sync Active
+            </span>
           </div>
-        }
-      />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Founder Command Center
+          </h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Real-time commercial telemetry, cold-chain fulfillment dispatch, and inventory controls.
+          </p>
+        </div>
 
-      {/* 2. Unified 8-Metric Operational Telemetry Grid (4x2 on desktop, 2x4 on tablet) */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="flex items-center gap-2.5">
+          <Badge size="small" color="grey" className="font-mono text-[11px]">
+            Auto-refreshes 30s
+          </Badge>
+          <Button
+            size="small"
+            variant="secondary"
+            onClick={handleRefreshAll}
+            className="h-8 rounded-xl px-3 text-xs font-bold bg-white hover:bg-slate-50 border-slate-200 text-slate-700 shadow-2xs inline-flex items-center gap-1.5 transition-all"
+          >
+            <ArrowPath className="size-3.5" />
+            <span>Refresh</span>
+          </Button>
+        </div>
+      </div>
+
+      {/* High-Priority Action Banner */}
+      {(proofsCount > 0 || supportCount > 0) && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-amber-200/90 bg-amber-50/80 p-4 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center rounded-xl bg-amber-100 text-amber-800 shrink-0">
+              <BellAlert className="size-4" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-900">
+                Action Required: {proofsCount > 0 ? `${proofsCount} pending manual payment ${proofsCount === 1 ? "proof" : "proofs"}` : ""}{proofsCount > 0 && supportCount > 0 ? " and " : ""}{supportCount > 0 ? `${supportCount} unread customer ${supportCount === 1 ? "inquiry" : "inquiries"}` : ""}
+              </p>
+              <p className="text-[11px] text-slate-600 mt-0.5">
+                Review and approve customer transactions and researcher queries to maintain SLAs.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {proofsCount > 0 && (
+              <Button
+                size="small"
+                onClick={() => navigate("/manual-payment-proofs")}
+                className="h-7 rounded-xl px-3 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-2xs"
+              >
+                Review Proofs ({proofsCount})
+              </Button>
+            )}
+            {supportCount > 0 && (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => navigate("/customer-support")}
+                className="h-7 rounded-xl px-3 text-xs font-bold bg-white hover:bg-amber-100/60 border-amber-300 text-amber-900 shadow-2xs"
+              >
+                Support Queue ({supportCount})
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 2. 4-Tile Top Executive Metric Rail */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <KpiCard
-          icon="💰"
+          icon={<CurrencyDollar className="size-4" />}
           title={`Revenue · ${monthLabel}`}
           value={
             ordersQuery.isError
@@ -642,28 +710,11 @@ const DashboardPage = () => {
               : "—"
           }
           status={ordersQuery.isError ? "critical" : "healthy"}
-          subtext={cardSubtext(
-            ordersQuery,
-            "captured payments · MTD",
-          )}
+          subtext={cardSubtext(ordersQuery, "captured payments · MTD")}
           onClick={() => navigate("/orders")}
         />
         <KpiCard
-          icon="🛒"
-          title={`Orders · ${monthLabel}`}
-          value={ordersQuery.isError ? "!" : (ordersCount ?? "—")}
-          status={
-            ordersQuery.isError
-              ? "critical"
-              : ordersCount != null
-              ? ordersStatus(ordersCount)
-              : "neutral"
-          }
-          subtext={cardSubtext(ordersQuery, "all orders · MTD")}
-          onClick={() => navigate("/orders")}
-        />
-        <KpiCard
-          icon="📦"
+          icon={<ArchiveBox className="size-4" />}
           title="Pack Ready"
           value={packReadyQuery.isError ? "!" : (packReadyCount ?? "—")}
           status={
@@ -673,11 +724,11 @@ const DashboardPage = () => {
               ? packReadyStatus(packReadyCount)
               : "neutral"
           }
-          subtext={cardSubtext(packReadyQuery, "paid · not yet fulfilled")}
+          subtext={cardSubtext(packReadyQuery, "paid · ready to dispatch")}
           onClick={() => navigate("/orders")}
         />
         <KpiCard
-          icon="📱"
+          icon={<CreditCard className="size-4" />}
           title="Pending Proofs"
           value={proofsQuery.isError ? "!" : (proofsCount ?? "—")}
           status={
@@ -691,11 +742,9 @@ const DashboardPage = () => {
           onClick={() => navigate("/manual-payment-proofs")}
         />
         <KpiCard
-          icon="💬"
+          icon={<ChatBubbleLeftRight className="size-4" />}
           title="Unread Support"
-          value={
-            supportCountQuery.isError ? "!" : (supportCount ?? "—")
-          }
+          value={supportCountQuery.isError ? "!" : (supportCount ?? "—")}
           status={
             supportCountQuery.isError
               ? "critical"
@@ -703,18 +752,17 @@ const DashboardPage = () => {
               ? supportStatus(supportCount)
               : "neutral"
           }
-          subtext={cardSubtext(
-            supportCountQuery,
-            "conversations with unread messages",
-          )}
+          subtext={cardSubtext(supportCountQuery, "conversations awaiting reply")}
           onClick={() => navigate("/customer-support")}
         />
+      </div>
+
+      {/* 3. Secondary Operational Telemetry */}
+      <div className="grid grid-cols-3 gap-3">
         <KpiCard
-          icon="⚠️"
+          icon={<Component className="size-4" />}
           title="Components Low"
-          value={
-            reorderQuery.isError ? "!" : (belowThresholdCount ?? "—")
-          }
+          value={reorderQuery.isError ? "!" : (belowThresholdCount ?? "—")}
           status={
             reorderQuery.isError
               ? "critical"
@@ -724,9 +772,7 @@ const DashboardPage = () => {
           }
           subtext={
             reorderQuery.isError
-              ? "⚠ Failed to load — check permissions"
-              : reorderQuery.isLoading
-              ? "Loading…"
+              ? "Failed to load"
               : outOfStockCount != null && outOfStockCount > 0
               ? `${belowThresholdCount} low · ${outOfStockCount} completely out`
               : "below reorder threshold"
@@ -734,8 +780,8 @@ const DashboardPage = () => {
           onClick={() => navigate("/buildable-products")}
         />
         <KpiCard
-          icon="🚫"
-          title="Zero-Stock SKUs"
+          icon={<ExclamationCircle className="size-4" />}
+          title="Zero-Stock Recipes"
           value={buildableQuery.isError ? "!" : (zeroStockCount ?? "—")}
           status={
             buildableQuery.isError
@@ -744,80 +790,48 @@ const DashboardPage = () => {
               ? zeroStockStatus(zeroStockCount)
               : "neutral"
           }
-          subtext={cardSubtext(
-            buildableQuery,
-            "configured recipes with 0 buildable units",
-          )}
+          subtext={cardSubtext(buildableQuery, "configured recipes with 0 units")}
           onClick={() => navigate("/buildable-products")}
         />
         <KpiCard
-          icon="🔬"
+          icon={<Beaker className="size-4" />}
           title="Published Protocols"
           value={protocolsQuery.isError ? "!" : (protocolsCount ?? "—")}
           status={protocolsQuery.isError ? "critical" : "info"}
-          subtext={cardSubtext(
-            protocolsQuery,
-            "active research protocols",
-          )}
+          subtext={cardSubtext(protocolsQuery, "active research protocols")}
           onClick={() => navigate("/research-protocols")}
         />
       </div>
 
-      {/* 3. Revenue & Sales Velocity Chart Card */}
+      {/* 4. Revenue & Sales Velocity Chart Card */}
       <AdminCard
         title="Revenue & Sales Velocity"
         subtitle="Captured income telemetry · Reflects confirmed customer payments."
         headerAction={
-          <div className="flex flex-wrap items-center gap-1 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-0.5">
-            <Button
-              size="small"
-              variant={salesTimeframe === "today" ? "primary" : "transparent"}
-              onClick={() => setSalesTimeframe("today")}
-              className="h-6 text-xs px-2"
-            >
-              Today
-            </Button>
-            <Button
-              size="small"
-              variant={salesTimeframe === "yesterday" ? "primary" : "transparent"}
-              onClick={() => setSalesTimeframe("yesterday")}
-              className="h-6 text-xs px-2"
-            >
-              Yesterday
-            </Button>
-            <Button
-              size="small"
-              variant={salesTimeframe === "7d" ? "primary" : "transparent"}
-              onClick={() => setSalesTimeframe("7d")}
-              className="h-6 text-xs px-2"
-            >
-              7 Days
-            </Button>
-            <Button
-              size="small"
-              variant={salesTimeframe === "this_month" ? "primary" : "transparent"}
-              onClick={() => setSalesTimeframe("this_month")}
-              className="h-6 text-xs px-2"
-            >
-              This Month
-            </Button>
-            <Button
-              size="small"
-              variant={salesTimeframe === "custom" ? "primary" : "transparent"}
-              onClick={() => setSalesTimeframe("custom")}
-              className="h-6 text-xs px-2"
-            >
-              Custom
-            </Button>
+          <div className="flex flex-wrap items-center gap-1 rounded-xl border border-slate-200/80 bg-slate-50 p-1">
+            {(["today", "yesterday", "7d", "this_month", "custom"] as const).map((tf) => (
+              <button
+                key={tf}
+                type="button"
+                onClick={() => setSalesTimeframe(tf)}
+                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                  salesTimeframe === tf
+                    ? "bg-slate-900 text-white shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                }`}
+              >
+                {tf === "today" ? "Today" : tf === "yesterday" ? "Yesterday" : tf === "7d" ? "7 Days" : tf === "this_month" ? "This Month" : "Custom"}
+              </button>
+            ))}
           </div>
         }
-        contentClassName="p-0 divide-y divide-ui-border-base"
+        contentClassName="p-0 divide-y divide-slate-100"
       >
         {/* Custom Date Pickers (visible when Custom is active) */}
         {salesTimeframe === "custom" && (
-          <div className="flex flex-wrap items-center gap-3 bg-ui-bg-subtle/50 px-4 py-2.5">
+          <div className="flex flex-wrap items-center gap-3 bg-slate-50/50 px-5 py-3">
             <div className="flex items-center gap-2">
-              <Text size="xsmall" className="text-ui-fg-subtle">From:</Text>
+              <Text size="xsmall" className="text-slate-500 font-medium">From:</Text>
               <DatePicker
                 value={customFrom}
                 onChange={(date) => setCustomFrom(date)}
@@ -825,7 +839,7 @@ const DashboardPage = () => {
               />
             </div>
             <div className="flex items-center gap-2">
-              <Text size="xsmall" className="text-ui-fg-subtle">To:</Text>
+              <Text size="xsmall" className="text-slate-500 font-medium">To:</Text>
               <DatePicker
                 value={customTo}
                 onChange={(date) => setCustomTo(date)}
@@ -836,32 +850,32 @@ const DashboardPage = () => {
         )}
 
         {/* Founder Metric Strip */}
-        <div className="grid grid-cols-2 gap-4 bg-ui-bg-subtle/20 px-6 py-3.5 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 bg-slate-50/30 px-6 py-4 sm:grid-cols-4">
           <div>
-            <Text size="xsmall" className="text-ui-fg-subtle">Total Income</Text>
-            <Text size="large" weight="plus" className="mt-0.5 text-ui-fg-base font-mono">
+            <Text size="xsmall" className="text-slate-500 font-medium">Total Income</Text>
+            <Text size="large" weight="plus" className="mt-0.5 text-slate-900 font-mono font-extrabold text-base sm:text-lg">
               {formatPhp(chartSummary.totalRevenue * 100)}
             </Text>
           </div>
           <div>
-            <Text size="xsmall" className="text-ui-fg-subtle">
+            <Text size="xsmall" className="text-slate-500 font-medium">
               Average / {chartSummary.paceUnit === "hour" ? "Hour" : "Day"}
             </Text>
-            <Text size="large" weight="plus" className="mt-0.5 text-ui-fg-base font-mono">
+            <Text size="large" weight="plus" className="mt-0.5 text-slate-900 font-mono font-extrabold text-base sm:text-lg">
               {formatPhp(chartSummary.averagePace * 100)}
             </Text>
           </div>
           <div>
-            <Text size="xsmall" className="text-ui-fg-subtle">Average Order Value (AOV)</Text>
-            <Text size="large" weight="plus" className="mt-0.5 text-ui-fg-base font-mono">
+            <Text size="xsmall" className="text-slate-500 font-medium">Average Order Value (AOV)</Text>
+            <Text size="large" weight="plus" className="mt-0.5 text-slate-900 font-mono font-extrabold text-base sm:text-lg">
               {chartSummary.aov > 0 ? formatPhp(chartSummary.aov * 100) : "₱0"}
             </Text>
           </div>
           <div>
-            <Text size="xsmall" className="text-ui-fg-subtle">
+            <Text size="xsmall" className="text-slate-500 font-medium">
               {chartSummary.paceUnit === "hour" ? "Peak Hour" : "Peak Day"}
             </Text>
-            <Text size="large" weight="plus" className="mt-0.5 text-ui-fg-base font-mono">
+            <Text size="large" weight="plus" className="mt-0.5 text-slate-900 font-mono font-extrabold text-base sm:text-lg">
               {chartSummary.peakPoint
                 ? `${chartSummary.peakPoint.label} (${formatPhp(chartSummary.peakPoint.revenue * 100)})`
                 : "—"}
@@ -870,17 +884,21 @@ const DashboardPage = () => {
         </div>
 
         {/* Chart Canvas Area */}
-        <div className="px-6 py-4">
+        <div className="px-6 py-5">
           {ordersQuery.isLoading ? (
             <div className="flex h-[240px] items-center justify-center">
-              <Text size="small" className="text-ui-fg-subtle">Loading sales velocity…</Text>
+              <Text size="small" className="text-slate-400 font-medium">Loading sales velocity…</Text>
             </div>
           ) : ordersQuery.isError ? (
             <div className="flex h-[240px] items-center justify-center">
-              <Text size="small" className="text-ui-fg-error">⚠ Sales telemetry could not be loaded.</Text>
+              <Text size="small" className="text-rose-600 font-medium">Sales telemetry could not be loaded.</Text>
+            </div>
+          ) : chartData.length === 0 ? (
+            <div className="flex h-[240px] items-center justify-center">
+              <Text size="small" className="text-slate-400 font-medium">No sales recorded for this timeframe.</Text>
             </div>
           ) : (
-            <div className="h-[240px] w-full min-w-0">
+            <div className="h-[240px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={chartData}
@@ -888,28 +906,27 @@ const DashboardPage = () => {
                 >
                   <defs>
                     <linearGradient id="salesVelocityGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.32} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.01} />
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.00} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid
                     strokeDasharray="3 3"
+                    stroke="#f1f5f9"
                     vertical={false}
-                    stroke="#3f3f46"
-                    opacity={0.2}
                   />
                   <XAxis
                     dataKey="label"
                     tickLine={false}
                     axisLine={false}
-                    tick={{ fontSize: 11, fill: "#71717a" }}
+                    tick={{ fontSize: 11, fill: "#64748b" }}
                     minTickGap={18}
                   />
                   <YAxis
                     tickLine={false}
                     axisLine={false}
                     tickFormatter={(val) => `₱${val >= 1000 ? `${Math.round(val / 1000)}k` : val}`}
-                    tick={{ fontSize: 11, fill: "#71717a" }}
+                    tick={{ fontSize: 11, fill: "#64748b" }}
                     width={50}
                   />
                   <Tooltip content={<CustomSalesTooltip />} />
@@ -928,181 +945,224 @@ const DashboardPage = () => {
         </div>
       </AdminCard>
 
-      {/* 4. Quick Actions */}
-      <AdminCard
-        title="Quick Operational Actions"
-        subtitle="Fast shortcuts to frequent founder workflows and customer queues."
-        contentClassName="p-3.5"
-      >
-        <div className="flex flex-wrap gap-2">
-          {QUICK_ACTIONS.map(({ label, to }) => (
-            <Button
-              key={to}
-              size="small"
-              variant="secondary"
-              onClick={() => navigate(to)}
-              className="h-7 text-xs"
-            >
-              {label}
-            </Button>
-          ))}
-        </div>
-      </AdminCard>
-
-      {/* 5. Feed panels — side by side on wide screens */}
-      <div className="grid gap-3 lg:grid-cols-2">
-        {/* Recent Orders Card */}
-        <AdminCard
-          title="Recent Orders"
-          subtitle="Last 10 customer orders · click any row to inspect details."
-          headerAction={
-            <Button
-              size="small"
-              variant="transparent"
-              onClick={() => navigate("/orders")}
-              className="h-7 text-xs text-ui-fg-muted hover:text-ui-fg-base"
-            >
-              View all orders →
-            </Button>
-          }
-          contentClassName="p-0 divide-y divide-ui-border-base"
-        >
-          {recentOrdersQuery.isError ? (
-            <Text size="small" className="px-4 py-4 text-ui-fg-error">
-              ⚠ Orders could not be loaded. Check your admin permissions.
-            </Text>
-          ) : recentOrdersQuery.isLoading ? (
-            <Text size="small" className="px-4 py-4 text-ui-fg-subtle">
-              Loading…
-            </Text>
-          ) : !recentOrdersQuery.data?.orders?.length ? (
-            <Text size="small" className="px-4 py-8 text-center text-ui-fg-muted">
-              No orders placed yet.
-            </Text>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-ui-border-base bg-ui-bg-subtle/50 text-left">
-                    <th className="px-3.5 py-2 text-xs font-medium text-ui-fg-subtle">Order</th>
-                    <th className="px-3.5 py-2 text-xs font-medium text-ui-fg-subtle">Customer</th>
-                    <th className="px-3.5 py-2 text-right text-xs font-medium text-ui-fg-subtle">Total</th>
-                    <th className="px-3.5 py-2 text-xs font-medium text-ui-fg-subtle">Payment</th>
-                    <th className="px-3.5 py-2 text-xs font-medium text-ui-fg-subtle">Fulfillment</th>
-                    <th className="px-3.5 py-2 text-right text-xs font-medium text-ui-fg-subtle">When</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-ui-border-base">
-                  {recentOrdersQuery.data.orders.map((order: HttpTypes.AdminOrder) => (
-                    <tr
+      {/* 5. Balanced 7/5 Operational Grid */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Left Column (7 cols): Recent Orders & Cold-Chain Fulfillment */}
+        <div className="lg:col-span-7">
+          <AdminCard
+            title="Recent Orders & Fulfillment"
+            subtitle="Last 10 customer orders · Click any row to inspect details and packing slips."
+            headerAction={
+              <Button
+                size="small"
+                variant="transparent"
+                onClick={() => navigate("/orders")}
+                className="h-7 text-xs font-bold text-emerald-700 hover:text-emerald-900"
+              >
+                View all orders &rarr;
+              </Button>
+            }
+            contentClassName="p-0"
+          >
+            {recentOrdersQuery.isError ? (
+              <Text size="small" className="p-5 text-rose-600 font-medium">
+                Orders could not be loaded. Check your admin permissions.
+              </Text>
+            ) : recentOrdersQuery.isLoading ? (
+              <Text size="small" className="p-5 text-slate-400 font-medium">
+                Loading…
+              </Text>
+            ) : !recentOrdersQuery.data?.orders?.length ? (
+              <Text size="small" className="p-8 text-center text-slate-400 font-medium">
+                No orders placed yet.
+              </Text>
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {recentOrdersQuery.data.orders.map((order: HttpTypes.AdminOrder) => {
+                  const customerName = order.customer
+                    ? `${order.customer.first_name ?? ""} ${order.customer.last_name ?? ""}`.trim() || order.customer.email
+                    : "Dr. Client"
+                  return (
+                    <div
                       key={order.id}
                       onClick={() => navigate(`/orders/${order.id}`)}
-                      className="cursor-pointer transition-colors hover:bg-ui-bg-subtle/60"
+                      className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-slate-50/70 transition-all cursor-pointer"
                     >
-                      <td className="px-3.5 py-2 font-mono text-xs text-ui-fg-base font-medium">
-                        #{order.display_id}
-                      </td>
-                      <td className="max-w-[120px] truncate px-3.5 py-2 text-xs text-ui-fg-subtle">
-                        {order.customer
-                          ? `${order.customer.first_name ?? ""} ${order.customer.last_name ?? ""}`.trim() ||
-                            order.customer.email
-                          : "—"}
-                      </td>
-                      <td className="px-3.5 py-2 text-right font-mono text-xs font-medium text-ui-fg-base">
-                        {formatPhp(order.total ?? 0)}
-                      </td>
-                      <td className="px-3.5 py-2">
-                        <Badge size="small" color={paymentColor(order.payment_status ?? "")}>
-                          {order.payment_status ?? "—"}
-                        </Badge>
-                      </td>
-                      <td className="px-3.5 py-2">
-                        <Badge size="small" color={fulfillmentColor(order.fulfillment_status ?? "")}>
-                          {order.fulfillment_status ?? "—"}
-                        </Badge>
-                      </td>
-                      <td className="px-3.5 py-2 text-right text-xs text-ui-fg-muted font-mono">
-                        {relativeTime(order.created_at)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </AdminCard>
-
-        {/* Unread Support Feed Card */}
-        <AdminCard
-          title="Unread Support Queue"
-          subtitle="Recent customer conversations awaiting response."
-          headerAction={
-            <Button
-              size="small"
-              variant="transparent"
-              onClick={() => navigate("/customer-support")}
-              className="h-7 text-xs text-ui-fg-muted hover:text-ui-fg-base"
-            >
-              Open full queue →
-            </Button>
-          }
-          contentClassName="p-0 divide-y divide-ui-border-base"
-        >
-          {supportFeedQuery.isError ? (
-            <Text size="small" className="px-4 py-4 text-ui-fg-error">
-              ⚠ Support queue could not be loaded. Check your Support role.
-            </Text>
-          ) : supportFeedQuery.isLoading ? (
-            <Text size="small" className="px-4 py-4 text-ui-fg-subtle">
-              Loading…
-            </Text>
-          ) : !supportFeedQuery.data?.conversations.length ? (
-            <Text size="small" className="px-4 py-8 text-center text-ui-fg-muted">
-              No unread conversations. All caught up!
-            </Text>
-          ) : (
-            <div className="divide-y divide-ui-border-base">
-              {supportFeedQuery.data.conversations.map((conv) => {
-                const waiting = formatWaitingSince(conv.waiting_since)
-                return (
-                  <button
-                    key={conv.id}
-                    onClick={() => navigate(`/customer-support/${conv.id}`)}
-                    className="flex w-full items-start justify-between gap-3 px-3.5 py-2.5 text-left transition-colors hover:bg-ui-bg-subtle/60"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <Text size="small" weight="plus" className="text-ui-fg-base">
-                          {conv.subject}
-                        </Text>
-                        {conv.unread_count > 0 && (
-                          <Badge size="small" color="red">
-                            {conv.unread_count} unread
-                          </Badge>
-                        )}
-                        {waiting && (
-                          <Badge size="small" color={waiting.color}>
-                            ⏱ {waiting.text}
-                          </Badge>
-                        )}
+                      <div className="flex items-center gap-3">
+                        <div className="flex size-9 items-center justify-center rounded-xl bg-slate-100 border border-slate-200 text-slate-600 shrink-0 group-hover:border-emerald-300 group-hover:bg-emerald-50 group-hover:text-emerald-700 transition-colors">
+                          <ArchiveBox className="size-4" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-slate-900 font-mono">
+                              #{order.display_id}
+                            </span>
+                            <span className="text-[11px] font-medium text-slate-600 truncate max-w-[150px]">
+                              {customerName}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-slate-400 mt-0.5">
+                            {relativeTime(order.created_at)} · {order.items?.length || 1} line {(order.items?.length || 1) === 1 ? "item" : "items"}
+                          </p>
+                        </div>
                       </div>
-                      <Text size="xsmall" className="mt-0.5 text-ui-fg-subtle">
-                        {conv.customer ? `${conv.customer.name} · ` : ""}
-                        {conv.category.replaceAll("_", " ")}
-                      </Text>
-                      <Text size="xsmall" className="mt-0.5 line-clamp-1 text-ui-fg-muted">
-                        {conv.latest_message_preview || "No preview"}
-                      </Text>
+
+                      <div className="flex items-center justify-between sm:justify-end gap-3">
+                        <div className="text-right">
+                          <p className="text-xs font-extrabold text-slate-900 font-mono">
+                            {formatPhp(order.total ?? 0)}
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Badge size="small" color={paymentColor(order.payment_status ?? "")}>
+                              {order.payment_status ?? "—"}
+                            </Badge>
+                            <Badge size="small" color={fulfillmentColor(order.fulfillment_status ?? "")}>
+                              {order.fulfillment_status ?? "—"}
+                            </Badge>
+                          </div>
+                        </div>
+                        <ArrowUpRightMini className="size-3.5 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                      </div>
                     </div>
-                    <Badge size="small" color={priorityColor(conv.priority)}>
-                      {conv.priority}
-                    </Badge>
-                  </button>
-                )
-              })}
+                  )
+                })}
+              </div>
+            )}
+          </AdminCard>
+        </div>
+
+        {/* Right Column (5 cols): Founder Operational Action Suite */}
+        <div className="lg:col-span-5 space-y-4">
+          {/* Card A: Research Bundles & Synergy Stacks Health */}
+          <div className="rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-white via-emerald-50/20 to-white p-5 shadow-xs transition-all hover:border-emerald-300">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                  <Sparkles className="size-4" />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
+                  3-Tier Bundling Suite
+                </span>
+              </div>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200">
+                <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />
+                5 Stacks Active
+              </span>
             </div>
-          )}
-        </AdminCard>
+            <h3 className="text-sm font-bold text-slate-900 mt-2">
+              Multi-Compound Research Stacks
+            </h3>
+            <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              Curated synergy stacks active in catalog with 10%–15% package discounts and automatic prep kit tiering.
+            </p>
+            <div className="mt-4 pt-3 border-t border-emerald-100 flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-slate-500">
+                100% Shipping Profile Linked
+              </span>
+              <button
+                type="button"
+                onClick={() => navigate("/bundles")}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-colors cursor-pointer"
+              >
+                <span>Manage Stacks</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Card B: Quick Founder Actions */}
+          <AdminCard
+            title="Operational Shortcuts"
+            subtitle="Fast navigation to frequent founder administrative tasks."
+            contentClassName="p-3.5"
+          >
+            <div className="flex flex-wrap gap-2">
+              {QUICK_ACTIONS.map(({ label, to }) => (
+                <Button
+                  key={to}
+                  size="small"
+                  variant="secondary"
+                  onClick={() => navigate(to)}
+                  className="h-7 text-xs font-bold rounded-xl border-slate-200 text-slate-700 bg-white hover:bg-slate-50 shadow-2xs"
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+          </AdminCard>
+
+          {/* Card C: Unread Support Queue Feed */}
+          <AdminCard
+            title="Unread Support Queue"
+            subtitle="Recent customer conversations awaiting response."
+            headerAction={
+              <Button
+                size="small"
+                variant="transparent"
+                onClick={() => navigate("/customer-support")}
+                className="h-7 text-xs font-bold text-slate-500 hover:text-slate-900"
+              >
+                Open queue &rarr;
+              </Button>
+            }
+            contentClassName="p-0"
+          >
+            {supportFeedQuery.isError ? (
+              <Text size="small" className="p-4 text-rose-600 font-medium">
+                Support queue could not be loaded.
+              </Text>
+            ) : supportFeedQuery.isLoading ? (
+              <Text size="small" className="p-4 text-slate-400 font-medium">
+                Loading…
+              </Text>
+            ) : !supportFeedQuery.data?.conversations.length ? (
+              <Text size="small" className="p-6 text-center text-slate-400 font-medium">
+                No unread conversations. All caught up!
+              </Text>
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {supportFeedQuery.data.conversations.map((conv) => {
+                  const waiting = formatWaitingSince(conv.waiting_since)
+                  return (
+                    <button
+                      key={conv.id}
+                      onClick={() => navigate(`/customer-support/${conv.id}`)}
+                      className="flex w-full items-start justify-between gap-3 p-3.5 text-left transition-colors hover:bg-slate-50/80 cursor-pointer"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <Text size="small" weight="plus" className="text-slate-900 font-bold">
+                            {conv.subject}
+                          </Text>
+                          {conv.unread_count > 0 && (
+                            <Badge size="small" color="red">
+                              {conv.unread_count} unread
+                            </Badge>
+                          )}
+                          {waiting && (
+                            <Badge size="small" color={waiting.color}>
+                              {waiting.text}
+                            </Badge>
+                          )}
+                        </div>
+                        <Text size="xsmall" className="mt-0.5 text-slate-500">
+                          {conv.customer ? `${conv.customer.name} · ` : ""}
+                          {conv.category.replaceAll("_", " ")}
+                        </Text>
+                        <Text size="xsmall" className="mt-0.5 line-clamp-1 text-slate-400 font-medium">
+                          {conv.latest_message_preview || "No preview"}
+                        </Text>
+                      </div>
+                      <Badge size="small" color={priorityColor(conv.priority)}>
+                        {conv.priority}
+                      </Badge>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </AdminCard>
+        </div>
       </div>
     </div>
   )

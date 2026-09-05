@@ -58,6 +58,15 @@ function createClientSubmissionKey(): string {
   return createResearchSubmissionKey(() => globalThis.crypto.randomUUID())
 }
 
+function escapeCsv(val: string | number | null | undefined): string {
+  if (val == null) return ""
+  const str = String(val)
+  if (str.includes(",") || str.includes("\"") || str.includes("\n") || str.includes("\r")) {
+    return `"${str.replace(/"/g, '""')}"`
+  }
+  return str
+}
+
 // ─── Rating & tag helpers (encode into note prefix, no backend change) ────────
 
 const RATING_PREFIX_RE = /^\[ratings:M(\d)E(\d)A(\d)\]\n?/
@@ -150,8 +159,8 @@ function RatingInput({
             onClick={() => onChange(n)}
             className={`flex h-8 w-8 items-center justify-center rounded-lg border text-base transition-all ${
               value === n
-                ? "border-indigo-400 bg-indigo-50 shadow-sm"
-                : "border-ui-border-base bg-white hover:border-indigo-200"
+                ? "border-emerald-500 bg-emerald-50 shadow-xs"
+                : "border-ui-border-base bg-white hover:border-emerald-300"
             }`}
           >
             {RATING_EMOJI[name]?.[n - 1] ?? n}
@@ -217,7 +226,7 @@ function RatingDisplay({ ratings }: { ratings: Ratings }) {
         value > 0 ? (
           <span
             key={label}
-            className="inline-flex items-center gap-1 rounded-full border border-indigo-100 bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700"
+            className="inline-flex items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700"
           >
             {emoji} {label} {value}/5
           </span>
@@ -599,7 +608,7 @@ function JournalEntryCard({
           {(linkedMaterial || linkedSupply || linkedRoutine || linkedLog) && (
             <div className="mt-2 flex flex-wrap items-center gap-1.5">
               {linkedMaterial && (
-                <span className="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700">
+                <span className="inline-flex items-center rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
                   Compound: {linkedMaterial.label}
                 </span>
               )}
@@ -609,7 +618,7 @@ function JournalEntryCard({
                 </span>
               )}
               {linkedRoutine && (
-                <span className="inline-flex items-center rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700">
+                <span className="inline-flex items-center rounded-md border border-teal-200 bg-teal-50 px-2 py-0.5 text-xs font-medium text-teal-700">
                   Routine: {linkedRoutine.current_revision.label}
                 </span>
               )}
@@ -739,7 +748,7 @@ function JournalEntryCard({
                 onClick={() => setConfirmingTransition(true)}
                 className={`text-xs underline underline-offset-2 transition-colors ${
                   isVoided
-                    ? "text-indigo-600 hover:text-indigo-700"
+                    ? "text-emerald-600 hover:text-emerald-700"
                     : "text-ui-fg-muted hover:text-rose-600"
                 }`}
               >
@@ -750,13 +759,13 @@ function JournalEntryCard({
             <div
               className={`rounded-xl border p-4 ${
                 isVoided
-                  ? "border-indigo-200 bg-indigo-50/60"
+                  ? "border-emerald-200 bg-emerald-50/60"
                   : "border-rose-200 bg-rose-50/60"
               }`}
             >
               <p
                 className={`text-xs font-medium ${
-                  isVoided ? "text-indigo-900" : "text-rose-800"
+                  isVoided ? "text-emerald-900" : "text-rose-800"
                 }`}
               >
                 {isVoided
@@ -795,9 +804,9 @@ function JournalEntryCard({
                   </button>
                   <button
                     type="submit"
-                    className={`rounded-lg px-3 py-1.5 text-xs font-medium text-white transition-colors disabled:opacity-50 ${
+                    className={`rounded-xl px-4 py-2 text-xs font-medium text-white transition-colors ${
                       isVoided
-                        ? "bg-indigo-600 hover:bg-indigo-700"
+                        ? "bg-emerald-600 hover:bg-emerald-700"
                         : "bg-rose-600 hover:bg-rose-700"
                     }`}
                   >
@@ -849,7 +858,7 @@ export default function Journal({
   const localTime = now.toTimeString().slice(0, 5)
 
   const inputCls =
-    "w-full rounded-xl border border-ui-border-base bg-white px-4 py-3 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 disabled:bg-ui-bg-subtle"
+    "w-full rounded-xl border border-ui-border-base bg-white px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-ui-bg-subtle"
 
   return (
     <section className="mt-6 space-y-6" data-testid="research-journal">
@@ -859,7 +868,7 @@ export default function Journal({
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-ui-border-base py-4 text-sm font-medium text-ui-fg-subtle transition-colors hover:border-indigo-400 hover:text-indigo-600"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-ui-border-base py-4 text-sm font-medium text-ui-fg-subtle transition-colors hover:border-emerald-400 hover:text-emerald-600"
         >
           <span className="text-lg">&#x270F;&#xFE0F;</span> Write a Journal Note
         </button>
@@ -950,7 +959,7 @@ export default function Journal({
               <button
                 type="button"
                 onClick={() => setAdvanced((v) => !v)}
-                className="text-xs font-medium text-indigo-600 underline underline-offset-2"
+                className="text-xs font-medium text-emerald-600 underline underline-offset-2"
               >
                 {advanced ? "Hide advanced fields &#x2191;" : "Add title, date &#x26; links &#x2193;"}
               </button>
@@ -990,14 +999,70 @@ export default function Journal({
 
       {/* ── Journal timeline ───────────────────────────────────────── */}
       <div className="rounded-2xl border border-ui-border-base bg-white p-5">
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">Research Journal</p>
             <h3 className="mt-0.5 text-base font-semibold text-ui-fg-base">All entries</h3>
           </div>
-          <span className="rounded-full bg-ui-bg-subtle px-2.5 py-0.5 text-xs text-ui-fg-muted">
-            {entryCount} {entryCount === 1 ? "entry" : "entries"}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-ui-bg-subtle px-2.5 py-0.5 text-xs font-medium text-ui-fg-muted">
+              {entryCount} {entryCount === 1 ? "entry" : "entries"}
+            </span>
+            {entries.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  const headers = [
+                    "Date",
+                    "Time",
+                    "Title",
+                    "Tags",
+                    "Mood",
+                    "Energy",
+                    "Appetite",
+                    "Routine",
+                    "Status",
+                    "Note",
+                  ]
+                  const rows = entries.map((entry) => {
+                    const rev = entry.current_revision
+                    const { note, ratings, tags } = parseNotePrefix(rev.note ?? "")
+                    const linkedRoutine = routines.find((r) => r.routine_id === rev.routine_id)
+
+                    return [
+                      escapeCsv(rev.local_date),
+                      escapeCsv(rev.local_time),
+                      escapeCsv(rev.title ?? ""),
+                      escapeCsv(tags.join("; ")),
+                      escapeCsv(ratings?.mood ? `${ratings.mood}/5` : ""),
+                      escapeCsv(ratings?.energy ? `${ratings.energy}/5` : ""),
+                      escapeCsv(ratings?.appetite ? `${ratings.appetite}/5` : ""),
+                      escapeCsv(linkedRoutine?.current_revision?.label ?? ""),
+                      escapeCsv(entry.status),
+                      escapeCsv(note),
+                    ].join(",")
+                  })
+
+                  const csvContent = [headers.join(","), ...rows].join("\r\n")
+                  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement("a")
+                  a.href = url
+                  a.download = `research-journal-${new Date().toISOString().slice(0, 10)}.csv`
+                  a.click()
+                  URL.revokeObjectURL(url)
+                }}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-ui-border-base bg-white px-3 py-1.5 text-xs font-semibold text-ui-fg-base hover:border-emerald-300 hover:bg-emerald-50/50 hover:text-emerald-700 transition-colors shadow-2xs"
+              >
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Export CSV
+              </button>
+            )}
+          </div>
         </div>
 
         {!runtimeReady ? (
@@ -1007,7 +1072,7 @@ export default function Journal({
         ) : entries.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-10 text-center">
             <svg
-              className="h-12 w-12 text-indigo-300"
+              className="h-12 w-12 text-emerald-300"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -1028,7 +1093,7 @@ export default function Journal({
             <button
               type="button"
               onClick={() => setShowForm(true)}
-              className="mt-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              className="mt-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
             >
               Write your first entry &#x2192;
             </button>
@@ -1058,7 +1123,7 @@ export default function Journal({
             {currentPage > 1 ? (
               <Link
                 className="flex items-center gap-1 rounded-xl border border-ui-border-base px-3 py-1.5 text-xs font-medium hover:bg-ui-bg-subtle"
-                href={`/${countryCode}/account/research-tracking?journalPage=${currentPage - 1}`}
+                href={`/${countryCode}/account/research-hub?section=progress&journalPage=${currentPage - 1}`}
               >
                 &#x2190; Previous
               </Link>
@@ -1069,7 +1134,7 @@ export default function Journal({
             {currentPage < totalPages ? (
               <Link
                 className="flex items-center gap-1 rounded-xl border border-ui-border-base px-3 py-1.5 text-xs font-medium hover:bg-ui-bg-subtle"
-                href={`/${countryCode}/account/research-tracking?journalPage=${currentPage + 1}`}
+                href={`/${countryCode}/account/research-hub?section=progress&journalPage=${currentPage + 1}`}
               >
                 Next &#x2192;
               </Link>

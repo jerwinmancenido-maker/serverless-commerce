@@ -2,6 +2,7 @@
 
 import { addToCart, applyPromotions } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import { useState, useTransition } from "react"
 
 export type ParsedCard =
@@ -214,7 +215,7 @@ export function ChatCard({
 
         <div className="mt-2.5 flex items-center gap-2 border-t border-zinc-100 pt-2.5">
           <LocalizedClientLink
-            href={`/products/${card.handle}`}
+            href={`/products/${getCanonicalProductSlug(card.handle)}`}
             className="flex-1 rounded-xl border border-zinc-200/90 bg-zinc-50 hover:bg-zinc-100 py-1.5 text-center text-xs font-semibold text-zinc-700 transition-colors"
           >
             View

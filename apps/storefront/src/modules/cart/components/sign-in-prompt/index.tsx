@@ -1,22 +1,22 @@
-import { Button, Heading, Text } from "@modules/common/components/ui"
+import { Heading, Text } from "@modules/common/components/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const SignInPrompt = () => {
   return (
-    <div className="bg-white flex items-center justify-between">
+    <div className="bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <Heading level="h2" className="txt-xlarge">
-          Already have an account?
+        <Heading level="h2" className="text-base font-bold text-slate-900">
+          Already have an Institutional or Researcher Account?
         </Heading>
-        <Text className="txt-medium text-ui-fg-subtle mt-2">
-          Sign in for a better experience.
+        <Text className="text-xs text-slate-500 mt-1">
+          Sign in for rapid saved protocols, wholesale rates, and batch tracking.
         </Text>
       </div>
       <div>
         <LocalizedClientLink href="/account">
-          <Button variant="secondary" className="h-10" data-testid="sign-in-button">
-            Sign in
-          </Button>
+          <span className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-800 border border-slate-200 text-xs font-bold transition-all cursor-pointer">
+            Sign in &rarr;
+          </span>
         </LocalizedClientLink>
       </div>
     </div>

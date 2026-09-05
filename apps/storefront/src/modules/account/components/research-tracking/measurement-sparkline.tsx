@@ -38,76 +38,110 @@ export default function MeasurementSparkline({ summary }: Props) {
   const max = Math.max(...values)
   const span = max - min || 1
 
-  const svgPoints = points
-    .map((p, i) => {
-      const x = (i / (points.length - 1)) * 100
-      const y = 85 - ((p.value - min) / span) * 70
-      return `${x},${y}`
-    })
-    .join(" ")
+  const coords = points.map((p, i) => {
+    const x = points.length === 1 ? 50 : (i / (points.length - 1)) * 100
+    const y = 80 - ((p.value - min) / span) * 60
+    return { x, y }
+  })
 
-  // Area path: close below the line
-  const first = points[0]
-  const last = points[points.length - 1]
-  const firstX = 0
-  const lastX = 100
-  const firstY = 85 - ((first.value - min) / span) * 70
-  const lastY = 85 - ((last.value - min) / span) * 70
-  const areaPath = `M ${firstX},${firstY} L ${svgPoints.split(" ").slice(1).join(" L ")} L ${lastX},95 L ${firstX},95 Z`
+  // Smooth bezier curve path generation
+  let curvePath = `M ${coords[0].x},${coords[0].y}`
+  for (let i = 0; i < coords.length - 1; i++) {
+    const current = coords[i]
+    const next = coords[i + 1]
+    const cp1x = current.x + (next.x - current.x) / 2
+    const cp1y = current.y
+    const cp2x = current.x + (next.x - current.x) / 2
+    const cp2y = next.y
+    curvePath += ` C ${cp1x.toFixed(2)},${cp1y.toFixed(2)} ${cp2x.toFixed(2)},${cp2y.toFixed(2)} ${next.x.toFixed(2)},${next.y.toFixed(2)}`
+  }
+
+  const lastCoord = coords[coords.length - 1]
+  const areaPath = `${curvePath} L 100,95 L 0,95 Z`
 
   const delta = summary.summary.absolute_change
   const isDown = delta < 0
   const unit = summary.summary.normalized_unit
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {/* Stat row */}
-      <div className="flex items-baseline justify-between">
-        <span className="text-xs font-medium text-ui-fg-subtle">{label}</span>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-lg font-bold text-ui-fg-base">
+      <div className="flex items-baseline justify-between border-b border-slate-100 pb-2.5">
+        <div>
+          <span className="text-xs font-bold text-slate-900 block">{label} Tracking</span>
+          <span className="text-[11px] text-slate-500 font-medium">Last 30-day recorded baseline</span>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span className="text-xl font-extrabold text-slate-900 font-mono tracking-tight">
             {summary.summary.current_value}
           </span>
-          <span className="text-xs text-ui-fg-subtle">{unit}</span>
-          <span className={`text-xs font-semibold ${isDown ? "text-emerald-600" : delta > 0 ? "text-rose-500" : "text-ui-fg-subtle"}`}>
+          <span className="text-xs font-semibold text-slate-500">{unit}</span>
+          <span
+            className={`text-xs font-bold px-1.5 py-0.5 rounded-md ${
+              isDown
+                ? "text-emerald-800 bg-emerald-50 border border-emerald-200/80"
+                : delta > 0
+                ? "text-amber-800 bg-amber-50 border border-amber-200/80"
+                : "text-slate-600 bg-slate-100"
+            }`}
+          >
             {delta > 0 ? "+" : ""}{delta.toFixed(1)} {unit}
           </span>
         </div>
       </div>
 
-      {/* SVG Sparkline */}
-      <svg
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        className="h-20 w-full"
-        role="img"
-        aria-label={`${label} trend over last ${points.length} entries`}
-      >
-        <defs>
-          <linearGradient id="sparkGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {/* Area fill */}
-        <path d={areaPath} fill="url(#sparkGradient)" />
-        {/* Line */}
-        <polyline
-          points={svgPoints}
-          fill="none"
-          stroke="#6366f1"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          vectorEffect="non-scaling-stroke"
-        />
-        {/* Last point dot */}
-        <circle cx={lastX} cy={lastY} r="3" fill="#6366f1" vectorEffect="non-scaling-stroke" />
-      </svg>
+      {/* SVG Smooth Spline Sparkline */}
+      <div className="relative pt-1">
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          className="h-20 w-full overflow-visible"
+          role="img"
+          aria-label={`${label} smooth trend over last ${points.length} entries`}
+        >
+          <defs>
+            <linearGradient id="clinicalSparkGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#2563eb" stopOpacity="0.22" />
+              <stop offset="70%" stopColor="#3b82f6" stopOpacity="0.06" />
+              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
+            </linearGradient>
+          </defs>
+          {/* Smooth area fill */}
+          <path d={areaPath} fill="url(#clinicalSparkGradient)" />
+          {/* Smooth line */}
+          <path
+            d={curvePath}
+            fill="none"
+            stroke="#2563eb"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+          {/* Glowing pulse ring & last point dot */}
+          <circle
+            cx={lastCoord.x}
+            cy={lastCoord.y}
+            r="4.5"
+            fill="#ffffff"
+            stroke="#2563eb"
+            strokeWidth="2"
+            vectorEffect="non-scaling-stroke"
+          />
+          <circle
+            cx={lastCoord.x}
+            cy={lastCoord.y}
+            r="2"
+            fill="#2563eb"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+      </div>
 
-      <p className="text-right text-[10px] text-ui-fg-muted">
-        {points.length} entries · {summary.summary.measurement_count} total
-      </p>
+      <div className="flex items-center justify-between text-[10px] text-slate-600 pt-1">
+        <span>Stable telemetry baseline</span>
+        <span>{points.length} entries &middot; {summary.summary.measurement_count} total</span>
+      </div>
     </div>
   )
 }

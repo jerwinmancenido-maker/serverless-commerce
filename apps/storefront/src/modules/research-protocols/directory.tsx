@@ -67,30 +67,32 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
   return (
     <section className="mt-10">
       {/* ── Filter bar ── */}
-      <div className="rounded-rounded border border-ui-border-base bg-ui-bg-base p-4">
-        <div className="grid gap-3 small:grid-cols-3">
-
+      <div className="rounded-xl border border-ui-border-base bg-white p-5 shadow-xs">
+        <div className="grid gap-4 small:grid-cols-3">
           {/* Search */}
-          <label className="flex flex-col gap-1.5 text-small-semi text-ui-fg-base">
+          <label className="flex flex-col gap-1.5 text-xs font-semibold uppercase tracking-wider text-ui-fg-base">
             <span className="flex items-center gap-1.5">
-              🔍 Search protocols
+              <svg className="h-3.5 w-3.5 text-ui-fg-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              Search protocols
             </span>
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Compound, category, or research area"
-              className="h-10 rounded-md border border-ui-border-base bg-ui-bg-field px-3 text-small-regular outline-none transition-colors focus:border-ui-border-interactive"
+              className="h-10 rounded-lg border border-ui-border-base bg-ui-bg-field px-3 text-sm text-ui-fg-base outline-none transition-colors focus:border-emerald-500"
             />
           </label>
 
           {/* Category */}
-          <label className="flex flex-col gap-1.5 text-small-semi text-ui-fg-base">
+          <label className="flex flex-col gap-1.5 text-xs font-semibold uppercase tracking-wider text-ui-fg-base">
             <span className="flex items-center gap-1.5">
               Category
               {category !== "all" ? (
                 <span
-                  className="inline-block h-2 w-2 rounded-full"
-                  style={{ backgroundColor: "rgb(99 102 241)" }}
+                  className="inline-block h-2 w-2 rounded-full bg-emerald-500"
                   aria-label="filter active"
                 />
               ) : null}
@@ -98,7 +100,7 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
             <select
               value={category}
               onChange={(event) => setCategory(event.target.value)}
-              className="h-10 rounded-md border border-ui-border-base bg-ui-bg-field px-3 text-small-regular outline-none transition-colors focus:border-ui-border-interactive"
+              className="h-10 rounded-lg border border-ui-border-base bg-ui-bg-field px-3 text-sm text-ui-fg-base outline-none transition-colors focus:border-emerald-500"
             >
               <option value="all">All categories</option>
               {categories.map((item) => (
@@ -108,13 +110,12 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
           </label>
 
           {/* Product format */}
-          <label className="flex flex-col gap-1.5 text-small-semi text-ui-fg-base">
+          <label className="flex flex-col gap-1.5 text-xs font-semibold uppercase tracking-wider text-ui-fg-base">
             <span className="flex items-center gap-1.5">
               Product format
               {format !== "all" ? (
                 <span
-                  className="inline-block h-2 w-2 rounded-full"
-                  style={{ backgroundColor: "rgb(99 102 241)" }}
+                  className="inline-block h-2 w-2 rounded-full bg-emerald-500"
                   aria-label="filter active"
                 />
               ) : null}
@@ -122,7 +123,7 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
             <select
               value={format}
               onChange={(event) => setFormat(event.target.value)}
-              className="h-10 rounded-md border border-ui-border-base bg-ui-bg-field px-3 text-small-regular outline-none transition-colors focus:border-ui-border-interactive"
+              className="h-10 rounded-lg border border-ui-border-base bg-ui-bg-field px-3 text-sm text-ui-fg-base outline-none transition-colors focus:border-emerald-500"
             >
               <option value="all">All formats</option>
               {formats.map((item) => (
@@ -135,7 +136,7 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
 
       {/* ── Result count + clear filters ── */}
       <div className="mt-5 flex items-center justify-between gap-4">
-        <p className="text-small-regular text-ui-fg-subtle" aria-live="polite">
+        <p className="text-xs text-ui-fg-subtle" aria-live="polite">
           Showing{" "}
           <span className="font-semibold text-ui-fg-base">
             {visibleProtocols.length}
@@ -148,56 +149,82 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
           <button
             type="button"
             onClick={clearFilters}
-            className="text-small-semi text-ui-fg-interactive hover:underline"
+            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:underline"
           >
-            × Clear filters
+            Clear filters
           </button>
         ) : null}
       </div>
 
       {/* ── Protocol cards ── */}
       {visibleProtocols.length ? (
-        <div className="mt-4 grid gap-4 small:grid-cols-2 large:grid-cols-3">
-          {visibleProtocols.map((protocol) => (
-            <LocalizedClientLink
-              key={protocol.handle}
-              href={`/research-protocols/${protocol.handle}`}
-              className="group flex flex-col rounded-rounded border border-ui-border-base bg-ui-bg-base p-6 transition-all hover:border-ui-border-interactive hover:shadow-md"
-            >
-              {/* Format + category badges below title */}
-              <div>
-                <h2 className="text-xl-semi text-ui-fg-base group-hover:text-ui-fg-interactive">
-                  {protocol.content.compound_name || protocol.title}
-                </h2>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {protocol.content.product_format ? (
-                    <span className="rounded-full border border-ui-border-base bg-ui-bg-subtle px-2.5 py-0.5 text-xsmall-semi text-ui-fg-subtle">
-                      {protocol.content.product_format}
+        <div className="mt-4 grid gap-5 small:grid-cols-2 large:grid-cols-3">
+          {visibleProtocols.map((protocol) => {
+            const compoundName = protocol.content.compound_name || protocol.title
+            const calcParams = new URLSearchParams()
+            if (protocol.handle === "bpc-157-protocol") {
+              calcParams.set("preset", "bpc-157")
+            } else {
+              calcParams.set("name", compoundName)
+              calcParams.set("preset", "custom")
+            }
+            const calcHref = `#calculator?${calcParams.toString()}`
+
+            return (
+              <div
+                key={protocol.handle}
+                className="group flex flex-col justify-between rounded-xl border border-ui-border-base bg-white p-6 shadow-xs transition-all hover:border-slate-400 hover:shadow-md"
+              >
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {protocol.content.product_format ? (
+                      <span className="rounded-full border border-ui-border-base bg-ui-bg-subtle px-2.5 py-0.5 text-[11px] font-semibold text-ui-fg-subtle">
+                        {protocol.content.product_format}
+                      </span>
+                    ) : null}
+                    {protocol.content.category ? (
+                      <span className="rounded-full border border-emerald-500/20 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-800">
+                        {protocol.content.category}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <h3 className="mt-3 text-lg font-bold text-ui-fg-base group-hover:text-emerald-700 transition-colors">
+                    {compoundName}
+                  </h3>
+
+                  <p className="mt-2.5 text-xs text-ui-fg-subtle leading-relaxed line-clamp-3">
+                    {protocol.content.short_introduction ||
+                      protocol.summary ||
+                      "View the public research protocol preview and verified preparation standards."}
+                  </p>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between gap-2 border-t border-ui-border-base pt-4">
+                  <a
+                    href={calcHref}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700"
+                  >
+                    Load in Calculator
+                    <span aria-hidden="true">↑</span>
+                  </a>
+
+                  <LocalizedClientLink
+                    href={`/research-protocols/${protocol.handle}`}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-ui-fg-base hover:text-emerald-600"
+                  >
+                    View Dossier
+                    <span
+                      className="transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    >
+                      →
                     </span>
-                  ) : null}
-                  {protocol.content.category ? (
-                    <span className="rounded-full border border-ui-border-base bg-ui-bg-subtle px-2.5 py-0.5 text-xsmall-regular text-ui-fg-subtle">
-                      {protocol.content.category}
-                    </span>
-                  ) : null}
+                  </LocalizedClientLink>
                 </div>
               </div>
-
-              <p className="mt-3 flex-1 text-small-regular text-ui-fg-subtle leading-relaxed">
-                {protocol.content.short_introduction || protocol.summary || "View the public research protocol preview."}
-              </p>
-
-              <div className="mt-5 flex items-center gap-1.5 text-small-semi text-ui-fg-interactive">
-                View protocol
-                <span
-                  className="transition-transform group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                >
-                  →
-                </span>
-              </div>
-            </LocalizedClientLink>
-          ))}
+            )
+          })}
         </div>
       ) : (
         <div className="mt-4 rounded-rounded border border-ui-border-base bg-ui-bg-subtle p-8 text-center">

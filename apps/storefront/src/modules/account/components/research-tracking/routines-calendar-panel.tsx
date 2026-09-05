@@ -75,16 +75,16 @@ function statusBadge(occurrence: ResearchOccurrence, today: string) {
   if (occurrence.status === "rescheduled") {
     return {
       label: "Rescheduled",
-      color: "bg-purple-50 text-purple-700 border-purple-200",
-      dot: "bg-purple-500",
+      color: "bg-amber-50 text-amber-700 border-amber-200",
+      dot: "bg-amber-500",
     }
   }
   const date = effectiveDate(occurrence)
   if (date === today) {
     return {
       label: "Due Today",
-      color: "bg-blue-50 text-blue-700 border-blue-200",
-      dot: "bg-blue-500",
+      color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      dot: "bg-emerald-500",
     }
   }
   if (date < today) {
@@ -137,6 +137,7 @@ export default function RoutinesCalendarPanel({
     useState<ResearchOccurrence | null>(null)
   const [extraOccurrences, setExtraOccurrences] = useState<ResearchOccurrence[]>([])
   const [isLoadingMonth, setIsLoadingMonth] = useState(false)
+  const [quickFilter, setQuickFilter] = useState<"all" | "today" | "upcoming" | "confirmed">("all")
 
   const anchor = dateAt(currentAnchor)
   const currentMonth = anchor.getUTCMonth()
@@ -216,6 +217,27 @@ export default function RoutinesCalendarPanel({
   // Items for selected day
   const selectedItems = byDate.get(selectedDate) ?? []
 
+  // Computed displayed items based on quickFilter
+  const displayedItems = useMemo(() => {
+    if (quickFilter === "today") {
+      return byDate.get(today) ?? []
+    }
+    if (quickFilter === "confirmed") {
+      return allOccurrences
+        .filter((o) => o.status === "confirmed")
+        .sort((a, b) => effectiveDate(b).localeCompare(effectiveDate(a)))
+    }
+    if (quickFilter === "upcoming") {
+      return allOccurrences
+        .filter((o) => {
+          const d = effectiveDate(o)
+          return d >= today && o.status === "scheduled"
+        })
+        .sort((a, b) => effectiveDate(a).localeCompare(effectiveDate(b)))
+    }
+    return selectedItems
+  }, [allOccurrences, byDate, quickFilter, selectedItems, today])
+
   // Upcoming items in next 7 days from today
   const upcomingGrouped = useMemo(() => {
     const next7End = addDays(today, 7)
@@ -246,10 +268,10 @@ export default function RoutinesCalendarPanel({
   return (
     <div className="rounded-2xl border border-ui-border-base bg-white shadow-2xs overflow-hidden">
       {/* Header bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ui-border-base px-6 py-4 bg-gradient-to-r from-ui-bg-subtle/60 via-white to-white">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ui-border-base px-6 py-4 bg-gradient-to-r from-emerald-50/40 via-white to-white">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-2xs">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-2xs">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                 <line x1="16" y1="2" x2="16" y2="6" />
@@ -261,8 +283,8 @@ export default function RoutinesCalendarPanel({
               Protocol Schedule & Calendar
             </h3>
             {isLoadingMonth && (
-              <span className="flex items-center gap-1.5 text-xs text-indigo-600 font-medium animate-pulse">
-                <span className="size-1.5 rounded-full bg-indigo-600 animate-ping" />
+              <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium animate-pulse">
+                <span className="size-1.5 rounded-full bg-emerald-600 animate-ping" />
                 Updating…
               </span>
             )}
@@ -279,7 +301,7 @@ export default function RoutinesCalendarPanel({
             Confirmed
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="size-2 rounded-full bg-blue-500" />
+            <span className="size-2 rounded-full bg-emerald-500" />
             Due Today
           </span>
           <span className="flex items-center gap-1.5">
@@ -307,7 +329,7 @@ export default function RoutinesCalendarPanel({
                 <button
                   type="button"
                   onClick={handleToday}
-                  className="rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition-colors"
+                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors"
                 >
                   Return to Today
                 </button>
@@ -382,14 +404,17 @@ export default function RoutinesCalendarPanel({
                 <button
                   key={date}
                   type="button"
-                  onClick={() => setSelectedDate(date)}
+                  onClick={() => {
+                    setSelectedDate(date)
+                    setQuickFilter("all")
+                  }}
                   aria-pressed={isSelected}
                   aria-label={`${formatFullDate(date)}, ${count} routines`}
                   className={`group relative flex flex-col items-center justify-between rounded-xl py-2 px-1 text-center transition-all duration-150 min-h-[58px] sm:min-h-[64px] ${
                     isSelected
                       ? "bg-ui-fg-base text-white shadow-md ring-2 ring-ui-fg-base scale-[1.02] z-10"
                       : isToday
-                      ? "border-2 border-indigo-500 bg-indigo-50/50 text-indigo-950 font-bold hover:bg-indigo-50"
+                      ? "border-2 border-emerald-500 bg-emerald-50/50 text-emerald-950 font-bold hover:bg-emerald-50"
                       : inMonth
                       ? "border border-ui-border-base bg-white hover:bg-ui-bg-subtle text-ui-fg-base"
                       : "border border-transparent bg-ui-bg-subtle/30 text-ui-fg-muted/40 hover:bg-ui-bg-subtle/60"
@@ -401,7 +426,7 @@ export default function RoutinesCalendarPanel({
                       isSelected
                         ? "text-white"
                         : isToday
-                        ? "text-indigo-600 font-extrabold"
+                        ? "text-emerald-600 font-extrabold"
                         : inMonth
                         ? "text-ui-fg-base"
                         : "text-ui-fg-muted/40"
@@ -434,7 +459,7 @@ export default function RoutinesCalendarPanel({
 
                   {/* Tiny Today Label */}
                   {isToday && !isSelected && (
-                    <span className="text-[9px] font-bold text-indigo-600 uppercase tracking-tighter leading-none">
+                    <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-tighter leading-none">
                       Today
                     </span>
                   )}
@@ -448,47 +473,104 @@ export default function RoutinesCalendarPanel({
         <div className="lg:col-span-5 p-5 sm:p-6 bg-gradient-to-b from-ui-bg-subtle/30 to-white flex flex-col justify-between space-y-6">
           {/* Selected Day Header & List */}
           <div className="space-y-4">
+            {/* Quick Filter Buttons */}
+            <div className="flex items-center gap-1 rounded-xl border border-ui-border-base bg-ui-bg-subtle/80 p-1 text-xs">
+              <button
+                type="button"
+                onClick={() => setQuickFilter("all")}
+                className={`flex-1 rounded-lg py-1.5 px-2 text-center transition-all ${
+                  quickFilter === "all"
+                    ? "bg-white text-ui-fg-base shadow-xs font-bold"
+                    : "text-ui-fg-muted hover:text-ui-fg-base font-medium"
+                }`}
+              >
+                Day View
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuickFilter("today")
+                  setSelectedDate(today)
+                }}
+                className={`flex-1 rounded-lg py-1.5 px-2 text-center transition-all ${
+                  quickFilter === "today"
+                    ? "bg-emerald-600 text-white shadow-xs font-bold"
+                    : "text-ui-fg-muted hover:text-ui-fg-base font-medium"
+                }`}
+              >
+                Due Today
+              </button>
+              <button
+                type="button"
+                onClick={() => setQuickFilter("upcoming")}
+                className={`flex-1 rounded-lg py-1.5 px-2 text-center transition-all ${
+                  quickFilter === "upcoming"
+                    ? "bg-teal-600 text-white shadow-xs font-bold"
+                    : "text-ui-fg-muted hover:text-ui-fg-base font-medium"
+                }`}
+              >
+                Upcoming
+              </button>
+              <button
+                type="button"
+                onClick={() => setQuickFilter("confirmed")}
+                className={`flex-1 rounded-lg py-1.5 px-2 text-center transition-all ${
+                  quickFilter === "confirmed"
+                    ? "bg-slate-800 text-white shadow-xs font-bold"
+                    : "text-ui-fg-muted hover:text-ui-fg-base font-medium"
+                }`}
+              >
+                Confirmed
+              </button>
+            </div>
+
             <div className="flex items-start justify-between gap-3 border-b border-ui-border-base pb-3">
               <div>
                 <div className="flex items-center gap-2">
                   <h4 className="text-sm font-bold tracking-tight text-ui-fg-base">
-                    {formatFullDate(selectedDate)}
+                    {quickFilter === "today"
+                      ? "Doses Due Today"
+                      : quickFilter === "confirmed"
+                      ? "Confirmed Protocol Doses"
+                      : quickFilter === "upcoming"
+                      ? "All Upcoming Scheduled Doses"
+                      : formatFullDate(selectedDate)}
                   </h4>
-                  {selectedDate === today && (
-                    <span className="rounded-md bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-700 uppercase tracking-wider">
+                  {quickFilter === "all" && selectedDate === today && (
+                    <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
                       Today
                     </span>
                   )}
-                  {selectedDate === addDays(today, 1) && (
-                    <span className="rounded-md bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 uppercase tracking-wider">
+                  {quickFilter === "all" && selectedDate === addDays(today, 1) && (
+                    <span className="rounded-md bg-teal-100 px-2 py-0.5 text-[10px] font-bold text-teal-800 uppercase tracking-wider">
                       Tomorrow
                     </span>
                   )}
                 </div>
                 <p className="mt-0.5 text-xs text-ui-fg-subtle">
-                  {selectedItems.length === 0
-                    ? "No doses scheduled for this date"
-                    : `${selectedItems.length} ${
-                        selectedItems.length === 1 ? "scheduled dose" : "scheduled doses"
+                  {displayedItems.length === 0
+                    ? "No doses found in this view"
+                    : `${displayedItems.length} ${
+                        displayedItems.length === 1 ? "dose" : "doses"
                       }`}
                 </p>
               </div>
 
-              {selectedDate !== today && (
+              {selectedDate !== today && quickFilter === "all" && (
                 <button
                   type="button"
                   onClick={() => setSelectedDate(today)}
-                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+                  className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 transition-colors"
                 >
                   Go to today
                 </button>
               )}
             </div>
 
-            {/* Selected day occurrences list */}
-            {selectedItems.length > 0 ? (
+            {/* Displayed occurrences list */}
+            {displayedItems.length > 0 ? (
               <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
-                {selectedItems.map((occurrence) => {
+                {displayedItems.map((occurrence) => {
                   const badge = statusBadge(occurrence, today)
                   const unitProfile = defaultResearchUnitProfile(occurrence.base_unit)
                   const formattedQuantity = formatResearchQuantity(
@@ -629,8 +711,8 @@ export default function RoutinesCalendarPanel({
             <div>
               <div className="flex items-start justify-between gap-4 border-b border-ui-border-base pb-4">
                 <div>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-indigo-600">
-                    <span className="size-2 rounded-full bg-indigo-600" />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-600">
+                    <span className="size-2 rounded-full bg-emerald-600" />
                     Scheduled Dose
                   </span>
                   <h3 id="routines-drawer-title" className="mt-1 text-lg font-bold text-ui-fg-base tracking-tight">

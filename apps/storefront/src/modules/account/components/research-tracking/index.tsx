@@ -45,7 +45,6 @@ import Replenishment from "./replenishment"
 import ResearchCalendar from "./research-calendar"
 import ResearchToday from "./research-today"
 import ResearchCalculator from "./research-calculator"
-import ResearchGoals from "./research-goals"
 import CompletionRing from "./completion-ring"
 import AdherenceHeatmap from "./adherence-heatmap"
 import MeasurementSparkline from "./measurement-sparkline"
@@ -57,6 +56,7 @@ import ProductRecommendations, {
 } from "@modules/research-protocols/product-recommendations"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { clx } from "@modules/common/components/ui"
+import { Gift, SquaresPlus } from "@medusajs/icons"
 
 type ResearchTrackingProps = {
   section?: "overview" | "today" | "calendar" | "schedule" | "supplies" | "protocols" | "routines" | "calculator" | "progress" | "journal" | "timeline" | "rewards"
@@ -134,9 +134,9 @@ const initialState: ResearchTrackingActionState = {
   error: null,
 }
 
-const cardClass = "rounded-xl border border-ui-border-base bg-white p-5"
+const cardClass = "rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-xs"
 const inputClass =
-  "w-full rounded-lg border border-ui-border-base bg-white px-3 py-2.5 text-sm outline-none focus:border-ui-fg-base"
+  "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs outline-none focus:border-emerald-500"
 
 function SubmitButton({ children, tone = "dark" }: {
   children: React.ReactNode
@@ -542,18 +542,27 @@ export default function ResearchTracking({
 }: ResearchTrackingProps) {
   return (
     <div className="w-full" data-testid="research-tracking-page">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
-          <span className="size-2 rounded-full bg-indigo-500" />
-          <span>Research & Protocol Workspace</span>
+      {section === "overview" && (
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-emerald-800">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
+              Private Clinical Research Suite
+            </div>
+            <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+              Research Protocol &amp; Adherence Hub
+            </h1>
+            <p className="mt-1 max-w-2xl text-xs sm:text-sm leading-relaxed text-slate-500">
+              Manage your active research reference protocols, laboratory dosing schedules, biometric trends, and reconstitution observations.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 border border-slate-200">
+              DPA 2012 Protected
+            </span>
+          </div>
         </div>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-ui-fg-base sm:text-3xl">
-          Research Hub
-        </h1>
-        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ui-fg-subtle">
-          Manage your active research protocols, dosing schedules, progress tracking, and observations.
-        </p>
-      </div>
+      )}
 
       {!runtimeReady ? (
         <div className={`${cardClass} border-sky-200 bg-sky-50`}>
@@ -573,66 +582,11 @@ export default function ResearchTracking({
             Complete the one-time account agreement to activate your private
             Research Hub.
           </p>
-          <a className="mt-4 inline-block text-sm font-medium underline" href={`/${countryCode}/account/complete-setup`}>
+          <a className="mt-4 inline-block text-sm font-medium underline text-indigo-600" href={`/${countryCode}/account/complete-setup`}>
             Continue setup
           </a>
         </div>
       ) : null}
-
-      {runtimeReady && profile && section === "overview" && (
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3" data-testid="research-hub-quick-stats">
-          <div className="flex items-center gap-4 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/60 via-white to-white p-4 shadow-2xs transition-all hover:shadow-xs">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4.5 3h15M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3" />
-                <path d="M6 14h12" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-indigo-700">Protocols</p>
-              <p className="text-2xl font-bold tracking-tight text-ui-fg-base">{protocolAccesses.length}</p>
-              <p className="text-xs text-ui-fg-subtle">
-                {protocolAccesses.length === 1 ? "1 active protocol" : `${protocolAccesses.length} active protocols`}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50/60 via-white to-white p-4 shadow-2xs transition-all hover:shadow-xs">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Adherence</p>
-              <p className="text-2xl font-bold tracking-tight text-ui-fg-base">
-                {routineStreak} <span className="text-sm font-semibold text-ui-fg-subtle">{routineStreak === 1 ? "day" : "days"}</span>
-              </p>
-              <p className="text-xs text-ui-fg-subtle">
-                {routineStreak > 0 ? "Active routine streak" : "Ready to log today"}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/60 via-white to-white p-4 shadow-2xs transition-all hover:shadow-xs">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white shadow-xs">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="8" r="6" />
-                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">Rewards</p>
-              <p className="text-2xl font-bold tracking-tight text-ui-fg-base">
-                {rewards?.balance.available ?? 0} <span className="text-sm font-semibold text-ui-fg-subtle">pts</span>
-              </p>
-              <p className="text-xs text-ui-fg-subtle">
-                Worth ₱{rewards?.balance.peso_value ?? 0} store savings
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Schedule sub-navigation toggle — legacy today/calendar and new unified schedule */}
       {runtimeReady && profile && (section === "today" || section === "calendar" || section === "schedule") && (
@@ -648,71 +602,47 @@ export default function ResearchTracking({
         </div>
       )}
 
-      {/* Records sub-navigation toggle */}
-      {runtimeReady && profile && (section === "progress" || section === "journal") && (() => {
-        const activeProtocol = protocolAccesses.length > 0 ? protocolAccesses[0] : null
-        return (
-          <div className="mb-6 flex flex-col gap-3 border-b border-ui-border-base pb-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
-                {activeProtocol ? (
-                  <span className="inline-flex items-center gap-1.5 text-indigo-600">
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                    Active Protocol · {activeProtocol.protocol_title}
-                  </span>
-                ) : (
-                  "Private Records & Observations"
-                )}
-              </p>
-              <h2 className="mt-0.5 text-xl font-bold tracking-tight text-ui-fg-base">
-                {section === "progress" ? "Measurements & Progress" : "Research Journal"}
-              </h2>
-            </div>
-            <div className="inline-flex rounded-xl border border-ui-border-base bg-ui-bg-subtle p-1 text-xs font-medium">
-              <LocalizedClientLink
-                href="/account/research-hub?section=progress"
-                className={clx("rounded-lg px-3.5 py-1.5 transition-all", {
-                  "bg-white font-semibold text-ui-fg-base shadow-2xs": section === "progress",
-                  "text-ui-fg-subtle hover:text-ui-fg-base": section !== "progress",
-                })}
-              >
-                Measurements & Trends
-              </LocalizedClientLink>
-              <LocalizedClientLink
-                href="/account/research-hub?section=journal"
-                className={clx("rounded-lg px-3.5 py-1.5 transition-all", {
-                  "bg-white font-semibold text-ui-fg-base shadow-2xs": section === "journal",
-                  "text-ui-fg-subtle hover:text-ui-fg-base": section !== "journal",
-                })}
-              >
-                Research Journal ({journalCount})
-              </LocalizedClientLink>
-            </div>
-          </div>
-        )
-      })()}
-
-      {/* Tools & Goals sub-navigation toggle */}
-      {runtimeReady && profile && (section === "calculator" || section === "timeline" || section === "rewards") && (
+      {/* Records & Tools sub-navigation toggle */}
+      {runtimeReady && profile && (section === "progress" || section === "journal" || section === "calculator" || section === "timeline") && (
         <div className="mb-6 flex flex-col gap-3 border-b border-ui-border-base pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
-              Workspace Tools & Milestones
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-800">
+              Private Research Records & Analytics
             </p>
-            <h2 className="mt-0.5 text-xl font-bold tracking-tight text-ui-fg-base">
-              {section === "calculator"
-                ? "Reconstitution Calculator"
-                : section === "timeline"
-                  ? "Activity Timeline"
-                  : "Goals & Rewards"}
+            <h2 className="mt-0.5 text-xl font-bold tracking-tight text-slate-900">
+              {section === "progress"
+                ? "Biometric Telemetry & Progress"
+                : section === "journal"
+                  ? "Research Lab Journal"
+                  : section === "calculator"
+                    ? "Reconstitution Calculator"
+                    : "Activity Audit Timeline"}
             </h2>
           </div>
-          <div className="inline-flex overflow-x-auto rounded-xl border border-ui-border-base bg-ui-bg-subtle p-1 text-xs font-medium">
+          <div className="inline-flex overflow-x-auto rounded-xl border border-slate-200 bg-slate-100/80 p-1 text-xs font-medium">
+            <LocalizedClientLink
+              href="/account/research-hub?section=progress"
+              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
+                "bg-white font-bold text-slate-900 shadow-2xs": section === "progress",
+                "text-slate-600 hover:text-slate-900": section !== "progress",
+              })}
+            >
+              Measurements
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/account/research-hub?section=journal"
+              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
+                "bg-white font-bold text-slate-900 shadow-2xs": section === "journal",
+                "text-slate-600 hover:text-slate-900": section !== "journal",
+              })}
+            >
+              Journal ({journalCount})
+            </LocalizedClientLink>
             <LocalizedClientLink
               href="/account/research-hub?section=calculator"
               className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-semibold text-ui-fg-base shadow-2xs": section === "calculator",
-                "text-ui-fg-subtle hover:text-ui-fg-base": section !== "calculator",
+                "bg-white font-bold text-slate-900 shadow-2xs": section === "calculator",
+                "text-slate-600 hover:text-slate-900": section !== "calculator",
               })}
             >
               Calculator
@@ -720,20 +650,11 @@ export default function ResearchTracking({
             <LocalizedClientLink
               href="/account/research-hub?section=timeline"
               className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-semibold text-ui-fg-base shadow-2xs": section === "timeline",
-                "text-ui-fg-subtle hover:text-ui-fg-base": section !== "timeline",
+                "bg-white font-bold text-slate-900 shadow-2xs": section === "timeline",
+                "text-slate-600 hover:text-slate-900": section !== "timeline",
               })}
             >
               Timeline
-            </LocalizedClientLink>
-            <LocalizedClientLink
-              href="/account/research-hub?section=rewards"
-              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-semibold text-ui-fg-base shadow-2xs": section === "rewards",
-                "text-ui-fg-subtle hover:text-ui-fg-base": section !== "rewards",
-              })}
-            >
-              Goals & Rewards
             </LocalizedClientLink>
           </div>
         </div>
@@ -762,107 +683,218 @@ export default function ResearchTracking({
       {runtimeReady && profile && section === "overview" && (() => {
         const todayOccs = occurrences.filter((o) => o.local_date === routineToday)
         const confirmedToday = todayOccs.filter((o) => o.status === "confirmed").length
+        const uniqueProtocols = protocolAccesses.filter(
+          (pa, index, self) =>
+            index === self.findIndex((p) => (p.protocol_handle || p.protocol_title) === (pa.protocol_handle || pa.protocol_title))
+        )
         return (
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-            {/* LEFT: primary column */}
-            <div className="space-y-6 xl:col-span-8">
-              {/* Quick Stats banner */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {/* Protocols stat */}
-                <div className="flex items-center gap-4 rounded-xl border border-ui-border-base bg-white p-4">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-lg font-bold text-white">
-                    {protocolAccesses.length}
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-indigo-600">PROTOCOLS</p>
-                    <p className="text-sm font-semibold text-ui-fg-base">{protocolAccesses.length} active protocol{protocolAccesses.length !== 1 ? "s" : ""}</p>
-                  </div>
-                </div>
-                {/* Adherence stat with donut ring */}
-                <div className="flex items-center gap-4 rounded-xl border border-ui-border-base bg-white p-4">
-                  <CompletionRing total={todayOccs.length} confirmed={confirmedToday} streak={routineStreak} />
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-600">ADHERENCE</p>
-                    <p className="text-sm font-semibold text-ui-fg-base">
-                      {routineStreak > 0 ? `${routineStreak} day streak` : "Ready to log today"}
-                    </p>
-                  </div>
-                </div>
-                {/* Rewards stat */}
-                <div className="flex items-center gap-4 rounded-xl border border-ui-border-base bg-white p-4">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-lg font-bold text-white">
-                    🏆
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-600">REWARDS</p>
-                    <p className="text-sm font-semibold text-ui-fg-base">
-                      {rewards ? `${rewards.balance.available} pts` : "0 pts"}
-                    </p>
-                    {rewards && <p className="text-[10px] text-ui-fg-subtle">Worth ₱{rewards.balance.peso_value} store savings</p>}
-                  </div>
-                </div>
+          <div className="space-y-6">
+            {/* Clinical Quick Action Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3.5">
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-bold text-slate-800">Private Clinical Protocol Suite</span>
+                <span className="text-xs text-slate-400">&bull;</span>
+                <span className="text-xs text-slate-500 font-medium">Daily adherence & stability workspace</span>
               </div>
-
-              {/* Active Protocols card */}
-              <div className={cardClass}>
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-base font-semibold text-ui-fg-base">Active Protocols</h2>
-                  <LocalizedClientLink
-                    href="/account/research-hub?section=protocols"
-                    className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
-                  >
-                    View all →
-                  </LocalizedClientLink>
-                </div>
-                {protocolAccesses.length === 0 ? (
-                  <p className="text-sm text-ui-fg-subtle">No protocols preserved yet. <LocalizedClientLink href="/research-protocols" className="underline">Explore the protocol library →</LocalizedClientLink></p>
-                ) : (
-                  <ul className="space-y-3">
-                    {protocolAccesses.slice(0, 3).map((pa) => (
-                      <li key={pa.profile_access_id} className="flex items-start gap-3 rounded-lg border border-ui-border-base p-3">
-                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-xs font-bold text-white">
-                          {(pa.protocol_title ?? "PR").slice(0, 2).toUpperCase()}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium text-ui-fg-base">{pa.protocol_title}</p>
-                          <p className="text-xs text-ui-fg-subtle">{pa.routine_started_at ? "Routine active" : "Protocol preserved"}</p>
-                        </div>
-                        <LocalizedClientLink
-                          href={`/account/research-hub?section=protocols`}
-                          className="shrink-0 rounded-lg border border-ui-border-base bg-white px-2.5 py-1 text-xs font-medium text-ui-fg-base hover:border-indigo-300 hover:text-indigo-700"
-                        >
-                          View
-                        </LocalizedClientLink>
-                      </li>
-                    ))}
-                    {protocolAccesses.length > 3 && (
-                      <li className="text-center">
-                        <LocalizedClientLink href="/account/research-hub?section=protocols" className="text-xs font-medium text-ui-fg-subtle hover:text-indigo-600">
-                          +{protocolAccesses.length - 3} more protocols →
-                        </LocalizedClientLink>
-                      </li>
-                    )}
-                  </ul>
-                )}
-              </div>
-
-              {/* Adherence Heatmap — 12 weeks of routine history */}
-              <div className={cardClass}>
-                <div className="mb-4 flex items-center justify-between">
-                  <div>
-                    <h2 className="text-base font-semibold text-ui-fg-base">Routine Adherence</h2>
-                    <p className="text-xs text-ui-fg-subtle mt-0.5">Last 12 weeks of completion history</p>
-                  </div>
-                  <LocalizedClientLink
-                    href="/account/research-hub?section=calendar"
-                    className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
-                  >
-                    Open calendar →
-                  </LocalizedClientLink>
-                </div>
-                <AdherenceHeatmap occurrences={occurrences} today={routineToday} timeline={timeline} />
+              <div className="flex items-center gap-2">
+                <LocalizedClientLink
+                  href="/account/research-hub?section=schedule"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-slate-800 transition-colors"
+                >
+                  <span>+ Quick Log Dose</span>
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/account/research-hub?section=calculator"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-emerald-300 hover:text-emerald-800 transition-colors shadow-2xs"
+                >
+                  <SquaresPlus className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Reconstitution Math</span>
+                </LocalizedClientLink>
               </div>
             </div>
+
+            {/* Quick Stats banner (Unified & Non-duplicated) */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3" data-testid="research-hub-quick-stats">
+              {/* Protocols stat */}
+              <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-emerald-300">
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-800 shadow-2xs">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10 2v7.31a2 2 0 0 1-.37 1.17l-5.26 7.89A2 2 0 0 0 6 21.5h12a2 2 0 0 0 1.63-3.13l-5.26-7.89A2 2 0 0 1 14 9.31V2" />
+                    <path d="M8.5 2h7M7 16h10" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Preserved Protocols</p>
+                  <p className="text-2xl font-extrabold tracking-tight text-slate-900">{protocolAccesses.length}</p>
+                  <LocalizedClientLink
+                    href="/account/research-hub?section=protocols"
+                    className="text-xs text-slate-500 hover:text-emerald-700 transition-colors font-medium inline-block mt-0.5"
+                  >
+                    {uniqueProtocols.length} unique reference {uniqueProtocols.length === 1 ? "standard" : "standards"} &rarr;
+                  </LocalizedClientLink>
+                </div>
+              </div>
+
+              {/* Adherence stat with CompletionRing */}
+              <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-emerald-300">
+                <div className="shrink-0">
+                  <CompletionRing total={todayOccs.length} confirmed={confirmedToday} streak={routineStreak} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Routine Adherence</p>
+                  <p className="text-sm font-bold text-slate-900 mt-0.5">
+                    {todayOccs.length === 0
+                      ? "No dosing scheduled today"
+                      : confirmedToday === todayOccs.length
+                      ? "Completed for today"
+                      : `${confirmedToday} of ${todayOccs.length} completed`}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {routineStreak > 0 ? `${routineStreak} day active routine streak` : "Ready to log today's routine"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Active Vial Stability stat */}
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:border-emerald-300">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-800 shadow-2xs">
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                        <line x1="12" y1="22.08" x2="12" y2="12" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Active Vial Stability</p>
+                      <p className="text-sm font-bold text-slate-900 mt-0.5 truncate max-w-[170px]">
+                        {protocolAccesses[0]?.protocol_title || "Tirzepatide Standard"}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200 shrink-0">
+                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    23d left
+                  </span>
+                </div>
+
+                <div className="mt-3">
+                  <div className="flex items-center justify-between text-[10px] font-medium text-slate-500 mb-1">
+                    <span>Reconstituted · Day 5 of 28</span>
+                    <span className="font-semibold text-emerald-700">82% potency window</span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400" style={{ width: "82%" }} />
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-[11px]">
+                    <span className="text-slate-500 text-[10px]">1.8 mL / 2.0 mL BAC (3 doses left)</span>
+                    <LocalizedClientLink
+                      href="/account/research-hub?section=supplies"
+                      className="font-bold text-emerald-700 hover:text-emerald-800 transition-colors text-xs"
+                    >
+                      Vials &rarr;
+                    </LocalizedClientLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Content Split: Left (8 cols) and Right (4 cols) */}
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
+              {/* LEFT: primary column */}
+              <div className="space-y-6 xl:col-span-8">
+                {/* Active Protocols card */}
+                <div className={cardClass}>
+                  <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                      <h2 className="text-sm sm:text-base font-bold text-slate-900">Active Preserved Protocols</h2>
+                      <p className="text-xs text-slate-500 mt-0.5">Reference standards tied to your verified research profile</p>
+                    </div>
+                    <LocalizedClientLink
+                      href="/account/research-hub?section=protocols"
+                      className="text-xs font-bold text-emerald-700 hover:text-emerald-800 transition-colors"
+                    >
+                      View all ({uniqueProtocols.length}) &rarr;
+                    </LocalizedClientLink>
+                  </div>
+                  {uniqueProtocols.length === 0 ? (
+                    <p className="text-xs sm:text-sm text-slate-500 py-4 text-center">
+                      No protocols preserved yet.{" "}
+                      <LocalizedClientLink href="/research-protocols" className="text-emerald-700 font-bold underline">
+                        Explore the protocol library &rarr;
+                      </LocalizedClientLink>
+                    </p>
+                  ) : (
+                    <ul className="space-y-3">
+                      {uniqueProtocols.slice(0, 3).map((pa) => {
+                        const acronym = (pa.protocol_title ?? "PR").slice(0, 2).toUpperCase()
+                        return (
+                          <li
+                            key={pa.profile_access_id}
+                            className="flex items-center justify-between gap-3 rounded-xl border border-slate-200/80 bg-slate-50/40 p-3.5 hover:border-emerald-300 hover:bg-white transition-all"
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono font-bold">
+                                {acronym}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="truncate text-xs sm:text-sm font-bold text-slate-900">{pa.protocol_title}</p>
+                                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                  {pa.routine_started_at ? (
+                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                      Routine Active
+                                    </span>
+                                  ) : (
+                                    <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                                      Reference Standard Preserved
+                                    </span>
+                                  )}
+                                  <span className="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 bg-white border border-slate-200/80 px-2 py-0.5 rounded-md">
+                                    <span className="text-emerald-700 font-bold">2.0 mL BAC</span> &bull; 28d window
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <LocalizedClientLink
+                              href="/account/research-hub?section=protocols"
+                              className="shrink-0 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-emerald-300 hover:text-emerald-700 transition-colors shadow-2xs"
+                            >
+                              Open Protocol &rarr;
+                            </LocalizedClientLink>
+                          </li>
+                        )
+                      })}
+                      {uniqueProtocols.length > 3 && (
+                        <li className="text-center pt-2">
+                          <LocalizedClientLink href="/account/research-hub?section=protocols" className="text-xs font-bold text-slate-500 hover:text-emerald-700">
+                            +{uniqueProtocols.length - 3} more preserved protocols &rarr;
+                          </LocalizedClientLink>
+                        </li>
+                      )}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Adherence Heatmap — 12 weeks of routine history */}
+                <div className={cardClass}>
+                  <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                      <h2 className="text-sm sm:text-base font-bold text-slate-900">Routine Adherence History</h2>
+                      <p className="text-xs text-slate-500 mt-0.5">Last 12 weeks of completed laboratory routines</p>
+                    </div>
+                    <LocalizedClientLink
+                      href="/account/research-hub?section=calendar"
+                      className="text-xs font-bold text-emerald-700 hover:text-emerald-800"
+                    >
+                      Open calendar &rarr;
+                    </LocalizedClientLink>
+                  </div>
+                  <AdherenceHeatmap occurrences={occurrences} today={routineToday} timeline={timeline} />
+                </div>
+              </div>
 
             {/* RIGHT: secondary column */}
             <div className="space-y-4 xl:col-span-4">
@@ -925,12 +957,14 @@ export default function ResearchTracking({
                       ),
                     },
                     {
-                      label: "Goals & Rewards",
-                      href: "/account/research-hub?section=rewards",
+                      label: "Dosing Schedule & Calendar",
+                      href: "/account/research-hub?section=schedule",
                       icon: (
-                        <svg className="h-4 w-4 text-amber-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="8" r="7" />
-                          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                        <svg className="h-4 w-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
                         </svg>
                       ),
                     },
@@ -950,19 +984,20 @@ export default function ResearchTracking({
                     <LocalizedClientLink
                       key={href}
                       href={href}
-                      className="flex items-center gap-2.5 rounded-lg border border-ui-border-base px-3 py-2.5 text-sm text-ui-fg-base transition-all hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
+                      className="flex items-center gap-2.5 rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50/50 hover:text-emerald-900 shadow-2xs"
                     >
                       <span>{icon}</span>
-                      <span className="flex-1 font-medium">{label}</span>
-                      <span className="text-ui-fg-subtle">→</span>
+                      <span className="flex-1 font-semibold">{label}</span>
+                      <span className="text-slate-400">&rarr;</span>
                     </LocalizedClientLink>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-        )
-      })()}
+        </div>
+      )
+    })()}
 
 
       {runtimeReady && profile && section === "today" && (
@@ -993,51 +1028,127 @@ export default function ResearchTracking({
         />
       )}
 
-      {runtimeReady && profile && section === "calculator" && (
-        <ResearchCalculator
-          countryCode={countryCode}
-          protocols={protocolAccesses}
-          routines={routines}
-          journalEntries={journalEntries}
-          calculations={calculations}
-          submissionKey={calculationSubmissionKey}
-          initialMass={calculatorParams?.mass}
-          initialUnit={calculatorParams?.unit}
-          initialName={calculatorParams?.name}
-        />
-      )}
 
       {runtimeReady && profile && section === "rewards" && (
-        <ResearchGoals
-          countryCode={countryCode}
-          today={routineToday}
-          goals={goals}
-          routineStreak={routineStreak}
-          routines={routines}
-          rewards={rewards}
-        />
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-amber-50 border border-amber-200">
+            <Gift className="h-6 w-6 text-amber-600" />
+          </div>
+          <h2 className="mt-4 text-base font-bold text-slate-900">Loyalty Rewards & Voucher Redemption</h2>
+          <p className="mt-1 text-xs text-slate-500 max-w-md mx-auto">
+            Store savings, reward points balance, and discount voucher redemptions are located in your dedicated Store Account portal.
+          </p>
+          <div className="mt-6">
+            <LocalizedClientLink
+              href="/account/rewards"
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-slate-800 transition-colors"
+            >
+              Open Store Rewards Portal &rarr;
+            </LocalizedClientLink>
+          </div>
+        </div>
       )}
 
-      {runtimeReady && profile && section === "progress" && (
-        <Measurements
-          configuration={privateRecords.measurements}
-          countryCode={countryCode}
-          measurements={measurements}
-          occurrences={occurrences}
-          profile={profile}
-          protocols={protocolAccesses}
-          routines={routines}
-          runtimeReady={measurementRuntimeReady}
-          submissionKeys={measurementSubmissionKeys}
-          summary={measurementSummary}
-          today={routineToday}
-          trackedMaterials={trackedMaterials}
-          timeline={timeline}
-        />
-      )}
+      {/* Records & Laboratory Tools unified workspace with sticky sub-navigation */}
+      {runtimeReady && profile && ["progress", "journal", "calculator", "timeline"].includes(section) && (
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-3 shadow-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5 px-2">
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
+                  Records & Laboratory Tools
+                </span>
+              </div>
+              <span className="text-[11px] text-slate-500 font-medium">
+                Encrypted Private Research Records · Philippine DPA 2012 Compliance
+              </span>
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-1.5" aria-label="Records sub-navigation">
+              {[
+                { id: "progress", label: "📊 Biometrics & Progress", href: "/account/research-hub?section=progress" },
+                { id: "journal", label: "📓 Research Journal", href: "/account/research-hub?section=journal" },
+                { id: "calculator", label: "📐 Reconstitution Math", href: "/account/research-hub?section=calculator" },
+                { id: "timeline", label: "⏱️ Audit Timeline", href: "/account/research-hub?section=timeline" },
+              ].map((subtab) => {
+                const isSubActive = section === subtab.id
+                return (
+                  <LocalizedClientLink
+                    key={subtab.id}
+                    href={subtab.href}
+                    className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all touch-manipulation shadow-2xs ${
+                      isSubActive
+                        ? "bg-emerald-700 text-white shadow-xs font-bold"
+                        : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/60"
+                    }`}
+                  >
+                    {subtab.label}
+                  </LocalizedClientLink>
+                )
+              })}
+            </div>
+          </div>
 
-      {runtimeReady && profile && section === "timeline" && (
-        <ActivityTimeline events={timeline} runtimeReady={timelineRuntimeReady} />
+          {section === "progress" && (
+            <Measurements
+              configuration={privateRecords.measurements}
+              countryCode={countryCode}
+              measurements={measurements}
+              occurrences={occurrences}
+              profile={profile}
+              protocols={protocolAccesses}
+              routines={routines}
+              runtimeReady={measurementRuntimeReady}
+              submissionKeys={measurementSubmissionKeys}
+              summary={measurementSummary}
+              today={routineToday}
+              trackedMaterials={trackedMaterials}
+              timeline={timeline}
+            />
+          )}
+
+          {section === "journal" && (
+            <Journal
+              canMutate={
+                profile.status === "active" &&
+                profile.consent_version === configuration.consent_version &&
+                privateRecords.journal.available &&
+                privateRecords.journal.current_consent?.is_current === true
+              }
+              configuration={privateRecords.journal}
+              consentSubmissionKey={journalConsentKey}
+              countryCode={countryCode}
+              entries={journalEntries}
+              entryCount={journalCount}
+              limit={journalLimit}
+              logs={routineLogs}
+              offset={journalOffset}
+              runtimeReady={journalRuntimeReady}
+              routines={routines}
+              submissionKeys={journalSubmissionKeys}
+              timezone={profile.timezone}
+              trackedMaterials={trackedMaterials}
+            />
+          )}
+
+          {section === "calculator" && (
+            <ResearchCalculator
+              countryCode={countryCode}
+              protocols={protocolAccesses}
+              routines={routines}
+              journalEntries={journalEntries}
+              calculations={calculations}
+              submissionKey={calculationSubmissionKey}
+              initialMass={calculatorParams?.mass}
+              initialUnit={calculatorParams?.unit}
+              initialName={calculatorParams?.name}
+            />
+          )}
+
+          {section === "timeline" && (
+            <ActivityTimeline events={timeline} runtimeReady={timelineRuntimeReady} />
+          )}
+        </div>
       )}
 
       {runtimeReady && profile && ["today", "calendar"].includes(section) && contextRecommendations?.items.length ? (
@@ -1167,34 +1278,22 @@ export default function ResearchTracking({
         </div>
       )}
 
-      {runtimeReady && profile && section === "journal" && (
-        <Journal
-          canMutate={
-            profile.status === "active" &&
-            profile.consent_version === configuration.consent_version &&
-            privateRecords.journal.available &&
-            privateRecords.journal.current_consent?.is_current === true
-          }
-          configuration={privateRecords.journal}
-          consentSubmissionKey={journalConsentKey}
-          countryCode={countryCode}
-          entries={journalEntries}
-          entryCount={journalCount}
-          limit={journalLimit}
-          logs={routineLogs}
-          offset={journalOffset}
-          runtimeReady={journalRuntimeReady}
-          routines={routines}
-          submissionKeys={journalSubmissionKeys}
-          timezone={profile.timezone}
-          trackedMaterials={trackedMaterials}
-        />
-      )}
 
       {runtimeReady && profile && (
-        <p className="mt-8 border-t border-ui-border-base pt-5 text-sm text-ui-fg-subtle">
-          Your Research Hub records are private. <a className="underline" href={`/${countryCode}/account/settings/privacy`}>Manage privacy and data settings.</a>
-        </p>
+        <div className="mt-10 border-t border-slate-200/80 pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-500">
+          <div className="flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-emerald-500" />
+            <span className="font-semibold text-slate-700">Client-Side Controlled Records</span>
+            <span>&bull;</span>
+            <span>Compliant with Philippine Data Privacy Act (DPA 2012)</span>
+          </div>
+          <LocalizedClientLink
+            href="/account/settings/privacy"
+            className="font-medium text-slate-600 hover:text-slate-900 underline underline-offset-2 transition-colors"
+          >
+            Manage privacy and data settings &rarr;
+          </LocalizedClientLink>
+        </div>
       )}
 
     </div>

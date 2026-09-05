@@ -591,10 +591,10 @@ function researchTrackingAccountPath(formData: FormData): string {
   const countryCode = String(formData.get("country_code") || "").toLowerCase()
 
   if (!/^[a-z]{2}$/.test(countryCode)) {
-    return "/account/research-tracking"
+    return "/account/research-hub"
   }
 
-  return `/${countryCode}/account/research-tracking`
+  return `/${countryCode}/account/research-hub`
 }
 
 async function runResearchMutation(

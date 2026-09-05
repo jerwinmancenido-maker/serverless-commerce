@@ -55,11 +55,28 @@ const ImageGallery = ({
   if (!images || images.length === 0) {
     return (
       <div className="flex items-center justify-center w-full py-2">
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200/80 bg-gradient-to-b from-white/95 via-zinc-50/50 to-white/95 backdrop-blur-md p-8 sm:p-12 text-center shadow-xs w-full max-w-lg aspect-square relative overflow-hidden">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-200/80 bg-gradient-to-b from-white/95 via-zinc-50/50 to-white/95 backdrop-blur-md p-6 sm:p-10 text-center shadow-xs w-full max-w-[440px] aspect-square relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-40 pointer-events-none" />
 
-          <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-white border border-zinc-200/90 text-3xl shadow-2xs mb-5">
-            🧪
+          <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white border border-zinc-200/90 text-zinc-700 shadow-2xs mb-5">
+            <svg
+              className="w-8 h-8 text-emerald-600"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.375A4.5 4.5 0 008.25 21h7.5A4.5 4.5 0 0019 14.375l-4.091-3.966a2.25 2.25 0 01-.659-1.591V3.104"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 3.104h7.5M9.75 14.25h4.5"
+              />
+            </svg>
           </div>
 
           <span className="relative rounded-full bg-zinc-100 border border-zinc-200 px-3 py-1 text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-2.5">
@@ -102,10 +119,10 @@ const ImageGallery = ({
   }
 
   return (
-    <div className="flex flex-col w-full gap-y-3.5">
+    <div className="flex flex-col w-full max-w-[440px] mx-auto gap-y-3.5">
       {/* Primary Studio Display Card */}
       <div
-        className="group relative aspect-square w-full rounded-3xl border border-zinc-200/80 bg-gradient-to-b from-white via-zinc-50/30 to-white backdrop-blur-md p-6 sm:p-10 flex items-center justify-center shadow-xs overflow-hidden"
+        className="group relative aspect-square w-full rounded-3xl border border-zinc-200/80 bg-gradient-to-b from-white via-zinc-50/30 to-white backdrop-blur-md p-6 sm:p-8 flex items-center justify-center shadow-xs overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -129,7 +146,7 @@ const ImageGallery = ({
               className="object-contain drop-shadow-sm transition-all duration-500"
               alt={`${productTitle} image ${selectedImageIndex + 1}`}
               fill
-              sizes="(max-width: 576px) 320px, (max-width: 768px) 480px, (max-width: 1024px) 600px, 720px"
+              sizes="(max-width: 576px) 320px, (max-width: 768px) 400px, 440px"
             />
           </div>
         )}

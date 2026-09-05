@@ -2,6 +2,7 @@
 
 import type { TrackedResearchMaterial, ResearchReplenishmentProjection } from "@lib/data/research-tracking"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { ExclamationCircle } from "@medusajs/icons"
 
 type Props = {
   materials: TrackedResearchMaterial[]
@@ -62,8 +63,9 @@ export default function SupplyLevelBars({ materials, projections }: Props) {
               />
             </div>
             {proj?.urgency === "reorder_now" && (
-              <p className={`mt-1 text-[10px] font-semibold ${colors.text}`}>
-                ⚠ Reorder now
+              <p className={`mt-1 text-[10px] font-semibold ${colors.text} flex items-center gap-1`}>
+                <ExclamationCircle className="h-3 w-3 shrink-0" />
+                <span>Reorder now</span>
               </p>
             )}
           </li>

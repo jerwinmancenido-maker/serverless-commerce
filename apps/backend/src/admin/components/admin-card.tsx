@@ -20,20 +20,20 @@ export const AdminCard = ({
   headerAction,
   children,
   className = "",
-  contentClassName = "p-4",
-  headerClassName = "px-4 py-3 bg-ui-bg-subtle/30",
+  contentClassName = "p-4 sm:p-5",
+  headerClassName = "px-5 py-3.5 border-b border-slate-100 bg-slate-50/50",
   footer,
 }: AdminCardProps) => {
   const hasHeader = title || subtitle || badge || headerAction
 
   return (
-    <Container className={`divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base ${className}`}>
+    <Container className={`p-0 rounded-2xl border border-slate-200/80 bg-white shadow-xs overflow-hidden ${className}`}>
       {hasHeader && (
         <div className={`flex flex-wrap items-center justify-between gap-3 ${headerClassName}`}>
           <div className="flex flex-col gap-y-0.5">
             <div className="flex items-center gap-2">
               {typeof title === "string" ? (
-                <Heading level="h2" className="text-sm font-semibold text-ui-fg-base">
+                <Heading level="h2" className="text-sm font-bold text-slate-900 tracking-tight">
                   {title}
                 </Heading>
               ) : (
@@ -42,7 +42,7 @@ export const AdminCard = ({
               {badge}
             </div>
             {subtitle && typeof subtitle === "string" ? (
-              <Text size="xsmall" className="text-ui-fg-subtle">
+              <Text size="xsmall" className="text-xs text-slate-500">
                 {subtitle}
               </Text>
             ) : (
@@ -55,7 +55,7 @@ export const AdminCard = ({
 
       <div className={contentClassName}>{children}</div>
 
-      {footer && <div className="px-4 py-2.5 bg-ui-bg-subtle/30">{footer}</div>}
+      {footer && <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50">{footer}</div>}
     </Container>
   )
 }

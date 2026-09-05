@@ -1376,8 +1376,8 @@ function PersonalRoutinesContent({
       </div>
       {!canMutate && (
         <div className={`${cardClass} bg-ui-bg-subtle text-sm`}>
-          Routines are currently in read-only mode. An active verified profile is
-          required to create or modify schedules.
+          Personal routines and records are read-only. An active profile with
+          current consent is required to create or change them.
         </div>
       )}
       {canMutate && (

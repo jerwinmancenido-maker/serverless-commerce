@@ -1,0 +1,200 @@
+[
+  {
+    "id": 23,
+    "title": "BPC-157 10MG Blue Cap Procurement Date - May 15, 2026",
+    "product_name": "BPC-157 10MG",
+    "batch_number": "M-1111",
+    "tested_date": "2025-11-02T16:00:00.000Z",
+    "image_url": "/api/coas/images/coa-1779904034015-377510057.png",
+    "created_at": "2026-05-27T17:47:14.022Z"
+  },
+  {
+    "id": 22,
+    "title": "Selank 10MG Blue Cap Procurement Date - May 15, 2026",
+    "product_name": "Selank 10MG",
+    "batch_number": "M-1216",
+    "tested_date": "2026-01-08T16:00:00.000Z",
+    "image_url": "/api/coas/images/coa-1779903875336-739504968.png",
+    "created_at": "2026-05-27T17:44:35.341Z"
+  },
+  {
+    "id": 21,
+    "title": "Semax 10mg Blue Cap Procurement Date - May 15, 2026",
+    "product_name": "Semax 10MG",
+    "batch_number": "M-1215",
+    "tested_date": "2026-01-08T16:00:00.000Z",
+    "image_url": "/api/coas/images/coa-1779903803202-694272102.png",
+    "created_at": "2026-05-27T17:43:23.207Z"
+  },
+  {
+    "id": 20,
+    "title": "Tesamorelin 10MG Black Cap Procurement Date - May 15, 2026",
+    "product_name": "Tesamorelin 10mg",
+    "batch_number": null,
+    "tested_date": "2026-01-11T16:00:00.000Z",
+    "image_url": "/api/coas/images/coa-1779903636602-480571928.png",
+    "created_at": "2026-05-27T17:40:36.607Z"
+  },
+  {
+    "id": 19,
+    "title": "Epithalon 10MG Blue Cap Procurement Date May 15, 2026",
+    "product_name": "EPITHALON 10MG",
+    "batch_number": "M-0317",
+    "tested_date": "2026-03-25T16:00:00.000Z",
+    "image_url": "/api/coas/images/coa-1779903475089-67521574.png",
+    "created_at": "2026-05-27T17:37:55.098Z"
+  },
+  {
+    "id": 18,
+    "title": "GHK-CU 100MG Blue Cap Procurement Date - May 15, 2026",
+    "product_name": "GHK-CU 100MG",
+    "batch_number": "M-0316",
+    "tested_date": "2026-03-24T16:00:00.000Z",
+    "image_url": "/api/coas/images/coa-1779903223608-851126528.png",
+    "created_at": "2026-05-27T17:33:43.618Z"
+  },
+  {
+    "id": 16,
+    "title": "RETATRUTIDE 30MG BATCH 1",
+    "product_name": "RETATRUTIDE 30MG BATCH 1",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1779686022643-851313229.jpg",
+    "created_at": "2026-05-25T05:13:42.648Z"
+  },
+  {
+    "id": 15,
+    "title": "TIRZEPATIDE 30MG BATCH 1",
+    "product_name": "TIRZEPATIDE 30MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1779685954209-161493333.jpg",
+    "created_at": "2026-05-25T05:12:34.211Z"
+  },
+  {
+    "id": 14,
+    "title": "SEMAGLUTIDE 10MG BATCH 1",
+    "product_name": "SEMAGLUTIDE 10MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1779685922313-898026643.jpg",
+    "created_at": "2026-05-25T05:12:02.323Z"
+  },
+  {
+    "id": 13,
+    "title": "TIRZEPATIDE 30MG BATCH 2",
+    "product_name": "TIRZEPATIDE 30MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285726745-173331713.jpeg",
+    "created_at": "2026-05-09T00:15:26.750Z"
+  },
+  {
+    "id": 12,
+    "title": "RETATRUTIDE 15MG BATCH 2",
+    "product_name": "RETATRUTIDE 15MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285695191-984316138.jpeg",
+    "created_at": "2026-05-09T00:14:55.195Z"
+  },
+  {
+    "id": 11,
+    "title": "RETATRUTIDE 30MG BATCH 2",
+    "product_name": "RETATRUTIDE 30MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285664494-254901527.jpeg",
+    "created_at": "2026-05-09T00:14:24.499Z"
+  },
+  {
+    "id": 10,
+    "title": "RETATRUTIDE 10MG BATCH 2",
+    "product_name": "RETATRUTIDE 10MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285628958-939998582.jpeg",
+    "created_at": "2026-05-09T00:13:48.962Z"
+  },
+  {
+    "id": 9,
+    "title": "TIRZEPATIDE 15MG BATCH 2",
+    "product_name": "TIRZEPATIDE 15MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285597105-302636033.jpeg",
+    "created_at": "2026-05-09T00:13:17.110Z"
+  },
+  {
+    "id": 8,
+    "title": "RETATRUTIDE 20MG BATCH 2",
+    "product_name": "RETATRUTIDE 20MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285535175-365935698.jpeg",
+    "created_at": "2026-05-09T00:12:15.177Z"
+  },
+  {
+    "id": 7,
+    "title": "TIRZEPATIDE 60MG BATCH 2",
+    "product_name": "TIRZEPATIDE 60MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285512130-654349814.jpeg",
+    "created_at": "2026-05-09T00:11:52.135Z"
+  },
+  {
+    "id": 6,
+    "title": "GLOW 70MG BATCH 2",
+    "product_name": "GLOW 70MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778285486437-948756128.jpeg",
+    "created_at": "2026-05-09T00:11:26.449Z"
+  },
+  {
+    "id": 5,
+    "title": "CAGRILINTIDE 10MG BATCH 2",
+    "product_name": "CAGRILINTIDE 10MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778141604656-9640879.jpeg",
+    "created_at": "2026-05-07T08:13:24.661Z"
+  },
+  {
+    "id": 4,
+    "title": "KPV 10MG BATCH 2",
+    "product_name": "KPV 10MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778141580880-102506028.jpeg",
+    "created_at": "2026-05-07T08:13:00.885Z"
+  },
+  {
+    "id": 3,
+    "title": "GTT 1500MG BATCH 2",
+    "product_name": "GTT 1500MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778141553279-165160614.jpeg",
+    "created_at": "2026-05-07T08:12:33.284Z"
+  },
+  {
+    "id": 2,
+    "title": "NAD+ 500MG BATCH 2",
+    "product_name": "NAD+ 500MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778141531754-102441108.jpeg",
+    "created_at": "2026-05-07T08:12:11.759Z"
+  },
+  {
+    "id": 1,
+    "title": "GHK-CU 100MG BATCH 2",
+    "product_name": "GHK-CU 100MG",
+    "batch_number": null,
+    "tested_date": null,
+    "image_url": "/api/coas/images/coa-1778141475158-957292394.jpeg",
+    "created_at": "2026-05-07T08:11:15.175Z"
+  }
+]

@@ -39,6 +39,26 @@ function ScheduleIcon({ className }: { className?: string }) {
 
 
 
+function ProtocolsIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 2v7.31a2 2 0 0 1-.37 1.17l-5.26 7.89A2 2 0 0 0 6 21.5h12a2 2 0 0 0 1.63-3.13l-5.26-7.89A2 2 0 0 1 14 9.31V2" />
+      <path d="M8.5 2h7" />
+      <path d="M7 16h10" />
+    </svg>
+  )
+}
+
+function VialsIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
+    </svg>
+  )
+}
+
 function RecordsIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -48,44 +68,41 @@ function RecordsIcon({ className }: { className?: string }) {
   )
 }
 
-function MoreIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="1" />
-      <circle cx="19" cy="12" r="1" />
-      <circle cx="5" cy="12" r="1" />
-    </svg>
-  )
-}
-
 const tabs: TabItem[] = [
   {
     id: "overview",
     label: "Overview",
     href: "/account/research-hub",
-    matches: ["overview", "protocols"],
+    matches: ["overview"],
     icon: OverviewIcon,
   },
   {
+    id: "protocols",
+    label: "My Protocols",
+    href: "/account/research-hub?section=protocols",
+    matches: ["protocols"],
+    icon: ProtocolsIcon,
+  },
+  {
     id: "schedule",
-    label: "Schedule & Supplies",
+    label: "Schedule",
     href: "/account/research-hub?section=schedule",
-    matches: ["schedule", "routines", "today", "calendar", "supplies"],
+    matches: ["schedule", "routines", "today", "calendar"],
     icon: ScheduleIcon,
   },
   {
-    id: "records",
-    label: "Records",
-    href: "/account/research-hub?section=progress",
-    matches: ["progress", "journal"],
-    icon: RecordsIcon,
+    id: "supplies",
+    label: "Vials & Stability",
+    href: "/account/research-hub?section=supplies",
+    matches: ["supplies"],
+    icon: VialsIcon,
   },
   {
-    id: "more",
-    label: "Tools & Goals",
-    href: "/account/research-hub?section=calculator",
-    matches: ["calculator", "timeline", "rewards"],
-    icon: MoreIcon,
+    id: "records",
+    label: "Records & Tools",
+    href: "/account/research-hub?section=progress",
+    matches: ["progress", "journal", "calculator", "timeline"],
+    icon: RecordsIcon,
   },
 ]
 
@@ -94,28 +111,25 @@ export default function ResearchHubNav() {
   const activeSection = search.get("section") || "overview"
 
   return (
-    <nav
-      aria-label="Research Hub"
-      className="mb-8 overflow-x-auto pb-1"
-    >
-      <ul className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-ui-border-base bg-ui-bg-subtle/80 p-1.5 backdrop-blur-xs small:flex-nowrap small:min-w-max">
+    <nav aria-label="Research Hub" className="mb-6 w-full">
+      <ul className="flex flex-wrap small:flex-nowrap items-center gap-1.5 p-1.5 bg-slate-100/90 border border-slate-200/80 rounded-2xl overflow-x-auto no-scrollbar w-full">
         {tabs.map((tab) => {
           const isActive = tab.matches.includes(activeSection)
           const Icon = tab.icon
 
           return (
-            <li key={tab.id}>
+            <li key={tab.id} className="shrink-0">
               <LocalizedClientLink
                 href={tab.href}
                 className={clx(
-                  "flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-150",
+                  "flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer",
                   {
-                    "bg-ui-fg-base text-ui-bg-base shadow-xs": isActive,
-                    "text-ui-fg-subtle hover:bg-white hover:text-ui-fg-base hover:shadow-2xs": !isActive,
+                    "bg-white text-slate-900 shadow-xs border border-slate-200/60 font-bold": isActive,
+                    "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent": !isActive,
                   }
                 )}
               >
-                <Icon className={clx("transition-opacity", isActive ? "opacity-100" : "opacity-60")} />
+                <Icon className={clx("h-4 w-4 transition-colors", isActive ? "text-emerald-600" : "text-slate-400")} />
                 <span>{tab.label}</span>
               </LocalizedClientLink>
             </li>

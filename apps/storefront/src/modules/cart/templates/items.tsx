@@ -13,8 +13,18 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
   const items = cart?.items
   return (
     <div>
-      <div className="pb-3 flex items-center">
-        <Heading className="text-[2rem] leading-[2.75rem]">Cart</Heading>
+      <div className="pb-4 mb-3 flex items-center justify-between border-b border-slate-100">
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full inline-block mb-1.5">
+            Verified Laboratory Reagents
+          </span>
+          <Heading className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+            Research Cart
+          </Heading>
+        </div>
+        <span className="text-xs text-slate-500 font-medium">
+          {items?.length || 0} {items?.length === 1 ? "Compound" : "Compounds"}
+        </span>
       </div>
       <Table>
         <Table.Header className="border-t-0">

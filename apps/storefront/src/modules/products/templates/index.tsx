@@ -65,16 +65,16 @@ const ProductTemplate = async ({
 
       {/* 1. Hero 2-Column Section */}
       <div
-        className="content-container flex flex-col small:flex-row small:items-start gap-x-12 py-10 relative"
+        className="content-container flex flex-col small:flex-row small:items-start gap-x-10 lg:gap-x-14 py-10 relative"
         data-testid="product-container"
       >
         {/* Left Column: Product Media Gallery */}
-        <div className="w-full small:w-1/2 relative">
+        <div className="w-full small:w-5/12 relative">
           <ImageGallery images={images} productTitle={product.title} />
         </div>
 
         {/* Right Column: Sticky Buy Box */}
-        <div className="flex flex-col small:sticky small:top-24 w-full small:w-1/2 py-4 gap-y-4">
+        <div className="flex flex-col small:sticky small:top-24 w-full small:w-7/12 py-4 gap-y-4">
           <ProductInfo product={product} mode="header" />
           <ProductOnboardingCta />
           <Suspense

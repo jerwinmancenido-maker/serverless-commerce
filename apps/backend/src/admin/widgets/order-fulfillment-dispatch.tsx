@@ -12,7 +12,15 @@ import {
 } from "@medusajs/ui"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { sdk } from "../lib/sdk"
+import {
+  ArchiveBox,
+  ArrowUpRightOnBox,
+  Beaker,
+  CheckCircleSolid,
+  CurrencyDollar,
+  DocumentText,
+  SquaresPlus,
+} from "@medusajs/icons"
 import {
   PackingStationDrawer,
   type PrintableDocumentType,
@@ -35,6 +43,49 @@ function fulfillmentBadgeColor(status: string) {
     return "red" as const
   }
   return "grey" as const
+}
+
+type DisaggregatedComponent = {
+  title: string
+  quantity: number
+}
+
+function disaggregatePackingItems(item: HttpTypes.AdminOrderLineItem): DisaggregatedComponent[] {
+  const title = (item.title || "").toLowerCase()
+  const subtitle = (item.subtitle || "").toLowerCase()
+  const sku = (item.variant_sku || "").toUpperCase()
+  const results: DisaggregatedComponent[] = []
+
+  // Check 1: Multi-Compound Stacks
+  if (sku.includes("BNDL-EGN") || (title.includes("epithalon") && title.includes("glutathione") && title.includes("nad"))) {
+    results.push({ title: "Epithalon 10MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "NAD+ 500MG Lyophilized Research Vial", quantity: 1 })
+  } else if (sku.includes("BNDL-GNG") || (title.includes("glutathione") && title.includes("nad") && title.includes("ghk"))) {
+    results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "NAD+ 500MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "GHK-Cu 100MG Lyophilized Research Vial", quantity: 1 })
+  } else if (sku.includes("BNDL-GG") || (title.includes("ghk-cu") && title.includes("glutathione"))) {
+    results.push({ title: "GHK-Cu 100MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
+  } else if (sku.includes("BNDL-EG") || (title.includes("epithalon") && title.includes("glutathione"))) {
+    results.push({ title: "Epithalon 10MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
+  } else if (sku.includes("BNDL-NG") || (title.includes("nad") && title.includes("ghk"))) {
+    results.push({ title: "NAD+ 500MG Lyophilized Research Vial", quantity: 1 })
+    results.push({ title: "GHK-Cu 100MG Lyophilized Research Vial", quantity: 1 })
+  }
+
+  // Check 2: Tier 1 Inclusions (BAC Water / Complete SubQ Set)
+  if (subtitle.includes("subq") || title.includes("subq")) {
+    results.push({ title: "10mL Bacteriostatic Water USP (Diluent)", quantity: 1 })
+    results.push({ title: "10x 1mL Sterile Syringes (31G, 5/16\")", quantity: 1 })
+    results.push({ title: "10x Sterile Alcohol Antiseptic Swabs", quantity: 1 })
+  } else if (subtitle.includes("bac") || title.includes("bac")) {
+    results.push({ title: "10mL Bacteriostatic Water USP (Diluent)", quantity: 1 })
+  }
+
+  return results
 }
 
 const OrderFulfillmentDispatchWidget = ({
@@ -139,61 +190,130 @@ const OrderFulfillmentDispatchWidget = ({
             variant="secondary"
             onClick={() => openPrintStation("packing-slip")}
           >
-            📋 Packing Slip
+            <DocumentText className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            Packing Slip
           </Button>
           <Button
             size="small"
             variant="secondary"
             onClick={() => openPrintStation("shipping-label")}
           >
-            📦 Box Label
+            <ArchiveBox className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            Box Label
           </Button>
           <Button
             size="small"
             variant="secondary"
             onClick={() => openPrintStation("vial-labels")}
           >
-            🧪 Vial Labels
+            <Beaker className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            Vial Labels
           </Button>
           <Button
             size="small"
             variant="secondary"
             onClick={() => openPrintStation("receipt")}
           >
-            🧾 Receipt
+            <CurrencyDollar className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            Receipt
           </Button>
           {order.payment_status === "captured" && !isFulfilledOrShipped && (
-            <Badge color="green">⚡ Pack Ready (Paid)</Badge>
+            <Badge color="green">
+              <CheckCircleSolid className="mr-1 h-3 w-3 text-emerald-600" />
+              Pack Ready (Paid)
+            </Badge>
           )}
         </div>
       </div>
 
       {/* Items Checklist to Pack */}
       <div className="px-6 py-4">
-        <Text size="xsmall" weight="plus" className="mb-2 uppercase text-ui-fg-subtle">
-          Packing Checklist ({order.items?.length ?? 0} items)
-        </Text>
-        <div className="divide-y divide-ui-border-base rounded-lg border border-ui-border-base bg-ui-bg-subtle">
-          {order.items?.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between px-4 py-2.5 text-sm"
-            >
-              <div>
-                <Text size="small" weight="plus" className="text-ui-fg-base">
-                  {item.title}
-                </Text>
-                {item.subtitle && (
-                  <Text size="xsmall" className="text-ui-fg-subtle">
-                    {item.subtitle}
-                  </Text>
+        <div className="mb-3 flex items-center justify-between">
+          <Text size="xsmall" weight="plus" className="uppercase tracking-wider text-slate-500">
+            Fulfillment Packing Checklist ({order.items?.length ?? 0} line items)
+          </Text>
+          <Text size="xsmall" className="text-slate-400">
+            Verify constituent vials before sealing temperature-shield pouch
+          </Text>
+        </div>
+        <div className="divide-y divide-slate-200/80 rounded-xl border border-slate-200/80 bg-slate-50/50 overflow-hidden">
+          {order.items?.map((item) => {
+            const disaggregated = disaggregatePackingItems(item)
+            const isBundle = disaggregated.length > 0
+
+            return (
+              <div key={item.id} className="p-3.5 bg-white space-y-2.5">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Text size="small" weight="plus" className="text-slate-900 font-semibold">
+                        {item.title}
+                      </Text>
+                      {isBundle && (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-700">
+                          <SquaresPlus className="h-3 w-3" />
+                          Multi-Item Stack
+                        </span>
+                      )}
+                    </div>
+                    {item.subtitle && (
+                      <Text size="xsmall" className="text-slate-500 mt-0.5">
+                        {item.subtitle}
+                      </Text>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge color="grey">Ordered: {item.quantity}</Badge>
+                  </div>
+                </div>
+
+                {isBundle ? (
+                  <div className="rounded-lg border border-indigo-100 bg-indigo-50/40 p-3 space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-indigo-900 flex items-center gap-1.5">
+                        <Beaker className="h-3.5 w-3.5 text-indigo-600" />
+                        Constituent Pick & Pack Checklist (Disaggregated)
+                      </span>
+                      <span className="text-[11px] font-medium text-indigo-700">
+                        Total {disaggregated.reduce((acc, curr) => acc + curr.quantity * item.quantity, 0)} physical units
+                      </span>
+                    </div>
+                    <div className="divide-y divide-indigo-100/70 rounded-md border border-indigo-100/70 bg-white overflow-hidden text-xs">
+                      {disaggregated.map((comp, idx) => (
+                        <div key={idx} className="flex items-center justify-between px-3 py-2 hover:bg-slate-50/60 transition-colors">
+                          <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                            <input
+                              type="checkbox"
+                              className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                              defaultChecked={isFulfilledOrShipped}
+                            />
+                            <span className="text-slate-800 font-medium">{comp.title}</span>
+                          </label>
+                          <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
+                            x {comp.quantity * item.quantity}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50/60 px-3 py-2 text-xs">
+                    <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                        defaultChecked={isFulfilledOrShipped}
+                      />
+                      <span className="text-slate-700 font-medium">Verified single vial / item packed</span>
+                    </label>
+                    <span className="font-mono text-xs font-bold text-slate-700">
+                      x {item.quantity}
+                    </span>
+                  </div>
                 )}
               </div>
-              <div className="flex items-center gap-2">
-                <Badge color="grey">Qty: {item.quantity}</Badge>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -240,7 +360,8 @@ const OrderFulfillmentDispatchWidget = ({
                     variant="secondary"
                     onClick={() => window.open(trackingUrl, "_blank")}
                   >
-                    🔍 Track on J&T Portal ↗
+                    Track on J&T Portal
+                    <ArrowUpRightOnBox className="ml-1.5 h-3.5 w-3.5 text-slate-500" />
                   </Button>
                 )}
               </div>
@@ -276,7 +397,8 @@ const OrderFulfillmentDispatchWidget = ({
               isLoading={isFulfilling}
               onClick={() => dispatchMutation.mutate()}
             >
-              🚀 Fulfill & Dispatch Parcel
+              <ArchiveBox className="mr-1.5 h-3.5 w-3.5" />
+              Fulfill & Dispatch Parcel
             </Button>
           </div>
         </div>

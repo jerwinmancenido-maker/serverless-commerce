@@ -1,5 +1,7 @@
 "use client"
 
+import { Sparkles } from "@medusajs/icons"
+
 type Props = {
   total: number
   confirmed: number
@@ -13,7 +15,7 @@ export default function CompletionRing({ total, confirmed, streak }: Props) {
   const fill = total === 0 ? 0 : (confirmed / total) * circ
 
   const color =
-    pct >= 100 ? "#10b981" : pct >= 50 ? "#f59e0b" : pct > 0 ? "#6366f1" : "#e5e7eb"
+    pct >= 100 ? "#2563eb" : pct >= 50 ? "#f59e0b" : pct > 0 ? "#6366f1" : "#e5e7eb"
 
   return (
     <div className="flex flex-col items-center gap-1">
@@ -34,8 +36,9 @@ export default function CompletionRing({ total, confirmed, streak }: Props) {
         </text>
       </svg>
       {streak > 0 && (
-        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
-          🔥 {streak}d streak
+        <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+          <Sparkles className="h-3 w-3 text-amber-600" />
+          <span>{streak}d streak</span>
         </span>
       )}
     </div>

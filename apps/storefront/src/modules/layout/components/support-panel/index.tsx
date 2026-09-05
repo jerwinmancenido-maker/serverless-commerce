@@ -476,14 +476,14 @@ export default function SupportPanel({
             setOpen(true)
             setNudge(false)
           }}
-          className={`relative flex items-center gap-2.5 rounded-full bg-ui-fg-base px-5 py-3 text-sm font-semibold text-white shadow-xl hover:opacity-95 transition-all active:scale-95 ${
+          className={`relative flex items-center gap-2.5 rounded-full bg-white border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-800 shadow-xl hover:border-emerald-300 hover:text-emerald-700 hover:shadow-2xl transition-all active:scale-95 ${
             nudge ? "animate-bounce ring-4 ring-emerald-400/50" : ""
           }`}
           aria-label={`Open ${configuration.display_name}`}
         >
           <span
             className={`h-2.5 w-2.5 rounded-full ${
-              availability.status === "online" ? "bg-emerald-400" : "bg-zinc-400"
+              availability.status === "online" ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
             }`}
           />
           <span>Support</span>

@@ -56,8 +56,8 @@ import type { ResearchRecommendationItem } from "@modules/research-protocols/pro
 import { retrieveRewardsSummary, type RewardsSummary } from "@lib/data/rewards"
 
 export const metadata: Metadata = {
-  title: "Research & Tracking",
-  description: "Private research organization and data controls.",
+  title: "Research Hub | Clinical Research Workspace",
+  description: "Private research protocol organization, dosing schedules, stability telemetry, and data controls.",
 }
 
 const unavailableConfiguration: ResearchTrackingConfiguration = {

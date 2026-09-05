@@ -28,14 +28,14 @@ export const PageHeader = ({
   className = "",
 }: PageHeaderProps) => {
   return (
-    <div className={`flex flex-col gap-y-2 pb-1 ${className}`}>
+    <div className={`flex flex-col gap-y-2 pb-2 ${className}`}>
       {/* Breadcrumb row */}
       {(breadcrumbs?.length || backHref) && (
-        <nav className="flex items-center gap-1.5 text-xs text-ui-fg-muted">
+        <nav className="flex items-center gap-1.5 text-xs text-slate-400">
           {backHref && (
             <Link
               to={backHref}
-              className="inline-flex items-center gap-1 text-ui-fg-subtle hover:text-ui-fg-base transition-colors mr-1"
+              className="inline-flex items-center gap-1 text-slate-500 hover:text-slate-900 transition-colors mr-1 font-medium"
             >
               <ArrowLeftMini className="size-3.5" />
               <span>Back</span>
@@ -47,16 +47,16 @@ export const PageHeader = ({
 
             return (
               <span key={idx} className="inline-flex items-center gap-1.5">
-                {idx > 0 && <span className="text-ui-fg-muted/60">/</span>}
+                {idx > 0 && <span className="text-slate-300">/</span>}
                 {crumb.href && !isLast ? (
                   <Link
                     to={crumb.href}
-                    className="text-ui-fg-subtle hover:text-ui-fg-base transition-colors"
+                    className="text-slate-500 hover:text-slate-900 transition-colors font-medium"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className={isLast ? "text-ui-fg-base font-medium" : "text-ui-fg-subtle"}>
+                  <span className={isLast ? "text-slate-900 font-bold" : "text-slate-500"}>
                     {crumb.label}
                   </span>
                 )}
@@ -70,7 +70,7 @@ export const PageHeader = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2.5 min-w-0">
           {typeof title === "string" ? (
-            <Heading level="h1" className="text-lg font-semibold text-ui-fg-base truncate">
+            <Heading level="h1" className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
               {title}
             </Heading>
           ) : (
@@ -84,7 +84,7 @@ export const PageHeader = ({
 
       {/* Subtitle */}
       {subtitle && (
-        <Text size="xsmall" className="text-ui-fg-subtle">
+        <Text size="xsmall" className="text-xs text-slate-500 mt-0.5">
           {subtitle}
         </Text>
       )}
