@@ -14,9 +14,9 @@ const CustomerSupportPage = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Customer Support",
+  label: "Chats",
   icon: ChatBubbleLeftRight,
-  rank: 35,
+  rank: 8,
 })
 
 export default CustomerSupportPage

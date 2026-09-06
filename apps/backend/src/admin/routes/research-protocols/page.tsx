@@ -47,18 +47,20 @@ const statusDetails = (protocol: ResearchProtocolSeries) => {
 
 const readinessDetails = (protocol: ResearchProtocolSeries) => {
   const latest = protocol.revisions[0]
-  const readiness = latest?.readiness
-
-  if (!readiness) {
+  if (!latest) {
     return { label: "Unchecked", color: "grey" as const }
   }
 
-  if (readiness.is_ready) {
-    return { label: "Ready", color: "green" as const }
+  if (latest.status === "published") {
+    return { label: "Published & Ready", color: "green" as const }
+  }
+
+  if (latest.status === "withdrawn") {
+    return { label: "Withdrawn", color: "grey" as const }
   }
 
   return {
-    label: readiness.reasons[0]?.replaceAll("_", " ") || "Needs review",
+    label: "Draft in Progress",
     color: "orange" as const,
   }
 }
@@ -97,7 +99,7 @@ const ResearchProtocolsPage = () => {
       (p) => !p.revisions.some((r) => r.status === "published"),
     ).length
     const totalLinked = rawProtocols.reduce(
-      (acc, p) => acc + (p.compatible_products?.length || 0),
+      (acc, p) => acc + (p.product_links?.length || 0),
       0,
     )
 
@@ -118,12 +120,12 @@ const ResearchProtocolsPage = () => {
     }
     if (activeFilter === "linked") {
       return rawProtocols.filter(
-        (p) => (p.compatible_products?.length || 0) > 0,
+        (p) => (p.product_links?.length || 0) > 0,
       )
     }
     if (activeFilter === "unlinked") {
       return rawProtocols.filter(
-        (p) => (p.compatible_products?.length || 0) === 0,
+        (p) => (p.product_links?.length || 0) === 0,
       )
     }
     return rawProtocols
@@ -143,10 +145,10 @@ const ResearchProtocolsPage = () => {
                 to={`/research-protocols/${row.original.id}`}
               >
                 <span>🔬</span>
-                <span>{latest?.title || row.original.handle}</span>
+                <span>{latest?.title || row.original.protocol_key}</span>
               </Link>
               <span className="font-mono text-[10px] text-ui-fg-subtle">
-                {row.original.handle}
+                {row.original.protocol_key}
               </span>
             </div>
           )
@@ -156,7 +158,7 @@ const ResearchProtocolsPage = () => {
         id: "compatible_products",
         header: "Compatible products",
         cell: ({ row }) => {
-          const count = row.original.compatible_products?.length || 0
+          const count = row.original.product_links?.length || 0
           return count > 0 ? (
             <Badge size="small" color="blue" className="font-mono text-[11px]">
               💊 {count} {count === 1 ? "product" : "products"}
@@ -183,7 +185,7 @@ const ResearchProtocolsPage = () => {
         header: "Latest revision",
         cell: ({ row }) => (
           <span className="font-mono text-xs text-ui-fg-subtle">
-            r{row.original.revisions[0]?.revision_number || 1}
+            r{row.original.revisions[0]?.revision || 1}
           </span>
         ),
       }),
@@ -336,8 +338,9 @@ const ResearchProtocolsPage = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Research Protocols",
-  nested: "/products",
+  label: "COAs & Protocols",
+  icon: BookOpen,
+  rank: 9,
 })
 
 export default ResearchProtocolsPage

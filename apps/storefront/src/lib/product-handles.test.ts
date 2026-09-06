@@ -9,15 +9,15 @@ import {
 test("resolves GHK-Cu aliases to internal database handle", () => {
   assert.equal(
     resolveProductHandle("ghk-cu"),
-    "phase8-ghk-cu-acceptance-1788073261417"
+    "ghk-cu"
   )
   assert.equal(
     resolveProductHandle("GHK-CU"),
-    "phase8-ghk-cu-acceptance-1788073261417"
+    "ghk-cu"
   )
   assert.equal(
-    resolveProductHandle("phase-8-ghk-cu-50-mg-subq-set"),
-    "phase8-ghk-cu-acceptance-1788073261417"
+    resolveProductHandle("ghk-cu-50mg"),
+    "ghk-cu"
   )
 })
 
@@ -38,7 +38,7 @@ test("resolves chemical aliases for Glutathione, NAD+, Epithalon, and Bac Water"
 
 test("maps internal database handles to clean canonical slugs", () => {
   assert.equal(
-    getCanonicalProductSlug("phase8-ghk-cu-acceptance-1788073261417"),
+    getCanonicalProductSlug("ghk-cu-50mg"),
     "ghk-cu"
   )
   assert.equal(getCanonicalProductSlug("bpc-157-vial"), "bpc-157")
@@ -51,7 +51,7 @@ test("identifies canonical product slugs correctly", () => {
   assert.equal(isCanonicalProductSlug("bpc-157"), true)
   assert.equal(isCanonicalProductSlug("tirzepatide"), true)
   assert.equal(
-    isCanonicalProductSlug("phase8-ghk-cu-acceptance-1788073261417"),
+    isCanonicalProductSlug("ghk-cu-50mg"),
     false
   )
   assert.equal(isCanonicalProductSlug("bpc-157-vial"), false)

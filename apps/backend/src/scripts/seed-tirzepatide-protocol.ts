@@ -241,7 +241,7 @@ export default async function seedTirzepatideProtocol({
       public_products: true,
       public_faqs: true,
       public_recommendations: true,
-    },
+    } as any,
   })
   logger.info("Protocol visibility policy configured with public quick reference enabled.")
 }

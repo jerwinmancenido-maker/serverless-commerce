@@ -618,7 +618,7 @@ const Toggle = ({
 export const config = defineRouteConfig({
   label: "Notification Center",
   icon: BellAlert,
-  rank: 40,
+  rank: 15,
 })
 
 export default NotificationCenterAdminPage

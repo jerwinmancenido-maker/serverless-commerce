@@ -5,10 +5,10 @@
 
 export const PRODUCT_HANDLE_ALIASES: Record<string, string> = {
   // GHK-Cu friendly aliases
-  "ghk-cu": "phase8-ghk-cu-acceptance-1788073261417",
-  "ghk-cu-50mg": "phase8-ghk-cu-acceptance-1788073261417",
-  "phase-8-ghk-cu-50-mg-subq-set": "phase8-ghk-cu-acceptance-1788073261417",
-  "phase8-ghk-cu": "phase8-ghk-cu-acceptance-1788073261417",
+  "ghk-cu": "ghk-cu",
+  "ghk-cu-50mg": "ghk-cu",
+  "ghk-cu-subq-set": "ghk-cu",
+  "ghkcu": "ghk-cu",
 
   // Tirzepatide friendly aliases
   "tirzepatide-vial": "tirzepatide",
@@ -48,10 +48,8 @@ export const PRODUCT_HANDLE_ALIASES: Record<string, string> = {
  */
 export const CANONICAL_SLUG_BY_HANDLE: Record<string, string> = {
   // GHK-Cu internal handles -> canonical clean slug
-  "phase8-ghk-cu-acceptance-1788073261417": "ghk-cu",
-  "phase-8-ghk-cu-50-mg-subq-set": "ghk-cu",
-  "phase8-ghk-cu": "ghk-cu",
   "ghk-cu-50mg": "ghk-cu",
+  "ghk-cu-subq-set": "ghk-cu",
   "ghk-cu": "ghk-cu",
 
   // BPC-157 internal handles -> canonical clean slug

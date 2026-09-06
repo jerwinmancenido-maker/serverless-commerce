@@ -341,9 +341,9 @@ const BundlesManagementPage = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Research Bundles",
+  label: "Bundles",
   icon: SquaresPlus,
-  rank: 25,
+  rank: 4,
 })
 
 export default BundlesManagementPage

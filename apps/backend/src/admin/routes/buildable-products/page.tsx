@@ -1,5 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { ArrowUpRightOnBox } from "@medusajs/icons"
+import { ArrowUpRightOnBox, Component } from "@medusajs/icons"
 import {
   Badge,
   Button,
@@ -399,8 +399,9 @@ const BuildableProductsPage = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Buildable Products",
-  nested: "/inventory",
+  label: "Component Inventory",
+  icon: Component,
+  rank: 3,
 })
 
 export default BuildableProductsPage

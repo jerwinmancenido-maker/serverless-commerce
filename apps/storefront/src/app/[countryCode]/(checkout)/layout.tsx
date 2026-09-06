@@ -1,13 +1,21 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
+import SupportPanel from "@modules/layout/components/support-panel"
+import { retrieveCustomer } from "@lib/data/customer"
+import { retrieveSupportConfiguration } from "@lib/data/customer-support"
 import { storeConfig } from "@lib/store-config"
 
-export default function CheckoutLayout({
+export default async function CheckoutLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const customer = await retrieveCustomer().catch(() => null)
+  const supportConfiguration = await retrieveSupportConfiguration()
+    .then((result) => result.configuration)
+    .catch(() => null)
+
   return (
     <div className="w-full bg-white relative small:min-h-screen">
       <div className="h-16 bg-white border-b ">
@@ -36,9 +44,16 @@ export default function CheckoutLayout({
         </nav>
       </div>
       <div className="relative" data-testid="checkout-container">{children}</div>
+      {supportConfiguration ? (
+        <SupportPanel
+          signedIn={Boolean(customer)}
+          configuration={supportConfiguration}
+        />
+      ) : null}
       <div className="py-4 w-full flex items-center justify-center">
         <MedusaCTA />
       </div>
     </div>
   )
 }
+

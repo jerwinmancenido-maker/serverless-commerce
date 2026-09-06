@@ -242,7 +242,7 @@ export const COMPOUND_ANALYTICAL_PROTOCOLS: CompoundAnalyticalProtocol[] = [
   {
     id: "ghk-cu",
     compoundName: "GHK-Cu (50mg)",
-    handles: ["phase8-ghk-cu-acceptance-1788073261417", "phase-8-ghk-cu-50-mg-subq-set", "ghk-cu"],
+    handles: ["ghk-cu"],
     subtitle: "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
     category: "Extracellular Matrix Rejuvenation & Gene Regulation",
     purityStandard: "≥99.0% (Certified Copper Tripeptide Complex)",

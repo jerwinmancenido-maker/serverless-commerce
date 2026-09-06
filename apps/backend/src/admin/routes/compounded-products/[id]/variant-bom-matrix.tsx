@@ -71,10 +71,10 @@ type VariantBomMatrixProps = {
     { variantId: string; rows: RecipeRow[] },
     unknown
   >
-  profileByInventoryId: Map<string, ComponentProfile>
+  profileByInventoryId: Map<string, any>
   inventoryById: Map<string, HttpTypes.AdminInventoryItem>
-  profiles: ComponentProfile[]
-  formatVariantPrices: (prices?: HttpTypes.AdminProductVariantPrice[]) => string
+  profiles: any[]
+  formatVariantPrices: (prices?: any) => string
 }
 
 export const VariantBomMatrix = ({
@@ -786,7 +786,7 @@ export const VariantBomMatrix = ({
                               key={component.inventory_item_id}
                               className="flex items-center justify-between p-2 rounded border border-ui-border-base bg-ui-bg-base text-xs shadow-2xs"
                             >
-                              <span className="font-medium truncate text-ui-fg-base" title={item?.title}>
+                              <span className="font-medium truncate text-ui-fg-base" title={item?.title ?? undefined}>
                                 {item?.title || component.inventory_item_id}
                               </span>
                               <Badge color="grey" size="small" className="shrink-0 ml-2 font-mono">

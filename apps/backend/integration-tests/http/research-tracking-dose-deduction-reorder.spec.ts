@@ -136,7 +136,7 @@ async function createCustomerWithSupplyAndRoutine(input: {
       email: `${input.customerId}@example.test`,
       first_name: "E2E",
       last_name: "Researcher",
-    })
+    } as any)
   } catch {
     // Already created
   }

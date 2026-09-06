@@ -762,7 +762,7 @@ export function CustomerSupportMessenger({
                   <div className="flex flex-wrap items-center gap-2 rounded-lg bg-ui-bg-subtle p-1.5 text-xs">
                     {attachedCard && (
                       <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 border px-2 py-0.5 rounded text-[11px]">
-                        <span>📎 {attachedCard.title || attachedCard.type}</span>
+                        <span>📎 {(attachedCard as any).title || ((attachedCard as any).displayId ? `Order #${(attachedCard as any).displayId}` : attachedCard.type)}</span>
                         <button type="button" onClick={() => setAttachedCard(null)} className="text-ui-fg-muted hover:text-ui-fg-base ml-1">
                           ✕
                         </button>
@@ -1016,7 +1016,7 @@ export function CustomerSupportMessenger({
                       <div key={i} className="text-xs p-2 rounded-lg border bg-ui-bg-base">
                         <span className="font-semibold block truncate">
                           {c.type === "protocol" ? "🔬 " : c.type === "product" ? "💊 " : "🎫 "}
-                          {c.title}
+                          {(c as any).title || ((c as any).displayId ? `Order #${(c as any).displayId}` : c.type)}
                         </span>
                         <span className="text-[10px] text-ui-fg-muted capitalize">{c.type}</span>
                       </div>

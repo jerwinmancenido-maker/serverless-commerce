@@ -13,6 +13,7 @@ export type PageHeaderProps = {
   subtitle?: ReactNode
   breadcrumbs?: BreadcrumbItem[]
   badge?: ReactNode
+  statusDropdown?: ReactNode
   actions?: ReactNode
   backHref?: string
   className?: string
@@ -23,6 +24,7 @@ export const PageHeader = ({
   subtitle,
   breadcrumbs,
   badge,
+  statusDropdown,
   actions,
   backHref,
   className = "",
@@ -77,6 +79,7 @@ export const PageHeader = ({
             title
           )}
           {badge}
+          {statusDropdown}
         </div>
 
         {actions && <div className="flex flex-wrap items-center gap-2 shrink-0">{actions}</div>}

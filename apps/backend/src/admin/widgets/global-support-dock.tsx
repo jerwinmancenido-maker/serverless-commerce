@@ -245,7 +245,7 @@ const GlobalSupportDock = () => {
   }, [detailQuery.data?.messages.length, isOpen])
 
   const content = (
-    <div className="fixed bottom-5 right-5 z-[99999] flex flex-col items-end font-sans">
+    <div data-testid="global-support-dock" className="fixed bottom-5 right-5 z-[99999] flex flex-col items-end font-sans">
       {/* Floating Popup Window */}
       {isOpen && (
         <aside
@@ -666,6 +666,7 @@ const GlobalSupportDock = () => {
       {/* Floating Action Trigger Button */}
       <button
         type="button"
+        data-testid="global-support-dock-trigger"
         onClick={() => setIsOpen(!isOpen)}
         className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-zinc-900 text-white shadow-xl hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/30"
         title="Open Live Customer Support Dock"

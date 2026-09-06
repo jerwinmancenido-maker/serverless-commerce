@@ -70,7 +70,7 @@ type CompoundFormatsResponse = {
 }
 
 const formatVariantPrices = (
-  prices: HttpTypes.AdminProductVariant["prices"],
+  prices?: any,
 ) => {
   if (!prices?.length) {
     return "No price"
@@ -902,7 +902,7 @@ const CompoundedProductReadinessPage = () => {
         actions={
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
-              <IconButton size="small" variant="secondary" className="size-7" title="More Actions">
+              <IconButton size="small" variant="transparent" className="size-7" title="More Actions">
                 <EllipsisHorizontal className="size-4" />
               </IconButton>
             </DropdownMenu.Trigger>
@@ -1111,7 +1111,7 @@ const CompoundedProductReadinessPage = () => {
                             className="h-8 text-xs font-mono"
                             value={editHandle}
                             onChange={(e) => setEditHandle(e.target.value)}
-                            placeholder="e.g. phase-8-ghk-cu"
+                            placeholder="e.g. ghk-cu-subq-set"
                           />
                         </div>
                       </div>
@@ -1119,7 +1119,7 @@ const CompoundedProductReadinessPage = () => {
                       <div className="flex flex-col gap-1">
                         <Label className="text-[11px] text-ui-fg-subtle">Categories (Click to toggle)</Label>
                         <div className="flex flex-wrap gap-1.5 mt-0.5">
-                          {(categoriesQuery.data?.items || []).map((cat) => {
+                          {((categoriesQuery.data as any) || []).map((cat: any) => {
                             const active = editCategoryIds.includes(cat.id)
                             return (
                               <button
@@ -1897,7 +1897,6 @@ const CompoundedProductReadinessPage = () => {
           <Prompt.Footer>
             <Prompt.Cancel disabled={isDeleting}>Cancel</Prompt.Cancel>
             <Prompt.Action
-              variant="danger"
               onClick={handleDeleteProduct}
               disabled={isDeleting}
             >

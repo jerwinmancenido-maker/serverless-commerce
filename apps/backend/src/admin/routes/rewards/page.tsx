@@ -198,7 +198,8 @@ const RewardsAdminPage = () => {
 
 export const config = defineRouteConfig({
   label: "Rewards & Referrals",
-  nested: "/promotions",
+  icon: Sparkles,
+  rank: 16,
 })
 
 export default RewardsAdminPage

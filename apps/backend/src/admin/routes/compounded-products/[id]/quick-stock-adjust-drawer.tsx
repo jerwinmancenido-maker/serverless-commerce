@@ -4,7 +4,9 @@ import { Badge, Button, Drawer, Input, Text, toast } from "@medusajs/ui"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
 import { sdk } from "../../../lib/sdk"
-import type { InventoryComponentProfileResponse, ProductReadinessResponse, RecipeRow } from "../types"
+import type { ComponentProfile } from "../../bom/types"
+import type { ProductReadinessResponse } from "../types"
+import type { RecipeRow } from "./kit-template-matcher"
 
 type QuickStockAdjustDrawerProps = {
   open: boolean
@@ -14,7 +16,7 @@ type QuickStockAdjustDrawerProps = {
   selectedStockLocationId: string | null
   stockLocations: HttpTypes.AdminStockLocation[]
   inventoryById: Map<string, HttpTypes.AdminInventoryItem>
-  profileByInventoryId: Map<string, InventoryComponentProfileResponse>
+  profileByInventoryId: Map<string, any>
   recipes: Record<string, RecipeRow[]>
   readiness: ProductReadinessResponse
 }
@@ -55,7 +57,7 @@ export const QuickStockAdjustDrawer = ({
     if (targetVariant) {
       // 1. From local recipe draft
       const localRows = recipes[targetVariant.id] || []
-      localRows.forEach((r) => itemIds.add(r.inventory_item_id))
+      localRows.forEach((r) => itemIds.add(r.inventoryItemId || (r as any).inventory_item_id))
 
       // 2. From readiness variant recipe components
       const readinessVar = readiness.variants.find((v) => v.id === targetVariant.id)
@@ -63,7 +65,7 @@ export const QuickStockAdjustDrawer = ({
     } else {
       // All components across the product's variants
       Object.values(recipes).forEach((rows) => {
-        rows.forEach((r) => itemIds.add(r.inventory_item_id))
+        rows.forEach((r) => itemIds.add(r.inventoryItemId || (r as any).inventory_item_id))
       })
       readiness.variants.forEach((v) => {
         v.recipe_components.forEach((c) => itemIds.add(c.inventory_item_id))
@@ -84,7 +86,7 @@ export const QuickStockAdjustDrawer = ({
 
       rows.push({
         inventoryItemId: id,
-        title: invItem?.title || profile?.title || "Component",
+        title: invItem?.title || "Component",
         sku: invItem?.sku || null,
         classification: profile?.classification || "included_supply",
         currentStock,

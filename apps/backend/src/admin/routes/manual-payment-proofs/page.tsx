@@ -1,5 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { CurrencyDollar, DocumentText } from "@medusajs/icons"
+import { CreditCard, CurrencyDollar, DocumentText } from "@medusajs/icons"
 import {
   Badge,
   Container,
@@ -236,7 +236,8 @@ const ManualPaymentProofsPage = () => {
 
 export const config = defineRouteConfig({
   label: "Payment Proofs",
-  nested: "/orders",
+  icon: CreditCard,
+  rank: 7,
 })
 
 export default ManualPaymentProofsPage

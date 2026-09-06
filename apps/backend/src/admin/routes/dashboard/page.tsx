@@ -34,6 +34,7 @@ import { AdminCard } from "../../components/admin-card"
 import { KpiCard } from "../../components/kpi-card"
 import type { KpiStatus } from "../../components/kpi-card"
 import { PageHeader } from "../../components/page-header"
+import GlobalSupportDock from "../../widgets/global-support-dock"
 import { sdk } from "../../lib/sdk"
 import type {
   BuildableProductRow,
@@ -1164,6 +1165,7 @@ const DashboardPage = () => {
           </AdminCard>
         </div>
       </div>
+      <GlobalSupportDock />
     </div>
   )
 }

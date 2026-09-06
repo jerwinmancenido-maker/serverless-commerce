@@ -25,6 +25,7 @@ import {
   PackingStationDrawer,
   type PrintableDocumentType,
 } from "../components/printables/packing-station-drawer"
+import { sdk } from "../lib/sdk"
 
 function buildJntTrackingUrl(trackingNumber: string): string {
   const sanitized = trackingNumber.trim()
@@ -327,7 +328,7 @@ const OrderFulfillmentDispatchWidget = ({
             const metadata = (fulfillment.metadata ?? {}) as Record<string, unknown>
             const waybill =
               (metadata.waybill_number as string) ||
-              (fulfillment.labels?.[0]?.tracking_number as string) ||
+              ((fulfillment as any).labels?.[0]?.tracking_number as string) ||
               null
             const trackingUrl = waybill
               ? (metadata.tracking_url as string) || buildJntTrackingUrl(waybill)

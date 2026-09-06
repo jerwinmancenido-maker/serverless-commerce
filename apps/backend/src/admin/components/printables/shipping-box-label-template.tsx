@@ -10,7 +10,7 @@ export const ShippingBoxLabelTemplate = ({
   const addr = order.shipping_address
   const waybill =
     waybillNumber ||
-    (order.fulfillments?.[0]?.labels?.[0]?.tracking_number as string) ||
+    ((order.fulfillments?.[0] as any)?.labels?.[0]?.tracking_number as string) ||
     ((order.fulfillments?.[0]?.metadata?.waybill_number as string) ?? "JT-PH-PENDING")
 
   return (
