@@ -952,7 +952,7 @@ export const CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS: CompoundAnalyticalProtocol
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "5-amino-1mq",
-    "deliveryRoutes": ["oral"],
+    "deliveryRoutes": ["oral", "subq"],
     "oralGuide": {
       "defaultSuspensionMl": 10.0,
       "deviceLabel": "Calibrated oral dropper (1 mL graduations)",
@@ -1071,6 +1071,14 @@ export const CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS: CompoundAnalyticalProtocol
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "tesofensine",
+    "deliveryRoutes": [
+      "oral"
+    ],
+    "oralGuide": {
+      "defaultSuspensionMl": 20.0,
+      "deviceLabel": "Calibrated oral dropper (1 mL marks)",
+      "notes": "100 mg crystalline powder dissolved into 20.0 mL analytical vehicle yields 5.0 mg/mL stock solution."
+    },
     "reconstitution": {
       "defaultVialNetMg": 100,
       "defaultDiluentMl": 20,

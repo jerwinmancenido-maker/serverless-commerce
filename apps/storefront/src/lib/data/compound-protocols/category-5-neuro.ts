@@ -737,6 +737,14 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "noopept",
+    "deliveryRoutes": [
+      "oral"
+    ],
+    "oralGuide": {
+      "defaultSuspensionMl": 50.0,
+      "deviceLabel": "Calibrated oral dropper (1 mL marks)",
+      "notes": "500 mg powder dissolved into 50.0 mL oral research vehicle yields 10.0 mg/mL solution."
+    },
     "reconstitution": {
       "defaultVialNetMg": 500,
       "defaultDiluentMl": 50,

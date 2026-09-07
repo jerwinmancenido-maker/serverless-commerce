@@ -677,6 +677,21 @@ export const CATEGORY_7_BLENDS_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "catalogStatus": "in_catalog",
     "storeProductHandle": "selank-semax-combo",
     "isBlend": true,
+    "deliveryRoutes": [
+      "nasal",
+      "subq"
+    ],
+    "nasalGuide": {
+      "pumpVolumeMl": 0.1,
+      "recommendedDiluentMlOptions": [
+        3.0,
+        5.0,
+        10.0
+      ],
+      "defaultDiluentMl": 5.0,
+      "deviceLabel": "Amber nasal spray bottle (10 mL)",
+      "notes": "Produces 50 sprays at 0.10 mL per metered actuation (100 mcg total blend per spray with 5.0 mL diluent)."
+    },
     "blendConstituents": [
       {
         "name": "Semax",

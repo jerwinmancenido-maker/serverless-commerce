@@ -103,6 +103,12 @@ export const HANDLE_TO_DECK_JSON: Record<string, string> = {
   "nad-ghk-cu-bundle": "nad_500mg.json",
 }
 
+const ALL_PROTOCOLS_PATH = path.join(
+  COMMERCE_ROOT,
+  "data",
+  "all-compound-protocols.json",
+)
+
 type CatalogItem = {
   title: string
   handle: string
@@ -110,13 +116,16 @@ type CatalogItem = {
   metadata?: Record<string, unknown>
 }
 
+export type ProtocolSyncResult = {
+  scannedCount: number
+  diffs: MonographDiffResult[]
+  updatedCount: number
+}
+
 export function runProtocolSync(options: {
   isDryRun: boolean
   direction: "from-peptides" | "to-peptides"
-}): {
-  scannedCount: number
-  diffs: MonographDiffResult[]
-} {
+}): ProtocolSyncResult {
   if (!fs.existsSync(UNIFIED_CATALOG_PATH)) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
@@ -130,41 +139,113 @@ export function runProtocolSync(options: {
   const diffs: MonographDiffResult[] = []
   let updatedCount = 0
 
-  for (const item of catalog) {
-    const deckFileName = HANDLE_TO_DECK_JSON[item.handle]
-    if (!deckFileName) continue
+  if (options.direction === "from-peptides") {
+    for (const item of catalog) {
+      const deckFileName = HANDLE_TO_DECK_JSON[item.handle]
+      if (!deckFileName) continue
 
-    const deckFilePath = path.join(PEPTIDES_DATA_DIR, deckFileName)
-    if (!fs.existsSync(deckFilePath)) continue
+      const deckFilePath = path.join(PEPTIDES_DATA_DIR, deckFileName)
+      if (!fs.existsSync(deckFilePath)) continue
 
-    const peptidesDataRaw = fs.readFileSync(deckFilePath, "utf-8")
-    const peptidesData: PeptidesSkuData = JSON.parse(peptidesDataRaw)
+      const peptidesDataRaw = fs.readFileSync(deckFilePath, "utf-8")
+      const peptidesData: PeptidesSkuData = JSON.parse(peptidesDataRaw)
 
-    const diff = diffPeptidesAndMonograph(
-      item.handle,
-      peptidesData,
-      item.description,
-    )
-    if (diff.hasChanges) {
-      diffs.push(diff)
+      const diff = diffPeptidesAndMonograph(
+        item.handle,
+        peptidesData,
+        item.description,
+      )
+      if (diff.hasChanges) {
+        diffs.push(diff)
+      }
+
+      if (!options.isDryRun && diff.hasChanges) {
+        const compiledHtml = compileMonographHtml(peptidesData)
+        item.description = compiledHtml
+        updatedCount++
+      }
     }
 
-    if (options.direction === "from-peptides" && !options.isDryRun) {
-      const compiledHtml = compileMonographHtml(peptidesData)
-      item.description = compiledHtml
-      updatedCount++
+    if (!options.isDryRun && updatedCount > 0) {
+      const backupPath = UNIFIED_CATALOG_PATH.replace(".json", ".backup.json")
+      fs.writeFileSync(backupPath, catalogRaw, "utf-8")
+      fs.writeFileSync(
+        UNIFIED_CATALOG_PATH,
+        JSON.stringify(catalog, null, 2),
+        "utf-8",
+      )
     }
-  }
+  } else if (options.direction === "to-peptides") {
+    // Bidirectional Parity: Validate commerce protocols against Peptides deck JSONs
+    if (fs.existsSync(ALL_PROTOCOLS_PATH)) {
+      const protocolsRaw = fs.readFileSync(ALL_PROTOCOLS_PATH, "utf-8")
+      const protocols: Record<string, unknown>[] = JSON.parse(protocolsRaw)
 
-  if (options.direction === "from-peptides" && !options.isDryRun && updatedCount > 0) {
-    const backupPath = UNIFIED_CATALOG_PATH.replace(".json", ".backup.json")
-    fs.writeFileSync(backupPath, catalogRaw, "utf-8")
-    fs.writeFileSync(UNIFIED_CATALOG_PATH, JSON.stringify(catalog, null, 2), "utf-8")
+      for (const proto of protocols) {
+        const handle = (proto.storeProductHandle as string) || (proto.id as string)
+        const deckFileName = HANDLE_TO_DECK_JSON[handle]
+        if (!deckFileName) continue
+
+        const deckFilePath = path.join(PEPTIDES_DATA_DIR, deckFileName)
+        if (!fs.existsSync(deckFilePath)) {
+          diffs.push({
+            handle,
+            hasChanges: true,
+            differences: [
+              {
+                field: "Peptides Deck File",
+                currentValue: "Missing",
+                newValue: deckFileName,
+              },
+            ],
+          })
+          continue
+        }
+
+        const deckRaw = fs.readFileSync(deckFilePath, "utf-8")
+        const deckData: Record<string, unknown> = JSON.parse(deckRaw)
+
+        const differences: { field: string; currentValue: string; newValue: string }[] = []
+
+        // Check deliveryRoutes parity
+        const protoRoutes = (proto.deliveryRoutes as string[]) || ["subq"]
+        let deckRoute = (deckData.administration_route as string) || "subq"
+        if (deckRoute === "injectable") deckRoute = "subq"
+        if (!protoRoutes.includes(deckRoute)) {
+          differences.push({
+            field: "Delivery Route Parity",
+            currentValue: `Deck has route "${deckRoute}"`,
+            newValue: `Commerce protocol routes: [${protoRoutes.join(", ")}]`,
+          })
+        }
+
+        // Check supply classification parity
+        const isProtoSupply = Boolean(proto.isSupply)
+        const isDeckSupply =
+          deckData.category === "Laboratory Supplies" || Boolean(deckData.is_hardware)
+        if (isProtoSupply !== isDeckSupply) {
+          differences.push({
+            field: "Supply Classification Parity",
+            currentValue: `Deck isSupply: ${isDeckSupply}`,
+            newValue: `Commerce isSupply: ${isProtoSupply}`,
+          })
+        }
+
+        if (differences.length > 0) {
+          diffs.push({
+            handle,
+            hasChanges: true,
+            differences,
+          })
+        }
+      }
+    }
   }
 
   return {
     scannedCount: catalog.length,
     diffs,
+    updatedCount,
   }
 }
 
@@ -183,7 +264,7 @@ if (require.main === module) {
   const result = runProtocolSync({ isDryRun, direction })
 
   console.log(`Scanned ${result.scannedCount} catalog products.`)
-  console.log(`Found ${result.diffs.length} compounds with field differences:\n`)
+  console.log(`Found ${result.diffs.length} compounds with differences:\n`)
 
   for (const diff of result.diffs) {
     console.log(`Compound: [${diff.handle}]`)
@@ -196,6 +277,9 @@ if (require.main === module) {
   if (isDryRun) {
     console.log("Dry run complete. Use --apply to execute updates.")
   } else {
-    console.log("Live apply complete. Backups created and catalog updated.")
+    console.log(
+      `Live apply complete. Updated ${result.updatedCount} products. Backups created and catalog updated.`,
+    )
   }
 }
+
