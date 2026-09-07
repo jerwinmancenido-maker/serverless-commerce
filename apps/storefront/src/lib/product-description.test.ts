@@ -37,6 +37,19 @@ test("renders Markdown bold, italic, heading, and list", () => {
   assert.match(result, /<li>Research grade<\/li>/)
 })
 
+test("formats hybrid HTML descriptions containing embedded Markdown bold and paragraphs", () => {
+  const hybridInput =
+    "<p><strong>TB-500</strong> is an injectable research peptide.</p><p>**What it is:** Synthetic Thymosin Beta-4.\\n\\n**How it works:** Upregulates actin polymerization.</p>"
+  const result = sanitizeProductDescription(hybridInput)
+
+  assert.doesNotMatch(result, /\*\*/)
+  assert.match(result, /<strong>What it is:<\/strong>/)
+  assert.match(result, /<strong>How it works:<\/strong>/)
+  assert.match(result, /<p><strong>TB-500<\/strong> is an injectable research peptide.<\/p>/)
+  assert.match(result, /<p><strong>What it is:<\/strong> Synthetic Thymosin Beta-4.<\/p>/)
+  assert.match(result, /<p><strong>How it works:<\/strong> Upregulates actin polymerization.<\/p>/)
+})
+
 test("strips unsafe HTML injected through Markdown", () => {
   // Pure Markdown input — triggers the marked parser path.
   // marked converts [click](javascript:alert(1)) to <a href="javascript:...">

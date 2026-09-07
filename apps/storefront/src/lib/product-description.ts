@@ -15,20 +15,42 @@ const escapeHtml = (value: string) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;")
 
+const formatInlineMarkdown = (content: string) =>
+  content
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/__(.*?)__/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*(?!\*)([^\*]+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>")
+
 const sanitizeProductDescription = (description: string | null | undefined) => {
   if (!description?.trim()) return ""
 
   let source: string
 
   if (looksLikeHtml(description)) {
-    // Already HTML — sanitize directly
     source = description
+    // Format hybrid HTML containing Markdown bold/italic or unformatted newlines in <p>
+    if (looksLikeMarkdown(source) || source.includes("\n") || source.includes("\\n")) {
+      source = source.replace(/<p>([\s\S]*?)<\/p>/gi, (_match, inner) => {
+        const paragraphs = inner
+          .split(/(?:\r?\n|\\n)\s*(?:\r?\n|\\n)/)
+          .map((p: string) => p.trim())
+          .filter(Boolean)
+        if (paragraphs.length <= 1) {
+          return `<p>${inner.replace(/(?:\r?\n|\\n)/g, "<br>")}</p>`
+        }
+        return paragraphs
+          .map((p: string) => `<p>${p.replace(/(?:\r?\n|\\n)/g, "<br>")}</p>`)
+          .join("")
+      })
+      source = formatInlineMarkdown(source)
+    }
   } else if (looksLikeMarkdown(description)) {
-    // Markdown — convert to HTML first, then sanitize
-    source = marked.parse(description, { async: false }) as string
+    // Markdown — normalize literal \n if present, convert to HTML first, then sanitize
+    const normalizedMd = description.replace(/\\n/g, "\n")
+    source = marked.parse(normalizedMd, { async: false }) as string
   } else {
     // Plain text — wrap in paragraph with line breaks
-    source = `<p>${escapeHtml(description).replaceAll("\n", "<br>")}</p>`
+    source = `<p>${escapeHtml(description).replace(/(?:\r?\n|\\n)/g, "<br>")}</p>`
   }
 
   return sanitizeHtml(source, {

@@ -12,13 +12,20 @@ import { useEffect, useMemo, useState } from "react"
 
 function renderFormattedText(text?: string | null) {
   if (!text) return null
-  const parts = text.split(/(\*\*.*?\*\*)/g)
+  const parts = text.split(/(\*\*.*?\*\*|\*[^*]+?\*)/g)
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
         <strong key={i} className="font-semibold text-slate-900">
           {part.slice(2, -2)}
         </strong>
+      )
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <em key={i} className="italic text-slate-800">
+          {part.slice(1, -1)}
+        </em>
       )
     }
     return part
@@ -226,7 +233,7 @@ export default function FullProtocol({
             </span>
           </div>
           <div className="mt-4 print:mt-1.5 space-y-3 print:space-y-1.5 text-sm print:text-[10px] leading-relaxed print:leading-snug text-slate-700">
-            {content.full_description.split("\n\n").map((para, idx) => (
+            {content.full_description.split(/(?:\r?\n|\\n)\s*(?:\r?\n|\\n)/).map((para, idx) => (
               <p key={idx} className="whitespace-pre-line">
                 {renderFormattedText(para)}
               </p>

@@ -18,6 +18,45 @@ type ProductTabsProps = {
   linkedProtocol?: StoreResearchProtocol | null
 }
 
+function renderFormattedParagraphs(text?: string | null) {
+  if (!text) return null
+  const paragraphs = text
+    .split(/(?:\r?\n|\\n)\s*(?:\r?\n|\\n)/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+
+  if (paragraphs.length === 0) return null
+
+  return (
+    <div className="space-y-3">
+      {paragraphs.map((para, pIdx) => {
+        const parts = para.split(/(\*\*.*?\*\*|\*[^*]+?\*)/g)
+        return (
+          <p key={pIdx} className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            {parts.map((part, i) => {
+              if (part.startsWith("**") && part.endsWith("**")) {
+                return (
+                  <strong key={i} className="font-bold text-slate-900">
+                    {part.slice(2, -2)}
+                  </strong>
+                )
+              }
+              if (part.startsWith("*") && part.endsWith("*")) {
+                return (
+                  <em key={i} className="italic text-slate-800">
+                    {part.slice(1, -1)}
+                  </em>
+                )
+              }
+              return part
+            })}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
 const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
   const [activeTab, setActiveTab] = useState<string>("overview")
 
@@ -122,9 +161,7 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
                     Research Monograph
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                  {compoundProto.longDescription}
-                </p>
+                {renderFormattedParagraphs(compoundProto.longDescription)}
               </div>
             )}
             <div className="pt-6 border-t border-zinc-200">
@@ -413,9 +450,7 @@ const ResearchProtocolPanel = ({
               Research Monograph
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            {compoundProto.longDescription}
-          </p>
+          {renderFormattedParagraphs(compoundProto.longDescription)}
         </div>
       )}
 
