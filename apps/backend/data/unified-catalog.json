@@ -5,12 +5,14 @@
     "description": "<p><strong>5-Amino-1MQ</strong> – Selective Small-Molecule Nicotinamide N-Methyltransferase (NNMT) Inhibitor Standard</p><p><strong>What it is:</strong> 5-Amino-1MQ is a small-molecule chemical compound that acts as a selective, membrane-permeable inhibitor of NNMT (Nicotinamide N-methyltransferase), an enzyme overexpressed in fat tissue of obese individuals.</p><p><strong>How it works:</strong> By blocking NNMT, 5-Amino-1MQ stops the wasteful methylation of nicotinamide. This dramatically boosts intracellular NAD+ levels and SAM (S-adenosylmethionine) concentrations, which in turn revs up SIRT1 longevity enzymes and turns white fat cells into active, fat-burning metabolic furnaces without affecting the central nervous system.</p><p><strong>Why researchers study it:</strong> Researched for cellular energy enhancement, reversing diet-induced obesity, preventing muscle atrophy, improving muscle stem cell function, and boosting mitochondrial longevity.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/5-amino-1mq/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/5-amino-1mq/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/5-amino-1mq/photo1.png",
-      "http://localhost:9000/static/catalog/5-amino-1mq/photo2.png",
-      "http://localhost:9000/static/catalog/5-amino-1mq/photo3.png",
-      "http://localhost:9000/static/catalog/5-amino-1mq/photo4.png"
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -101,10 +103,14 @@
     "description": "<p><strong>AOD-9604</strong> – Modified C-Terminus hGH Fragment 177–191 Lipolytic Research Standard</p><p><strong>What it is:</strong> AOD-9604 (Advanced Obesity Drug-9604) is a synthetic 16-amino-acid peptide derived from the C-terminal region (amino acids 177–191) of human growth hormone, with an added tyrosine residue for stability.</p><p><strong>How it works:</strong> It isolates the fat-burning (lipolytic) domain of growth hormone without interacting with the growth hormone receptor. This means it triggers fat breakdown (lipolysis) and stops new fat storage (lipogenesis) without increasing IGF-1, without affecting blood sugar, and without promoting organ enlargement or cellular proliferation.</p><p><strong>Why researchers study it:</strong> Studied for targeted fat loss without hormonal side effects, cartilage and joint regeneration, repairing osteoarthritis damage, and metabolic health with an exceptional safety profile.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/aod-9604/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/aod-9604/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/aod-9604/photo1.jpg",
-      "http://localhost:9000/static/catalog/aod-9604/photo2.jpg"
+      "http://localhost:9000/static/catalog/aod-9604/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/aod-9604/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/aod-9604/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/aod-9604/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/aod-9604/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/aod-9604/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -195,12 +201,14 @@
     "description": "<p><strong>Cagrilintide</strong> – Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph</p><p><strong>What it is:</strong> Cagrilintide is a long-acting synthetic analogue of amylin, a natural hormone co-secreted with insulin by pancreatic beta cells to regulate mealtime fullness.</p><p><strong>How it works:</strong> Cagrilintide targets amylin and calcitonin receptors in the area postrema of the brainstem, controlling hunger through an entirely different biological pathway than GLP-1 peptides. It slows stomach emptying and suppresses appetite non-incretin style, creating powerful synergy when combined with GLP-1 agonists (such as the CagriSema combination).</p><p><strong>Why researchers study it:</strong> Researched for breaking weight loss plateaus, suppressing stubborn hunger, achieving greater fat loss in combination therapies, and managing blood sugar without causing nausea.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/cagrilintide/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/cagrilintide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/cagrilintide/photo1.png",
-      "http://localhost:9000/static/catalog/cagrilintide/photo2.png",
-      "http://localhost:9000/static/catalog/cagrilintide/photo3.png",
-      "http://localhost:9000/static/catalog/cagrilintide/photo4.png"
+      "http://localhost:9000/static/catalog/cagrilintide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/cagrilintide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/cagrilintide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/cagrilintide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/cagrilintide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/cagrilintide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -298,9 +306,14 @@
     "description": "<p><strong>Lemon Bottle</strong> – High-Concentration Riboflavin / Bromelain / Lecithin Adipocyte Lipolytic Solution Standard</p><p><strong>What it is:</strong> Lemon Bottle is a premium non-detergent lipolytic research formulation combining high-potency Riboflavin (Vitamin B2), Lecithin, and Bromelain (Ananas comosus proteolytic enzyme) optimized for targeted fat cell metabolism studies.</p><p><strong>How it works:</strong> Unlike sodium deoxycholate solutions that cause non-specific tissue necrosis, Lemon Bottle acts via metabolic adipocyte membrane destabilization. Lecithin breaks down localized triglyceride droplets into micro-emulsions; Bromelain hydrolyzes structural adipocyte collagen membranes while suppressing inflammatory edema; and Riboflavin (B2) accelerates cellular flavin adenine dinucleotide (FAD) beta-oxidation, mobilizing free fatty acids for metabolic clearance.</p><p><strong>Why researchers study it:</strong> Researched for targeted localized subcutaneous fat reduction (submental fullness, abdominal fat pads), accelerating adipocyte lipid metabolism without prolonged swelling or tissue fibrosis.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/lemon-bottle/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/lemon-bottle/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/lemon-bottle/photo1.jpg"
+      "http://localhost:9000/static/catalog/lemon-bottle/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/lemon-bottle/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/lemon-bottle/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/lemon-bottle/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/lemon-bottle/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/lemon-bottle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -434,11 +447,14 @@
     "description": "<p><strong>Lipo-C + B12</strong> – Methionine / Inositol / Choline + Cyanocobalamin Hepatic Lipotropic Mobilization Standard</p><p><strong>What it is:</strong> Lipo-C + B12 is an aqueous lipotropic formulation combining essential methyl donors and cofactors: L-Carnitine, Methionine, Inositol, Choline (MIC), and Cyanocobalamin (Vitamin B12).</p><p><strong>How it works:</strong> Choline and Inositol serve as essential structural components of phosphatidylcholine, necessary for the assembly and hepatic export of very-low-density lipoproteins (VLDL), preventing hepatic lipid accumulation. L-Carnitine shuttles long-chain fatty acids across the inner mitochondrial membrane via the carnitine palmitoyltransferase (CPT-1) system for ATP generation. Methionine and Vitamin B12 act as core methyl donors in the methionine-homocysteine cycle, regenerating S-adenosylmethionine (SAMe) and optimizing cellular energy metabolism.</p><p><strong>Why researchers study it:</strong> Studied for non-alcoholic fatty liver resistance, accelerating hepatic fat export, boosting mitochondrial ATP production, and improving metabolic rate in clinical research.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/lipo-c-b12/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/lipo-c-b12/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/lipo-c-b12/photo1.jpg",
-      "http://localhost:9000/static/catalog/lipo-c-b12/photo2.jpg",
-      "http://localhost:9000/static/catalog/lipo-c-b12/photo3.jpg"
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -529,12 +545,14 @@
     "description": "<p><strong>MOTS-c</strong> – Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard</p><p><strong>What it is:</strong> MOTS-c (Mitochondrial Open Reading Frame of the 12S rRNA-c) is a groundbreaking 16-amino-acid mitochondrial-derived peptide encoded directly within mitochondrial DNA.</p><p><strong>How it works:</strong> It acts as a powerful cellular exercise mimetic. When cells experience metabolic stress, MOTS-c translocates to the nucleus to regulate gene expression and activates AMPK (AMP-activated protein kinase). This turns on the folate-methionine cycle, stimulates glucose uptake into skeletal muscles without requiring insulin, and shifts cellular metabolism toward fat burning.</p><p><strong>Why researchers study it:</strong> Researched for reversing insulin resistance, combating obesity, increasing physical endurance and stamina, extending cellular lifespan, and preserving muscle metabolism during aging.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/mots-c/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/mots-c/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/mots-c/photo1.png",
-      "http://localhost:9000/static/catalog/mots-c/photo2.png",
-      "http://localhost:9000/static/catalog/mots-c/photo3.png",
-      "http://localhost:9000/static/catalog/mots-c/photo4.png"
+      "http://localhost:9000/static/catalog/mots-c/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/mots-c/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/mots-c/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/mots-c/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/mots-c/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/mots-c/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -668,9 +686,14 @@
     "description": "<p><strong>Retatrutide</strong> – Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard</p><p><strong>What it is:</strong> Retatrutide (LY3437943) is an advanced next-generation synthetic 39-amino-acid peptide that acts as a triple receptor agonist—activating GLP-1, GIP, and Glucagon receptors at the same time.</p><p><strong>How it works:</strong> In addition to the appetite suppression and insulin optimization of GLP-1 and GIP, Retatrutide's glucagon receptor activation directly stimulates the liver and brown adipose tissue to burn calories, actively ramping up resting energy expenditure. This means the body burns more fat even while resting, rather than merely relying on caloric restriction.</p><p><strong>Why researchers study it:</strong> Researched as the most potent weight loss and metabolic compound discovered to date, achieving over 24% mean weight loss in trials, complete resolution of fatty liver disease, and profound improvements in blood lipids.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/retatrutide/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/retatrutide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/retatrutide/photo1.jpg"
+      "http://localhost:9000/static/catalog/retatrutide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/retatrutide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/retatrutide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/retatrutide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/retatrutide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/retatrutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1007,12 +1030,14 @@
     "description": "<p><strong>Retatrutide</strong> – Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard</p><p><strong>What it is:</strong> Retatrutide (LY3437943) is an advanced next-generation synthetic 39-amino-acid peptide that acts as a triple receptor agonist—activating GLP-1, GIP, and Glucagon receptors at the same time.</p><p><strong>How it works:</strong> In addition to the appetite suppression and insulin optimization of GLP-1 and GIP, Retatrutide's glucagon receptor activation directly stimulates the liver and brown adipose tissue to burn calories, actively ramping up resting energy expenditure. This means the body burns more fat even while resting, rather than merely relying on caloric restriction.</p><p><strong>Why researchers study it:</strong> Researched as the most potent weight loss and metabolic compound discovered to date, achieving over 24% mean weight loss in trials, complete resolution of fatty liver disease, and profound improvements in blood lipids.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/rtt60/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/rtt60/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/rtt60/photo1.png",
-      "http://localhost:9000/static/catalog/rtt60/photo2.png",
-      "http://localhost:9000/static/catalog/rtt60/photo3.png",
-      "http://localhost:9000/static/catalog/rtt60/photo4.png"
+      "http://localhost:9000/static/catalog/rtt60/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/rtt60/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/rtt60/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/rtt60/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/rtt60/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/rtt60/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1103,12 +1128,14 @@
     "description": "<p><strong>Semaglutide</strong> – Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard</p><p><strong>What it is:</strong> Semaglutide is a long-acting synthetic GLP-1 (Glucagon-Like Peptide-1) receptor agonist peptide engineered with an albumin-binding fatty acid side chain that extends its biological half-life to approximately one week.</p><p><strong>How it works:</strong> It activates GLP-1 receptors in the pancreas to stimulate insulin release only when glucose is elevated, while suppressing excess glucagon secretion. In the brain and stomach, it slows gastric emptying and acts on the hypothalamus to significantly reduce appetite, hunger cravings, and food preoccupation.</p><p><strong>Why researchers study it:</strong> Widely researched for profound weight management, visceral fat reduction, blood sugar regulation, improved cardiovascular health, and non-alcoholic fatty liver disease (NAFLD/NASH).</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/semaglutide/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/semaglutide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/semaglutide/photo1.png",
-      "http://localhost:9000/static/catalog/semaglutide/photo2.png",
-      "http://localhost:9000/static/catalog/semaglutide/photo3.png",
-      "http://localhost:9000/static/catalog/semaglutide/photo4.png"
+      "http://localhost:9000/static/catalog/semaglutide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/semaglutide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/semaglutide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/semaglutide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/semaglutide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/semaglutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1206,12 +1233,14 @@
     "description": "<p><strong>Tirzepatide</strong> – Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard</p><p><strong>What it is:</strong> Tirzepatide is a synthetic 39-amino-acid peptide that represents a major scientific breakthrough: a first-in-class dual agonist that activates both GIP and GLP-1 receptors simultaneously.</p><p><strong>How it works:</strong> By triggering both glucose-dependent insulinotropic polypeptide (GIP) and GLP-1 receptors, Tirzepatide coordinates metabolic control on two fronts. GIP enhances fat cell sensitivity and lipid metabolism, while GLP-1 curbs appetite and controls blood sugar. Together, they create a synergistic effect on fat loss and metabolic rate that surpasses single-hormone compounds.</p><p><strong>Why researchers study it:</strong> Studied for massive body weight and fat reduction (averaging 20–25% in clinical trials), reversal of type 2 diabetes, fatty liver resolution, sleep apnea improvement, and cardiovascular risk reduction.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/tirzepatide/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/tirzepatide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/tirzepatide/photo1.jpg",
-      "http://localhost:9000/static/catalog/tirzepatide/photo1.png",
-      "http://localhost:9000/static/catalog/tirzepatide/photo2.png",
-      "http://localhost:9000/static/catalog/tirzepatide/photo3.png"
+      "http://localhost:9000/static/catalog/tirzepatide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/tirzepatide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/tirzepatide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/tirzepatide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/tirzepatide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/tirzepatide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1499,12 +1528,14 @@
     "description": "<p><strong>ARA-290</strong> – Non-Erythropoietic Innate Repair Receptor (IRR) Neuro-Regenerative Standard</p><p><strong>What it is:</strong> ARA-290 (also known as Cibinetide) is an engineered 11-amino-acid peptide designed from the tissue-protective helix B domain of Erythropoietin (EPO).</p><p><strong>How it works:</strong> Unlike natural EPO, ARA-290 selectively binds only to the Innate Repair Receptor (IRR)—the heterodimer of the EPO receptor and CD131—without binding to the classic EPO receptor. This means it triggers powerful tissue repair and anti-inflammatory signaling without increasing red blood cell production, blood thickness, or clot risks.</p><p><strong>Why researchers study it:</strong> Researched for peripheral nerve repair, diabetic neuropathy, small fiber neuropathy, sarcoidosis, chronic neuropathic pain, and ischemic organ protection.</p>",
     "category_handle": "healing-tissue-repair-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ara-290/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ara-290/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ara-290/photo1.png",
-      "http://localhost:9000/static/catalog/ara-290/photo2.png",
-      "http://localhost:9000/static/catalog/ara-290/photo3.png",
-      "http://localhost:9000/static/catalog/ara-290/photo4.png"
+      "http://localhost:9000/static/catalog/ara-290/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ara-290/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ara-290/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ara-290/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ara-290/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ara-290/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1595,12 +1626,14 @@
     "description": "<p><strong>BPC-157</strong> – Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard</p><p><strong>What it is:</strong> BPC-157 (Body Protection Compound-157) is a peptide composed of 15 amino acids, originally discovered in natural gastric digestive juices where it protects stomach tissue from acid and enzymes.</p><p><strong>How it works:</strong> In laboratory models, BPC-157 stimulates the formation of fresh microvascular blood vessels (angiogenesis) by activating early growth response-1 (egr-1) and VEGF receptor pathways. It also activates nitric oxide (eNOS) production to improve local blood flow, while upregulating collagen synthesis and cell migration directly at damaged tissue sites.</p><p><strong>Why researchers study it:</strong> Studied extensively for accelerating tendon, ligament, muscle, and gut lining healing, reducing systemic inflammation, and protecting gastrointestinal integrity from injury and ulceration.</p>",
     "category_handle": "healing-tissue-repair-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/bpc-157-vial/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/bpc-157-vial/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/bpc-157-vial/photo1.png",
-      "http://localhost:9000/static/catalog/bpc-157-vial/photo2.png",
-      "http://localhost:9000/static/catalog/bpc-157-vial/photo3.png",
-      "http://localhost:9000/static/catalog/bpc-157-vial/photo4.png"
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1698,12 +1731,14 @@
     "description": "<p><strong>ADAMAX 1032</strong> – Adamantane-Conjugated N-Acetyl Semax Amidate Enhanced TrkB / BDNF Neurotrophic Standard</p><p><strong>What it is:</strong> ADAMAX 1032 is an advanced synthetic analogue of Semax featuring an N-terminal acetyl group, a C-terminal amide moiety, and an adamantyl cross-link (adamantane moiety) designed to dramatically improve blood-brain barrier permeability and metabolic stability.</p><p><strong>How it works:</strong> ADAMAX acts as a hyper-potent activator of the Brain-Derived Neurotrophic Factor (BDNF) and TrkB receptor cascade in the hippocampus and prefrontal cortex. The lipophilic adamantane modification extends its central half-life and amplifies dopaminergic and serotonergic neurotransmission without causing peripheral sympathomimetic stimulation or crash.</p><p><strong>Why researchers study it:</strong> Researched for intense cognitive focus, long-term potentiation (LTP), synaptic plasticity, accelerated learning acquisition, neuroprotection against oxidative stress, and rapid neurological rehabilitation.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/adamax-1032/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/adamax-1032/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/adamax-1032/photo1.png",
-      "http://localhost:9000/static/catalog/adamax-1032/photo2.png",
-      "http://localhost:9000/static/catalog/adamax-1032/photo3.png",
-      "http://localhost:9000/static/catalog/adamax-1032/photo4.png"
+      "http://localhost:9000/static/catalog/adamax-1032/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/adamax-1032/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/adamax-1032/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/adamax-1032/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/adamax-1032/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/adamax-1032/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1779,9 +1814,14 @@
     "description": "<p><strong>Dihexa</strong> – Angiotensin IV Analogue Hepatocyte Growth Factor (HGF) Synaptogenic Standard</p><p><strong>What it is:</strong> Dihexa (N-hexanoic-Tyr-Ile-(6) aminohexanoic amide) is an orally active, blood-brain barrier-permeable small-molecule peptide derivative developed at Washington State University.</p><p><strong>How it works:</strong> Dihexa binds with high affinity to Hepatocyte Growth Factor (HGF) and its receptor c-Met. Remarkably, in preclinical assays, Dihexa was found to be orders of magnitude more potent than BDNF at inducing spinogenesis—the physical creation of new dendritic spines and synaptic connections between neurons.</p><p><strong>Why researchers study it:</strong> Researched for reversing severe cognitive deficits, Alzheimer's and Parkinson's disease, traumatic brain injury, and building vast new synaptic networks in the brain.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/dihexa/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/dihexa/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/dihexa/photo1.png"
+      "http://localhost:9000/static/catalog/dihexa/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/dihexa/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/dihexa/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/dihexa/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/dihexa/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/dihexa/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1887,12 +1927,14 @@
     "description": "<p><strong>PE-22-28</strong> – Shortened Spadin Derivative Selective TREK-1 Potassium Channel Antagonist Standard</p><p><strong>What it is:</strong> PE-22-28 is a synthetic heptapeptide derivative of spadin (a natural propeptide directed against sortilin) specifically engineered as a selective, high-affinity blocker of the two-pore domain potassium channel TREK-1 (K2P2.1).</p><p><strong>How it works:</strong> By selectively blocking TREK-1 channels in hippocampal neurons, PE-22-28 enhances neuronal excitability, promotes rapid synaptogenesis, and stimulates immediate CREB phosphorylation and BDNF transcription. Unlike conventional monoaminergic modulators, PE-22-28 exerts rapid neurotrophic and behavioral actions within hours rather than weeks.</p><p><strong>Why researchers study it:</strong> Researched for rapid-onset neuroplasticity, mood elevation, resistance to chronic stress, reversing hippocampal dendritic atrophy, and cognitive preservation in neurodegenerative models.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/pe-22-28/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/pe-22-28/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/pe-22-28/photo1.png",
-      "http://localhost:9000/static/catalog/pe-22-28/photo2.png",
-      "http://localhost:9000/static/catalog/pe-22-28/photo3.png",
-      "http://localhost:9000/static/catalog/pe-22-28/photo4.png"
+      "http://localhost:9000/static/catalog/pe-22-28/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/pe-22-28/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/pe-22-28/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/pe-22-28/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/pe-22-28/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/pe-22-28/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1983,12 +2025,14 @@
     "description": "<p><strong>Pinealon</strong> – Synthetic Epithalamic Tripeptide (Glu-Arg-Asp) Pineal Bioregulator Standard</p><p><strong>What it is:</strong> Pinealon is a synthetic neuroprotective tripeptide composed of L-glutamic acid, L-arginine, and L-aspartic acid (Glu-Arg-Asp / E-R-D), modeled after natural bioregulatory peptides isolated from the pineal gland and cerebral cortex.</p><p><strong>How it works:</strong> Pinealon penetrates cell and nuclear membranes directly, interacting with histone proteins to modulate gene expression in brain tissue. It stimulates ribosomal RNA transcription, activates endogenous antioxidant enzymes (superoxide dismutase and catalase), and prevents caspase-3-mediated apoptotic cell death induced by oxidative stress, hypoxia, or aging.</p><p><strong>Why researchers study it:</strong> Studied for cerebral vascular health, circadian rhythm synchronization, cognitive preservation in extreme environments, protecting neurons against ischemic insults, and reducing intellectual fatigue.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/pinealon/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/pinealon/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/pinealon/photo1.png",
-      "http://localhost:9000/static/catalog/pinealon/photo2.png",
-      "http://localhost:9000/static/catalog/pinealon/photo3.png",
-      "http://localhost:9000/static/catalog/pinealon/photo4.png"
+      "http://localhost:9000/static/catalog/pinealon/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/pinealon/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/pinealon/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/pinealon/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/pinealon/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/pinealon/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2064,12 +2108,14 @@
     "description": "<p><strong>Selank</strong> – Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard</p><p><strong>What it is:</strong> Selank is a synthetic regulatory heptapeptide (Thr-Lys-Pro-Arg-Pro-Gly-Pro) derived from the naturally occurring human immunopeptide Tuftsin, stabilized with a Pro-Gly-Pro sequence.</p><p><strong>How it works:</strong> Selank acts as a potent, non-sedating anxiolytic and nootropic. It modulates GABAergic neurotransmission, stabilizes blood enkephalins (the body's natural calm-inducing endorphins), and influences dopamine and serotonin metabolism. Crucially, it relieves anxiety, fear, and mental stress without causing sedation, drowsiness, muscle relaxation, or physical addiction.</p><p><strong>Why researchers study it:</strong> Studied for generalized anxiety reduction, stress resilience, cognitive clarity under pressure, memory consolidation, and modulating immune system balance.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/selank/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/selank/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/selank/photo1.png",
-      "http://localhost:9000/static/catalog/selank/photo2.png",
-      "http://localhost:9000/static/catalog/selank/photo3.png",
-      "http://localhost:9000/static/catalog/selank/photo4.png"
+      "http://localhost:9000/static/catalog/selank/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/selank/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/selank/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/selank/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/selank/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/selank/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2152,9 +2198,14 @@
     "description": "<p><strong>Semax</strong> – Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard</p><p><strong>What it is:</strong> Semax is a synthetic heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) derived from a natural fragment of adrenocorticotropic hormone (ACTH 4-10) combined with a tripeptide stabilizer.</p><p><strong>How it works:</strong> Semax acts on the central nervous system without producing any hormonal or steroid side effects. It dramatically boosts the expression of BDNF (Brain-Derived Neurotrophic Factor) and its TrkB receptor in the hippocampus, activates dopaminergic and serotonergic neurotransmission, and shields brain cells from glutamate excitotoxicity and oxygen deprivation.</p><p><strong>Why researchers study it:</strong> Studied for cognitive enhancement, memory formation, rapid focus and mental processing, ischemic stroke recovery, ADHD research, and protecting the brain from stress and exhaustion.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/semax/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/semax/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/semax/photo1.png"
+      "http://localhost:9000/static/catalog/semax/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/semax/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/semax/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/semax/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/semax/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/semax/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2237,12 +2288,14 @@
     "description": "<p><strong>Neuro-Sync Blend</strong> – Dual Nootropic & Anxiolytic Synergistic Complex (Semax 5mg + Selank 5mg) Standard</p><p><strong>What it is:</strong> Neuro-Sync Blend is a cutting-edge dual-nootropic peptide formulation combining equal parts Semax and Selank to deliver comprehensive cognitive enhancement and emotional balance.</p><p><strong>How it works:</strong> Semax acts on BDNF and dopamine/serotonin pathways to drive laser-sharp mental focus, cognitive processing speed, and neuroplasticity. Meanwhile, Selank acts on GABA and enkephalin systems to completely extinguish anxiety, stress, and mental chatter without causing sedation. Together, they create a state of 'relaxed focus' or mental flow where the brain operates at peak cognitive capacity under zero anxiety.</p><p><strong>Why researchers study it:</strong> Studied for achieving peak executive cognitive performance, overcoming brain fog and burnout, anxiety-free mental focus, stress resilience, and long-term neuroprotection.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/selank-semax-combo/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/selank-semax-combo/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/selank-semax-combo/photo1.png",
-      "http://localhost:9000/static/catalog/selank-semax-combo/photo2.png",
-      "http://localhost:9000/static/catalog/selank-semax-combo/photo3.png",
-      "http://localhost:9000/static/catalog/selank-semax-combo/photo4.png"
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2436,12 +2489,14 @@
     "description": "<p><strong>CJC-1295 + Ipamorelin Blend</strong> – Dual-Action Synergistic Somatotrope Pulse (CJC-1295 5mg + Ipamorelin 5mg) Standard</p><p><strong>What it is:</strong> CJC-1295 + Ipamorelin Blend is the most widely researched synergistic combination in growth hormone optimization, combining GHRH (Mod GRF 1-29) and a selective ghrelin secretagogue (Ipamorelin) in a 1:1 ratio.</p><p><strong>How it works:</strong> Natural growth hormone release requires two distinct signals: a GHRH signal to open the pituitary faucet, and a ghrelin signal to amplify the pulse while blocking somatostatin (the hormone that shuts off GH). By supplying CJC-1295 No DAC and Ipamorelin together, both pathways are activated simultaneously, generating a massive, 5x–10x amplification of natural growth hormone pulses without elevating cortisol or prolactin.</p><p><strong>Why researchers study it:</strong> Studied for deep restorative sleep, rapid fat loss, lean muscle tone, accelerated injury recovery, collagen synthesis, and reversing the biological signs of aging.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/photo1.png",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/photo2.png",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/photo3.png",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/photo4.png"
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2532,9 +2587,14 @@
     "description": "<p><strong>GHRP-2</strong> – Potent Synthetic Hexapeptide Growth Hormone Secretagogue Standard</p><p><strong>What it is:</strong> GHRP-2 (Growth Hormone Releasing Peptide-2, or Pralmorelin) is a synthetic hexapeptide that acts as a potent agonist of the ghrelin/growth hormone secretagogue receptor.</p><p><strong>How it works:</strong> It stimulates the pituitary gland to release massive pulses of growth hormone. Compared to GHRP-6, GHRP-2 produces a significantly stronger growth hormone release while generating only a mild-to-moderate increase in appetite.</p><p><strong>Why researchers study it:</strong> Studied for intense muscle building, bone density enhancement, accelerating recovery from severe injuries, and treating growth hormone deficiency.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ghrp-2/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/ghrp-2/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ghrp-2/photo1.jpg"
+      "http://localhost:9000/static/catalog/ghrp-2/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ghrp-2/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ghrp-2/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ghrp-2/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ghrp-2/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ghrp-2/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2625,9 +2685,14 @@
     "description": "<p><strong>GHRP-6</strong> – Orexigenic Ghrelin Hexapeptide Somatotrope & Gastric Motility Standard</p><p><strong>What it is:</strong> GHRP-6 (Growth Hormone Releasing Hexapeptide-6) is a first-generation synthetic hexapeptide growth hormone secretagogue that powerfully stimulates both growth hormone release and appetite.</p><p><strong>How it works:</strong> It acts on the ghrelin receptor in the pituitary gland and hypothalamus. In addition to triggering large growth hormone pulses, it strongly activates appetite-stimulating NPY neurons in the brain, inducing intense, rapid hunger cravings within 20–30 minutes of injection.</p><p><strong>Why researchers study it:</strong> Studied for overcoming severe muscle wasting (cachexia), accelerating joint and tendon repair, increasing caloric intake in low-appetite models, and neuroprotection.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ghrp-6/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/ghrp-6/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ghrp-6/photo1.jpg"
+      "http://localhost:9000/static/catalog/ghrp-6/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ghrp-6/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ghrp-6/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ghrp-6/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ghrp-6/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ghrp-6/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2718,9 +2783,14 @@
     "description": "<p><strong>HGH (Somatropin 191AA)</strong> – Recombinant 191-Amino-Acid Somatropin Growth Hormone Receptor (GHR) Agonist Standard</p><p><strong>What it is:</strong> Recombinant Somatropin is a 191-amino-acid single-chain polypeptide hormone identical in sequence and tertiary conformation to native human pituitary growth hormone. Synthesized with two critical intramolecular disulfide bridges (Cys53–Cys165 and Cys182–Cys189), this authentic 191AA formulation is free of the non-human N-terminal methionine found in older 192AA somatrem variants, eliminating anti-hGH antibody formation.</p><p><strong>How it works:</strong> Somatropin binds extracellular Growth Hormone Receptors (GHR), inducing receptor homodimerization and intracellular signaling via the JAK2/STAT5b pathway. In hepatic tissue, this cascades into transcription and secretion of Insulin-like Growth Factor 1 (IGF-1) alongside ternary circulating carriers (IGFBP-3 and ALS). Concurrently, Somatropin exerts direct non-IGF-1-dependent lipolytic action in adipocytes by activating hormone-sensitive lipase (HSL) and downregulating lipoprotein lipase (LPL). In musculoskeletal tissues, it upregulates type I and type III collagen synthesis, stimulates chondrocyte proliferation in articular cartilage, and enhances cellular nitrogen retention.</p><p><strong>Why researchers study it:</strong> Researched extensively in cellular models of tendon, ligament, and fascial extracellular matrix regeneration, deep slow-wave somatotropic pulsatility, lipid oxidation without glycemic degradation, and endocrine longevity signaling.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/hgh-somatropin/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/hgh-somatropin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/hgh-somatropin/photo1.jpg"
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2854,9 +2924,14 @@
     "description": "<p><strong>IGF-1 LR3</strong> – 83-Amino-Acid Extended Analogue Long R3 Insulin-Like Growth Factor-1 Standard</p><p><strong>What it is:</strong> IGF-1 LR3 (Long R3 Insulin-Like Growth Factor-1) is a synthetic recombinant 83-amino-acid polypeptide containing the complete 70-amino-acid native human IGF-1 sequence with an Arg3 substitution and an additional 13-amino-acid N-terminal peptide extension.</p><p><strong>How it works:</strong> The N-terminal peptide extension and Glu3Arg substitution dramatically reduce its binding affinity for endogenous IGF-Binding Proteins (IGFBPs) by over 100-fold. This prevents physiological sequestration, increasing biological bioavailability and extending its active receptor-binding half-life from ~20 minutes to over 20–30 hours. It activates the IGF-1R tyrosine kinase cascade, driving mTOR signaling, cellular hyperplasia (new muscle fiber recruitment), satellite cell proliferation, and amino acid uptake.</p><p><strong>Why researchers study it:</strong> Extensively studied for muscle satellite cell activation, true cellular hyperplasia, enhanced nitrogen retention, accelerated soft tissue repair, and reversing catabolic muscle wasting.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/igf-1-lr3/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/igf-1-lr3/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/igf-1-lr3/photo1.png"
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2947,12 +3022,14 @@
     "description": "<p><strong>IGF-DES</strong> – Truncated (1-3) 67-Amino-Acid Des-IGF-1 High-Affinity Anabolic Standard</p><p><strong>What it is:</strong> IGF-DES (also known as Des(1-3) IGF-1) is a naturally occurring truncated splice variant of native human IGF-1 that lacks the first three N-terminal amino acids (Gly-Pro-Glu).</p><p><strong>How it works:</strong> Removal of the N-terminal tripeptide eliminates virtually all affinity for inhibitory IGF-Binding Proteins (IGFBPs). Because it does not bind to circulating IGFBPs, IGF-DES exhibits up to 10-fold greater potency than native IGF-1 at local tissue IGF-1 receptors. While its systemic half-life is short (~20–30 minutes), it produces an intense, localized burst of receptor activation, driving rapid glucose transport and immediate ribosomal protein synthesis directly at the target tissue site.</p><p><strong>Why researchers study it:</strong> Researched for localized muscle tissue regeneration, targeted hypertrophy, tendon-to-bone junction repair, and acute post-injury cellular repair without prolonged systemic hypoglycemia.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/igf-des/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/igf-des/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/igf-des/photo1.png",
-      "http://localhost:9000/static/catalog/igf-des/photo2.png",
-      "http://localhost:9000/static/catalog/igf-des/photo3.png",
-      "http://localhost:9000/static/catalog/igf-des/photo4.png"
+      "http://localhost:9000/static/catalog/igf-des/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/igf-des/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/igf-des/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/igf-des/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/igf-des/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/igf-des/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3040,11 +3117,14 @@
     "description": "<p><strong>Ipamorelin</strong> – Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard</p><p><strong>What it is:</strong> Ipamorelin is a synthetic pentapeptide (Aib-His-D-2-Nal-D-Phe-Lys-NH2) that belongs to the Growth Hormone Secretagogue (GHS) family and acts as a selective ghrelin receptor agonist.</p><p><strong>How it works:</strong> It selectively binds to the ghrelin/GHS-R1a receptor in the pituitary gland, triggering clean, natural pulses of growth hormone (GH) that closely mimic the body's natural youthful secretion patterns. Remarkably, unlike older GHRPs, Ipamorelin does not stimulate cortisol, prolactin, or ACTH, and causes minimal hunger spikes.</p><p><strong>Why researchers study it:</strong> Studied for deep slow-wave sleep enhancement, lean muscle preservation, accelerated wound and bone healing, body fat reduction, skin collagen synthesis, and anti-aging without hormonal side effects.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ipamorelin/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/ipamorelin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ipamorelin/photo1.jpg",
-      "http://localhost:9000/static/catalog/ipamorelin/photo2.jpg",
-      "http://localhost:9000/static/catalog/ipamorelin/photo3.jpg"
+      "http://localhost:9000/static/catalog/ipamorelin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ipamorelin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ipamorelin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ipamorelin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ipamorelin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ipamorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3135,12 +3215,14 @@
     "description": "<p><strong>Tesamorelin</strong> – Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard</p><p><strong>What it is:</strong> Tesamorelin is a synthetic 44-amino-acid peptide analogue of Growth Hormone-Releasing Hormone (GHRH), modified with a trans-3-hexenoic acid moiety at its N-terminus for enhanced metabolic stability.</p><p><strong>How it works:</strong> It acts on the pituitary gland to stimulate natural, pulsatile growth hormone release with remarkable potency. Uniquely among GHRH analogues, Tesamorelin specifically targets and reduces deep visceral adipose tissue (the dangerous fat packed around internal organs like the liver, heart, and intestines).</p><p><strong>Why researchers study it:</strong> Studied for visceral belly fat reduction, non-alcoholic fatty liver disease (NAFLD), improving cardiovascular risk markers, and enhancing cognitive function in aging subjects.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/tesamorelin/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/tesamorelin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/tesamorelin/photo1.png",
-      "http://localhost:9000/static/catalog/tesamorelin/photo2.png",
-      "http://localhost:9000/static/catalog/tesamorelin/photo3.png",
-      "http://localhost:9000/static/catalog/tesamorelin/photo4.png"
+      "http://localhost:9000/static/catalog/tesamorelin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/tesamorelin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/tesamorelin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/tesamorelin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/tesamorelin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/tesamorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3208,9 +3290,14 @@
     "description": "<p><strong>TI15</strong> – Synergistic Dual-Secretagogue (Tesamorelin 10mg + Ipamorelin 5mg) Standard</p><p><strong>What it is:</strong> TI15 is an advanced dual-action somatotropic formulation combining 10mg of Tesamorelin (trans-3-hexenoyl GHRH) and 5mg of Ipamorelin (selective ghrelin receptor agonist) in a single 15mg lyophilized research standard.</p><p><strong>How it works:</strong> Tesamorelin acts as the most potent clinical GHRH analogue approved for visceral adipose reduction, stimulating pituitary adenylate cyclase and cAMP. Ipamorelin selectively engages the pituitary GHS-R1a receptor, stimulating calcium influx and amplifying the growth hormone pulse amplitude while suppressing somatostatin. Together, they generate maximal natural pulsatile GH elevation and sustained lipolysis without elevating appetite, cortisol, or prolactin.</p><p><strong>Why researchers study it:</strong> Studied for visceral deep belly fat reduction, liver fat mobilization, cardiovascular metabolic parameters, lean body mass preservation, and restorative deep sleep.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ti15/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ti15/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ti15/photo1.png"
+      "http://localhost:9000/static/catalog/ti15/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ti15/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ti15/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ti15/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ti15/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ti15/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3298,12 +3385,14 @@
     "description": "<p><strong>AICAR</strong> – 5-Aminoimidazole-4-Carboxamide Ribonucleoside Direct AMPK Bioenergetic Standard</p><p><strong>What it is:</strong> AICAR (5-Aminoimidazole-4-carboxamide ribonucleoside, also known as Acadesine) is an adenosine analogue and direct cellular activator of AMP-activated protein kinase (AMPK), the master metabolic regulator of energy homeostasis.</p><p><strong>How it works:</strong> Inside cells, AICAR is phosphorylated by adenosine kinase into ZMP (AICAR monophosphate), an AMP mimetic. ZMP binds to the gamma-subunit of AMPK, allosterically activating it and promoting its phosphorylation by upstream kinase LKB1. This shifts cellular metabolism from anabolic energy-consuming processes to catabolic ATP-generating processes, stimulating glucose uptake via GLUT4 translocation, fatty acid beta-oxidation via acetyl-CoA carboxylase (ACC) inhibition, and mitochondrial biogenesis via PGC-1alpha activation without requiring muscular exertion.</p><p><strong>Why researchers study it:</strong> Extensively studied as an 'exercise mimetic' for endurance adaptation, insulin sensitivity enhancement, metabolic syndrome research, cardiovascular ischemic preconditioning, and cellular longevity.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/aicar/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/aicar/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/aicar/photo1.png",
-      "http://localhost:9000/static/catalog/aicar/photo2.png",
-      "http://localhost:9000/static/catalog/aicar/photo3.png",
-      "http://localhost:9000/static/catalog/aicar/photo4.png"
+      "http://localhost:9000/static/catalog/aicar/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/aicar/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/aicar/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/aicar/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/aicar/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/aicar/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3394,9 +3483,14 @@
     "description": "<p><strong>Epithalon</strong> – Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard</p><p><strong>What it is:</strong> Epithalon (also spelled Epitalon) is a synthetic tetrapeptide (Ala-Glu-Asp-Gly) based on epithalamin, a natural peptide extract of the pineal gland discovered by Russian biogerontologist Prof. Vladimir Khavinson.</p><p><strong>How it works:</strong> It acts on the pineal gland to restore natural melatonin secretion rhythms, while uniquely activating the telomerase enzyme. By stimulating telomerase, Epithalon extends the protective telomeres at the ends of chromosomes, allowing aging cells to exceed the traditional Hayflick division limit and repair themselves for longer.</p><p><strong>Why researchers study it:</strong> Studied worldwide for lifespan extension, telomere lengthening, resetting circadian sleep rhythms, antioxidant enzyme upregulation, cancer prevention, and restoring endocrine balance in aging models.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/epithalon/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/epithalon/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/epithalon/photo1.jpg"
+      "http://localhost:9000/static/catalog/epithalon/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/epithalon/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/epithalon/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/epithalon/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/epithalon/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/epithalon/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3494,12 +3588,14 @@
     "description": "<p><strong>Glutathione</strong> – Tripeptide (gamma-L-Glutamyl-L-Cysteinylglycine) Intracellular Antioxidant Standard</p><p><strong>What it is:</strong> Glutathione (GSH) is a natural tripeptide composed of Glutamine, Cysteine, and Glycine, recognized as the body's 'Master Antioxidant' and primary hepatic detoxifier.</p><p><strong>How it works:</strong> Glutathione neutralizes free radicals, reactive oxygen species, and heavy metals by directly donating electrons via its active sulfhydryl (-SH) group. In the liver, it binds to toxic compounds via glutathione S-transferase enzymes, converting them into water-soluble forms for safe excretion. It also regenerates other vital antioxidants like Vitamin C and Vitamin E back into their active forms.</p><p><strong>Why researchers study it:</strong> Researched for liver detoxification, reversing oxidative stress, skin brightening and melanin inhibition, immune system enhancement, and protecting cellular DNA from environmental pollutants.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/glutathione-1500mg/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/glutathione-1500mg/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/glutathione-1500mg/photo1.png",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/photo2.png",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/photo3.png",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/photo4.png"
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3640,11 +3736,14 @@
     "description": "<p><strong>NAD+</strong> – High-Concentration Beta-Nicotinamide Adenine Dinucleotide Redox Standard</p><p><strong>What it is:</strong> NAD+ (Nicotinamide Adenine Dinucleotide) is a critical coenzyme found in every single living cell, essential for cellular respiration, ATP energy generation, and DNA repair.</p><p><strong>How it works:</strong> NAD+ serves two major roles: it acts as an electron carrier in the Krebs cycle to generate ATP energy, and it serves as the essential substrate consumed by SIRT1-7 longevity enzymes and PARP-1 DNA repair enzymes. Because NAD+ levels drop by over 50% between youth and middle age, replenishing cellular NAD+ reactivates youthful cellular cleanup and genomic repair.</p><p><strong>Why researchers study it:</strong> Studied for anti-aging, mental clarity and focus, cellular energy restoration, reversing chronic fatigue, DNA repair, addiction recovery, and mitochondrial rejuvenation.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/nad-plus-500mg/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/nad-plus-500mg/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/nad-plus-500mg/photo1.jpg",
-      "http://localhost:9000/static/catalog/nad-plus-500mg/photo2.jpg",
-      "http://localhost:9000/static/catalog/nad-plus-500mg/photo3.jpg"
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3782,10 +3881,14 @@
     "description": "<p><strong>SS-31</strong> – Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard</p><p><strong>What it is:</strong> SS-31 (also known as Elamipretide) is a synthetic tetrapeptide (D-Arg-Dmt-Lys-Phe-NH2) engineered specifically to target and repair the inner membrane of mitochondria.</p><p><strong>How it works:</strong> SS-31 selectively penetrates cell membranes and binds with high affinity to cardiolipin, a unique phospholipid found exclusively on the inner mitochondrial membrane. In aging or damaged cells, oxidized cardiolipin causes the mitochondrial cristae to collapse and leak free radicals. SS-31 restores cardiolipin structure, stabilizes the electron transport chain, boosts ATP energy production, and halts toxic ROS generation.</p><p><strong>Why researchers study it:</strong> Researched for heart failure, mitochondrial myopathy, acute kidney injury, macular degeneration, cognitive decline, and restoring youthful energy production to aging organs.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ss-31/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ss-31/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ss-31/photo1.png",
-      "http://localhost:9000/static/catalog/ss-31/photo2.jpg"
+      "http://localhost:9000/static/catalog/ss-31/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ss-31/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ss-31/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ss-31/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ss-31/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ss-31/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3919,12 +4022,14 @@
     "description": "<p><strong>GHK-Cu</strong> – Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard</p><p><strong>What it is:</strong> GHK-Cu (Glycyl-L-Histidyl-L-Lysine Copper) is a naturally occurring human tripeptide chelated with a copper(II) ion, present in human plasma, saliva, and urine, where its levels decline significantly with age.</p><p><strong>How it works:</strong> GHK-Cu regulates over 4,000 human genes, shifting gene expression toward youthful cellular repair. It stimulates both collagen and elastin synthesis, enhances fibroblast production, activates nerve outgrowth, and acts as a potent antioxidant by quenching free radicals and toxic lipid peroxidation products.</p><p><strong>Why researchers study it:</strong> Studied extensively for skin rejuvenation, wrinkle reduction, wound repair, anti-aging, hair follicle stimulation, and reversing tissue fibrosis in organs and joints.</p>",
     "category_handle": "skin-hair-cosmetic-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/photo1.png",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/photo2.png",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/photo3.png",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/photo4.png"
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4015,12 +4120,14 @@
     "description": "<p><strong>GHK-Cu</strong> – Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard</p><p><strong>What it is:</strong> GHK-Cu (Glycyl-L-Histidyl-L-Lysine Copper) is a naturally occurring human tripeptide chelated with a copper(II) ion, present in human plasma, saliva, and urine, where its levels decline significantly with age.</p><p><strong>How it works:</strong> GHK-Cu regulates over 4,000 human genes, shifting gene expression toward youthful cellular repair. It stimulates both collagen and elastin synthesis, enhances fibroblast production, activates nerve outgrowth, and acts as a potent antioxidant by quenching free radicals and toxic lipid peroxidation products.</p><p><strong>Why researchers study it:</strong> Studied extensively for skin rejuvenation, wrinkle reduction, wound repair, anti-aging, hair follicle stimulation, and reversing tissue fibrosis in organs and joints.</p>",
     "category_handle": "skin-hair-cosmetic-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ghk-cu/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ghk-cu/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ghk-cu/photo1.png",
-      "http://localhost:9000/static/catalog/ghk-cu/photo2.png",
-      "http://localhost:9000/static/catalog/ghk-cu/photo3.png",
-      "http://localhost:9000/static/catalog/ghk-cu/photo4.png"
+      "http://localhost:9000/static/catalog/ghk-cu/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ghk-cu/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ghk-cu/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ghk-cu/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ghk-cu/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ghk-cu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4167,9 +4274,14 @@
     "description": "<p><strong>GHK-Cu</strong> – Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard</p><p><strong>What it is:</strong> GHK-Cu (Glycyl-L-Histidyl-L-Lysine Copper) is a naturally occurring human tripeptide chelated with a copper(II) ion, present in human plasma, saliva, and urine, where its levels decline significantly with age.</p><p><strong>How it works:</strong> GHK-Cu regulates over 4,000 human genes, shifting gene expression toward youthful cellular repair. It stimulates both collagen and elastin synthesis, enhances fibroblast production, activates nerve outgrowth, and acts as a potent antioxidant by quenching free radicals and toxic lipid peroxidation products.</p><p><strong>Why researchers study it:</strong> Studied extensively for skin rejuvenation, wrinkle reduction, wound repair, anti-aging, hair follicle stimulation, and reversing tissue fibrosis in organs and joints.</p>",
     "category_handle": "skin-hair-cosmetic-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/photo1.png"
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4242,12 +4354,14 @@
     "description": "<p><strong>GLOW Blend</strong> – Triple-Synergy Matrix Remodeling (GHK-Cu 50mg + BPC-157 10mg + TB-500 10mg) Protocol</p><p><strong>What it is:</strong> GLOW Blend is an advanced multi-peptide formulation combining high-potency GHK-Cu, TB-500, and BPC-157 in a precisely balanced synergistic ratio.</p><p><strong>How it works:</strong> This triple blend tackles tissue and cosmetic regeneration from every angle: GHK-Cu stimulates massive collagen and elastin synthesis while resetting gene expression; TB-500 upregulates actin to speed cell migration and prevent scar tissue; and BPC-157 builds fresh microvascular capillaries to deliver oxygen and nutrients throughout the matrix.</p><p><strong>Why researchers study it:</strong> Researched as the ultimate cosmetic and skin rejuvenation blend, for reversing skin aging, wrinkle reduction, rapid wound repair, scar minimization, and radiant skin elasticity.</p>",
     "category_handle": "skin-hair-cosmetic-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/glow70/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/glow70/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/glow70/photo1.png",
-      "http://localhost:9000/static/catalog/glow70/photo2.png",
-      "http://localhost:9000/static/catalog/glow70/photo3.png",
-      "http://localhost:9000/static/catalog/glow70/photo4.png"
+      "http://localhost:9000/static/catalog/glow70/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/glow70/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/glow70/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/glow70/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/glow70/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/glow70/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4335,9 +4449,14 @@
     "description": "<p><strong>SNAP-8</strong> – Acetyl Octapeptide-3 Biomimetic SNARE Complex Competitive Inhibitor Standard</p><p><strong>What it is:</strong> SNAP-8 (Acetyl Octapeptide-3) is an advanced elongation of the hexapeptide Argireline, composed of an 8-amino-acid synthetic sequence (Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2) designed for targeted dermatological and tissue repair research.</p><p><strong>How it works:</strong> SNAP-8 mimics the N-terminal end of SNAP-25, competitively displacing SNAP-25 from the ternary SNARE (Soluble N-ethylmaleimide-sensitive factor Attachment protein REceptor) complex. By destabilizing the SNARE complex, it inhibits calcium-dependent catecholamine and acetylcholine exocytosis at the neuromuscular junction, attenuating repeated micro-contractions and relaxing muscle-induced skin tension.</p><p><strong>Why researchers study it:</strong> Researched for cosmetic anti-wrinkle depth reduction, dermal matrix elastin preservation, non-invasive expression line modulation, and topical skin rejuvenation.</p>",
     "category_handle": "skin-hair-cosmetic-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/snap-8/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/snap-8/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/snap-8/photo1.jpg"
+      "http://localhost:9000/static/catalog/snap-8/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/snap-8/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/snap-8/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/snap-8/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/snap-8/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/snap-8/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4428,10 +4547,14 @@
     "description": "<p><strong>KLOW Blend</strong> – Quad-Action Antimicrobial, Anti-Inflammatory & Matrix Regenerative Standard</p><p><strong>What it is:</strong> KLOW Blend is an elite high-strength four-peptide matrix combining GHK-Cu, TB-500, BPC-157, and KPV in a comprehensive synergistic vial.</p><p><strong>How it works:</strong> It supercharges the regenerative power of the GLOW Blend by adding KPV, a master anti-inflammatory tripeptide. KPV inhibits NF-kB at the nucleus to shut down chronic redness, swelling, and irritation, allowing the regenerative actions of GHK-Cu, TB-500, and BPC-157 to rebuild damaged tissues without inflammatory interference.</p><p><strong>Why researchers study it:</strong> Studied for inflammatory skin conditions (eczema, rosacea, severe dermatitis), deep tissue healing, post-surgical recovery, scar prevention, and complete dermal renewal.</p>",
     "category_handle": "immune-inflammation-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/klow80/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/klow80/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/klow80/photo1.jpg",
-      "http://localhost:9000/static/catalog/klow80/photo2.jpg"
+      "http://localhost:9000/static/catalog/klow80/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/klow80/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/klow80/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/klow80/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/klow80/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/klow80/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4519,11 +4642,14 @@
     "description": "<p><strong>KPV</strong> – C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor</p><p><strong>What it is:</strong> KPV is a potent natural tripeptide (Lysine-Proline-Valine) representing the active C-terminal fragment of alpha-Melanocyte-Stimulating Hormone (alpha-MSH).</p><p><strong>How it works:</strong> KPV enters the nucleus of cells and prevents the activation of NF-kB, the master switch of systemic inflammation, without triggering skin tanning or melanogenesis. In addition, KPV exhibits direct antimicrobial and antifungal properties by disrupting the cell walls of harmful microbes like Candida albicans and Staphylococcus aureus.</p><p><strong>Why researchers study it:</strong> Studied primarily for inflammatory bowel diseases (Crohn's disease, ulcerative colitis), severe dermatological inflammation (eczema, psoriasis), mast cell activation, and gut microbiome balance.</p>",
     "category_handle": "immune-inflammation-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/kpv/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/kpv/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/kpv/photo1.jpg",
-      "http://localhost:9000/static/catalog/kpv/photo2.jpg",
-      "http://localhost:9000/static/catalog/kpv/photo3.jpg"
+      "http://localhost:9000/static/catalog/kpv/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/kpv/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/kpv/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/kpv/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/kpv/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/kpv/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4621,9 +4747,14 @@
     "description": "<p><strong>Thymosin Alpha-1</strong> – Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard</p><p><strong>What it is:</strong> Thymosin Alpha-1 (Talpha1) is a 28-amino-acid peptide naturally produced by the thymus gland, essential for programming, training, and regulating the human immune system.</p><p><strong>How it works:</strong> It acts as an immune system master-regulator. Through Toll-like receptors (TLR9 and TLR2), it ramps up underactive immune responses by stimulating cytotoxic T-cells, Natural Killer (NK) cells, and dendritic cells to attack viruses and infections. Simultaneously, it increases anti-inflammatory T-regulatory (Treg) cells, preventing the immune system from overreacting and attacking the body's own tissues.</p><p><strong>Why researchers study it:</strong> Studied worldwide for treating chronic viral infections (Hepatitis B/C, HIV), preventing respiratory illnesses, enhancing vaccine responsiveness, calming autoimmune flare-ups, and supporting immune recovery during chemotherapy.</p>",
     "category_handle": "immune-inflammation-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/thymosin-alpha-1/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/thymosin-alpha-1/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/thymosin-alpha-1/photo1.jpg"
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4757,12 +4888,14 @@
     "description": "<p><strong>HCG</strong> – Human Chorionic Gonadotropin (10,000 IU) Luteinizing Hormone Receptor Agonist Standard</p><p><strong>What it is:</strong> HCG (Human Chorionic Gonadotropin) is a heterodimeric glycoprotein hormone composed of 237 amino acids across two non-covalently linked alpha and beta subunits, sharing structural homology with native pituitary Luteinizing Hormone (LH).</p><p><strong>How it works:</strong> HCG binds directly to the shared LH/choriogonadotropin receptor (LHCGR) on testicular Leydig cells in males and ovarian theca/granulosa cells in females. In males, it stimulates cyclic AMP and cholesterol desmolase (CYP11A1), driving intratesticular testosterone synthesis and maintaining spermatogenesis during gonadotropin suppression. Its biological half-life (~24–36 hours) is substantially longer than native LH (~20 minutes), providing steady physiological stimulation.</p><p><strong>Why researchers study it:</strong> Studied for post-cycle endocrine recovery, preserving testicular trophism and spermatogenesis during TRT, male hypogonadism research, fertility optimization, and neurosteroid pathway support.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/hcg/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/hcg/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/hcg/photo1.png",
-      "http://localhost:9000/static/catalog/hcg/photo2.png",
-      "http://localhost:9000/static/catalog/hcg/photo3.png",
-      "http://localhost:9000/static/catalog/hcg/photo4.png"
+      "http://localhost:9000/static/catalog/hcg/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/hcg/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/hcg/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/hcg/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/hcg/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/hcg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4850,9 +4983,14 @@
     "description": "<p><strong>HMG (Human Menopausal Gonadotropin 75 IU)</strong> – Dual-Gonadotropin Standard (75 IU FSH + 75 IU LH Bioactivity) for Endocrine & Spermatogenic Pathway Studies</p><p><strong>What it is:</strong> Human Menopausal Gonadotropin (HMG / Menotropins) is a purified biological glycoprotein preparation standardized to contain equal biological activity of Follicle-Stimulating Hormone (FSH, 75 IU) and Luteinizing Hormone (LH, 75 IU). Both hormones are non-covalently linked heterodimers composed of a common 92-amino-acid alpha subunit non-covalently joined to hormone-specific beta subunits that confer specific receptor selectivity.</p><p><strong>How it works:</strong> Operates through dual, complementary endocrine mechanisms: The FSH fraction binds transmembrane FSH Receptors (FSHR) exclusively expressed on Sertoli cells, elevating intracellular cAMP to drive Androgen-Binding Protein (ABP) secretion, tight-junction maintenance, and the mitotic proliferation of spermatogonia. Concurrently, the LH fraction engages LH/Choriogonadotropin Receptors (LHCGR) on Leydig cells, activating the steroidogenic acute regulatory (StAR) pathway to sustain essential intratesticular testosterone (ITT) microenvironments. In contrast to hCG monotherapy (which activates only LH receptors), HMG provides necessary Sertoli cell stimulation to maintain complete germ cell maturation.</p><p><strong>Why researchers study it:</strong> Researched extensively in laboratory models of severe hypogonadotropic hypogonadism, reversal of suppressed spermatogenesis following exogenous androgenic saturation, preservation of Sertoli cell cytoarchitecture, and endocrine axis restoration.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/hmg-75iu/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/hmg-75iu/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/hmg-75iu/photo1.png"
+      "http://localhost:9000/static/catalog/hmg-75iu/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/hmg-75iu/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/hmg-75iu/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/hmg-75iu/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/hmg-75iu/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/hmg-75iu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4943,12 +5081,14 @@
     "description": "<p><strong>Kisspeptin-10</strong> – GPR54 (KISS1R) Agonist Pulsatile Hypothalamic GnRH Secretion Standard</p><p><strong>What it is:</strong> Kisspeptin-10 is a natural 10-amino-acid peptide that represents the active functional core of kisspeptin, the master regulatory hormone of the human reproductive axis.</p><p><strong>How it works:</strong> In the brain, Kisspeptin-10 binds to GPR54 (KISS1R) receptors in the hypothalamus, directly triggering the pulsatile release of GnRH (Gonadotropin-Releasing Hormone). GnRH then prompts the pituitary gland to release Luteinizing Hormone (LH) and Follicle-Stimulating Hormone (FSH), which signal the body to produce natural testosterone, enhance fertility, and maintain endocrine balance without shutting down endogenous hormone glands.</p><p><strong>Why researchers study it:</strong> Studied for restoring natural hormone production during post-cycle recovery (PCT), boosting libido and mood, supporting fertility and sperm quality, and treating secondary hypogonadism.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/kisspeptin-10/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/kisspeptin-10/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/kisspeptin-10/photo1.png",
-      "http://localhost:9000/static/catalog/kisspeptin-10/photo2.png",
-      "http://localhost:9000/static/catalog/kisspeptin-10/photo3.png",
-      "http://localhost:9000/static/catalog/kisspeptin-10/photo4.png"
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5039,10 +5179,14 @@
     "description": "<p><strong>PT-141</strong> – Central Melanocortin MC4R/MC1R Agonist Sexual Arousal & Libido Standard</p><p><strong>What it is:</strong> PT-141 (Bremelanotide) is a synthetic cyclic peptide derived from Melanotan II, specifically developed to treat sexual dysfunction without inducing skin pigmentation.</p><p><strong>How it works:</strong> Unlike PDE5 inhibitors (like Viagra) that only act locally on blood vessels in the genitals, PT-141 acts centrally in the brain. It crosses the blood-brain barrier to bind to Melanocortin-4 Receptors (MC4R) in the medial preoptic area and hypothalamus, activating natural neural pathways of sexual desire, arousal, and motivation in both men and women.</p><p><strong>Why researchers study it:</strong> Clinically approved and studied for hypoactive sexual desire disorder (HSDD) in premenopausal women, refractory erectile dysfunction in men, and boosting sexual intimacy.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/pt-141/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/pt-141/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/pt-141/photo1.jpg",
-      "http://localhost:9000/static/catalog/pt-141/photo2.jpg"
+      "http://localhost:9000/static/catalog/pt-141/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/pt-141/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/pt-141/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/pt-141/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/pt-141/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/pt-141/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5133,9 +5277,14 @@
     "description": "<p><strong>DSIP</strong> – Endogenous Circadian Neuromodulator & Slow-Wave Sleep Neuropeptide Standard</p><p><strong>What it is:</strong> DSIP (Delta Sleep-Inducing Peptide) is a naturally occurring 9-amino-acid neuropeptide originally isolated from cerebral venous blood in rabbits during induced deep slow-wave sleep.</p><p><strong>How it works:</strong> DSIP crosses the blood-brain barrier and acts on the hypothalamus and limbic system. Rather than acting as a heavy knock-out sedative, DSIP functions as a sleep neuromodulator: it restores natural physiological circadian sleep architecture, specifically promoting restorative delta-wave (Stage 3/4) deep sleep while modulating autonomic stress responses and stabilizing cortisol rhythms.</p><p><strong>Why researchers study it:</strong> Studied for treating chronic insomnia, restoring healthy circadian sleep cycles, dampening stress-induced cortisol spikes, chronic pain relief, and reducing opioid and alcohol withdrawal symptoms.</p>",
     "category_handle": "sleep-circadian-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/dsip/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/dsip/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/dsip/photo1.png"
+      "http://localhost:9000/static/catalog/dsip/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/dsip/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/dsip/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/dsip/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/dsip/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/dsip/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5211,11 +5360,14 @@
     "description": "<p><strong>Bacteriostatic Water USP</strong> – Sterile Laboratory Diluent Standard</p><p><strong>What it is:</strong> Sterile non-pyrogenic water containing 0.9% (9 mg/mL) benzyl alcohol added as a bacteriostatic preservative, designed specifically for multiple aseptic needle penetrations.</p><p><strong>How it works:</strong> The 0.9% benzyl alcohol preservative inhibits microbial proliferation, ensuring stability and sterility of reconstituted lyophilized research compounds for up to 28 days at 2°C–8°C.</p><p><strong>Why researchers study it:</strong> Universal laboratory diluent for aseptic reconstitution, stoichiometric dilution, and extended refrigeration of peptide standards.</p>",
     "category_handle": "research-supplies-accessories",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/bacteriostatic-water/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/bacteriostatic-water/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/bacteriostatic-water/photo1.jpg",
-      "http://localhost:9000/static/catalog/bacteriostatic-water/photo2.jpg",
-      "http://localhost:9000/static/catalog/bacteriostatic-water/photo3.jpg"
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5363,9 +5515,14 @@
     "description": "<h2><strong>Product Overview</strong></h2><p>The Peptide Reconstitution Set is a laboratory accessory kit designed to support the preparation, handling, and reconstitution of research compounds and lyophilized peptides. This complete set includes sterile syringes and alcohol preparation materials commonly used in laboratory workflows requiring precision, cleanliness, and consistency.</p><p>Designed for convenience and efficiency, the kit provides essential preparation tools in a single package, making it a practical addition to research environments and laboratory preparation protocols.</p><p><br></p><h2><strong>Description</strong></h2><p>The Peptide Reconstitution Set is intended for laboratories and researchers requiring sterile accessories for solution preparation and handling. The included syringes support accurate liquid measurement and transfer, while the alcohol swabs and alcohol pads assist with maintaining cleanliness during preparation procedures.</p><p><br></p><p>Whether used alongside research peptides, analytical compounds, or laboratory solutions, this accessory kit provides a convenient collection of preparation materials suitable for controlled research environments.</p><p><br></p><h2><strong>What’s Included</strong></h2><p>• 6 × Sterile 1CC Syringes</p><p>• 1 × Sterile 5CC/3CC Syringe</p><p>• 10 × Alcohol Preparation Pads</p><p><br></p><h2><strong>Key Features</strong></h2><p>• Complete peptide preparation accessory kit</p><p>• Sterile and individually packaged components</p><p>• Supports accurate liquid measurement and transfer</p><p>• Convenient all-in-one laboratory preparation set</p><p>• Suitable for research and analytical environments</p><p>• Compact and easy to store</p><p><br></p><h2><strong>Applications</strong></h2><p>• Research peptide preparation</p><p>• Lyophilized compound reconstitution</p><p>• Laboratory solution transfer</p><p>• Analytical preparation workflows</p><p>• General laboratory handling procedures</p><p><br></p><h2><strong>Product Features</strong></h2><p>• Laboratory-grade preparation accessories</p><p>• Sterile packaging for convenience</p><p>• Suitable for precise liquid handling</p><p>• Designed for research and laboratory use</p><p>• Compact and practical preparation kit</p><h2><br></h2>",
     "category_handle": "research-supplies-accessories",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/peptide-reconstitution-set/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/peptide-reconstitution-set/photo1.jpg"
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5423,9 +5580,14 @@
     "description": "<p><strong>Product Overview</strong></p><p>The Reusable Insulin Pen is a precision dosing device designed for accurate and consistent measurement of liquid compounds in laboratory and research settings. Built with a durable metal body and smooth dosing mechanism, it supports controlled delivery and repeatable measurements, making it ideal for research environments requiring precision and reliability.</p><p><br></p><p><strong>Description</strong></p><p>This reusable insulin pen is commonly used in laboratory workflows that require precise volume measurement and controlled dispensing of prepared solutions. Its ergonomic design and adjustable dosing system allow for accurate and repeatable use, making it suitable for ongoing research protocols.</p><p><br></p><p>The pen is compatible with standard cartridges and insulin pen needles, providing flexibility and convenience for laboratory handling. Its reusable design ensures long-term usability while maintaining consistency across multiple preparation cycles.</p><p><br></p><p><strong>Key Features &amp; Benefits</strong></p><p>• Precision dosing mechanism for accurate measurement</p><p>• Reusable metal body for durability and long-term use</p><p>• Smooth and controlled delivery system</p><p>• Compatible with standard cartridges and pen needles</p><p>• Easy-to-use and ergonomic design</p><p>• Ideal for repeatable laboratory workflows</p><p><br></p><p><strong>Applications</strong></p><p>The reusable insulin pen is commonly used in laboratory environments for controlled dosing, solution handling, and precise delivery of prepared research materials. It supports consistent measurement across experimental procedures.</p>",
     "category_handle": "research-supplies-accessories",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/photo1.jpg"
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5483,9 +5645,14 @@
     "description": "<p><strong>50-Slot Vial Organizer Box – Precision Laboratory Supplies & Dispensing Accessories</strong></p><p><strong>Product Overview</strong></p><p>50-Slot Vial Organizer Box is supplied strictly for controlled laboratory research workflows, aseptic compound reconstitution, and high-precision volumetric measurement. Engineered from medical-grade inert materials to prevent chemical leaching and ensure research repeatability.</p><p><strong>Intended Use</strong></p><p>All accessories supplied by Research Compounds are intended strictly for in-vitro laboratory research, analytical preparation, and scientific investigation only.</p>",
     "category_handle": "research-supplies-accessories",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/photo1.jpeg",
+    "thumbnail": "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/photo1.jpeg"
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5558,9 +5725,14 @@
     "description": "<p>Custom Mixed Vial Organizer Box with Hinged Lid | Heavy Duty Medical Multi-Size Grid Storage Case for 10ml, 5ml, 2ml Vials &amp; Ampoules (3D Printed Premium)</p><p><br></p><p>PRODUCT HIGHLIGHTS:</p><p>- Custom Mixed Grid Layout: Specially designed to fit multiple sizes of medical, cosmetic, or laboratory vials simultaneously in one neat box.</p><p>- Premium Heavy-Duty Build: Crafted with precise 3D-printing technology featuring thick walls and a solid integrated layout.</p><p>- Hinged Protective Lid: Keeps your fragile glass vials safe from dust, accidental spills, and impacts.</p><p>- Compact &amp; Travel-Friendly: Outer dimensions of roughly 120mm x 108mm x 77mm (when closed)—perfect for medical bags or tabletop setups.</p><p>- High Capacity Design: Maximizes space efficiently with dedicated slots tailored for different diameter bottles.</p><p><br></p><p>PRODUCT DESCRIPTION:</p><p>Tired of messy medical bags, rattling glass bottles, or disorganized countertops? Streamline your workspace with our Premium Mixed Vial Storage Box.&nbsp;</p><p><br></p><p>Engineered specifically for medical professionals, researchers, beauty practitioners, and hobbyists, this organizer features a carefully calculated multi-diameter slot layout. No more relying on standard grid boxes that leave your smaller vials loosely wobbling or larger vials unable to fit!</p><p><br></p><p>Key Features:</p><p>* Smart Hybrid Configuration: Features multiple rows of smaller slots ideal for standard 2ml–5ml vials, alongside larger precision slots perfectly suited for wider 10ml vials or vaccine bottles.</p><p>* Two-Tone Aesthetics: Gorgeous pastel pink base insert paired with an ergonomic off-white protective lid for a clean, professional, and easily identifiable look.</p><p>* Snug &amp; Secure Fit: Every slot is optimized to keep your vials standing perfectly upright, reducing the risk of glass breakage and liquid contamination.</p><p>* Durable Construction: Made using high-density 3D printing parameters ensuring structural rigidity and daily wear-and-tear resistance.</p><p><br></p><p>TECHNICAL SPECIFICATIONS:</p><p>- Main Base Box Size: 119.52 mm x 107.52 mm x 52.58 mm</p><p>- Protective Lid Size: 107.93 mm x 120.88 mm x 24.58 mm</p><p>- Material: Eco-friendly, impact-resistant premium plastic (3D Printed)</p><p>- Color: Pastel Pink (Base Organizer) + Soft White (Lid)</p><p><br></p><p>WHAT'S IN THE BOX?</p><p>- 1 x Mixed Vial Box Base Organizer&nbsp;</p><p>- 1 x Matching Protective Hinged Lid</p><p>*(Note: Glass vials shown in pictures are for illustration purposes only and are NOT included in the package).*</p><p><br></p><p>KEYWORDS / SEARCH TAGS:</p><p>Vial Organizer, Medical Storage Box, 10ml Vial Holder, Ampoule Case, Lab Bottle Rack, 3D Printed Organizer, Cosmetic Vial Box, Multi-size Grid Box, Clinic Storage Solution, Pink Medical Organizer</p>",
     "category_handle": "research-supplies-accessories",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/photo1.jpeg",
+    "thumbnail": "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/photo1.jpeg"
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5633,12 +5805,14 @@
     "description": "<p><strong>Clear&nbsp;Nasal&nbsp;Spray&nbsp;Bottles&nbsp;with&nbsp;White&nbsp;Nozzles&nbsp;&amp;&nbsp;Caps&nbsp;–&nbsp;Premium&nbsp;Refillable&nbsp;Nasal&nbsp;Spray&nbsp;Bottle&nbsp;|&nbsp;PepStack&nbsp;Labs</strong></p><p><strong>Category&nbsp;</strong>Laboratory&nbsp;Supplies&nbsp;/&nbsp;Nasal&nbsp;Spray&nbsp;Bottles&nbsp;&amp;&nbsp;Dispensing&nbsp;Accessories</p><p><strong>Product&nbsp;Overview</strong>The&nbsp;PepStack&nbsp;Labs&nbsp;Clear&nbsp;Nasal&nbsp;Spray&nbsp;Bottle&nbsp;is&nbsp;a&nbsp;premium&nbsp;refillable&nbsp;dispensing&nbsp;bottle&nbsp;designed&nbsp;for&nbsp;precise&nbsp;liquid&nbsp;delivery&nbsp;and&nbsp;secure&nbsp;storage.&nbsp;Manufactured&nbsp;from&nbsp;durable,&nbsp;crystal-clear&nbsp;plastic,&nbsp;it&nbsp;features&nbsp;a&nbsp;fine-mist&nbsp;spray&nbsp;pump,&nbsp;protective&nbsp;cap,&nbsp;and&nbsp;leak-resistant&nbsp;construction&nbsp;suitable&nbsp;for&nbsp;laboratory&nbsp;preparations&nbsp;and&nbsp;research-use&nbsp;formulations.</p><p>Its&nbsp;transparent&nbsp;body&nbsp;allows&nbsp;convenient&nbsp;monitoring&nbsp;of&nbsp;liquid&nbsp;levels&nbsp;while&nbsp;maintaining&nbsp;a&nbsp;clean,&nbsp;professional&nbsp;pharmaceutical&nbsp;appearance.</p><p><strong>Description</strong>Designed&nbsp;for&nbsp;laboratories,&nbsp;research&nbsp;facilities,&nbsp;and&nbsp;professional&nbsp;preparation&nbsp;environments,&nbsp;the&nbsp;PepStack&nbsp;Labs&nbsp;Nasal&nbsp;Spray&nbsp;Bottle&nbsp;offers&nbsp;reliable&nbsp;and&nbsp;consistent&nbsp;spray&nbsp;performance&nbsp;for&nbsp;liquid&nbsp;formulations&nbsp;requiring&nbsp;fine-mist&nbsp;dispensing.</p><p>The&nbsp;ergonomic&nbsp;spray&nbsp;pump&nbsp;provides&nbsp;smooth&nbsp;and&nbsp;repeatable&nbsp;actuation,&nbsp;while&nbsp;the&nbsp;protective&nbsp;cap&nbsp;helps&nbsp;maintain&nbsp;cleanliness&nbsp;during&nbsp;storage&nbsp;and&nbsp;transportation.&nbsp;Its&nbsp;premium&nbsp;pharmaceutical-style&nbsp;appearance&nbsp;makes&nbsp;it&nbsp;ideal&nbsp;for&nbsp;laboratory&nbsp;research,&nbsp;formulation&nbsp;development,&nbsp;sample&nbsp;preparation,&nbsp;and&nbsp;professional&nbsp;packaging&nbsp;applications.</p><p>Whether&nbsp;used&nbsp;for&nbsp;laboratory&nbsp;compounds,&nbsp;analytical&nbsp;solutions,&nbsp;or&nbsp;research&nbsp;formulations,&nbsp;this&nbsp;refillable&nbsp;bottle&nbsp;combines&nbsp;functionality,&nbsp;durability,&nbsp;and&nbsp;a&nbsp;clean&nbsp;modern&nbsp;aesthetic.</p><p><strong>Key&nbsp;Features</strong></p><p>•&nbsp;Premium&nbsp;fine-mist&nbsp;spray&nbsp;mechanism •&nbsp;Crystal-clear&nbsp;bottle&nbsp;for&nbsp;easy&nbsp;liquid&nbsp;visibility •&nbsp;Leak-resistant&nbsp;nozzle&nbsp;and&nbsp;cap&nbsp;assembly •&nbsp;Durable&nbsp;reusable&nbsp;bottle&nbsp;construction •&nbsp;Professional&nbsp;pharmaceutical-style&nbsp;appearance •&nbsp;Compact,&nbsp;lightweight,&nbsp;and&nbsp;travel-friendly&nbsp;design</p><p><strong>Applications</strong></p><p>•&nbsp;Laboratory&nbsp;formulations •&nbsp;Research&nbsp;liquid&nbsp;dispensing •&nbsp;Nasal&nbsp;spray&nbsp;bottle&nbsp;replacement •&nbsp;Laboratory&nbsp;sample&nbsp;preparation •&nbsp;Research&nbsp;and&nbsp;analytical&nbsp;applications</p><p><strong>Product&nbsp;Features</strong></p><p>•&nbsp;High-quality&nbsp;refillable&nbsp;spray&nbsp;bottle •&nbsp;Fine-mist&nbsp;dispensing&nbsp;nozzle •&nbsp;Clear&nbsp;PET&nbsp;bottle&nbsp;construction •&nbsp;White&nbsp;spray&nbsp;pump&nbsp;and&nbsp;protective&nbsp;cap •&nbsp;Secure&nbsp;leak-resistant&nbsp;seal •&nbsp;Designed&nbsp;for&nbsp;laboratory&nbsp;and&nbsp;research&nbsp;use</p><p><strong>Storage&nbsp;and&nbsp;Handling</strong></p><p>•&nbsp;Store&nbsp;in&nbsp;a&nbsp;clean,&nbsp;dry&nbsp;environment&nbsp;away&nbsp;from&nbsp;direct&nbsp;sunlight •&nbsp;Keep&nbsp;securely&nbsp;capped&nbsp;when&nbsp;not&nbsp;in&nbsp;use •&nbsp;Avoid&nbsp;excessive&nbsp;heat&nbsp;and&nbsp;physical&nbsp;impact •&nbsp;Inspect&nbsp;bottle&nbsp;and&nbsp;spray&nbsp;mechanism&nbsp;before&nbsp;filling</p><p>All&nbsp;handling&nbsp;should&nbsp;follow&nbsp;standard&nbsp;laboratory&nbsp;practices&nbsp;and&nbsp;institutional&nbsp;safety&nbsp;protocols.</p><p><strong>Intended&nbsp;Use</strong></p><p>Products&nbsp;supplied&nbsp;by&nbsp;<strong>PepStack&nbsp;Labs</strong>&nbsp;are&nbsp;intended&nbsp;for&nbsp;laboratory,&nbsp;research,&nbsp;formulation,&nbsp;packaging,&nbsp;and&nbsp;analytical&nbsp;applications&nbsp;only.</p><p>Users&nbsp;are&nbsp;responsible&nbsp;for&nbsp;ensuring&nbsp;compatibility&nbsp;with&nbsp;their&nbsp;intended&nbsp;laboratory&nbsp;or&nbsp;research&nbsp;formulations.</p><p><strong>Terms&nbsp;of&nbsp;Sale</strong></p><p>By&nbsp;purchasing&nbsp;from&nbsp;<strong>PepStack&nbsp;Labs</strong>,&nbsp;the&nbsp;customer&nbsp;acknowledges&nbsp;and&nbsp;agrees&nbsp;that:</p><p>•&nbsp;They&nbsp;are&nbsp;qualified&nbsp;to&nbsp;handle&nbsp;laboratory&nbsp;supplies&nbsp;and&nbsp;research&nbsp;accessories •&nbsp;Products&nbsp;will&nbsp;be&nbsp;used&nbsp;in&nbsp;accordance&nbsp;with&nbsp;applicable&nbsp;regulations&nbsp;and&nbsp;laboratory&nbsp;standards •&nbsp;Proper&nbsp;cleaning,&nbsp;storage,&nbsp;and&nbsp;handling&nbsp;remain&nbsp;the&nbsp;responsibility&nbsp;of&nbsp;the&nbsp;purchaser •&nbsp;<strong>PepStack&nbsp;Labs</strong>&nbsp;shall&nbsp;not&nbsp;be&nbsp;responsible&nbsp;for&nbsp;misuse,&nbsp;improper&nbsp;handling,&nbsp;or&nbsp;use&nbsp;outside&nbsp;intended&nbsp;applications</p><p><strong>Disclaimer</strong></p><p>All&nbsp;information&nbsp;provided&nbsp;by&nbsp;<strong>PepStack&nbsp;Labs</strong>&nbsp;is&nbsp;intended&nbsp;for&nbsp;educational&nbsp;and&nbsp;informational&nbsp;purposes&nbsp;only.</p><p>This&nbsp;product&nbsp;is&nbsp;an&nbsp;empty&nbsp;dispensing&nbsp;container&nbsp;and&nbsp;does&nbsp;not&nbsp;contain&nbsp;any&nbsp;medication,&nbsp;peptide,&nbsp;research&nbsp;compound,&nbsp;or&nbsp;active&nbsp;pharmaceutical&nbsp;ingredient.</p><p>PepStack&nbsp;Labs&nbsp;assumes&nbsp;no&nbsp;liability&nbsp;for&nbsp;misuse,&nbsp;improper&nbsp;filling,&nbsp;contamination,&nbsp;or&nbsp;application&nbsp;outside&nbsp;the&nbsp;purchaser’s&nbsp;intended&nbsp;use.</p><p><strong>About&nbsp;PepStack&nbsp;Labs</strong></p><p>PepStack&nbsp;Labs&nbsp;is&nbsp;a&nbsp;Philippines-based&nbsp;supplier&nbsp;of&nbsp;premium&nbsp;laboratory&nbsp;accessories,&nbsp;dispensing&nbsp;systems,&nbsp;and&nbsp;Research&nbsp;Use&nbsp;Only&nbsp;(RUO)&nbsp;products&nbsp;designed&nbsp;for&nbsp;researchers,&nbsp;laboratories,&nbsp;and&nbsp;professionals.</p><p>We&nbsp;focus&nbsp;on&nbsp;quality,&nbsp;precision,&nbsp;and&nbsp;dependable&nbsp;products&nbsp;that&nbsp;support&nbsp;laboratory&nbsp;workflows&nbsp;and&nbsp;professional&nbsp;presentation.</p><p><strong>PepStack&nbsp;Labs&nbsp;–&nbsp;Precision&nbsp;in&nbsp;Research.&nbsp;Built&nbsp;on&nbsp;Trust.</strong></p><p><strong>Packaging&nbsp;Options</strong></p><p><strong>Bottle&nbsp;Only</strong></p><p>1&nbsp;×&nbsp;Clear&nbsp;Nasal&nbsp;Spray&nbsp;Bottle&nbsp;with&nbsp;White&nbsp;Nozzle&nbsp;&amp;&nbsp;Protective&nbsp;Cap</p><p>Each&nbsp;component&nbsp;is&nbsp;individually&nbsp;sealed&nbsp;and&nbsp;securely&nbsp;packaged&nbsp;to&nbsp;help&nbsp;maintain&nbsp;product&nbsp;quality&nbsp;during&nbsp;storage&nbsp;and&nbsp;transportation.</p><p><strong>SEO&nbsp;Keywords</strong></p><p>PepStack&nbsp;Labs&nbsp;nasal&nbsp;spray&nbsp;bottle,&nbsp;empty&nbsp;nasal&nbsp;spray&nbsp;bottle,&nbsp;refillable&nbsp;nasal&nbsp;spray&nbsp;bottle,&nbsp;fine&nbsp;mist&nbsp;spray&nbsp;bottle,&nbsp;laboratory&nbsp;spray&nbsp;bottle,&nbsp;pharmaceutical&nbsp;spray&nbsp;bottle,&nbsp;research&nbsp;spray&nbsp;bottle,&nbsp;clear&nbsp;nasal&nbsp;spray&nbsp;container,&nbsp;empty&nbsp;mist&nbsp;bottle,&nbsp;premium&nbsp;spray&nbsp;bottle.</p>",
     "category_handle": "research-supplies-accessories",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/photo1.png",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/photo2.png",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/photo3.png",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/photo4.png"
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5726,12 +5900,14 @@
     "description": "<p><strong>GLOW Blend</strong> – Triple-Synergy Matrix Remodeling (GHK-Cu 50mg + BPC-157 10mg + TB-500 10mg) Protocol</p><p><strong>What it is:</strong> GLOW Blend is an advanced multi-peptide formulation combining high-potency GHK-Cu, TB-500, and BPC-157 in a precisely balanced synergistic ratio.</p><p><strong>How it works:</strong> This triple blend tackles tissue and cosmetic regeneration from every angle: GHK-Cu stimulates massive collagen and elastin synthesis while resetting gene expression; TB-500 upregulates actin to speed cell migration and prevent scar tissue; and BPC-157 builds fresh microvascular capillaries to deliver oxygen and nutrients throughout the matrix.</p><p><strong>Why researchers study it:</strong> Researched as the ultimate cosmetic and skin rejuvenation blend, for reversing skin aging, wrinkle reduction, rapid wound repair, scar minimization, and radiant skin elasticity.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/photo1.png",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/photo2.png",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/photo3.png",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/photo4.png"
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5825,12 +6001,14 @@
     "description": "<p><strong>Epithalon</strong> – Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard</p><p><strong>What it is:</strong> Epithalon (also spelled Epitalon) is a synthetic tetrapeptide (Ala-Glu-Asp-Gly) based on epithalamin, a natural peptide extract of the pineal gland discovered by Russian biogerontologist Prof. Vladimir Khavinson.</p><p><strong>How it works:</strong> It acts on the pineal gland to restore natural melatonin secretion rhythms, while uniquely activating the telomerase enzyme. By stimulating telomerase, Epithalon extends the protective telomeres at the ends of chromosomes, allowing aging cells to exceed the traditional Hayflick division limit and repair themselves for longer.</p><p><strong>Why researchers study it:</strong> Studied worldwide for lifespan extension, telomere lengthening, resetting circadian sleep rhythms, antioxidant enzyme upregulation, cancer prevention, and restoring endocrine balance in aging models.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/photo1.png",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/photo2.jpg",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/photo3.jpg",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/photo4.jpg"
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5918,12 +6096,14 @@
     "description": "<p><strong>Epithalon</strong> – Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard</p><p><strong>What it is:</strong> Epithalon (also spelled Epitalon) is a synthetic tetrapeptide (Ala-Glu-Asp-Gly) based on epithalamin, a natural peptide extract of the pineal gland discovered by Russian biogerontologist Prof. Vladimir Khavinson.</p><p><strong>How it works:</strong> It acts on the pineal gland to restore natural melatonin secretion rhythms, while uniquely activating the telomerase enzyme. By stimulating telomerase, Epithalon extends the protective telomeres at the ends of chromosomes, allowing aging cells to exceed the traditional Hayflick division limit and repair themselves for longer.</p><p><strong>Why researchers study it:</strong> Studied worldwide for lifespan extension, telomere lengthening, resetting circadian sleep rhythms, antioxidant enzyme upregulation, cancer prevention, and restoring endocrine balance in aging models.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/photo1.png",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/photo2.jpg",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/photo3.jpg",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/photo4.jpg"
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6024,12 +6204,14 @@
     "description": "<p><strong>NAD+</strong> – High-Concentration Beta-Nicotinamide Adenine Dinucleotide Redox Standard</p><p><strong>What it is:</strong> NAD+ (Nicotinamide Adenine Dinucleotide) is a critical coenzyme found in every single living cell, essential for cellular respiration, ATP energy generation, and DNA repair.</p><p><strong>How it works:</strong> NAD+ serves two major roles: it acts as an electron carrier in the Krebs cycle to generate ATP energy, and it serves as the essential substrate consumed by SIRT1-7 longevity enzymes and PARP-1 DNA repair enzymes. Because NAD+ levels drop by over 50% between youth and middle age, replenishing cellular NAD+ reactivates youthful cellular cleanup and genomic repair.</p><p><strong>Why researchers study it:</strong> Studied for anti-aging, mental clarity and focus, cellular energy restoration, reversing chronic fatigue, DNA repair, addiction recovery, and mitochondrial rejuvenation.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/photo1.png",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/photo2.png",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/photo3.png",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/photo4.png"
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6136,12 +6318,14 @@
     "description": "<p><strong>NAD+</strong> – High-Concentration Beta-Nicotinamide Adenine Dinucleotide Redox Standard</p><p><strong>What it is:</strong> NAD+ (Nicotinamide Adenine Dinucleotide) is a critical coenzyme found in every single living cell, essential for cellular respiration, ATP energy generation, and DNA repair.</p><p><strong>How it works:</strong> NAD+ serves two major roles: it acts as an electron carrier in the Krebs cycle to generate ATP energy, and it serves as the essential substrate consumed by SIRT1-7 longevity enzymes and PARP-1 DNA repair enzymes. Because NAD+ levels drop by over 50% between youth and middle age, replenishing cellular NAD+ reactivates youthful cellular cleanup and genomic repair.</p><p><strong>Why researchers study it:</strong> Studied for anti-aging, mental clarity and focus, cellular energy restoration, reversing chronic fatigue, DNA repair, addiction recovery, and mitochondrial rejuvenation.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/photo1.png",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/photo2.png",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/photo3.png",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/photo4.png"
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6241,12 +6425,14 @@
     "description": "<p><strong>TB-500</strong> – Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph</p><p><strong>What it is:</strong> TB-500 is a synthetic version of the active healing region of Thymosin Beta-4, a naturally occurring protein found in high concentrations in blood platelets and wound fluid.</p><p><strong>How it works:</strong> Its primary mechanism is actin sequestration—it regulates actin, the essential protein cells use to build their internal skeleton, move, and heal. By upregulating actin, TB-500 accelerates the migration of endothelial cells and fibroblasts to wound sites while calming overactive inflammatory signals like NF-kB.</p><p><strong>Why researchers study it:</strong> Studied for broad systemic healing, cardiac muscle protection, reducing scar tissue and fibrosis, improving joint flexibility, and repairing skeletal muscle fibers.</p>",
     "category_handle": "healing-tissue-repair-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/tb-500/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/tb-500/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/tb-500/photo1.png",
-      "http://localhost:9000/static/catalog/tb-500/photo2.png",
-      "http://localhost:9000/static/catalog/tb-500/photo3.png",
-      "http://localhost:9000/static/catalog/tb-500/photo4.png"
+      "http://localhost:9000/static/catalog/tb-500/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/tb-500/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/tb-500/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/tb-500/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/tb-500/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/tb-500/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6330,12 +6516,14 @@
     "description": "<p><strong>GHK Basic</strong> – Non-Chelated Tripeptide-1 Epigenetic Transcriptional Standard</p><p><strong>What it is:</strong> GHK Basic is the unchelated, copper-free version of the native Glycyl-L-Histidyl-L-Lysine tripeptide, allowing researchers to study the pure peptide carrier molecule independently from copper ions.</p><p><strong>How it works:</strong> Without a pre-bound copper ion, GHK Basic binds to endogenous trace copper and other minerals in biological fluids, naturally shuttling them into cells. It stimulates decorin synthesis, modulates inflammatory pathways, and supports extracellular matrix reorganization.</p><p><strong>Why researchers study it:</strong> Researched for tissue remodeling, cosmetic topical formulations, cellular antioxidant defenses, and as a gentle carrier peptide that avoids the localized stinging associated with pre-bound copper.</p>",
     "category_handle": "healing-tissue-repair-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ghk-basic/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ghk-basic/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ghk-basic/photo1.png",
-      "http://localhost:9000/static/catalog/ghk-basic/photo2.png",
-      "http://localhost:9000/static/catalog/ghk-basic/photo3.png",
-      "http://localhost:9000/static/catalog/ghk-basic/photo4.png"
+      "http://localhost:9000/static/catalog/ghk-basic/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ghk-basic/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ghk-basic/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ghk-basic/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ghk-basic/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ghk-basic/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6419,12 +6607,14 @@
     "description": "<p><strong>Pentosan Polysulfate Sodium</strong> – Sulfated Polysaccharide Chondroprotective & Disease-Modifying Matrix Standard</p><p><strong>What it is:</strong> Pentosan Polysulfate Sodium (PPS) is a semi-synthetic macromolecular carbohydrate polymer derived from beechwood hemicellulose, bearing structural similarities to glycosaminoglycans.</p><p><strong>How it works:</strong> PPS acts as a chondroprotective agent that protects joint cartilage. It inhibits cartilage-degrading enzymes (like ADAMTS-5 and MMP-13), stimulates hyaluronic acid synthesis in synovial fluid, improves subchondral bone microcirculation, and reduces bone marrow edema.</p><p><strong>Why researchers study it:</strong> Studied for osteoarthritis, degenerative joint disease, cartilage rebuilding, interstitial cystitis, and restoring fluid lubrication to arthritic joints.</p>",
     "category_handle": "healing-tissue-repair-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/pentosan-polysulfate/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/pentosan-polysulfate/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/photo1.png",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/photo2.png",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/photo3.png",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/photo4.png"
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6508,13 +6698,14 @@
     "description": "<p><strong>Mazdutide</strong> – Synthetic Oxyntomodulin Dual GLP-1 / Glucagon Receptor Co-Agonist Standard</p><p><strong>What it is:</strong> Mazdutide (IBI362) is a synthetic dual GLP-1 and glucagon receptor agonist peptide with a long-acting fatty acid chain, engineered to mimic the body's natural oxyntomodulin hormone.</p><p><strong>How it works:</strong> By stimulating both GLP-1 and glucagon receptors, Mazdutide balances appetite reduction with enhanced liver fat metabolism and increased caloric expenditure. It specifically targets visceral abdominal fat and liver fat accumulation.</p><p><strong>Why researchers study it:</strong> Studied for high-rate weight loss, targeted reduction of visceral belly fat, clearing fatty liver disease, and improving blood lipid and uric acid levels.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/mazdutide/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/mazdutide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/mazdutide/photo1.jpg",
-      "http://localhost:9000/static/catalog/mazdutide/photo1.png",
-      "http://localhost:9000/static/catalog/mazdutide/photo2.png",
-      "http://localhost:9000/static/catalog/mazdutide/photo3.png",
-      "http://localhost:9000/static/catalog/mazdutide/photo4.png"
+      "http://localhost:9000/static/catalog/mazdutide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/mazdutide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/mazdutide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/mazdutide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/mazdutide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/mazdutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6598,13 +6789,14 @@
     "description": "<p><strong>Survodutide</strong> – Dual Glucagon / GLP-1 Receptor Agonist Hepatic Steatosis & Fibrosis Standard</p><p><strong>What it is:</strong> Survodutide (BI 456906) is a dual glucagon/GLP-1 receptor agonist peptide specifically engineered with high glucagon receptor activity relative to its GLP-1 action.</p><p><strong>How it works:</strong> It activates glucagon receptors in the liver to dramatically speed up fat breakdown and energy expenditure, while simultaneously activating GLP-1 receptors in the brain to keep appetite under control.</p><p><strong>Why researchers study it:</strong> Researched as a prime candidate for curing MASH/NASH (Metabolic Dysfunction-Associated Steatohepatitis), reversing advanced liver fibrosis, and driving significant total-body weight reduction.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/survodutide/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/survodutide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/survodutide/photo1.jpg",
-      "http://localhost:9000/static/catalog/survodutide/photo1.png",
-      "http://localhost:9000/static/catalog/survodutide/photo2.png",
-      "http://localhost:9000/static/catalog/survodutide/photo3.png",
-      "http://localhost:9000/static/catalog/survodutide/photo4.png"
+      "http://localhost:9000/static/catalog/survodutide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/survodutide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/survodutide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/survodutide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/survodutide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/survodutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6688,9 +6880,14 @@
     "description": "<p><strong>Tesofensine</strong> – Triple Monoamine (DA/NE/5-HT) Reuptake Inhibitor Metabolic Research Standard</p><p><strong>What it is:</strong> Tesofensine is a novel triple monoamine reuptake inhibitor that centrally inhibits the reuptake of dopamine, noradrenaline (norepinephrine), and serotonin in the synaptic cleft.</p><p><strong>How it works:</strong> Originally developed for neurodegenerative conditions like Parkinson's and Alzheimer's, researchers discovered that its triple reuptake blockade potently suppresses appetite and raises resting energy expenditure. By keeping dopamine and norepinephrine elevated in brain reward pathways, it eliminates food cravings and emotional eating while stimulating sympathetic fat burning.</p><p><strong>Why researchers study it:</strong> Studied for massive long-term weight reduction (10–12% in clinical trials), suppressing emotional and binge eating, neuroprotection, and increasing daytime alertness.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/tesofensine/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/tesofensine/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/tesofensine/photo1.png"
+      "http://localhost:9000/static/catalog/tesofensine/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/tesofensine/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/tesofensine/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/tesofensine/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/tesofensine/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/tesofensine/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6744,13 +6941,14 @@
     "description": "<p><strong>Liraglutide</strong> – Daily Human GLP-1 Analogue (Arg34Lys26-(N-epsilon-(gamma-Glu(N-alpha-hexadecanoyl)))) Standard</p><p><strong>What it is:</strong> Liraglutide is a once-daily synthetic GLP-1 receptor agonist with 97% sequence homology to native human GLP-1, stabilized with a C16 fatty acid chain that extends its half-life to 13 hours.</p><p><strong>How it works:</strong> It binds to pancreatic GLP-1 receptors to promote insulin secretion in response to elevated blood glucose and reduces glucagon output. In the brain and gut, it slows stomach emptying and promotes satiety, helping reduce daily food consumption.</p><p><strong>Why researchers study it:</strong> Extensively studied as an authoritative benchmark for daily GLP-1 therapy in weight control, diabetes management, kidney protection, and cardiovascular risk reduction.</p>",
     "category_handle": "metabolic-weight-management-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/liraglutide/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/liraglutide/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/liraglutide/photo1.jpg",
-      "http://localhost:9000/static/catalog/liraglutide/photo1.png",
-      "http://localhost:9000/static/catalog/liraglutide/photo2.png",
-      "http://localhost:9000/static/catalog/liraglutide/photo3.png",
-      "http://localhost:9000/static/catalog/liraglutide/photo4.png"
+      "http://localhost:9000/static/catalog/liraglutide/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/liraglutide/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/liraglutide/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/liraglutide/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/liraglutide/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/liraglutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6834,11 +7032,14 @@
     "description": "<p><strong>CJC-1295 No DAC</strong> – Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard</p><p><strong>What it is:</strong> CJC-1295 No DAC (also known as Mod GRF 1-29) is a synthetic 29-amino-acid peptide analogue of natural Growth Hormone Releasing Hormone (GHRH), modified with 4 amino acid substitutions to increase resistance to enzyme breakdown.</p><p><strong>How it works:</strong> It acts directly on the GHRH receptor on pituitary cells to stimulate the synthesis and natural pulsatile release of endogenous growth hormone. Because it lacks a Drug Affinity Complex (DAC), its half-life is approximately 30 minutes, allowing the pituitary gland to release GH in natural, healthy physiological pulses without exhausting the gland.</p><p><strong>Why researchers study it:</strong> Studied in synergy with Ipamorelin for deep sleep, lean muscle preservation, cellular rejuvenation, and fat loss while preserving natural pituitary pulsatility.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/cjc-1295-no-dac/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/photo1.jpg",
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/photo2.jpg",
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/photo3.jpg"
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6922,11 +7123,14 @@
     "description": "<p><strong>CJC-1295 with DAC</strong> – Drug Affinity Complex Bioconjugated GHRH Extended Somatotropic Standard</p><p><strong>What it is:</strong> CJC-1295 with DAC is a synthetic GHRH analogue conjugated to a Drug Affinity Complex (DAC) that binds irreversibly to circulating serum albumin, extending its biological half-life to 6–8 days.</p><p><strong>How it works:</strong> By binding to blood albumin, CJC-1295 with DAC provides continuous, 24/7 stimulation of the pituitary GHRH receptor. This drives a sustained, around-the-clock elevation in baseline growth hormone and circulating IGF-1 levels from a single weekly or bi-weekly dose.</p><p><strong>Why researchers study it:</strong> Researched for long-acting growth hormone elevation, continuous tissue healing, sustained muscle preservation, and anti-catabolic support without requiring daily injections.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/cjc-1295-with-dac/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/photo1.jpg",
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/photo2.jpg",
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/photo3.jpg"
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7010,11 +7214,14 @@
     "description": "<p><strong>Sermorelin</strong> – Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard</p><p><strong>What it is:</strong> Sermorelin (GRF 1-29) is a synthetic 29-amino-acid peptide representing the exact, shortest functional biological fragment of natural human Growth Hormone-Releasing Hormone (GHRH).</p><p><strong>How it works:</strong> It binds directly to pituitary GHRH receptors, encouraging the pituitary gland to naturally produce and secrete endogenous human growth hormone in physiological bursts. Because it triggers the body's own production rather than replacing hormone externally, somatostatin negative feedback remains fully intact, eliminating the risk of excess growth hormone overdosing.</p><p><strong>Why researchers study it:</strong> Studied as a gentle, natural anti-aging therapy, for restoring youthful sleep quality, boosting skin elasticity and muscle tone, and supporting natural hormone restoration.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/sermorelin/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/sermorelin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/sermorelin/photo1.jpg",
-      "http://localhost:9000/static/catalog/sermorelin/photo2.jpg",
-      "http://localhost:9000/static/catalog/sermorelin/photo3.jpg"
+      "http://localhost:9000/static/catalog/sermorelin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/sermorelin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/sermorelin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/sermorelin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/sermorelin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/sermorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7098,11 +7305,14 @@
     "description": "<p><strong>Hexarelin</strong> – Potent Hexapeptide Secretagogue & Cardioprotective CD36 Receptor Agonist Standard</p><p><strong>What it is:</strong> Hexarelin (Examorelin) is a synthetic hexapeptide that is recognized scientifically as the single most potent growth hormone secretagogue in the entire GHRP family.</p><p><strong>How it works:</strong> It binds strongly to the ghrelin receptor in the pituitary gland and also binds to CD36 receptors in cardiac and vascular tissues. It produces the largest growth hormone pulse of any peptide secretagogue, without increasing appetite. Furthermore, its CD36 binding gives it unmatched, direct cardioprotective and anti-ischemic properties.</p><p><strong>Why researchers study it:</strong> Studied for acute cardiovascular protection following heart attacks, intense tissue repair, severe tendon regeneration, and maximum growth hormone surges.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/hexarelin/photo1.jpg",
+    "thumbnail": "http://localhost:9000/static/catalog/hexarelin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/hexarelin/photo1.jpg",
-      "http://localhost:9000/static/catalog/hexarelin/photo2.jpg",
-      "http://localhost:9000/static/catalog/hexarelin/photo3.jpg"
+      "http://localhost:9000/static/catalog/hexarelin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/hexarelin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/hexarelin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/hexarelin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/hexarelin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/hexarelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7186,9 +7396,14 @@
     "description": "<p><strong>MK-677</strong> – Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph</p><p><strong>What it is:</strong> MK-677 (also known as Ibutamoren) is an orally active, non-peptide growth hormone secretagogue that functions as a potent, long-acting ghrelin receptor agonist.</p><p><strong>How it works:</strong> It binds to the ghrelin/GHS-R1a receptor in the brain and pituitary gland, sustained by a long biological half-life of 24 hours. A single oral dose stimulates continuous, multi-pulsatile growth hormone and IGF-1 secretion around the clock, without requiring any injections.</p><p><strong>Why researchers study it:</strong> Studied for combating muscle wasting, improving bone mineral density, increasing deep sleep stages, accelerating tendon repair, and enhancing overall body vitality through simple oral administration.</p>",
     "category_handle": "growth-hormone-recovery-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/mk-677/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/mk-677/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/mk-677/photo1.png"
+      "http://localhost:9000/static/catalog/mk-677/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/mk-677/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/mk-677/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/mk-677/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/mk-677/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/mk-677/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7242,12 +7457,14 @@
     "description": "<p><strong>FOXO4-DRI</strong> – D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard</p><p><strong>What it is:</strong> FOXO4-DRI is a retro-inverso D-amino acid peptide engineered to selectively destroy senescent 'zombie' cells—aging cells that refuse to die and continually pump out toxic inflammatory chemicals.</p><p><strong>How it works:</strong> Senescent cells survive by using the FOXO4 protein to bind and sequester p53, the cell's natural self-destruction switch. FOXO4-DRI acts as a molecular decoy that competitively disrupts this FOXO4-p53 interaction. Once freed, p53 moves to the mitochondria, triggering targeted apoptosis (programmed cell death) exclusively in senescent cells while leaving healthy normal cells untouched.</p><p><strong>Why researchers study it:</strong> Studied for clearing senescent cells, restoring youthful organ function, improving fur/hair density, reversing frailty in aging models, and reducing systemic chronic inflammation.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/foxo4-dri/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/foxo4-dri/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/foxo4-dri/photo1.png",
-      "http://localhost:9000/static/catalog/foxo4-dri/photo2.png",
-      "http://localhost:9000/static/catalog/foxo4-dri/photo3.png",
-      "http://localhost:9000/static/catalog/foxo4-dri/photo4.png"
+      "http://localhost:9000/static/catalog/foxo4-dri/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/foxo4-dri/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/foxo4-dri/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/foxo4-dri/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/foxo4-dri/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/foxo4-dri/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7331,12 +7548,14 @@
     "description": "<p><strong>Humanin</strong> – Mitochondrial 24-Amino Acid Cytoprotective Anti-Apoptotic Peptide Standard</p><p><strong>What it is:</strong> Humanin is a 24-amino-acid peptide encoded within the 16S ribosomal RNA region of mitochondrial DNA, originally discovered while screening for genes that protect brain cells from Alzheimer's disease.</p><p><strong>How it works:</strong> Humanin functions as a cytoprotective shield. It binds to the pro-apoptotic protein Bax, preventing it from puncturing mitochondrial membranes and stopping premature cell death. Furthermore, it activates the STAT3 signaling pathway, suppressing neuroinflammation and enhancing cellular survival in response to oxidative and toxic insults.</p><p><strong>Why researchers study it:</strong> Studied for neuroprotection against Alzheimer's and Parkinson's, cardiovascular endothelial defense, preserving insulin sensitivity, and protecting germ cells and organ tissues.</p>",
     "category_handle": "longevity-cellular-health-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/humanin/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/humanin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/humanin/photo1.png",
-      "http://localhost:9000/static/catalog/humanin/photo2.png",
-      "http://localhost:9000/static/catalog/humanin/photo3.png",
-      "http://localhost:9000/static/catalog/humanin/photo4.png"
+      "http://localhost:9000/static/catalog/humanin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/humanin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/humanin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/humanin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/humanin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/humanin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7420,9 +7639,14 @@
     "description": "<p><strong>N-Acetyl Semax Amidate</strong> – Acetylated & Amidated High-Stability Semax Analogue Standard</p><p><strong>What it is:</strong> N-Acetyl Semax Amidate (NA-Semax-A) is an advanced modified version of Semax, featuring an N-terminal acetyl group and a C-terminal amide group.</p><p><strong>How it works:</strong> These dual molecular modifications protect the peptide from degradation by aminopeptidases and carboxypeptidases in the bloodstream. This dramatically increases its biological half-life, enhances blood-brain barrier permeability, and delivers deeper, more sustained BDNF upregulation at lower micro-dose amounts compared to standard Semax.</p><p><strong>Why researchers study it:</strong> Researched for extended cognitive focus, long-lasting mental stamina, neuroplasticity, memory retention, and combating mental fatigue with lower dosage requirements.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/na-semax-amidate/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/na-semax-amidate/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/na-semax-amidate/photo1.png"
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7506,9 +7730,14 @@
     "description": "<p><strong>N-Acetyl Selank Amidate</strong> – High-Bioavailability Acetylated & Amidated Selank Neuroprotective Standard</p><p><strong>What it is:</strong> N-Acetyl Selank Amidate (NA-Selank-A) is an enhanced molecular analogue of Selank, featuring both N-terminal acetylation and C-terminal amidation.</p><p><strong>How it works:</strong> The dual end-cap modifications protect the peptide against circulating peptidase enzymes, dramatically slowing its breakdown. This significantly boosts blood-brain barrier penetration and delivers a smoother, deeper, and longer-lasting anxiolytic and nootropic effect with superior bioavailability.</p><p><strong>Why researchers study it:</strong> Researched for all-day stress and anxiety resilience, improved emotional stability, sharper focus under intense pressure, and sustained cognitive clarity.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/na-selank-amidate/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/na-selank-amidate/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/na-selank-amidate/photo1.png"
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7592,9 +7821,14 @@
     "description": "<p><strong>Cerebrolysin</strong> – Purified Porcine Brain-Derived Peptides & Neurotrophic Factor Complex Standard</p><p><strong>What it is:</strong> Cerebrolysin is a low-molecular-weight neuropeptide preparation purified from porcine brain tissue, containing concentrated natural neurotrophic factors including BDNF, GDNF, NGF, and CNTF.</p><p><strong>How it works:</strong> Its small peptides easily cross the blood-brain barrier to mimic the actions of natural endogenous neurotrophic factors. It promotes neurogenesis (the birth of new brain cells), enhances synaptic plasticity, shields neurons against free radical damage and glutamate excitotoxicity, and reduces amyloid deposition and neuroinflammation.</p><p><strong>Why researchers study it:</strong> Studied worldwide for acute ischemic stroke rehabilitation, vascular dementia, Alzheimer's disease, traumatic brain injury (TBI), neuro-regeneration, and cognitive recovery.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/cerebrolysin/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/cerebrolysin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/cerebrolysin/photo1.png"
+      "http://localhost:9000/static/catalog/cerebrolysin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/cerebrolysin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/cerebrolysin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/cerebrolysin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/cerebrolysin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/cerebrolysin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7678,9 +7912,14 @@
     "description": "<p><strong>P21</strong> – Ciliary Neurotrophic Factor (CNTF) Active Fragment Dentate Gyrus Neurogenesis Standard</p><p><strong>What it is:</strong> P21 (Ac-DGGL(A)G-NH2) is a synthetic, brain-penetrant peptide derived from the active neutralizing region of Ciliary Neurotrophic Factor (CNTF).</p><p><strong>How it works:</strong> P21 was engineered to bypass CNTF's bulky size and avoid stimulating neutralizing antibodies. It crosses the blood-brain barrier to inhibit leukemia inhibitory factor (LIF) signaling and downregulate anti-neurogenic enzymes. This activates endogenous neurogenesis in the subgranular zone of the dentate gyrus in the hippocampus, stimulating the continuous growth of fresh, healthy neurons and synapses.</p><p><strong>Why researchers study it:</strong> Researched for boosting long-term memory formation, reversing neurodegenerative cognitive decline, stimulating adult brain neurogenesis, and promoting rapid learning.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/p21/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/p21/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/p21/photo1.png"
+      "http://localhost:9000/static/catalog/p21/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/p21/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/p21/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/p21/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/p21/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/p21/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7764,9 +8003,14 @@
     "description": "<p><strong>Noopept</strong> – N-Phenylacetyl-L-Prolylglycine Ethyl Ester Hippocampal Neurotrophin Standard</p><p><strong>What it is:</strong> Noopept (N-phenylacetyl-L-prolylglycine ethyl ester, GVS-111) is a synthetic peptide-derived nootropic molecule related to the racetam family, boasting approximately 1,000 times higher potency than Piracetam.</p><p><strong>How it works:</strong> It acts as a cycloprolylglycine prodrug, crossing the blood-brain barrier to bind to AMPA and NMDA glutamate receptors. It stimulates the expression of both NGF (Nerve Growth Factor) and BDNF in the hippocampus and cerebral cortex, while sensitizing acetylcholine receptors to improve neural communication.</p><p><strong>Why researchers study it:</strong> Studied for enhancing memory retention, speed of mental recall, cognitive clarity, neuroprotection against trauma and toxins, and reducing cognitive anxiety.</p>",
     "category_handle": "cognitive-neuroprotective-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/noopept/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/noopept/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/noopept/photo1.png"
+      "http://localhost:9000/static/catalog/noopept/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/noopept/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/noopept/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/noopept/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/noopept/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/noopept/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7820,12 +8064,14 @@
     "description": "<p><strong>LL-37</strong> – Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard</p><p><strong>What it is:</strong> LL-37 is a 37-amino-acid antimicrobial peptide (AMP) representing the active functional cleavage fragment of human cathelicidin (hCAP-18).</p><p><strong>How it works:</strong> LL-37 carries a strong net positive charge, allowing it to bind to negatively charged bacterial membranes and physically punch holes through them, causing rapid bacterial lysis. It destroys both Gram-positive and Gram-negative bacteria, dissolves protective bacterial biofilms, clears fungal pathogens, and recruits immune cells to wound sites.</p><p><strong>Why researchers study it:</strong> Researched as a powerful natural antibiotic alternative, for eradicating antibiotic-resistant bacteria (MRSA, Pseudomonas), destroying bacterial biofilms, and accelerating chronic non-healing wound recovery.</p>",
     "category_handle": "antimicrobial-host-defense-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/ll-37/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/ll-37/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/ll-37/photo1.png",
-      "http://localhost:9000/static/catalog/ll-37/photo2.png",
-      "http://localhost:9000/static/catalog/ll-37/photo3.png",
-      "http://localhost:9000/static/catalog/ll-37/photo4.png"
+      "http://localhost:9000/static/catalog/ll-37/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/ll-37/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/ll-37/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/ll-37/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/ll-37/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/ll-37/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7909,12 +8155,14 @@
     "description": "<p><strong>Melanotan I</strong> – Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard</p><p><strong>What it is:</strong> Melanotan I (Afamelanotide) is a synthetic 13-amino-acid peptide analogue of alpha-Melanocyte-Stimulating Hormone (alpha-MSH), engineered with two amino acid substitutions to resist enzyme degradation.</p><p><strong>How it works:</strong> It selectively binds to the Melanocortin-1 Receptor (MC1R) on melanocytes in the skin. This triggers eumelanin synthesis—the rich brown/black protective pigment that naturally absorbs and shields skin cells from damaging UV radiation. Crucially, because it is highly selective for MC1R, it promotes skin pigmentation without the severe nausea, blood pressure spikes, or sexual arousal caused by non-selective melanocortins.</p><p><strong>Why researchers study it:</strong> Studied for photoprotection in erythropoietic protoporphyria (EPP), preventing skin damage and sunburn in fair-skinned subjects, and generating natural, UV-free photoprotective pigmentation.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/melanotan-1/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/melanotan-1/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/melanotan-1/photo1.png",
-      "http://localhost:9000/static/catalog/melanotan-1/photo2.png",
-      "http://localhost:9000/static/catalog/melanotan-1/photo3.png",
-      "http://localhost:9000/static/catalog/melanotan-1/photo4.png"
+      "http://localhost:9000/static/catalog/melanotan-1/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/melanotan-1/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/melanotan-1/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/melanotan-1/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/melanotan-1/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/melanotan-1/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7998,12 +8246,14 @@
     "description": "<p><strong>Melanotan II</strong> – Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard</p><p><strong>What it is:</strong> Melanotan II (MT-2) is a synthetic cyclic lactam heptapeptide analogue of alpha-Melanocyte-Stimulating Hormone (alpha-MSH).</p><p><strong>How it works:</strong> Unlike Melanotan I, MT-2 is non-selective: it crosses the blood-brain barrier to bind to multiple melanocortin receptors, including MC1R (skin tanning), MC3R/MC4R (appetite suppression and metabolic regulation), and MC4R (sexual arousal and erectile response in the central nervous system).</p><p><strong>Why researchers study it:</strong> Studied for rapid, deep photoprotective skin tanning, treating erectile dysfunction and female sexual arousal disorder, and appetite suppression.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/melanotan-2/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/melanotan-2/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/melanotan-2/photo1.png",
-      "http://localhost:9000/static/catalog/melanotan-2/photo2.png",
-      "http://localhost:9000/static/catalog/melanotan-2/photo3.png",
-      "http://localhost:9000/static/catalog/melanotan-2/photo4.png"
+      "http://localhost:9000/static/catalog/melanotan-2/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/melanotan-2/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/melanotan-2/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/melanotan-2/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/melanotan-2/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/melanotan-2/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8087,12 +8337,14 @@
     "description": "<p><strong>Oxytocin</strong> – Nonapeptide Neurohypophysial Hormone Prosocial & Anxiolytic Standard</p><p><strong>What it is:</strong> Oxytocin is a natural 9-amino-acid neuropeptide hormone produced in the hypothalamus and stored in the posterior pituitary gland, famously known as the 'bonding and trust hormone.'</p><p><strong>How it works:</strong> In the central nervous system, Oxytocin acts as a powerful neuromodulator, dampening activity in the amygdala (the brain's fear and stress center) and boosting dopamine in social reward circuits. It promotes social bonding, deep empathy, trust, and emotional closeness, while also functioning in smooth muscle contraction and sexual climax.</p><p><strong>Why researchers study it:</strong> Studied for reducing social anxiety, autism spectrum social communication, healing emotional trauma and PTSD, enhancing marital intimacy, and reducing cortisol stress levels.</p>",
     "category_handle": "sexual-reproductive-research-peptides",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/oxytocin/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/oxytocin/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/oxytocin/photo1.png",
-      "http://localhost:9000/static/catalog/oxytocin/photo2.png",
-      "http://localhost:9000/static/catalog/oxytocin/photo3.png",
-      "http://localhost:9000/static/catalog/oxytocin/photo4.png"
+      "http://localhost:9000/static/catalog/oxytocin/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/oxytocin/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/oxytocin/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/oxytocin/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/oxytocin/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/oxytocin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8176,12 +8428,14 @@
     "description": "<p><strong>Wolverine Blend</strong> – Dual-Action Synergistic Musculoskeletal Repair (BPC-157 5mg + TB-500 5mg) Standard</p><p><strong>What it is:</strong> Wolverine Blend (also known as the Recovery Blend) is the premier dual-peptide synergy in modern sports medicine research, combining equal parts BPC-157 and TB-500.</p><p><strong>How it works:</strong> While BPC-157 rebuilds localized microvascular blood flow, activates tenocytes, and speeds collagen synthesis directly at the injury site, TB-500 circulates systemically to mobilize cellular actin, upregulate cell migration, and prevent stiff fibrotic scarring. Together, their complementary actions cut tissue recovery times dramatically compared to either peptide alone.</p><p><strong>Why researchers study it:</strong> Researched as the gold standard for rapid healing of torn ligaments, tendonitis, muscle tears, joint pain, cartilage wear, and post-surgical rehabilitation.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/wolverine-blend/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/wolverine-blend/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/wolverine-blend/photo1.png",
-      "http://localhost:9000/static/catalog/wolverine-blend/photo2.png",
-      "http://localhost:9000/static/catalog/wolverine-blend/photo3.png",
-      "http://localhost:9000/static/catalog/wolverine-blend/photo4.png"
+      "http://localhost:9000/static/catalog/wolverine-blend/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/wolverine-blend/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/wolverine-blend/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/wolverine-blend/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/wolverine-blend/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/wolverine-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8265,12 +8519,14 @@
     "description": "<p><strong>Tri-Heal Matrix Blend</strong> – Triple Regenerative & Mucosal Integrity (BPC-157 5mg + TB-500 5mg + KPV 5mg) Standard</p><p><strong>What it is:</strong> Tri-Heal Matrix Blend is an advanced triple-peptide formulation that combines BPC-157, TB-500, and KPV for maximum recovery and complete inflammatory control.</p><p><strong>How it works:</strong> It expands upon the Wolverine Blend by adding KPV's nuclear NF-kB inhibition. BPC-157 provides angiogenic blood flow, TB-500 drives rapid cell motility and tissue remodeling, and KPV instantly extinguishes acute and chronic inflammation at the cellular level. This tripartite approach prevents chronic inflammatory loops from stalling tissue repair.</p><p><strong>Why researchers study it:</strong> Studied for complex chronic injuries, severe tendon and ligament tears, arthritic joint inflammation, inflammatory bowel disease, and accelerated surgical recovery.</p>",
     "category_handle": "multi-compound-research-bundles",
     "type_id": null,
-    "thumbnail": "http://localhost:9000/static/catalog/tri-heal-blend/photo1.png",
+    "thumbnail": "http://localhost:9000/static/catalog/tri-heal-blend/slide1_hero.webp",
     "images": [
-      "http://localhost:9000/static/catalog/tri-heal-blend/photo1.png",
-      "http://localhost:9000/static/catalog/tri-heal-blend/photo2.png",
-      "http://localhost:9000/static/catalog/tri-heal-blend/photo3.png",
-      "http://localhost:9000/static/catalog/tri-heal-blend/photo4.png"
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide1_hero.webp",
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide2_molecular.webp",
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide3_reconstitution.webp",
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide4_benefits.webp",
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide5_kit.webp",
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide6_superapp.webp"
     ],
     "options": [
       {
