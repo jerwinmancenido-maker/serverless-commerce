@@ -34,7 +34,8 @@
     "promo:launch": "medusa exec ./src/scripts/configure-launch-promotions.ts",
     "inventory:seed-master-supplies": "medusa exec ./src/scripts/seed-production-master-supplies.ts",
     "catalog:patch-ghk-cu": "medusa exec ./src/scripts/patch-ghk-cu-description.ts",
-    "protocols:rebrand-backfill": "medusa exec ./src/scripts/update-product-protocols.ts"
+    "protocols:rebrand-backfill": "medusa exec ./src/scripts/update-product-protocols.ts",
+    "protocols:sync": "npx tsx ./src/scripts/sync-protocols.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",
