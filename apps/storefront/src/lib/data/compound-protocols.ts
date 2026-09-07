@@ -1,336 +1,37 @@
-export type TitrationStep = {
-  stage: string
-  timeframe: string
-  doseDisplay: string
-  doseMcg: number
-  cadence: string
-  focus: string
-  notes?: string
+import {
+  type CompoundAnalyticalProtocol,
+  type TitrationStep,
+  type SyringeGraduation,
+  type BlendConstituent,
+  ALL_COMPOUND_PROTOCOLS,
+} from "./compound-protocols/index.ts"
+
+export type {
+  CompoundAnalyticalProtocol,
+  TitrationStep,
+  SyringeGraduation,
+  BlendConstituent,
 }
 
-export type SyringeGraduation = {
-  doseDisplay: string
-  doseMcg: number
-  volumeMl: number
-  syringeIU: number
-  tickLabel: string
-}
+export * from "./compound-protocols/index.ts"
 
-export type CompoundAnalyticalProtocol = {
-  id: string
-  compoundName: string
-  handles: string[]
-  subtitle: string
-  category: string
-  purityStandard: string
-  reconstitution: {
-    defaultVialNetMg: number
-    defaultDiluentMl: number
-    solvent: string
-    dissolutionMethod: string
-    resultingConcentrationMgPerMl: number
-    handlingRule: string
-  }
-  dosing: {
-    standardDoseDisplay: string
-    standardDoseMcg: number
-    cadence: string
-    halfLife: string
-    typicalProtocolDuration: string
-    washoutPeriod: string
-    titrationSteps: TitrationStep[]
-  }
-  syringeGuide: {
-    syringeType: string
-    standardIUDisplay: string
-    graduations: SyringeGraduation[]
-  }
-  storage: {
-    lyophilized: string
-    reconstituted: string
-    lightProtection: boolean
-  }
-  disclaimer: string
-}
-
-export const COMPOUND_ANALYTICAL_PROTOCOLS: CompoundAnalyticalProtocol[] = [
-  {
-    id: "bpc-157",
-    compoundName: "BPC-157",
-    handles: ["bpc-157-vial", "bpc-157", "bpc157"],
-    subtitle: "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Dosing Standard",
-    category: "Angiogenic Signaling & Tissue Remodeling",
-    purityStandard: "≥99.2% (HPLC Analytical Release Standard)",
-    reconstitution: {
-      defaultVialNetMg: 10,
-      defaultDiluentMl: 2.0,
-      solvent: "Bacteriostatic Water USP (0.9% Benzyl Alcohol preserved water)",
-      dissolutionMethod:
-        "Direct needle against the inner glass vial wall. Allow vacuum to draw diluent smoothly without rapid bubbling. Swirl gently in a horizontal circular motion; avoid vigorous shaking or vortexing to prevent peptide chain shearing.",
-      resultingConcentrationMgPerMl: 5.0, // 10mg / 2mL = 5mg/mL (5,000 mcg/mL)
-      handlingRule: "Clear, colorless aqueous solution once dissolved.",
-    },
-    dosing: {
-      standardDoseDisplay: "250 mcg – 500 mcg daily",
-      standardDoseMcg: 250,
-      cadence: "Once daily (or 250 mcg BID / twice daily in acute trauma models)",
-      halfLife: "~4–6 Hours (Aqueous Buffer / Plasma)",
-      typicalProtocolDuration: "4 to 6 Weeks per analytical trial cycle",
-      washoutPeriod: "2 to 4 Weeks between experimental evaluations",
-      titrationSteps: [
-        {
-          stage: "Initial Analytical Calibration",
-          timeframe: "Days 1–7",
-          doseDisplay: "250 mcg daily",
-          doseMcg: 250,
-          cadence: "1x Daily (Morning)",
-          focus: "Baseline tissue tolerance & receptor saturation assessment",
-          notes: "Corresponds to 5.0 IU on standard U-100 syringe (at 5 mg/mL concentration)",
-        },
-        {
-          stage: "Standard Regeneration Window",
-          timeframe: "Weeks 2–5",
-          doseDisplay: "250 mcg – 500 mcg daily",
-          doseMcg: 500,
-          cadence: "1x Daily or 250 mcg BID (Twice Daily)",
-          focus: "Peak microvascular angiogenesis & collagen fibril deposition assays",
-          notes: "Split cadence (AM/PM) maintains continuous steady-state plasma levels",
-        },
-        {
-          stage: "Washout & Matrix Remodeling",
-          timeframe: "Week 6+",
-          doseDisplay: "Observation Period",
-          doseMcg: 0,
-          cadence: "Zero dosing",
-          focus: "Evaluation of sustained extracellular matrix stabilization",
-          notes: "2–4 week cessation to observe persistent cellular healing dynamics",
-        },
-      ],
-    },
-    syringeGuide: {
-      syringeType: "Standard U-100 Insulin Syringe (100 units = 1.0 mL; 1 unit = 0.01 mL)",
-      standardIUDisplay: "5.0 IU (5 Ticks)",
-      graduations: [
-        {
-          doseDisplay: "100 mcg",
-          doseMcg: 100,
-          volumeMl: 0.02,
-          syringeIU: 2.0,
-          tickLabel: "2 units (0.02 mL)",
-        },
-        {
-          doseDisplay: "200 mcg",
-          doseMcg: 200,
-          volumeMl: 0.04,
-          syringeIU: 4.0,
-          tickLabel: "4 units (0.04 mL)",
-        },
-        {
-          doseDisplay: "250 mcg (Standard)",
-          doseMcg: 250,
-          volumeMl: 0.05,
-          syringeIU: 5.0,
-          tickLabel: "5 units (0.05 mL) — Standard Target",
-        },
-        {
-          doseDisplay: "500 mcg (Intensive)",
-          doseMcg: 500,
-          volumeMl: 0.10,
-          syringeIU: 10.0,
-          tickLabel: "10 units (0.10 mL) — Double Target",
-        },
-      ],
-    },
-    storage: {
-      lyophilized: "-20°C in dry desiccated container (shelf-life: 24 months)",
-      reconstituted: "2°C–8°C refrigerated; use within 28 days for maximum stability",
-      lightProtection: true,
-    },
-    disclaimer:
-      "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
-  },
-  {
-    id: "tirzepatide",
-    compoundName: "Tirzepatide",
-    handles: ["tirzepatide", "tirzepatide-vial", "tirzepatide-laboratory-handling"],
-    subtitle: "Dual GLP-1 / GIP Incretin Co-Agonist Laboratory Titration & Handling Standard",
-    category: "Dual Incretin Receptor Co-Agonism & Metabolic Regulation",
-    purityStandard: "≥99.3% (HPLC Verified Lot Standard)",
-    reconstitution: {
-      defaultVialNetMg: 10,
-      defaultDiluentMl: 2.0,
-      solvent: "Bacteriostatic Water USP (0.9% Benzyl Alcohol preserved water)",
-      dissolutionMethod:
-        "Inject diluent slowly down the glass barrel wall. The lyophilized cake will spontaneously wet and dissolve within 60–120 seconds. Swirl gently. Never agitate or centrifuge.",
-      resultingConcentrationMgPerMl: 5.0, // 10mg / 2mL = 5mg/mL (5,000 mcg/mL)
-      handlingRule: "Visually inspect: solution must be clear, colorless, and free of visible particulates.",
-    },
-    dosing: {
-      standardDoseDisplay: "2.5 mg weekly initial titration",
-      standardDoseMcg: 2500,
-      cadence: "Once every 7 days (Weekly interval)",
-      halfLife: "~120 Hours (~5 Days terminal half-life)",
-      typicalProtocolDuration: "8 to 16 Weeks progressive escalation protocol",
-      washoutPeriod: "4 to 6 Weeks between trial series",
-      titrationSteps: [
-        {
-          stage: "Titration Initiation (Phase 1)",
-          timeframe: "Weeks 1–4",
-          doseDisplay: "2.5 mg weekly",
-          doseMcg: 2500,
-          cadence: "1x Every 7 Days",
-          focus: "Receptor acclimatization, GIP lipid buffering, and gastrointestinal tolerance",
-          notes: "0.5 mL (50 IU) on U-100 syringe from 10 mg / 2 mL solution",
-        },
-        {
-          stage: "Primary Response Escalation (Phase 2)",
-          timeframe: "Weeks 5–8",
-          doseDisplay: "5.0 mg weekly",
-          doseMcg: 5000,
-          cadence: "1x Every 7 Days",
-          focus: "Significant adipose thermogenesis & uncoupling protein-1 (UCP-1) stimulation",
-          notes: "1.0 mL (100 IU) from 10mg/2mL, or use 20mg vial with 2mL diluent (0.5 mL = 50 IU)",
-        },
-        {
-          stage: "Advanced Metabolic Assays (Phase 3)",
-          timeframe: "Weeks 9–12",
-          doseDisplay: "7.5 mg weekly",
-          doseMcg: 7500,
-          cadence: "1x Every 7 Days",
-          focus: "Maximum incretin co-agonism and sustained insulinotropic signaling",
-          notes: "Requires higher concentration vial (15mg or 20mg) to maintain low injection volumes",
-        },
-        {
-          stage: "Peak Experimental Threshold (Phase 4)",
-          timeframe: "Weeks 13+",
-          doseDisplay: "10.0 mg – 15.0 mg weekly",
-          doseMcg: 10000,
-          cadence: "1x Every 7 Days",
-          focus: "Ceiling efficacy assays in intensive metabolic research models",
-          notes: "Maximum protocol dose ceiling; monitor fluid balance and satiety markers",
-        },
-      ],
-    },
-    syringeGuide: {
-      syringeType: "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
-      standardIUDisplay: "50.0 IU (0.50 mL)",
-      graduations: [
-        {
-          doseDisplay: "2.5 mg (Weeks 1–4)",
-          doseMcg: 2500,
-          volumeMl: 0.50,
-          syringeIU: 50.0,
-          tickLabel: "50 units (0.50 mL) — Phase 1 Starting Dose",
-        },
-        {
-          doseDisplay: "5.0 mg (Weeks 5–8)",
-          doseMcg: 5000,
-          volumeMl: 1.00,
-          syringeIU: 100.0,
-          tickLabel: "100 units (1.00 mL) — Phase 2 Escalation",
-        },
-      ],
-    },
-    storage: {
-      lyophilized: "-20°C deep freeze protected from light (24 months)",
-      reconstituted: "2°C–8°C refrigerated; use within 28 days for integrity",
-      lightProtection: true,
-    },
-    disclaimer:
-      "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
-  },
-  {
-    id: "ghk-cu",
-    compoundName: "GHK-Cu (50mg)",
-    handles: ["ghk-cu"],
-    subtitle: "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
-    category: "Extracellular Matrix Rejuvenation & Gene Regulation",
-    purityStandard: "≥99.0% (Certified Copper Tripeptide Complex)",
-    reconstitution: {
-      defaultVialNetMg: 50,
-      defaultDiluentMl: 2.5,
-      solvent: "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
-      dissolutionMethod:
-        "Add 2.5 mL Bacteriostatic Water slowly. Solution immediately turns characteristic deep royal blue. Swirl gently for 30 seconds. Do not sonicate or vortex.",
-      resultingConcentrationMgPerMl: 20.0, // 50mg / 2.5mL = 20mg/mL
-      handlingRule: "Clear royal blue solution. Precipitation indicates pH imbalance or copper dissociation.",
-    },
-    dosing: {
-      standardDoseDisplay: "1.0 mg – 2.0 mg daily",
-      standardDoseMcg: 1000,
-      cadence: "Once daily (or cyclical 30-day research blocks)",
-      halfLife: "~1 Hour in plasma; extended cellular retention in extracellular matrix",
-      typicalProtocolDuration: "30 to 60 Days continuous trial series",
-      washoutPeriod: "30 Days between cycles to allow copper clearance",
-      titrationSteps: [
-        {
-          stage: "Micro-Dose Initiation",
-          timeframe: "Days 1–7",
-          doseDisplay: "1.0 mg daily",
-          doseMcg: 1000,
-          cadence: "1x Daily",
-          focus: "Fibroblast collagen stimulation & superoxide dismutase (SOD1) induction",
-          notes: "0.05 mL (5.0 IU on U-100 syringe at 20 mg/mL concentration)",
-        },
-        {
-          stage: "Full Regenerative Block",
-          timeframe: "Days 8–30",
-          doseDisplay: "2.0 mg daily",
-          doseMcg: 2000,
-          cadence: "1x Daily",
-          focus: "Peak decorin expression and parallel Type I/III collagen bundle synthesis",
-          notes: "0.10 mL (10.0 IU on U-100 syringe)",
-        },
-        {
-          stage: "Copper Homeostasis Washout",
-          timeframe: "Days 31–60",
-          doseDisplay: "Cycle Washout",
-          doseMcg: 0,
-          cadence: "Zero dosing",
-          focus: "Cellular equilibrium and copper clearance observation",
-          notes: "30-day rest period prevents copper accumulation in hepatic assays",
-        },
-      ],
-    },
-    syringeGuide: {
-      syringeType: "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
-      standardIUDisplay: "5.0 IU (0.05 mL)",
-      graduations: [
-        {
-          doseDisplay: "1.0 mg (Standard)",
-          doseMcg: 1000,
-          volumeMl: 0.05,
-          syringeIU: 5.0,
-          tickLabel: "5 units (0.05 mL) — Standard Target",
-        },
-        {
-          doseDisplay: "2.0 mg (High Output)",
-          doseMcg: 2000,
-          volumeMl: 0.10,
-          syringeIU: 10.0,
-          tickLabel: "10 units (0.10 mL) — High Output Target",
-        },
-      ],
-    },
-    storage: {
-      lyophilized: "-20°C in dark dessicator (up to 24 months)",
-      reconstituted: "2°C–8°C; use within 28 days. Keep strictly shielded from direct light",
-      lightProtection: true,
-    },
-    disclaimer:
-      "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
-  },
-]
+/**
+ * Master catalog of analytical protocols (re-exporting unified 55+ compound registry)
+ */
+export const COMPOUND_ANALYTICAL_PROTOCOLS: CompoundAnalyticalProtocol[] = ALL_COMPOUND_PROTOCOLS
 
 /**
  * Universal Fallback Protocol for any compound that does not have an explicit entry
  */
-const DEFAULT_FALLBACK_PROTOCOL: CompoundAnalyticalProtocol = {
+export const DEFAULT_FALLBACK_PROTOCOL: CompoundAnalyticalProtocol = {
   id: "generic-peptide",
   compoundName: "Research Compound",
   handles: [],
   subtitle: "Universal Analytical Reconstitution & Laboratory Handling Standard",
-  category: "Preclinical Synthetic Peptide Standard",
+  longDescription:
+    "This reference protocol establishes universal analytical handling, aseptic reconstitution, and stoichiometric dilution procedures for lyophilized research peptides. In laboratory research, solid lyophilized peptide cakes require gentle reconstitution with bacteriostatic water or compatible aqueous solvents without mechanical vortexing to preserve secondary and tertiary structural integrity.",
+  category: "Tissue Repair & Healing",
+  catalogStatus: "reference_only",
   purityStandard: "≥99.0% (Analytical HPLC Standard)",
   reconstitution: {
     defaultVialNetMg: 10,
@@ -356,6 +57,7 @@ const DEFAULT_FALLBACK_PROTOCOL: CompoundAnalyticalProtocol = {
         doseMcg: 100,
         cadence: "Daily or Intermittent",
         focus: "Receptor binding and system equilibration",
+        notes: "2.0 units (0.02 mL) on U-100 syringe",
       },
       {
         stage: "Target Experimental Assay",
@@ -364,19 +66,43 @@ const DEFAULT_FALLBACK_PROTOCOL: CompoundAnalyticalProtocol = {
         doseMcg: 250,
         cadence: "Standard Cadence",
         focus: "Primary pharmacodynamic evaluation",
+        notes: "5.0 units (0.05 mL) on U-100 syringe",
+      },
+      {
+        stage: "Washout & Matrix Observation",
+        timeframe: "Weeks 7+",
+        doseDisplay: "Observation Window",
+        doseMcg: 0,
+        cadence: "Zero dosing",
+        focus: "Post-protocol kinetic clearance and persistent cellular response",
+        notes: "System clearance evaluation",
       },
     ],
   },
   syringeGuide: {
     syringeType: "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
-    standardIUDisplay: "5.0 IU (at 5 mg/mL)",
+    standardIUDisplay: "5.0 units (0.05 mL)",
     graduations: [
+      {
+        doseDisplay: "100 mcg",
+        doseMcg: 100,
+        volumeMl: 0.02,
+        syringeIU: 2.0,
+        tickLabel: "2.0 units (0.02 mL) on U-100 syringe",
+      },
       {
         doseDisplay: "250 mcg",
         doseMcg: 250,
         volumeMl: 0.05,
         syringeIU: 5.0,
-        tickLabel: "5 units (0.05 mL)",
+        tickLabel: "5.0 units (0.05 mL) on U-100 syringe",
+      },
+      {
+        doseDisplay: "500 mcg",
+        doseMcg: 500,
+        volumeMl: 0.1,
+        syringeIU: 10.0,
+        tickLabel: "10.0 units (0.10 mL) on U-100 syringe",
       },
     ],
   },
@@ -385,39 +111,289 @@ const DEFAULT_FALLBACK_PROTOCOL: CompoundAnalyticalProtocol = {
     reconstituted: "2°C–8°C refrigerated; use within 28 days",
     lightProtection: true,
   },
+  citations: [
+    {
+      sourceReference: "USP General Chapter <797> / <800>",
+      notes: "Standard sterile reconstitution and compounding standards for parenteral lyophilized peptides.",
+    },
+  ],
   disclaimer:
     "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
 }
 
 /**
- * Resolve compound protocol by handle, title, or substring
+ * Keyword-to-ID alias lookup table for high-precision resolution across customer inputs,
+ * product handles, chemical synonyms, and trade names.
+ */
+const COMPOUND_ALIAS_MAP: Record<string, string> = {
+  // Category 1: Tissue Repair
+  bpc: "bpc-157",
+  "bpc-157": "bpc-157",
+  bpc157: "bpc-157",
+  tb500: "tb-500",
+  "tb-500": "tb-500",
+  thymosin_beta: "tb-500",
+  "thymosin-beta": "tb-500",
+  "thymosin beta": "tb-500",
+  ghk: "ghk-cu",
+  "ghk-cu": "ghk-cu",
+  ghkcu: "ghk-cu",
+  copper_peptide: "ghk-cu",
+  "copper peptide": "ghk-cu",
+  ghk_basic: "ghk-basic",
+  "ghk-basic": "ghk-basic",
+  kpv: "kpv",
+  ara290: "ara-290",
+  "ara-290": "ara-290",
+  cibinetide: "ara-290",
+  pps: "pentosan-polysulfate",
+  pentosan: "pentosan-polysulfate",
+  elmiron: "pentosan-polysulfate",
+
+  // Category 2: Metabolic Incretins
+  sema: "semaglutide",
+  semaglutide: "semaglutide",
+  ozempic: "semaglutide",
+  wegovy: "semaglutide",
+  rybelsus: "semaglutide",
+  tirz: "tirzepatide",
+  tirzepatide: "tirzepatide",
+  mounjaro: "tirzepatide",
+  zepbound: "tirzepatide",
+  reta: "retatrutide",
+  retatrutide: "retatrutide",
+  cagri: "cagrilintide",
+  cagrilintide: "cagrilintide",
+  mazdutide: "mazdutide",
+  survodutide: "survodutide",
+  aod: "aod-9604",
+  "aod-9604": "aod-9604",
+  aod9604: "aod-9604",
+  "5-amino": "5-amino-1mq",
+  "5-amino-1mq": "5-amino-1mq",
+  amino1mq: "5-amino-1mq",
+  tesofensine: "tesofensine",
+  lira: "liraglutide",
+  liraglutide: "liraglutide",
+  victoza: "liraglutide",
+  saxenda: "liraglutide",
+
+  // Category 3: GH Axis
+  hgh: "hgh-somatropin",
+  somatropin: "hgh-somatropin",
+  "hgh-somatropin": "hgh-somatropin",
+  hgh24: "hgh-somatropin",
+  "hgh-24iu": "hgh-somatropin",
+  "hgh-15iu": "hgh-somatropin",
+  ipam: "ipamorelin",
+  ipamorelin: "ipamorelin",
+  cjc: "cjc-1295-no-dac",
+  "cjc-1295": "cjc-1295-no-dac",
+  "cjc-1295-no-dac": "cjc-1295-no-dac",
+  cjc1295: "cjc-1295-no-dac",
+  "cjc-dac": "cjc-1295-dac",
+  "cjc-1295-dac": "cjc-1295-dac",
+  tesamorelin: "tesamorelin",
+  egrifta: "tesamorelin",
+  sermorelin: "sermorelin",
+  geref: "sermorelin",
+  ghrp2: "ghrp-2",
+  "ghrp-2": "ghrp-2",
+  pralmorelin: "ghrp-2",
+  ghrp6: "ghrp-6",
+  "ghrp-6": "ghrp-6",
+  hexarelin: "hexarelin",
+  mk677: "mk-677",
+  "mk-677": "mk-677",
+  ibutamoren: "mk-677",
+
+  // Category 4: Longevity & Mitochondria
+  mots: "mots-c",
+  "mots-c": "mots-c",
+  motsc: "mots-c",
+  ss31: "ss-31",
+  "ss-31": "ss-31",
+  elamipretide: "ss-31",
+  bendavia: "ss-31",
+  epith: "epithalon",
+  epithalon: "epithalon",
+  epitalon: "epithalon",
+  foxo: "foxo4-dri",
+  "foxo4-dri": "foxo4-dri",
+  foxo4: "foxo4-dri",
+  humanin: "humanin",
+  nad: "nad-plus",
+  "nad+": "nad-plus",
+  "nad-plus": "nad-plus",
+  nadplus: "nad-plus",
+  gluta: "glutathione",
+  glutathione: "glutathione",
+
+  // Category 5: Cognitive & Neuro
+  semax: "semax",
+  "na-semax": "na-semax-amidate",
+  "na-semax-amidate": "na-semax-amidate",
+  selank: "selank",
+  "na-selank": "na-selank-amidate",
+  "na-selank-amidate": "na-selank-amidate",
+  cere: "cerebrolysin",
+  cerebrolysin: "cerebrolysin",
+  p21: "p21",
+  noopept: "noopept",
+  dihexa: "dihexa",
+  dsip: "dsip",
+
+  // Category 6: Immune & Sexual
+  hmg: "hmg-75iu",
+  menotropins: "hmg-75iu",
+  menopur: "hmg-75iu",
+  "hmg-75iu": "hmg-75iu",
+  hmg75: "hmg-75iu",
+  ll37: "ll-37",
+  "ll-37": "ll-37",
+  ta1: "thymosin-alpha-1",
+  "thymosin-alpha-1": "thymosin-alpha-1",
+  "thymosin alpha": "thymosin-alpha-1",
+  zadaxin: "thymosin-alpha-1",
+  mt1: "melanotan-1",
+  "melanotan-1": "melanotan-1",
+  afamelanotide: "melanotan-1",
+  scenesse: "melanotan-1",
+  mt2: "melanotan-2",
+  "melanotan-2": "melanotan-2",
+  melanotan: "melanotan-2",
+  pt141: "pt-141",
+  "pt-141": "pt-141",
+  bremelanotide: "pt-141",
+  vyleesi: "pt-141",
+  kiss: "kisspeptin-10",
+  kisspeptin: "kisspeptin-10",
+  "kisspeptin-10": "kisspeptin-10",
+  oxytocin: "oxytocin",
+  pitocin: "oxytocin",
+
+  // Category 7: Blends
+  glow: "glow-blend",
+  "glow-blend": "glow-blend",
+  glow70: "glow-blend",
+  klow: "klow-blend",
+  "klow-blend": "klow-blend",
+  klow80: "klow-blend",
+  wolverine: "wolverine-blend",
+  "wolverine-blend": "wolverine-blend",
+  "tri-heal": "tri-heal-blend",
+  "tri-heal-matrix": "tri-heal-blend",
+  triheal: "tri-heal-blend",
+  "cjc-ipam": "cjc-ipam-blend",
+  "cjc-1295-ipamorelin": "cjc-ipam-blend",
+  "cjc-1295-ipamorelin-blend": "cjc-ipam-blend",
+  "cjc-ipam-blend": "cjc-ipam-blend",
+  "neuro-sync": "neuro-sync-blend",
+  "neuro-sync-stack": "neuro-sync-blend",
+  "selank-semax-combo": "neuro-sync-blend",
+}
+
+/**
+ * Normalizes product handles by stripping common packaging and dosage suffixes
+ * (-vial, -5mg, -10mg, etc.) for resilient fallback matching.
+ */
+export function normalizeProductHandle(handle: string): string {
+  if (!handle) return ""
+  let normalized = handle.toLowerCase().trim()
+  let prev = ""
+  while (prev !== normalized) {
+    prev = normalized
+    normalized = normalized
+      .replace(/-(?:vial|organizer|box|set|kit|combo|pack|anti-aging-serum|somatropin)$/i, "")
+      .replace(/-(?:500mcg|100mcg|250mcg|\d+(?:\.\d+)?(?:mg|iu|ml|cc))$/i, "")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+  }
+  return normalized
+}
+
+/**
+ * Resolve compound protocol by handle, title, or substring across all 55+ compounds and blends.
  */
 export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnalyticalProtocol {
   if (!handleOrTitle) return DEFAULT_FALLBACK_PROTOCOL
 
   const query = handleOrTitle.toLowerCase().trim()
 
-  const match = COMPOUND_ANALYTICAL_PROTOCOLS.find(
+  // 1. Direct ID match
+  const exactIdMatch = ALL_COMPOUND_PROTOCOLS.find(
+    (p) => p.id.toLowerCase() === query
+  )
+  if (exactIdMatch) return exactIdMatch
+
+  // 2. Direct Handle match
+  const exactHandleMatch = ALL_COMPOUND_PROTOCOLS.find((p) =>
+    p.handles.some((h) => h.toLowerCase() === query)
+  )
+  if (exactHandleMatch) return exactHandleMatch
+
+  // 3. Substring in handles
+  const handleSubstringMatch = ALL_COMPOUND_PROTOCOLS.find((p) =>
+    p.handles.some((h) => query.includes(h.toLowerCase()) || h.toLowerCase().includes(query))
+  )
+  if (handleSubstringMatch) return handleSubstringMatch
+
+  // 4. Exact compoundName match (ignoring parenthetical packaging like "(10mg Vial)")
+  const cleanQuery = query.replace(/\(.*?\)/g, "").trim()
+  const exactNameMatch = ALL_COMPOUND_PROTOCOLS.find((p) => {
+    const cleanName = p.compoundName.toLowerCase().replace(/\(.*?\)/g, "").trim()
+    return cleanName === cleanQuery || p.compoundName.toLowerCase() === query
+  })
+  if (exactNameMatch) return exactNameMatch
+
+  // 5. Alias map lookup
+  for (const [alias, protocolId] of Object.entries(COMPOUND_ALIAS_MAP)) {
+    if (query === alias || query.includes(alias) || alias.includes(query)) {
+      const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === protocolId)
+      if (match) return match
+    }
+  }
+
+  // 6. Substring in compoundName
+  const nameSubstringMatch = ALL_COMPOUND_PROTOCOLS.find(
     (p) =>
-      p.id === query ||
-      p.handles.some((h) => query.includes(h.toLowerCase()) || h.toLowerCase().includes(query)) ||
       p.compoundName.toLowerCase().includes(query) ||
       query.includes(p.compoundName.toLowerCase())
   )
+  if (nameSubstringMatch) return nameSubstringMatch
 
-  if (match) return match
+  // 7. Safeguard 3: Normalized fallback stripping packaging & dosage suffixes
+  const normalizedQuery = normalizeProductHandle(query)
+  if (normalizedQuery && normalizedQuery !== query) {
+    const normIdMatch = ALL_COMPOUND_PROTOCOLS.find(
+      (p) => p.id.toLowerCase() === normalizedQuery
+    )
+    if (normIdMatch) return normIdMatch
 
-  // Fallback keyword checks
-  if (query.includes("bpc") || query.includes("157")) {
-    return COMPOUND_ANALYTICAL_PROTOCOLS.find((p) => p.id === "bpc-157")!
-  }
-  if (query.includes("tirz") || query.includes("mounj") || query.includes("zep")) {
-    return COMPOUND_ANALYTICAL_PROTOCOLS.find((p) => p.id === "tirzepatide")!
-  }
-  if (query.includes("ghk") || query.includes("copper")) {
-    return COMPOUND_ANALYTICAL_PROTOCOLS.find((p) => p.id === "ghk-cu")!
+    const normHandleMatch = ALL_COMPOUND_PROTOCOLS.find((p) =>
+      p.handles.some((h) => h.toLowerCase() === normalizedQuery)
+    )
+    if (normHandleMatch) return normHandleMatch
+
+    for (const [alias, protocolId] of Object.entries(COMPOUND_ALIAS_MAP)) {
+      if (
+        normalizedQuery === alias ||
+        normalizedQuery.includes(alias) ||
+        alias.includes(normalizedQuery)
+      ) {
+        const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === protocolId)
+        if (match) return match
+      }
+    }
+
+    const normNameMatch = ALL_COMPOUND_PROTOCOLS.find((p) => {
+      const cleanName = p.compoundName.toLowerCase().replace(/\(.*?\)/g, "").trim()
+      return cleanName === normalizedQuery
+    })
+    if (normNameMatch) return normNameMatch
   }
 
+  // 8. Fallback generic protocol with user-provided compoundName
   return {
     ...DEFAULT_FALLBACK_PROTOCOL,
     compoundName: handleOrTitle,

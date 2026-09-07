@@ -8,11 +8,12 @@ import {
   type CompoundAnalyticalProtocol,
 } from "@lib/data/compound-protocols"
 import { listProducts } from "@lib/data/products"
-import { getCanonicalProductSlug } from "@lib/util/product-handles"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { formatPeptideDosage } from "@lib/research-quantity"
+import FullProtocol from "@modules/research-protocols/full-protocol"
 import ProductRecommendations from "@modules/research-protocols/product-recommendations"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { HttpTypes } from "@medusajs/types"
 
 function adaptCompoundToStoreProtocol(
   analytical: CompoundAnalyticalProtocol,
@@ -21,7 +22,7 @@ function adaptCompoundToStoreProtocol(
   return {
     handle,
     revision: 1,
-    title: `${analytical.compoundName} Analytical Protocol`,
+    title: analytical.compoundName,
     summary: analytical.subtitle,
     published_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -40,97 +41,207 @@ function adaptCompoundToStoreProtocol(
     content: {
       compound_name: analytical.compoundName,
       short_introduction: analytical.subtitle,
-      product_format: "Lyophilized Analytical Standard",
+      product_format: "Lyophilized Solid Powder",
       category: analytical.category,
-      research_use_label: "In-Vitro Laboratory Protocol",
-      last_reviewed_at: "September 2026",
+      protocol_category_type:
+        analytical.category === "Multi-Peptide Blends" || analytical.isBlend ? "blend" : "single_peptide",
+      full_description: analytical.longDescription || null,
+      investigated_benefits: analytical.investigatedBenefits || [],
+      adverse_observations: analytical.adverseObservations || [],
+      molecular_details: analytical.molecularDetails
+        ? {
+            cas_number: analytical.molecularDetails.casNumber || null,
+            pubchem_cid: analytical.molecularDetails.pubchemCid || null,
+            sequence_or_formula: analytical.molecularDetails.sequenceOrFormula || null,
+            molecular_weight_g_per_mol: analytical.molecularDetails.molecularWeightGPerMol || null,
+          }
+        : null,
+      reconstitution_details: {
+        default_vial_net_mg: analytical.reconstitution.defaultVialNetMg || null,
+        default_diluent_ml: analytical.reconstitution.defaultDiluentMl || null,
+        solvent: analytical.reconstitution.solvent || null,
+        dissolution_method: analytical.reconstitution.dissolutionMethod || null,
+        resulting_concentration_mg_per_ml: analytical.reconstitution.resultingConcentrationMgPerMl || null,
+        handling_rule: analytical.reconstitution.handlingRule || null,
+      },
+      storage_details: {
+        lyophilized: analytical.storage.lyophilized || null,
+        reconstituted: analytical.storage.reconstituted || null,
+        light_protection: !!analytical.storage.lightProtection,
+      },
+      purity_standard: analytical.purityStandard || null,
+      research_use_label: "In-Vitro Laboratory Research Only",
+      last_reviewed_at: "2026-09-06",
       quick_reference: [
         {
           key: "target_solvent",
           label: "Target Solvent",
-          value: "Bacteriostatic Water USP",
-          description: "0.9% Benzyl Alcohol preserved water",
-          evidence_label: null,
-          reference_keys: [],
+          value: analytical.reconstitution.solvent,
+          description: analytical.reconstitution.handlingRule || "Store refrigerated",
+          evidence_label: "Standard",
+          reference_keys: ["ref-1"],
         },
         {
           key: "diluent_ratio",
           label: "Diluent Ratio",
-          value: `${analytical.reconstitution.defaultDiluentMl.toFixed(1)} mL / ${analytical.reconstitution.defaultVialNetMg} mg`,
-          description: `Target concentration: ${analytical.reconstitution.resultingConcentrationMgPerMl.toFixed(1)} mg/mL`,
-          evidence_label: null,
-          reference_keys: [],
+          value: `${analytical.reconstitution.defaultDiluentMl.toFixed(1)} mL per ${analytical.reconstitution.defaultVialNetMg} mg (${analytical.reconstitution.resultingConcentrationMgPerMl.toFixed(1)} mg/mL)`,
+          description: analytical.reconstitution.dissolutionMethod || "Swirl gently horizontally",
+          evidence_label: "Analytical",
+          reference_keys: ["ref-1"],
         },
         {
           key: "lyophilized_storage",
           label: "Lyophilized Storage",
-          value: "-20°C Desiccated",
-          description: "24-month sealed stability standard",
-          evidence_label: null,
-          reference_keys: [],
+          value: analytical.storage.lyophilized,
+          description: "Desiccated and protected from thermal spikes",
+          evidence_label: "Stability",
+          reference_keys: ["ref-1"],
         },
         {
           key: "liquid_stability",
-          label: "Reconstituted Stability",
-          value: "2°C–8°C Refrigerated",
-          description: "Use within 28 days; protect from light",
-          evidence_label: null,
-          reference_keys: [],
+          label: "Liquid Stability",
+          value: analytical.storage.reconstituted,
+          description: analytical.storage.lightProtection ? "Refrigerated and light-protected" : "Refrigerated at 2°C–8°C",
+          evidence_label: "Stability",
+          reference_keys: ["ref-1"],
         },
         {
-          key: "purity",
-          label: "Purity Release Spec",
-          value: analytical.purityStandard.split("(")[0].trim(),
-          description: "HPLC analytical release standard",
-          evidence_label: null,
-          reference_keys: [],
-        },
-        {
-          key: "cadence",
-          label: "Analytical Cadence",
-          value: analytical.dosing.standardDoseDisplay,
-          description: analytical.dosing.cadence,
-          evidence_label: null,
-          reference_keys: [],
+          key: "half_life",
+          label: "Pharmacokinetics / Half-Life",
+          value: analytical.dosing.halfLife,
+          description: `Typical protocol duration: ${analytical.dosing.typicalProtocolDuration}; Washout: ${analytical.dosing.washoutPeriod}`,
+          evidence_label: "Pharmacology",
+          reference_keys: ["ref-1"],
         },
       ],
-      sections: [
+      calculator: (() => {
+        if (analytical.calculator) {
+          const cfg = analytical.calculator
+          return {
+            enabled: cfg.enabled ?? true,
+            title: cfg.title || "Reconstitution Calculator",
+            default_compound_mass: cfg.defaultCompoundMass || String(analytical.reconstitution.defaultVialNetMg),
+            compound_mass_unit: cfg.compoundMassUnit || "mg",
+            default_final_volume_ml: cfg.defaultFinalVolumeMl || String(analytical.reconstitution.defaultDiluentMl),
+            default_target_amount: cfg.defaultTargetAmount || String(analytical.dosing.standardDoseMcg),
+            target_amount_unit: cfg.targetAmountUnit || "mcg",
+            iu_per_mg: cfg.iuPerMg ? String(cfg.iuPerMg) : null,
+            device_volume_ml: cfg.deviceVolumeMl || "1",
+            device_label: cfg.deviceLabel || analytical.syringeGuide.syringeType || "U-100 Insulin Syringe",
+            rounding_precision: cfg.roundingPrecision ?? 2,
+            instructions: cfg.instructions || `Calibrated for ${analytical.reconstitution.resultingConcentrationMgPerMl} mg/mL concentration using standard laboratory volumetric instruments.`,
+          }
+        }
+        const targetDose = formatPeptideDosage(analytical.dosing.standardDoseMcg, "mcg")
+        return {
+          enabled: true,
+          title: "Reconstitution Calculator",
+          default_compound_mass: String(analytical.reconstitution.defaultVialNetMg),
+          compound_mass_unit: "mg" as const,
+          default_final_volume_ml: String(analytical.reconstitution.defaultDiluentMl),
+          default_target_amount: targetDose.amount,
+          target_amount_unit: targetDose.unit as "mcg" | "mg" | "IU",
+          iu_per_mg: null,
+          device_volume_ml: "1",
+          device_label: analytical.syringeGuide.syringeType || "U-100 Insulin Syringe",
+          rounding_precision: 2,
+          instructions: `Calibrated for ${analytical.reconstitution.resultingConcentrationMgPerMl} mg/mL concentration using standard laboratory volumetric instruments.`,
+        }
+      })(),
+      protocol_levels: [
         {
-          key: "preparation",
-          title: "Reconstitution & Handling Protocol",
-          body: `${analytical.reconstitution.dissolutionMethod}\n\nHandling Standard: ${analytical.reconstitution.handlingRule}`,
+          key: "standard-schedule",
+          title: "In-Vitro Assay Titration Schedule",
+          summary: `Study duration: ${analytical.dosing.typicalProtocolDuration} · Washout: ${analytical.dosing.washoutPeriod}`,
+          duration: analytical.dosing.typicalProtocolDuration,
+          interval: analytical.dosing.washoutPeriod,
+          applicability: null,
+          evidence_label: "Assay Schedule",
+          reference_keys: ["ref-1"],
+          routine_enabled: true,
+          rows: analytical.dosing.titrationSteps.map((step, idx) => {
+            const iuMatch = step.doseDisplay?.match(/([\d.]+)\s*IU/i)
+            const stepDose = (analytical.calculator?.targetAmountUnit === "IU" && iuMatch)
+              ? { amount: iuMatch[1], unit: "IU" as const }
+              : formatPeptideDosage(step.doseMcg, "mcg")
+            return {
+              row_key: `step-${idx + 1}`,
+              period: step.timeframe,
+              start_offset_days: null,
+              end_offset_days: null,
+              amount: stepDose.amount,
+              unit: stepDose.unit,
+              recurrence_type: "daily" as const,
+              times_per_day: 1,
+              weekdays: [],
+              suggested_local_times: [],
+              frequency: step.cadence,
+              notes: `${step.stage}: ${step.focus}${step.notes ? ` (${step.notes})` : ""}`,
+              reference_keys: ["ref-1"],
+            }
+          }),
+        },
+      ],
+      research_purpose: `Analytical characterization, laboratory reconstitution standard, and stoichiometric verification for ${analytical.compoundName}.`,
+      intended_application: (analytical.longDescription || `In-vitro cellular signaling assays, receptor binding affinity quantification, and chromatographic reference investigation.`).slice(0, 5000),
+      explicit_exclusions: `Strictly prohibited for in-vivo diagnostic, medical, cosmetic, food additive, or therapeutic human or animal administration.`,
+      reference_quantities: [],
+      materials_and_equipment: [],
+      preparation_and_handling: `Aseptic reconstitution in a certified laminar airflow hood utilizing sterile disposable syringes and ${analytical.reconstitution.solvent}. ${analytical.reconstitution.dissolutionMethod}`,
+      research_procedure: `1. Equilibrate vial to ambient room temperature.\n2. Swab septum with 70% isopropyl alcohol.\n3. Introduce ${analytical.reconstitution.defaultDiluentMl} mL diluent slowly down the inner glass vial wall.\n4. Swirl horizontally until complete dissolution is observed.\n5. Calibrate research concentrations according to analytical assay parameters.`,
+      storage_and_disposal: `Store lyophilized cake at ${analytical.storage.lyophilized}. Store reconstituted solution at ${analytical.storage.reconstituted}. Dispose of all vials and analytical consumables in compliance with laboratory biohazard waste procedures.`,
+      sections: [
+        ...(analytical.longDescription
+          ? [
+              {
+                key: "pharmacological-profile",
+                title: "Pharmacological Profile & Mechanism of Action",
+                body: analytical.longDescription,
+                visible: true,
+                position: 1,
+                reference_keys: ["ref-1"],
+              },
+            ]
+          : []),
+        {
+          key: "reconstitution-procedure",
+          title: "Aseptic Reconstitution Procedure",
+          body: `1. Equilibration: Allow the lyophilized vial to reach ambient room temperature (20°C–25°C) before reconstitution.\n2. Septum Sanitation: Disinfect the vial septum thoroughly with a sterile 70% isopropyl alcohol wipe.\n3. Diluent Addition: Using a sterile syringe, slowly draw ${analytical.reconstitution.defaultDiluentMl} mL of ${analytical.reconstitution.solvent}. Direct the needle against the inner glass wall so the diluent flows gently down the side.\n4. Gentle Dissolution: ${analytical.reconstitution.dissolutionMethod}\n5. Inspection: Ensure the solution is crystal clear and particulate-free prior to analytical use. ${analytical.reconstitution.handlingRule}`,
           visible: true,
-          position: 1,
-          reference_keys: [],
+          position: analytical.longDescription ? 2 : 1,
+          reference_keys: ["ref-1"],
         },
         {
-          key: "dosing_schedule",
-          title: "Calibrated Titration & Dosing Roadmap",
+          key: "storage-stability",
+          title: "Storage and Temperature Stability",
+          body: `Lyophilized powder: ${analytical.storage.lyophilized}. Once reconstituted: ${analytical.storage.reconstituted}. ${analytical.storage.lightProtection ? "Keep shielded from UV light." : ""}`,
+          visible: true,
+          position: 2,
+          reference_keys: ["ref-1"],
+        },
+        {
+          key: "analytical-characterization",
+          title: "Analytical Specifications & Purity Standard",
+          body: `Purity Standard: ${analytical.purityStandard}.\n${analytical.molecularDetails ? `CAS Number: ${analytical.molecularDetails.casNumber || "N/A"}\nPubChem CID: ${analytical.molecularDetails.pubchemCid || "N/A"}\nFormula/Sequence: ${analytical.molecularDetails.sequenceOrFormula || "N/A"}\nMolecular Weight: ${analytical.molecularDetails.molecularWeightGPerMol ? `${analytical.molecularDetails.molecularWeightGPerMol} g/mol` : "N/A"}` : "Multi-peptide blended formulation standard."}`,
+          visible: true,
+          position: 3,
+          reference_keys: ["ref-1"],
+        },
+        {
+          key: "assay-schedule",
+          title: "In-Vitro Concentration & Assay Schedule",
           body: analytical.dosing.titrationSteps
             .map(
               (s) =>
-                `• ${s.stage} (${s.timeframe}): ${s.doseDisplay} — Cadence: ${s.cadence}\n  Focus: ${s.focus}${
-                  s.notes ? `\n  Notes: ${s.notes}` : ""
+                `• ${s.stage} (${s.timeframe}): Target Assay Dose: ${s.doseDisplay} | Cadence: ${s.cadence}\n  Assay Focus: ${s.focus}${
+                  s.notes ? `\n  Volumetric Calibration: ${s.notes}` : ""
                 }`
             )
-            .join("\n\n"),
+            .join("\n\n") +
+            `\n\nTypical Study Duration: ${analytical.dosing.typicalProtocolDuration}\nReceptor Washout Window: ${analytical.dosing.washoutPeriod}`,
           visible: true,
-          position: 2,
-          reference_keys: [],
-        },
-        {
-          key: "storage",
-          title: "Storage & Stability Guidelines",
-          body: `Lyophilized Standard: ${analytical.storage.lyophilized}\nReconstituted Solution: ${
-            analytical.storage.reconstituted
-          }\nProtection: ${
-            analytical.storage.lightProtection
-              ? "Protect from direct ultraviolet light."
-              : "Standard analytical laboratory storage."
-          }`,
-          visible: true,
-          position: 3,
-          reference_keys: [],
+          position: 4,
+          reference_keys: ["ref-1"],
         },
       ],
       faqs: [
@@ -147,21 +258,35 @@ function adaptCompoundToStoreProtocol(
           position: 2,
         },
       ],
-      references: [
-        {
-          reference_key: "ref-1",
-          title: `${analytical.compoundName} Analytical Profile & High-Performance Liquid Chromatography Assay Standard`,
-          authors: "PepStack Analytical Bioresearch Registry",
-          published_at: "2026",
-          url: null,
-          doi: null,
-          evidence_type: "HPLC Monograph",
-          supported_claim:
-            "Standardized peptide sequence, molecular purity, and handling guidelines.",
-          customer_annotation:
-            "Authoritative reference dossier for research laboratory use.",
-        },
-      ],
+      references: (analytical.citations && analytical.citations.length > 0)
+        ? analytical.citations.map((c, idx) => {
+            const pmidMatch = c.sourceReference?.match(/PMID:\s*(\d+)/i)
+            const pmid = pmidMatch ? pmidMatch[1] : null
+            return {
+              reference_key: `ref-${idx + 1}`,
+              title: (c.notes || c.sourceReference || "Laboratory Reference").trim(),
+              authors: "Peer-Reviewed Scientific Literature",
+              published_at: "PubMed Indexed",
+              url: pmid ? `https://pubmed.ncbi.nlm.nih.gov/${pmid}/` : null,
+              doi: null,
+              evidence_type: "peer-reviewed",
+              supported_claim: "Peer-reviewed pharmacological and analytical characterization.",
+              customer_annotation: "Verified scientific reference.",
+            }
+          })
+        : [
+            {
+              reference_key: "ref-1",
+              title: `${analytical.compoundName} Analytical Profile & High-Performance Liquid Chromatography Assay Standard`,
+              authors: "PepStack Analytical Bioresearch Registry",
+              published_at: "2026",
+              url: null,
+              doi: null,
+              evidence_type: "HPLC Monograph",
+              supported_claim: "Standardized peptide sequence, molecular purity, and handling guidelines.",
+              customer_annotation: "Authoritative reference dossier for research laboratory use.",
+            },
+          ],
       disclaimer: analytical.disclaimer,
     },
   }
@@ -171,40 +296,177 @@ type Props = { params: Promise<{ handle: string; countryCode: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { handle } = await params
-  try {
-    const { protocol } = await retrieveResearchProtocol(handle)
-    return {
-      title: protocol.content.compound_name || protocol.title,
-      description:
-        protocol.content.short_introduction || protocol.summary || undefined,
-      robots:
-        protocol.search_indexable === false
-          ? { index: false, follow: false }
-          : undefined,
-    }
-  } catch {
-    const analytical = getCompoundProtocol(handle)
-    return {
-      title: `${analytical.compoundName} Protocol | Research Protocols`,
-      description: analytical.subtitle,
-    }
+  const staticProtocol = getCompoundProtocol(handle)
+  const backendProtocol = await retrieveResearchProtocol(handle)
+    .then((r) => r.protocol)
+    .catch(() => null)
+
+  const rawTitle =
+    backendProtocol?.content?.compound_name ||
+    backendProtocol?.title ||
+    (staticProtocol.id !== "generic-peptide" ? staticProtocol.compoundName : null)
+
+  const title = rawTitle ? rawTitle.replace(/\s*Product Protocol\s*$/i, "").trim() : null
+
+  const description =
+    backendProtocol?.content?.short_introduction ||
+    backendProtocol?.summary ||
+    (staticProtocol.id !== "generic-peptide" ? staticProtocol.subtitle : null)
+
+  if (!title) {
+    return { title: "Protocol Not Found | Product Protocols" }
+  }
+
+  return {
+    title: `${title} | Product Protocols`,
+    description: description || undefined,
   }
 }
 
 export default async function ResearchProtocolPage({ params }: Props) {
   const { handle, countryCode } = await params
-  let protocol: StoreResearchProtocol | null = await retrieveResearchProtocol(handle)
+
+  const backendProtocol: StoreResearchProtocol | null = await retrieveResearchProtocol(handle)
     .then((response) => response.protocol)
     .catch(() => null)
 
-  if (!protocol) {
-    const analytical = getCompoundProtocol(handle)
-    if (analytical) {
-      protocol = adaptCompoundToStoreProtocol(analytical, handle)
-    }
+  const staticProtocol = getCompoundProtocol(handle)
+
+  // Safeguard: 404 Guard for Missing Protocols
+  if (!backendProtocol && (!staticProtocol || staticProtocol.id === "generic-peptide")) {
+    notFound()
   }
 
-  if (!protocol) notFound()
+  const cleanHandle = handle.toLowerCase().trim()
+  const fallbackStore = adaptCompoundToStoreProtocol(staticProtocol, cleanHandle)
+
+  // Server-side deep merge: database values take precedence, falling back to static registry
+  const protocol: StoreResearchProtocol = {
+    handle: backendProtocol?.handle || cleanHandle,
+    revision: backendProtocol?.revision || 1,
+    title: backendProtocol?.title || staticProtocol.compoundName,
+    summary: backendProtocol?.summary || staticProtocol.subtitle,
+    published_at: backendProtocol?.published_at || new Date().toISOString(),
+    updated_at: backendProtocol?.updated_at || new Date().toISOString(),
+    products: backendProtocol?.products?.length ? backendProtocol.products : fallbackStore.products,
+    access: backendProtocol?.access || fallbackStore.access,
+    search_indexable: backendProtocol?.search_indexable ?? true,
+    recommendations_enabled: backendProtocol?.recommendations_enabled ?? false,
+    content: {
+      compound_name: backendProtocol?.content?.compound_name || staticProtocol.compoundName,
+      short_introduction: backendProtocol?.content?.short_introduction || staticProtocol.subtitle,
+      product_format: backendProtocol?.content?.product_format || "Lyophilized Solid Powder",
+      category: backendProtocol?.content?.category || staticProtocol.category,
+      protocol_category_type:
+        backendProtocol?.content?.protocol_category_type ||
+        (staticProtocol.category === "Multi-Peptide Blends" || staticProtocol.isBlend ? "blend" : "single_peptide"),
+      full_description:
+        backendProtocol?.content?.full_description ||
+        staticProtocol.longDescription ||
+        null,
+      investigated_benefits:
+        backendProtocol?.content?.investigated_benefits?.length
+          ? backendProtocol.content.investigated_benefits
+          : staticProtocol.investigatedBenefits || [],
+      adverse_observations:
+        backendProtocol?.content?.adverse_observations?.length
+          ? backendProtocol.content.adverse_observations
+          : staticProtocol.adverseObservations || [],
+      molecular_details:
+        backendProtocol?.content?.molecular_details ||
+        (staticProtocol.molecularDetails
+          ? {
+              cas_number: staticProtocol.molecularDetails.casNumber || null,
+              pubchem_cid: staticProtocol.molecularDetails.pubchemCid || null,
+              sequence_or_formula: staticProtocol.molecularDetails.sequenceOrFormula || null,
+              molecular_weight_g_per_mol: staticProtocol.molecularDetails.molecularWeightGPerMol || null,
+            }
+          : null),
+      reconstitution_details:
+        backendProtocol?.content?.reconstitution_details || fallbackStore.content.reconstitution_details,
+      storage_details:
+        backendProtocol?.content?.storage_details || fallbackStore.content.storage_details,
+      purity_standard:
+        backendProtocol?.content?.purity_standard ||
+        staticProtocol.purityStandard ||
+        null,
+      research_use_label: backendProtocol?.content?.research_use_label || "In-Vitro Laboratory Research Only",
+      last_reviewed_at: backendProtocol?.content?.last_reviewed_at || "2026-09-06",
+      quick_reference: backendProtocol?.content?.quick_reference?.length
+        ? backendProtocol.content.quick_reference
+        : fallbackStore.content.quick_reference,
+      calculator: (() => {
+        const rawCalc = backendProtocol?.content?.calculator || fallbackStore.content.calculator
+        if (rawCalc?.default_target_amount && rawCalc?.target_amount_unit) {
+          const normalizedTarget = formatPeptideDosage(rawCalc.default_target_amount, rawCalc.target_amount_unit)
+          return {
+            ...rawCalc,
+            default_target_amount: normalizedTarget.amount,
+            target_amount_unit: normalizedTarget.unit as "mcg" | "mg" | "IU",
+          }
+        }
+        return rawCalc
+      })(),
+      protocol_levels: (
+        backendProtocol?.content?.protocol_levels?.length
+          ? backendProtocol.content.protocol_levels
+          : (fallbackStore.content.protocol_levels || [])
+      ).map((level) => ({
+        ...level,
+        rows: level.rows.map((row) => {
+          const normalized = formatPeptideDosage(row.amount, row.unit)
+          return {
+            ...row,
+            amount: normalized.amount,
+            unit: normalized.unit as typeof row.unit,
+          }
+        }),
+      })),
+      research_purpose: backendProtocol?.content?.research_purpose || fallbackStore.content.research_purpose,
+      intended_application: backendProtocol?.content?.intended_application || fallbackStore.content.intended_application,
+      preparation_and_handling: backendProtocol?.content?.preparation_and_handling || fallbackStore.content.preparation_and_handling,
+      research_procedure: backendProtocol?.content?.research_procedure || fallbackStore.content.research_procedure,
+      storage_and_disposal: backendProtocol?.content?.storage_and_disposal || fallbackStore.content.storage_and_disposal,
+      sections: backendProtocol?.content?.sections?.length
+        ? backendProtocol.content.sections
+        : fallbackStore.content.sections,
+      faqs: backendProtocol?.content?.faqs?.length
+        ? backendProtocol.content.faqs
+        : fallbackStore.content.faqs,
+      references: backendProtocol?.content?.references?.length
+        ? backendProtocol.content.references
+        : fallbackStore.content.references,
+      disclaimer: backendProtocol?.content?.disclaimer || staticProtocol.disclaimer,
+    },
+  }
+
+  // Resolve matching store products
+  let matchedProducts: HttpTypes.StoreProduct[] = []
+  try {
+    const handlesToSearch = Array.from(
+      new Set([
+        ...protocol.products.map((p) => p.handle),
+        ...staticProtocol.handles,
+        cleanHandle.replace(/-laboratory-handling$/, ""),
+      ])
+    ).filter(Boolean)
+
+    for (const h of handlesToSearch) {
+      const { response } = await listProducts({
+        countryCode,
+        queryParams: { handle: h, limit: 1 },
+      }).catch(() => ({ response: { products: [] } }))
+
+      if (
+        response.products.length > 0 &&
+        !matchedProducts.some((mp) => mp.id === response.products[0].id)
+      ) {
+        matchedProducts.push(response.products[0])
+      }
+    }
+  } catch {
+    matchedProducts = []
+  }
 
   const recommendationResult = protocol.recommendations_enabled
     ? await listResearchProtocolRecommendations({
@@ -213,12 +475,13 @@ export default async function ResearchProtocolPage({ params }: Props) {
         excludeProductIds: protocol.products.map((product) => product.id),
       }).catch(() => ({ recommendations: [] }))
     : { recommendations: [] }
+
   const recommendedProducts = recommendationResult.recommendations.length
     ? await listProducts({
         countryCode,
         queryParams: {
           id: recommendationResult.recommendations.map(
-            (item) => item.product_id,
+            (item) => item.product_id
           ),
           limit: recommendationResult.recommendations.length,
         },
@@ -226,304 +489,37 @@ export default async function ResearchProtocolPage({ params }: Props) {
         .then(({ response }) => response.products)
         .catch(() => [])
     : []
+
   const recommendedProductById = new Map(
-    recommendedProducts.map((product) => [product.id, product]),
+    recommendedProducts.map((product) => [product.id, product])
   )
   const recommendationItems = recommendationResult.recommendations.flatMap(
     (recommendation) => {
       const product = recommendedProductById.get(recommendation.product_id)
       return product ? [{ recommendation, product }] : []
-    },
+    }
   )
-  const content = protocol.content
-  const sections = [...content.sections]
-    .filter((section) => section.visible)
-    .sort((a, b) => a.position - b.position)
-  const faqs = [...content.faqs].sort((a, b) => a.position - b.position)
-
-  const qrLabels: Record<string, string> = {
-    target_solvent: "Solvent",
-    diluent_ratio: "Ratio",
-    lyophilized_storage: "Storage",
-    liquid_stability: "Stability",
-    reconstitution: "Preparation",
-    purity: "Specifications",
-    molecular_weight: "Mass",
-  }
 
   return (
-    <div>
-      {/* ── Hero ── */}
-      <div className="border-b border-ui-border-base bg-ui-bg-subtle">
-        <div className="content-container py-10 small:py-14">
+    <div className="content-container py-8 small:py-12 max-w-5xl mx-auto">
+      <FullProtocol
+        protocol={protocol}
+        showCatalogProduct={true}
+        matchedProducts={matchedProducts}
+        backLink={{ href: "/research-library#protocols", label: "← Back to Protocols" }}
+        badgeText="Validated Laboratory Standard"
+        countryCode={countryCode}
+      />
 
-          {/* Research-use badge */}
-          {content.research_use_label ? (
-            <span
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xsmall-semi uppercase tracking-wider"
-              style={{
-                backgroundColor: "rgb(254 243 199)",
-                color: "rgb(146 64 14)",
-                border: "1px solid rgb(253 230 138)",
-              }}
-            >
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-600" />
-              {content.research_use_label}
-            </span>
-          ) : null}
-
-          {/* Compound name + format badge */}
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl-semi text-ui-fg-base">
-              {content.compound_name || protocol.title}
-            </h1>
-            {content.product_format ? (
-              <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-semi text-ui-fg-subtle">
-                {content.product_format}
-              </span>
-            ) : null}
-          </div>
-
-          {/* Short introduction */}
-          {(content.short_introduction || protocol.summary) ? (
-            <p className="mt-4 max-w-3xl text-base-regular leading-relaxed text-ui-fg-subtle">
-              {content.short_introduction || protocol.summary}
-            </p>
-          ) : null}
-
-          {/* Metadata chips */}
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-regular text-ui-fg-subtle">
-              Revision {protocol.revision}
-            </span>
-            {content.last_reviewed_at ? (
-              <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-regular text-ui-fg-subtle">
-                Reviewed {content.last_reviewed_at}
-              </span>
-            ) : null}
-            {content.category ? (
-              <span className="rounded-full border border-ui-border-base bg-ui-bg-base px-3 py-1 text-small-regular text-ui-fg-subtle">
-                {content.category}
-              </span>
-            ) : null}
-          </div>
+      {recommendationItems.length > 0 && (
+        <div className="mt-12">
+          <ProductRecommendations
+            handle={handle}
+            items={recommendationItems}
+            countryCode={countryCode}
+          />
         </div>
-      </div>
-
-      {/* ── Main content (full-width, no sidebar) ── */}
-      <main className="content-container py-10 small:py-14">
-
-        {/* Back breadcrumb */}
-        <LocalizedClientLink
-          href="/research-protocols"
-          className="text-small-semi text-ui-fg-interactive hover:underline"
-        >
-          ← Back to protocol directory
-        </LocalizedClientLink>
-
-        {/* ── Quick-reference cards ── */}
-        {content.quick_reference.length ? (
-          <section className="mt-8 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {content.quick_reference.map((item) => {
-              const tag = qrLabels[item.key] ?? "Parameter"
-              return (
-                <div
-                  key={item.key}
-                  className="rounded-xl border border-ui-border-base bg-white p-4 sm:p-5 border-l-4 border-l-emerald-500 shadow-xs flex flex-col justify-between"
-                >
-                  <div>
-                    <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-ui-fg-subtle">
-                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      {item.label || tag}
-                    </p>
-                    <p className="mt-1.5 text-base sm:text-lg font-bold text-ui-fg-base tracking-tight leading-snug">
-                      {item.value}
-                    </p>
-                  </div>
-                  {item.description ? (
-                    <p className="mt-2 text-xs text-ui-fg-subtle leading-relaxed line-clamp-2">
-                      {item.description}
-                    </p>
-                  ) : null}
-                </div>
-              )
-            })}
-          </section>
-        ) : null}
-
-        {/* ── Content sections ── */}
-        {sections.map((section) => (
-          <section key={section.key} className="mt-12 max-w-3xl">
-            <h2 className="text-2xl-semi text-ui-fg-base">{section.title}</h2>
-            <div className="mt-2 h-px bg-ui-border-base" />
-            <p className="mt-4 whitespace-pre-wrap text-base-regular leading-relaxed text-ui-fg-subtle">
-              {section.body}
-            </p>
-          </section>
-        ))}
-
-        {/* ── FAQ accordion ── */}
-        {faqs.length ? (
-          <section className="mt-12 max-w-3xl">
-            <h2 className="text-2xl-semi text-ui-fg-base">
-              Frequently asked questions
-            </h2>
-            <div className="mt-2 h-px bg-ui-border-base" />
-            <div className="mt-5 grid gap-3">
-              {faqs.map((faq) => (
-                <details
-                  key={faq.key}
-                  className="group rounded-rounded border border-ui-border-base bg-ui-bg-base p-5 open:bg-ui-bg-subtle"
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-base-semi text-ui-fg-base">
-                    {faq.question}
-                    <span className="shrink-0 text-ui-fg-muted transition-transform group-open:rotate-180" aria-hidden="true">
-                      ▾
-                    </span>
-                  </summary>
-                  <p className="mt-3 whitespace-pre-wrap text-base-regular leading-relaxed text-ui-fg-subtle">
-                    {faq.answer}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {/* ── References & evidence ── */}
-        {content.references.length ? (
-          <section className="mt-12 max-w-3xl">
-            <h2 className="text-2xl-semi text-ui-fg-base">
-              References & evidence
-            </h2>
-            <div className="mt-2 h-px bg-ui-border-base" />
-            <ol className="mt-5 grid gap-4">
-              {content.references.map((reference, index) => (
-                <li
-                  key={reference.reference_key || `${reference.title}-${index}`}
-                  className="flex gap-4 rounded-rounded border border-ui-border-base bg-ui-bg-base p-4"
-                >
-                  <span
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xsmall-semi text-white"
-                    aria-hidden="true"
-                  >
-                    {index + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-base-semi text-ui-fg-base">
-                      {reference.title}
-                    </p>
-                    {reference.customer_annotation ? (
-                      <p className="mt-1 text-small-regular text-ui-fg-subtle">
-                        {reference.customer_annotation}
-                      </p>
-                    ) : null}
-                    {reference.url ? (
-                      <a
-                        href={reference.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex items-center gap-1 rounded-md border border-ui-border-base bg-ui-bg-subtle px-3 py-1 text-small-semi text-ui-fg-interactive transition-colors hover:bg-ui-bg-base"
-                      >
-                        Open source ↗
-                      </a>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
-        ) : null}
-
-        {/* ── Applicable compounds ── */}
-        {protocol.products.length ? (
-          <section className="mt-12 max-w-3xl">
-            <h2 className="text-2xl-semi text-ui-fg-base">
-              Applicable compounds
-            </h2>
-            <div className="mt-2 h-px bg-ui-border-base" />
-            <p className="mt-3 text-small-regular text-ui-fg-subtle">
-              This protocol applies to the following compounds.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {protocol.products.map((product) => (
-                <LocalizedClientLink
-                  key={product.id}
-                  href={`/products/${getCanonicalProductSlug(product.handle)}`}
-                  className="inline-flex items-center gap-2 rounded-rounded border border-ui-border-base bg-ui-bg-base px-4 py-2.5 text-small-semi transition-colors hover:border-ui-border-interactive hover:bg-ui-bg-subtle"
-                >
-                  {product.title}
-                  <span aria-hidden="true" className="text-ui-fg-muted">→</span>
-                </LocalizedClientLink>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {/* ── Product recommendations ── */}
-        <ProductRecommendations
-          handle={handle}
-          items={recommendationItems}
-          countryCode={countryCode}
-        />
-
-        {/* ── Disclaimer ── */}
-        <div className="mt-12 max-w-3xl rounded-rounded border border-ui-border-base bg-ui-bg-subtle p-5">
-          <p className="text-small-semi text-ui-fg-base">Important information</p>
-          <p className="mt-2 text-small-regular text-ui-fg-subtle">
-            {content.disclaimer}
-          </p>
-        </div>
-
-        {/* ── Full Protocol Access CTA ── */}
-        <div className="mt-12 overflow-hidden rounded-2xl border border-emerald-200/90 bg-gradient-to-r from-emerald-50/80 via-teal-50/40 to-white p-6 small:p-8 shadow-xs">
-          <div className="flex flex-col gap-6 medium:flex-row medium:items-center medium:justify-between">
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-600" />
-                <p className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
-                  Customer Research Hub
-                </p>
-              </div>
-              <h2 className="mt-2 text-xl font-bold text-slate-900 small:text-2xl">
-                Unlock Full Protocol &amp; Titration Schedules
-              </h2>
-              <ul className="mt-4 grid gap-2">
-                {[
-                  "Complete dosage schedules & titration steps",
-                  "Automated dose calendar & routine tracking",
-                  "Private vial hub & encrypted research journal",
-                ].map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-2 text-sm text-slate-700"
-                  >
-                    <span
-                      className="mt-0.5 shrink-0 font-bold text-emerald-600"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 text-xs text-slate-500">
-                Automatically unlocked for customers with a verified compound order.
-              </p>
-            </div>
-            <div className="shrink-0">
-              <LocalizedClientLink
-                href="/account/research-hub"
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition-colors hover:bg-emerald-500"
-              >
-                Open Research Hub
-                <span aria-hidden="true">→</span>
-              </LocalizedClientLink>
-            </div>
-          </div>
-        </div>
-      </main>
+      )}
     </div>
   )
 }

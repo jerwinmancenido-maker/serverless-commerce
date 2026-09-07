@@ -315,6 +315,7 @@ export default function CoaDirectoryPanel() {
                       className="w-full max-w-3xl shadow-xl rounded-lg overflow-hidden bg-white"
                     >
                       {/* Embedded Vector / Image / PDF Document */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={selectedDoc.fileUrl}
                         alt={`${selectedDoc.compoundName} Certificate of Analysis`}

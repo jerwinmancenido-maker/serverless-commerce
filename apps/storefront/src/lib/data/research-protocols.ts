@@ -26,7 +26,14 @@ export type StoreResearchProtocol = {
   recommendations_enabled?: boolean
 }
 
-export const listResearchProtocols = async () => sdk.client.fetch<{ protocols: StoreResearchProtocol[]; count: number }>("/store/research-protocols", { method: "GET", cache: "no-store" })
+export const listResearchProtocols = async (params?: { limit?: number; offset?: number }) => {
+  const limit = params?.limit ?? 100
+  const offset = params?.offset ?? 0
+  return sdk.client.fetch<{ protocols: StoreResearchProtocol[]; count: number }>(
+    `/store/research-protocols?limit=${limit}&offset=${offset}`,
+    { method: "GET", cache: "no-store" }
+  )
+}
 
 export const retrieveResearchProtocol = async (handle: string) => sdk.client.fetch<{ protocol: StoreResearchProtocol }>(`/store/research-protocols/${encodeURIComponent(handle)}`, { method: "GET", cache: "no-store" })
 

@@ -133,11 +133,41 @@ const ResearchCalculatorConfiguration = z.strictObject({
   instructions: z.string().trim().max(2_000).nullable().default(null),
 })
 
+const ResearchMolecularDetails = z.strictObject({
+  cas_number: z.string().trim().max(120).nullable().default(null),
+  pubchem_cid: z.number().int().positive().nullable().default(null),
+  sequence_or_formula: z.string().trim().max(2_000).nullable().default(null),
+  molecular_weight_g_per_mol: z.number().positive().nullable().default(null),
+})
+
+const ResearchReconstitutionDetails = z.strictObject({
+  default_vial_net_mg: z.number().positive().nullable().default(null),
+  default_diluent_ml: z.number().positive().nullable().default(null),
+  solvent: z.string().trim().max(255).nullable().default(null),
+  dissolution_method: z.string().trim().max(2_000).nullable().default(null),
+  resulting_concentration_mg_per_ml: z.number().positive().nullable().default(null),
+  handling_rule: z.string().trim().max(2_000).nullable().default(null),
+})
+
+const ResearchStorageDetails = z.strictObject({
+  lyophilized: z.string().trim().max(500).nullable().default(null),
+  reconstituted: z.string().trim().max(500).nullable().default(null),
+  light_protection: z.boolean().default(true),
+})
+
 export const ResearchProtocolContent = z.strictObject({
   compound_name: z.string().trim().max(255).nullable().default(null),
   short_introduction: z.string().trim().max(2_000).nullable().default(null),
   product_format: z.string().trim().max(120).nullable().default(null),
   category: z.string().trim().max(255).nullable().default(null),
+  protocol_category_type: z.enum(["single_peptide", "blend"]).nullable().default(null),
+  full_description: z.string().trim().max(10_000).nullable().default(null),
+  investigated_benefits: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
+  adverse_observations: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
+  molecular_details: ResearchMolecularDetails.nullable().default(null),
+  reconstitution_details: ResearchReconstitutionDetails.nullable().default(null),
+  storage_details: ResearchStorageDetails.nullable().default(null),
+  purity_standard: z.string().trim().max(255).nullable().default(null),
   research_use_label: z.string().trim().min(1).max(120).default("Research use only"),
   last_reviewed_at: z.iso.date().nullable().default(null),
   quick_reference: z.array(ResearchQuickReference).max(24).default([]),

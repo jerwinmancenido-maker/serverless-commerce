@@ -178,7 +178,7 @@ export default async function ResearchArticlePage({ params }: Props) {
                   href={`/research-protocols/${article.referenced_compound.protocol_handle}`}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-transparent hover:bg-slate-800/80 text-slate-300 border border-slate-700/80 text-xs font-semibold transition-colors text-center"
                 >
-                  <span>Preparation Protocol &rarr;</span>
+                  <span>Product Protocol &rarr;</span>
                 </LocalizedClientLink>
               )}
             </div>

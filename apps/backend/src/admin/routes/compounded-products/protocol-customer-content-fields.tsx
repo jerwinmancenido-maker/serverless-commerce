@@ -31,12 +31,322 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="flex flex-col gap-y-2"><Label>Compound name</Label><Input value={content.compound_name || ""} disabled={disabled} onChange={(event) => update({ compound_name: event.target.value || null })} /></div>
+        <div className="flex flex-col gap-y-2">
+          <Label>Classification</Label>
+          <Select
+            value={content.protocol_category_type || "single_peptide"}
+            disabled={disabled}
+            onValueChange={(val) => update({ protocol_category_type: val as "single_peptide" | "blend" })}
+          >
+            <Select.Trigger>
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value="single_peptide">Single Peptide</Select.Item>
+              <Select.Item value="blend">Multi-Peptide Blend</Select.Item>
+            </Select.Content>
+          </Select>
+        </div>
         <div className="flex flex-col gap-y-2"><Label>Product format</Label><Input value={content.product_format || ""} disabled={disabled} placeholder="Nasal, Injectable, Oral, or Topical" onChange={(event) => update({ product_format: event.target.value || null })} /></div>
         <div className="flex flex-col gap-y-2"><Label>Research category</Label><Input value={content.category || ""} disabled={disabled} onChange={(event) => update({ category: event.target.value || null })} /></div>
+        <div className="flex flex-col gap-y-2"><Label>Purity standard</Label><Input value={content.purity_standard || ""} disabled={disabled} placeholder="≥99.0% (HPLC Certified Lot Standard)" onChange={(event) => update({ purity_standard: event.target.value })} /></div>
         <div className="flex flex-col gap-y-2"><Label>Last reviewed</Label><Input type="date" value={content.last_reviewed_at || ""} disabled={disabled} onChange={(event) => update({ last_reviewed_at: event.target.value || null })} /></div>
         <div className="flex flex-col gap-y-2"><Label>Page label</Label><Input value={content.research_use_label} disabled={disabled} onChange={(event) => update({ research_use_label: event.target.value })} /></div>
       </div>
       <div className="flex flex-col gap-y-2"><Label>Customer introduction</Label><Textarea value={content.short_introduction || ""} disabled={disabled} onChange={(event) => update({ short_introduction: event.target.value || null })} /></div>
+
+      <div className="flex flex-col gap-y-2">
+        <Label>Full Monograph & Mechanism of Action</Label>
+        <Textarea
+          rows={5}
+          value={content.full_description || ""}
+          disabled={disabled}
+          placeholder="Comprehensive pharmacological profile, biological mechanism of action, receptor binding, and cellular pathway..."
+          onChange={(event) => update({ full_description: event.target.value || null })}
+        />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="flex flex-col gap-y-2">
+          <Label>Researched Benefits (One item per line)</Label>
+          <Textarea
+            rows={4}
+            value={(content.investigated_benefits || []).join("\n")}
+            disabled={disabled}
+            placeholder="Enter validated analytical and preclinical benefits, one per line..."
+            onChange={(event) => update({
+              investigated_benefits: event.target.value.split("\n").map((s) => s.trim()).filter(Boolean)
+            })}
+          />
+        </div>
+        <div className="flex flex-col gap-y-2">
+          <Label>Adverse Observations & Precautions (One item per line)</Label>
+          <Textarea
+            rows={4}
+            value={(content.adverse_observations || []).join("\n")}
+            disabled={disabled}
+            placeholder="Enter analytical handling cautions and laboratory observations, one per line..."
+            onChange={(event) => update({
+              adverse_observations: event.target.value.split("\n").map((s) => s.trim()).filter(Boolean)
+            })}
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+        <div>
+          <Text size="small" weight="plus">Molecular Identity</Text>
+          <Text size="small" className="text-ui-fg-subtle">Chemical CAS registry, PubChem CID, peptide sequence/formula, and molecular weight.</Text>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="flex flex-col gap-y-2">
+            <Label>CAS Number</Label>
+            <Input
+              value={content.molecular_details?.cas_number || ""}
+              disabled={disabled}
+              placeholder="e.g. 137525-51-0"
+              onChange={(e) => update({
+                molecular_details: {
+                  cas_number: e.target.value || null,
+                  pubchem_cid: content.molecular_details?.pubchem_cid ?? null,
+                  sequence_or_formula: content.molecular_details?.sequence_or_formula ?? null,
+                  molecular_weight_g_per_mol: content.molecular_details?.molecular_weight_g_per_mol ?? null,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>PubChem CID</Label>
+            <Input
+              type="number"
+              value={content.molecular_details?.pubchem_cid ?? ""}
+              disabled={disabled}
+              placeholder="e.g. 9941957"
+              onChange={(e) => update({
+                molecular_details: {
+                  cas_number: content.molecular_details?.cas_number ?? null,
+                  pubchem_cid: e.target.value === "" ? null : Number(e.target.value),
+                  sequence_or_formula: content.molecular_details?.sequence_or_formula ?? null,
+                  molecular_weight_g_per_mol: content.molecular_details?.molecular_weight_g_per_mol ?? null,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Peptide Sequence / Chemical Formula</Label>
+            <Input
+              value={content.molecular_details?.sequence_or_formula || ""}
+              disabled={disabled}
+              placeholder="e.g. Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val"
+              onChange={(e) => update({
+                molecular_details: {
+                  cas_number: content.molecular_details?.cas_number ?? null,
+                  pubchem_cid: content.molecular_details?.pubchem_cid ?? null,
+                  sequence_or_formula: e.target.value || null,
+                  molecular_weight_g_per_mol: content.molecular_details?.molecular_weight_g_per_mol ?? null,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Molecular Weight (g/mol)</Label>
+            <Input
+              type="number"
+              step="0.01"
+              value={content.molecular_details?.molecular_weight_g_per_mol ?? ""}
+              disabled={disabled}
+              placeholder="e.g. 1419.5"
+              onChange={(e) => update({
+                molecular_details: {
+                  cas_number: content.molecular_details?.cas_number ?? null,
+                  pubchem_cid: content.molecular_details?.pubchem_cid ?? null,
+                  sequence_or_formula: content.molecular_details?.sequence_or_formula ?? null,
+                  molecular_weight_g_per_mol: e.target.value === "" ? null : Number(e.target.value),
+                }
+              })}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+        <div>
+          <Text size="small" weight="plus">Reconstitution & Laboratory Stoichiometry</Text>
+          <Text size="small" className="text-ui-fg-subtle">Vial net mass, reconstitution diluent volume, resulting concentration, solvent, and dissolution technique.</Text>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="flex flex-col gap-y-2">
+            <Label>Default Vial Net Mass (mg)</Label>
+            <Input
+              type="number"
+              value={content.reconstitution_details?.default_vial_net_mg ?? ""}
+              disabled={disabled}
+              onChange={(e) => update({
+                reconstitution_details: {
+                  default_vial_net_mg: e.target.value === "" ? null : Number(e.target.value),
+                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
+                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
+                  solvent: content.reconstitution_details?.solvent ?? null,
+                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
+                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Default Diluent Volume (mL)</Label>
+            <Input
+              type="number"
+              step="0.1"
+              value={content.reconstitution_details?.default_diluent_ml ?? ""}
+              disabled={disabled}
+              onChange={(e) => update({
+                reconstitution_details: {
+                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
+                  default_diluent_ml: e.target.value === "" ? null : Number(e.target.value),
+                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
+                  solvent: content.reconstitution_details?.solvent ?? null,
+                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
+                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Resulting Concentration (mg/mL)</Label>
+            <Input
+              type="number"
+              step="0.01"
+              value={content.reconstitution_details?.resulting_concentration_mg_per_ml ?? ""}
+              disabled={disabled}
+              onChange={(e) => update({
+                reconstitution_details: {
+                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
+                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
+                  resulting_concentration_mg_per_ml: e.target.value === "" ? null : Number(e.target.value),
+                  solvent: content.reconstitution_details?.solvent ?? null,
+                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
+                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
+                }
+              })}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-2">
+          <Label>Reconstitution Solvent</Label>
+          <Input
+            value={content.reconstitution_details?.solvent || ""}
+            disabled={disabled}
+            placeholder="e.g. Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+            onChange={(e) => update({
+              reconstitution_details: {
+                default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
+                default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
+                resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
+                solvent: e.target.value || null,
+                dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
+                handling_rule: content.reconstitution_details?.handling_rule ?? null,
+              }
+            })}
+          />
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="flex flex-col gap-y-2">
+            <Label>Dissolution Technique</Label>
+            <Textarea
+              value={content.reconstitution_details?.dissolution_method || ""}
+              disabled={disabled}
+              placeholder="e.g. Swirl gently horizontally in circular motion. Do not agitate or vortex."
+              onChange={(e) => update({
+                reconstitution_details: {
+                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
+                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
+                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
+                  solvent: content.reconstitution_details?.solvent ?? null,
+                  dissolution_method: e.target.value || null,
+                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Handling Rule & Solution Clarity</Label>
+            <Textarea
+              value={content.reconstitution_details?.handling_rule || ""}
+              disabled={disabled}
+              placeholder="e.g. Clear, colorless solution. Inspect visually for particulates prior to assay."
+              onChange={(e) => update({
+                reconstitution_details: {
+                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
+                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
+                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
+                  solvent: content.reconstitution_details?.solvent ?? null,
+                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
+                  handling_rule: e.target.value || null,
+                }
+              })}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
+        <div>
+          <Text size="small" weight="plus">Storage & Temperature Stability</Text>
+          <Text size="small" className="text-ui-fg-subtle">Lyophilized solid and reconstituted liquid thermal stability constraints.</Text>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="flex flex-col gap-y-2">
+            <Label>Lyophilized Powder Storage</Label>
+            <Input
+              value={content.storage_details?.lyophilized || ""}
+              disabled={disabled}
+              placeholder="e.g. -20°C (desiccated, stable 24 months)"
+              onChange={(e) => update({
+                storage_details: {
+                  lyophilized: e.target.value || null,
+                  reconstituted: content.storage_details?.reconstituted ?? null,
+                  light_protection: content.storage_details?.light_protection ?? true,
+                }
+              })}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <Label>Reconstituted Liquid Stability</Label>
+            <Input
+              value={content.storage_details?.reconstituted || ""}
+              disabled={disabled}
+              placeholder="e.g. 2°C–8°C refrigerated (stable 30 days)"
+              onChange={(e) => update({
+                storage_details: {
+                  lyophilized: content.storage_details?.lyophilized ?? null,
+                  reconstituted: e.target.value || null,
+                  light_protection: content.storage_details?.light_protection ?? true,
+                }
+              })}
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-2 pt-1">
+          <input
+            type="checkbox"
+            id="light_protection_checkbox"
+            checked={content.storage_details?.light_protection ?? true}
+            disabled={disabled}
+            onChange={(e) => update({
+              storage_details: {
+                lyophilized: content.storage_details?.lyophilized ?? null,
+                reconstituted: content.storage_details?.reconstituted ?? null,
+                light_protection: e.target.checked,
+              }
+            })}
+            className="h-4 w-4 rounded border-ui-border-base text-ui-fg-interactive focus:ring-ui-bg-interactive"
+          />
+          <Label htmlFor="light_protection_checkbox" className="cursor-pointer">
+            Light Protection Required (Shield from direct sunlight and UV exposure)
+          </Label>
+        </div>
+      </div>
 
       <div id="quick-reference" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
         <div className="flex items-start justify-between gap-x-4">

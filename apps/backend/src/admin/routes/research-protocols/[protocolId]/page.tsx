@@ -50,13 +50,93 @@ const PublishedProtocolDocument = ({
           </Text>
         ) : null}
         <div className="flex flex-wrap gap-2">
+          {content.protocol_category_type === "blend" ? (
+            <Badge color="purple">🧬 Multi-Peptide Blend</Badge>
+          ) : (
+            <Badge color="blue">🧪 Single Peptide</Badge>
+          )}
           {content.product_format ? <Badge>{content.product_format}</Badge> : null}
           {content.category ? <Badge>{content.category}</Badge> : null}
+          {content.purity_standard ? (
+            <Badge color="green">Release Purity: {content.purity_standard}</Badge>
+          ) : null}
           {content.last_reviewed_at ? (
             <Badge>Reviewed {content.last_reviewed_at}</Badge>
           ) : null}
         </div>
       </div>
+
+      {content.full_description ? (
+        <div className="rounded-lg border border-ui-border-base p-4 bg-ui-bg-subtle/40">
+          <Heading level="h3" className="text-sm font-bold text-ui-fg-base mb-1">
+            Pharmacological Monograph & Mechanism of Action
+          </Heading>
+          <Text size="small" className="whitespace-pre-wrap text-ui-fg-subtle leading-relaxed">
+            {content.full_description}
+          </Text>
+        </div>
+      ) : null}
+
+      {(content.investigated_benefits?.length || content.adverse_observations?.length) ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          {content.investigated_benefits?.length ? (
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50/40 p-4">
+              <Heading level="h3" className="text-sm font-bold text-emerald-950 mb-2">
+                Investigated Research Actions
+              </Heading>
+              <ul className="list-disc pl-4 space-y-1 text-xs text-emerald-900">
+                {content.investigated_benefits.map((b, i) => (
+                  <li key={i}>{b}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {content.adverse_observations?.length ? (
+            <div className="rounded-lg border border-amber-200 bg-amber-50/40 p-4">
+              <Heading level="h3" className="text-sm font-bold text-amber-950 mb-2">
+                Adverse Observations & Handling Precautions
+              </Heading>
+              <ul className="list-disc pl-4 space-y-1 text-xs text-amber-900">
+                {content.adverse_observations.map((o, i) => (
+                  <li key={i}>{o}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
+      {content.molecular_details ? (
+        <div className="rounded-lg border border-ui-border-base p-4">
+          <Heading level="h3" className="text-sm font-bold text-ui-fg-base mb-2">
+            Molecular Identity & Structure
+          </Heading>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 font-mono text-xs">
+            <div><span className="text-ui-fg-subtle block text-[10px]">CAS Number</span><span className="font-semibold">{content.molecular_details.cas_number || "—"}</span></div>
+            <div><span className="text-ui-fg-subtle block text-[10px]">PubChem CID</span><span className="font-semibold">{content.molecular_details.pubchem_cid || "—"}</span></div>
+            <div><span className="text-ui-fg-subtle block text-[10px]">Formula / Sequence</span><span className="font-semibold truncate block max-w-full">{content.molecular_details.sequence_or_formula || "—"}</span></div>
+            <div><span className="text-ui-fg-subtle block text-[10px]">Molecular Weight</span><span className="font-semibold">{content.molecular_details.molecular_weight_g_per_mol ? `${content.molecular_details.molecular_weight_g_per_mol} g/mol` : "—"}</span></div>
+          </div>
+        </div>
+      ) : null}
+
+      {content.reconstitution_details ? (
+        <div className="rounded-lg border border-ui-border-base p-4">
+          <Heading level="h3" className="text-sm font-bold text-ui-fg-base mb-2">
+            Laboratory Reconstitution Parameters
+          </Heading>
+          <div className="grid gap-3 sm:grid-cols-3 font-mono text-xs mb-3">
+            <div><span className="text-ui-fg-subtle block text-[10px]">Vial Net Mass</span><span className="font-semibold">{content.reconstitution_details.default_vial_net_mg} mg</span></div>
+            <div><span className="text-ui-fg-subtle block text-[10px]">Diluent Volume</span><span className="font-semibold">{content.reconstitution_details.default_diluent_ml} mL</span></div>
+            <div><span className="text-ui-fg-subtle block text-[10px]">Target Concentration</span><span className="font-semibold">{content.reconstitution_details.resulting_concentration_mg_per_ml} mg/mL</span></div>
+          </div>
+          <div className="text-xs space-y-1 text-ui-fg-subtle">
+            <div><strong className="text-ui-fg-base font-medium">Solvent:</strong> {content.reconstitution_details.solvent}</div>
+            <div><strong className="text-ui-fg-base font-medium">Dissolution Method:</strong> {content.reconstitution_details.dissolution_method}</div>
+            <div><strong className="text-ui-fg-base font-medium">Handling Rule:</strong> {content.reconstitution_details.handling_rule}</div>
+          </div>
+        </div>
+      ) : null}
 
       {content.protocol_levels.length ? (
         <section className="flex flex-col gap-y-3">

@@ -81,8 +81,6 @@ function CompoundDropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
-  const accentColor = side === "a" ? "emerald" : "indigo"
-
   return (
     <div className="relative w-full" ref={dropdownRef}>
       {/* Trigger Button */}
@@ -190,7 +188,7 @@ function CompoundDropdown({
   )
 }
 
-export default function PeptideComparisonsDirectory({ comparisons }: Props) {
+export default function PeptideComparisonsDirectory({ comparisons: _comparisons }: Props) {
   const [compoundAId, setCompoundAId] = useState<string>("bpc-157")
   const [compoundBId, setCompoundBId] = useState<string>("tb-500")
 
@@ -294,10 +292,10 @@ export default function PeptideComparisonsDirectory({ comparisons }: Props) {
               <div className="grid grid-cols-2 gap-2.5 pt-2">
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
                   <span className="text-[10px] font-bold uppercase text-slate-600 block">
-                    Purity Release
+                    Molecular Mass
                   </span>
                   <span className="text-xs font-bold text-slate-900 font-mono">
-                    {activeComparison.compoundA.purity}
+                    {activeComparison.compoundA.molecular_mass}
                   </span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
@@ -374,10 +372,10 @@ export default function PeptideComparisonsDirectory({ comparisons }: Props) {
               <div className="grid grid-cols-2 gap-2.5 pt-2">
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
                   <span className="text-[10px] font-bold uppercase text-slate-600 block">
-                    Purity Release
+                    Molecular Mass
                   </span>
                   <span className="text-xs font-bold text-slate-900 font-mono">
-                    {activeComparison.compoundB.purity}
+                    {activeComparison.compoundB.molecular_mass}
                   </span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">

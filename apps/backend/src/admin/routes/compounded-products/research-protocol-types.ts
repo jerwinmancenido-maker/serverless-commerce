@@ -95,11 +95,41 @@ export type ResearchProtocolFaq = {
   position: number
 }
 
+export type ResearchProtocolMolecularDetails = {
+  cas_number: string | null
+  pubchem_cid: number | null
+  sequence_or_formula: string | null
+  molecular_weight_g_per_mol: number | null
+}
+
+export type ResearchProtocolReconstitutionDetails = {
+  default_vial_net_mg: number | null
+  default_diluent_ml: number | null
+  solvent: string | null
+  dissolution_method: string | null
+  resulting_concentration_mg_per_ml: number | null
+  handling_rule: string | null
+}
+
+export type ResearchProtocolStorageDetails = {
+  lyophilized: string | null
+  reconstituted: string | null
+  light_protection: boolean
+}
+
 export type ResearchProtocolContent = {
   compound_name: string | null
   short_introduction: string | null
   product_format: string | null
   category: string | null
+  protocol_category_type: "single_peptide" | "blend" | null
+  full_description: string | null
+  investigated_benefits: string[]
+  adverse_observations: string[]
+  molecular_details: ResearchProtocolMolecularDetails | null
+  reconstitution_details: ResearchProtocolReconstitutionDetails | null
+  storage_details: ResearchProtocolStorageDetails | null
+  purity_standard: string | null
   research_use_label: string
   last_reviewed_at: string | null
   quick_reference: ResearchProtocolQuickReference[]

@@ -10,10 +10,11 @@ export type CompoundPreset = {
   id: string
   name: string
   mass: number
-  massUnit: "mg" | "mcg" | "g"
+  massUnit: "mg" | "mcg" | "g" | "IU"
   volumeMl: number
   targetAmount: number
-  targetUnit: "mcg" | "mg"
+  targetUnit: "mcg" | "mg" | "IU"
+  iuPerMg?: number
   protocolHandle?: string
 }
 
@@ -55,6 +56,92 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     targetAmount: 0.25,
     targetUnit: "mg",
   },
+  {
+    id: "hgh",
+    name: "HGH (24 IU)",
+    mass: 24,
+    massUnit: "IU",
+    volumeMl: 2.0,
+    targetAmount: 2.0,
+    targetUnit: "IU",
+    iuPerMg: 3,
+    protocolHandle: "hgh-somatropin-laboratory-handling",
+  },
+  {
+    id: "hmg",
+    name: "HMG (75 IU)",
+    mass: 75,
+    massUnit: "IU",
+    volumeMl: 1.0,
+    targetAmount: 37.5,
+    targetUnit: "IU",
+    iuPerMg: 75,
+    protocolHandle: "hmg-75iu-laboratory-handling",
+  },
+  {
+    id: "tb-500",
+    name: "TB-500 (10 mg)",
+    mass: 10,
+    massUnit: "mg",
+    volumeMl: 2.0,
+    targetAmount: 2.0,
+    targetUnit: "mg",
+    protocolHandle: "tb-500-laboratory-handling",
+  },
+  {
+    id: "cjc-ipamorelin",
+    name: "CJC-1295 + Ipamorelin (10 mg)",
+    mass: 10,
+    massUnit: "mg",
+    volumeMl: 2.0,
+    targetAmount: 500,
+    targetUnit: "mcg",
+  },
+  {
+    id: "nad-plus",
+    name: "NAD+ (500 mg)",
+    mass: 500,
+    massUnit: "mg",
+    volumeMl: 5.0,
+    targetAmount: 50,
+    targetUnit: "mg",
+  },
+  {
+    id: "epithalon",
+    name: "Epithalon (10 mg)",
+    mass: 10,
+    massUnit: "mg",
+    volumeMl: 2.0,
+    targetAmount: 500,
+    targetUnit: "mcg",
+  },
+  {
+    id: "adamax",
+    name: "Adamax (10 mg · Nasal)",
+    mass: 10,
+    massUnit: "mg",
+    volumeMl: 5.0,
+    targetAmount: 200,
+    targetUnit: "mcg",
+  },
+  {
+    id: "semax",
+    name: "Semax (30 mg · Nasal)",
+    mass: 30,
+    massUnit: "mg",
+    volumeMl: 5.0,
+    targetAmount: 600,
+    targetUnit: "mcg",
+  },
+  {
+    id: "selank",
+    name: "Selank (5 mg · Nasal)",
+    mass: 5,
+    massUnit: "mg",
+    volumeMl: 5.0,
+    targetAmount: 100,
+    targetUnit: "mcg",
+  },
 ]
 
 export default function StandaloneReconstitutionCalculator({
@@ -69,10 +156,11 @@ export default function StandaloneReconstitutionCalculator({
   )
   const [compoundName, setCompoundName] = useState("BPC-157")
   const [compoundMass, setCompoundMass] = useState("10")
-  const [compoundMassUnit, setCompoundMassUnit] = useState<"mg" | "mcg" | "g">("mg")
+  const [compoundMassUnit, setCompoundMassUnit] = useState<"mg" | "mcg" | "g" | "IU">("mg")
   const [diluentVolume, setDiluentVolume] = useState("2.0")
   const [targetDose, setTargetDose] = useState("250")
-  const [targetDoseUnit, setTargetDoseUnit] = useState<"mcg" | "mg">("mcg")
+  const [targetDoseUnit, setTargetDoseUnit] = useState<"mcg" | "mg" | "IU">("mcg")
+  const [iuPerMg, setIuPerMg] = useState<number | null>(null)
   const [activeProtocolHandle, setActiveProtocolHandle] = useState<string | undefined>("bpc-157-protocol")
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null)
   const [shareFeedback, setShareFeedback] = useState<string | null>(null)
@@ -99,12 +187,12 @@ export default function StandaloneReconstitutionCalculator({
       setActivePreset("custom")
       if (pName) setCompoundName(pName)
       if (pMass) setCompoundMass(pMass)
-      if (pUnit && (pUnit === "mg" || pUnit === "mcg" || pUnit === "g")) {
+      if (pUnit && (pUnit === "mg" || pUnit === "mcg" || pUnit === "g" || pUnit === "IU")) {
         setCompoundMassUnit(pUnit)
       }
       if (pVolume) setDiluentVolume(pVolume)
       if (pDose) setTargetDose(pDose)
-      if (pDoseUnit && (pDoseUnit === "mcg" || pDoseUnit === "mg")) {
+      if (pDoseUnit && (pDoseUnit === "mcg" || pDoseUnit === "mg" || pDoseUnit === "IU")) {
         setTargetDoseUnit(pDoseUnit)
       }
     }
@@ -118,6 +206,7 @@ export default function StandaloneReconstitutionCalculator({
     setDiluentVolume(String(preset.volumeMl))
     setTargetDose(String(preset.targetAmount))
     setTargetDoseUnit(preset.targetUnit)
+    setIuPerMg(preset.iuPerMg ?? null)
     setActiveProtocolHandle(preset.protocolHandle)
   }
 
@@ -130,6 +219,8 @@ export default function StandaloneReconstitutionCalculator({
   const numVolume = Number(diluentVolume) || 0
   const numTarget = Number(targetDose) || 0
 
+  const resolvedIuPerMg = iuPerMg ?? (activePreset === "hgh" ? 3 : activePreset === "hmg" ? 75 : null)
+
   const result = useMemo(() => {
     return calculateProtocol({
       compoundMass: numMass,
@@ -137,20 +228,23 @@ export default function StandaloneReconstitutionCalculator({
       finalVolumeMl: numVolume,
       targetAmount: numTarget,
       targetAmountUnit: targetDoseUnit,
+      iuPerMg: resolvedIuPerMg,
     })
-  }, [numMass, compoundMassUnit, numVolume, numTarget, targetDoseUnit])
+  }, [numMass, compoundMassUnit, numVolume, numTarget, targetDoseUnit, resolvedIuPerMg])
 
   // Conversion check for sanity warnings
   const massInMg = useMemo(() => {
     if (compoundMassUnit === "mcg") return numMass / 1000
     if (compoundMassUnit === "g") return numMass * 1000
+    if (compoundMassUnit === "IU" && resolvedIuPerMg) return numMass / resolvedIuPerMg
     return numMass
-  }, [numMass, compoundMassUnit])
+  }, [numMass, compoundMassUnit, resolvedIuPerMg])
 
   const targetInMg = useMemo(() => {
     if (targetDoseUnit === "mcg") return numTarget / 1000
+    if (targetDoseUnit === "IU" && resolvedIuPerMg) return numTarget / resolvedIuPerMg
     return numTarget
-  }, [numTarget, targetDoseUnit])
+  }, [numTarget, targetDoseUnit, resolvedIuPerMg])
 
   const isDoseExceedingVial = targetInMg > 0 && massInMg > 0 && targetInMg > massInMg
   const isVolumeOver1mL = result?.volumeMl != null && result.volumeMl > 1.0
@@ -321,7 +415,7 @@ Storage: 2°C - 8°C (Refrigerate once reconstituted)`
                   Vial Content Mass
                 </label>
                 <div className="flex rounded-md border border-slate-200 bg-slate-100 p-0.5 text-xs">
-                  {(["mg", "mcg", "g"] as const).map((unit) => (
+                  {(["mg", "mcg", "g", "IU"] as const).map((unit) => (
                     <button
                       key={unit}
                       type="button"
@@ -403,7 +497,7 @@ Storage: 2°C - 8°C (Refrigerate once reconstituted)`
                   Target Research Dose
                 </label>
                 <div className="flex rounded-md border border-slate-200 bg-slate-100 p-0.5 text-xs">
-                  {(["mcg", "mg"] as const).map((unit) => (
+                  {(["mcg", "mg", "IU"] as const).map((unit) => (
                     <button
                       key={unit}
                       type="button"

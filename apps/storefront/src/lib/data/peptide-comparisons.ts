@@ -18,7 +18,7 @@ export type CompoundProfile = {
   reconstitution_diluent: string
   standard_dilution?: string
   primary_focus: string
-  purity: string
+  purity?: string
   typical_cadence?: string
   citations?: Array<{ number: number; text: string; url: string }>
 }
@@ -50,7 +50,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water (0.9% Benzyl Alcohol)",
     standard_dilution: "2.0 mL / 10 mg (5.0 mg/mL)",
     primary_focus: "Tendon, Ligament & Gut Mucosal Microvascular Healing",
-    purity: "≥99.2% (HPLC Verified)",
     typical_cadence: "250 mcg – 500 mcg daily",
     citations: [
       {
@@ -78,7 +77,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water or Sterile Saline",
     standard_dilution: "2.0 mL / 5 mg (2.5 mg/mL)",
     primary_focus: "Skeletal Muscle, Cardiac Fibrosis & Systemic Mobility",
-    purity: "≥99.0% (HPLC Verified)",
     typical_cadence: "2.0 mg – 2.5 mg twice weekly",
     citations: [
       {
@@ -101,7 +99,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water (0.9% Benzyl Alcohol)",
     standard_dilution: "2.0 mL / 10 mg (5.0 mg/mL)",
     primary_focus: "Adipose Thermogenesis, Insulin Sensitivity & Glucagon Suppression",
-    purity: "≥99.3% (HPLC Verified)",
     typical_cadence: "2.5 mg – 15.0 mg weekly (Titrated)",
     citations: [
       {
@@ -129,7 +126,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water (0.9% Benzyl Alcohol)",
     standard_dilution: "2.0 mL / 5 mg (2.5 mg/mL)",
     primary_focus: "Gastric Motility Deceleration & Central Satiety Signaling",
-    purity: "≥99.1% (HPLC Verified)",
     typical_cadence: "0.25 mg – 2.4 mg weekly (Titrated)",
     citations: [
       {
@@ -152,7 +148,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
     standard_dilution: "2.5 mL / 50 mg (20.0 mg/mL)",
     primary_focus: "Dermal Fibroblast Activation, Collagen Remodeling & Gene Reset",
-    purity: "≥99.1% (HPLC Verified)",
     typical_cadence: "1.0 mg – 2.0 mg daily",
     citations: [
       {
@@ -175,7 +170,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water (0.9% Benzyl Alcohol)",
     standard_dilution: "2.0 mL / 10 mg (5.0 mg/mL)",
     primary_focus: "Visceral Adipose Mobilization & IGF-1 Elevation Without Somatotroph Burnout",
-    purity: "≥99.0% (HPLC Verified)",
     typical_cadence: "1.0 mg – 2.0 mg daily (Before sleep/fasted)",
     citations: [
       {
@@ -198,7 +192,6 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
     reconstitution_diluent: "Bacteriostatic Water (0.9% Benzyl Alcohol)",
     standard_dilution: "2.0 mL / 10 mg (5.0 mg/mL)",
     primary_focus: "Telomere Length Maintenance, Circadian Neuroendocrine & Melatonin Reset",
-    purity: "≥99.4% (HPLC Verified)",
     typical_cadence: "5.0 mg – 10.0 mg daily in 10-day courses",
     citations: [
       {

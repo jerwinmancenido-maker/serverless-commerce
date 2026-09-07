@@ -92,6 +92,12 @@ const ResearchProtocolsPage = () => {
   // Compute KPIs
   const kpis = useMemo(() => {
     const total = protocolsQuery.data?.count ?? rawProtocols.length
+    const singlePeptides = rawProtocols.filter(
+      (p) => p.revisions[0]?.content?.protocol_category_type !== "blend",
+    ).length
+    const blends = rawProtocols.filter(
+      (p) => p.revisions[0]?.content?.protocol_category_type === "blend",
+    ).length
     const published = rawProtocols.filter(
       (p) => p.revisions.some((r) => r.status === "published"),
     ).length
@@ -103,11 +109,21 @@ const ResearchProtocolsPage = () => {
       0,
     )
 
-    return { total, published, draft, totalLinked }
+    return { total, singlePeptides, blends, published, draft, totalLinked }
   }, [rawProtocols, protocolsQuery.data?.count])
 
   // Filter based on active filter pill
   const filteredProtocols = useMemo(() => {
+    if (activeFilter === "singles") {
+      return rawProtocols.filter(
+        (p) => p.revisions[0]?.content?.protocol_category_type !== "blend",
+      )
+    }
+    if (activeFilter === "blends") {
+      return rawProtocols.filter(
+        (p) => p.revisions[0]?.content?.protocol_category_type === "blend",
+      )
+    }
     if (activeFilter === "published") {
       return rawProtocols.filter((p) =>
         p.revisions.some((r) => r.status === "published"),
@@ -151,6 +167,23 @@ const ResearchProtocolsPage = () => {
                 {row.original.protocol_key}
               </span>
             </div>
+          )
+        },
+      }),
+      columnHelper.display({
+        id: "classification",
+        header: "Classification",
+        cell: ({ row }) => {
+          const latest = row.original.revisions[0]
+          const isBlend = latest?.content?.protocol_category_type === "blend"
+          return isBlend ? (
+            <Badge size="small" color="purple" className="font-mono text-[10px]">
+              🧬 Multi-Peptide Blend
+            </Badge>
+          ) : (
+            <Badge size="small" color="blue" className="font-mono text-[10px]">
+              🧪 Single Peptide
+            </Badge>
           )
         },
       }),
@@ -248,10 +281,10 @@ const ResearchProtocolsPage = () => {
       <PageHeader
         breadcrumbs={[
           { label: "Products", href: "/products" },
-          { label: "Research Protocols" },
+          { label: "Product Protocols" },
         ]}
-        title="Research Protocols"
-        subtitle="Manage independent, versioned clinical research guides, dosage routines, and linked peptide products."
+        title="Product Protocols"
+        subtitle="Manage independent, versioned product analytical protocols, stoichiometry, and dosage routines across single peptides and multi-peptide blends."
         actions={
           <Button asChild size="small" className="h-8 text-xs inline-flex items-center gap-1">
             <Link to="/research-protocols/new">
@@ -268,21 +301,21 @@ const ResearchProtocolsPage = () => {
           value={kpis.total}
           icon="🔬"
           status="neutral"
-          subtext="Standardized dosing guides"
+          subtext="Authoritative product protocols"
         />
         <KpiCard
-          title="Published & Live"
-          value={kpis.published}
-          icon="✅"
+          title="Single Peptides"
+          value={kpis.singlePeptides}
+          icon="🧪"
           status="healthy"
-          subtext="Available on storefront"
+          subtext="Single compound monographs"
         />
         <KpiCard
-          title="Draft / In Review"
-          value={kpis.draft}
-          icon="📝"
-          status={kpis.draft > 0 ? "warning" : "healthy"}
-          subtext="Unpublished revisions"
+          title="Multi-Peptide Blends"
+          value={kpis.blends}
+          icon="🧬"
+          status="info"
+          subtext="Multi-compound formulations"
         />
         <KpiCard
           title="Product Links"
@@ -300,10 +333,11 @@ const ResearchProtocolsPage = () => {
           <FilterPillGroup
             items={[
               { id: "all", label: "All Protocols", count: kpis.total },
+              { id: "singles", label: "Single Peptides", count: kpis.singlePeptides, badgeColor: "blue" },
+              { id: "blends", label: "Multi-Peptide Blends", count: kpis.blends, badgeColor: "purple" },
               { id: "published", label: "Published", count: kpis.published, badgeColor: "green" },
               { id: "draft", label: "Draft", count: kpis.draft, badgeColor: "orange" },
               { id: "linked", label: "Linked Products", count: kpis.totalLinked },
-              { id: "unlinked", label: "Unlinked" },
             ]}
             selectedId={activeFilter}
             onSelect={(id) => setActiveFilter(id)}
@@ -338,7 +372,7 @@ const ResearchProtocolsPage = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "COAs & Protocols",
+  label: "Research Protocols",
   icon: BookOpen,
   rank: 9,
 })

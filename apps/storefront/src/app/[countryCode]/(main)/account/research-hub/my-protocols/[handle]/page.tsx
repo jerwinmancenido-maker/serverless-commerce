@@ -10,15 +10,15 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-export default async function CustomerProtocolPage({ params }: { params: Promise<{ handle: string }> }) {
-  const { handle } = await params
+export default async function CustomerProtocolPage({ params }: { params: Promise<{ countryCode: string; handle: string }> }) {
+  const { handle, countryCode } = await params
   const result = await retrieveCustomerResearchProtocol(handle).catch(() => null)
   if (!result?.protocol || result.protocol.access_level !== "purchaser") notFound()
   return <div>
-    <div className="mb-5 flex flex-wrap gap-3">
+    <div className="mb-5 flex flex-wrap gap-3 print:hidden">
       <LocalizedClientLink href="/account/research-hub?section=protocols" className="text-sm font-medium text-ui-fg-interactive">← My Protocols</LocalizedClientLink>
       <LocalizedClientLink href={`/account/community`} className="text-sm font-medium text-ui-fg-interactive">Open community →</LocalizedClientLink>
     </div>
-    <FullProtocol protocol={result.protocol} />
+    <FullProtocol protocol={result.protocol} countryCode={countryCode} />
   </div>
 }

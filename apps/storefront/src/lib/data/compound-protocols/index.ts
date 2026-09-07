@@ -1,0 +1,57 @@
+import type { CompoundAnalyticalProtocol } from "./types.ts"
+import { CATEGORY_1_TISSUE_REPAIR_PROTOCOLS } from "./category-1-tissue-repair.ts"
+import { CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS } from "./category-2-metabolic.ts"
+import { CATEGORY_3_GH_AXIS_PROTOCOLS } from "./category-3-gh-axis.ts"
+import { CATEGORY_4_LONGEVITY_PROTOCOLS } from "./category-4-longevity.ts"
+import { CATEGORY_5_NEURO_PROTOCOLS } from "./category-5-neuro.ts"
+import { CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS } from "./category-6-immune-sexual.ts"
+import { CATEGORY_7_BLENDS_PROTOCOLS } from "./category-7-blends.ts"
+
+export type * from "./types.ts"
+export * from "./category-1-tissue-repair.ts"
+export * from "./category-2-metabolic.ts"
+export * from "./category-3-gh-axis.ts"
+export * from "./category-4-longevity.ts"
+export * from "./category-5-neuro.ts"
+export * from "./category-6-immune-sexual.ts"
+export * from "./category-7-blends.ts"
+
+/**
+ * Master Registry of all 55+ Verified Analytical Compound & Blend Protocols.
+ * Covers both active store products and open-access reference monographs.
+ */
+export const ALL_COMPOUND_PROTOCOLS: CompoundAnalyticalProtocol[] = [
+  ...CATEGORY_1_TISSUE_REPAIR_PROTOCOLS,
+  ...CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS,
+  ...CATEGORY_3_GH_AXIS_PROTOCOLS,
+  ...CATEGORY_4_LONGEVITY_PROTOCOLS,
+  ...CATEGORY_5_NEURO_PROTOCOLS,
+  ...CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS,
+  ...CATEGORY_7_BLENDS_PROTOCOLS,
+]
+
+/**
+ * Filter protocols by clinical/pharmacological category
+ */
+export function getProtocolsByCategory(
+  category: CompoundAnalyticalProtocol["category"]
+): CompoundAnalyticalProtocol[] {
+  return ALL_COMPOUND_PROTOCOLS.filter((p) => p.category === category)
+}
+
+/**
+ * Filter protocols by catalog availability
+ */
+export function getProtocolsByCatalogStatus(
+  status: "in_catalog" | "reference_only"
+): CompoundAnalyticalProtocol[] {
+  return ALL_COMPOUND_PROTOCOLS.filter((p) => p.catalogStatus === status)
+}
+
+/**
+ * Retrieve protocol by strict ID
+ */
+export function getProtocolById(id: string): CompoundAnalyticalProtocol | undefined {
+  const normalized = id.toLowerCase().trim()
+  return ALL_COMPOUND_PROTOCOLS.find((p) => p.id.toLowerCase() === normalized)
+}

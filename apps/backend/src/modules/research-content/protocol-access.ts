@@ -13,6 +13,14 @@ export type ResearchProtocolAccessProjection = Pick<
   | "short_introduction"
   | "product_format"
   | "category"
+  | "protocol_category_type"
+  | "full_description"
+  | "investigated_benefits"
+  | "adverse_observations"
+  | "molecular_details"
+  | "reconstitution_details"
+  | "storage_details"
+  | "purity_standard"
   | "research_use_label"
   | "last_reviewed_at"
   | "disclaimer"
@@ -42,7 +50,7 @@ export type PublicResearchProtocolContent = ResearchProtocolAccessProjection
 export const DEFAULT_RESEARCH_PROTOCOL_VISIBILITY: ResearchProtocolVisibilityPolicyValue = {
   public_page_enabled: true,
   public_summary: null,
-  public_quick_reference: false,
+  public_quick_reference: true,
   public_faqs: true,
   public_references: true,
   public_products: true,
@@ -120,7 +128,7 @@ export const buildResearchProtocolContentForAccess = (
   sections: content.sections.filter(
     (section) =>
       section.visible &&
-      item(`sections.${section.key}`, "purchaser"),
+      item(`sections.${section.key}`, "public"),
   ),
   faqs: content.faqs.filter((faq) =>
     item(`faqs.${faq.key}`, policy.public_faqs ? "public" : "purchaser"),
@@ -132,6 +140,30 @@ export const buildResearchProtocolContentForAccess = (
     ),
   ),
   disclaimer: content.disclaimer,
+  protocol_category_type: item("protocol_category_type", "public")
+    ? content.protocol_category_type
+    : null,
+  full_description: item("full_description", "public")
+    ? content.full_description
+    : null,
+  investigated_benefits: item("investigated_benefits", "public")
+    ? content.investigated_benefits
+    : [],
+  adverse_observations: item("adverse_observations", "public")
+    ? content.adverse_observations
+    : [],
+  molecular_details: item("molecular_details", "public")
+    ? content.molecular_details
+    : null,
+  reconstitution_details: item("reconstitution_details", "public")
+    ? content.reconstitution_details
+    : null,
+  storage_details: item("storage_details", "public")
+    ? content.storage_details
+    : null,
+  purity_standard: item("purity_standard", "public")
+    ? content.purity_standard
+    : null,
   }
   const optionalFields = [
     "calculator",
@@ -146,7 +178,7 @@ export const buildResearchProtocolContentForAccess = (
     "storage_and_disposal",
   ] as const
   for (const field of optionalFields) {
-    if (item(field, "purchaser")) {
+    if (item(field, "public")) {
       ;(projection as any)[field] = content[field]
     }
   }
