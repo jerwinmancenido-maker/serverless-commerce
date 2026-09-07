@@ -946,6 +946,12 @@ export const CATEGORY_3_GH_AXIS_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "mk-677",
+    "deliveryRoutes": ["oral"],
+    "oralGuide": {
+      "defaultSuspensionMl": 30.0,
+      "deviceLabel": "Calibrated oral dropper (1 mL graduations) or oral dosing syringe",
+      "notes": "MK-677 is formulated as an oral research liquid (25 mg/mL in 30 mL PEG-400 vehicle). Delivered via calibrated dropper or oral syringe — no injection required."
+    },
     "reconstitution": {
       "defaultVialNetMg": 750,
       "defaultDiluentMl": 30,

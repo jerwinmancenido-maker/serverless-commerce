@@ -14,6 +14,14 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "semax",
+    "deliveryRoutes": ["subq", "nasal"],
+    "nasalGuide": {
+      "pumpVolumeMl": 0.10,
+      "recommendedDiluentMlOptions": [3.0, 5.0, 10.0],
+      "defaultDiluentMl": 5.0,
+      "deviceLabel": "Amber nasal spray bottle (10 mL capacity)",
+      "notes": "Semax is natively produced as a nasal spray in Russia (0.1% solution). Metered pump delivers 0.10 mL per spray actuation."
+    },
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -135,6 +143,14 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "na-semax-amidate",
+    "deliveryRoutes": ["subq", "nasal"],
+    "nasalGuide": {
+      "pumpVolumeMl": 0.10,
+      "recommendedDiluentMlOptions": [3.0, 5.0, 10.0],
+      "defaultDiluentMl": 5.0,
+      "deviceLabel": "Amber nasal spray bottle (10 mL capacity)",
+      "notes": "NA-Semax Amidate shares the intranasal delivery profile of Semax. N-terminal acetyl and C-terminal amide modifications significantly improve mucosal bioavailability."
+    },
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -251,6 +267,14 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "selank",
+    "deliveryRoutes": ["subq", "nasal"],
+    "nasalGuide": {
+      "pumpVolumeMl": 0.10,
+      "recommendedDiluentMlOptions": [3.0, 5.0, 10.0],
+      "defaultDiluentMl": 5.0,
+      "deviceLabel": "Amber nasal spray bottle (10 mL capacity)",
+      "notes": "Selank is approved in Russia as a nasal spray (0.15% solution, 150 mcg/spray). Metered pump delivers 0.10 mL per actuation."
+    },
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -370,6 +394,14 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "na-selank-amidate",
+    "deliveryRoutes": ["subq", "nasal"],
+    "nasalGuide": {
+      "pumpVolumeMl": 0.10,
+      "recommendedDiluentMlOptions": [3.0, 5.0, 10.0],
+      "defaultDiluentMl": 5.0,
+      "deviceLabel": "Amber nasal spray bottle (10 mL capacity)",
+      "notes": "NA-Selank Amidate is the fluorinated analogue of Selank with equivalent intranasal bioavailability."
+    },
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -1036,6 +1068,14 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "adamax-1032",
+    "deliveryRoutes": ["subq", "nasal"],
+    "nasalGuide": {
+      "pumpVolumeMl": 0.10,
+      "recommendedDiluentMlOptions": [3.0, 5.0, 10.0],
+      "defaultDiluentMl": 5.0,
+      "deviceLabel": "Amber nasal spray bottle (10 mL capacity)",
+      "notes": "The adamantane modification markedly increases BBB permeability for intranasal delivery. 10 mg dissolved in 5.0 mL yields 200 mcg per 0.10 mL spray actuation (50 sprays per vial)."
+    },
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,

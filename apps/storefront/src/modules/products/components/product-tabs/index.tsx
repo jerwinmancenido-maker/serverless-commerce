@@ -1003,11 +1003,23 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
   const [diluentMl, setDiluentMl] = useState(compoundProto.reconstitution.defaultDiluentMl)
   const [doseMcg, setDoseMcg] = useState(compoundProto.dosing.standardDoseMcg)
 
+  // Route-of-Administration: default to first route, or "subq" if absent
+  const deliveryRoutes = compoundProto.deliveryRoutes ?? ["subq"]
+  const [activeRoute, setActiveRoute] = useState<string>(deliveryRoutes[0])
+
+  // Nasal atomizer diluent state — separate from SubQ diluent
+  const nasalDiluentOptions = compoundProto.nasalGuide?.recommendedDiluentMlOptions ?? [5.0]
+  const [nasalDiluentMl, setNasalDiluentMl] = useState(
+    compoundProto.nasalGuide?.defaultDiluentMl ?? 5.0
+  )
+
   useEffect(() => {
     setSelectedContent(defaultContent)
     setDiluentMl(compoundProto.reconstitution.defaultDiluentMl)
     setDoseMcg(compoundProto.dosing.standardDoseMcg)
-  }, [compoundProto.id, defaultContent, compoundProto.reconstitution.defaultDiluentMl, compoundProto.dosing.standardDoseMcg])
+    setActiveRoute((compoundProto.deliveryRoutes ?? ["subq"])[0])
+    setNasalDiluentMl(compoundProto.nasalGuide?.defaultDiluentMl ?? 5.0)
+  }, [compoundProto.id, defaultContent, compoundProto.reconstitution.defaultDiluentMl, compoundProto.dosing.standardDoseMcg, compoundProto.deliveryRoutes, compoundProto.nasalGuide?.defaultDiluentMl])
 
   const concentration = selectedContent.mcg / diluentMl
   const volumePerDose = doseMcg / concentration
@@ -1045,6 +1057,25 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
       : `${concentration.toFixed(1)} mcg/mL`
   }
 
+  // Nasal atomizer math (derived from protocol data)
+  const nasalPumpVolumeMl = compoundProto.nasalGuide?.pumpVolumeMl ?? 0.10
+  const nasalVialMcg = selectedContent.mcg
+  const nasalConcentrationMcgPerMl = nasalVialMcg / nasalDiluentMl
+  const nasalMcgPerSpray = nasalPumpVolumeMl * nasalConcentrationMcgPerMl
+  const nasalSpraysPerBottle = Math.floor(nasalDiluentMl / nasalPumpVolumeMl)
+  const nasalSpraysForDose = doseMcg / nasalMcgPerSpray
+
+  // Oral dropper math (derived from protocol data)
+  const oralConcentrationMcgPerMl = selectedContent.mcg / (compoundProto.oralGuide?.defaultSuspensionMl ?? compoundProto.reconstitution.defaultDiluentMl)
+  const oralVolumePerDoseMl = doseMcg / oralConcentrationMcgPerMl
+
+  const ROUTE_LABELS: Record<string, string> = {
+    subq: "SubQ Syringe",
+    nasal: "Nasal Atomizer",
+    oral: "Oral Dropper",
+    topical: "Topical",
+  }
+
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -1066,6 +1097,31 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
         </div>
       </div>
 
+      {/* Route-of-Administration Selector — only shown when >1 route exists */}
+      {deliveryRoutes.length > 1 && (
+        <div className="flex flex-col gap-2">
+          <span className="text-xs font-semibold text-slate-700">Administration Route</span>
+          <div className="flex items-center gap-2 p-1 bg-slate-100 border border-slate-200/80 rounded-2xl w-fit">
+            {deliveryRoutes.map((route) => (
+              <button
+                key={route}
+                type="button"
+                onClick={() => setActiveRoute(route)}
+                className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeRoute === route
+                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/60 font-bold"
+                    : "text-slate-500 hover:text-slate-800 hover:bg-white/50"
+                }`}
+              >
+                {ROUTE_LABELS[route] ?? route}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* SubQ Syringe Calculator — shown when activeRoute is "subq" */}
+      {activeRoute === "subq" && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Left: Input Controls */}
         <div className="space-y-5">
@@ -1190,6 +1246,215 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
           </p>
         </div>
       </div>
+      )}
+
+      {/* Nasal Atomizer Calculator */}
+      {activeRoute === "nasal" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Left: Nasal Controls */}
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-slate-700">1. Diluent Volume (Reconstitution in Nasal Bottle)</span>
+              <div className="flex flex-wrap gap-2">
+                {nasalDiluentOptions.map((vol) => (
+                  <button
+                    key={vol}
+                    type="button"
+                    onClick={() => setNasalDiluentMl(vol)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                      nasalDiluentMl === vol
+                        ? "border-blue-600 bg-blue-50/90 text-blue-950 font-bold shadow-2xs ring-1 ring-blue-500/30"
+                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                    }`}
+                  >
+                    {vol} mL
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500">
+                Concentration:{" "}
+                <span className="font-bold text-slate-800">
+                  {nasalConcentrationMcgPerMl >= 1000
+                    ? `${(nasalConcentrationMcgPerMl / 1000).toFixed(2)} mg/mL`
+                    : `${nasalConcentrationMcgPerMl.toFixed(1)} mcg/mL`}
+                </span>
+                {" "}— {nasalMcgPerSpray.toFixed(1)} mcg per 0.10 mL spray
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-700">2. Target Dose</span>
+                <span className="text-xs font-bold text-slate-900 tabular-nums">
+                  {formatDosePresetLabel(doseMcg)}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {dosePresets.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setDoseMcg(preset)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                      doseMcg === preset
+                        ? "bg-slate-900 text-white border-slate-900"
+                        : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                    }`}
+                  >
+                    {formatDosePresetLabel(preset)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {compoundProto.nasalGuide?.notes && (
+              <p className="text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200/80 p-3 leading-relaxed">
+                {compoundProto.nasalGuide.notes}
+              </p>
+            )}
+          </div>
+
+          {/* Right: Nasal Results */}
+          <div className="rounded-2xl border border-blue-200 bg-blue-50/50 p-6 space-y-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-blue-900">
+              Nasal Atomizer Spray Outputs
+            </div>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="bg-white p-3 rounded-xl border border-blue-100 shadow-2xs">
+                <div className="text-xl font-bold text-blue-900 tabular-nums">
+                  {nasalMcgPerSpray < 1
+                    ? nasalMcgPerSpray.toFixed(2)
+                    : Math.round(nasalMcgPerSpray)}
+                  <span className="text-xs font-normal text-slate-500 ml-0.5">mcg</span>
+                </div>
+                <div className="text-[11px] text-slate-500 mt-1">Per Spray</div>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-blue-100 shadow-2xs">
+                <div className="text-xl font-bold text-blue-800 tabular-nums">
+                  {nasalSpraysForDose < 0.1
+                    ? "<0.1"
+                    : nasalSpraysForDose % 1 === 0
+                    ? nasalSpraysForDose.toFixed(0)
+                    : nasalSpraysForDose.toFixed(2)}
+                </div>
+                <div className="text-[11px] text-slate-500 mt-1">Sprays / Dose</div>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-blue-100 shadow-2xs">
+                <div className="text-xl font-bold text-slate-900 tabular-nums">
+                  {nasalSpraysPerBottle}
+                </div>
+                <div className="text-[11px] text-slate-500 mt-1">Sprays / Bottle</div>
+              </div>
+            </div>
+            <p className="text-[11px] text-slate-500 leading-relaxed border-t border-blue-200/80 pt-3">
+              {compoundProto.reconstitution.defaultVialNetMg} mg dissolved in {nasalDiluentMl} mL —{" "}
+              metered pump ({nasalPumpVolumeMl * 1000} μL/actuation) yields{" "}
+              {Math.round(nasalMcgPerSpray)} mcg/spray.{" "}
+              {nasalSpraysPerBottle} total sprays from one bottle.{" "}
+              {compoundProto.nasalGuide?.deviceLabel ?? "Amber nasal spray bottle"}.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Oral Dropper Calculator */}
+      {activeRoute === "oral" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-slate-700">Target Dose</span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-500">Current selection:</span>
+                <span className="text-xs font-bold text-slate-900 tabular-nums">
+                  {formatDosePresetLabel(doseMcg)}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {dosePresets.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setDoseMcg(preset)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                      doseMcg === preset
+                        ? "bg-slate-900 text-white border-slate-900"
+                        : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                    }`}
+                  >
+                    {formatDosePresetLabel(preset)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-2">
+              <div className="text-xs font-semibold text-slate-700">Solution Details</div>
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Vial Mass</span>
+                <span className="font-bold text-slate-800">{selectedContent.label}</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Suspension Volume</span>
+                <span className="font-bold text-slate-800">
+                  {compoundProto.oralGuide?.defaultSuspensionMl ?? compoundProto.reconstitution.defaultDiluentMl} mL
+                </span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Concentration</span>
+                <span className="font-bold text-slate-800">
+                  {(oralConcentrationMcgPerMl / 1000).toFixed(1)} mg/mL
+                </span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500">Device</span>
+                <span className="font-bold text-slate-800">
+                  {compoundProto.oralGuide?.deviceLabel ?? "Calibrated oral dropper"}
+                </span>
+              </div>
+            </div>
+
+            {compoundProto.oralGuide?.notes && (
+              <p className="text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200/80 p-3 leading-relaxed">
+                {compoundProto.oralGuide.notes}
+              </p>
+            )}
+          </div>
+
+          {/* Right: Oral Results */}
+          <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-6 space-y-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-amber-900">
+              Oral Dropper Dose Outputs
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div className="bg-white p-4 rounded-xl border border-amber-100 shadow-2xs">
+                <div className="text-2xl font-bold text-amber-900 tabular-nums">
+                  {oralVolumePerDoseMl < 0.01
+                    ? "<0.01"
+                    : oralVolumePerDoseMl.toFixed(2)}
+                  <span className="text-xs font-normal text-slate-500 ml-1">mL</span>
+                </div>
+                <div className="text-[11px] text-slate-500 mt-1">Volume per Dose</div>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-amber-100 shadow-2xs">
+                <div className="text-2xl font-bold text-amber-800 tabular-nums">
+                  {(selectedContent.mcg / doseMcg) < 1
+                    ? "<1"
+                    : (selectedContent.mcg / doseMcg) % 1 === 0
+                    ? (selectedContent.mcg / doseMcg).toFixed(0)
+                    : (selectedContent.mcg / doseMcg).toFixed(1)}
+                </div>
+                <div className="text-[11px] text-slate-500 mt-1">Doses per Vial</div>
+              </div>
+            </div>
+            <p className="text-[11px] text-slate-500 leading-relaxed border-t border-amber-200/80 pt-3">
+              Administer {oralVolumePerDoseMl.toFixed(2)} mL per {formatDosePresetLabel(doseMcg)} dose
+              using a calibrated dropper. Oral solution at
+              {" "}{(oralConcentrationMcgPerMl / 1000).toFixed(1)} mg/mL.
+              For laboratory evaluation only.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

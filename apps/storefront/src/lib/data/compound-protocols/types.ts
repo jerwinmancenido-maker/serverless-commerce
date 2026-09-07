@@ -22,6 +22,25 @@ export type BlendConstituent = {
   percentageOfTotal: number  // e.g., 62.5
 }
 
+// Delivery route classification for calculator mode selection
+export type DeliveryRoute = "subq" | "nasal" | "oral" | "topical"
+
+// Nasal atomizer calibration data
+export type NasalGuide = {
+  pumpVolumeMl: number        // Fixed metered pump output per spray, e.g., 0.10
+  recommendedDiluentMlOptions: number[] // e.g., [3.0, 5.0, 10.0]
+  defaultDiluentMl: number    // e.g., 5.0
+  deviceLabel: string         // e.g., "Amber nasal spray bottle (10 mL)"
+  notes?: string
+}
+
+// Oral solution calibration data
+export type OralGuide = {
+  defaultSuspensionMl: number // e.g., 30.0
+  deviceLabel: string         // e.g., "Calibrated oral dropper (1 mL marks)"
+  notes?: string
+}
+
 export type CompoundAnalyticalProtocol = {
   id: string                 // e.g., "bpc-157", "retatrutide", "klow-blend"
   compoundName: string       // Full display name e.g., "BPC-157 (10mg Vial)"
@@ -44,6 +63,13 @@ export type CompoundAnalyticalProtocol = {
   purityStandard?: string
   isBlend?: boolean
   blendConstituents?: BlendConstituent[]
+  // Optional: specifies which routes are clinically applicable for this compound.
+  // When absent or undefined, defaults to ["subq"] (standard injectable).
+  deliveryRoutes?: DeliveryRoute[]
+  // Optional: nasal atomizer calibration data — required when "nasal" is in deliveryRoutes
+  nasalGuide?: NasalGuide
+  // Optional: oral solution calibration — required when "oral" is in deliveryRoutes
+  oralGuide?: OralGuide
   reconstitution: {
     defaultVialNetMg: number // Total vial dry mass
     defaultDiluentMl: number // Recommended diluent volume

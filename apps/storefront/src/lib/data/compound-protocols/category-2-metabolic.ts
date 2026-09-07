@@ -952,6 +952,12 @@ export const CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS: CompoundAnalyticalProtocol
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "5-amino-1mq",
+    "deliveryRoutes": ["oral"],
+    "oralGuide": {
+      "defaultSuspensionMl": 10.0,
+      "deviceLabel": "Calibrated oral dropper (1 mL graduations)",
+      "notes": "5-Amino-1MQ is dissolved into a liquid vehicle (PEG-400 or sterile water). A calibrated oral dropper delivers precise mL volumes; no syringe or needle required."
+    },
     "reconstitution": {
       "defaultVialNetMg": 500,
       "defaultDiluentMl": 10,
