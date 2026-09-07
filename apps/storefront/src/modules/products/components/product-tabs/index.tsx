@@ -931,16 +931,21 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
       .filter(Boolean) as { label: string; mcg: number; rawAmount: number; unit: string }[]
   }, [contentOption, compoundProto.id])
 
-  const defaultContent = contentValues[0] ?? {
-    label: isIUCompound && compoundProto.calculator?.defaultCompoundMass
-      ? `${compoundProto.calculator.defaultCompoundMass} IU`
-      : `${compoundProto.reconstitution.defaultVialNetMg} mg`,
-    mcg: isIUCompound && compoundProto.id === "hgh-somatropin"
-      ? (24 / 3) * 1000
-      : compoundProto.reconstitution.defaultVialNetMg * 1000,
-    rawAmount: isIUCompound ? (compoundProto.id === "hgh-somatropin" ? 24 : 75) : compoundProto.reconstitution.defaultVialNetMg,
-    unit: isIUCompound ? "iu" : "mg",
-  }
+  const defaultContent = useMemo(() => {
+    return (
+      contentValues[0] ?? {
+        label: isIUCompound && compoundProto.calculator?.defaultCompoundMass
+          ? `${compoundProto.calculator.defaultCompoundMass} IU`
+          : `${compoundProto.reconstitution.defaultVialNetMg} mg`,
+        mcg: isIUCompound && compoundProto.id === "hgh-somatropin"
+          ? (24 / 3) * 1000
+          : compoundProto.reconstitution.defaultVialNetMg * 1000,
+        rawAmount: isIUCompound ? (compoundProto.id === "hgh-somatropin" ? 24 : 75) : compoundProto.reconstitution.defaultVialNetMg,
+        unit: isIUCompound ? "iu" : "mg",
+      }
+    )
+  }, [contentValues, isIUCompound, compoundProto])
+
 
   const dosePresets = useMemo(() => {
     if (compoundProto.id === "hgh-somatropin") {
@@ -957,12 +962,52 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
     if (compoundProto.id === "ghk-cu") {
       return [500, 1000, 1500, 2000, 2500, 3000]
     }
+
+    const gathered = new Set<number>()
+
+    if (compoundProto.syringeGuide?.graduations) {
+      for (const grad of compoundProto.syringeGuide.graduations) {
+        if (grad.doseMcg && grad.doseMcg > 0) {
+          gathered.add(grad.doseMcg)
+        }
+      }
+    }
+
+    if (compoundProto.dosing?.titrationSteps) {
+      for (const step of compoundProto.dosing.titrationSteps) {
+        if (step.doseMcg && step.doseMcg > 0) {
+          gathered.add(step.doseMcg)
+        }
+      }
+    }
+
+    if (compoundProto.dosing?.standardDoseMcg && compoundProto.dosing.standardDoseMcg > 0) {
+      gathered.add(compoundProto.dosing.standardDoseMcg)
+    }
+
+    if (gathered.size >= 2) {
+      return Array.from(gathered).sort((a, b) => a - b)
+    }
+
+    const vialMg = compoundProto.reconstitution?.defaultVialNetMg || 10
+    if (vialMg >= 500) {
+      return [50000, 100000, 200000, 300000, 500000]
+    }
+    if (vialMg >= 20) {
+      return [1000, 2000, 3000, 5000, 7500, 10000]
+    }
     return [100, 200, 250, 300, 500, 750, 1000]
-  }, [compoundProto.id])
+  }, [compoundProto])
 
   const [selectedContent, setSelectedContent] = useState(defaultContent)
   const [diluentMl, setDiluentMl] = useState(compoundProto.reconstitution.defaultDiluentMl)
   const [doseMcg, setDoseMcg] = useState(compoundProto.dosing.standardDoseMcg)
+
+  useEffect(() => {
+    setSelectedContent(defaultContent)
+    setDiluentMl(compoundProto.reconstitution.defaultDiluentMl)
+    setDoseMcg(compoundProto.dosing.standardDoseMcg)
+  }, [compoundProto.id, defaultContent, compoundProto.reconstitution.defaultDiluentMl, compoundProto.dosing.standardDoseMcg])
 
   const concentration = selectedContent.mcg / diluentMl
   const volumePerDose = doseMcg / concentration
@@ -978,7 +1023,11 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
       const iu = (preset / 1000) * 75
       return `${Number(iu.toFixed(1))} IU`
     }
-    return preset >= 1000 ? `${(preset / 1000).toFixed(preset % 1000 === 0 ? 0 : 2)} mg` : `${preset} mcg`
+    if (preset >= 1000) {
+      const mg = preset / 1000
+      return `${Number(mg.toFixed(mg % 1 === 0 ? 0 : 2))} mg`
+    }
+    return `${preset} mcg`
   }
 
   const concentrationDisplay = () => {
