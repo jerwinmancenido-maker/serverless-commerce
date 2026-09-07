@@ -1,8 +1,9 @@
 "use server"
 
+import { revalidatePath, revalidateTag } from "next/cache"
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
-import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { getAuthHeaders, getCacheOptions, getCacheTag } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
 
 export const retrieveOrder = async (id: string) => {
@@ -19,7 +20,7 @@ export const retrieveOrder = async (id: string) => {
       method: "GET",
       query: {
         fields:
-          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
+          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,+status,+payment_status,+fulfillment_status",
       },
       headers,
       next,
@@ -49,7 +50,8 @@ export const listOrders = async (
         limit,
         offset,
         order: "-created_at",
-        fields: "*items,+items.metadata,*items.variant,*items.product",
+        fields:
+          "*items,+items.metadata,*items.variant,*items.product,*shipping_address,*fulfillments,+status",
         ...filters,
       },
       headers,
@@ -110,3 +112,41 @@ export const declineTransferRequest = async (id: string, token: string) => {
     .then(({ order }) => ({ success: true, error: null, order }))
     .catch((err) => ({ success: false, error: err.message, order: null }))
 }
+
+export const cancelCustomerOrder = async (orderId: string) => {
+  const headers = await getAuthHeaders()
+
+  try {
+    const res = await sdk.client.fetch<{
+      success: boolean
+      order_id: string
+      status: string
+      message: string
+    }>(`/store/customers/me/orders/${orderId}/cancel`, {
+      method: "POST",
+      headers,
+    })
+
+    try {
+      const cacheTag = await getCacheTag("orders")
+      if (cacheTag) {
+        revalidateTag(cacheTag)
+      }
+      revalidateTag("orders")
+      revalidatePath("/account/orders")
+      revalidatePath(`/account/orders/details/${orderId}`)
+    } catch {
+      // Revalidation might fail outside Next.js request context (e.g. unit tests)
+    }
+
+    return { success: true, error: null, data: res }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to cancel order"
+    return {
+      success: false,
+      error: message,
+      data: null,
+    }
+  }
+}
+

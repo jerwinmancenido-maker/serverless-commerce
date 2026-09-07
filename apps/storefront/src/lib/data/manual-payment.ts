@@ -13,6 +13,7 @@ export type StoreManualPaymentProof = {
   status: "pending" | "approved" | "rejected" | "expired"
   revision: number
   submitted_at: string
+  expires_at?: string | null
   reviewed_at: string | null
   rejection_reason: string | null
 }
