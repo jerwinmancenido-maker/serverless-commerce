@@ -298,8 +298,26 @@ const COMPOUND_ALIAS_MAP: Record<string, string> = {
   "epithalon-glutathione-bundle": "epithalon",
   "epithalon-glutathione-nad-bundle": "epithalon",
   "nad-ghk-cu-bundle": "nad-plus",
-  "glutathione-nad-ghk-cu-bundle": "nad-plus",
   "ghk-cu-anti-aging-serum": "ghk-cu",
+
+  // Category 8: Laboratory Supplies & Accessories
+  "bacteriostatic-water": "bacteriostatic-water",
+  "bac-water": "bacteriostatic-water",
+  "bac-water-10ml": "bacteriostatic-water",
+  "bacwater": "bacteriostatic-water",
+  "peptide-reconstitution-set": "peptide-reconstitution-set",
+  "reconstitution-set": "peptide-reconstitution-set",
+  "reusable-metal-insulin-pen": "reusable-metal-insulin-pen",
+  "insulin-pen": "reusable-metal-insulin-pen",
+  "metal-insulin-pen": "reusable-metal-insulin-pen",
+  "50-slot-vial-organizer-box": "50-slot-vial-organizer-box",
+  "vial-organizer-box-50": "50-slot-vial-organizer-box",
+  "50-slot-vial-box": "50-slot-vial-organizer-box",
+  "custom-mixed-vial-organizer-box": "custom-mixed-vial-organizer-box",
+  "custom-mixed-vial-box": "custom-mixed-vial-organizer-box",
+  "mixed-vial-box": "custom-mixed-vial-organizer-box",
+  "clear-nasal-spray-bottles": "clear-nasal-spray-bottles",
+  "nasal-spray-bottles": "clear-nasal-spray-bottles",
 }
 
 /**

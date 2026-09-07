@@ -90,10 +90,22 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
     return () => window.removeEventListener("hashchange", handleHash)
   }, [])
 
+  const isSupply =
+    compoundProto?.isSupply ||
+    compoundProto?.category === "Laboratory Supplies"
+
   const tabs: Array<{ id: string; label: string; badge?: string }> = [
     { id: "overview", label: "Description & Specs" },
-    { id: "protocol", label: "Product Protocol & Handling", badge: "RUO Standard" },
-    { id: "calculator", label: "Reconstitution Calculator" },
+    {
+      id: "protocol",
+      label: isSupply ? "Labware Specs & SOP" : "Product Protocol & Handling",
+      badge: "RUO Standard",
+    },
+    {
+      id: "calculator",
+      label: isSupply ? "Aseptic & Storage Guide" : "Reconstitution Calculator",
+      badge: isSupply ? "Lab Standard" : undefined,
+    },
     {
       id: "customer_hub",
       label: "Customer Research Hub",
@@ -245,7 +257,9 @@ const ProductSpecsGrid = ({
       </div>
       <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
         <span className="font-semibold text-zinc-900 text-xs">Physical State</span>
-        <p className="text-zinc-600 text-xs mt-1">Lyophilized Solid Powder</p>
+        <p className="text-zinc-600 text-xs mt-1">
+          {compoundProto?.supplyGuide?.physicalState || "Lyophilized Solid Powder"}
+        </p>
       </div>
 
       {mol?.casNumber && (
@@ -384,55 +398,107 @@ const ResearchProtocolPanel = ({
       </div>
 
       {/* Top Parameter Metrics (4 Critical Analytical Standards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
-          <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
-            Target Solvent
-          </span>
-          <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight">
-            BAC Water USP
-          </span>
-          <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
-            0.9% Benzyl Alcohol preserved
-          </p>
-        </div>
+      {compoundProto.isSupply && compoundProto.supplyGuide ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Physical Classification
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight truncate">
+              {compoundProto.supplyGuide.physicalState}
+            </span>
+            <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed truncate">
+              {compoundProto.subtitle}
+            </p>
+          </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
-          <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
-            Standard Diluent Ratio
-          </span>
-          <span className="font-bold text-slate-900 mt-1 block text-sm font-mono tracking-tight">
-            {compoundProto.reconstitution.defaultDiluentMl.toFixed(1)} mL BAC Water
-          </span>
-          <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
-            Yields {compoundProto.reconstitution.resultingConcentrationMgPerMl.toFixed(1)} mg/mL concentration
-          </p>
-        </div>
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Material Standard
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight truncate">
+              {compoundProto.supplyGuide.material}
+            </span>
+            <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
+              Laboratory Grade Specification
+            </p>
+          </div>
 
-        <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-xs shadow-2xs">
-          <span className="font-bold text-emerald-800 block text-[10px] uppercase tracking-wider">
-            Target Assay Concentration
-          </span>
-          <span className="font-bold text-emerald-950 mt-1 block text-sm font-mono tracking-tight">
-            {compoundProto.dosing.standardDoseDisplay}
-          </span>
-          <p className="text-emerald-700 text-[11px] mt-0.5 leading-relaxed">
-            {compoundProto.dosing.cadence}
-          </p>
-        </div>
+          <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-emerald-800 block text-[10px] uppercase tracking-wider">
+              Sterility Standard
+            </span>
+            <span className="font-bold text-emerald-950 mt-1 block text-sm tracking-tight truncate">
+              {compoundProto.supplyGuide.sterilityStandard}
+            </span>
+            <p className="text-emerald-700 text-[11px] mt-0.5 leading-relaxed truncate">
+              {compoundProto.purityStandard || "Laboratory RUO Standard"}
+            </p>
+          </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
-          <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
-            Volumetric Mark
-          </span>
-          <span className="font-bold text-slate-900 mt-1 block text-sm font-mono tracking-tight">
-            {compoundProto.syringeGuide.standardIUDisplay}
-          </span>
-          <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
-            Standard U-100 (100 units = 1.0 mL = 1,000 µL)
-          </p>
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Storage Specification
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight truncate">
+              {compoundProto.storage.reconstituted || compoundProto.storage.lyophilized}
+            </span>
+            <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed truncate">
+              {compoundProto.storage.lyophilized}
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Target Solvent
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight">
+              BAC Water USP
+            </span>
+            <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
+              0.9% Benzyl Alcohol preserved
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Standard Diluent Ratio
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm font-mono tracking-tight">
+              {compoundProto.reconstitution.defaultDiluentMl.toFixed(1)} mL BAC Water
+            </span>
+            <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
+              Yields {compoundProto.reconstitution.resultingConcentrationMgPerMl.toFixed(1)} mg/mL concentration
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-emerald-800 block text-[10px] uppercase tracking-wider">
+              Target Assay Concentration
+            </span>
+            <span className="font-bold text-emerald-950 mt-1 block text-sm font-mono tracking-tight">
+              {compoundProto.dosing.standardDoseDisplay}
+            </span>
+            <p className="text-emerald-700 text-[11px] mt-0.5 leading-relaxed">
+              {compoundProto.dosing.cadence}
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Volumetric Mark
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm font-mono tracking-tight">
+              {compoundProto.syringeGuide.standardIUDisplay}
+            </span>
+            <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
+              Standard U-100 (100 units = 1.0 mL = 1,000 µL)
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Pharmacological Profile & Mechanism of Action */}
       {compoundProto.longDescription && (
@@ -879,21 +945,210 @@ const CustomerResearchHubPanel = ({
 }
 
 // ---------------------------------------------------------------------------
-// 3. Interactive Reconstitution Calculator (Compound-Aware Defaults)
+// 3. Aseptic Supplies & Hardware Standard Operating Procedure (SOP) Guide
+// ---------------------------------------------------------------------------
+const AsepticSuppliesGuide = ({
+  compoundProto,
+}: {
+  compoundProto: CompoundAnalyticalProtocol
+}) => {
+  const guide = compoundProto.supplyGuide
+  const specs = guide?.specs ? Object.entries(guide.specs) : []
+  const steps = guide?.protocolSteps ?? []
+  const features = guide?.features ?? []
+  const inclusions = guide?.inclusions ?? []
+
+  return (
+    <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-xs space-y-8">
+      {/* 1. Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6 border-b border-slate-100">
+        <div className="flex items-start gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs">
+            <Beaker className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-[10px] font-bold text-slate-800 uppercase tracking-wide">
+                Laboratory Equipment &amp; Consumables SOP
+              </span>
+              <span className="text-[11px] text-slate-500 font-medium">
+                USP &lt;797&gt; / &lt;800&gt; Compliant Standard
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900 mt-1">
+              {compoundProto.compoundName}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed max-w-3xl">
+              {compoundProto.subtitle}
+            </p>
+          </div>
+        </div>
+
+        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs font-semibold shrink-0">
+          <CheckCircleSolid className="h-4 w-4 text-emerald-600" />
+          <span>Aseptic Protocol Verified</span>
+        </span>
+      </div>
+
+      {/* 2. Key Technical Specifications Grid */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            Technical Labware Specifications
+          </h4>
+          <span className="text-[11px] text-slate-400 font-mono">
+            Standard: {guide?.sterilityStandard || compoundProto.purityStandard}
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Physical State &amp; Class
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight">
+              {guide?.physicalState || "Laboratory Consumable"}
+            </span>
+          </div>
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Primary Material
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight">
+              {guide?.material || "High-Density Polymer"}
+            </span>
+          </div>
+          <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+            <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+              Sterility &amp; Barrier
+            </span>
+            <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight">
+              {guide?.sterilityStandard || "Aseptic Standard"}
+            </span>
+          </div>
+          {specs.map(([key, val]) => (
+            <div key={key} className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
+              <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
+                {key}
+              </span>
+              <span className="font-bold text-slate-900 mt-1 block text-sm tracking-tight">
+                {val}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Standard Operating Procedure (SOP) */}
+      <div className="space-y-3 pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-between">
+          <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            Standard Operating Procedure (SOP) &amp; Handling Protocol
+          </h4>
+          <span className="text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80">
+            4-Step Aseptic Standard
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {steps.map((step) => (
+            <div
+              key={step.stepNumber}
+              className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-colors flex gap-3.5 items-start shadow-2xs"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white text-xs font-bold font-mono shadow-xs">
+                {step.stepNumber}
+              </span>
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-slate-900 block">
+                  {step.title}
+                </span>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {step.instruction}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Engineering & Integrity Highlights */}
+      {features.length > 0 && (
+        <div className="space-y-3 pt-4 border-t border-slate-100">
+          <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            Engineering &amp; Integrity Standards
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {features.map((feat, idx) => (
+              <div
+                key={idx}
+                className="p-4 rounded-xl border border-slate-200/70 bg-white shadow-2xs space-y-1"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="text-xs font-bold text-slate-900">
+                    {feat.title}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed pl-4">
+                  {feat.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 5. Package Inclusions & Manifest */}
+      {inclusions.length > 0 && (
+        <div className="space-y-3 pt-4 border-t border-slate-100">
+          <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            Package Contents &amp; Labware Manifest
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+            {inclusions.map(([item, desc], idx) => (
+              <div
+                key={idx}
+                className="p-3 rounded-lg border border-slate-200/80 bg-slate-50/60 text-xs"
+              >
+                <span className="font-bold text-slate-900 block">{item}</span>
+                <span className="text-[11px] text-slate-500 block mt-0.5">{desc}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 6. Storage & Regulatory Notice */}
+      <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs text-amber-950 flex gap-3 items-start">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-200 text-amber-900 font-bold text-[10px]">
+          !
+        </div>
+        <div className="space-y-1">
+          <span className="font-bold block">Laboratory Research Handling Standard</span>
+          <p className="text-[11px] text-amber-900/90 leading-relaxed">
+            {compoundProto.disclaimer}
+          </p>
+          <div className="pt-1 text-[11px] text-amber-800/80 flex flex-wrap gap-x-4 gap-y-1">
+            <span><strong>Dry / Ambient Storage:</strong> {compoundProto.storage.lyophilized}</span>
+            <span><strong>Operating / Liquid Condition:</strong> {compoundProto.storage.reconstituted}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// 4. Interactive Reconstitution Calculator (Compound-Aware Defaults)
 // ---------------------------------------------------------------------------
 const DILUENT_VOLUMES_ML = [1, 2, 3, 4, 5, 6, 8, 10]
 
-const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => {
-  const compoundProto = useMemo(() => {
-    const protocolHandle =
-      (product.metadata?.protocol_handle as string) ||
-      (product.metadata?.protocol_id as string)
-    if (protocolHandle) {
-      const proto = getCompoundProtocol(protocolHandle)
-      if (proto && proto.id !== "generic-peptide") return proto
-    }
-    return getCompoundProtocol(product.handle || product.title)
-  }, [product.metadata, product.handle, product.title])
+const PeptideReconstitutionCalculator = ({
+  product,
+  compoundProto,
+}: {
+  product: HttpTypes.StoreProduct
+  compoundProto: CompoundAnalyticalProtocol
+}) => {
 
   const isIUCompound =
     compoundProto.calculator?.targetAmountUnit === "IU" ||
@@ -1459,8 +1714,32 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
   )
 }
 
+const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => {
+  const compoundProto = useMemo(() => {
+    const protocolHandle =
+      (product.metadata?.protocol_handle as string) ||
+      (product.metadata?.protocol_id as string)
+    if (protocolHandle) {
+      const proto = getCompoundProtocol(protocolHandle)
+      if (proto && proto.id !== "generic-peptide") return proto
+    }
+    return getCompoundProtocol(product.handle || product.title)
+  }, [product.metadata, product.handle, product.title])
+
+  if (compoundProto.isSupply || compoundProto.category === "Laboratory Supplies") {
+    return <AsepticSuppliesGuide compoundProto={compoundProto} />
+  }
+
+  return (
+    <PeptideReconstitutionCalculator
+      product={product}
+      compoundProto={compoundProto}
+    />
+  )
+}
+
 // ---------------------------------------------------------------------------
-// 4. Compliance & Safety Accordion
+// 5. Compliance & Safety Accordion
 // ---------------------------------------------------------------------------
 const ComplianceSafetyAccordion = ({ product }: { product: HttpTypes.StoreProduct }) => {
   const compliance = (product.metadata?.compliance as Record<string, string>) || {}

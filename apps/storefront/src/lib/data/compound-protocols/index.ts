@@ -6,6 +6,7 @@ import { CATEGORY_4_LONGEVITY_PROTOCOLS } from "./category-4-longevity.ts"
 import { CATEGORY_5_NEURO_PROTOCOLS } from "./category-5-neuro.ts"
 import { CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS } from "./category-6-immune-sexual.ts"
 import { CATEGORY_7_BLENDS_PROTOCOLS } from "./category-7-blends.ts"
+import { CATEGORY_8_SUPPLIES_PROTOCOLS } from "./category-8-supplies.ts"
 
 export type * from "./types.ts"
 export * from "./category-1-tissue-repair.ts"
@@ -15,6 +16,7 @@ export * from "./category-4-longevity.ts"
 export * from "./category-5-neuro.ts"
 export * from "./category-6-immune-sexual.ts"
 export * from "./category-7-blends.ts"
+export * from "./category-8-supplies.ts"
 
 /**
  * Master Registry of all 55+ Verified Analytical Compound & Blend Protocols.
@@ -28,6 +30,7 @@ export const ALL_COMPOUND_PROTOCOLS: CompoundAnalyticalProtocol[] = [
   ...CATEGORY_5_NEURO_PROTOCOLS,
   ...CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS,
   ...CATEGORY_7_BLENDS_PROTOCOLS,
+  ...CATEGORY_8_SUPPLIES_PROTOCOLS,
 ]
 
 /**

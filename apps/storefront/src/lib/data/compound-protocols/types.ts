@@ -41,6 +41,29 @@ export type OralGuide = {
   notes?: string
 }
 
+// Laboratory supplies & hardware handling guide
+export type SupplyProtocolStep = {
+  stepNumber: number
+  title: string
+  instruction: string
+}
+
+export type SupplyFeature = {
+  title: string
+  desc: string
+}
+
+export type SupplyGuide = {
+  isHardware?: boolean
+  physicalState: string       // e.g. "Aqueous Sterile Diluent Solution", "Aviation-Grade Precision Labware"
+  sterilityStandard: string   // e.g. "0.22 µm Membrane Filtered · Non-Pyrogenic", "ETO Sterilized"
+  material: string            // e.g. "Type I USP Borosilicate Glass Vial", "High-Density Cryo Polymer"
+  specs: Record<string, string>
+  protocolSteps: SupplyProtocolStep[]
+  features: SupplyFeature[]
+  inclusions?: [string, string][]
+}
+
 export type CompoundAnalyticalProtocol = {
   id: string                 // e.g., "bpc-157", "retatrutide", "klow-blend"
   compoundName: string       // Full display name e.g., "BPC-157 (10mg Vial)"
@@ -58,6 +81,7 @@ export type CompoundAnalyticalProtocol = {
     | "Antimicrobial & Immune"
     | "Photoprotection & Sexual Health"
     | "Multi-Peptide Blends"
+    | "Laboratory Supplies"
   catalogStatus: "in_catalog" | "reference_only"
   storeProductHandle?: string // Defined only if catalogStatus === "in_catalog"
   purityStandard?: string
@@ -70,6 +94,9 @@ export type CompoundAnalyticalProtocol = {
   nasalGuide?: NasalGuide
   // Optional: oral solution calibration — required when "oral" is in deliveryRoutes
   oralGuide?: OralGuide
+  // Optional: laboratory supplies handling guide
+  isSupply?: boolean
+  supplyGuide?: SupplyGuide
   reconstitution: {
     defaultVialNetMg: number // Total vial dry mass
     defaultDiluentMl: number // Recommended diluent volume

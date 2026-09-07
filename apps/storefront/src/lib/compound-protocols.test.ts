@@ -10,6 +10,7 @@ import {
   CATEGORY_5_NEURO_PROTOCOLS,
   CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS,
   CATEGORY_7_BLENDS_PROTOCOLS,
+  CATEGORY_8_SUPPLIES_PROTOCOLS,
   getCompoundProtocol,
   normalizeProductHandle,
   getProtocolsByCategory,
@@ -17,7 +18,7 @@ import {
   getProtocolById,
 } from "./data/compound-protocols.ts"
 
-test("contains all 55+ verified analytical protocols across 7 categories", () => {
+test("contains all 74 verified analytical protocols across 8 categories", () => {
   assert.equal(CATEGORY_1_TISSUE_REPAIR_PROTOCOLS.length, 8)
   assert.equal(CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS.length, 12)
   assert.equal(CATEGORY_3_GH_AXIS_PROTOCOLS.length, 13)
@@ -25,8 +26,9 @@ test("contains all 55+ verified analytical protocols across 7 categories", () =>
   assert.equal(CATEGORY_5_NEURO_PROTOCOLS.length, 12)
   assert.equal(CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS.length, 9)
   assert.equal(CATEGORY_7_BLENDS_PROTOCOLS.length, 6)
+  assert.equal(CATEGORY_8_SUPPLIES_PROTOCOLS.length, 6)
 
-  const expectedTotal = 8 + 12 + 13 + 8 + 12 + 9 + 6
+  const expectedTotal = 8 + 12 + 13 + 8 + 12 + 9 + 6 + 6
   assert.equal(ALL_COMPOUND_PROTOCOLS.length, expectedTotal)
   assert.equal(COMPOUND_ANALYTICAL_PROTOCOLS.length, expectedTotal)
 })
@@ -38,18 +40,26 @@ test("validates complete type fields and non-empty metadata for every protocol",
     assert.ok(protocol.subtitle, `Missing subtitle on ${protocol.id}`)
     assert.ok(protocol.category, `Missing category on ${protocol.id}`)
     assert.ok(protocol.catalogStatus, `Missing catalogStatus on ${protocol.id}`)
-    assert.ok(protocol.reconstitution.defaultVialNetMg > 0, `Invalid vial mg on ${protocol.id}`)
-    assert.ok(protocol.reconstitution.defaultDiluentMl > 0, `Invalid diluent mL on ${protocol.id}`)
-    assert.ok(protocol.reconstitution.solvent, `Missing solvent on ${protocol.id}`)
-    assert.ok(protocol.reconstitution.dissolutionMethod, `Missing dissolution method on ${protocol.id}`)
-    assert.ok(protocol.dosing.standardDoseDisplay, `Missing standardDoseDisplay on ${protocol.id}`)
-    assert.ok(protocol.dosing.cadence, `Missing cadence on ${protocol.id}`)
-    assert.ok(protocol.dosing.halfLife, `Missing halfLife on ${protocol.id}`)
-    assert.ok(protocol.dosing.titrationSteps.length >= 3, `Expected at least 3 titration steps on ${protocol.id}`)
-    assert.ok(protocol.syringeGuide.graduations.length >= 1, `Expected at least 1 syringe graduation on ${protocol.id}`)
     assert.ok(protocol.citations.length >= 1, `Expected at least 1 citation on ${protocol.id}`)
     assert.ok(protocol.longDescription && protocol.longDescription.length >= 150, `Missing or short longDescription on ${protocol.id}`)
     assert.ok(protocol.disclaimer, `Missing disclaimer on ${protocol.id}`)
+
+    if (protocol.isSupply || protocol.category === "Laboratory Supplies") {
+      assert.ok(protocol.supplyGuide, `Missing supplyGuide on ${protocol.id}`)
+      assert.ok(protocol.supplyGuide.physicalState, `Missing physicalState on ${protocol.id}`)
+      assert.ok(protocol.supplyGuide.protocolSteps.length === 4, `Expected 4 steps on ${protocol.id}`)
+      assert.ok(protocol.supplyGuide.features.length >= 4, `Expected >= 4 features on ${protocol.id}`)
+    } else {
+      assert.ok(protocol.reconstitution.defaultVialNetMg > 0, `Invalid vial mg on ${protocol.id}`)
+      assert.ok(protocol.reconstitution.defaultDiluentMl > 0, `Invalid diluent mL on ${protocol.id}`)
+      assert.ok(protocol.reconstitution.solvent, `Missing solvent on ${protocol.id}`)
+      assert.ok(protocol.reconstitution.dissolutionMethod, `Missing dissolution method on ${protocol.id}`)
+      assert.ok(protocol.dosing.standardDoseDisplay, `Missing standardDoseDisplay on ${protocol.id}`)
+      assert.ok(protocol.dosing.cadence, `Missing cadence on ${protocol.id}`)
+      assert.ok(protocol.dosing.halfLife, `Missing halfLife on ${protocol.id}`)
+      assert.ok(protocol.dosing.titrationSteps.length >= 3, `Expected at least 3 titration steps on ${protocol.id}`)
+      assert.ok(protocol.syringeGuide.graduations.length >= 1, `Expected at least 1 syringe graduation on ${protocol.id}`)
+    }
 
     if (protocol.isBlend) {
       assert.ok(protocol.blendConstituents && protocol.blendConstituents.length >= 2, `Blend ${protocol.id} must have >= 2 constituents`)
@@ -59,6 +69,9 @@ test("validates complete type fields and non-empty metadata for every protocol",
 
 test("verifies stoichiometric dilution and syringe unit math for every compound", () => {
   for (const protocol of ALL_COMPOUND_PROTOCOLS) {
+    if (protocol.isSupply || protocol.category === "Laboratory Supplies") {
+      continue
+    }
     const { defaultVialNetMg, defaultDiluentMl, resultingConcentrationMgPerMl } = protocol.reconstitution
     const expectedConcentration = defaultVialNetMg / defaultDiluentMl
     const concDiff = Math.abs(resultingConcentrationMgPerMl - expectedConcentration)
@@ -159,7 +172,10 @@ test("filters protocols by category and catalog status", () => {
   assert.equal(incretinProtocols.length, 12)
 
   const inCatalog = getProtocolsByCatalogStatus("in_catalog")
-  assert.equal(inCatalog.length, 68)
+  assert.equal(inCatalog.length, 74)
+
+  const supplyProtocols = getProtocolsByCategory("Laboratory Supplies")
+  assert.equal(supplyProtocols.length, 6)
 
   const referenceOnly = getProtocolsByCatalogStatus("reference_only")
   assert.equal(referenceOnly.length, 0)
