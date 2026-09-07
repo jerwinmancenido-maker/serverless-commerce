@@ -1308,5 +1308,240 @@ export const CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS: CompoundAnalyticalProtocol
       "**Injection Site Rotating**: Subcutaneous administration site should be rotated daily across abdomen, thigh, and arm.",
       "**Refrigerate at 2°C–8°C**: Once opened, cartridges or vials must remain refrigerated."
     ]
+  },
+  {
+    "id": "lemon-bottle",
+    "compoundName": "Lemon Bottle",
+    "handles": [
+      "lemon-bottle",
+      "lemonbottle",
+      "lemon-bottle-lipolysis"
+    ],
+    "subtitle": "High-Concentration Riboflavin / Bromelain / Lecithin Adipocyte Lipolytic Solution Standard",
+    "longDescription": "**What it is:** Lemon Bottle is a premium non-detergent lipolytic research formulation combining high-potency Riboflavin (Vitamin B2), Lecithin, and Bromelain (Ananas comosus proteolytic enzyme) optimized for targeted fat cell metabolism studies.\n\n**How it works:** Unlike sodium deoxycholate solutions that cause non-specific tissue necrosis, Lemon Bottle acts via metabolic adipocyte membrane destabilization. Lecithin breaks down localized triglyceride droplets into micro-emulsions; Bromelain hydrolyzes structural adipocyte collagen membranes while suppressing inflammatory edema; and Riboflavin (B2) accelerates cellular flavin adenine dinucleotide (FAD) beta-oxidation, mobilizing free fatty acids for metabolic clearance.\n\n**Why researchers study it:** Researched for targeted localized subcutaneous fat reduction (submental fullness, abdominal fat pads), accelerating adipocyte lipid metabolism without prolonged swelling or tissue fibrosis.",
+    "category": "Metabolic Signaling & Incretins",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "lemon-bottle",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 10,
+      "solvent": "Pre-formulated Sterile Aqueous Solution (Ready to Draw)",
+      "dissolutionMethod": "Supplied as a ready-to-use liquid solution. Invert vial gently 3 times before laboratory sampling. Do not dilute further.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Slightly yellow clear liquid. Keep refrigerated at 2°C–8°C. Protect from intense light."
+    },
+    "dosing": {
+      "standardDoseDisplay": "1.0 mL – 3.0 mL per target localized zone",
+      "standardDoseMcg": 1000,
+      "cadence": "1x Every 7 to 10 Days (Localized SubQ research grid)",
+      "halfLife": "~24 to 48 Hours (Localized tissue enzymatic action)",
+      "typicalProtocolDuration": "3 to 5 Sessions",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Session 1: Initial Local Tissue Tolerance",
+          "timeframe": "Day 1",
+          "doseDisplay": "1.0 mL – 2.0 mL total per zone",
+          "doseMcg": 1000,
+          "cadence": "Single session (0.2 mL per grid point)",
+          "focus": "Observation of local adipocyte permeability and absence of excessive inflammatory swelling",
+          "notes": "10–20 units (0.1–0.2 mL) per micro-injection point"
+        },
+        {
+          "stage": "Sessions 2–4: Target Lipolysis Consolidation",
+          "timeframe": "Weeks 2–6 (Every 7–10 days)",
+          "doseDisplay": "2.0 mL – 3.0 mL total per zone",
+          "doseMcg": 2000,
+          "cadence": "1x Every 7 to 10 Days",
+          "focus": "Maximal enzymatic lipid emulsion, bromelain fibrillar breakdown, and lymphatic clearance",
+          "notes": "Spaced 1 cm apart in a uniform subcutaneous grid"
+        },
+        {
+          "stage": "Post-Protocol Evaluation",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "Observation Window",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Measurement of localized skinfold thickness reduction and tissue contour remodeling",
+          "notes": "Hydration protocols accelerate lipid transport"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe or 1.0 mL Tuberculin Syringe",
+      "standardIUDisplay": "20.0 units (0.20 mL per grid point)",
+      "graduations": [
+        {
+          "doseDisplay": "0.1 mL (Micro-Grid Point)",
+          "doseMcg": 100,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "0.2 mL (Standard Grid Point)",
+          "doseMcg": 200,
+          "volumeMl": 0.2,
+          "syringeIU": 20,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.0 mL (Total Zone Volume)",
+          "doseMcg": 1000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "2°C–8°C refrigerated in original amber packaging (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 30 days after opening vial",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "sequenceOrFormula": "Riboflavin (B2) + Lecithin + Bromelain Complex Solution"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15798993",
+        "notes": "Rotunda et al. Lipomas treated with subcutaneous deoxycholate vs non-detergent lipolytic agents."
+      },
+      {
+        "sourceReference": "PubMed PMID: 23304525",
+        "notes": "Pavan et al. Properties and therapeutic application of bromelain: a review (Biotechnology Research International)."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Non-Necrotic Adipocyte Lipolysis**: Destabilizes fat cell membranes metabolically without causing non-specific tissue destruction.",
+      "**Minimal Post-Procedure Swelling**: Bromelain enzyme inhibits bradykinin and prostaglandin E2, suppressing local inflammatory edema.",
+      "**Accelerated FAD Beta-Oxidation**: High-potency Riboflavin (Vitamin B2) fuels enzymatic cellular breakdown of released fatty acids.",
+      "**Lecithin Triglyceride Emulsification**: Breaks dense lipid stores into tiny micro-droplets easily transported by lymphatic vessels.",
+      "**Precise Localized Contouring**: Optimized for selective subcutaneous fat deposits resistant to generalized caloric deficits."
+    ],
+    "adverseObservations": [
+      "**Mild Transient Bruising**: Mechanical micro-needle insertion can produce small local bruising at injection points.",
+      "**Hydration Requirement**: Adequate fluid throughput in research subjects is necessary to support optimal lymphatic drainage.",
+      "**Light Sensitivity**: Riboflavin degrades upon UV exposure; maintain solution in shaded, refrigerated storage."
+    ]
+  },
+  {
+    "id": "lipo-c-b12",
+    "compoundName": "Lipo-C + B12",
+    "handles": [
+      "lipo-c-b12",
+      "lipo-c",
+      "lipotropic-b12",
+      "mic-b12"
+    ],
+    "subtitle": "Methionine / Inositol / Choline + Cyanocobalamin Hepatic Lipotropic Mobilization Standard",
+    "longDescription": "**What it is:** Lipo-C + B12 is an aqueous lipotropic formulation combining essential methyl donors and cofactors: L-Carnitine, Methionine, Inositol, Choline (MIC), and Cyanocobalamin (Vitamin B12).\n\n**How it works:** Choline and Inositol serve as essential structural components of phosphatidylcholine, necessary for the assembly and hepatic export of very-low-density lipoproteins (VLDL), preventing hepatic lipid accumulation. L-Carnitine shuttles long-chain fatty acids across the inner mitochondrial membrane via the carnitine palmitoyltransferase (CPT-1) system for ATP generation. Methionine and Vitamin B12 act as core methyl donors in the methionine-homocysteine cycle, regenerating S-adenosylmethionine (SAMe) and optimizing cellular energy metabolism.\n\n**Why researchers study it:** Studied for non-alcoholic fatty liver resistance, accelerating hepatic fat export, boosting mitochondrial ATP production, and improving metabolic rate in clinical research.",
+    "category": "Metabolic Signaling & Incretins",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "lipo-c-b12",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 10,
+      "solvent": "Pre-formulated Sterile Aqueous Solution (Ready to Draw)",
+      "dissolutionMethod": "Supplied as a ready-to-use liquid solution. Invert vial gently 3 times before laboratory sampling. Do not dilute further.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Clear red/pinkish liquid (due to B12 cyanocobalamin). Store at 15°C–25°C or refrigerated. Protect from light."
+    },
+    "dosing": {
+      "standardDoseDisplay": "1.0 mL (Intramuscular or SubQ 1x to 2x weekly)",
+      "standardDoseMcg": 1000,
+      "cadence": "1x to 2x Weekly",
+      "halfLife": "~24 Hours",
+      "typicalProtocolDuration": "6 to 12 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Metabolic Priming",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "1.0 mL weekly",
+          "doseMcg": 1000,
+          "cadence": "1x Weekly",
+          "focus": "Hepatic methyl donor saturation and baseline carnitine pool replenishment",
+          "notes": "1.0 mL drawn via sterile syringe"
+        },
+        {
+          "stage": "Phase 2: Target Lipotropic Export Phase",
+          "timeframe": "Weeks 3–10",
+          "doseDisplay": "1.0 mL (1x to 2x weekly)",
+          "doseMcg": 1000,
+          "cadence": "1x or 2x Weekly (Every 3–4 days)",
+          "focus": "Maximal VLDL hepatic lipid export, mitochondrial fatty acid oxidation, and ATP generation",
+          "notes": "1.0 mL per administration"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 11–12",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Assessment of sustained hepatic enzyme stability and body composition changes",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard 1.0 mL or 3.0 mL Luer-Lock Syringe",
+      "standardIUDisplay": "1.0 mL (100 units on U-100 syringe)",
+      "graduations": [
+        {
+          "doseDisplay": "0.5 mL (Half Dose)",
+          "doseMcg": 500,
+          "volumeMl": 0.5,
+          "syringeIU": 50,
+          "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.0 mL (Standard Dose)",
+          "doseMcg": 1000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.5 mL (Maximum Target)",
+          "doseMcg": 1500,
+          "volumeMl": 1.5,
+          "syringeIU": 150,
+          "tickLabel": "1.5 mL on 3.0 mL syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "15°C–25°C controlled room temperature or refrigerated at 2°C–8°C (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 60 days after opening vial",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "sequenceOrFormula": "Methionine + Inositol + Choline + L-Carnitine + Cyanocobalamin (B12)"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15159228",
+        "notes": "Zeisel et al. Choline: critical role during fetal development and dietary requirements in adults."
+      },
+      {
+        "sourceReference": "PubMed PMID: 15005834",
+        "notes": "Vance et al. Phosphatidylcholine and hepatic lipid secretion: role of PEMT and CDP-choline pathways."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Hepatic VLDL Lipid Export**: Choline and inositol facilitate the synthesis of lipoproteins that carry fat away from the liver.",
+      "**Mitochondrial Fatty Acid Transport**: L-Carnitine transfers long-chain acyl-CoA into mitochondrial matrix for beta-oxidation.",
+      "**Enhanced Cellular Energy & Red Cell Synthesis**: Vitamin B12 cofactor drives cellular ATP synthesis and combats research fatigue.",
+      "**Homocysteine & Methylation Support**: Methionine provides active methyl groups for detoxifying metabolic pathways.",
+      "**Non-Stimulant Metabolic Acceleration**: Promotes natural fat turnover without elevating heart rate or blood pressure."
+    ],
+    "adverseObservations": [
+      "**Mild Post-Injection Soreness**: Intramuscular administration may cause mild, temporary muscle tenderness.",
+      "**Chromaturia (Red/Pink Urine)**: Harmless pinkish or reddish tint in urine following administration due to excess water-soluble Vitamin B12 excretion.",
+      "**Light Protection**: Vitamin B12 is sensitive to photodegradation; keep vial in protective packaging."
+    ]
   }
 ]

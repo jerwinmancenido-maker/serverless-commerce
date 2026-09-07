@@ -1207,5 +1207,374 @@ export const CATEGORY_3_GH_AXIS_PROTOCOLS: CompoundAnalyticalProtocol[] = [
       "roundingPrecision": 2,
       "instructions": "Calibrated for standard 24 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (12.0 IU/mL; 1.0 mL = 12 IU = 100 units). For 15 IU vials, reconstitute with 1.5 mL for 10.0 IU/mL."
     }
+  },
+  {
+    "id": "igf-1-lr3",
+    "compoundName": "IGF-1 LR3",
+    "handles": [
+      "igf-1-lr3",
+      "igf1-lr3",
+      "igf-1-long-r3",
+      "long-r3-igf-1"
+    ],
+    "subtitle": "83-Amino-Acid Extended Analogue Long R3 Insulin-Like Growth Factor-1 Standard",
+    "longDescription": "**What it is:** IGF-1 LR3 (Long R3 Insulin-Like Growth Factor-1) is a synthetic recombinant 83-amino-acid polypeptide containing the complete 70-amino-acid native human IGF-1 sequence with an Arg3 substitution and an additional 13-amino-acid N-terminal peptide extension.\n\n**How it works:** The N-terminal peptide extension and Glu3Arg substitution dramatically reduce its binding affinity for endogenous IGF-Binding Proteins (IGFBPs) by over 100-fold. This prevents physiological sequestration, increasing biological bioavailability and extending its active receptor-binding half-life from ~20 minutes to over 20–30 hours. It activates the IGF-1R tyrosine kinase cascade, driving mTOR signaling, cellular hyperplasia (new muscle fiber recruitment), satellite cell proliferation, and amino acid uptake.\n\n**Why researchers study it:** Extensively studied for muscle satellite cell activation, true cellular hyperplasia, enhanced nitrogen retention, accelerated soft tissue repair, and reversing catabolic muscle wasting.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "igf-1-lr3",
+    "reconstitution": {
+      "defaultVialNetMg": 1,
+      "defaultDiluentMl": 2,
+      "solvent": "0.6% Acetic Acid or Bacteriostatic Water USP",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down vial inner wall. Allow cake to dissolve passively with gentle horizontal swirling. Never vortex or shake.",
+      "resultingConcentrationMgPerMl": 0.5,
+      "handlingRule": "Clear, colorless solution. Extremely shear-sensitive. Store strictly refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "20 mcg – 50 mcg daily",
+      "standardDoseMcg": 50,
+      "cadence": "1x Daily (Post-workout or morning SubQ)",
+      "halfLife": "20–30 Hours (Markedly extended via low IGFBP binding affinity)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Insulin Sensitivity Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "20 mcg daily",
+          "doseMcg": 20,
+          "cadence": "1x Daily (Post-workout / Morning)",
+          "focus": "IGF-1R receptor calibration and glycemic tolerance observation",
+          "notes": "4.0 units (0.04 mL) on U-100 syringe at 0.5 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Hyperplasia Protocol",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "30 mcg – 50 mcg daily",
+          "doseMcg": 50,
+          "cadence": "1x Daily (Post-workout SubQ)",
+          "focus": "Maximal satellite cell proliferation, mTOR activation, and systemic protein synthesis",
+          "notes": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Receptor Reset & Washout",
+          "timeframe": "Weeks 6–9",
+          "doseDisplay": "Zero Dosing",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Prevention of IGF-1R receptor downregulation and preservation of endogenous insulin sensitivity",
+          "notes": "Mandatory 4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "10.0 units (0.10 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "20 mcg",
+          "doseMcg": 20,
+          "volumeMl": 0.04,
+          "syringeIU": 4,
+          "tickLabel": "4.0 units (0.04 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "30 mcg",
+          "doseMcg": 30,
+          "volumeMl": 0.06,
+          "syringeIU": 6,
+          "tickLabel": "6.0 units (0.06 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "50 mcg (Standard Protocol)",
+          "doseMcg": 50,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "946870-92-4",
+      "sequenceOrFormula": "83-Amino-Acid Polypeptide Analogue",
+      "molecularWeightGPerMol": 9117.5
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 1839958",
+        "notes": "Francis et al. Novel recombinant fusion protein analogs of insulin-like growth factor (IGF)-I with altered binding affinities for IGF-binding proteins."
+      },
+      {
+        "sourceReference": "PubMed PMID: 14764835",
+        "notes": "Tomas et al. Long R3 IGF-I is more potent than IGF-I in stimulating growth of gut and muscle in rats."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Satellite Cell Hyperplasia**: Activates quiescent myosatellite cells to donate nuclei, facilitating true fiber hyperplasia.",
+      "**Evades Inhibitory Binding Proteins**: 100x lower affinity for IGFBPs ensures high free active hormone bioavailability.",
+      "**Prolonged 20–30h Receptor Half-Life**: Enables steady 24-hour anabolic signaling from a single daily administration.",
+      "**Rapid Glycogen & Nutrient Shunting**: Directs amino acids and glucose into muscle tissue, accelerating recovery kinetics.",
+      "**Connective Tissue Collagen Synthesis**: Stimulates tenocyte and chondrocyte proliferation for tendon and ligament repair."
+    ],
+    "adverseObservations": [
+      "**Hypoglycemic Sensitivity**: Potent insulin-like activity can induce hypoglycemia if administered fasted without carbohydrate availability.",
+      "**Downregulation Window**: Continuous protocols exceeding 6 weeks can desensitize IGF-1 receptors; strict cycle breaks are essential.",
+      "**High Temperature Sensitivity**: Reconstituted peptide denatures rapidly at room temperature; keep strictly at 2°C–8°C."
+    ]
+  },
+  {
+    "id": "igf-des",
+    "compoundName": "IGF-DES",
+    "handles": [
+      "igf-des",
+      "igf-1-des",
+      "des-1-3-igf-1"
+    ],
+    "subtitle": "Truncated (1-3) 67-Amino-Acid Des-IGF-1 High-Affinity Anabolic Standard",
+    "longDescription": "**What it is:** IGF-DES (also known as Des(1-3) IGF-1) is a naturally occurring truncated splice variant of native human IGF-1 that lacks the first three N-terminal amino acids (Gly-Pro-Glu).\n\n**How it works:** Removal of the N-terminal tripeptide eliminates virtually all affinity for inhibitory IGF-Binding Proteins (IGFBPs). Because it does not bind to circulating IGFBPs, IGF-DES exhibits up to 10-fold greater potency than native IGF-1 at local tissue IGF-1 receptors. While its systemic half-life is short (~20–30 minutes), it produces an intense, localized burst of receptor activation, driving rapid glucose transport and immediate ribosomal protein synthesis directly at the target tissue site.\n\n**Why researchers study it:** Researched for localized muscle tissue regeneration, targeted hypertrophy, tendon-to-bone junction repair, and acute post-injury cellular repair without prolonged systemic hypoglycemia.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "igf-des",
+    "reconstitution": {
+      "defaultVialNetMg": 2,
+      "defaultDiluentMl": 2,
+      "solvent": "0.6% Acetic Acid or Bacteriostatic Water USP",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently for 30 seconds. Avoid shaking.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "50 mcg – 100 mcg daily",
+      "standardDoseMcg": 50,
+      "cadence": "1x to 2x Daily (Intramuscular or SubQ near target tissue)",
+      "halfLife": "~20–30 Minutes (Rapid localized receptor clearance)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "2 to 4 Weeks",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Localized Receptor Testing",
+          "timeframe": "Days 1–5",
+          "doseDisplay": "25 mcg – 50 mcg daily",
+          "doseMcg": 25,
+          "cadence": "1x Daily (Pre/Post-study tissue session)",
+          "focus": "Observation of acute localized vascularity and intracellular amino acid pump",
+          "notes": "2.5 units (0.025 mL) on U-100 syringe at 1.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Hypertrophy Phase",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "50 mcg – 100 mcg daily",
+          "doseMcg": 50,
+          "cadence": "1x or 2x Daily (Bilateral site administration)",
+          "focus": "Direct localized satellite cell activation and immediate ribosomal translation",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Week 6+",
+          "doseDisplay": "Zero Dosing",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Clearance and recovery of endogenous IGF signaling",
+          "notes": "2–4 week cycle break"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "25 mcg",
+          "doseMcg": 25,
+          "volumeMl": 0.025,
+          "syringeIU": 2.5,
+          "tickLabel": "2.5 units (0.025 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "50 mcg (Standard Target)",
+          "doseMcg": 50,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "100 mcg (Intensive Target)",
+          "doseMcg": 100,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "112648-62-5",
+      "sequenceOrFormula": "67-Amino-Acid Truncated Polypeptide",
+      "molecularWeightGPerMol": 7371.4
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 2470123",
+        "notes": "Ballard et al. Does the wide distribution of des(1-3)IGF-I reflect specific functional roles in target tissues?"
+      },
+      {
+        "sourceReference": "PubMed PMID: 1718228",
+        "notes": "Gillespie et al. Des(1-3)IGF-I is more potent than IGF-I in promoting growth and nitrogen retention."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**10x Higher Local Anabolic Potency**: Complete absence of IGFBP binding enables immediate, concentrated local tissue stimulation.",
+      "**Targeted Bilateral Site Regeneration**: Well suited for localized injury rehabilitation directly in affected muscle or tendon bellies.",
+      "**Rapid Elimination Profile**: 20–30 minute half-life avoids sustained systemic hypoglycemic stress.",
+      "**Intense Amino Acid & Glucose Uptake**: Accelerates instant cellular nutrient influx and protein synthesis within minutes.",
+      "**Tendon-to-Bone Reattachment Models**: Promotes tenocyte proliferation at vulnerable musculoskeletal junctures."
+    ],
+    "adverseObservations": [
+      "**Transient Local Hypoglycemia**: Mild transient lightheadedness if dosed without recent nutrition; ensure adequate carbohydrate availability.",
+      "**Localized Muscle Fullness**: Rapid localized fluid and glycogen uptake can cause temporary stiffness at site.",
+      "**Reconstitution Handling**: Lyophilized cake dissolves rapidly; handle with care without shaking."
+    ]
+  },
+  {
+    "id": "ti15",
+    "compoundName": "TI15",
+    "handles": [
+      "ti15",
+      "ti-15",
+      "tesamorelin-ipamorelin-blend"
+    ],
+    "subtitle": "Synergistic Dual-Secretagogue (Tesamorelin 10mg + Ipamorelin 5mg) Standard",
+    "longDescription": "**What it is:** TI15 is an advanced dual-action somatotropic formulation combining 10mg of Tesamorelin (trans-3-hexenoyl GHRH) and 5mg of Ipamorelin (selective ghrelin receptor agonist) in a single 15mg lyophilized research standard.\n\n**How it works:** Tesamorelin acts as the most potent clinical GHRH analogue approved for visceral adipose reduction, stimulating pituitary adenylate cyclase and cAMP. Ipamorelin selectively engages the pituitary GHS-R1a receptor, stimulating calcium influx and amplifying the growth hormone pulse amplitude while suppressing somatostatin. Together, they generate maximal natural pulsatile GH elevation and sustained lipolysis without elevating appetite, cortisol, or prolactin.\n\n**Why researchers study it:** Studied for visceral deep belly fat reduction, liver fat mobilization, cardiovascular metabolic parameters, lean body mass preservation, and restorative deep sleep.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "ti15",
+    "isBlend": true,
+    "blendConstituents": [
+      {
+        "name": "Tesamorelin",
+        "ratioMg": 10,
+        "percentageOfTotal": 66.7
+      },
+      {
+        "name": "Ipamorelin",
+        "ratioMg": 5,
+        "percentageOfTotal": 33.3
+      }
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 15,
+      "defaultDiluentMl": 3,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 3.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 60 seconds until transparent. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "1.5 mg total blend daily (Yields 1.0 mg Tesamorelin + 0.5 mg Ipamorelin)",
+      "standardDoseMcg": 1500,
+      "cadence": "1x Daily (Nightly before sleep, 5 days on / 2 days off)",
+      "halfLife": "Tesamorelin (~30 min) / Ipamorelin (~2h)",
+      "typicalProtocolDuration": "8 to 12 Weeks",
+      "washoutPeriod": "4 Weeks",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Pituitary Activation Initiation",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "750 mcg total blend daily",
+          "doseMcg": 750,
+          "cadence": "1x Daily (Nightly before sleep)",
+          "focus": "Pituitary somatotrope priming and assessment of individual glycemic tolerance",
+          "notes": "15.0 units (0.15 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Visceral Lipolysis & Somatotropic Pulse",
+          "timeframe": "Weeks 3–10",
+          "doseDisplay": "1.5 mg total blend daily",
+          "doseMcg": 1500,
+          "cadence": "1x Daily (Nightly, 5 days on / 2 days off)",
+          "focus": "Maximal nocturnal GH pulse amplitude, visceral adipose beta-oxidation, and IGF-1 elevation",
+          "notes": "30.0 units (0.30 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 11–12",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Evaluation of sustained metabolic rate and body composition remodeling",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "30.0 units (0.30 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "750 mcg (Half Dose)",
+          "doseMcg": 750,
+          "volumeMl": 0.15,
+          "syringeIU": 15,
+          "tickLabel": "15.0 units (0.15 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.5 mg (Standard Protocol)",
+          "doseMcg": 1500,
+          "volumeMl": 0.3,
+          "syringeIU": 30,
+          "tickLabel": "30.0 units (0.30 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "2.0 mg (Advanced Protocol)",
+          "doseMcg": 2000,
+          "volumeMl": 0.4,
+          "syringeIU": 40,
+          "tickLabel": "40.0 units (0.40 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "sequenceOrFormula": "Tesamorelin (10mg) + Ipamorelin (5mg) Dual Standard"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 17978288",
+        "notes": "Falutz et al. Metabolic effects of a growth hormone-releasing factor in patients with HIV: a randomized controlled trial."
+      },
+      {
+        "sourceReference": "PubMed PMID: 9849822",
+        "notes": "Raun et al. Ipamorelin, the first selective growth hormone secretagogue."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Selective Visceral Adipose Tissue Mobilization**: Tesamorelin preferentially mobilizes deep visceral and intrahepatic fat stores.",
+      "**Supra-Additive GH Pulse Amplitude**: Dual GHRH + ghrelin receptor engagement amplifies pulse magnitude without exhausting pituitary reserves.",
+      "**Zero Prolactin or Cortisol Elevation**: High-specificity Ipamorelin component avoids unwanted stress hormone activation.",
+      "**Improved Deep Delta-Wave Sleep Architecture**: Elevated nocturnal growth hormone secretion promotes restorative stage 3/4 sleep.",
+      "**Preserves Endogenous Negative Feedback**: Pulsatile release prevents desensitization and avoids pituitary axis suppression."
+    ],
+    "adverseObservations": [
+      "**Mild Fluid Retention**: Temporary finger tightness or mild ankle puffiness during early titration.",
+      "**Fasting Administration Window**: Must be administered in a fasted state (at least 90 minutes post-carbohydrate) to prevent somatostatin blunting.",
+      "**Reconstitution Storage**: Keep solution strictly refrigerated at 2°C–8°C."
+    ]
   }
 ]

@@ -1022,5 +1022,362 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
       "**Individual Sensitivity Variations**: Response can vary based on baseline circadian disruption; consistency over 5–7 days produces best stability.",
       "**Reconstitution & Refrigeration**: Dissolve gently in Bacteriostatic Water and store strictly refrigerated at 2°C–8°C."
     ]
+  },
+  {
+    "id": "adamax-1032",
+    "compoundName": "ADAMAX 1032",
+    "handles": [
+      "adamax-1032",
+      "adamax",
+      "adamax-10mg"
+    ],
+    "subtitle": "Adamantane-Conjugated N-Acetyl Semax Amidate Enhanced TrkB / BDNF Neurotrophic Standard",
+    "longDescription": "**What it is:** ADAMAX 1032 is an advanced synthetic analogue of Semax featuring an N-terminal acetyl group, a C-terminal amide moiety, and an adamantyl cross-link (adamantane moiety) designed to dramatically improve blood-brain barrier permeability and metabolic stability.\n\n**How it works:** ADAMAX acts as a hyper-potent activator of the Brain-Derived Neurotrophic Factor (BDNF) and TrkB receptor cascade in the hippocampus and prefrontal cortex. The lipophilic adamantane modification extends its central half-life and amplifies dopaminergic and serotonergic neurotransmission without causing peripheral sympathomimetic stimulation or crash.\n\n**Why researchers study it:** Researched for intense cognitive focus, long-term potentiation (LTP), synaptic plasticity, accelerated learning acquisition, neuroprotection against oxidative stress, and rapid neurological rehabilitation.",
+    "category": "Cognitive & Neuroprotective",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "adamax-1032",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 45 seconds until crystal clear. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseMcg": 250,
+      "cadence": "1x Daily (Morning SubQ or Intranasal)",
+      "halfLife": "~4 to 6 Hours (Extended central action via adamantane stabilization)",
+      "typicalProtocolDuration": "4 to 8 Weeks",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Baseline Nootropic Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "100 mcg daily",
+          "doseMcg": 100,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Upregulation of BDNF, TrkB, and NGF mRNA expression in hippocampus",
+          "notes": "2.0 units (0.02 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Cognitive Consolidation",
+          "timeframe": "Weeks 2–6",
+          "doseDisplay": "250 mcg – 500 mcg daily",
+          "doseMcg": 250,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Cerebral blood flow optimization, dopamine/serotonin turnover enhancement, and synaptic plasticity",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Assessment of persistent memory retention and working recall post-stimulation",
+          "notes": "2–4 week cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "100 mcg",
+          "doseMcg": 100,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "250 mcg (Standard Dose)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 mcg (Intensive Target)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "1638363-22-2",
+      "sequenceOrFormula": "Ac-Met-Glu-His-Phe-Pro-Gly-Pro-Adamantane-NH2",
+      "molecularWeightGPerMol": 1032.25
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 17351604",
+        "notes": "Eremin et al. Semax and its modified analogues in experimental cerebral ischemia and memory enhancement."
+      },
+      {
+        "sourceReference": "PubMed PMID: 21972661",
+        "notes": "Medvedeva et al. The effects of Semax and its adamantyl derivatives on TrkB/BDNF expression in primary cortical neurons."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Potent TrkB / BDNF Activation**: Dramatically elevates brain-derived neurotrophic factor expression, promoting dendritic arborization and neurogenesis.",
+      "**Superior Blood-Brain Barrier Penetration**: Adamantyl moiety provides lipid solubility, enhancing central nervous system bioavailability.",
+      "**Optimized Synaptic Plasticity**: Enhances long-term potentiation (LTP) in hippocampal circuits for accelerated memory consolidation.",
+      "**Dopamine & Serotonin System Modulation**: Elevates cognitive motivation and sustained focus without cardiovascular side effects.",
+      "**Neuroprotective Resilience**: Protects neuronal membranes from excitotoxic glutamate insults and hypoxic stress."
+    ],
+    "adverseObservations": [
+      "**Late-Day Insomnia**: Due to prolonged central stimulation, administration within 6 hours of sleep may impair sleep onset.",
+      "**Overstimulation at High Doses**: Titration above 500 mcg daily can cause sensory over-responsiveness or mild transient headaches.",
+      "**Storage Protocol**: Sensitive to temperature cycling; store reconstituted liquid strictly at 2°C–8°C."
+    ]
+  },
+  {
+    "id": "pe-22-28",
+    "compoundName": "PE-22-28",
+    "handles": [
+      "pe-22-28",
+      "pe2228",
+      "spadin-derivative"
+    ],
+    "subtitle": "Shortened Spadin Derivative Selective TREK-1 Potassium Channel Antagonist Standard",
+    "longDescription": "**What it is:** PE-22-28 is a synthetic heptapeptide derivative of spadin (a natural propeptide directed against sortilin) specifically engineered as a selective, high-affinity blocker of the two-pore domain potassium channel TREK-1 (K2P2.1).\n\n**How it works:** By selectively blocking TREK-1 channels in hippocampal neurons, PE-22-28 enhances neuronal excitability, promotes rapid synaptogenesis, and stimulates immediate CREB phosphorylation and BDNF transcription. Unlike conventional monoaminergic modulators, PE-22-28 exerts rapid neurotrophic and behavioral actions within hours rather than weeks.\n\n**Why researchers study it:** Researched for rapid-onset neuroplasticity, mood elevation, resistance to chronic stress, reversing hippocampal dendritic atrophy, and cognitive preservation in neurodegenerative models.",
+    "category": "Cognitive & Neuroprotective",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "pe-22-28",
+    "reconstitution": {
+      "defaultVialNetMg": 5,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Sterile Saline",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until clear. Avoid vigorous shaking.",
+      "resultingConcentrationMgPerMl": 2.5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "100 mcg – 200 mcg daily",
+      "standardDoseMcg": 100,
+      "cadence": "1x Daily (Morning SubQ)",
+      "halfLife": "~2 Hours (Rapid central activation with persistent downstream CREB signaling)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "2 to 3 Weeks",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Initiation Calibration",
+          "timeframe": "Days 1–5",
+          "doseDisplay": "50 mcg daily",
+          "doseMcg": 50,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Baseline TREK-1 channel blockade and membrane potential adjustment",
+          "notes": "2.0 units (0.02 mL) on U-100 syringe at 2.5 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Neuroplasticity Phase",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "100 mcg – 200 mcg daily",
+          "doseMcg": 100,
+          "cadence": "1x Daily (Morning)",
+          "focus": "CREB phosphorylation, sustained BDNF release, and hippocampal neurogenesis",
+          "notes": "4.0 units (0.04 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Week 6+",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Monitoring long-term synaptogenic persistence and mood stability",
+          "notes": "2–3 week cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "4.0 units (0.04 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "50 mcg",
+          "doseMcg": 50,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "100 mcg (Standard Dose)",
+          "doseMcg": 100,
+          "volumeMl": 0.04,
+          "syringeIU": 4,
+          "tickLabel": "4.0 units (0.04 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "200 mcg (Ceiling Dose)",
+          "doseMcg": 200,
+          "volumeMl": 0.08,
+          "syringeIU": 8,
+          "tickLabel": "8.0 units (0.08 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "1374529-65-3",
+      "sequenceOrFormula": "Gly-Lys-Leu-Pro-Arg-Ala-Ser (GKLPRAS)",
+      "molecularWeightGPerMol": 740.9
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 24709675",
+        "notes": "Moha Ou Maati et al. PE-22-28, a shorter and more potent spadin derivative targeting TREK-1 potassium channels with rapid antidepressant-like activity."
+      },
+      {
+        "sourceReference": "PubMed PMID: 20406899",
+        "notes": "Mazella et al. Spadin, a sortilin-derived peptide, targeting TREK-1 channels: a new concept for fast-acting antidepressants."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Selective TREK-1 Channel Inhibition**: High-affinity antagonist of the K2P2.1 potassium channel without off-target ion channel blockade.",
+      "**Rapid-Onset Neuroplasticity**: Induces CREB phosphorylation and synaptogenesis within hours of administration in animal models.",
+      "**Hippocampal Neurogenesis**: Accelerates the formation and functional integration of new granule neurons in the dentate gyrus.",
+      "**Stress Resilience Modeling**: Protects neuronal architecture against stress-induced dendritic retraction.",
+      "**Zero Sedation**: Exerts behavioral normalization without sedation, ataxia, or motor impairment."
+    ],
+    "adverseObservations": [
+      "**Mild Transient Restlessness**: Initial doses may induce temporary psychomotor activation.",
+      "**Short Elimination Window**: Requires precise daily timing for consistent receptor target engagement.",
+      "**Reconstitution Storage**: Protect reconstituted solution from light and excessive temperature excursions."
+    ]
+  },
+  {
+    "id": "pinealon",
+    "compoundName": "Pinealon",
+    "handles": [
+      "pinealon",
+      "pinealon-peptide",
+      "pineal-bioregulator"
+    ],
+    "subtitle": "Synthetic Epithalamic Tripeptide (Glu-Arg-Asp) Pineal Bioregulator Standard",
+    "longDescription": "**What it is:** Pinealon is a synthetic neuroprotective tripeptide composed of L-glutamic acid, L-arginine, and L-aspartic acid (Glu-Arg-Asp / E-R-D), modeled after natural bioregulatory peptides isolated from the pineal gland and cerebral cortex.\n\n**How it works:** Pinealon penetrates cell and nuclear membranes directly, interacting with histone proteins to modulate gene expression in brain tissue. It stimulates ribosomal RNA transcription, activates endogenous antioxidant enzymes (superoxide dismutase and catalase), and prevents caspase-3-mediated apoptotic cell death induced by oxidative stress, hypoxia, or aging.\n\n**Why researchers study it:** Studied for cerebral vascular health, circadian rhythm synchronization, cognitive preservation in extreme environments, protecting neurons against ischemic insults, and reducing intellectual fatigue.",
+    "category": "Cognitive & Neuroprotective",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "pinealon",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until completely dissolved. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseMcg": 250,
+      "cadence": "1x Daily (Morning SubQ or Intranasal)",
+      "halfLife": "~30–45 Minutes (Induces long-lasting genomic epigenetic modifications)",
+      "typicalProtocolDuration": "20 to 30 Days",
+      "washoutPeriod": "2 to 3 Months between bioregulatory courses",
+      "titrationSteps": [
+        {
+          "stage": "Course Initiation",
+          "timeframe": "Days 1–10",
+          "doseDisplay": "250 mcg daily",
+          "doseMcg": 250,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Epigenetic chromatin normalization and endogenous antioxidant enzyme activation",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Consolidation Phase",
+          "timeframe": "Days 11–20",
+          "doseDisplay": "250 mcg – 500 mcg daily",
+          "doseMcg": 500,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Cerebral microcirculation stabilization and circadian clock gene harmonization",
+          "notes": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Washout & Residual Action",
+          "timeframe": "Months 2–4",
+          "doseDisplay": "Observation Window",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Assessment of sustained cognitive clarity and cellular vitality post-course",
+          "notes": "Persistent bioregulatory effects observed up to 6 months"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "100 mcg",
+          "doseMcg": 100,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "250 mcg (Standard Target)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 mcg (Intensive Target)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "851199-59-2",
+      "sequenceOrFormula": "Glu-Arg-Asp (ERD)",
+      "molecularWeightGPerMol": 404.38
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 21542385",
+        "notes": "Khavinson et al. Short peptides regulate gene expression and protein synthesis in cerebral cortex cells."
+      },
+      {
+        "sourceReference": "PubMed PMID: 18663842",
+        "notes": "Chalisova et al. Neuroprotective effects of Pinealon peptide in aging cerebral tissue cultures."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct Gene Expression Modulation**: Penetrates nucleoli to modulate chromatin architecture and ribosomal synthesis in brain cells.",
+      "**Endogenous Antioxidant Upregulation**: Significantly elevates intracellular superoxide dismutase (SOD) and catalase activity.",
+      "**Circadian Rhythm Harmonization**: Modulates melatonin-synthesizing pineal pathways, supporting natural biorhythm restoration.",
+      "**Cerebrovascular Protection**: Protects vascular endothelial lining in cerebral microvasculature against hypoxic stress.",
+      "**Long-Lasting Post-Course Persistence**: Short 20-day course yields durable metabolic improvements lasting several months."
+    ],
+    "adverseObservations": [
+      "**High Tolerability Profile**: Naturally occurring peptide sequence exhibits minimal adverse potential in documented animal protocols.",
+      "**Course-Based Usage**: Not intended for continuous year-round dosing; cyclical 20–30 day blocks provide optimal epigenetic priming.",
+      "**Aseptic Handling**: Maintain strict sterility during reconstitution to prevent microbial contamination."
+    ]
   }
 ]

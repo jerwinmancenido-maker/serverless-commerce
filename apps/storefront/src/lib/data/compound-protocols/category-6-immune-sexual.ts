@@ -973,5 +973,138 @@ export const CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS: CompoundAnalyticalProtocol[] = 
       "roundingPrecision": 2,
       "instructions": "Calibrated for 75 IU vial reconstituted with 1.0 mL Bacteriostatic Water USP (75.0 IU/mL; 50 units = 37.5 IU, 100 units = 75 IU)."
     }
+  },
+  {
+    "id": "hcg",
+    "compoundName": "HCG",
+    "handles": [
+      "hcg",
+      "hcg-10000iu",
+      "human-chorionic-gonadotropin",
+      "pregnyl"
+    ],
+    "subtitle": "Human Chorionic Gonadotropin (10,000 IU) Luteinizing Hormone Receptor Agonist Standard",
+    "longDescription": "**What it is:** HCG (Human Chorionic Gonadotropin) is a heterodimeric glycoprotein hormone composed of 237 amino acids across two non-covalently linked alpha and beta subunits, sharing structural homology with native pituitary Luteinizing Hormone (LH).\n\n**How it works:** HCG binds directly to the shared LH/choriogonadotropin receptor (LHCGR) on testicular Leydig cells in males and ovarian theca/granulosa cells in females. In males, it stimulates cyclic AMP and cholesterol desmolase (CYP11A1), driving intratesticular testosterone synthesis and maintaining spermatogenesis during gonadotropin suppression. Its biological half-life (~24–36 hours) is substantially longer than native LH (~20 minutes), providing steady physiological stimulation.\n\n**Why researchers study it:** Studied for post-cycle endocrine recovery, preserving testicular trophism and spermatogenesis during TRT, male hypogonadism research, fertility optimization, and neurosteroid pathway support.",
+    "category": "Photoprotection & Sexual Health",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "hcg",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until clear. Avoid shaking.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless aqueous solution. Store refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 IU – 500 IU (2x to 3x weekly)",
+      "standardDoseMcg": 250,
+      "cadence": "2x to 3x Weekly (SubQ)",
+      "halfLife": "24–36 Hours (Extended biological activity compared to native LH)",
+      "typicalProtocolDuration": "6 to 12 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Leydig Cell Priming",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "250 IU (2x weekly)",
+          "doseMcg": 250,
+          "cadence": "2x Weekly (Every 3.5 Days SubQ)",
+          "focus": "Initial LHCGR receptor engagement and intratesticular steroidogenesis reactivation",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5,000 IU/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Endocrine Maintenance",
+          "timeframe": "Weeks 3–10",
+          "doseDisplay": "250 IU – 500 IU (2x to 3x weekly)",
+          "doseMcg": 500,
+          "cadence": "2x to 3x Weekly SubQ",
+          "focus": "Spermatogenesis maintenance, normal testicular volume preservation, and neurosteroid synthesis",
+          "notes": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 11–12",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Monitoring endogenous pituitary LH/FSH pulse recovery without exogenous support",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "250 IU (Standard Dose)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 IU (Higher Dose)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1,000 IU (Clinical Assay Dose)",
+          "doseMcg": 1000,
+          "volumeMl": 0.2,
+          "syringeIU": 20,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 30 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "9002-61-3",
+      "molecularWeightGPerMol": 36700
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15713727",
+        "notes": "Coviello et al. Intratesticular testosterone is restored by low-dose human chorionic gonadotropin in normal men with gonadotropin suppression."
+      },
+      {
+        "sourceReference": "PubMed PMID: 23260860",
+        "notes": "Hsieh et al. Concomitant intramuscular human chorionic gonadotropin preserves spermatogenesis in men undergoing testosterone replacement therapy."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct LHCGR Leydig Cell Stimulation**: Reactivates intratesticular testosterone synthesis without requiring pituitary LH secretion.",
+      "**Preserves Testicular Volume & Trophism**: Prevents testicular atrophy and morphological regression during endocrine suppression.",
+      "**Spermatogenesis Support**: Sustains high localized intratesticular androgen levels required for healthy sperm maturation.",
+      "**Neurosteroid Precursor Activation**: Stimulates conversion of cholesterol to pregnenolone, supporting downstream DHEA and neurosteroids.",
+      "**Reliable Clinical Pharmacokinetics**: 24–36 hour biological half-life enables steady receptor engagement with twice-weekly schedules."
+    ],
+    "adverseObservations": [
+      "**Aromatase Upregulation at High Doses**: Excessive dosing (>1,000 IU per injection) can stimulate intratesticular aromatase, elevating estradiol.",
+      "**Downregulation from Chronic Overdosing**: Massive continuous doses can desensitize Leydig LHCGR receptors; conservative physiological dosing is optimal.",
+      "**Strict Cold Storage**: Reconstituted solution must be kept continuously refrigerated at 2°C–8°C to prevent peptide bond cleavage."
+    ],
+    "calculator": {
+      "enabled": true,
+      "title": "HCG Reconstitution & Volumetric Calculator",
+      "defaultCompoundMass": "10000",
+      "compoundMassUnit": "IU",
+      "defaultFinalVolumeMl": "2",
+      "defaultTargetAmount": "250",
+      "targetAmountUnit": "IU",
+      "iuPerMg": 1000,
+      "deviceVolumeMl": "1",
+      "deviceLabel": "U-100 Syringe (mL)",
+      "roundingPrecision": 2,
+      "instructions": "Calibrated for 10,000 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (5,000 IU/mL; 5 units = 250 IU, 10 units = 500 IU)."
+    }
   }
 ]

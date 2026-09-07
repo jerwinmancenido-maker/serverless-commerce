@@ -162,6 +162,7 @@ const COMPOUND_ALIAS_MAP: Record<string, string> = {
   zepbound: "tirzepatide",
   reta: "retatrutide",
   retatrutide: "retatrutide",
+  rtt60: "retatrutide",
   cagri: "cagrilintide",
   cagrilintide: "cagrilintide",
   mazdutide: "mazdutide",
@@ -191,8 +192,9 @@ const COMPOUND_ALIAS_MAP: Record<string, string> = {
   "cjc-1295": "cjc-1295-no-dac",
   "cjc-1295-no-dac": "cjc-1295-no-dac",
   cjc1295: "cjc-1295-no-dac",
-  "cjc-dac": "cjc-1295-dac",
-  "cjc-1295-dac": "cjc-1295-dac",
+  "cjc-dac": "cjc-1295-with-dac",
+  "cjc-1295-dac": "cjc-1295-with-dac",
+  "cjc-1295-with-dac": "cjc-1295-with-dac",
   tesamorelin: "tesamorelin",
   egrifta: "tesamorelin",
   sermorelin: "sermorelin",
@@ -272,7 +274,7 @@ const COMPOUND_ALIAS_MAP: Record<string, string> = {
   oxytocin: "oxytocin",
   pitocin: "oxytocin",
 
-  // Category 7: Blends
+  // Category 7: Blends & Bundles
   glow: "glow-blend",
   "glow-blend": "glow-blend",
   glow70: "glow-blend",
@@ -281,6 +283,7 @@ const COMPOUND_ALIAS_MAP: Record<string, string> = {
   klow80: "klow-blend",
   wolverine: "wolverine-blend",
   "wolverine-blend": "wolverine-blend",
+  "wolverine-bundle": "wolverine-blend",
   "tri-heal": "tri-heal-blend",
   "tri-heal-matrix": "tri-heal-blend",
   triheal: "tri-heal-blend",
@@ -291,6 +294,12 @@ const COMPOUND_ALIAS_MAP: Record<string, string> = {
   "neuro-sync": "neuro-sync-blend",
   "neuro-sync-stack": "neuro-sync-blend",
   "selank-semax-combo": "neuro-sync-blend",
+  "ghk-cu-glutathione-bundle": "glow-blend",
+  "epithalon-glutathione-bundle": "epithalon",
+  "epithalon-glutathione-nad-bundle": "epithalon",
+  "nad-ghk-cu-bundle": "nad-plus",
+  "glutathione-nad-ghk-cu-bundle": "nad-plus",
+  "ghk-cu-anti-aging-serum": "ghk-cu",
 }
 
 /**
@@ -314,6 +323,7 @@ export function normalizeProductHandle(handle: string): string {
 
 /**
  * Resolve compound protocol by handle, title, or substring across all 55+ compounds and blends.
+ * Exact ID, exact handle, and exact alias matches take strict precedence before substring heuristics.
  */
 export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnalyticalProtocol {
   if (!handleOrTitle) return DEFAULT_FALLBACK_PROTOCOL
@@ -332,11 +342,11 @@ export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnal
   )
   if (exactHandleMatch) return exactHandleMatch
 
-  // 3. Substring in handles
-  const handleSubstringMatch = ALL_COMPOUND_PROTOCOLS.find((p) =>
-    p.handles.some((h) => query.includes(h.toLowerCase()) || h.toLowerCase().includes(query))
-  )
-  if (handleSubstringMatch) return handleSubstringMatch
+  // 3. Exact Alias map lookup
+  if (COMPOUND_ALIAS_MAP[query]) {
+    const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === COMPOUND_ALIAS_MAP[query])
+    if (match) return match
+  }
 
   // 4. Exact compoundName match (ignoring parenthetical packaging like "(10mg Vial)")
   const cleanQuery = query.replace(/\(.*?\)/g, "").trim()
@@ -346,23 +356,7 @@ export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnal
   })
   if (exactNameMatch) return exactNameMatch
 
-  // 5. Alias map lookup
-  for (const [alias, protocolId] of Object.entries(COMPOUND_ALIAS_MAP)) {
-    if (query === alias || query.includes(alias) || alias.includes(query)) {
-      const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === protocolId)
-      if (match) return match
-    }
-  }
-
-  // 6. Substring in compoundName
-  const nameSubstringMatch = ALL_COMPOUND_PROTOCOLS.find(
-    (p) =>
-      p.compoundName.toLowerCase().includes(query) ||
-      query.includes(p.compoundName.toLowerCase())
-  )
-  if (nameSubstringMatch) return nameSubstringMatch
-
-  // 7. Safeguard 3: Normalized fallback stripping packaging & dosage suffixes
+  // 5. Normalized exact matches (ID, Handle, Alias, Name)
   const normalizedQuery = normalizeProductHandle(query)
   if (normalizedQuery && normalizedQuery !== query) {
     const normIdMatch = ALL_COMPOUND_PROTOCOLS.find(
@@ -375,15 +369,9 @@ export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnal
     )
     if (normHandleMatch) return normHandleMatch
 
-    for (const [alias, protocolId] of Object.entries(COMPOUND_ALIAS_MAP)) {
-      if (
-        normalizedQuery === alias ||
-        normalizedQuery.includes(alias) ||
-        alias.includes(normalizedQuery)
-      ) {
-        const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === protocolId)
-        if (match) return match
-      }
+    if (COMPOUND_ALIAS_MAP[normalizedQuery]) {
+      const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === COMPOUND_ALIAS_MAP[normalizedQuery])
+      if (match) return match
     }
 
     const normNameMatch = ALL_COMPOUND_PROTOCOLS.find((p) => {
@@ -393,7 +381,29 @@ export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnal
     if (normNameMatch) return normNameMatch
   }
 
-  // 8. Fallback generic protocol with user-provided compoundName
+  // 6. Substring in handles
+  const handleSubstringMatch = ALL_COMPOUND_PROTOCOLS.find((p) =>
+    p.handles.some((h) => query.includes(h.toLowerCase()) || h.toLowerCase().includes(query))
+  )
+  if (handleSubstringMatch) return handleSubstringMatch
+
+  // 7. Substring in alias map
+  for (const [alias, protocolId] of Object.entries(COMPOUND_ALIAS_MAP)) {
+    if (query === alias || query.includes(alias) || alias.includes(query)) {
+      const match = ALL_COMPOUND_PROTOCOLS.find((p) => p.id === protocolId)
+      if (match) return match
+    }
+  }
+
+  // 8. Substring in compoundName
+  const nameSubstringMatch = ALL_COMPOUND_PROTOCOLS.find(
+    (p) =>
+      p.compoundName.toLowerCase().includes(query) ||
+      query.includes(p.compoundName.toLowerCase())
+  )
+  if (nameSubstringMatch) return nameSubstringMatch
+
+  // 9. Fallback generic protocol with user-provided compoundName
   return {
     ...DEFAULT_FALLBACK_PROTOCOL,
     compoundName: handleOrTitle,

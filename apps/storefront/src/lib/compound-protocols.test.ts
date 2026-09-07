@@ -18,15 +18,15 @@ import {
 } from "./data/compound-protocols.ts"
 
 test("contains all 55+ verified analytical protocols across 7 categories", () => {
-  assert.equal(CATEGORY_1_TISSUE_REPAIR_PROTOCOLS.length, 7)
-  assert.equal(CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS.length, 10)
-  assert.equal(CATEGORY_3_GH_AXIS_PROTOCOLS.length, 10)
-  assert.equal(CATEGORY_4_LONGEVITY_PROTOCOLS.length, 7)
-  assert.equal(CATEGORY_5_NEURO_PROTOCOLS.length, 9)
-  assert.equal(CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS.length, 8)
+  assert.equal(CATEGORY_1_TISSUE_REPAIR_PROTOCOLS.length, 8)
+  assert.equal(CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS.length, 12)
+  assert.equal(CATEGORY_3_GH_AXIS_PROTOCOLS.length, 13)
+  assert.equal(CATEGORY_4_LONGEVITY_PROTOCOLS.length, 8)
+  assert.equal(CATEGORY_5_NEURO_PROTOCOLS.length, 12)
+  assert.equal(CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS.length, 9)
   assert.equal(CATEGORY_7_BLENDS_PROTOCOLS.length, 6)
 
-  const expectedTotal = 7 + 10 + 10 + 7 + 9 + 8 + 6
+  const expectedTotal = 8 + 12 + 13 + 8 + 12 + 9 + 6
   assert.equal(ALL_COMPOUND_PROTOCOLS.length, expectedTotal)
   assert.equal(COMPOUND_ANALYTICAL_PROTOCOLS.length, expectedTotal)
 })
@@ -153,13 +153,13 @@ test("Safeguard 3: strips dosage and packaging suffixes via normalizeProductHand
 
 test("filters protocols by category and catalog status", () => {
   const tissueProtocols = getProtocolsByCategory("Tissue Repair & Healing")
-  assert.equal(tissueProtocols.length, 7)
+  assert.equal(tissueProtocols.length, 8)
 
   const incretinProtocols = getProtocolsByCategory("Metabolic Signaling & Incretins")
-  assert.equal(incretinProtocols.length, 10)
+  assert.equal(incretinProtocols.length, 12)
 
   const inCatalog = getProtocolsByCatalogStatus("in_catalog")
-  assert.equal(inCatalog.length, 57)
+  assert.equal(inCatalog.length, 68)
 
   const referenceOnly = getProtocolsByCatalogStatus("reference_only")
   assert.equal(referenceOnly.length, 0)

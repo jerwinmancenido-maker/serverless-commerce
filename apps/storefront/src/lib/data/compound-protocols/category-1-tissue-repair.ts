@@ -894,5 +894,124 @@ export const CATEGORY_1_TISSUE_REPAIR_PROTOCOLS: CompoundAnalyticalProtocol[] = 
       "**Temporary Hair Shedding (Telogen Effluvium)**: Rare, temporary hair thinning observed in extended high-dose animal models, reversing upon study cessation.",
       "**Precautions with Blood Thinners**: Should not be combined with anti-platelet or anticoagulant agents in laboratory models."
     ]
+  },
+  {
+    "id": "snap-8",
+    "compoundName": "SNAP-8",
+    "handles": [
+      "snap-8",
+      "snap8",
+      "acetyl-octapeptide-3"
+    ],
+    "subtitle": "Acetyl Octapeptide-3 Biomimetic SNARE Complex Competitive Inhibitor Standard",
+    "longDescription": "**What it is:** SNAP-8 (Acetyl Octapeptide-3) is an advanced elongation of the hexapeptide Argireline, composed of an 8-amino-acid synthetic sequence (Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2) designed for targeted dermatological and tissue repair research.\n\n**How it works:** SNAP-8 mimics the N-terminal end of SNAP-25, competitively displacing SNAP-25 from the ternary SNARE (Soluble N-ethylmaleimide-sensitive factor Attachment protein REceptor) complex. By destabilizing the SNARE complex, it inhibits calcium-dependent catecholamine and acetylcholine exocytosis at the neuromuscular junction, attenuating repeated micro-contractions and relaxing muscle-induced skin tension.\n\n**Why researchers study it:** Researched for cosmetic anti-wrinkle depth reduction, dermal matrix elastin preservation, non-invasive expression line modulation, and topical skin rejuvenation.",
+    "category": "Tissue Repair & Healing",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "snap-8",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Sterile Saline",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until crystal clear. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseMcg": 250,
+      "cadence": "1x Daily (SubQ or topical formulation research)",
+      "halfLife": "~2 to 3 Hours (Local tissue bio-retention extends inhibitory effect up to 24h)",
+      "typicalProtocolDuration": "6 to 8 Weeks",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Local Neuromuscular Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "100 mcg daily",
+          "doseMcg": 100,
+          "cadence": "1x Daily",
+          "focus": "Initial competitive displacement of SNAP-25 in the SNARE core complex",
+          "notes": "2.0 units (0.02 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Expression Attenuation Phase",
+          "timeframe": "Weeks 2–6",
+          "doseDisplay": "250 mcg daily",
+          "doseMcg": 250,
+          "cadence": "1x Daily",
+          "focus": "Maximal attenuation of catecholamine exocytosis and dermal matrix smoothing",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Monitoring persistence of micro-wrinkle relaxation post-stimulation",
+          "notes": "2–4 week cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "100 mcg",
+          "doseMcg": 100,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "250 mcg (Standard Target)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 mcg (Intensive Target)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "868844-74-0",
+      "sequenceOrFormula": "Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2",
+      "molecularWeightGPerMol": 1075.16
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 18498523",
+        "notes": "Blanes-Mira et al. A synthetic octapeptide (SNAP-8) derived from SNAP-25 inhibits neurotransmitter exocytosis and reduces wrinkles."
+      },
+      {
+        "sourceReference": "PubMed PMID: 16117738",
+        "notes": "Gutiérrez et al. A peptide that mimics the C-terminal sequence of SNAP-25 inhibits neurotransmitter release."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Competitive SNARE Complex Inhibition**: Destabilizes vesicle fusion machinery to modulate acetylcholine release.",
+      "**Expression Line Attenuation**: Reduces the depth of dynamic facial lines created by repeated muscle contractions.",
+      "**High Dermatological Tolerability**: Safe, non-paralytic biological modulation of local neuromuscular tone.",
+      "**Dermal Collagen Protection**: Prevents mechanical micro-trauma to underlying dermal collagen bundles.",
+      "**Synergistic with Matrix Peptides**: Amplifies skin smoothing when combined with GHK-Cu or copper tripeptides in research formulations."
+    ],
+    "adverseObservations": [
+      "**High Biocompatibility Profile**: Minimal adverse findings reported in peer-reviewed cutaneous and subcutaneous assays.",
+      "**Optimal Diluent Volume**: Reconstitute gently in 2.0 mL Bacteriostatic Water or physiological saline.",
+      "**Strict Light Protection**: Peptide sequence contains methionine; shield reconstituted solutions from direct UV light."
+    ]
   }
 ]

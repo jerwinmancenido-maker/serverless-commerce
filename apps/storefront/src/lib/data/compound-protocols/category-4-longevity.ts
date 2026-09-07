@@ -811,5 +811,125 @@ export const CATEGORY_4_LONGEVITY_PROTOCOLS: CompoundAnalyticalProtocol[] = [
       "**Localized Injection Discomfort**: Subcutaneous injection of high concentrations can cause mild, temporary stinging.",
       "**Rapid Oxidation in Liquid**: Reconstituted glutathione oxidizes quickly if exposed to air; use within 14–21 days and keep tightly sealed at 2°C–8°C."
     ]
+  },
+  {
+    "id": "aicar",
+    "compoundName": "AICAR",
+    "handles": [
+      "aicar",
+      "aicar-100mg",
+      "acadisine",
+      "ampk-activator"
+    ],
+    "subtitle": "5-Aminoimidazole-4-Carboxamide Ribonucleoside Direct AMPK Bioenergetic Standard",
+    "longDescription": "**What it is:** AICAR (5-Aminoimidazole-4-carboxamide ribonucleoside, also known as Acadesine) is an adenosine analogue and direct cellular activator of AMP-activated protein kinase (AMPK), the master metabolic regulator of energy homeostasis.\n\n**How it works:** Inside cells, AICAR is phosphorylated by adenosine kinase into ZMP (AICAR monophosphate), an AMP mimetic. ZMP binds to the gamma-subunit of AMPK, allosterically activating it and promoting its phosphorylation by upstream kinase LKB1. This shifts cellular metabolism from anabolic energy-consuming processes to catabolic ATP-generating processes, stimulating glucose uptake via GLUT4 translocation, fatty acid beta-oxidation via acetyl-CoA carboxylase (ACC) inhibition, and mitochondrial biogenesis via PGC-1alpha activation without requiring muscular exertion.\n\n**Why researchers study it:** Extensively studied as an 'exercise mimetic' for endurance adaptation, insulin sensitivity enhancement, metabolic syndrome research, cardiovascular ischemic preconditioning, and cellular longevity.",
+    "category": "Mitochondrial & Cellular Longevity",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "aicar",
+    "reconstitution": {
+      "defaultVialNetMg": 100,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 45 seconds until transparent. Do not shake.",
+      "resultingConcentrationMgPerMl": 50,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "10 mg – 25 mg daily",
+      "standardDoseMcg": 25000,
+      "cadence": "1x Daily (Morning SubQ)",
+      "halfLife": "~2 to 4 Hours (Cellular ZMP retention provides extended allosteric AMPK activation)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Bioenergetic Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "10 mg daily",
+          "doseMcg": 10000,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Initial AMPK phosphorylation and hepatic gluconeogenic adaptation",
+          "notes": "20.0 units (0.20 mL) on U-100 syringe at 50 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Metabolic Phase",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "25 mg daily",
+          "doseMcg": 25000,
+          "cadence": "1x Daily (Morning SubQ)",
+          "focus": "Mitochondrial biogenesis, GLUT4 translocation, and fatty acid oxidation",
+          "notes": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Week 6+",
+          "doseDisplay": "Zero Dosing",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Re-equilibration of endogenous purine synthesis and AMPK sensitivity",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "50.0 units (0.50 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "10 mg (Initiation)",
+          "doseMcg": 10000,
+          "volumeMl": 0.2,
+          "syringeIU": 20,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "25 mg (Target Protocol)",
+          "doseMcg": 25000,
+          "volumeMl": 0.5,
+          "syringeIU": 50,
+          "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "50 mg (Advanced Research Protocol)",
+          "doseMcg": 50000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "2627-69-2",
+      "sequenceOrFormula": "C9H14N4O5",
+      "molecularWeightGPerMol": 258.23
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 18674996",
+        "notes": "Narkar et al. AMPK and PPARdelta agonists are exercise mimetics (Cell)."
+      },
+      {
+        "sourceReference": "PubMed PMID: 12086937",
+        "notes": "Corton et al. 5-aminoimidazole-4-carboxamide ribonucleoside: a specific method for activating AMP-activated protein kinase in intact cells."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct Allosteric AMPK Activation**: Phosphorylates directly into ZMP to activate AMP-kinase without depleting cellular ATP.",
+      "**Accelerates Mitochondrial Biogenesis**: Drives PGC-1alpha transcription to expand mitochondrial density and cristae surface area.",
+      "**Insulin-Independent Glucose Transport**: Triggers direct GLUT4 vesicle translocation to plasma membranes.",
+      "**Intensive Lipid Beta-Oxidation**: Inhibits acetyl-CoA carboxylase, unblocking CPT-1 for accelerated fatty acid oxidation.",
+      "**Cardiovascular Ischemic Protection**: Enhances coronary collateral blood flow and ischemic resilience in cardiac models."
+    ],
+    "adverseObservations": [
+      "**Transient Mild Hypoglycemia**: Due to rapid non-insulin glucose uptake; administration with food or carbs in preclinical models is common.",
+      "**Purine Metabolism Precursor**: Prolonged continuous high-dose protocols can transiently elevate serum uric acid levels.",
+      "**High Mass Solution**: 100 mg lyophilized vial requires 2.0 mL diluent for complete 50 mg/mL dissolution."
+    ]
   }
 ]

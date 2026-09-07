@@ -145,6 +145,7 @@
     "longDescription": "**What it is:** TB-500 is a synthetic version of the active healing region of Thymosin Beta-4, a naturally occurring protein found in high concentrations in blood platelets and wound fluid.\n\n**How it works:** Its primary mechanism is actin sequestration—it regulates actin, the essential protein cells use to build their internal skeleton, move, and heal. By upregulating actin, TB-500 accelerates the migration of endothelial cells and fibroblasts to wound sites while calming overactive inflammatory signals like NF-kB.\n\n**Why researchers study it:** Studied for broad systemic healing, cardiac muscle protection, reducing scar tissue and fibrosis, improving joint flexibility, and repairing skeletal muscle fibers.",
     "category": "Tissue Repair & Healing",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "tb-500",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -256,8 +257,7 @@
       "**Occasional Fatigue**: Temporary lethargy or tiredness reported during early loading cycles as the body prioritizes tissue repair processes.",
       "**Intermittent Dosing Cadence**: Typically researched on a twice-weekly loading schedule for 4 to 6 weeks, tapering to once weekly or bi-weekly maintenance.",
       "**Storage and Handling**: Highly stable in lyophilized powder; once mixed with Bacteriostatic Water, store strictly at 2°C–8°C away from heat and direct UV light."
-    ],
-    "storeProductHandle": "tb-500"
+    ]
   },
   {
     "id": "ghk-cu",
@@ -405,6 +405,7 @@
     "longDescription": "**What it is:** GHK Basic is the unchelated, copper-free version of the native Glycyl-L-Histidyl-L-Lysine tripeptide, allowing researchers to study the pure peptide carrier molecule independently from copper ions.\n\n**How it works:** Without a pre-bound copper ion, GHK Basic binds to endogenous trace copper and other minerals in biological fluids, naturally shuttling them into cells. It stimulates decorin synthesis, modulates inflammatory pathways, and supports extracellular matrix reorganization.\n\n**Why researchers study it:** Researched for tissue remodeling, cosmetic topical formulations, cellular antioxidant defenses, and as a gentle carrier peptide that avoids the localized stinging associated with pre-bound copper.",
     "category": "Tissue Repair & Healing",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "ghk-basic",
     "reconstitution": {
       "defaultVialNetMg": 50,
       "defaultDiluentMl": 2.5,
@@ -509,8 +510,7 @@
       "**Mild Injection Site Itching**: Occasional minor localized itching that resolves quickly without lasting irritation.",
       "**Lower Direct Copper Bioavailability**: Lacks the immediate copper delivery of GHK-Cu, meaning some copper-dependent enzymatic processes may proceed more gradually.",
       "**Proper Refrigeration Required**: Store reconstituted solution strictly at 2°C–8°C to prevent peptide chain breakdown."
-    ],
-    "storeProductHandle": "ghk-basic"
+    ]
   },
   {
     "id": "kpv",
@@ -780,6 +780,7 @@
     "longDescription": "**What it is:** Pentosan Polysulfate Sodium (PPS) is a semi-synthetic macromolecular carbohydrate polymer derived from beechwood hemicellulose, bearing structural similarities to glycosaminoglycans.\n\n**How it works:** PPS acts as a chondroprotective agent that protects joint cartilage. It inhibits cartilage-degrading enzymes (like ADAMTS-5 and MMP-13), stimulates hyaluronic acid synthesis in synovial fluid, improves subchondral bone microcirculation, and reduces bone marrow edema.\n\n**Why researchers study it:** Studied for osteoarthritis, degenerative joint disease, cartilage rebuilding, interstitial cystitis, and restoring fluid lubrication to arthritic joints.",
     "category": "Tissue Repair & Healing",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "pentosan-polysulfate",
     "reconstitution": {
       "defaultVialNetMg": 250,
       "defaultDiluentMl": 2.5,
@@ -890,8 +891,126 @@
       "**Gastrointestinal Sensitivity**: Mild nausea, loose stools, or abdominal discomfort can occur if administered on an empty stomach.",
       "**Temporary Hair Shedding (Telogen Effluvium)**: Rare, temporary hair thinning observed in extended high-dose animal models, reversing upon study cessation.",
       "**Precautions with Blood Thinners**: Should not be combined with anti-platelet or anticoagulant agents in laboratory models."
+    ]
+  },
+  {
+    "id": "snap-8",
+    "compoundName": "SNAP-8",
+    "handles": [
+      "snap-8",
+      "snap8",
+      "acetyl-octapeptide-3"
     ],
-    "storeProductHandle": "pentosan-polysulfate"
+    "subtitle": "Acetyl Octapeptide-3 Biomimetic SNARE Complex Competitive Inhibitor Standard",
+    "longDescription": "**What it is:** SNAP-8 (Acetyl Octapeptide-3) is an advanced elongation of the hexapeptide Argireline, composed of an 8-amino-acid synthetic sequence (Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2) designed for targeted dermatological and tissue repair research.\n\n**How it works:** SNAP-8 mimics the N-terminal end of SNAP-25, competitively displacing SNAP-25 from the ternary SNARE (Soluble N-ethylmaleimide-sensitive factor Attachment protein REceptor) complex. By destabilizing the SNARE complex, it inhibits calcium-dependent catecholamine and acetylcholine exocytosis at the neuromuscular junction, attenuating repeated micro-contractions and relaxing muscle-induced skin tension.\n\n**Why researchers study it:** Researched for cosmetic anti-wrinkle depth reduction, dermal matrix elastin preservation, non-invasive expression line modulation, and topical skin rejuvenation.",
+    "category": "Tissue Repair & Healing",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "snap-8",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Sterile Saline",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until crystal clear. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseMcg": 250,
+      "cadence": "1x Daily (SubQ or topical formulation research)",
+      "halfLife": "~2 to 3 Hours (Local tissue bio-retention extends inhibitory effect up to 24h)",
+      "typicalProtocolDuration": "6 to 8 Weeks",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Local Neuromuscular Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "100 mcg daily",
+          "doseMcg": 100,
+          "cadence": "1x Daily",
+          "focus": "Initial competitive displacement of SNAP-25 in the SNARE core complex",
+          "notes": "2.0 units (0.02 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Expression Attenuation Phase",
+          "timeframe": "Weeks 2–6",
+          "doseDisplay": "250 mcg daily",
+          "doseMcg": 250,
+          "cadence": "1x Daily",
+          "focus": "Maximal attenuation of catecholamine exocytosis and dermal matrix smoothing",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Monitoring persistence of micro-wrinkle relaxation post-stimulation",
+          "notes": "2–4 week cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "100 mcg",
+          "doseMcg": 100,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "250 mcg (Standard Target)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 mcg (Intensive Target)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "868844-74-0",
+      "sequenceOrFormula": "Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2",
+      "molecularWeightGPerMol": 1075.16
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 18498523",
+        "notes": "Blanes-Mira et al. A synthetic octapeptide (SNAP-8) derived from SNAP-25 inhibits neurotransmitter exocytosis and reduces wrinkles."
+      },
+      {
+        "sourceReference": "PubMed PMID: 16117738",
+        "notes": "Gutiérrez et al. A peptide that mimics the C-terminal sequence of SNAP-25 inhibits neurotransmitter release."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Competitive SNARE Complex Inhibition**: Destabilizes vesicle fusion machinery to modulate acetylcholine release.",
+      "**Expression Line Attenuation**: Reduces the depth of dynamic facial lines created by repeated muscle contractions.",
+      "**High Dermatological Tolerability**: Safe, non-paralytic biological modulation of local neuromuscular tone.",
+      "**Dermal Collagen Protection**: Prevents mechanical micro-trauma to underlying dermal collagen bundles.",
+      "**Synergistic with Matrix Peptides**: Amplifies skin smoothing when combined with GHK-Cu or copper tripeptides in research formulations."
+    ],
+    "adverseObservations": [
+      "**High Biocompatibility Profile**: Minimal adverse findings reported in peer-reviewed cutaneous and subcutaneous assays.",
+      "**Optimal Diluent Volume**: Reconstitute gently in 2.0 mL Bacteriostatic Water or physiological saline.",
+      "**Strict Light Protection**: Peptide sequence contains methionine; shield reconstituted solutions from direct UV light."
+    ]
   },
   {
     "id": "semaglutide",
@@ -925,7 +1044,7 @@
         {
           "stage": "Phase 1: Initiation & GI Acclimatization",
           "timeframe": "Weeks 1–4",
-          "doseDisplay": "0.25 mg weekly",
+          "doseDisplay": "0.25 mg weekly ",
           "doseMcg": 250,
           "cadence": "1x Every 7 Days",
           "focus": "GLP-1 receptor upregulation and gastric emptying deceleration calibration",
@@ -934,7 +1053,7 @@
         {
           "stage": "Phase 2: Intermediate Escalation",
           "timeframe": "Weeks 5–8",
-          "doseDisplay": "0.50 mg weekly",
+          "doseDisplay": "0.50 mg weekly ",
           "doseMcg": 500,
           "cadence": "1x Every 7 Days",
           "focus": "Sustained postprandial glycemic suppression and central hypothalamic pro-opiomelanocortin (POMC) activation",
@@ -943,7 +1062,7 @@
         {
           "stage": "Phase 3: Therapeutic Research Target",
           "timeframe": "Weeks 9–12",
-          "doseDisplay": "1.00 mg weekly",
+          "doseDisplay": "1.00 mg weekly ",
           "doseMcg": 1000,
           "cadence": "1x Every 7 Days",
           "focus": "Significant visceral adipose thermogenesis and continuous satiety signaling",
@@ -1075,7 +1194,7 @@
         {
           "stage": "Phase 1: Titration Initiation",
           "timeframe": "Weeks 1–4",
-          "doseDisplay": "2.5 mg weekly",
+          "doseDisplay": "2.5 mg weekly ",
           "doseMcg": 2500,
           "cadence": "1x Every 7 Days",
           "focus": "Receptor acclimatization, GIP lipid buffering, and gastrointestinal tolerance calibration",
@@ -1084,7 +1203,7 @@
         {
           "stage": "Phase 2: Primary Response Escalation",
           "timeframe": "Weeks 5–8",
-          "doseDisplay": "5.0 mg weekly",
+          "doseDisplay": "5.0 mg weekly ",
           "doseMcg": 5000,
           "cadence": "1x Every 7 Days",
           "focus": "Adipose thermogenesis, uncoupling protein-1 (UCP-1) stimulation, and insulin sensitivity enhancement",
@@ -1093,7 +1212,7 @@
         {
           "stage": "Phase 3: Advanced Metabolic Assays",
           "timeframe": "Weeks 9–12",
-          "doseDisplay": "7.5 mg weekly",
+          "doseDisplay": "7.5 mg weekly ",
           "doseMcg": 7500,
           "cadence": "1x Every 7 Days",
           "focus": "Maximum dual-receptor synergy and continuous hepatic triglyceride clearance",
@@ -1102,7 +1221,7 @@
         {
           "stage": "Phase 4: Ceiling Efficacy Window",
           "timeframe": "Weeks 13+",
-          "doseDisplay": "10.0 mg weekly",
+          "doseDisplay": "10.0 mg weekly ",
           "doseMcg": 10000,
           "cadence": "1x Every 7 Days",
           "focus": "Ceiling efficacy assays in intensive metabolic research models",
@@ -1205,7 +1324,7 @@
         {
           "stage": "Phase 1: Triple-Receptor Initiation",
           "timeframe": "Weeks 1–4",
-          "doseDisplay": "2.0 mg weekly",
+          "doseDisplay": "2.0 mg weekly ",
           "doseMcg": 2000,
           "cadence": "1x Every 7 Days",
           "focus": "Initial glucagon receptor recruitment without compensatory tachycardia; glycemic and satiety baseline",
@@ -1214,7 +1333,7 @@
         {
           "stage": "Phase 2: Glucagon Thermogenic Escalation",
           "timeframe": "Weeks 5–8",
-          "doseDisplay": "4.0 mg weekly",
+          "doseDisplay": "4.0 mg weekly ",
           "doseMcg": 4000,
           "cadence": "1x Every 7 Days",
           "focus": "Hepatic lipid oxidation stimulation, uncoupling protein activation, and robust energy expenditure enhancement",
@@ -1223,7 +1342,7 @@
         {
           "stage": "Phase 3: High-Output Tri-Agonism",
           "timeframe": "Weeks 9–12",
-          "doseDisplay": "8.0 mg weekly",
+          "doseDisplay": "8.0 mg weekly ",
           "doseMcg": 8000,
           "cadence": "1x Every 7 Days",
           "focus": "Near-total hepatic steatosis clearance and peak triple-pathway metabolic overdrive",
@@ -1232,7 +1351,7 @@
         {
           "stage": "Phase 4: Maximum Protocol Ceiling",
           "timeframe": "Weeks 13+",
-          "doseDisplay": "12.0 mg weekly",
+          "doseDisplay": "12.0 mg weekly ",
           "doseMcg": 12000,
           "cadence": "1x Every 7 Days",
           "focus": "Maximum clinical trial endpoint evaluation",
@@ -1341,7 +1460,7 @@
         {
           "stage": "Phase 1: Initiation & Tolerance Calibration",
           "timeframe": "Weeks 1–4",
-          "doseDisplay": "0.30 mg weekly",
+          "doseDisplay": "0.30 mg weekly ",
           "doseMcg": 300,
           "cadence": "1x Every 7 Days",
           "focus": "Amylin receptor saturation and homeostatic satiety signaling without acute emetic response",
@@ -1350,7 +1469,7 @@
         {
           "stage": "Phase 2: Escalation Step 1",
           "timeframe": "Weeks 5–8",
-          "doseDisplay": "0.60 mg weekly",
+          "doseDisplay": "0.60 mg weekly ",
           "doseMcg": 600,
           "cadence": "1x Every 7 Days",
           "focus": "Synergistic gastric tone delay and central area postrema activation",
@@ -1359,7 +1478,7 @@
         {
           "stage": "Phase 3: Therapeutic Target Step 2",
           "timeframe": "Weeks 9–12",
-          "doseDisplay": "1.20 mg weekly",
+          "doseDisplay": "1.20 mg weekly ",
           "doseMcg": 1200,
           "cadence": "1x Every 7 Days",
           "focus": "Maximum independent amylinergic satiety induction (or co-infusion with GLP-1 agonists)",
@@ -1368,7 +1487,7 @@
         {
           "stage": "Phase 4: Full Maintenance Ceiling",
           "timeframe": "Weeks 13+",
-          "doseDisplay": "2.40 mg weekly",
+          "doseDisplay": "2.40 mg weekly ",
           "doseMcg": 2400,
           "cadence": "1x Every 7 Days",
           "focus": "Ceiling trial efficacy endpoint evaluation",
@@ -1463,6 +1582,7 @@
     "longDescription": "**What it is:** Mazdutide (IBI362) is a synthetic dual GLP-1 and glucagon receptor agonist peptide with a long-acting fatty acid chain, engineered to mimic the body's natural oxyntomodulin hormone.\n\n**How it works:** By stimulating both GLP-1 and glucagon receptors, Mazdutide balances appetite reduction with enhanced liver fat metabolism and increased caloric expenditure. It specifically targets visceral abdominal fat and liver fat accumulation.\n\n**Why researchers study it:** Studied for high-rate weight loss, targeted reduction of visceral belly fat, clearing fatty liver disease, and improving blood lipid and uric acid levels.",
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "mazdutide",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -1482,7 +1602,7 @@
         {
           "stage": "Phase 1: Initiation Step",
           "timeframe": "Weeks 1–4",
-          "doseDisplay": "3.0 mg weekly",
+          "doseDisplay": "3.0 mg weekly ",
           "doseMcg": 3000,
           "cadence": "1x Every 7 Days",
           "focus": "Dual GLP-1/GCGR receptor baseline adaptation and gastrointestinal tolerance calibration",
@@ -1568,8 +1688,7 @@
       "**Digestive System Adjustment**: Standard incretin side effects (nausea, mild diarrhea, decreased appetite) during dose escalation.",
       "**Mild Resting Pulse Increase**: Glucagon component may modestly increase heart rate by 2–4 beats per minute.",
       "**Hydration Diligence**: Ensure adequate daily fluids to support kidney filtration and uric acid clearance."
-    ],
-    "storeProductHandle": "mazdutide"
+    ]
   },
   {
     "id": "survodutide",
@@ -1583,6 +1702,7 @@
     "longDescription": "**What it is:** Survodutide (BI 456906) is a dual glucagon/GLP-1 receptor agonist peptide specifically engineered with high glucagon receptor activity relative to its GLP-1 action.\n\n**How it works:** It activates glucagon receptors in the liver to dramatically speed up fat breakdown and energy expenditure, while simultaneously activating GLP-1 receptors in the brain to keep appetite under control.\n\n**Why researchers study it:** Researched as a prime candidate for curing MASH/NASH (Metabolic Dysfunction-Associated Steatohepatitis), reversing advanced liver fibrosis, and driving significant total-body weight reduction.",
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "survodutide",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -1602,7 +1722,7 @@
         {
           "stage": "Phase 1: Initial Calibration Step 1",
           "timeframe": "Weeks 1–4",
-          "doseDisplay": "0.60 mg weekly",
+          "doseDisplay": "0.60 mg weekly ",
           "doseMcg": 600,
           "cadence": "1x Every 7 Days",
           "focus": "Dual GCGR/GLP-1 receptor acclimatization and baseline glycemic control",
@@ -1611,7 +1731,7 @@
         {
           "stage": "Phase 2: Escalation Step 2",
           "timeframe": "Weeks 5–8",
-          "doseDisplay": "1.20 mg weekly",
+          "doseDisplay": "1.20 mg weekly ",
           "doseMcg": 1200,
           "cadence": "1x Every 7 Days",
           "focus": "Hepatic fat oxidation activation and systemic energy expenditure elevation",
@@ -1620,7 +1740,7 @@
         {
           "stage": "Phase 3: Therapeutic Target Step 3",
           "timeframe": "Weeks 9–12",
-          "doseDisplay": "2.40 mg weekly",
+          "doseDisplay": "2.40 mg weekly ",
           "doseMcg": 2400,
           "cadence": "1x Every 7 Days",
           "focus": "MASH / NASH hepatic fibrosis reversal assays and profound weight reduction",
@@ -1704,8 +1824,7 @@
       "**Gastrointestinal Symptoms**: Nausea and loose stools can occur during early titration; gradual escalation minimises distress.",
       "**Heart Rate Sensitivity**: Due to glucagon receptor potency, resting heart rate should be monitored.",
       "**Proper Reconstitution Protocols**: Dissolve gently in Bacteriostatic Water without vortexing; refrigerate at 2°C–8°C."
-    ],
-    "storeProductHandle": "survodutide"
+    ]
   },
   {
     "id": "aod-9604",
@@ -1956,6 +2075,7 @@
     "longDescription": "**What it is:** Tesofensine is a novel triple monoamine reuptake inhibitor that centrally inhibits the reuptake of dopamine, noradrenaline (norepinephrine), and serotonin in the synaptic cleft.\n\n**How it works:** Originally developed for neurodegenerative conditions like Parkinson's and Alzheimer's, researchers discovered that its triple reuptake blockade potently suppresses appetite and raises resting energy expenditure. By keeping dopamine and norepinephrine elevated in brain reward pathways, it eliminates food cravings and emotional eating while stimulating sympathetic fat burning.\n\n**Why researchers study it:** Studied for massive long-term weight reduction (10–12% in clinical trials), suppressing emotional and binge eating, neuroprotection, and increasing daytime alertness.",
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "tesofensine",
     "reconstitution": {
       "defaultVialNetMg": 100,
       "defaultDiluentMl": 20,
@@ -2062,8 +2182,7 @@
       "**Insomnia or Sleep Disturbance**: Increased alertness can interfere with sleep if administered late in the day; best administered early morning.",
       "**Dry Mouth (Xerostomia) and Mild Jitteriness**: Common anticholinergic/noradrenergic side effects; maintain constant hydration.",
       "**Avoid Combining with SSRIs or Stimulants**: Strictly avoid combining with other serotonergic or stimulant compounds to prevent serotonin syndrome."
-    ],
-    "storeProductHandle": "tesofensine"
+    ]
   },
   {
     "id": "liraglutide",
@@ -2076,6 +2195,7 @@
     "longDescription": "**What it is:** Liraglutide is a once-daily synthetic GLP-1 receptor agonist with 97% sequence homology to native human GLP-1, stabilized with a C16 fatty acid chain that extends its half-life to 13 hours.\n\n**How it works:** It binds to pancreatic GLP-1 receptors to promote insulin secretion in response to elevated blood glucose and reduces glucagon output. In the brain and gut, it slows stomach emptying and promotes satiety, helping reduce daily food consumption.\n\n**Why researchers study it:** Extensively studied as an authoritative benchmark for daily GLP-1 therapy in weight control, diabetes management, kidney protection, and cardiovascular risk reduction.",
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "liraglutide",
     "reconstitution": {
       "defaultVialNetMg": 18,
       "defaultDiluentMl": 3,
@@ -2095,7 +2215,7 @@
         {
           "stage": "Phase 1: Initial Calibration",
           "timeframe": "Week 1",
-          "doseDisplay": "0.60 mg daily",
+          "doseDisplay": "0.60 mg daily ",
           "doseMcg": 600,
           "cadence": "1x Daily (SubQ)",
           "focus": "Gastrointestinal adaptation and initial glucose-dependent insulin secretion",
@@ -2104,7 +2224,7 @@
         {
           "stage": "Phase 2: Escalation Step 1",
           "timeframe": "Week 2",
-          "doseDisplay": "1.20 mg daily",
+          "doseDisplay": "1.20 mg daily ",
           "doseMcg": 1200,
           "cadence": "1x Daily",
           "focus": "Appetite suppression and glycemic control stabilization",
@@ -2113,7 +2233,7 @@
         {
           "stage": "Phase 3: Therapeutic Step 2",
           "timeframe": "Week 3",
-          "doseDisplay": "1.80 mg daily",
+          "doseDisplay": "1.80 mg daily ",
           "doseMcg": 1800,
           "cadence": "1x Daily",
           "focus": "Visceral adiposity reduction and continuous satiety maintenance",
@@ -2122,7 +2242,7 @@
         {
           "stage": "Phase 4: High Output Protocol",
           "timeframe": "Week 4+",
-          "doseDisplay": "3.00 mg daily",
+          "doseDisplay": "3.00 mg daily ",
           "doseMcg": 3000,
           "cadence": "1x Daily",
           "focus": "Maximum clinical trial endpoint evaluation",
@@ -2198,8 +2318,242 @@
       "**Transient Nausea & Reflux**: Nausea and stomach discomfort occur during initial dose titration; escalations in 0.6 mg weekly increments prevent distress.",
       "**Injection Site Rotating**: Subcutaneous administration site should be rotated daily across abdomen, thigh, and arm.",
       "**Refrigerate at 2°C–8°C**: Once opened, cartridges or vials must remain refrigerated."
+    ]
+  },
+  {
+    "id": "lemon-bottle",
+    "compoundName": "Lemon Bottle",
+    "handles": [
+      "lemon-bottle",
+      "lemonbottle",
+      "lemon-bottle-lipolysis"
     ],
-    "storeProductHandle": "liraglutide"
+    "subtitle": "High-Concentration Riboflavin / Bromelain / Lecithin Adipocyte Lipolytic Solution Standard",
+    "longDescription": "**What it is:** Lemon Bottle is a premium non-detergent lipolytic research formulation combining high-potency Riboflavin (Vitamin B2), Lecithin, and Bromelain (Ananas comosus proteolytic enzyme) optimized for targeted fat cell metabolism studies.\n\n**How it works:** Unlike sodium deoxycholate solutions that cause non-specific tissue necrosis, Lemon Bottle acts via metabolic adipocyte membrane destabilization. Lecithin breaks down localized triglyceride droplets into micro-emulsions; Bromelain hydrolyzes structural adipocyte collagen membranes while suppressing inflammatory edema; and Riboflavin (B2) accelerates cellular flavin adenine dinucleotide (FAD) beta-oxidation, mobilizing free fatty acids for metabolic clearance.\n\n**Why researchers study it:** Researched for targeted localized subcutaneous fat reduction (submental fullness, abdominal fat pads), accelerating adipocyte lipid metabolism without prolonged swelling or tissue fibrosis.",
+    "category": "Metabolic Signaling & Incretins",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "lemon-bottle",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 10,
+      "solvent": "Pre-formulated Sterile Aqueous Solution (Ready to Draw)",
+      "dissolutionMethod": "Supplied as a ready-to-use liquid solution. Invert vial gently 3 times before laboratory sampling. Do not dilute further.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Slightly yellow clear liquid. Keep refrigerated at 2°C–8°C. Protect from intense light."
+    },
+    "dosing": {
+      "standardDoseDisplay": "1.0 mL – 3.0 mL per target localized zone",
+      "standardDoseMcg": 1000,
+      "cadence": "1x Every 7 to 10 Days (Localized SubQ research grid)",
+      "halfLife": "~24 to 48 Hours (Localized tissue enzymatic action)",
+      "typicalProtocolDuration": "3 to 5 Sessions",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Session 1: Initial Local Tissue Tolerance",
+          "timeframe": "Day 1",
+          "doseDisplay": "1.0 mL – 2.0 mL total per zone",
+          "doseMcg": 1000,
+          "cadence": "Single session (0.2 mL per grid point)",
+          "focus": "Observation of local adipocyte permeability and absence of excessive inflammatory swelling",
+          "notes": "10–20 units (0.1–0.2 mL) per micro-injection point"
+        },
+        {
+          "stage": "Sessions 2–4: Target Lipolysis Consolidation",
+          "timeframe": "Weeks 2–6 (Every 7–10 days)",
+          "doseDisplay": "2.0 mL – 3.0 mL total per zone",
+          "doseMcg": 2000,
+          "cadence": "1x Every 7 to 10 Days",
+          "focus": "Maximal enzymatic lipid emulsion, bromelain fibrillar breakdown, and lymphatic clearance",
+          "notes": "Spaced 1 cm apart in a uniform subcutaneous grid"
+        },
+        {
+          "stage": "Post-Protocol Evaluation",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "Observation Window",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Measurement of localized skinfold thickness reduction and tissue contour remodeling",
+          "notes": "Hydration protocols accelerate lipid transport"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe or 1.0 mL Tuberculin Syringe",
+      "standardIUDisplay": "20.0 units (0.20 mL per grid point)",
+      "graduations": [
+        {
+          "doseDisplay": "0.1 mL (Micro-Grid Point)",
+          "doseMcg": 100,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "0.2 mL (Standard Grid Point)",
+          "doseMcg": 200,
+          "volumeMl": 0.2,
+          "syringeIU": 20,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.0 mL (Total Zone Volume)",
+          "doseMcg": 1000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "2°C–8°C refrigerated in original amber packaging (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 30 days after opening vial",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "sequenceOrFormula": "Riboflavin (B2) + Lecithin + Bromelain Complex Solution"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15798993",
+        "notes": "Rotunda et al. Lipomas treated with subcutaneous deoxycholate vs non-detergent lipolytic agents."
+      },
+      {
+        "sourceReference": "PubMed PMID: 23304525",
+        "notes": "Pavan et al. Properties and therapeutic application of bromelain: a review (Biotechnology Research International)."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Non-Necrotic Adipocyte Lipolysis**: Destabilizes fat cell membranes metabolically without causing non-specific tissue destruction.",
+      "**Minimal Post-Procedure Swelling**: Bromelain enzyme inhibits bradykinin and prostaglandin E2, suppressing local inflammatory edema.",
+      "**Accelerated FAD Beta-Oxidation**: High-potency Riboflavin (Vitamin B2) fuels enzymatic cellular breakdown of released fatty acids.",
+      "**Lecithin Triglyceride Emulsification**: Breaks dense lipid stores into tiny micro-droplets easily transported by lymphatic vessels.",
+      "**Precise Localized Contouring**: Optimized for selective subcutaneous fat deposits resistant to generalized caloric deficits."
+    ],
+    "adverseObservations": [
+      "**Mild Transient Bruising**: Mechanical micro-needle insertion can produce small local bruising at injection points.",
+      "**Hydration Requirement**: Adequate fluid throughput in research subjects is necessary to support optimal lymphatic drainage.",
+      "**Light Sensitivity**: Riboflavin degrades upon UV exposure; maintain solution in shaded, refrigerated storage."
+    ]
+  },
+  {
+    "id": "lipo-c-b12",
+    "compoundName": "Lipo-C + B12",
+    "handles": [
+      "lipo-c-b12",
+      "lipo-c",
+      "lipotropic-b12",
+      "mic-b12"
+    ],
+    "subtitle": "Methionine / Inositol / Choline + Cyanocobalamin Hepatic Lipotropic Mobilization Standard",
+    "longDescription": "**What it is:** Lipo-C + B12 is an aqueous lipotropic formulation combining essential methyl donors and cofactors: L-Carnitine, Methionine, Inositol, Choline (MIC), and Cyanocobalamin (Vitamin B12).\n\n**How it works:** Choline and Inositol serve as essential structural components of phosphatidylcholine, necessary for the assembly and hepatic export of very-low-density lipoproteins (VLDL), preventing hepatic lipid accumulation. L-Carnitine shuttles long-chain fatty acids across the inner mitochondrial membrane via the carnitine palmitoyltransferase (CPT-1) system for ATP generation. Methionine and Vitamin B12 act as core methyl donors in the methionine-homocysteine cycle, regenerating S-adenosylmethionine (SAMe) and optimizing cellular energy metabolism.\n\n**Why researchers study it:** Studied for non-alcoholic fatty liver resistance, accelerating hepatic fat export, boosting mitochondrial ATP production, and improving metabolic rate in clinical research.",
+    "category": "Metabolic Signaling & Incretins",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "lipo-c-b12",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 10,
+      "solvent": "Pre-formulated Sterile Aqueous Solution (Ready to Draw)",
+      "dissolutionMethod": "Supplied as a ready-to-use liquid solution. Invert vial gently 3 times before laboratory sampling. Do not dilute further.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Clear red/pinkish liquid (due to B12 cyanocobalamin). Store at 15°C–25°C or refrigerated. Protect from light."
+    },
+    "dosing": {
+      "standardDoseDisplay": "1.0 mL (Intramuscular or SubQ 1x to 2x weekly)",
+      "standardDoseMcg": 1000,
+      "cadence": "1x to 2x Weekly",
+      "halfLife": "~24 Hours",
+      "typicalProtocolDuration": "6 to 12 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Metabolic Priming",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "1.0 mL weekly",
+          "doseMcg": 1000,
+          "cadence": "1x Weekly",
+          "focus": "Hepatic methyl donor saturation and baseline carnitine pool replenishment",
+          "notes": "1.0 mL drawn via sterile syringe"
+        },
+        {
+          "stage": "Phase 2: Target Lipotropic Export Phase",
+          "timeframe": "Weeks 3–10",
+          "doseDisplay": "1.0 mL (1x to 2x weekly)",
+          "doseMcg": 1000,
+          "cadence": "1x or 2x Weekly (Every 3–4 days)",
+          "focus": "Maximal VLDL hepatic lipid export, mitochondrial fatty acid oxidation, and ATP generation",
+          "notes": "1.0 mL per administration"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 11–12",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Assessment of sustained hepatic enzyme stability and body composition changes",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard 1.0 mL or 3.0 mL Luer-Lock Syringe",
+      "standardIUDisplay": "1.0 mL (100 units on U-100 syringe)",
+      "graduations": [
+        {
+          "doseDisplay": "0.5 mL (Half Dose)",
+          "doseMcg": 500,
+          "volumeMl": 0.5,
+          "syringeIU": 50,
+          "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.0 mL (Standard Dose)",
+          "doseMcg": 1000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.5 mL (Maximum Target)",
+          "doseMcg": 1500,
+          "volumeMl": 1.5,
+          "syringeIU": 150,
+          "tickLabel": "1.5 mL on 3.0 mL syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "15°C–25°C controlled room temperature or refrigerated at 2°C–8°C (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 60 days after opening vial",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "sequenceOrFormula": "Methionine + Inositol + Choline + L-Carnitine + Cyanocobalamin (B12)"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15159228",
+        "notes": "Zeisel et al. Choline: critical role during fetal development and dietary requirements in adults."
+      },
+      {
+        "sourceReference": "PubMed PMID: 15005834",
+        "notes": "Vance et al. Phosphatidylcholine and hepatic lipid secretion: role of PEMT and CDP-choline pathways."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Hepatic VLDL Lipid Export**: Choline and inositol facilitate the synthesis of lipoproteins that carry fat away from the liver.",
+      "**Mitochondrial Fatty Acid Transport**: L-Carnitine transfers long-chain acyl-CoA into mitochondrial matrix for beta-oxidation.",
+      "**Enhanced Cellular Energy & Red Cell Synthesis**: Vitamin B12 cofactor drives cellular ATP synthesis and combats research fatigue.",
+      "**Homocysteine & Methylation Support**: Methionine provides active methyl groups for detoxifying metabolic pathways.",
+      "**Non-Stimulant Metabolic Acceleration**: Promotes natural fat turnover without elevating heart rate or blood pressure."
+    ],
+    "adverseObservations": [
+      "**Mild Post-Injection Soreness**: Intramuscular administration may cause mild, temporary muscle tenderness.",
+      "**Chromaturia (Red/Pink Urine)**: Harmless pinkish or reddish tint in urine following administration due to excess water-soluble Vitamin B12 excretion.",
+      "**Light Protection**: Vitamin B12 is sensitive to photodegradation; keep vial in protective packaging."
+    ]
   },
   {
     "id": "ipamorelin",
@@ -2336,6 +2690,7 @@
     "longDescription": "**What it is:** CJC-1295 No DAC (also known as Mod GRF 1-29) is a synthetic 29-amino-acid peptide analogue of natural Growth Hormone Releasing Hormone (GHRH), modified with 4 amino acid substitutions to increase resistance to enzyme breakdown.\n\n**How it works:** It acts directly on the GHRH receptor on pituitary cells to stimulate the synthesis and natural pulsatile release of endogenous growth hormone. Because it lacks a Drug Affinity Complex (DAC), its half-life is approximately 30 minutes, allowing the pituitary gland to release GH in natural, healthy physiological pulses without exhausting the gland.\n\n**Why researchers study it:** Studied in synergy with Ipamorelin for deep sleep, lean muscle preservation, cellular rejuvenation, and fat loss while preserving natural pituitary pulsatility.",
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "cjc-1295-no-dac",
     "reconstitution": {
       "defaultVialNetMg": 5,
       "defaultDiluentMl": 2.5,
@@ -2442,8 +2797,7 @@
       "**Mild Injection Site Stinging**: Temporary redness or tingling at the subcutaneous injection point.",
       "**Water Retention**: Mild extracellular water holding that typically stabilizes after the first two weeks.",
       "**Food Interaction**: Must be administered during a fasted state (at least 90–120 minutes away from carbohydrate/fat intake) for optimal results."
-    ],
-    "storeProductHandle": "cjc-1295-no-dac"
+    ]
   },
   {
     "id": "cjc-1295-with-dac",
@@ -2457,6 +2811,7 @@
     "longDescription": "**What it is:** CJC-1295 with DAC is a synthetic GHRH analogue conjugated to a Drug Affinity Complex (DAC) that binds irreversibly to circulating serum albumin, extending its biological half-life to 6–8 days.\n\n**How it works:** By binding to blood albumin, CJC-1295 with DAC provides continuous, 24/7 stimulation of the pituitary GHRH receptor. This drives a sustained, around-the-clock elevation in baseline growth hormone and circulating IGF-1 levels from a single weekly or bi-weekly dose.\n\n**Why researchers study it:** Researched for long-acting growth hormone elevation, continuous tissue healing, sustained muscle preservation, and anti-catabolic support without requiring daily injections.",
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "cjc-1295-with-dac",
     "reconstitution": {
       "defaultVialNetMg": 2,
       "defaultDiluentMl": 2,
@@ -2556,8 +2911,7 @@
       "**Peripheral Water Retention & Carpal Pressure**: Sustained IGF-1 levels can cause fluid retention in the wrists or ankles (mild numbness/tingling).",
       "**Occasional Injection Site Lump**: Mild subcutaneous firmness at the injection site that resolves over several days.",
       "**Mandatory Washout Cycles**: Research protocols typically recommend an 8-week cycle followed by 4–8 weeks off to allow pituitary receptors to reset."
-    ],
-    "storeProductHandle": "cjc-1295-with-dac"
+    ]
   },
   {
     "id": "tesamorelin",
@@ -2685,6 +3039,7 @@
     "longDescription": "**What it is:** Sermorelin (GRF 1-29) is a synthetic 29-amino-acid peptide representing the exact, shortest functional biological fragment of natural human Growth Hormone-Releasing Hormone (GHRH).\n\n**How it works:** It binds directly to pituitary GHRH receptors, encouraging the pituitary gland to naturally produce and secrete endogenous human growth hormone in physiological bursts. Because it triggers the body's own production rather than replacing hormone externally, somatostatin negative feedback remains fully intact, eliminating the risk of excess growth hormone overdosing.\n\n**Why researchers study it:** Studied as a gentle, natural anti-aging therapy, for restoring youthful sleep quality, boosting skin elasticity and muscle tone, and supporting natural hormone restoration.",
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "sermorelin",
     "reconstitution": {
       "defaultVialNetMg": 5,
       "defaultDiluentMl": 2.5,
@@ -2791,8 +3146,7 @@
       "**Injection Site Sensitivity**: Minor redness or mild itching at the subcutaneous injection point.",
       "**Short Biological Half-Life**: Cleared quickly (half-life ~10–12 minutes); consistency in nightly administration before sleep is key.",
       "**Reconstitution & Cold Storage**: Keep lyophilized vials frozen; once reconstituted with Bacteriostatic Water, store at 2°C–8°C and use within 28 days."
-    ],
-    "storeProductHandle": "sermorelin"
+    ]
   },
   {
     "id": "ghrp-2",
@@ -3031,6 +3385,7 @@
     "longDescription": "**What it is:** Hexarelin (Examorelin) is a synthetic hexapeptide that is recognized scientifically as the single most potent growth hormone secretagogue in the entire GHRP family.\n\n**How it works:** It binds strongly to the ghrelin receptor in the pituitary gland and also binds to CD36 receptors in cardiac and vascular tissues. It produces the largest growth hormone pulse of any peptide secretagogue, without increasing appetite. Furthermore, its CD36 binding gives it unmatched, direct cardioprotective and anti-ischemic properties.\n\n**Why researchers study it:** Studied for acute cardiovascular protection following heart attacks, intense tissue repair, severe tendon regeneration, and maximum growth hormone surges.",
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "hexarelin",
     "reconstitution": {
       "defaultVialNetMg": 5,
       "defaultDiluentMl": 2.5,
@@ -3130,8 +3485,7 @@
       "**Cortisol & Prolactin Elevation**: Noticeably elevates both cortisol and prolactin levels at standard doses.",
       "**Temporary Flushing & Blood Pressure Shifts**: Vasodilation can cause brief flushing, warmth, or mild dizziness immediately after injection.",
       "**Mandatory Rest Period**: Requires at least a 4-week washout between cycles to restore full pituitary sensitivity."
-    ],
-    "storeProductHandle": "hexarelin"
+    ]
   },
   {
     "id": "mk-677",
@@ -3145,6 +3499,7 @@
     "longDescription": "**What it is:** MK-677 (also known as Ibutamoren) is an orally active, non-peptide growth hormone secretagogue that functions as a potent, long-acting ghrelin receptor agonist.\n\n**How it works:** It binds to the ghrelin/GHS-R1a receptor in the brain and pituitary gland, sustained by a long biological half-life of 24 hours. A single oral dose stimulates continuous, multi-pulsatile growth hormone and IGF-1 secretion around the clock, without requiring any injections.\n\n**Why researchers study it:** Studied for combating muscle wasting, improving bone mineral density, increasing deep sleep stages, accelerating tendon repair, and enhancing overall body vitality through simple oral administration.",
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "mk-677",
     "reconstitution": {
       "defaultVialNetMg": 750,
       "defaultDiluentMl": 30,
@@ -3245,8 +3600,536 @@
       "**Water Retention (Edema)**: Mild swelling in hands and lower legs is common during early weeks as intracellular hydration increases.",
       "**Mild Insulin Sensitivity Shift**: Elevated growth hormone over long periods can mildly reduce insulin sensitivity; monitoring fasting blood glucose is recommended.",
       "**Morning Grogginess**: If taken too late in the evening, enhanced deep sleep can cause temporary lethargy upon waking."
+    ]
+  },
+  {
+    "id": "hgh-somatropin",
+    "compoundName": "HGH (Somatropin 191AA)",
+    "handles": [
+      "hgh-somatropin",
+      "hgh",
+      "somatropin",
+      "hgh-somatropin-laboratory-handling",
+      "hgh-24iu",
+      "hgh-15iu"
     ],
-    "storeProductHandle": "mk-677"
+    "subtitle": "Recombinant 191-Amino-Acid Somatropin Growth Hormone Receptor (GHR) Agonist Standard",
+    "longDescription": "**What it is:** Recombinant Somatropin is a 191-amino-acid single-chain polypeptide hormone identical in sequence and tertiary conformation to native human pituitary growth hormone. Synthesized with two critical intramolecular disulfide bridges (Cys53–Cys165 and Cys182–Cys189), this authentic 191AA formulation is free of the non-human N-terminal methionine found in older 192AA somatrem variants, eliminating anti-hGH antibody formation.\n\n**How it works:** Somatropin binds extracellular Growth Hormone Receptors (GHR), inducing receptor homodimerization and intracellular signaling via the JAK2/STAT5b pathway. In hepatic tissue, this cascades into transcription and secretion of Insulin-like Growth Factor 1 (IGF-1) alongside ternary circulating carriers (IGFBP-3 and ALS). Concurrently, Somatropin exerts direct non-IGF-1-dependent lipolytic action in adipocytes by activating hormone-sensitive lipase (HSL) and downregulating lipoprotein lipase (LPL). In musculoskeletal tissues, it upregulates type I and type III collagen synthesis, stimulates chondrocyte proliferation in articular cartilage, and enhances cellular nitrogen retention.\n\n**Why researchers study it:** Researched extensively in cellular models of tendon, ligament, and fascial extracellular matrix regeneration, deep slow-wave somatotropic pulsatility, lipid oxidation without glycemic degradation, and endocrine longevity signaling.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "hgh-somatropin",
+    "purityStandard": "≥99.0% (Recombinant High-Resolution RP-HPLC & SEC-HPLC Standard)",
+    "reconstitution": {
+      "defaultVialNetMg": 8,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Direct 2.0 mL diluent slowly down the glass wall. Swirl in horizontal circular motions for 60 seconds until crystal-clear. Never shake or vortex; mechanical agitation shears the tertiary protein structure and causes irreversible fibrillation.",
+      "resultingConcentrationMgPerMl": 4,
+      "handlingRule": "Crystal-clear aqueous solution. Inspect against a dark backdrop. Do not freeze once reconstituted; store strictly at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "2.0 IU daily",
+      "standardDoseMcg": 667,
+      "cadence": "1x Daily (Morning Fasted or Pre-Bed SubQ)",
+      "halfLife": "~20–30 Minutes (IV clearance); ~2–4 Hours (SubQ terminal absorption); secondary circulating IGF-1 elevation sustained for 16–24 Hours",
+      "typicalProtocolDuration": "12 to 24 Weeks per analytical research cycle",
+      "washoutPeriod": "4 to 8 Weeks between experimental cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Baseline Receptor Sensitivity & Fluid Homeostasis",
+          "timeframe": "Weeks 1–4",
+          "doseDisplay": "1.0 IU daily",
+          "doseMcg": 333,
+          "cadence": "1x Daily (SubQ)",
+          "focus": "GHR sensitivity calibration, baseline sodium/fluid homeostasis equilibration",
+          "notes": "8.3 units (0.083 mL) on U-100 syringe at 12.0 IU/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Somatotropic & Lipolytic Activation",
+          "timeframe": "Weeks 5–16",
+          "doseDisplay": "2.0 IU daily",
+          "doseMcg": 667,
+          "cadence": "1x Daily (Morning Fasted or Pre-Bed SubQ)",
+          "focus": "Peak lipolysis, hepatic IGF-1 induction, and type I/III collagen matrix synthesis",
+          "notes": "16.7 units (0.167 mL) on U-100 syringe (or 20.0 units for 15 IU vial reconstituted with 1.5 mL)"
+        },
+        {
+          "stage": "Phase 3: High-Demand Tissue Regeneration Block",
+          "timeframe": "Weeks 17–24",
+          "doseDisplay": "3.0 IU daily",
+          "doseMcg": 1000,
+          "cadence": "1x Daily or 1.5 IU BID",
+          "focus": "Maximal connective tissue remodeling, chondrocyte proliferation, and cellular repair",
+          "notes": "25.0 units (0.25 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 4: Pituitary Somatotrope Washout",
+          "timeframe": "Weeks 25+",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Endogenous GHRH/somatostatin feedback equilibrium verification",
+          "notes": "4 to 8 week cessation window maintains pituitary receptor responsiveness"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "16.7 units (0.167 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "1.0 IU (Initiation Target)",
+          "doseMcg": 333,
+          "volumeMl": 0.083,
+          "syringeIU": 8.3,
+          "tickLabel": "8.3 units (0.083 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "2.0 IU (Standard Daily Target)",
+          "doseMcg": 667,
+          "volumeMl": 0.167,
+          "syringeIU": 16.7,
+          "tickLabel": "16.7 units (0.167 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "3.0 IU (Regenerative Target)",
+          "doseMcg": 1000,
+          "volumeMl": 0.25,
+          "syringeIU": 25,
+          "tickLabel": "25.0 units (0.25 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "4.0 IU (Ceiling Target)",
+          "doseMcg": 1333,
+          "volumeMl": 0.333,
+          "syringeIU": 33.3,
+          "tickLabel": "33.3 units (0.333 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months shelf-life); 2°C–8°C for 90 days",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days for optimal molecular stability",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "12629-01-5",
+      "pubchemCid": 9833946,
+      "sequenceOrFormula": "191-Amino-Acid Single-Chain Polypeptide with 2 Disulfide Bonds (C990H1528N262O300S7)",
+      "molecularWeightGPerMol": 22124.8
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 10442564",
+        "notes": "De Boer et al. Long-term effects of growth hormone replacement therapy on bone turnover, bone mineral density, and body composition."
+      },
+      {
+        "sourceReference": "PubMed PMID: 20022872",
+        "notes": "Velloso CP. Regulation of muscle mass by growth hormone and IGF-I."
+      },
+      {
+        "sourceReference": "PubMed PMID: 16127118",
+        "notes": "Doessing et al. Growth hormone stimulates the collagen synthesis in tendon and muscle."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Up-regulates Systemic and Local IGF-1 Signaling**: Triggers sustained hepatic synthesis of IGF-1 and its ternary complexes (IGFBP-3 and ALS) to drive cellular recovery.",
+      "**Potent Adipocyte Lipolysis (HSL Activation)**: Direct stimulation of hormone-sensitive lipase mobilizes free fatty acids independently of glycemic shifts.",
+      "**Accelerates Type I & III Collagen Deposition**: Significantly upregulates procollagen mRNA expression in tendons, ligaments, and skeletal muscle fascia.",
+      "**Chondrocyte Proliferation in Articular Cartilage**: Promotes proteoglycan synthesis and joint surface matrix stabilization in preclinical models.",
+      "**Enhanced Cellular Nitrogen Retention**: Improves amino acid transport kinetics and counteracts musculoskeletal catabolism.",
+      "**Promotes Microvascular Tissue Perfusion**: Stimulates localized angiogenic factors to support tissue remodeling."
+    ],
+    "adverseObservations": [
+      "**Transient Peripheral Fluid Shifts**: Rapid initiation can cause temporary mild edema in extremities; gradual titration mitigates fluid retention.",
+      "**Mild Carpal Tunnel Sensitivity**: Temporary extracellular fluid expansion around median nerves may cause transient morning hand numbness.",
+      "**Modulation of Insulin Sensitivity**: High concentrations can transiently alter glucose clearance; monitoring fasting parameters in research models is advised.",
+      "**Shear Sensitivity**: High molecular weight protein requires gentle swirling; never vortex, freeze-thaw repeatedly, or expose to direct sunlight."
+    ],
+    "calculator": {
+      "enabled": true,
+      "title": "HGH Reconstitution & Volumetric Calculator",
+      "defaultCompoundMass": "24",
+      "compoundMassUnit": "IU",
+      "defaultFinalVolumeMl": "2",
+      "defaultTargetAmount": "2",
+      "targetAmountUnit": "IU",
+      "iuPerMg": 3,
+      "deviceVolumeMl": "1",
+      "deviceLabel": "U-100 Syringe (mL)",
+      "roundingPrecision": 2,
+      "instructions": "Calibrated for standard 24 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (12.0 IU/mL; 1.0 mL = 12 IU = 100 units). For 15 IU vials, reconstitute with 1.5 mL for 10.0 IU/mL."
+    }
+  },
+  {
+    "id": "igf-1-lr3",
+    "compoundName": "IGF-1 LR3",
+    "handles": [
+      "igf-1-lr3",
+      "igf1-lr3",
+      "igf-1-long-r3",
+      "long-r3-igf-1"
+    ],
+    "subtitle": "83-Amino-Acid Extended Analogue Long R3 Insulin-Like Growth Factor-1 Standard",
+    "longDescription": "**What it is:** IGF-1 LR3 (Long R3 Insulin-Like Growth Factor-1) is a synthetic recombinant 83-amino-acid polypeptide containing the complete 70-amino-acid native human IGF-1 sequence with an Arg3 substitution and an additional 13-amino-acid N-terminal peptide extension.\n\n**How it works:** The N-terminal peptide extension and Glu3Arg substitution dramatically reduce its binding affinity for endogenous IGF-Binding Proteins (IGFBPs) by over 100-fold. This prevents physiological sequestration, increasing biological bioavailability and extending its active receptor-binding half-life from ~20 minutes to over 20–30 hours. It activates the IGF-1R tyrosine kinase cascade, driving mTOR signaling, cellular hyperplasia (new muscle fiber recruitment), satellite cell proliferation, and amino acid uptake.\n\n**Why researchers study it:** Extensively studied for muscle satellite cell activation, true cellular hyperplasia, enhanced nitrogen retention, accelerated soft tissue repair, and reversing catabolic muscle wasting.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "igf-1-lr3",
+    "reconstitution": {
+      "defaultVialNetMg": 1,
+      "defaultDiluentMl": 2,
+      "solvent": "0.6% Acetic Acid or Bacteriostatic Water USP",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down vial inner wall. Allow cake to dissolve passively with gentle horizontal swirling. Never vortex or shake.",
+      "resultingConcentrationMgPerMl": 0.5,
+      "handlingRule": "Clear, colorless solution. Extremely shear-sensitive. Store strictly refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "20 mcg – 50 mcg daily",
+      "standardDoseMcg": 50,
+      "cadence": "1x Daily (Post-workout or morning SubQ)",
+      "halfLife": "20–30 Hours (Markedly extended via low IGFBP binding affinity)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Insulin Sensitivity Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "20 mcg daily",
+          "doseMcg": 20,
+          "cadence": "1x Daily (Post-workout / Morning)",
+          "focus": "IGF-1R receptor calibration and glycemic tolerance observation",
+          "notes": "4.0 units (0.04 mL) on U-100 syringe at 0.5 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Hyperplasia Protocol",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "30 mcg – 50 mcg daily",
+          "doseMcg": 50,
+          "cadence": "1x Daily (Post-workout SubQ)",
+          "focus": "Maximal satellite cell proliferation, mTOR activation, and systemic protein synthesis",
+          "notes": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Receptor Reset & Washout",
+          "timeframe": "Weeks 6–9",
+          "doseDisplay": "Zero Dosing",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Prevention of IGF-1R receptor downregulation and preservation of endogenous insulin sensitivity",
+          "notes": "Mandatory 4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "10.0 units (0.10 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "20 mcg",
+          "doseMcg": 20,
+          "volumeMl": 0.04,
+          "syringeIU": 4,
+          "tickLabel": "4.0 units (0.04 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "30 mcg",
+          "doseMcg": 30,
+          "volumeMl": 0.06,
+          "syringeIU": 6,
+          "tickLabel": "6.0 units (0.06 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "50 mcg (Standard Protocol)",
+          "doseMcg": 50,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "946870-92-4",
+      "sequenceOrFormula": "83-Amino-Acid Polypeptide Analogue",
+      "molecularWeightGPerMol": 9117.5
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 1839958",
+        "notes": "Francis et al. Novel recombinant fusion protein analogs of insulin-like growth factor (IGF)-I with altered binding affinities for IGF-binding proteins."
+      },
+      {
+        "sourceReference": "PubMed PMID: 14764835",
+        "notes": "Tomas et al. Long R3 IGF-I is more potent than IGF-I in stimulating growth of gut and muscle in rats."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Satellite Cell Hyperplasia**: Activates quiescent myosatellite cells to donate nuclei, facilitating true fiber hyperplasia.",
+      "**Evades Inhibitory Binding Proteins**: 100x lower affinity for IGFBPs ensures high free active hormone bioavailability.",
+      "**Prolonged 20–30h Receptor Half-Life**: Enables steady 24-hour anabolic signaling from a single daily administration.",
+      "**Rapid Glycogen & Nutrient Shunting**: Directs amino acids and glucose into muscle tissue, accelerating recovery kinetics.",
+      "**Connective Tissue Collagen Synthesis**: Stimulates tenocyte and chondrocyte proliferation for tendon and ligament repair."
+    ],
+    "adverseObservations": [
+      "**Hypoglycemic Sensitivity**: Potent insulin-like activity can induce hypoglycemia if administered fasted without carbohydrate availability.",
+      "**Downregulation Window**: Continuous protocols exceeding 6 weeks can desensitize IGF-1 receptors; strict cycle breaks are essential.",
+      "**High Temperature Sensitivity**: Reconstituted peptide denatures rapidly at room temperature; keep strictly at 2°C–8°C."
+    ]
+  },
+  {
+    "id": "igf-des",
+    "compoundName": "IGF-DES",
+    "handles": [
+      "igf-des",
+      "igf-1-des",
+      "des-1-3-igf-1"
+    ],
+    "subtitle": "Truncated (1-3) 67-Amino-Acid Des-IGF-1 High-Affinity Anabolic Standard",
+    "longDescription": "**What it is:** IGF-DES (also known as Des(1-3) IGF-1) is a naturally occurring truncated splice variant of native human IGF-1 that lacks the first three N-terminal amino acids (Gly-Pro-Glu).\n\n**How it works:** Removal of the N-terminal tripeptide eliminates virtually all affinity for inhibitory IGF-Binding Proteins (IGFBPs). Because it does not bind to circulating IGFBPs, IGF-DES exhibits up to 10-fold greater potency than native IGF-1 at local tissue IGF-1 receptors. While its systemic half-life is short (~20–30 minutes), it produces an intense, localized burst of receptor activation, driving rapid glucose transport and immediate ribosomal protein synthesis directly at the target tissue site.\n\n**Why researchers study it:** Researched for localized muscle tissue regeneration, targeted hypertrophy, tendon-to-bone junction repair, and acute post-injury cellular repair without prolonged systemic hypoglycemia.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "igf-des",
+    "reconstitution": {
+      "defaultVialNetMg": 2,
+      "defaultDiluentMl": 2,
+      "solvent": "0.6% Acetic Acid or Bacteriostatic Water USP",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently for 30 seconds. Avoid shaking.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "50 mcg – 100 mcg daily",
+      "standardDoseMcg": 50,
+      "cadence": "1x to 2x Daily (Intramuscular or SubQ near target tissue)",
+      "halfLife": "~20–30 Minutes (Rapid localized receptor clearance)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "2 to 4 Weeks",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Localized Receptor Testing",
+          "timeframe": "Days 1–5",
+          "doseDisplay": "25 mcg – 50 mcg daily",
+          "doseMcg": 25,
+          "cadence": "1x Daily (Pre/Post-study tissue session)",
+          "focus": "Observation of acute localized vascularity and intracellular amino acid pump",
+          "notes": "2.5 units (0.025 mL) on U-100 syringe at 1.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Hypertrophy Phase",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "50 mcg – 100 mcg daily",
+          "doseMcg": 50,
+          "cadence": "1x or 2x Daily (Bilateral site administration)",
+          "focus": "Direct localized satellite cell activation and immediate ribosomal translation",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Week 6+",
+          "doseDisplay": "Zero Dosing",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Clearance and recovery of endogenous IGF signaling",
+          "notes": "2–4 week cycle break"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "25 mcg",
+          "doseMcg": 25,
+          "volumeMl": 0.025,
+          "syringeIU": 2.5,
+          "tickLabel": "2.5 units (0.025 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "50 mcg (Standard Target)",
+          "doseMcg": 50,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "100 mcg (Intensive Target)",
+          "doseMcg": 100,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "112648-62-5",
+      "sequenceOrFormula": "67-Amino-Acid Truncated Polypeptide",
+      "molecularWeightGPerMol": 7371.4
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 2470123",
+        "notes": "Ballard et al. Does the wide distribution of des(1-3)IGF-I reflect specific functional roles in target tissues?"
+      },
+      {
+        "sourceReference": "PubMed PMID: 1718228",
+        "notes": "Gillespie et al. Des(1-3)IGF-I is more potent than IGF-I in promoting growth and nitrogen retention."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**10x Higher Local Anabolic Potency**: Complete absence of IGFBP binding enables immediate, concentrated local tissue stimulation.",
+      "**Targeted Bilateral Site Regeneration**: Well suited for localized injury rehabilitation directly in affected muscle or tendon bellies.",
+      "**Rapid Elimination Profile**: 20–30 minute half-life avoids sustained systemic hypoglycemic stress.",
+      "**Intense Amino Acid & Glucose Uptake**: Accelerates instant cellular nutrient influx and protein synthesis within minutes.",
+      "**Tendon-to-Bone Reattachment Models**: Promotes tenocyte proliferation at vulnerable musculoskeletal junctures."
+    ],
+    "adverseObservations": [
+      "**Transient Local Hypoglycemia**: Mild transient lightheadedness if dosed without recent nutrition; ensure adequate carbohydrate availability.",
+      "**Localized Muscle Fullness**: Rapid localized fluid and glycogen uptake can cause temporary stiffness at site.",
+      "**Reconstitution Handling**: Lyophilized cake dissolves rapidly; handle with care without shaking."
+    ]
+  },
+  {
+    "id": "ti15",
+    "compoundName": "TI15",
+    "handles": [
+      "ti15",
+      "ti-15",
+      "tesamorelin-ipamorelin-blend"
+    ],
+    "subtitle": "Synergistic Dual-Secretagogue (Tesamorelin 10mg + Ipamorelin 5mg) Standard",
+    "longDescription": "**What it is:** TI15 is an advanced dual-action somatotropic formulation combining 10mg of Tesamorelin (trans-3-hexenoyl GHRH) and 5mg of Ipamorelin (selective ghrelin receptor agonist) in a single 15mg lyophilized research standard.\n\n**How it works:** Tesamorelin acts as the most potent clinical GHRH analogue approved for visceral adipose reduction, stimulating pituitary adenylate cyclase and cAMP. Ipamorelin selectively engages the pituitary GHS-R1a receptor, stimulating calcium influx and amplifying the growth hormone pulse amplitude while suppressing somatostatin. Together, they generate maximal natural pulsatile GH elevation and sustained lipolysis without elevating appetite, cortisol, or prolactin.\n\n**Why researchers study it:** Studied for visceral deep belly fat reduction, liver fat mobilization, cardiovascular metabolic parameters, lean body mass preservation, and restorative deep sleep.",
+    "category": "Growth Hormone Axis",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "ti15",
+    "isBlend": true,
+    "blendConstituents": [
+      {
+        "name": "Tesamorelin",
+        "ratioMg": 10,
+        "percentageOfTotal": 66.7
+      },
+      {
+        "name": "Ipamorelin",
+        "ratioMg": 5,
+        "percentageOfTotal": 33.3
+      }
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 15,
+      "defaultDiluentMl": 3,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 3.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 60 seconds until transparent. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "1.5 mg total blend daily (Yields 1.0 mg Tesamorelin + 0.5 mg Ipamorelin)",
+      "standardDoseMcg": 1500,
+      "cadence": "1x Daily (Nightly before sleep, 5 days on / 2 days off)",
+      "halfLife": "Tesamorelin (~30 min) / Ipamorelin (~2h)",
+      "typicalProtocolDuration": "8 to 12 Weeks",
+      "washoutPeriod": "4 Weeks",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Pituitary Activation Initiation",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "750 mcg total blend daily",
+          "doseMcg": 750,
+          "cadence": "1x Daily (Nightly before sleep)",
+          "focus": "Pituitary somatotrope priming and assessment of individual glycemic tolerance",
+          "notes": "15.0 units (0.15 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Visceral Lipolysis & Somatotropic Pulse",
+          "timeframe": "Weeks 3–10",
+          "doseDisplay": "1.5 mg total blend daily",
+          "doseMcg": 1500,
+          "cadence": "1x Daily (Nightly, 5 days on / 2 days off)",
+          "focus": "Maximal nocturnal GH pulse amplitude, visceral adipose beta-oxidation, and IGF-1 elevation",
+          "notes": "30.0 units (0.30 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 11–12",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Evaluation of sustained metabolic rate and body composition remodeling",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "30.0 units (0.30 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "750 mcg (Half Dose)",
+          "doseMcg": 750,
+          "volumeMl": 0.15,
+          "syringeIU": 15,
+          "tickLabel": "15.0 units (0.15 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1.5 mg (Standard Protocol)",
+          "doseMcg": 1500,
+          "volumeMl": 0.3,
+          "syringeIU": 30,
+          "tickLabel": "30.0 units (0.30 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "2.0 mg (Advanced Protocol)",
+          "doseMcg": 2000,
+          "volumeMl": 0.4,
+          "syringeIU": 40,
+          "tickLabel": "40.0 units (0.40 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "sequenceOrFormula": "Tesamorelin (10mg) + Ipamorelin (5mg) Dual Standard"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 17978288",
+        "notes": "Falutz et al. Metabolic effects of a growth hormone-releasing factor in patients with HIV: a randomized controlled trial."
+      },
+      {
+        "sourceReference": "PubMed PMID: 9849822",
+        "notes": "Raun et al. Ipamorelin, the first selective growth hormone secretagogue."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Selective Visceral Adipose Tissue Mobilization**: Tesamorelin preferentially mobilizes deep visceral and intrahepatic fat stores.",
+      "**Supra-Additive GH Pulse Amplitude**: Dual GHRH + ghrelin receptor engagement amplifies pulse magnitude without exhausting pituitary reserves.",
+      "**Zero Prolactin or Cortisol Elevation**: High-specificity Ipamorelin component avoids unwanted stress hormone activation.",
+      "**Improved Deep Delta-Wave Sleep Architecture**: Elevated nocturnal growth hormone secretion promotes restorative stage 3/4 sleep.",
+      "**Preserves Endogenous Negative Feedback**: Pulsatile release prevents desensitization and avoids pituitary axis suppression."
+    ],
+    "adverseObservations": [
+      "**Mild Fluid Retention**: Temporary finger tightness or mild ankle puffiness during early titration.",
+      "**Fasting Administration Window**: Must be administered in a fasted state (at least 90 minutes post-carbohydrate) to prevent somatostatin blunting.",
+      "**Reconstitution Storage**: Keep solution strictly refrigerated at 2°C–8°C."
+    ]
   },
   {
     "id": "mots-c",
@@ -3610,6 +4493,7 @@
     "longDescription": "**What it is:** FOXO4-DRI is a retro-inverso D-amino acid peptide engineered to selectively destroy senescent 'zombie' cells—aging cells that refuse to die and continually pump out toxic inflammatory chemicals.\n\n**How it works:** Senescent cells survive by using the FOXO4 protein to bind and sequester p53, the cell's natural self-destruction switch. FOXO4-DRI acts as a molecular decoy that competitively disrupts this FOXO4-p53 interaction. Once freed, p53 moves to the mitochondria, triggering targeted apoptosis (programmed cell death) exclusively in senescent cells while leaving healthy normal cells untouched.\n\n**Why researchers study it:** Studied for clearing senescent cells, restoring youthful organ function, improving fur/hair density, reversing frailty in aging models, and reducing systemic chronic inflammation.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "foxo4-dri",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -3704,8 +4588,7 @@
       "**Transient Fatigue & Detox Sensation**: Rapid clearance of senescent cells can temporarily release cellular debris, causing mild fatigue for 24–48 hours.",
       "**Strict Pulse Dosing Required**: Researched strictly in brief pulse cycles (e.g. 3–5 doses over 1–2 weeks) with multi-month rest periods, never continuously.",
       "**High Molecular Mass & Fragility**: Large, complex retro-inverso peptide requiring delicate reconstitution and cold storage at -20°C until use."
-    ],
-    "storeProductHandle": "foxo4-dri"
+    ]
   },
   {
     "id": "humanin",
@@ -3719,6 +4602,7 @@
     "longDescription": "**What it is:** Humanin is a 24-amino-acid peptide encoded within the 16S ribosomal RNA region of mitochondrial DNA, originally discovered while screening for genes that protect brain cells from Alzheimer's disease.\n\n**How it works:** Humanin functions as a cytoprotective shield. It binds to the pro-apoptotic protein Bax, preventing it from puncturing mitochondrial membranes and stopping premature cell death. Furthermore, it activates the STAT3 signaling pathway, suppressing neuroinflammation and enhancing cellular survival in response to oxidative and toxic insults.\n\n**Why researchers study it:** Studied for neuroprotection against Alzheimer's and Parkinson's, cardiovascular endothelial defense, preserving insulin sensitivity, and protecting germ cells and organ tissues.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "humanin",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -3817,8 +4701,7 @@
       "**Mild Injection Site Reaction**: Minor, transient erythema at the subcutaneous injection point.",
       "**Reconstitution Care**: Fragile mitochondrial peptide; dissolve gently in Bacteriostatic Water without vigorous shaking.",
       "**Storage Standard**: Store reconstituted peptide at 2°C–8°C shielded from light."
-    ],
-    "storeProductHandle": "humanin"
+    ]
   },
   {
     "id": "nad-plus",
@@ -4060,6 +4943,126 @@
     ]
   },
   {
+    "id": "aicar",
+    "compoundName": "AICAR",
+    "handles": [
+      "aicar",
+      "aicar-100mg",
+      "acadisine",
+      "ampk-activator"
+    ],
+    "subtitle": "5-Aminoimidazole-4-Carboxamide Ribonucleoside Direct AMPK Bioenergetic Standard",
+    "longDescription": "**What it is:** AICAR (5-Aminoimidazole-4-carboxamide ribonucleoside, also known as Acadesine) is an adenosine analogue and direct cellular activator of AMP-activated protein kinase (AMPK), the master metabolic regulator of energy homeostasis.\n\n**How it works:** Inside cells, AICAR is phosphorylated by adenosine kinase into ZMP (AICAR monophosphate), an AMP mimetic. ZMP binds to the gamma-subunit of AMPK, allosterically activating it and promoting its phosphorylation by upstream kinase LKB1. This shifts cellular metabolism from anabolic energy-consuming processes to catabolic ATP-generating processes, stimulating glucose uptake via GLUT4 translocation, fatty acid beta-oxidation via acetyl-CoA carboxylase (ACC) inhibition, and mitochondrial biogenesis via PGC-1alpha activation without requiring muscular exertion.\n\n**Why researchers study it:** Extensively studied as an 'exercise mimetic' for endurance adaptation, insulin sensitivity enhancement, metabolic syndrome research, cardiovascular ischemic preconditioning, and cellular longevity.",
+    "category": "Mitochondrial & Cellular Longevity",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "aicar",
+    "reconstitution": {
+      "defaultVialNetMg": 100,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 45 seconds until transparent. Do not shake.",
+      "resultingConcentrationMgPerMl": 50,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "10 mg – 25 mg daily",
+      "standardDoseMcg": 25000,
+      "cadence": "1x Daily (Morning SubQ)",
+      "halfLife": "~2 to 4 Hours (Cellular ZMP retention provides extended allosteric AMPK activation)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Bioenergetic Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "10 mg daily",
+          "doseMcg": 10000,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Initial AMPK phosphorylation and hepatic gluconeogenic adaptation",
+          "notes": "20.0 units (0.20 mL) on U-100 syringe at 50 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Metabolic Phase",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "25 mg daily",
+          "doseMcg": 25000,
+          "cadence": "1x Daily (Morning SubQ)",
+          "focus": "Mitochondrial biogenesis, GLUT4 translocation, and fatty acid oxidation",
+          "notes": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Week 6+",
+          "doseDisplay": "Zero Dosing",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Re-equilibration of endogenous purine synthesis and AMPK sensitivity",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "50.0 units (0.50 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "10 mg (Initiation)",
+          "doseMcg": 10000,
+          "volumeMl": 0.2,
+          "syringeIU": 20,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "25 mg (Target Protocol)",
+          "doseMcg": 25000,
+          "volumeMl": 0.5,
+          "syringeIU": 50,
+          "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "50 mg (Advanced Research Protocol)",
+          "doseMcg": 50000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "2627-69-2",
+      "sequenceOrFormula": "C9H14N4O5",
+      "molecularWeightGPerMol": 258.23
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 18674996",
+        "notes": "Narkar et al. AMPK and PPARdelta agonists are exercise mimetics (Cell)."
+      },
+      {
+        "sourceReference": "PubMed PMID: 12086937",
+        "notes": "Corton et al. 5-aminoimidazole-4-carboxamide ribonucleoside: a specific method for activating AMP-activated protein kinase in intact cells."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct Allosteric AMPK Activation**: Phosphorylates directly into ZMP to activate AMP-kinase without depleting cellular ATP.",
+      "**Accelerates Mitochondrial Biogenesis**: Drives PGC-1alpha transcription to expand mitochondrial density and cristae surface area.",
+      "**Insulin-Independent Glucose Transport**: Triggers direct GLUT4 vesicle translocation to plasma membranes.",
+      "**Intensive Lipid Beta-Oxidation**: Inhibits acetyl-CoA carboxylase, unblocking CPT-1 for accelerated fatty acid oxidation.",
+      "**Cardiovascular Ischemic Protection**: Enhances coronary collateral blood flow and ischemic resilience in cardiac models."
+    ],
+    "adverseObservations": [
+      "**Transient Mild Hypoglycemia**: Due to rapid non-insulin glucose uptake; administration with food or carbs in preclinical models is common.",
+      "**Purine Metabolism Precursor**: Prolonged continuous high-dose protocols can transiently elevate serum uric acid levels.",
+      "**High Mass Solution**: 100 mg lyophilized vial requires 2.0 mL diluent for complete 50 mg/mL dissolution."
+    ]
+  },
+  {
     "id": "semax",
     "compoundName": "Semax",
     "handles": [
@@ -4192,6 +5195,7 @@
     "longDescription": "**What it is:** N-Acetyl Semax Amidate (NA-Semax-A) is an advanced modified version of Semax, featuring an N-terminal acetyl group and a C-terminal amide group.\n\n**How it works:** These dual molecular modifications protect the peptide from degradation by aminopeptidases and carboxypeptidases in the bloodstream. This dramatically increases its biological half-life, enhances blood-brain barrier permeability, and delivers deeper, more sustained BDNF upregulation at lower micro-dose amounts compared to standard Semax.\n\n**Why researchers study it:** Researched for extended cognitive focus, long-lasting mental stamina, neuroplasticity, memory retention, and combating mental fatigue with lower dosage requirements.",
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "na-semax-amidate",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -4293,8 +5297,7 @@
       "**Sleep Interference if Taken Late**: Due to its extended duration, administration should be restricted to morning or early afternoon.",
       "**Sensory Sensitivity**: Enhanced focus may heighten sensitivity to bright lights or loud sounds during initial research.",
       "**Strict Refrigeration Required**: Store reconstituted solution strictly at 2°C–8°C away from heat sources."
-    ],
-    "storeProductHandle": "na-semax-amidate"
+    ]
   },
   {
     "id": "selank",
@@ -4427,6 +5430,7 @@
     "longDescription": "**What it is:** N-Acetyl Selank Amidate (NA-Selank-A) is an enhanced molecular analogue of Selank, featuring both N-terminal acetylation and C-terminal amidation.\n\n**How it works:** The dual end-cap modifications protect the peptide against circulating peptidase enzymes, dramatically slowing its breakdown. This significantly boosts blood-brain barrier penetration and delivers a smoother, deeper, and longer-lasting anxiolytic and nootropic effect with superior bioavailability.\n\n**Why researchers study it:** Researched for all-day stress and anxiety resilience, improved emotional stability, sharper focus under intense pressure, and sustained cognitive clarity.",
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "na-selank-amidate",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -4521,8 +5525,7 @@
       "**Deep Relaxation**: Very high doses can induce deep calm that may reduce motivation for high-stress physical tasks.",
       "**Subcutaneous Administration Care**: If administered via subcutaneous injection, ensure proper aseptic technique.",
       "**Refrigeration Mandatory**: Maintain reconstituted vials at 2°C–8°C shielded from light."
-    ],
-    "storeProductHandle": "na-selank-amidate"
+    ]
   },
   {
     "id": "cerebrolysin",
@@ -4535,6 +5538,7 @@
     "longDescription": "**What it is:** Cerebrolysin is a low-molecular-weight neuropeptide preparation purified from porcine brain tissue, containing concentrated natural neurotrophic factors including BDNF, GDNF, NGF, and CNTF.\n\n**How it works:** Its small peptides easily cross the blood-brain barrier to mimic the actions of natural endogenous neurotrophic factors. It promotes neurogenesis (the birth of new brain cells), enhances synaptic plasticity, shields neurons against free radical damage and glutamate excitotoxicity, and reduces amyloid deposition and neuroinflammation.\n\n**Why researchers study it:** Studied worldwide for acute ischemic stroke rehabilitation, vascular dementia, Alzheimer's disease, traumatic brain injury (TBI), neuro-regeneration, and cognitive recovery.",
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "cerebrolysin",
     "reconstitution": {
       "defaultVialNetMg": 2152,
       "defaultDiluentMl": 10,
@@ -4634,8 +5638,7 @@
       "**Sensation of Head Heat / Warmth**: Rapid administration can cause a transient feeling of head warmth or light dizziness; inject slowly.",
       "**Mild Headache or Agitation**: Rare, mild restlessness or headache reported during early administration.",
       "**Single-Use Ampoule Precautions**: Filter needles should be used when drawing from glass ampoules to prevent micro-glass contamination."
-    ],
-    "storeProductHandle": "cerebrolysin"
+    ]
   },
   {
     "id": "p21",
@@ -4649,6 +5652,7 @@
     "longDescription": "**What it is:** P21 (Ac-DGGL(A)G-NH2) is a synthetic, brain-penetrant peptide derived from the active neutralizing region of Ciliary Neurotrophic Factor (CNTF).\n\n**How it works:** P21 was engineered to bypass CNTF's bulky size and avoid stimulating neutralizing antibodies. It crosses the blood-brain barrier to inhibit leukemia inhibitory factor (LIF) signaling and downregulate anti-neurogenic enzymes. This activates endogenous neurogenesis in the subgranular zone of the dentate gyrus in the hippocampus, stimulating the continuous growth of fresh, healthy neurons and synapses.\n\n**Why researchers study it:** Researched for boosting long-term memory formation, reversing neurodegenerative cognitive decline, stimulating adult brain neurogenesis, and promoting rapid learning.",
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "p21",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -4747,8 +5751,7 @@
       "**Mild Temporary Lethargy**: Intense neurogenic stimulation can cause mild mental fatigue as synapses reorganize.",
       "**Sensory Sensitivity**: Increased synaptic clarity can temporarily heighten visual or auditory perception.",
       "**Storage Requirements**: Reconstituted solution must remain refrigerated at 2°C–8°C."
-    ],
-    "storeProductHandle": "p21"
+    ]
   },
   {
     "id": "noopept",
@@ -4762,6 +5765,7 @@
     "longDescription": "**What it is:** Noopept (N-phenylacetyl-L-prolylglycine ethyl ester, GVS-111) is a synthetic peptide-derived nootropic molecule related to the racetam family, boasting approximately 1,000 times higher potency than Piracetam.\n\n**How it works:** It acts as a cycloprolylglycine prodrug, crossing the blood-brain barrier to bind to AMPA and NMDA glutamate receptors. It stimulates the expression of both NGF (Nerve Growth Factor) and BDNF in the hippocampus and cerebral cortex, while sensitizing acetylcholine receptors to improve neural communication.\n\n**Why researchers study it:** Studied for enhancing memory retention, speed of mental recall, cognitive clarity, neuroprotection against trauma and toxins, and reducing cognitive anxiety.",
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "noopept",
     "reconstitution": {
       "defaultVialNetMg": 500,
       "defaultDiluentMl": 50,
@@ -4853,8 +5857,7 @@
       "**Mild Headaches from Choline Depletion**: Elevated acetylcholine turnover can cause headaches; co-administering a choline source (Alpha-GPC or CDP-Choline) resolves this.",
       "**Over-Stimulation at High Doses**: Excessive amounts can cause brain fog, restlessness, or irritability; precise microgram/milligram calibration is critical.",
       "**Sublingual or Oral Dosing**: Highly bioavailable sublingually or orally; avoid late evening research to prevent sleep disturbances."
-    ],
-    "storeProductHandle": "noopept"
+    ]
   },
   {
     "id": "dihexa",
@@ -5082,6 +6085,363 @@
     ]
   },
   {
+    "id": "adamax-1032",
+    "compoundName": "ADAMAX 1032",
+    "handles": [
+      "adamax-1032",
+      "adamax",
+      "adamax-10mg"
+    ],
+    "subtitle": "Adamantane-Conjugated N-Acetyl Semax Amidate Enhanced TrkB / BDNF Neurotrophic Standard",
+    "longDescription": "**What it is:** ADAMAX 1032 is an advanced synthetic analogue of Semax featuring an N-terminal acetyl group, a C-terminal amide moiety, and an adamantyl cross-link (adamantane moiety) designed to dramatically improve blood-brain barrier permeability and metabolic stability.\n\n**How it works:** ADAMAX acts as a hyper-potent activator of the Brain-Derived Neurotrophic Factor (BDNF) and TrkB receptor cascade in the hippocampus and prefrontal cortex. The lipophilic adamantane modification extends its central half-life and amplifies dopaminergic and serotonergic neurotransmission without causing peripheral sympathomimetic stimulation or crash.\n\n**Why researchers study it:** Researched for intense cognitive focus, long-term potentiation (LTP), synaptic plasticity, accelerated learning acquisition, neuroprotection against oxidative stress, and rapid neurological rehabilitation.",
+    "category": "Cognitive & Neuroprotective",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "adamax-1032",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 45 seconds until crystal clear. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseMcg": 250,
+      "cadence": "1x Daily (Morning SubQ or Intranasal)",
+      "halfLife": "~4 to 6 Hours (Extended central action via adamantane stabilization)",
+      "typicalProtocolDuration": "4 to 8 Weeks",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Baseline Nootropic Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "100 mcg daily",
+          "doseMcg": 100,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Upregulation of BDNF, TrkB, and NGF mRNA expression in hippocampus",
+          "notes": "2.0 units (0.02 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Cognitive Consolidation",
+          "timeframe": "Weeks 2–6",
+          "doseDisplay": "250 mcg – 500 mcg daily",
+          "doseMcg": 250,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Cerebral blood flow optimization, dopamine/serotonin turnover enhancement, and synaptic plasticity",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Assessment of persistent memory retention and working recall post-stimulation",
+          "notes": "2–4 week cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "100 mcg",
+          "doseMcg": 100,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "250 mcg (Standard Dose)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 mcg (Intensive Target)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "1638363-22-2",
+      "sequenceOrFormula": "Ac-Met-Glu-His-Phe-Pro-Gly-Pro-Adamantane-NH2",
+      "molecularWeightGPerMol": 1032.25
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 17351604",
+        "notes": "Eremin et al. Semax and its modified analogues in experimental cerebral ischemia and memory enhancement."
+      },
+      {
+        "sourceReference": "PubMed PMID: 21972661",
+        "notes": "Medvedeva et al. The effects of Semax and its adamantyl derivatives on TrkB/BDNF expression in primary cortical neurons."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Potent TrkB / BDNF Activation**: Dramatically elevates brain-derived neurotrophic factor expression, promoting dendritic arborization and neurogenesis.",
+      "**Superior Blood-Brain Barrier Penetration**: Adamantyl moiety provides lipid solubility, enhancing central nervous system bioavailability.",
+      "**Optimized Synaptic Plasticity**: Enhances long-term potentiation (LTP) in hippocampal circuits for accelerated memory consolidation.",
+      "**Dopamine & Serotonin System Modulation**: Elevates cognitive motivation and sustained focus without cardiovascular side effects.",
+      "**Neuroprotective Resilience**: Protects neuronal membranes from excitotoxic glutamate insults and hypoxic stress."
+    ],
+    "adverseObservations": [
+      "**Late-Day Insomnia**: Due to prolonged central stimulation, administration within 6 hours of sleep may impair sleep onset.",
+      "**Overstimulation at High Doses**: Titration above 500 mcg daily can cause sensory over-responsiveness or mild transient headaches.",
+      "**Storage Protocol**: Sensitive to temperature cycling; store reconstituted liquid strictly at 2°C–8°C."
+    ]
+  },
+  {
+    "id": "pe-22-28",
+    "compoundName": "PE-22-28",
+    "handles": [
+      "pe-22-28",
+      "pe2228",
+      "spadin-derivative"
+    ],
+    "subtitle": "Shortened Spadin Derivative Selective TREK-1 Potassium Channel Antagonist Standard",
+    "longDescription": "**What it is:** PE-22-28 is a synthetic heptapeptide derivative of spadin (a natural propeptide directed against sortilin) specifically engineered as a selective, high-affinity blocker of the two-pore domain potassium channel TREK-1 (K2P2.1).\n\n**How it works:** By selectively blocking TREK-1 channels in hippocampal neurons, PE-22-28 enhances neuronal excitability, promotes rapid synaptogenesis, and stimulates immediate CREB phosphorylation and BDNF transcription. Unlike conventional monoaminergic modulators, PE-22-28 exerts rapid neurotrophic and behavioral actions within hours rather than weeks.\n\n**Why researchers study it:** Researched for rapid-onset neuroplasticity, mood elevation, resistance to chronic stress, reversing hippocampal dendritic atrophy, and cognitive preservation in neurodegenerative models.",
+    "category": "Cognitive & Neuroprotective",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "pe-22-28",
+    "reconstitution": {
+      "defaultVialNetMg": 5,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Sterile Saline",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until clear. Avoid vigorous shaking.",
+      "resultingConcentrationMgPerMl": 2.5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "100 mcg – 200 mcg daily",
+      "standardDoseMcg": 100,
+      "cadence": "1x Daily (Morning SubQ)",
+      "halfLife": "~2 Hours (Rapid central activation with persistent downstream CREB signaling)",
+      "typicalProtocolDuration": "4 to 6 Weeks",
+      "washoutPeriod": "2 to 3 Weeks",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Initiation Calibration",
+          "timeframe": "Days 1–5",
+          "doseDisplay": "50 mcg daily",
+          "doseMcg": 50,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Baseline TREK-1 channel blockade and membrane potential adjustment",
+          "notes": "2.0 units (0.02 mL) on U-100 syringe at 2.5 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Neuroplasticity Phase",
+          "timeframe": "Weeks 2–5",
+          "doseDisplay": "100 mcg – 200 mcg daily",
+          "doseMcg": 100,
+          "cadence": "1x Daily (Morning)",
+          "focus": "CREB phosphorylation, sustained BDNF release, and hippocampal neurogenesis",
+          "notes": "4.0 units (0.04 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Week 6+",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Monitoring long-term synaptogenic persistence and mood stability",
+          "notes": "2–3 week cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "4.0 units (0.04 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "50 mcg",
+          "doseMcg": 50,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "100 mcg (Standard Dose)",
+          "doseMcg": 100,
+          "volumeMl": 0.04,
+          "syringeIU": 4,
+          "tickLabel": "4.0 units (0.04 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "200 mcg (Ceiling Dose)",
+          "doseMcg": 200,
+          "volumeMl": 0.08,
+          "syringeIU": 8,
+          "tickLabel": "8.0 units (0.08 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "1374529-65-3",
+      "sequenceOrFormula": "Gly-Lys-Leu-Pro-Arg-Ala-Ser (GKLPRAS)",
+      "molecularWeightGPerMol": 740.9
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 24709675",
+        "notes": "Moha Ou Maati et al. PE-22-28, a shorter and more potent spadin derivative targeting TREK-1 potassium channels with rapid antidepressant-like activity."
+      },
+      {
+        "sourceReference": "PubMed PMID: 20406899",
+        "notes": "Mazella et al. Spadin, a sortilin-derived peptide, targeting TREK-1 channels: a new concept for fast-acting antidepressants."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Selective TREK-1 Channel Inhibition**: High-affinity antagonist of the K2P2.1 potassium channel without off-target ion channel blockade.",
+      "**Rapid-Onset Neuroplasticity**: Induces CREB phosphorylation and synaptogenesis within hours of administration in animal models.",
+      "**Hippocampal Neurogenesis**: Accelerates the formation and functional integration of new granule neurons in the dentate gyrus.",
+      "**Stress Resilience Modeling**: Protects neuronal architecture against stress-induced dendritic retraction.",
+      "**Zero Sedation**: Exerts behavioral normalization without sedation, ataxia, or motor impairment."
+    ],
+    "adverseObservations": [
+      "**Mild Transient Restlessness**: Initial doses may induce temporary psychomotor activation.",
+      "**Short Elimination Window**: Requires precise daily timing for consistent receptor target engagement.",
+      "**Reconstitution Storage**: Protect reconstituted solution from light and excessive temperature excursions."
+    ]
+  },
+  {
+    "id": "pinealon",
+    "compoundName": "Pinealon",
+    "handles": [
+      "pinealon",
+      "pinealon-peptide",
+      "pineal-bioregulator"
+    ],
+    "subtitle": "Synthetic Epithalamic Tripeptide (Glu-Arg-Asp) Pineal Bioregulator Standard",
+    "longDescription": "**What it is:** Pinealon is a synthetic neuroprotective tripeptide composed of L-glutamic acid, L-arginine, and L-aspartic acid (Glu-Arg-Asp / E-R-D), modeled after natural bioregulatory peptides isolated from the pineal gland and cerebral cortex.\n\n**How it works:** Pinealon penetrates cell and nuclear membranes directly, interacting with histone proteins to modulate gene expression in brain tissue. It stimulates ribosomal RNA transcription, activates endogenous antioxidant enzymes (superoxide dismutase and catalase), and prevents caspase-3-mediated apoptotic cell death induced by oxidative stress, hypoxia, or aging.\n\n**Why researchers study it:** Studied for cerebral vascular health, circadian rhythm synchronization, cognitive preservation in extreme environments, protecting neurons against ischemic insults, and reducing intellectual fatigue.",
+    "category": "Cognitive & Neuroprotective",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "pinealon",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until completely dissolved. Do not shake.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseMcg": 250,
+      "cadence": "1x Daily (Morning SubQ or Intranasal)",
+      "halfLife": "~30–45 Minutes (Induces long-lasting genomic epigenetic modifications)",
+      "typicalProtocolDuration": "20 to 30 Days",
+      "washoutPeriod": "2 to 3 Months between bioregulatory courses",
+      "titrationSteps": [
+        {
+          "stage": "Course Initiation",
+          "timeframe": "Days 1–10",
+          "doseDisplay": "250 mcg daily",
+          "doseMcg": 250,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Epigenetic chromatin normalization and endogenous antioxidant enzyme activation",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5.0 mg/mL concentration"
+        },
+        {
+          "stage": "Consolidation Phase",
+          "timeframe": "Days 11–20",
+          "doseDisplay": "250 mcg – 500 mcg daily",
+          "doseMcg": 500,
+          "cadence": "1x Daily (Morning)",
+          "focus": "Cerebral microcirculation stabilization and circadian clock gene harmonization",
+          "notes": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Washout & Residual Action",
+          "timeframe": "Months 2–4",
+          "doseDisplay": "Observation Window",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Assessment of sustained cognitive clarity and cellular vitality post-course",
+          "notes": "Persistent bioregulatory effects observed up to 6 months"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "100 mcg",
+          "doseMcg": 100,
+          "volumeMl": 0.02,
+          "syringeIU": 2,
+          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "250 mcg (Standard Target)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 mcg (Intensive Target)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "851199-59-2",
+      "sequenceOrFormula": "Glu-Arg-Asp (ERD)",
+      "molecularWeightGPerMol": 404.38
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 21542385",
+        "notes": "Khavinson et al. Short peptides regulate gene expression and protein synthesis in cerebral cortex cells."
+      },
+      {
+        "sourceReference": "PubMed PMID: 18663842",
+        "notes": "Chalisova et al. Neuroprotective effects of Pinealon peptide in aging cerebral tissue cultures."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct Gene Expression Modulation**: Penetrates nucleoli to modulate chromatin architecture and ribosomal synthesis in brain cells.",
+      "**Endogenous Antioxidant Upregulation**: Significantly elevates intracellular superoxide dismutase (SOD) and catalase activity.",
+      "**Circadian Rhythm Harmonization**: Modulates melatonin-synthesizing pineal pathways, supporting natural biorhythm restoration.",
+      "**Cerebrovascular Protection**: Protects vascular endothelial lining in cerebral microvasculature against hypoxic stress.",
+      "**Long-Lasting Post-Course Persistence**: Short 20-day course yields durable metabolic improvements lasting several months."
+    ],
+    "adverseObservations": [
+      "**High Tolerability Profile**: Naturally occurring peptide sequence exhibits minimal adverse potential in documented animal protocols.",
+      "**Course-Based Usage**: Not intended for continuous year-round dosing; cyclical 20–30 day blocks provide optimal epigenetic priming.",
+      "**Aseptic Handling**: Maintain strict sterility during reconstitution to prevent microbial contamination."
+    ]
+  },
+  {
     "id": "ll-37",
     "compoundName": "LL-37",
     "handles": [
@@ -5093,6 +6453,7 @@
     "longDescription": "**What it is:** LL-37 is a 37-amino-acid antimicrobial peptide (AMP) representing the active functional cleavage fragment of human cathelicidin (hCAP-18).\n\n**How it works:** LL-37 carries a strong net positive charge, allowing it to bind to negatively charged bacterial membranes and physically punch holes through them, causing rapid bacterial lysis. It destroys both Gram-positive and Gram-negative bacteria, dissolves protective bacterial biofilms, clears fungal pathogens, and recruits immune cells to wound sites.\n\n**Why researchers study it:** Researched as a powerful natural antibiotic alternative, for eradicating antibiotic-resistant bacteria (MRSA, Pseudomonas), destroying bacterial biofilms, and accelerating chronic non-healing wound recovery.",
     "category": "Antimicrobial & Immune",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "ll-37",
     "reconstitution": {
       "defaultVialNetMg": 5,
       "defaultDiluentMl": 2.5,
@@ -5192,8 +6553,7 @@
       "**Dilution Recommendation**: Using a larger volume of Bacteriostatic Water (e.g. 2–3 mL) substantially diminishes localized stinging.",
       "**Transient Joint Aches**: High systemic concentrations can trigger mild temporary flu-like sensations as immune pathways activate.",
       "**Gentle Reconstitution Required**: Large peptide chain; roll gently between palms without shaking and keep refrigerated."
-    ],
-    "storeProductHandle": "ll-37"
+    ]
   },
   {
     "id": "thymosin-alpha-1",
@@ -5322,6 +6682,7 @@
     "longDescription": "**What it is:** Melanotan I (Afamelanotide) is a synthetic 13-amino-acid peptide analogue of alpha-Melanocyte-Stimulating Hormone (alpha-MSH), engineered with two amino acid substitutions to resist enzyme degradation.\n\n**How it works:** It selectively binds to the Melanocortin-1 Receptor (MC1R) on melanocytes in the skin. This triggers eumelanin synthesis—the rich brown/black protective pigment that naturally absorbs and shields skin cells from damaging UV radiation. Crucially, because it is highly selective for MC1R, it promotes skin pigmentation without the severe nausea, blood pressure spikes, or sexual arousal caused by non-selective melanocortins.\n\n**Why researchers study it:** Studied for photoprotection in erythropoietic protoporphyria (EPP), preventing skin damage and sunburn in fair-skinned subjects, and generating natural, UV-free photoprotective pigmentation.",
     "category": "Photoprotection & Sexual Health",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "melanotan-1",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -5424,8 +6785,7 @@
       "**Darkening of Freckles & Moles**: Will darken existing freckles, beauty marks, and pigmentation spots; dermatological monitoring is recommended.",
       "**Facial Flushing**: Mild, brief flushing or warmth in the face shortly after injection.",
       "**Proper Titration**: Begin with micro-doses (250–500 mcg) to assess pigmentation response before advancing."
-    ],
-    "storeProductHandle": "melanotan-1"
+    ]
   },
   {
     "id": "melanotan-2",
@@ -5439,6 +6799,7 @@
     "longDescription": "**What it is:** Melanotan II (MT-2) is a synthetic cyclic lactam heptapeptide analogue of alpha-Melanocyte-Stimulating Hormone (alpha-MSH).\n\n**How it works:** Unlike Melanotan I, MT-2 is non-selective: it crosses the blood-brain barrier to bind to multiple melanocortin receptors, including MC1R (skin tanning), MC3R/MC4R (appetite suppression and metabolic regulation), and MC4R (sexual arousal and erectile response in the central nervous system).\n\n**Why researchers study it:** Studied for rapid, deep photoprotective skin tanning, treating erectile dysfunction and female sexual arousal disorder, and appetite suppression.",
     "category": "Photoprotection & Sexual Health",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "melanotan-2",
     "reconstitution": {
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
@@ -5544,8 +6905,7 @@
       "**Spontaneous Erections (Priapism Risk)**: Can cause strong, prolonged spontaneous erections; conservative micro-dosing is essential.",
       "**Mole and Freckle Darkening**: Darkens existing freckles and moles; subjects should track skin spots regularly.",
       "**Micro-Titration Rule**: Always initiate at a micro-dose (100–250 mcg) to gauge tolerance before escalating."
-    ],
-    "storeProductHandle": "melanotan-2"
+    ]
   },
   {
     "id": "pt-141",
@@ -5795,6 +7155,7 @@
     "longDescription": "**What it is:** Oxytocin is a natural 9-amino-acid neuropeptide hormone produced in the hypothalamus and stored in the posterior pituitary gland, famously known as the 'bonding and trust hormone.'\n\n**How it works:** In the central nervous system, Oxytocin acts as a powerful neuromodulator, dampening activity in the amygdala (the brain's fear and stress center) and boosting dopamine in social reward circuits. It promotes social bonding, deep empathy, trust, and emotional closeness, while also functioning in smooth muscle contraction and sexual climax.\n\n**Why researchers study it:** Studied for reducing social anxiety, autism spectrum social communication, healing emotional trauma and PTSD, enhancing marital intimacy, and reducing cortisol stress levels.",
     "category": "Photoprotection & Sexual Health",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "oxytocin",
     "reconstitution": {
       "defaultVialNetMg": 5,
       "defaultDiluentMl": 2.5,
@@ -5901,8 +7262,290 @@
       "**Mild Headache or Drowsiness**: Occasional mild headache or relaxed drowsiness reported following administration.",
       "**Mild Blood Pressure Changes**: High doses can cause minor, temporary shifts in blood pressure.",
       "**Short Biological Half-Life**: Rapidly metabolized (half-life 3–5 minutes in blood); nasal spray or targeted subcutaneous timing is utilized."
+    ]
+  },
+  {
+    "id": "hmg-75iu",
+    "compoundName": "HMG (Human Menopausal Gonadotropin 75 IU)",
+    "handles": [
+      "hmg-75iu",
+      "hmg",
+      "menotropins",
+      "hmg-75iu-laboratory-handling"
     ],
-    "storeProductHandle": "oxytocin"
+    "subtitle": "Dual-Gonadotropin Standard (75 IU FSH + 75 IU LH Bioactivity) for Endocrine & Spermatogenic Pathway Studies",
+    "longDescription": "**What it is:** Human Menopausal Gonadotropin (HMG / Menotropins) is a purified biological glycoprotein preparation standardized to contain equal biological activity of Follicle-Stimulating Hormone (FSH, 75 IU) and Luteinizing Hormone (LH, 75 IU). Both hormones are non-covalently linked heterodimers composed of a common 92-amino-acid alpha subunit non-covalently joined to hormone-specific beta subunits that confer specific receptor selectivity.\n\n**How it works:** Operates through dual, complementary endocrine mechanisms: The FSH fraction binds transmembrane FSH Receptors (FSHR) exclusively expressed on Sertoli cells, elevating intracellular cAMP to drive Androgen-Binding Protein (ABP) secretion, tight-junction maintenance, and the mitotic proliferation of spermatogonia. Concurrently, the LH fraction engages LH/Choriogonadotropin Receptors (LHCGR) on Leydig cells, activating the steroidogenic acute regulatory (StAR) pathway to sustain essential intratesticular testosterone (ITT) microenvironments. In contrast to hCG monotherapy (which activates only LH receptors), HMG provides necessary Sertoli cell stimulation to maintain complete germ cell maturation.\n\n**Why researchers study it:** Researched extensively in laboratory models of severe hypogonadotropic hypogonadism, reversal of suppressed spermatogenesis following exogenous androgenic saturation, preservation of Sertoli cell cytoarchitecture, and endocrine axis restoration.",
+    "category": "Photoprotection & Sexual Health",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "hmg-75iu",
+    "purityStandard": "Biological Activity Standard (75 IU FSH + 75 IU LH; Highly Purified Menotropins)",
+    "reconstitution": {
+      "defaultVialNetMg": 1,
+      "defaultDiluentMl": 1,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) or 0.9% Sodium Chloride USP",
+      "dissolutionMethod": "Direct 1.0 mL diluent slowly down the inner glass vial wall. Allow natural liquid saturation, then swirl gently in horizontal circles for 30–45 seconds until optically clear. Avoid vigorous shaking.",
+      "resultingConcentrationMgPerMl": 1,
+      "handlingRule": "Clear, colorless aqueous solution. Store refrigerated at 2°C–8°C; use within 28 days if reconstituted with Bacteriostatic Water USP."
+    },
+    "dosing": {
+      "standardDoseDisplay": "75 IU SubQ (2x–3x weekly)",
+      "standardDoseMcg": 1000,
+      "cadence": "2x to 3x Weekly (e.g. Mon / Wed / Fri SubQ)",
+      "halfLife": "FSH beta-subunit clearance ~30–40 Hours; LH fraction distribution ~20–30 Minutes with terminal elimination ~4 Hours",
+      "typicalProtocolDuration": "8 to 12 Weeks per analytical research block",
+      "washoutPeriod": "4 Weeks between experimental cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Baseline Sertoli Cell & Receptor Priming",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "37.5 IU SubQ",
+          "doseMcg": 500,
+          "cadence": "3x Weekly (Mon/Wed/Fri)",
+          "focus": "Evaluates receptor responsiveness, baseline gonadotropin priming, and estradiol response",
+          "notes": "50.0 units (0.50 mL) on U-100 syringe at 75.0 IU/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Active Spermatogenic & Steroidogenic Induction",
+          "timeframe": "Weeks 3–8",
+          "doseDisplay": "75 IU SubQ",
+          "doseMcg": 1000,
+          "cadence": "2x to 3x Weekly (SubQ)",
+          "focus": "Direct stimulation of Sertoli cell ABP secretion and active spermatogenesis",
+          "notes": "100.0 units (1.00 mL) on U-100 syringe (full vial draw)"
+        },
+        {
+          "stage": "Phase 3: High-Demand / Intensive Recovery Block",
+          "timeframe": "Weeks 9–12",
+          "doseDisplay": "75–150 IU SubQ",
+          "doseMcg": 1500,
+          "cadence": "3x Weekly",
+          "focus": "Maximal germ cell maturation and Leydig/Sertoli dual signaling (often paired with hCG)",
+          "notes": "Full vial or dual vial draw per scheduled session"
+        },
+        {
+          "stage": "Phase 4: Endocrine Washout & Feedback Calibration",
+          "timeframe": "Weeks 13+",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Endogenous pituitary gonadotropin autonomy verification",
+          "notes": "4-week cessation window to assess natural HPTA axis recovery"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "100.0 units (1.00 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "25 IU (Low Calibration)",
+          "doseMcg": 333,
+          "volumeMl": 0.333,
+          "syringeIU": 33.3,
+          "tickLabel": "33.3 units (0.33 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "37.5 IU (Half-Vial Induction)",
+          "doseMcg": 500,
+          "volumeMl": 0.5,
+          "syringeIU": 50,
+          "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "75 IU (Full Vial Target)",
+          "doseMcg": 1000,
+          "volumeMl": 1,
+          "syringeIU": 100,
+          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "2°C–8°C refrigerated or -20°C in dry desiccator (24 months shelf-life)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days with Bacteriostatic Water USP",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "61489-71-2",
+      "pubchemCid": 135331145,
+      "sequenceOrFormula": "Purified Human Menotropins (FSH: 203 amino acids; LH: 213 amino acids; sharing alpha subunit)",
+      "molecularWeightGPerMol": 30000
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15713823",
+        "notes": "Rastrelli et al. Recombinant LH versus human menopausal gonadotropin in gonadal stimulation."
+      },
+      {
+        "sourceReference": "PubMed PMID: 10465691",
+        "notes": "Schill WB. Treatment of male infertility with gonadotropins: HCG/HMG therapy in hypogonadotropic hypogonadism."
+      },
+      {
+        "sourceReference": "PubMed PMID: 24344364",
+        "notes": "Fraietta et al. Hypogonadotropic hypogonadism revisited: management with gonadotropins and GnRH."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct FSH Receptor Stimulation on Sertoli Cells**: Restores androgen-binding protein (ABP) synthesis and active spermatogenesis in preclinical models.",
+      "**Dual LH Bioactivity for Intratesticular Testosterone**: Stimulates Leydig cell steroidogenesis while avoiding selective downregulation.",
+      "**Preserves Testicular Cytoarchitecture**: Maintains blood-testis barrier integrity and tubular basement membrane health.",
+      "**Complements Incomplete LH-Only Mimetic Regimens**: Supplies indispensable FSH signaling that hCG alone cannot stimulate.",
+      "**Research Standard for Hypogonadotropic Signaling**: Widely referenced benchmark for endocrine and reproductive axis research."
+    ],
+    "adverseObservations": [
+      "**Transient Local Erythema**: Mild, transient redness or sensitivity at injection site resolving within 15–30 minutes.",
+      "**Dose-Dependent Aromatase Induction**: Requires baseline estradiol and hormonal balance monitoring in research protocols.",
+      "**Quaternary Protein Fragility**: High-molecular-weight glycoprotein heterodimer; avoid violent vortexing or freeze-thaw cycles.",
+      "**Storage Protocol**: Keep refrigerated at 2°C–8°C; protect from prolonged UV/light exposure."
+    ],
+    "calculator": {
+      "enabled": true,
+      "title": "HMG Reconstitution & Volumetric Calculator",
+      "defaultCompoundMass": "75",
+      "compoundMassUnit": "IU",
+      "defaultFinalVolumeMl": "1",
+      "defaultTargetAmount": "37.5",
+      "targetAmountUnit": "IU",
+      "iuPerMg": 75,
+      "deviceVolumeMl": "1",
+      "deviceLabel": "U-100 Syringe (mL)",
+      "roundingPrecision": 2,
+      "instructions": "Calibrated for 75 IU vial reconstituted with 1.0 mL Bacteriostatic Water USP (75.0 IU/mL; 50 units = 37.5 IU, 100 units = 75 IU)."
+    }
+  },
+  {
+    "id": "hcg",
+    "compoundName": "HCG",
+    "handles": [
+      "hcg",
+      "hcg-10000iu",
+      "human-chorionic-gonadotropin",
+      "pregnyl"
+    ],
+    "subtitle": "Human Chorionic Gonadotropin (10,000 IU) Luteinizing Hormone Receptor Agonist Standard",
+    "longDescription": "**What it is:** HCG (Human Chorionic Gonadotropin) is a heterodimeric glycoprotein hormone composed of 237 amino acids across two non-covalently linked alpha and beta subunits, sharing structural homology with native pituitary Luteinizing Hormone (LH).\n\n**How it works:** HCG binds directly to the shared LH/choriogonadotropin receptor (LHCGR) on testicular Leydig cells in males and ovarian theca/granulosa cells in females. In males, it stimulates cyclic AMP and cholesterol desmolase (CYP11A1), driving intratesticular testosterone synthesis and maintaining spermatogenesis during gonadotropin suppression. Its biological half-life (~24–36 hours) is substantially longer than native LH (~20 minutes), providing steady physiological stimulation.\n\n**Why researchers study it:** Studied for post-cycle endocrine recovery, preserving testicular trophism and spermatogenesis during TRT, male hypogonadism research, fertility optimization, and neurosteroid pathway support.",
+    "category": "Photoprotection & Sexual Health",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "hcg",
+    "reconstitution": {
+      "defaultVialNetMg": 10,
+      "defaultDiluentMl": 2,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until clear. Avoid shaking.",
+      "resultingConcentrationMgPerMl": 5,
+      "handlingRule": "Clear, colorless aqueous solution. Store refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "250 IU – 500 IU (2x to 3x weekly)",
+      "standardDoseMcg": 250,
+      "cadence": "2x to 3x Weekly (SubQ)",
+      "halfLife": "24–36 Hours (Extended biological activity compared to native LH)",
+      "typicalProtocolDuration": "6 to 12 Weeks",
+      "washoutPeriod": "4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Leydig Cell Priming",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "250 IU (2x weekly)",
+          "doseMcg": 250,
+          "cadence": "2x Weekly (Every 3.5 Days SubQ)",
+          "focus": "Initial LHCGR receptor engagement and intratesticular steroidogenesis reactivation",
+          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5,000 IU/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Endocrine Maintenance",
+          "timeframe": "Weeks 3–10",
+          "doseDisplay": "250 IU – 500 IU (2x to 3x weekly)",
+          "doseMcg": 500,
+          "cadence": "2x to 3x Weekly SubQ",
+          "focus": "Spermatogenesis maintenance, normal testicular volume preservation, and neurosteroid synthesis",
+          "notes": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout",
+          "timeframe": "Weeks 11–12",
+          "doseDisplay": "Observation Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Monitoring endogenous pituitary LH/FSH pulse recovery without exogenous support",
+          "notes": "4-week wash-out window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "5.0 units (0.05 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "250 IU (Standard Dose)",
+          "doseMcg": 250,
+          "volumeMl": 0.05,
+          "syringeIU": 5,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "500 IU (Higher Dose)",
+          "doseMcg": 500,
+          "volumeMl": 0.1,
+          "syringeIU": 10,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "1,000 IU (Clinical Assay Dose)",
+          "doseMcg": 1000,
+          "volumeMl": 0.2,
+          "syringeIU": 20,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in dry desiccator (24 months)",
+      "reconstituted": "2°C–8°C refrigerated; use within 30 days",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "9002-61-3",
+      "molecularWeightGPerMol": 36700
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 15713727",
+        "notes": "Coviello et al. Intratesticular testosterone is restored by low-dose human chorionic gonadotropin in normal men with gonadotropin suppression."
+      },
+      {
+        "sourceReference": "PubMed PMID: 23260860",
+        "notes": "Hsieh et al. Concomitant intramuscular human chorionic gonadotropin preserves spermatogenesis in men undergoing testosterone replacement therapy."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
+    "investigatedBenefits": [
+      "**Direct LHCGR Leydig Cell Stimulation**: Reactivates intratesticular testosterone synthesis without requiring pituitary LH secretion.",
+      "**Preserves Testicular Volume & Trophism**: Prevents testicular atrophy and morphological regression during endocrine suppression.",
+      "**Spermatogenesis Support**: Sustains high localized intratesticular androgen levels required for healthy sperm maturation.",
+      "**Neurosteroid Precursor Activation**: Stimulates conversion of cholesterol to pregnenolone, supporting downstream DHEA and neurosteroids.",
+      "**Reliable Clinical Pharmacokinetics**: 24–36 hour biological half-life enables steady receptor engagement with twice-weekly schedules."
+    ],
+    "adverseObservations": [
+      "**Aromatase Upregulation at High Doses**: Excessive dosing (>1,000 IU per injection) can stimulate intratesticular aromatase, elevating estradiol.",
+      "**Downregulation from Chronic Overdosing**: Massive continuous doses can desensitize Leydig LHCGR receptors; conservative physiological dosing is optimal.",
+      "**Strict Cold Storage**: Reconstituted solution must be kept continuously refrigerated at 2°C–8°C to prevent peptide bond cleavage."
+    ],
+    "calculator": {
+      "enabled": true,
+      "title": "HCG Reconstitution & Volumetric Calculator",
+      "defaultCompoundMass": "10000",
+      "compoundMassUnit": "IU",
+      "defaultFinalVolumeMl": "2",
+      "defaultTargetAmount": "250",
+      "targetAmountUnit": "IU",
+      "iuPerMg": 1000,
+      "deviceVolumeMl": "1",
+      "deviceLabel": "U-100 Syringe (mL)",
+      "roundingPrecision": 2,
+      "instructions": "Calibrated for 10,000 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (5,000 IU/mL; 5 units = 250 IU, 10 units = 500 IU)."
+    }
   },
   {
     "id": "glow-blend",
@@ -6195,6 +7838,7 @@
     "longDescription": "**What it is:** Wolverine Blend (also known as the Recovery Blend) is the premier dual-peptide synergy in modern sports medicine research, combining equal parts BPC-157 and TB-500.\n\n**How it works:** While BPC-157 rebuilds localized microvascular blood flow, activates tenocytes, and speeds collagen synthesis directly at the injury site, TB-500 circulates systemically to mobilize cellular actin, upregulate cell migration, and prevent stiff fibrotic scarring. Together, their complementary actions cut tissue recovery times dramatically compared to either peptide alone.\n\n**Why researchers study it:** Researched as the gold standard for rapid healing of torn ligaments, tendonitis, muscle tears, joint pain, cartilage wear, and post-surgical rehabilitation.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "wolverine-blend",
     "isBlend": true,
     "blendConstituents": [
       {
@@ -6308,8 +7952,7 @@
       "**Transient Warmth or Lightheadedness**: Mild, temporary head rush reported within 15 minutes due to vascular shifts.",
       "**Consistent Dosing Cadence**: Typically researched daily (or twice-weekly loading for TB-500) over 4 to 6 weeks, followed by a 2-week rest.",
       "**Reconstitution Standard**: Gently add Bacteriostatic Water down the inner glass wall; swirl smoothly without shaking; store at 2°C–8°C."
-    ],
-    "storeProductHandle": "wolverine-blend"
+    ]
   },
   {
     "id": "tri-heal-blend",
@@ -6324,6 +7967,7 @@
     "longDescription": "**What it is:** Tri-Heal Matrix Blend is an advanced triple-peptide formulation that combines BPC-157, TB-500, and KPV for maximum recovery and complete inflammatory control.\n\n**How it works:** It expands upon the Wolverine Blend by adding KPV's nuclear NF-kB inhibition. BPC-157 provides angiogenic blood flow, TB-500 drives rapid cell motility and tissue remodeling, and KPV instantly extinguishes acute and chronic inflammation at the cellular level. This tripartite approach prevents chronic inflammatory loops from stalling tissue repair.\n\n**Why researchers study it:** Studied for complex chronic injuries, severe tendon and ligament tears, arthritic joint inflammation, inflammatory bowel disease, and accelerated surgical recovery.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
+    "storeProductHandle": "tri-heal-blend",
     "isBlend": true,
     "blendConstituents": [
       {
@@ -6438,8 +8082,7 @@
       "**Mild Injection Point Irritation**: Minor subcutaneous redness that clears within 30 to 45 minutes.",
       "**Transient Digestive Sensitivity**: Occasional mild stomach queasiness during initial days if administered while fasting.",
       "**Refrigeration Mandatory**: Maintain reconstituted vial strictly between 2°C–8°C away from direct light."
-    ],
-    "storeProductHandle": "tri-heal-blend"
+    ]
   },
   {
     "id": "cjc-ipam-blend",
@@ -6685,315 +8328,5 @@
       "**Sensory Clarity Adjustment**: Enhanced sensory processing can make subjects more observant of environment and sounds.",
       "**Refrigeration & Light Shielding**: Both peptides are temperature-sensitive; store reconstituted solution strictly at 2°C–8°C away from heat and direct light."
     ]
-  },
-  {
-    "id": "hgh-somatropin",
-    "compoundName": "HGH (Somatropin 191AA)",
-    "handles": [
-      "hgh-somatropin",
-      "hgh",
-      "somatropin",
-      "hgh-somatropin-laboratory-handling",
-      "hgh-24iu",
-      "hgh-15iu"
-    ],
-    "subtitle": "Recombinant 191-Amino-Acid Somatropin Growth Hormone Receptor (GHR) Agonist Standard",
-    "longDescription": "**What it is:** Recombinant Somatropin is a 191-amino-acid single-chain polypeptide hormone identical in sequence and tertiary conformation to native human pituitary growth hormone. Synthesized with two critical intramolecular disulfide bridges (Cys53–Cys165 and Cys182–Cys189), this authentic 191AA formulation is free of the non-human N-terminal methionine found in older 192AA somatrem variants, eliminating anti-hGH antibody formation.\n\n**How it works:** Somatropin binds extracellular Growth Hormone Receptors (GHR), inducing receptor homodimerization and intracellular signaling via the JAK2/STAT5b pathway. In hepatic tissue, this cascades into transcription and secretion of Insulin-like Growth Factor 1 (IGF-1) alongside ternary circulating carriers (IGFBP-3 and ALS). Concurrently, Somatropin exerts direct non-IGF-1-dependent lipolytic action in adipocytes by activating hormone-sensitive lipase (HSL) and downregulating lipoprotein lipase (LPL). In musculoskeletal tissues, it upregulates type I and type III collagen synthesis, stimulates chondrocyte proliferation in articular cartilage, and enhances cellular nitrogen retention.\n\n**Why researchers study it:** Researched extensively in cellular models of tendon, ligament, and fascial extracellular matrix regeneration, deep slow-wave somatotropic pulsatility, lipid oxidation without glycemic degradation, and endocrine longevity signaling.",
-    "category": "Growth Hormone Axis",
-    "catalogStatus": "in_catalog",
-    "storeProductHandle": "hgh-somatropin",
-    "purityStandard": "≥99.0% (Recombinant High-Resolution RP-HPLC & SEC-HPLC Standard)",
-    "reconstitution": {
-      "defaultVialNetMg": 8,
-      "defaultDiluentMl": 2,
-      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
-      "dissolutionMethod": "Direct 2.0 mL diluent slowly down the glass wall. Swirl in horizontal circular motions for 60 seconds until crystal-clear. Never shake or vortex; mechanical agitation shears the tertiary protein structure and causes irreversible fibrillation.",
-      "resultingConcentrationMgPerMl": 4,
-      "handlingRule": "Crystal-clear aqueous solution. Inspect against a dark backdrop. Do not freeze once reconstituted; store strictly at 2°C–8°C."
-    },
-    "dosing": {
-      "standardDoseDisplay": "2.0 IU daily",
-      "standardDoseMcg": 667,
-      "cadence": "1x Daily (Morning Fasted or Pre-Bed SubQ)",
-      "halfLife": "~20–30 Minutes (IV clearance); ~2–4 Hours (SubQ terminal absorption); secondary circulating IGF-1 elevation sustained for 16–24 Hours",
-      "typicalProtocolDuration": "12 to 24 Weeks per analytical research cycle",
-      "washoutPeriod": "4 to 8 Weeks between experimental cycles",
-      "titrationSteps": [
-        {
-          "stage": "Phase 1: Baseline Receptor Sensitivity & Fluid Homeostasis",
-          "timeframe": "Weeks 1–4",
-          "doseDisplay": "1.0 IU daily",
-          "doseMcg": 333,
-          "cadence": "1x Daily (SubQ)",
-          "focus": "GHR sensitivity calibration, baseline sodium/fluid homeostasis equilibration",
-          "notes": "8.3 units (0.083 mL) on U-100 syringe at 12.0 IU/mL concentration"
-        },
-        {
-          "stage": "Phase 2: Target Somatotropic & Lipolytic Activation",
-          "timeframe": "Weeks 5–16",
-          "doseDisplay": "2.0 IU daily",
-          "doseMcg": 667,
-          "cadence": "1x Daily (Morning Fasted or Pre-Bed SubQ)",
-          "focus": "Peak lipolysis, hepatic IGF-1 induction, and type I/III collagen matrix synthesis",
-          "notes": "16.7 units (0.167 mL) on U-100 syringe (or 20.0 units for 15 IU vial reconstituted with 1.5 mL)"
-        },
-        {
-          "stage": "Phase 3: High-Demand Tissue Regeneration Block",
-          "timeframe": "Weeks 17–24",
-          "doseDisplay": "3.0 IU daily",
-          "doseMcg": 1000,
-          "cadence": "1x Daily or 1.5 IU BID",
-          "focus": "Maximal connective tissue remodeling, chondrocyte proliferation, and cellular repair",
-          "notes": "25.0 units (0.25 mL) on U-100 syringe"
-        },
-        {
-          "stage": "Phase 4: Pituitary Somatotrope Washout",
-          "timeframe": "Weeks 25+",
-          "doseDisplay": "Observation Period",
-          "doseMcg": 0,
-          "cadence": "Zero dosing",
-          "focus": "Endogenous GHRH/somatostatin feedback equilibrium verification",
-          "notes": "4 to 8 week cessation window maintains pituitary receptor responsiveness"
-        }
-      ]
-    },
-    "syringeGuide": {
-      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
-      "standardIUDisplay": "16.7 units (0.167 mL)",
-      "graduations": [
-        {
-          "doseDisplay": "1.0 IU (Initiation Target)",
-          "doseMcg": 333,
-          "volumeMl": 0.083,
-          "syringeIU": 8.3,
-          "tickLabel": "8.3 units (0.083 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "2.0 IU (Standard Daily Target)",
-          "doseMcg": 667,
-          "volumeMl": 0.167,
-          "syringeIU": 16.7,
-          "tickLabel": "16.7 units (0.167 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "3.0 IU (Regenerative Target)",
-          "doseMcg": 1000,
-          "volumeMl": 0.25,
-          "syringeIU": 25,
-          "tickLabel": "25.0 units (0.25 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "4.0 IU (Ceiling Target)",
-          "doseMcg": 1333,
-          "volumeMl": 0.333,
-          "syringeIU": 33.3,
-          "tickLabel": "33.3 units (0.333 mL) on U-100 syringe"
-        }
-      ]
-    },
-    "storage": {
-      "lyophilized": "-20°C in dry desiccator (24 months shelf-life); 2°C–8°C for 90 days",
-      "reconstituted": "2°C–8°C refrigerated; use within 28 days for optimal molecular stability",
-      "lightProtection": true
-    },
-    "molecularDetails": {
-      "casNumber": "12629-01-5",
-      "pubchemCid": 9833946,
-      "sequenceOrFormula": "191-Amino-Acid Single-Chain Polypeptide with 2 Disulfide Bonds (C990H1528N262O300S7)",
-      "molecularWeightGPerMol": 22124.8
-    },
-    "citations": [
-      {
-        "sourceReference": "PubMed PMID: 10442564",
-        "notes": "De Boer et al. Long-term effects of growth hormone replacement therapy on bone turnover, bone mineral density, and body composition."
-      },
-      {
-        "sourceReference": "PubMed PMID: 20022872",
-        "notes": "Velloso CP. Regulation of muscle mass by growth hormone and IGF-I."
-      },
-      {
-        "sourceReference": "PubMed PMID: 16127118",
-        "notes": "Doessing et al. Growth hormone stimulates the collagen synthesis in tendon and muscle."
-      }
-    ],
-    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
-    "investigatedBenefits": [
-      "**Up-regulates Systemic and Local IGF-1 Signaling**: Triggers sustained hepatic synthesis of IGF-1 and its ternary complexes (IGFBP-3 and ALS) to drive cellular recovery.",
-      "**Potent Adipocyte Lipolysis (HSL Activation)**: Direct stimulation of hormone-sensitive lipase mobilizes free fatty acids independently of glycemic shifts.",
-      "**Accelerates Type I & III Collagen Deposition**: Significantly upregulates procollagen mRNA expression in tendons, ligaments, and skeletal muscle fascia.",
-      "**Chondrocyte Proliferation in Articular Cartilage**: Promotes proteoglycan synthesis and joint surface matrix stabilization in preclinical models.",
-      "**Enhanced Cellular Nitrogen Retention**: Improves amino acid transport kinetics and counteracts musculoskeletal catabolism.",
-      "**Promotes Microvascular Tissue Perfusion**: Stimulates localized angiogenic factors to support tissue remodeling."
-    ],
-    "adverseObservations": [
-      "**Transient Peripheral Fluid Shifts**: Rapid initiation can cause temporary mild edema in extremities; gradual titration mitigates fluid retention.",
-      "**Mild Carpal Tunnel Sensitivity**: Temporary extracellular fluid expansion around median nerves may cause transient morning hand numbness.",
-      "**Modulation of Insulin Sensitivity**: High concentrations can transiently alter glucose clearance; monitoring fasting parameters in research models is advised.",
-      "**Shear Sensitivity**: High molecular weight protein requires gentle swirling; never vortex, freeze-thaw repeatedly, or expose to direct sunlight."
-    ],
-    "calculator": {
-      "enabled": true,
-      "title": "HGH Reconstitution & Volumetric Calculator",
-      "defaultCompoundMass": "24",
-      "compoundMassUnit": "IU",
-      "defaultFinalVolumeMl": "2",
-      "defaultTargetAmount": "2",
-      "targetAmountUnit": "IU",
-      "iuPerMg": 3,
-      "deviceVolumeMl": "1",
-      "deviceLabel": "U-100 Syringe (mL)",
-      "roundingPrecision": 2,
-      "instructions": "Calibrated for standard 24 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (12.0 IU/mL; 1.0 mL = 12 IU = 100 units). For 15 IU vials, reconstitute with 1.5 mL for 10.0 IU/mL."
-    }
-  },
-  {
-    "id": "hmg-75iu",
-    "compoundName": "HMG (Human Menopausal Gonadotropin 75 IU)",
-    "handles": [
-      "hmg-75iu",
-      "hmg",
-      "menotropins",
-      "hmg-75iu-laboratory-handling"
-    ],
-    "subtitle": "Dual-Gonadotropin Standard (75 IU FSH + 75 IU LH Bioactivity) for Endocrine & Spermatogenic Pathway Studies",
-    "longDescription": "**What it is:** Human Menopausal Gonadotropin (HMG / Menotropins) is a purified biological glycoprotein preparation standardized to contain equal biological activity of Follicle-Stimulating Hormone (FSH, 75 IU) and Luteinizing Hormone (LH, 75 IU). Both hormones are non-covalently linked heterodimers composed of a common 92-amino-acid alpha subunit non-covalently joined to hormone-specific beta subunits that confer specific receptor selectivity.\n\n**How it works:** Operates through dual, complementary endocrine mechanisms: The FSH fraction binds transmembrane FSH Receptors (FSHR) exclusively expressed on Sertoli cells, elevating intracellular cAMP to drive Androgen-Binding Protein (ABP) secretion, tight-junction maintenance, and the mitotic proliferation of spermatogonia. Concurrently, the LH fraction engages LH/Choriogonadotropin Receptors (LHCGR) on Leydig cells, activating the steroidogenic acute regulatory (StAR) pathway to sustain essential intratesticular testosterone (ITT) microenvironments. In contrast to hCG monotherapy (which activates only LH receptors), HMG provides necessary Sertoli cell stimulation to maintain complete germ cell maturation.\n\n**Why researchers study it:** Researched extensively in laboratory models of severe hypogonadotropic hypogonadism, reversal of suppressed spermatogenesis following exogenous androgenic saturation, preservation of Sertoli cell cytoarchitecture, and endocrine axis restoration.",
-    "category": "Photoprotection & Sexual Health",
-    "catalogStatus": "in_catalog",
-    "storeProductHandle": "hmg-75iu",
-    "purityStandard": "Biological Activity Standard (75 IU FSH + 75 IU LH; Highly Purified Menotropins)",
-    "reconstitution": {
-      "defaultVialNetMg": 1,
-      "defaultDiluentMl": 1,
-      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) or 0.9% Sodium Chloride USP",
-      "dissolutionMethod": "Direct 1.0 mL diluent slowly down the inner glass vial wall. Allow natural liquid saturation, then swirl gently in horizontal circles for 30–45 seconds until optically clear. Avoid vigorous shaking.",
-      "resultingConcentrationMgPerMl": 1,
-      "handlingRule": "Clear, colorless aqueous solution. Store refrigerated at 2°C–8°C; use within 28 days if reconstituted with Bacteriostatic Water USP."
-    },
-    "dosing": {
-      "standardDoseDisplay": "75 IU SubQ (2x–3x weekly)",
-      "standardDoseMcg": 1000,
-      "cadence": "2x to 3x Weekly (e.g. Mon / Wed / Fri SubQ)",
-      "halfLife": "FSH beta-subunit clearance ~30–40 Hours; LH fraction distribution ~20–30 Minutes with terminal elimination ~4 Hours",
-      "typicalProtocolDuration": "8 to 12 Weeks per analytical research block",
-      "washoutPeriod": "4 Weeks between experimental cycles",
-      "titrationSteps": [
-        {
-          "stage": "Phase 1: Baseline Sertoli Cell & Receptor Priming",
-          "timeframe": "Weeks 1–2",
-          "doseDisplay": "37.5 IU SubQ",
-          "doseMcg": 500,
-          "cadence": "3x Weekly (Mon/Wed/Fri)",
-          "focus": "Evaluates receptor responsiveness, baseline gonadotropin priming, and estradiol response",
-          "notes": "50.0 units (0.50 mL) on U-100 syringe at 75.0 IU/mL concentration"
-        },
-        {
-          "stage": "Phase 2: Active Spermatogenic & Steroidogenic Induction",
-          "timeframe": "Weeks 3–8",
-          "doseDisplay": "75 IU SubQ",
-          "doseMcg": 1000,
-          "cadence": "2x to 3x Weekly (SubQ)",
-          "focus": "Direct stimulation of Sertoli cell ABP secretion and active spermatogenesis",
-          "notes": "100.0 units (1.00 mL) on U-100 syringe (full vial draw)"
-        },
-        {
-          "stage": "Phase 3: High-Demand / Intensive Recovery Block",
-          "timeframe": "Weeks 9–12",
-          "doseDisplay": "75–150 IU SubQ",
-          "doseMcg": 1500,
-          "cadence": "3x Weekly",
-          "focus": "Maximal germ cell maturation and Leydig/Sertoli dual signaling (often paired with hCG)",
-          "notes": "Full vial or dual vial draw per scheduled session"
-        },
-        {
-          "stage": "Phase 4: Endocrine Washout & Feedback Calibration",
-          "timeframe": "Weeks 13+",
-          "doseDisplay": "Observation Period",
-          "doseMcg": 0,
-          "cadence": "Zero dosing",
-          "focus": "Endogenous pituitary gonadotropin autonomy verification",
-          "notes": "4-week cessation window to assess natural HPTA axis recovery"
-        }
-      ]
-    },
-    "syringeGuide": {
-      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
-      "standardIUDisplay": "100.0 units (1.00 mL)",
-      "graduations": [
-        {
-          "doseDisplay": "25 IU (Low Calibration)",
-          "doseMcg": 333,
-          "volumeMl": 0.333,
-          "syringeIU": 33.3,
-          "tickLabel": "33.3 units (0.33 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "37.5 IU (Half-Vial Induction)",
-          "doseMcg": 500,
-          "volumeMl": 0.5,
-          "syringeIU": 50,
-          "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "75 IU (Full Vial Target)",
-          "doseMcg": 1000,
-          "volumeMl": 1,
-          "syringeIU": 100,
-          "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
-        }
-      ]
-    },
-    "storage": {
-      "lyophilized": "2°C–8°C refrigerated or -20°C in dry desiccator (24 months shelf-life)",
-      "reconstituted": "2°C–8°C refrigerated; use within 28 days with Bacteriostatic Water USP",
-      "lightProtection": true
-    },
-    "molecularDetails": {
-      "casNumber": "61489-71-2",
-      "pubchemCid": 135331145,
-      "sequenceOrFormula": "Purified Human Menotropins (FSH: 203 amino acids; LH: 213 amino acids; sharing alpha subunit)",
-      "molecularWeightGPerMol": 30000
-    },
-    "citations": [
-      {
-        "sourceReference": "PubMed PMID: 15713823",
-        "notes": "Rastrelli et al. Recombinant LH versus human menopausal gonadotropin in gonadal stimulation."
-      },
-      {
-        "sourceReference": "PubMed PMID: 10465691",
-        "notes": "Schill WB. Treatment of male infertility with gonadotropins: HCG/HMG therapy in hypogonadotropic hypogonadism."
-      },
-      {
-        "sourceReference": "PubMed PMID: 24344364",
-        "notes": "Fraietta et al. Hypogonadotropic hypogonadism revisited: management with gonadotropins and GnRH."
-      }
-    ],
-    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration, diagnosis, treatment, or clinical therapy.",
-    "investigatedBenefits": [
-      "**Direct FSH Receptor Stimulation on Sertoli Cells**: Restores androgen-binding protein (ABP) synthesis and active spermatogenesis in preclinical models.",
-      "**Dual LH Bioactivity for Intratesticular Testosterone**: Stimulates Leydig cell steroidogenesis while avoiding selective downregulation.",
-      "**Preserves Testicular Cytoarchitecture**: Maintains blood-testis barrier integrity and tubular basement membrane health.",
-      "**Complements Incomplete LH-Only Mimetic Regimens**: Supplies indispensable FSH signaling that hCG alone cannot stimulate.",
-      "**Research Standard for Hypogonadotropic Signaling**: Widely referenced benchmark for endocrine and reproductive axis research."
-    ],
-    "adverseObservations": [
-      "**Transient Local Erythema**: Mild, transient redness or sensitivity at injection site resolving within 15–30 minutes.",
-      "**Dose-Dependent Aromatase Induction**: Requires baseline estradiol and hormonal balance monitoring in research protocols.",
-      "**Quaternary Protein Fragility**: High-molecular-weight glycoprotein heterodimer; avoid violent vortexing or freeze-thaw cycles.",
-      "**Storage Protocol**: Keep refrigerated at 2°C–8°C; protect from prolonged UV/light exposure."
-    ],
-    "calculator": {
-      "enabled": true,
-      "title": "HMG Reconstitution & Volumetric Calculator",
-      "defaultCompoundMass": "75",
-      "compoundMassUnit": "IU",
-      "defaultFinalVolumeMl": "1",
-      "defaultTargetAmount": "37.5",
-      "targetAmountUnit": "IU",
-      "iuPerMg": 75,
-      "deviceVolumeMl": "1",
-      "deviceLabel": "U-100 Syringe (mL)",
-      "roundingPrecision": 2,
-      "instructions": "Calibrated for 75 IU vial reconstituted with 1.0 mL Bacteriostatic Water USP (75.0 IU/mL; 50 units = 37.5 IU, 100 units = 75 IU)."
-    }
   }
 ]
