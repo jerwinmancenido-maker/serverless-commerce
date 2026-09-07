@@ -11,6 +11,7 @@ import { CompatibleProducts } from "../compatible-products"
 import { ProductMerchandising } from "../product-merchandising"
 import { CommunityModeration } from "../community-moderation"
 import { ProtocolVisibility } from "../protocol-visibility"
+import { evaluatePublicationReadiness } from "../readiness-evaluator"
 
 const messageFromError = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback
 
@@ -51,9 +52,9 @@ const PublishedProtocolDocument = ({
         ) : null}
         <div className="flex flex-wrap gap-2">
           {content.protocol_category_type === "blend" ? (
-            <Badge color="purple">🧬 Multi-Peptide Blend</Badge>
+            <Badge color="purple">Multi-Peptide Blend</Badge>
           ) : (
-            <Badge color="blue">🧪 Single Peptide</Badge>
+            <Badge color="blue">Single Peptide</Badge>
           )}
           {content.product_format ? <Badge>{content.product_format}</Badge> : null}
           {content.category ? <Badge>{content.category}</Badge> : null}
@@ -211,6 +212,81 @@ const PublishedProtocolDocument = ({
   )
 }
 
+const PublicationReadinessCard = ({
+  content,
+}: {
+  content: Partial<ResearchProtocolMutationBody["content"]> | null | undefined
+}) => {
+  const evaluation = useMemo(
+    () => evaluatePublicationReadiness(content as any),
+    [content],
+  )
+
+  return (
+    <div className="flex flex-col gap-y-3">
+      <div className="flex items-center justify-between gap-x-2">
+        <div className="flex flex-col gap-y-0.5">
+          <Text size="small" leading="compact" weight="plus">
+            Publication Readiness
+          </Text>
+          <Text size="xsmall" leading="compact" className="text-ui-fg-subtle">
+            {evaluation.passedCount} of {evaluation.totalCount} criteria satisfied
+          </Text>
+        </div>
+        <Badge
+          size="small"
+          color={evaluation.isReady ? "green" : "orange"}
+        >
+          {evaluation.isReady ? "Ready to Publish" : "Incomplete Draft"}
+        </Badge>
+      </div>
+
+      <div className="flex flex-col gap-y-1.5 rounded-lg border border-ui-border-base bg-ui-bg-subtle/30 p-2.5">
+        {evaluation.checklist.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center justify-between gap-x-2 py-0.5 text-xs"
+          >
+            <div className="flex items-center gap-x-2 min-w-0">
+              <span
+                className={`inline-block size-1.5 rounded-full shrink-0 ${
+                  item.passed ? "bg-emerald-500" : "bg-amber-400"
+                }`}
+              />
+              <span
+                className={
+                  item.passed
+                    ? "text-ui-fg-base"
+                    : "text-ui-fg-muted"
+                }
+              >
+                {item.label}
+              </span>
+            </div>
+            <span
+              className={`font-mono text-[10px] ${
+                item.passed ? "text-emerald-700" : "text-amber-700 font-semibold"
+              }`}
+            >
+              {item.passed ? "Passed" : "Missing"}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {evaluation.isReady ? (
+        <Text size="xsmall" className="text-emerald-800">
+          All mandatory monograph publication requirements are satisfied.
+        </Text>
+      ) : (
+        <Text size="xsmall" className="text-ui-fg-subtle">
+          Complete the missing monograph sections above before publishing.
+        </Text>
+      )}
+    </div>
+  )
+}
+
 const ResearchProtocolEditorPage = () => {
   const { protocolId = "" } = useParams()
   const navigate = useNavigate()
@@ -229,6 +305,11 @@ const ResearchProtocolEditorPage = () => {
   const draft = useMemo(() => protocol?.revisions.find((revision) => revision.status === "draft"), [protocol?.revisions])
   const published = useMemo(() => protocol?.revisions.find((revision) => revision.status === "published"), [protocol?.revisions])
   const displayedRevision = draft || published || protocol?.revisions[0]
+
+  const readiness = useMemo(
+    () => evaluatePublicationReadiness(form?.content as any),
+    [form?.content],
+  )
 
   useEffect(() => {
     if (!protocol || !displayedRevision) return
@@ -331,8 +412,12 @@ const ResearchProtocolEditorPage = () => {
           <div className="flex flex-col gap-y-1">
             <div className="flex items-center gap-x-2">
               <Heading>{displayedRevision.title}</Heading>
-              <Badge color={draft ? "orange" : published ? "green" : "grey"}>
-                {draft ? `Draft r${draft.revision}` : published ? `Published r${published.revision}` : displayedRevision.status}
+              <Badge color={draft ? (readiness.isReady ? "green" : "orange") : published ? "green" : "grey"}>
+                {draft
+                  ? `Draft r${draft.revision} (${readiness.isReady ? "Ready" : `${readiness.totalCount - readiness.passedCount} missing`})`
+                  : published
+                  ? `Published r${published.revision}`
+                  : displayedRevision.status}
               </Badge>
             </div>
             <Text size="small" className="text-ui-fg-subtle">
@@ -477,8 +562,13 @@ const ResearchProtocolEditorPage = () => {
           </Container>
         </div>
 
-        {/* ── Right sidebar (compatible products, merchandising, visibility, history) ── */}
+        {/* ── Right sidebar (readiness checklist, compatible products, merchandising, visibility, history) ── */}
         <div className="flex flex-col gap-y-4">
+          {draft ? (
+            <Container className="flex flex-col gap-y-4 px-6 py-4">
+              <PublicationReadinessCard content={form?.content} />
+            </Container>
+          ) : null}
           <Container className="flex flex-col gap-y-4 px-6 py-4"><CompatibleProducts protocolId={protocolId} /></Container>
           <Container className="flex flex-col gap-y-4 px-6 py-4"><ProductMerchandising protocolId={protocolId} /></Container>
           <Container className="flex flex-col gap-y-4 px-6 py-4"><ProtocolVisibility protocolId={protocolId} content={displayedRevision.content} /></Container>

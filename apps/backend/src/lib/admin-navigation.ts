@@ -341,7 +341,7 @@ table tbody tr:hover td:first-child {
 }
 
 /* Hide raw legacy square dots */
-td [class*="bg-ui-tag-"] {
+td [class*="bg-ui-tag-"][class*="-icon"] {
   display: none !important;
 }
 

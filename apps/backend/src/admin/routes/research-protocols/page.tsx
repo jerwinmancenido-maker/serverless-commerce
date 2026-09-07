@@ -1,5 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { BookOpen, Plus } from "@medusajs/icons"
+import { BookOpen, MagnifyingGlass, Plus, XMark } from "@medusajs/icons"
 import {
   Badge,
   Button,
@@ -7,11 +7,12 @@ import {
   createDataTableColumnHelper,
   DataTable,
   type DataTablePaginationState,
+  Input,
   Text,
   useDataTable,
 } from "@medusajs/ui"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { EmptyState } from "../../components/empty-state"
@@ -22,8 +23,8 @@ import { sdk } from "../../lib/sdk"
 import type {
   ResearchProtocolListResponse,
   ResearchProtocolSeries,
-  ResearchProtocolStatus,
 } from "../compounded-products/research-protocol-types"
+import { evaluatePublicationReadiness } from "./readiness-evaluator"
 
 const PAGE_SIZE = 20
 const columnHelper = createDataTableColumnHelper<ResearchProtocolSeries>()
@@ -46,23 +47,58 @@ const statusDetails = (protocol: ResearchProtocolSeries) => {
 }
 
 const readinessDetails = (protocol: ResearchProtocolSeries) => {
+  const published = protocol.revisions.find(
+    (revision) => revision.status === "published",
+  )
+  if (published) {
+    return { label: "Published & Ready", color: "green" as const }
+  }
+
   const latest = protocol.revisions[0]
   if (!latest) {
     return { label: "Unchecked", color: "grey" as const }
-  }
-
-  if (latest.status === "published") {
-    return { label: "Published & Ready", color: "green" as const }
   }
 
   if (latest.status === "withdrawn") {
     return { label: "Withdrawn", color: "grey" as const }
   }
 
+  const evaluation = evaluatePublicationReadiness(latest.content)
+  if (evaluation.isReady) {
+    return { label: "Ready to Publish", color: "green" as const }
+  }
+
+  const missingCount = evaluation.totalCount - evaluation.passedCount
   return {
-    label: "Draft in Progress",
+    label: `Draft (${missingCount} missing)`,
     color: "orange" as const,
   }
+}
+
+const ProtocolStatusBadge = ({
+  children,
+  color,
+  className = "",
+}: {
+  children: React.ReactNode
+  color: "green" | "purple" | "blue" | "orange" | "grey"
+  className?: string
+}) => {
+  const colorStyles = {
+    green: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    purple: "bg-purple-50 text-purple-700 border-purple-200",
+    blue: "bg-blue-50 text-blue-700 border-blue-200",
+    orange: "bg-amber-50 text-amber-700 border-amber-200",
+    grey: "bg-zinc-100 text-zinc-600 border-zinc-200",
+  }
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${colorStyles[color]} ${className}`}
+    >
+      {children}
+    </span>
+  )
 }
 
 const ResearchProtocolsPage = () => {
@@ -71,81 +107,102 @@ const ResearchProtocolsPage = () => {
     pageSize: PAGE_SIZE,
   })
   const [activeFilter, setActiveFilter] = useState("all")
+  const [searchQuery, setSearchQuery] = useState("")
 
   const protocolsQuery = useQuery({
-    queryKey: ["research-protocols", "all", pagination],
+    queryKey: ["research-protocols", "catalog-all"],
     queryFn: () =>
       sdk.client.fetch<ResearchProtocolListResponse>(
         "/admin/research-protocols",
         {
           query: {
-            limit: pagination.pageSize,
-            offset: pagination.pageIndex * pagination.pageSize,
+            limit: 100,
+            offset: 0,
           },
         },
       ),
     placeholderData: keepPreviousData,
   })
 
-  const rawProtocols = protocolsQuery.data?.protocols || []
+  const allProtocols = protocolsQuery.data?.protocols || []
 
-  // Compute KPIs
+  // Compute accurate global KPIs across the entire catalog
   const kpis = useMemo(() => {
-    const total = protocolsQuery.data?.count ?? rawProtocols.length
-    const singlePeptides = rawProtocols.filter(
+    const total = protocolsQuery.data?.count ?? allProtocols.length
+    const singlePeptides = allProtocols.filter(
       (p) => p.revisions[0]?.content?.protocol_category_type !== "blend",
     ).length
-    const blends = rawProtocols.filter(
+    const blends = allProtocols.filter(
       (p) => p.revisions[0]?.content?.protocol_category_type === "blend",
     ).length
-    const published = rawProtocols.filter(
+    const published = allProtocols.filter(
       (p) => p.revisions.some((r) => r.status === "published"),
     ).length
-    const draft = rawProtocols.filter(
+    const draft = allProtocols.filter(
       (p) => !p.revisions.some((r) => r.status === "published"),
     ).length
-    const totalLinked = rawProtocols.reduce(
+    const totalLinked = allProtocols.reduce(
       (acc, p) => acc + (p.product_links?.length || 0),
       0,
     )
 
     return { total, singlePeptides, blends, published, draft, totalLinked }
-  }, [rawProtocols, protocolsQuery.data?.count])
+  }, [allProtocols, protocolsQuery.data?.count])
 
-  // Filter based on active filter pill
+  // Filter and search over all protocols
   const filteredProtocols = useMemo(() => {
+    let result = allProtocols
+
     if (activeFilter === "singles") {
-      return rawProtocols.filter(
+      result = result.filter(
         (p) => p.revisions[0]?.content?.protocol_category_type !== "blend",
       )
-    }
-    if (activeFilter === "blends") {
-      return rawProtocols.filter(
+    } else if (activeFilter === "blends") {
+      result = result.filter(
         (p) => p.revisions[0]?.content?.protocol_category_type === "blend",
       )
-    }
-    if (activeFilter === "published") {
-      return rawProtocols.filter((p) =>
+    } else if (activeFilter === "published") {
+      result = result.filter((p) =>
         p.revisions.some((r) => r.status === "published"),
       )
-    }
-    if (activeFilter === "draft") {
-      return rawProtocols.filter(
+    } else if (activeFilter === "draft") {
+      result = result.filter(
         (p) => !p.revisions.some((r) => r.status === "published"),
       )
-    }
-    if (activeFilter === "linked") {
-      return rawProtocols.filter(
+    } else if (activeFilter === "linked") {
+      result = result.filter(
         (p) => (p.product_links?.length || 0) > 0,
       )
-    }
-    if (activeFilter === "unlinked") {
-      return rawProtocols.filter(
+    } else if (activeFilter === "unlinked") {
+      result = result.filter(
         (p) => (p.product_links?.length || 0) === 0,
       )
     }
-    return rawProtocols
-  }, [rawProtocols, activeFilter])
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim()
+      result = result.filter((p) => {
+        const latest = p.revisions[0]
+        const keyMatch = p.protocol_key.toLowerCase().includes(q)
+        const titleMatch = latest?.title?.toLowerCase().includes(q)
+        const compoundMatch = latest?.content?.compound_name?.toLowerCase().includes(q)
+        return keyMatch || titleMatch || compoundMatch
+      })
+    }
+
+    return result
+  }, [allProtocols, activeFilter, searchQuery])
+
+  // Reset pagination to page 0 whenever filter or search changes
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+  }, [activeFilter, searchQuery])
+
+  // Paged slice for data table
+  const pagedProtocols = useMemo(() => {
+    const start = pagination.pageIndex * pagination.pageSize
+    return filteredProtocols.slice(start, start + pagination.pageSize)
+  }, [filteredProtocols, pagination])
 
   const columns = useMemo(
     () => [
@@ -160,7 +217,6 @@ const ResearchProtocolsPage = () => {
                 className="w-fit font-semibold hover:text-ui-fg-interactive text-xs inline-flex items-center gap-1.5"
                 to={`/research-protocols/${row.original.id}`}
               >
-                <span>🔬</span>
                 <span>{latest?.title || row.original.protocol_key}</span>
               </Link>
               <span className="font-mono text-[10px] text-ui-fg-subtle">
@@ -177,13 +233,13 @@ const ResearchProtocolsPage = () => {
           const latest = row.original.revisions[0]
           const isBlend = latest?.content?.protocol_category_type === "blend"
           return isBlend ? (
-            <Badge size="small" color="purple" className="font-mono text-[10px]">
-              🧬 Multi-Peptide Blend
-            </Badge>
+            <ProtocolStatusBadge color="purple" className="font-mono text-[10px]">
+              Multi-Peptide Blend
+            </ProtocolStatusBadge>
           ) : (
-            <Badge size="small" color="blue" className="font-mono text-[10px]">
-              🧪 Single Peptide
-            </Badge>
+            <ProtocolStatusBadge color="blue" className="font-mono text-[10px]">
+              Single Peptide
+            </ProtocolStatusBadge>
           )
         },
       }),
@@ -193,9 +249,9 @@ const ResearchProtocolsPage = () => {
         cell: ({ row }) => {
           const count = row.original.product_links?.length || 0
           return count > 0 ? (
-            <Badge size="small" color="blue" className="font-mono text-[11px]">
-              💊 {count} {count === 1 ? "product" : "products"}
-            </Badge>
+            <ProtocolStatusBadge color="blue" className="font-mono text-[11px]">
+              {count} {count === 1 ? "product" : "products"}
+            </ProtocolStatusBadge>
           ) : (
             <span className="text-ui-fg-muted text-xs italic">None</span>
           )
@@ -207,9 +263,9 @@ const ResearchProtocolsPage = () => {
         cell: ({ row }) => {
           const status = statusDetails(row.original)
           return (
-            <Badge size="small" color={status.color}>
+            <ProtocolStatusBadge color={status.color}>
               {status.label}
-            </Badge>
+            </ProtocolStatusBadge>
           )
         },
       }),
@@ -228,9 +284,9 @@ const ResearchProtocolsPage = () => {
         cell: ({ row }) => {
           const readiness = readinessDetails(row.original)
           return (
-            <Badge size="small" color={readiness.color} className="capitalize text-[10px]">
+            <ProtocolStatusBadge color={readiness.color} className="capitalize text-[10px]">
               {readiness.label}
-            </Badge>
+            </ProtocolStatusBadge>
           )
         },
       }),
@@ -264,10 +320,10 @@ const ResearchProtocolsPage = () => {
   )
 
   const table = useDataTable({
-    data: filteredProtocols,
+    data: pagedProtocols,
     columns,
     getRowId: (protocol) => protocol.id,
-    rowCount: protocolsQuery.data?.count || 0,
+    rowCount: filteredProtocols.length,
     isLoading: protocolsQuery.isLoading,
     pagination: {
       state: pagination,
@@ -299,28 +355,24 @@ const ResearchProtocolsPage = () => {
         <KpiCard
           title="Total Protocols"
           value={kpis.total}
-          icon="🔬"
           status="neutral"
           subtext="Authoritative product protocols"
         />
         <KpiCard
           title="Single Peptides"
           value={kpis.singlePeptides}
-          icon="🧪"
           status="healthy"
           subtext="Single compound monographs"
         />
         <KpiCard
           title="Multi-Peptide Blends"
           value={kpis.blends}
-          icon="🧬"
           status="info"
           subtext="Multi-compound formulations"
         />
         <KpiCard
           title="Product Links"
           value={kpis.totalLinked}
-          icon="💊"
           status="info"
           subtext="Cross-catalog associations"
         />
@@ -328,7 +380,7 @@ const ResearchProtocolsPage = () => {
 
       {/* 3. Main Data Container */}
       <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base">
-        {/* Filter Pills Toolbar */}
+        {/* Filter Pills Toolbar & Live Search Input */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-ui-bg-subtle/20 border-b border-ui-border-base">
           <FilterPillGroup
             items={[
@@ -342,6 +394,27 @@ const ResearchProtocolsPage = () => {
             selectedId={activeFilter}
             onSelect={(id) => setActiveFilter(id)}
           />
+
+          <div className="relative flex items-center">
+            <MagnifyingGlass className="absolute left-2.5 size-3.5 text-ui-fg-muted pointer-events-none" />
+            <Input
+              size="small"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search protocol or compound..."
+              className="h-8 pl-8 pr-7 text-xs w-64"
+            />
+            {searchQuery ? (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2 text-ui-fg-muted hover:text-ui-fg-base"
+                title="Clear search"
+              >
+                <XMark className="size-3.5" />
+              </button>
+            ) : null}
+          </div>
         </div>
 
         {protocolsQuery.isError ? (
@@ -354,11 +427,17 @@ const ResearchProtocolsPage = () => {
 
         {!protocolsQuery.isLoading && filteredProtocols.length === 0 ? (
           <EmptyState
-            icon="🔬"
-            title={rawProtocols.length === 0 ? "No research protocols yet" : "No research protocols found"}
-            description="No protocols match the selected filter. Create a new protocol or switch filters."
-            actionLabel="Show All Protocols"
-            onAction={() => setActiveFilter("all")}
+            title={allProtocols.length === 0 ? "No research protocols yet" : "No research protocols found"}
+            description={
+              searchQuery
+                ? `No protocols matching "${searchQuery}". Clear your search or change filters.`
+                : "No protocols match the selected filter. Create a new protocol or switch filters."
+            }
+            actionLabel={searchQuery ? "Clear Search" : "Show All Protocols"}
+            onAction={() => {
+              setSearchQuery("")
+              setActiveFilter("all")
+            }}
           />
         ) : (
           <DataTable instance={table}>

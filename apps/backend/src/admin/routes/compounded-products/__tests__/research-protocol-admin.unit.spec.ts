@@ -1,6 +1,8 @@
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
 
+import { evaluatePublicationReadiness } from "../../research-protocols/readiness-evaluator"
+
 const routesRoot = join(__dirname, "..", "..")
 const srcRoot = join(__dirname, "..", "..", "..", "..")
 
@@ -221,4 +223,64 @@ describe("research protocol Admin", () => {
     expect(storeRoute).toContain("req.auth_context.actor_id")
     expect(storeRoute).not.toContain("publishResearchProtocolWorkflow")
   })
+
+  it("evaluates draft publication readiness against the 8 mandatory monograph criteria", () => {
+    const emptyResult = evaluatePublicationReadiness(null)
+    expect(emptyResult.isReady).toBe(false)
+    expect(emptyResult.passedCount).toBe(1)
+    expect(emptyResult.problems).toContain("Add a quick overview")
+    expect(emptyResult.problems).toContain("Explain what this research guide covers")
+    expect(emptyResult.problems).toContain("Add important limitations")
+    expect(emptyResult.problems).toContain("Add preparation and handling information")
+    expect(emptyResult.problems).toContain("Add the research steps")
+    expect(emptyResult.problems).toContain("Add storage and disposal information")
+    expect(emptyResult.problems).toContain("Add at least one supporting reference")
+
+    const completeResult = evaluatePublicationReadiness({
+      intended_application: "In-vitro laboratory research and analytical characterization.",
+      research_purpose: "Investigation of receptor affinity and enzymatic stability.",
+      explicit_exclusions: "Not for human or veterinary administration.",
+      preparation_and_handling: "Aseptic reconstitution in laminar airflow hood.",
+      research_procedure: "1. Equilibrate to room temperature. 2. Reconstitute with bacteriostatic water.",
+      storage_and_disposal: "Store at -20°C. Dispose per laboratory biohazard waste guidelines.",
+      references: [
+        {
+          reference_key: "ref-1",
+          title: "HPLC characterization and stability assay standard",
+          authors: "Analytical Chemistry Laboratory",
+          published_at: "2026",
+          url: "https://example.com/assay",
+          doi: null,
+          evidence_type: "peer-reviewed",
+          supported_claim: "Purity standard verified",
+          customer_annotation: null,
+        },
+      ],
+      reference_quantities: [],
+    })
+
+    expect(completeResult.isReady).toBe(true)
+    expect(completeResult.passedCount).toBe(8)
+    expect(completeResult.problems).toHaveLength(0)
+  })
+
+  it("integrates search and real-time publication readiness cards into the admin dashboard and editor", () => {
+    const dashboardSource = readFileSync(
+      join(routesRoot, "research-protocols/page.tsx"),
+      "utf8",
+    )
+    const editorSource = readFileSync(
+      join(routesRoot, "research-protocols/[protocolId]/page.tsx"),
+      "utf8",
+    )
+
+    expect(dashboardSource).toContain("Search protocol or compound...")
+    expect(dashboardSource).toContain("evaluatePublicationReadiness")
+    expect(dashboardSource).toContain("Ready to Publish")
+    expect(dashboardSource).toContain("Draft (")
+    expect(editorSource).toContain("PublicationReadinessCard")
+    expect(editorSource).toContain("Publication Readiness")
+    expect(editorSource).toContain("criteria satisfied")
+  })
 })
+
