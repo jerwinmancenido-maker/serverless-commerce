@@ -63,6 +63,38 @@ function statusLabel(occurrence: ResearchOccurrence, today: string) {
   return "Upcoming"
 }
 
+function occurrenceChipStyle(occurrence: ResearchOccurrence, today: string) {
+  if (occurrence.status === "confirmed") {
+    return {
+      container: "bg-emerald-50 text-emerald-900 border border-emerald-200 font-medium",
+      dot: "bg-emerald-500",
+    }
+  }
+  if (occurrence.status === "skipped") {
+    return {
+      container: "bg-zinc-100 text-zinc-500 border border-zinc-200 line-through opacity-75",
+      dot: "bg-zinc-400",
+    }
+  }
+  const date = effectiveDate(occurrence)
+  if (date === today) {
+    return {
+      container: "bg-amber-50 text-amber-900 border border-amber-300 font-semibold shadow-2xs",
+      dot: "bg-amber-500 animate-pulse",
+    }
+  }
+  if (date < today) {
+    return {
+      container: "bg-rose-50 text-rose-850 border border-rose-200 font-medium",
+      dot: "bg-rose-500",
+    }
+  }
+  return {
+    container: "bg-blue-50 text-blue-900 border border-blue-100",
+    dot: "bg-blue-500",
+  }
+}
+
 export default function ResearchCalendar({
   anchorDate,
   countryCode,
@@ -186,11 +218,18 @@ export default function ResearchCalendar({
                       {dateValue.getUTCDate()}
                     </span>
                     <span className="mt-2 block space-y-1">
-                      {items.slice(0, 3).map((occurrence) => (
-                        <span key={occurrence.occurrence_id} className="block truncate rounded bg-blue-50 px-2 py-1 text-xs text-blue-900">
-                          {effectiveTime(occurrence)} {occurrence.label}
-                        </span>
-                      ))}
+                      {items.slice(0, 3).map((occurrence) => {
+                        const style = occurrenceChipStyle(occurrence, today)
+                        return (
+                          <span
+                            key={occurrence.occurrence_id}
+                            className={`flex items-center gap-1 truncate rounded px-1.5 py-0.5 text-[11px] ${style.container}`}
+                          >
+                            <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${style.dot}`} />
+                            <span className="truncate">{effectiveTime(occurrence)} {occurrence.label}</span>
+                          </span>
+                        )
+                      })}
                       {items.length > 3 ? <span className="block text-xs text-ui-fg-muted">+{items.length - 3} more</span> : null}
                     </span>
                   </button>
@@ -205,11 +244,18 @@ export default function ResearchCalendar({
             {Array.from({ length: 7 }, (_, index) => addDays(selectedDate, index - ((dateAt(selectedDate).getUTCDay() + 6) % 7))).map((date) => (
               <button key={date} type="button" onClick={() => { setSelectedDate(date); setView("day") }} className="min-h-36 p-3 text-left hover:bg-ui-bg-subtle">
                 <span className="text-xs font-semibold">{date}</span>
-                {(byDate.get(date) ?? []).map((occurrence) => (
-                  <span key={occurrence.occurrence_id} className="mt-2 block rounded bg-blue-50 p-2 text-xs text-blue-900">
-                    {effectiveTime(occurrence)} {occurrence.label}
-                  </span>
-                ))}
+                {(byDate.get(date) ?? []).map((occurrence) => {
+                  const style = occurrenceChipStyle(occurrence, today)
+                  return (
+                    <span
+                      key={occurrence.occurrence_id}
+                      className={`mt-1.5 flex items-center gap-1.5 rounded p-1.5 text-xs ${style.container}`}
+                    >
+                      <span className={`h-2 w-2 shrink-0 rounded-full ${style.dot}`} />
+                      <span className="truncate font-medium">{effectiveTime(occurrence)} {occurrence.label}</span>
+                    </span>
+                  )
+                })}
               </button>
             ))}
           </div>
@@ -224,12 +270,26 @@ export default function ResearchCalendar({
             </div>
             {selectedItems.length ? (
               <div className="space-y-3">
-                {selectedItems.map((occurrence) => (
-                  <button key={occurrence.occurrence_id} type="button" onClick={() => setSelectedOccurrence(occurrence)} className="flex w-full items-center justify-between rounded-lg border border-ui-border-base p-4 text-left hover:bg-ui-bg-subtle">
-                    <span><span className="font-semibold">{effectiveTime(occurrence)}</span><span className="ml-3">{occurrence.label}</span></span>
-                    <span className="text-xs font-medium text-ui-fg-muted">{statusLabel(occurrence, today)}</span>
-                  </button>
-                ))}
+                {selectedItems.map((occurrence) => {
+                  const style = occurrenceChipStyle(occurrence, today)
+                  return (
+                    <button
+                      key={occurrence.occurrence_id}
+                      type="button"
+                      onClick={() => setSelectedOccurrence(occurrence)}
+                      className="flex w-full items-center justify-between rounded-lg border border-ui-border-base bg-white p-3.5 text-left hover:bg-ui-bg-subtle transition-colors"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${style.dot}`} />
+                        <span className="font-bold text-ui-fg-base">{effectiveTime(occurrence)}</span>
+                        <span className="text-sm font-medium text-ui-fg-base">{occurrence.label}</span>
+                      </div>
+                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${style.container}`}>
+                        {statusLabel(occurrence, today)}
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
             ) : <p className="py-8 text-center text-sm text-ui-fg-subtle">No activities on this day.</p>}
           </div>

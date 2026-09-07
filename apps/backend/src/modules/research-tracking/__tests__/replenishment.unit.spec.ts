@@ -46,6 +46,54 @@ describe("replenishment contract", () => {
     ).toBe("reorder_now")
   })
 
+  it("classifies depleted or zero-day balance as urgent reorder", () => {
+    expect(
+      classifyReplenishmentUrgency({
+        estimatedDaysRemaining: 0,
+        reorderNowDays: 14,
+        planReorderDays: 30,
+      }),
+    ).toBe("reorder_now")
+  })
+
+  it("handles exact boundary transitions between urgency levels", () => {
+    // Exactly at reorderNowDays threshold
+    expect(
+      classifyReplenishmentUrgency({
+        estimatedDaysRemaining: 14,
+        reorderNowDays: 14,
+        planReorderDays: 30,
+      }),
+    ).toBe("reorder_now")
+
+    // One day above reorderNowDays
+    expect(
+      classifyReplenishmentUrgency({
+        estimatedDaysRemaining: 15,
+        reorderNowDays: 14,
+        planReorderDays: 30,
+      }),
+    ).toBe("plan_reorder")
+
+    // Exactly at planReorderDays
+    expect(
+      classifyReplenishmentUrgency({
+        estimatedDaysRemaining: 30,
+        reorderNowDays: 14,
+        planReorderDays: 30,
+      }),
+    ).toBe("plan_reorder")
+
+    // One day above planReorderDays
+    expect(
+      classifyReplenishmentUrgency({
+        estimatedDaysRemaining: 31,
+        reorderNowDays: 14,
+        planReorderDays: 30,
+      }),
+    ).toBe("on_track")
+  })
+
   it("projects customer-created routines that predate schedule segments", () => {
     expect(
       legacyRevisionSegment({

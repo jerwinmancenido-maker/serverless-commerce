@@ -18,6 +18,8 @@ import {
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import React, { useActionState, useMemo, useState } from "react"
 import { useFormStatus } from "react-dom"
+import SyringeVisualizer from "./syringe-visualizer"
+import { getCompoundProtocol } from "@lib/data/compound-protocols"
 
 const initialState: ResearchTrackingActionState = {
   success: false,
@@ -101,6 +103,23 @@ export default function ResearchOccurrenceActions({
   const activeProfile =
     unitProfile ??
     defaultResearchUnitProfile(occurrence.base_unit, occurrence.label)
+
+  const proto = useMemo(() => {
+    return getCompoundProtocol(occurrence.label || routine?.tracked_material_label || "")
+  }, [occurrence.label, routine?.tracked_material_label])
+
+  const volumeMl = useMemo(() => {
+    if (occurrence.base_unit === "microliter") {
+      return Number((occurrence.planned_quantity_base_units / 1000).toFixed(3))
+    }
+    if (occurrence.base_unit === "microgram") {
+      const conc = proto?.reconstitution?.resultingConcentrationMgPerMl || 2.5
+      if (!conc || conc <= 0) return null
+      const doseMg = occurrence.planned_quantity_base_units / 1000
+      return Number((doseMg / conc).toFixed(3))
+    }
+    return null
+  }, [proto, occurrence.base_unit, occurrence.planned_quantity_base_units])
 
   const submissionKey = useMemo(createSubmissionKey, [occurrence.occurrence_id])
   const confirmSubmissionKey = useMemo(
@@ -246,6 +265,27 @@ export default function ResearchOccurrenceActions({
                   </p>
                 </div>
               </div>
+
+              {volumeMl != null && volumeMl > 0 && (
+                <div className="rounded-xl border border-ui-border-base bg-white p-3.5 shadow-2xs">
+                  <div className="mb-2 flex items-center justify-between border-b border-ui-border-base pb-2">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-ui-fg-base">Laboratory Syringe Draw</span>
+                      <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                        {(volumeMl * 100).toFixed(1)} Units (U-100)
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-semibold text-ui-fg-muted">
+                      {volumeMl.toFixed(2)} mL volume
+                    </span>
+                  </div>
+                  <SyringeVisualizer
+                    volumeMl={volumeMl}
+                    compoundName={occurrence.label || routine?.tracked_material_label}
+                    deviceLabel="U-100 Laboratory Syringe"
+                  />
+                </div>
+              )}
 
               {!previewState.preview ? (
                 <form action={previewAction} className="space-y-3">

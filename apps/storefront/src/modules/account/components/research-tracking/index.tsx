@@ -965,7 +965,7 @@ export default function ResearchTracking({
                     Manage →
                   </LocalizedClientLink>
                 </div>
-                <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} />
+                <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} countryCode={countryCode} />
                 {purchasedItems.some((p) => p.added_to_tracking_at === null && p.eligibility === "eligible") && (
                   <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
                     New purchases ready to activate. <LocalizedClientLink href="/account/research-hub?section=schedule" className="font-semibold underline">Activate now →</LocalizedClientLink>
@@ -1214,7 +1214,7 @@ export default function ResearchTracking({
               </LocalizedClientLink>
             </div>
             <div className="mt-4">
-              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} />
+              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} countryCode={countryCode} />
             </div>
           </div>
         </>
@@ -1267,7 +1267,7 @@ export default function ResearchTracking({
               </LocalizedClientLink>
             </div>
             <div className="mt-4">
-              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} />
+              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} countryCode={countryCode} />
             </div>
           </div>
         </>
