@@ -25,6 +25,32 @@ test("keeps legacy plain-text descriptions readable", () => {
   )
 })
 
+test("renders Markdown bold, italic, heading, and list", () => {
+  const result = sanitizeProductDescription(
+    "## GHK-Cu Overview\n\n**Copper peptide** with *collagen synthesis* activity.\n\n- Lyophilized\n- Research grade",
+  )
+
+  assert.match(result, /<h2>GHK-Cu Overview<\/h2>/)
+  assert.match(result, /<strong>Copper peptide<\/strong>/)
+  assert.match(result, /<em>collagen synthesis<\/em>/)
+  assert.match(result, /<li>Lyophilized<\/li>/)
+  assert.match(result, /<li>Research grade<\/li>/)
+})
+
+test("strips unsafe HTML injected through Markdown", () => {
+  // Pure Markdown input — triggers the marked parser path.
+  // marked converts [click](javascript:alert(1)) to <a href="javascript:...">
+  // which sanitize-html then strips because javascript: is a disallowed scheme.
+  const result = sanitizeProductDescription(
+    "**Safe content** [click](javascript:alert(1))",
+  )
+
+  // The javascript: href must not appear as a clickable link
+  assert.doesNotMatch(result, /href=["']javascript:/i)
+  // Bold text should render correctly
+  assert.match(result, /<strong>Safe content<\/strong>/)
+})
+
 test("removes scripts, event handlers, and unsafe image sources", () => {
   const result = sanitizeProductDescription(
     '<p onclick="alert(1)">Safe</p><script>alert(1)</script><span style="color: expression(alert(1)); position: fixed">Unsafe style</span><mark style="background-color: url(javascript:alert(1))">Unsafe mark</mark><img src="javascript:alert(1)" onerror="alert(1)"><a href="javascript:alert(1)">Link</a>',

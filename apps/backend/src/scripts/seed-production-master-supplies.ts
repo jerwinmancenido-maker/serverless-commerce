@@ -123,9 +123,9 @@ export default async function seedProductionMasterSupplies({
   container: any
 }) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
-  const inventoryService = container.resolve<IInventoryService>(Modules.INVENTORY)
-  const bomService = container.resolve<PepstackBomModuleService>(PEPSTACK_BOM_MODULE)
-  const remoteLink = container.resolve<ILinkModule>(ContainerRegistrationKeys.LINK)
+  const inventoryService = container.resolve(Modules.INVENTORY) as IInventoryService
+  const bomService = container.resolve(PEPSTACK_BOM_MODULE) as PepstackBomModuleService
+  const remoteLink = container.resolve(ContainerRegistrationKeys.LINK) as ILinkModule
 
   logger.info("=== Phase 2: Seeding production master supplies ===")
 
@@ -278,7 +278,7 @@ export default async function seedProductionMasterSupplies({
 
     // Check if the variant link exists via remote link
     try {
-      await remoteLink.create({
+      await (remoteLink as any).create({
         [Modules.PRODUCT]: { variant_id: variantId },
         [Modules.INVENTORY]: { inventory_item_id: inventoryItemId },
       })

@@ -1,6 +1,11 @@
 import sanitizeHtml from "sanitize-html"
+import { marked } from "marked"
 
 const looksLikeHtml = (value: string) => /<\/?[a-z][\s\S]*>/i.test(value)
+
+// Detects common Markdown patterns: **bold**, *italic*, # headings, - lists, [links]
+const looksLikeMarkdown = (value: string) =>
+  /(\*\*|__|\*|_|#{1,6} |^- |\[.+\]\(.+\)|^> )/m.test(value)
 
 const escapeHtml = (value: string) =>
   value
@@ -13,9 +18,18 @@ const escapeHtml = (value: string) =>
 const sanitizeProductDescription = (description: string | null | undefined) => {
   if (!description?.trim()) return ""
 
-  const source = looksLikeHtml(description)
-    ? description
-    : `<p>${escapeHtml(description).replaceAll("\n", "<br>")}</p>`
+  let source: string
+
+  if (looksLikeHtml(description)) {
+    // Already HTML — sanitize directly
+    source = description
+  } else if (looksLikeMarkdown(description)) {
+    // Markdown — convert to HTML first, then sanitize
+    source = marked.parse(description, { async: false }) as string
+  } else {
+    // Plain text — wrap in paragraph with line breaks
+    source = `<p>${escapeHtml(description).replaceAll("\n", "<br>")}</p>`
+  }
 
   return sanitizeHtml(source, {
     allowedTags: [

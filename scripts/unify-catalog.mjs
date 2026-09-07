@@ -12,6 +12,83 @@ const pepstackDosing = JSON.parse(fs.readFileSync(path.join(SCRAPED_DIR, "pepsta
 const pepstackComponents = JSON.parse(fs.readFileSync(path.join(SCRAPED_DIR, "pepstack-components.json"), "utf-8"));
 const pepstackCompVariants = JSON.parse(fs.readFileSync(path.join(SCRAPED_DIR, "pepstack-component-variants.json"), "utf-8"));
 
+const PROTOCOLS_PATH = path.resolve("apps/backend/data/all-compound-protocols.json");
+const allProtocols = fs.existsSync(PROTOCOLS_PATH)
+  ? JSON.parse(fs.readFileSync(PROTOCOLS_PATH, "utf-8"))
+  : [];
+
+function resolveProtocolForProduct(handle, name) {
+  if (!handle && !name) return null;
+  const cleanHandle = (handle || "").toLowerCase().trim();
+  const stripped = cleanHandle
+    .replace(/-(?:vial|organizer|box|set|kit|combo|pack|anti-aging-serum|somatropin)$/i, "")
+    .replace(/-(?:500mcg|100mcg|250mcg|\d+(?:\.\d+)?(?:mg|iu|ml|cc))$/i, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  let match = allProtocols.find(p => 
+    p.handles?.some(h => h.toLowerCase() === cleanHandle || h.toLowerCase() === stripped)
+  );
+  if (match) return match;
+
+  match = allProtocols.find(p => p.id === cleanHandle || p.id === stripped);
+  if (match) return match;
+
+  const cleanName = (name || "").toLowerCase().replace(/\(.*?\)/g, "").trim();
+  match = allProtocols.find(p => {
+    const pName = p.compoundName.toLowerCase().replace(/\(.*?\)/g, "").trim();
+    return pName === cleanName || p.id === cleanName.replace(/[^a-z0-9]+/g, "-");
+  });
+  return match || null;
+}
+
+function synthesizeProductDescription(rule, protocol, isSupply) {
+  if (isSupply) {
+    return `<p><strong>${rule.canonicalName} – Precision Laboratory Supplies & Dispensing Accessories</strong></p>` +
+      `<p><strong>Product Overview</strong></p>` +
+      `<p>${rule.canonicalName} is supplied strictly for controlled laboratory research workflows, aseptic compound reconstitution, and high-precision volumetric measurement. Engineered from medical-grade inert materials to prevent chemical leaching and ensure research repeatability.</p>` +
+      `<p><strong>Intended Use</strong></p>` +
+      `<p>All accessories supplied by Research Compounds are intended strictly for in-vitro laboratory research, analytical preparation, and scientific investigation only.</p>`;
+  }
+
+  const name = protocol ? protocol.compoundName.replace(/\(.*?\)/g, "").trim() : rule.canonicalName;
+  const subtitle = protocol?.subtitle || `${name} Analytical Standard`;
+  const category = protocol?.category || "Research Compounds";
+  const purity = protocol?.purityStandard || "≥99.0% (HPLC Certified Lot Standard)";
+  const cas = protocol?.molecularDetails?.casNumber || "Analytical Reference Standard";
+  const mw = protocol?.molecularDetails?.molecularWeightGPerMol ? `${protocol.molecularDetails.molecularWeightGPerMol} g/mol` : "Standard Compound Profile";
+  const formula = protocol?.molecularDetails?.sequenceOrFormula || "Synthesized Reference Peptide";
+  const solvent = protocol?.reconstitution?.solvent || "Bacteriostatic Water USP (0.9% Benzyl Alcohol)";
+  const ratio = protocol?.reconstitution ? `${protocol.reconstitution.defaultDiluentMl} mL per ${protocol.reconstitution.defaultVialNetMg} mg (${protocol.reconstitution.resultingConcentrationMgPerMl} mg/mL)` : "2.0 mL per 10 mg (5.0 mg/mL)";
+  const lyoStorage = protocol?.storage?.lyophilized || "-20°C in dry desiccated container (24 months)";
+  const liqStorage = protocol?.storage?.reconstituted || "2°C–8°C refrigerated; use within 28 days";
+  const method = protocol?.reconstitution?.dissolutionMethod || "Add diluent slowly down inner glass vial wall. Swirl gently in horizontal circles until clear.";
+  const monograph = protocol?.longDescription
+    ? `<p><strong>Pharmacological Profile & Mechanism of Action</strong></p><p>${protocol.longDescription}</p>`
+    : "";
+
+  return `<p><strong>${name} – Research Grade Peptide Standard | Lyophilized Lab Monograph</strong></p>` +
+    `<p><strong>Classification & Category</strong></p>` +
+    `<p>${category} / In-Vitro Reference Grade</p>` +
+    `<p><strong>Product Overview & Research Rationale</strong></p>` +
+    `<p>${name} is a high-purity laboratory reference peptide supplied as a sterile lyophilized cake. ${subtitle}. Formulated specifically for controlled in-vitro cellular signaling assays, receptor-binding affinity studies, bioenergetic kinetic modeling, and high-performance liquid chromatography (HPLC) calibration.</p>` +
+    monograph +
+    `<p><strong>Physicochemical & Molecular Specifications</strong></p>` +
+    `<p>• <strong>Chemical Sequence / Formula:</strong> <code>${formula}</code></p>` +
+    `<p>• <strong>CAS Registry Number:</strong> ${cas}</p>` +
+    `<p>• <strong>Molecular Weight:</strong> ${mw}</p>` +
+    `<p>• <strong>HPLC Chromatographic Purity:</strong> ${purity}</p>` +
+    `<p>• <strong>Physical State:</strong> Lyophilized Solid Powder (Sealed Glass Vial)</p>` +
+    `<p><strong>Aseptic Reconstitution & Laboratory Handling Profile</strong></p>` +
+    `<p>• <strong>Target Diluent:</strong> ${solvent}</p>` +
+    `<p>• <strong>Standard Reconstitution Ratio:</strong> ${ratio}</p>` +
+    `<p>• <strong>Dissolution Technique:</strong> ${method} Avoid vortexing or violent agitation to preserve secondary peptide conformation.</p>` +
+    `<p>• <strong>Lyophilized Storage:</strong> ${lyoStorage}</p>` +
+    `<p>• <strong>Reconstituted Solution Stability:</strong> ${liqStorage}. Protect from direct sunlight and repeated freeze-thaw cycles.</p>` +
+    `<p><strong>Intended Use & Compliance Notice</strong></p>` +
+    `<p>All materials supplied by Research Compounds are synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation only. Not for human, veterinary, therapeutic, cosmetic, or clinical administration. Research Use Only (RUO).</p>`;
+}
+
 const PHOTO_STAGING_DIR = "/Users/m5/Projects/Peptides/pepstack-photo-refresh/staging";
 const PHOTO_LIBRARY_PEPSTACK = "/Users/m5/Projects/Peptides/START HERE - Photo Libraries/PepStack Photo Library";
 const PHOTO_LIBRARY_RESEARCH = "/Users/m5/Projects/Peptides/START HERE - Photo Libraries/Research Compound Photo Library";
@@ -969,11 +1046,18 @@ async function unify() {
     // 7b. Supply check
     const isSupply = rule.category === "research-supplies-accessories" && rule.code !== "BAC";
 
+    // 7c. Resolve protocol and synthesize rich description with monograph
+    const matchedProtocol = resolveProtocolForProduct(rule.handle, rule.canonicalName);
+    const finalDescription = (isSupply && matchedPepStack?.description && matchedPepStack.description.length >= 100)
+      ? matchedPepStack.description
+      : synthesizeProductDescription(rule, matchedProtocol, isSupply);
+    const protocolHandle = matchedProtocol ? `${matchedProtocol.id}-laboratory-handling` : null;
+
     // 8. Push unified product
     unifiedProducts.push({
       title: rule.canonicalName,
       handle: rule.handle,
-      description: matchedPepStack?.description || (isSupply ? `<p>${rule.canonicalName} is supplied strictly for laboratory research workflows, preparation, and precision dispensing.</p>` : `<p>${rule.canonicalName} is supplied strictly as a pure analytical and laboratory research compound.</p>`),
+      description: finalDescription,
       category_handle: rule.category,
       type_id: null,
       thumbnail,
@@ -990,6 +1074,8 @@ async function unify() {
       ],
       variants: uniqueVariants,
       metadata: {
+        protocol_handle: protocolHandle,
+        protocol_id: matchedProtocol?.id || null,
         canonical_code: rule.code,
         is_bundle: rule.isBundle || false,
         bundle_spec: rule.bundleSpec || null,

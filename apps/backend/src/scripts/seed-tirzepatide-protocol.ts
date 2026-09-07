@@ -45,7 +45,7 @@ export default async function seedTirzepatideProtocol({
     const { result } = await createResearchProtocolWorkflow(container).run({
       input: {
         protocol_key: PROTOCOL_KEY,
-        title: "Tirzepatide Laboratory Reconstitution & Handling Standard",
+        title: "Tirzepatide",
         summary:
           "Verified analytical standard for reconstitution ratios, bacteriostatic solvent compatibility, and temperature stability of lyophilized Tirzepatide.",
         purpose: "In-vitro analytical laboratory investigation and chromatographic reference.",
@@ -57,6 +57,40 @@ export default async function seedTirzepatideProtocol({
             "High-purity lyophilized dual GLP-1/GIP receptor agonist peptide standard formulated for in-vitro research and laboratory analytical validation.",
           product_format: "Lyophilized Solid Powder",
           category: "Dual Incretin Receptor Agonist",
+          protocol_category_type: "single_peptide",
+          full_description:
+            "Tirzepatide is a synthetic 39-amino-acid linear peptide engineered as a dual glucose-dependent insulinotropic polypeptide (GIP) and glucagon-like peptide-1 (GLP-1) receptor agonist. Structurally, Tirzepatide incorporates two non-coded amino acid residues (aminoisobutyric acid, Aib) at positions 2 and 13 to impart resistance to dipeptidyl peptidase-4 (DPP-4) degradation, and is conjugated via a gamma-glutamyl linker to a C20 diacid fatty acid moiety at Lys20, promoting reversible albumin binding and a prolonged pharmacokinetic profile. In analytical and cellular signaling assays, Tirzepatide binds with high affinity to both native human GIP and GLP-1 receptors, stimulating concentration-dependent intracellular cAMP accumulation and downstream protein kinase A (PKA) phosphorylation cascades.",
+          investigated_benefits: [
+            "Dual GIP/GLP-1 receptor activation pathway modeling",
+            "In-vitro glucose-dependent insulin secretagogue quantification",
+            "Adipocyte lipid metabolism and lipolysis signaling",
+            "Chromatographic purity and structural stability verification",
+          ],
+          adverse_observations: [
+            "Laboratory handling precautions: avoid aerosolization",
+            "In-vitro concentration-dependent receptor desensitization observed at supra-physiological levels",
+            "Not for human administration or clinical therapeutic trial",
+          ],
+          molecular_details: {
+            cas_number: "2023788-19-2",
+            pubchem_cid: 156588324,
+            sequence_or_formula: "C225H348N48O68",
+            molecular_weight_g_per_mol: 4813.45,
+          },
+          reconstitution_details: {
+            default_vial_net_mg: 10,
+            default_diluent_ml: 2,
+            solvent: "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+            dissolution_method: "Direct needle against glass wall. Swirl gently horizontally.",
+            resulting_concentration_mg_per_ml: 5,
+            handling_rule: "Clear, colorless aqueous solution. Inspect for clarity.",
+          },
+          storage_details: {
+            lyophilized: "-20°C in dry desiccator protected from light",
+            reconstituted: "2°C–8°C refrigerated; use within 28 days",
+            light_protection: true,
+          },
+          purity_standard: null,
           research_use_label: "In-Vitro Laboratory Research Only",
           last_reviewed_at: "2026-09-01",
           quick_reference: [
@@ -99,8 +133,8 @@ export default async function seedTirzepatideProtocol({
             default_compound_mass: "10",
             compound_mass_unit: "mg",
             default_final_volume_ml: "2",
-            default_target_amount: "250",
-            target_amount_unit: "mcg",
+            default_target_amount: "2.5",
+            target_amount_unit: "mg",
             iu_per_mg: null,
             device_volume_ml: "1",
             device_label: "U-100 Insulin Syringe",
