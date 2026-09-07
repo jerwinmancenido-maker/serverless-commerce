@@ -47,6 +47,27 @@ const ProductInfo = ({ product, mode = "all" }: ProductInfoProps) => {
                 {product.subtitle}
               </p>
             )}
+
+            {/* Quick Research Profile (RUO Standard) */}
+            <div className="mt-1 flex flex-wrap items-center gap-2 pt-2.5 border-t border-zinc-100">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-100/90 text-zinc-700 text-[11px] font-medium border border-zinc-200/60">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                <strong className="font-semibold text-zinc-900">Use:</strong> In-Vitro Laboratory Research
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-zinc-100/90 text-zinc-700 text-[11px] font-medium border border-zinc-200/60">
+                <strong className="font-semibold text-zinc-900">State:</strong> Lyophilized Solid Powder
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-[11px] font-medium">
+                <strong className="font-semibold text-emerald-950">Purity:</strong> ≥99.0% HPLC Standard
+              </span>
+              <a
+                href="#scientific-workspace"
+                className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 transition-colors ml-auto group py-1"
+              >
+                <span>Jump to Full Technical Protocol</span>
+                <span className="group-hover:translate-y-0.5 transition-transform">&darr;</span>
+              </a>
+            </div>
           </>
         )}
 

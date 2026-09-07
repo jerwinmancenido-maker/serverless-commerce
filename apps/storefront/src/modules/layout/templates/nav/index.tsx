@@ -25,7 +25,7 @@ export default async function Nav({
   ])
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
+    <div className="sticky top-0 inset-x-0 z-50 group print:hidden">
       {/* Top Scientific Trust & Dispatch Ticker */}
       <div className="bg-[#070A11] border-b border-slate-800/60 py-1.5 text-slate-400 text-[11px]">
         <div className="content-container flex items-center justify-between">

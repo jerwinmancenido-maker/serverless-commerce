@@ -52,6 +52,7 @@ import {
   type ResearchProtocolRecommendation,
 } from "@lib/data/research-protocols"
 import { listProducts } from "@lib/data/products"
+import type { HttpTypes } from "@medusajs/types"
 import type { ResearchRecommendationItem } from "@modules/research-protocols/product-recommendations"
 import { retrieveRewardsSummary, type RewardsSummary } from "@lib/data/rewards"
 
@@ -250,6 +251,17 @@ export default async function ResearchTrackingPage({
     handle: string
     items: ResearchRecommendationItem[]
   } | null = null
+  let storeProducts: HttpTypes.StoreProduct[] = []
+
+  try {
+    const { response: productCatalog } = await listProducts({
+      countryCode,
+      queryParams: { limit: 50 },
+    })
+    storeProducts = productCatalog.products
+  } catch {
+    storeProducts = []
+  }
 
   try {
     configuration = await retrieveResearchTrackingConfiguration()
@@ -486,6 +498,7 @@ export default async function ResearchTrackingPage({
       runtimeReady={runtimeReady}
       submissionKeys={createResearchSubmissionKeys(randomUUID)}
       trackedMaterials={trackedMaterials}
+      products={storeProducts}
       myProtocolsRecommendations={myProtocolsRecommendations}
       dashboardRecommendations={dashboardRecommendations}
       contextRecommendations={contextRecommendations}

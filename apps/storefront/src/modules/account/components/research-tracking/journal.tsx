@@ -488,6 +488,7 @@ function RelationFields({
                 {supply.materialLabel} · {formatResearchQuantity(
                   supply.remaining_quantity_base_units,
                   supply,
+                  supply.materialLabel,
                 )}
               </option>
             ))}
@@ -518,19 +519,25 @@ function RelationFields({
             <option value="">No linked record</option>
             {logs
               .filter((log) => log.status === "confirmed")
-              .map((log) => (
-                <option key={log.log_id} value={log.log_id}>
-                  {log.local_date} · {formatResearchQuantity(
-                    log.confirmed_quantity_base_units,
-                    supplies.find((supply) => supply.supply_id === log.supply_id) ?? {
-                      base_unit: log.base_unit,
-                      display_unit: null,
-                      base_units_per_display_unit: null,
-                      display_precision: null,
-                    },
-                  )}
-                </option>
-              ))}
+              .map((log) => {
+                const linkedSupply = supplies.find(
+                  (supply) => supply.supply_id === log.supply_id,
+                )
+                return (
+                  <option key={log.log_id} value={log.log_id}>
+                    {log.local_date} · {formatResearchQuantity(
+                      log.confirmed_quantity_base_units,
+                      linkedSupply ?? {
+                        base_unit: log.base_unit,
+                        display_unit: null,
+                        base_units_per_display_unit: null,
+                        display_precision: null,
+                      },
+                      linkedSupply?.materialLabel,
+                    )}
+                  </option>
+                )
+              })}
           </select>
         </label>
       </div>

@@ -6,10 +6,10 @@ import test from "node:test"
 const sourceRoot = process.cwd()
 
 test("gates Research & Tracking navigation on server activation", () => {
-  const navigationSource = readFileSync(
+  const layoutSource = readFileSync(
     join(
       sourceRoot,
-      "src/modules/account/components/account-nav/index.tsx",
+      "src/app/[countryCode]/(main)/account/layout.tsx",
     ),
     "utf8",
   )
@@ -22,8 +22,8 @@ test("gates Research & Tracking navigation on server activation", () => {
   )
 
   assert.match(
-    navigationSource,
-    /researchTrackingAvailable[\s\S]*account\/research-hub/,
+    layoutSource,
+    /retrieveResearchTrackingConfiguration/,
   )
   assert.match(pageSource, /!configuration\.available[\s\S]*notFound\(\)/)
 })
@@ -272,7 +272,6 @@ test("uses task-oriented account navigation and an editable rewards destination"
 
   for (const label of [
     "Home",
-    "Research Hub",
     "Orders",
     "Rewards",
     "Profile & Settings",
@@ -280,6 +279,7 @@ test("uses task-oriented account navigation and an editable rewards destination"
     assert.match(navigationSource, new RegExp(label.replace("&", "&")))
   }
   assert.doesNotMatch(navigationSource, /href: "\/account\/addresses"/)
+  assert.doesNotMatch(navigationSource, /href: "\/account\/research-hub"/)
   assert.match(researchHubNavigationSource, /flex-wrap/)
   assert.match(researchHubNavigationSource, /small:flex-nowrap/)
   assert.match(rewardsSource, /Getting started/)

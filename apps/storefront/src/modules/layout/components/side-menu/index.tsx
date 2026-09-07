@@ -252,7 +252,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           >
                             <div className="flex items-center gap-2">
                               <Beaker className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>Preparation Protocols Directory</span>
+                              <span>Product Protocols Directory</span>
                             </div>
                             <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
                           </LocalizedClientLink>

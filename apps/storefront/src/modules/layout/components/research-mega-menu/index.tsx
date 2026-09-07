@@ -236,7 +236,7 @@ export default function ResearchMegaMenu({ isOpen, onClose }: MegaMenuProps) {
                       <SquaresPlus className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                          Preparation Protocols Directory
+                          Product Protocols Directory
                         </span>
                         <span className="text-xs text-slate-500">
                           Solubility, temperature &amp; multi-day stability

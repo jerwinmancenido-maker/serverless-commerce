@@ -126,10 +126,14 @@ export default function RoutinesCalendarPanel({
   occurrences: initialOccurrences,
   today,
   countryCode,
+  canMutate = false,
+  onAddRoutine,
 }: {
   occurrences: ResearchOccurrence[]
   today: string
   countryCode: string
+  canMutate?: boolean
+  onAddRoutine?: () => void
 }) {
   const [currentAnchor, setCurrentAnchor] = useState(today)
   const [selectedDate, setSelectedDate] = useState(today)
@@ -215,7 +219,10 @@ export default function RoutinesCalendarPanel({
   }, [allOccurrences])
 
   // Items for selected day
-  const selectedItems = byDate.get(selectedDate) ?? []
+  const selectedItems = useMemo(
+    () => byDate.get(selectedDate) ?? [],
+    [byDate, selectedDate]
+  )
 
   // Computed displayed items based on quickFilter
   const displayedItems = useMemo(() => {
@@ -294,24 +301,40 @@ export default function RoutinesCalendarPanel({
           </p>
         </div>
 
-        {/* Legend pills */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-ui-fg-muted font-medium">
-          <span className="flex items-center gap-1.5">
-            <span className="size-2 rounded-full bg-emerald-500" />
-            Confirmed
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="size-2 rounded-full bg-emerald-500" />
-            Due Today
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="size-2 rounded-full bg-rose-500" />
-            Missed
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="size-2 rounded-full bg-slate-400" />
-            Upcoming
-          </span>
+        {/* Right side: Legend pills & New Routine CTA */}
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-ui-fg-muted font-medium">
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-emerald-500" />
+              Confirmed
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-blue-500" />
+              Due Today
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-rose-500" />
+              Missed
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-slate-400" />
+              Upcoming
+            </span>
+          </div>
+
+          {canMutate && onAddRoutine && (
+            <button
+              type="button"
+              onClick={onAddRoutine}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2 text-xs font-semibold shadow-2xs transition-all active:scale-[0.98]"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              <span>New Routine Schedule</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -572,10 +595,14 @@ export default function RoutinesCalendarPanel({
               <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
                 {displayedItems.map((occurrence) => {
                   const badge = statusBadge(occurrence, today)
-                  const unitProfile = defaultResearchUnitProfile(occurrence.base_unit)
+                  const unitProfile = defaultResearchUnitProfile(
+                    occurrence.base_unit,
+                    occurrence.label,
+                  )
                   const formattedQuantity = formatResearchQuantity(
                     occurrence.planned_quantity_base_units,
                     unitProfile,
+                    occurrence.label,
                   )
 
                   return (
@@ -739,7 +766,11 @@ export default function RoutinesCalendarPanel({
                   <p className="mt-1 text-base font-bold text-ui-fg-base">
                     {formatResearchQuantity(
                       selectedOccurrence.planned_quantity_base_units,
-                      defaultResearchUnitProfile(selectedOccurrence.base_unit),
+                      defaultResearchUnitProfile(
+                        selectedOccurrence.base_unit,
+                        selectedOccurrence.label,
+                      ),
+                      selectedOccurrence.label,
                     )}
                   </p>
                 </div>

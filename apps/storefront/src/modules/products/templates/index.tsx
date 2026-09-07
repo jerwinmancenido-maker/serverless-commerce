@@ -33,8 +33,12 @@ const ProductTemplate = async ({
   const { protocols } = await listResearchProtocols().catch(() => ({
     protocols: [],
   }))
+  const protocolHandle =
+    (product.metadata?.protocol_handle as string) ||
+    (product.metadata?.protocol_id as string)
   const linkedProtocol = protocols.find(
     (p) =>
+      (protocolHandle && p.handle === protocolHandle) ||
       p.products?.some(
         (prod) => prod.id === product.id || prod.handle === product.handle
       ) ||

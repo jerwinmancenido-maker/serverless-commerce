@@ -33,7 +33,10 @@ function unitProfile(
     return resolveResearchUnitProfile(matching[0])
   }
 
-  return defaultResearchUnitProfile(occurrence.base_unit)
+  return defaultResearchUnitProfile(
+    occurrence.base_unit,
+    material?.label || occurrence.label,
+  )
 }
 
 function displayStatus(occurrence: ResearchOccurrence, today: string) {
@@ -213,6 +216,7 @@ export default function ResearchToday({
                       {formatResearchQuantity(
                         occurrence.planned_quantity_base_units,
                         profile,
+                        material?.label || occurrence.label,
                       )}
                     </dd>
                   </div>
@@ -220,7 +224,11 @@ export default function ResearchToday({
                     <dt className="text-ui-fg-muted">Personal supply estimate</dt>
                     <dd className="mt-1 font-semibold">
                       {matchingSupplies.length
-                        ? formatResearchQuantity(remaining, profile)
+                        ? formatResearchQuantity(
+                            remaining,
+                            profile,
+                            material?.label || occurrence.label,
+                          )
                         : "Not linked"}
                     </dd>
                   </div>

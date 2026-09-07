@@ -7,6 +7,10 @@ import {
 } from "@lib/data/research-tracking"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
+import {
+  defaultResearchUnitProfile,
+  formatResearchQuantity,
+} from "@lib/research-quantity"
 import { useResearchSubmissionKey } from "./use-research-submission-key"
 import { useActionState, useState, useTransition } from "react"
 
@@ -80,7 +84,16 @@ export default function Replenishment({
                 <div className="rounded-lg bg-ui-bg-subtle p-3">
                   <p className="text-xs text-ui-fg-muted">Tracked balance</p>
                   <p className="mt-1 text-lg font-semibold">
-                    {projection.remaining_quantity_base_units.toLocaleString()} {projection.base_unit}
+                    {formatResearchQuantity(
+                      projection.remaining_quantity_base_units,
+                      defaultResearchUnitProfile(
+                        projection.base_unit,
+                        projection.tracked_material_label ||
+                          projection.source_product_handle,
+                      ),
+                      projection.tracked_material_label ||
+                        projection.source_product_handle,
+                    )}
                   </p>
                 </div>
               </div>

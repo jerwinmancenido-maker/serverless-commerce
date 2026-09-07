@@ -1,21 +1,15 @@
 "use client"
 
 import { useParams, usePathname } from "next/navigation"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import {
   ChevronDownMini,
   MagnifyingGlassMini,
   User,
-  Beaker,
   ArchiveBox,
   ArrowRightOnRectangle,
-  Gift,
-  BellAlert,
-  MapPin,
-  ChatBubble,
-  SquaresPlus,
   CogSixTooth,
-  ChatBubbleLeftRight,
+  Gift,
 } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -60,13 +54,13 @@ export default function NavHeaderClient({
     setAccountMenuOpen(true)
   }
 
-  const closeAccountMenu = () => {
+  const closeAccountMenu = useCallback(() => {
     if (accountTimer) {
       clearTimeout(accountTimer)
       setAccountTimer(undefined)
     }
     setAccountMenuOpen(false)
-  }
+  }, [accountTimer])
 
   const openAccountMenuAndCancel = () => {
     if (accountTimer) {
@@ -100,7 +94,7 @@ export default function NavHeaderClient({
     setHubMenuOpen(false)
     closeAccountMenu()
     setSearchModalOpen(false)
-  }, [pathname])
+  }, [pathname, closeAccountMenu])
 
   // Click outside listener for account dropdown
   useEffect(() => {
@@ -114,7 +108,7 @@ export default function NavHeaderClient({
     }
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+  }, [closeAccountMenu])
 
   // Close menus when any header popover opens to maintain mutual exclusivity
   useEffect(() => {
@@ -331,7 +325,7 @@ export default function NavHeaderClient({
             {/* Account Dropdown */}
             {accountMenuOpen && (
               <div
-                className="absolute right-0 top-full mt-2 w-80 rounded-2xl bg-white border border-slate-200/90 p-2 shadow-2xl z-50 text-xs text-slate-800 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 max-h-[calc(100vh-120px)] overflow-y-auto no-scrollbar"
+                className="absolute right-0 top-full mt-2 w-72 rounded-2xl bg-white border border-slate-200/90 p-2 shadow-2xl z-50 text-xs text-slate-800 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
                 data-testid="nav-account-dropdown"
               >
                 {/* Profile Header */}
@@ -351,11 +345,17 @@ export default function NavHeaderClient({
                   </p>
                 </div>
 
-                {/* Group 1: Commerce & Orders */}
-                <div className="py-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 py-1">
-                    Commerce &amp; Orders
-                  </p>
+                {/* Quick Navigation Links */}
+                <div className="py-1 space-y-0.5">
+                  <LocalizedClientLink
+                    href="/account"
+                    onClick={closeAccountMenu}
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors font-medium"
+                  >
+                    <User className="h-4 w-4 text-emerald-600" />
+                    <span>Account Overview</span>
+                  </LocalizedClientLink>
+
                   <LocalizedClientLink
                     href="/account/orders"
                     onClick={closeAccountMenu}
@@ -375,87 +375,12 @@ export default function NavHeaderClient({
                   </LocalizedClientLink>
 
                   <LocalizedClientLink
-                    href="/account/notifications"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <BellAlert className="h-4 w-4 text-slate-400" />
-                    <span>Notification Center</span>
-                  </LocalizedClientLink>
-
-                  <LocalizedClientLink
-                    href="/account/addresses"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <MapPin className="h-4 w-4 text-slate-400" />
-                    <span>Delivery Addresses</span>
-                  </LocalizedClientLink>
-                </div>
-
-                {/* Group 2: Research & Protocols */}
-                <div className="py-1 border-t border-slate-100">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 py-1">
-                    Research &amp; Protocols
-                  </p>
-                  <LocalizedClientLink
-                    href="/account/research-hub"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <Beaker className="h-4 w-4 text-emerald-600" />
-                    <span>My Research Hub</span>
-                  </LocalizedClientLink>
-
-                  <LocalizedClientLink
-                    href="/account/community"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <ChatBubble className="h-4 w-4 text-indigo-500" />
-                    <span>Community Discussions</span>
-                  </LocalizedClientLink>
-
-                  <LocalizedClientLink
-                    href="/research-library#calculator"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <SquaresPlus className="h-4 w-4 text-purple-500" />
-                    <span>Reconstitution Calculator</span>
-                  </LocalizedClientLink>
-                </div>
-
-                {/* Group 3: Account & Settings */}
-                <div className="py-1 border-t border-slate-100">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 py-1">
-                    Account &amp; Settings
-                  </p>
-                  <LocalizedClientLink
-                    href="/account"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <User className="h-4 w-4 text-slate-400" />
-                    <span>Account Overview</span>
-                  </LocalizedClientLink>
-
-                  <LocalizedClientLink
                     href="/account/settings"
                     onClick={closeAccountMenu}
                     className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
                   >
                     <CogSixTooth className="h-4 w-4 text-slate-400" />
-                    <span>Profile &amp; Laboratory Settings</span>
-                  </LocalizedClientLink>
-
-                  <LocalizedClientLink
-                    href="/account/support"
-                    onClick={closeAccountMenu}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    <ChatBubbleLeftRight className="h-4 w-4 text-sky-500" />
-                    <span>Customer Support Desk</span>
+                    <span>Account Settings</span>
                   </LocalizedClientLink>
                 </div>
 
@@ -467,7 +392,7 @@ export default function NavHeaderClient({
                       closeAccountMenu()
                       signout(countryCode)
                     }}
-                    className="w-full flex items-center gap-2.5 rounded-lg px-3 py-2 text-rose-600 hover:bg-rose-50 transition-colors text-left"
+                    className="w-full flex items-center gap-2.5 rounded-lg px-3 py-2 text-rose-600 hover:bg-rose-50 transition-colors text-left font-medium cursor-pointer"
                   >
                     <ArrowRightOnRectangle className="h-4 w-4 text-rose-500" />
                     <span>Sign Out</span>

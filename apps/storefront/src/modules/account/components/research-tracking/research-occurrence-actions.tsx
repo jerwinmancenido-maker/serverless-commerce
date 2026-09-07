@@ -99,7 +99,8 @@ export default function ResearchOccurrenceActions({
   )
 
   const activeProfile =
-    unitProfile ?? defaultResearchUnitProfile(occurrence.base_unit)
+    unitProfile ??
+    defaultResearchUnitProfile(occurrence.base_unit, occurrence.label)
 
   const submissionKey = useMemo(createSubmissionKey, [occurrence.occurrence_id])
   const confirmSubmissionKey = useMemo(
@@ -276,7 +277,11 @@ export default function ResearchOccurrenceActions({
                             : "Active In-Service Vial"}
                         </span>
                         <span className="font-semibold text-emerald-700">
-                          {formatResearchQuantity(supplies[0].remaining_quantity_base_units, supplies[0])} available
+                          {formatResearchQuantity(
+                            supplies[0].remaining_quantity_base_units,
+                            supplies[0],
+                            occurrence.label,
+                          )} available
                         </span>
                         <input type="hidden" name="supply_id" value={supplies[0].supply_id} />
                       </div>
@@ -291,7 +296,11 @@ export default function ResearchOccurrenceActions({
                         {supplies.map((sup) => (
                           <option key={sup.supply_id} value={sup.supply_id}>
                             {sup.lot_number ? `Lot ${sup.lot_number} — ` : ""}
-                            {formatResearchQuantity(sup.remaining_quantity_base_units, sup)} remaining
+                            {formatResearchQuantity(
+                              sup.remaining_quantity_base_units,
+                              sup,
+                              occurrence.label,
+                            )} remaining
                           </option>
                         ))}
                       </select>

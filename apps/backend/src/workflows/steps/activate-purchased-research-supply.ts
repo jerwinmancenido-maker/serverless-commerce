@@ -347,9 +347,10 @@ export const preparePurchasedSupplyActivationStep = createStep(
       conflict("archived_material_action_required")
     }
 
-    const label = normalizeActivationLabel(
-      item.title || item.variant_title || item.variant_sku || "",
-    )
+    const resolvedLabel = item.product_title
+      ? `${item.product_title}${item.variant_title ? ` - ${item.variant_title}` : item.title ? ` - ${item.title}` : ""}`
+      : item.title || item.variant_title || item.variant_sku || ""
+    const label = normalizeActivationLabel(resolvedLabel)
 
     return new StepResponse<PreparedPurchasedSupplyActivation>({
       shouldCreate: true,

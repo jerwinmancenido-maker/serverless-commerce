@@ -62,10 +62,22 @@ function validProfile(
     : profile.base_unit !== "piece"
 }
 
+export const MCG_PREFERRED_COMPOUND_REGEX =
+  /\b(semax|selank|dsip|adamax)\b|(?:\b|\d)mcg\b/i
+
+export function isMcgPreferredCompound(nameOrLabel?: string | null): boolean {
+  if (!nameOrLabel) {
+    return false
+  }
+
+  return MCG_PREFERRED_COMPOUND_REGEX.test(nameOrLabel)
+}
+
 export function serializeResearchUnitProfile(
   profile: ResearchUnitProfile,
+  compoundNameOrLabel?: string | null,
 ): string {
-  return JSON.stringify(resolveResearchUnitProfile(profile))
+  return JSON.stringify(resolveResearchUnitProfile(profile, compoundNameOrLabel))
 }
 
 export function parseResearchUnitProfile(
@@ -84,15 +96,100 @@ export function parseResearchUnitProfile(
   }
 }
 
+/**
+ * Universal dosage normalizer for research compounds:
+ * - If dose >= 1000 mcg -> format in mg (e.g., 1000 mcg -> 1 mg, 2500 mcg -> 2.5 mg, 5000 mcg -> 5 mg)
+ * - If dose < 1000 mcg -> format in mcg (e.g., 200 mcg -> 200 mcg, 0.2 mg -> 200 mcg)
+ */
+export function formatPeptideDosage(
+  amount: number | string,
+  unit: string = "mcg"
+): { amount: string; unit: "mcg" | "mg" | "IU"; formatted: string } {
+  const num = typeof amount === "string" ? parseFloat(amount) : amount
+  if (isNaN(num) || num <= 0) {
+    const fallbackUnit = unit?.toLowerCase() === "iu" ? "IU" : unit === "mg" ? "mg" : "mcg"
+    const fallbackAmount = isNaN(num) ? String(amount) : "0"
+    return {
+      amount: fallbackAmount,
+      unit: fallbackUnit,
+      formatted: `${fallbackAmount} ${fallbackUnit}`,
+    }
+  }
+
+  // Handle native International Units (IU)
+  if (unit?.toLowerCase() === "iu") {
+    const formattedIU = Number(num.toFixed(2)).toString()
+    return {
+      amount: formattedIU,
+      unit: "IU",
+      formatted: `${formattedIU} IU`,
+    }
+  }
+
+  // Convert to microgram baseline
+  let mcg = num
+  if (unit === "mg") {
+    mcg = num * 1000
+  }
+
+  // Threshold rule: >= 1000 mcg -> mg; < 1000 mcg -> mcg
+  if (mcg >= 1000) {
+    const mg = mcg / 1000
+    // Format cleanly without trailing zeros (up to 3 decimal places if needed, e.g. 1.25)
+    const formattedMg = Number(mg.toFixed(3)).toString()
+    return {
+      amount: formattedMg,
+      unit: "mg",
+      formatted: `${formattedMg} mg`,
+    }
+  }
+
+  const formattedMcg = Number(mcg.toFixed(1)).toString()
+  return {
+    amount: formattedMcg,
+    unit: "mcg",
+    formatted: `${formattedMcg} mcg`,
+  }
+}
+
 export function defaultResearchUnitProfile(
   baseUnit: ResearchBaseUnit,
+  compoundNameOrLabel?: string | null,
+  amountOrBaseUnits?: number | null,
 ): CompleteResearchUnitProfile {
   if (baseUnit === "microgram") {
+    if (amountOrBaseUnits != null) {
+      if (amountOrBaseUnits >= 1000) {
+        return {
+          base_unit: baseUnit,
+          display_unit: "mg",
+          base_units_per_display_unit: 1_000,
+          display_precision: 2,
+        }
+      } else {
+        return {
+          base_unit: baseUnit,
+          display_unit: "mcg",
+          base_units_per_display_unit: 1,
+          display_precision: 0,
+        }
+      }
+    }
+
+    if (isMcgPreferredCompound(compoundNameOrLabel)) {
+      return {
+        base_unit: baseUnit,
+        display_unit: "mcg",
+        base_units_per_display_unit: 1,
+        display_precision: 0,
+      }
+    }
+
     return {
       base_unit: baseUnit,
-      display_unit: "mcg",
-      base_units_per_display_unit: 1,
-      display_precision: 0,
+      display_unit: "mg",
+      base_units_per_display_unit: 1_000,
+      display_precision: 2,
     }
   }
 
@@ -115,17 +212,19 @@ export function defaultResearchUnitProfile(
 
 export function resolveResearchUnitProfile(
   profile: ResearchUnitProfile,
+  compoundNameOrLabel?: string | null,
 ): CompleteResearchUnitProfile {
   return validProfile(profile)
     ? profile
-    : defaultResearchUnitProfile(profile.base_unit)
+    : defaultResearchUnitProfile(profile.base_unit, compoundNameOrLabel)
 }
 
 export function formatResearchQuantity(
   baseUnits: number,
   profile: ResearchUnitProfile,
+  compoundNameOrLabel?: string | null,
 ): string {
-  const resolved = resolveResearchUnitProfile(profile)
+  const resolved = resolveResearchUnitProfile(profile, compoundNameOrLabel)
   const displayValue = baseUnits / resolved.base_units_per_display_unit
 
   return `${displayValue.toLocaleString("en-PH", {
@@ -137,14 +236,18 @@ export function formatResearchQuantity(
 export function researchDisplayQuantity(
   baseUnits: number,
   profile: ResearchUnitProfile,
+  compoundNameOrLabel?: string | null,
 ): number {
-  const resolved = resolveResearchUnitProfile(profile)
+  const resolved = resolveResearchUnitProfile(profile, compoundNameOrLabel)
 
   return baseUnits / resolved.base_units_per_display_unit
 }
 
-export function researchDisplayStep(profile: ResearchUnitProfile): number {
-  const resolved = resolveResearchUnitProfile(profile)
+export function researchDisplayStep(
+  profile: ResearchUnitProfile,
+  compoundNameOrLabel?: string | null,
+): number {
+  const resolved = resolveResearchUnitProfile(profile, compoundNameOrLabel)
 
   return 10 ** -resolved.display_precision
 }
@@ -152,8 +255,9 @@ export function researchDisplayStep(profile: ResearchUnitProfile): number {
 export function convertResearchDisplayQuantityToBaseUnits(
   displayValue: number,
   profile: ResearchUnitProfile,
+  compoundNameOrLabel?: string | null,
 ): number | null {
-  const resolved = resolveResearchUnitProfile(profile)
+  const resolved = resolveResearchUnitProfile(profile, compoundNameOrLabel)
   const baseUnits = displayValue * resolved.base_units_per_display_unit
 
   return Number.isSafeInteger(baseUnits) && baseUnits > 0 ? baseUnits : null

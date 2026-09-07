@@ -58,11 +58,11 @@ const features: FeatureItem[] = [
   },
   {
     category: "Handling Standards",
-    title: "Clinical Protocol Library",
+    title: "Product Protocol Library",
     description:
       "Detailed guidance on half-life decay curves, cold-chain temperature thresholds, reconstitution procedures, and compound stability.",
-    linkHref: "/research-protocols",
-    linkText: "View Protocol Guides",
+    linkHref: "/research-library#protocols",
+    linkText: "View Product Protocols",
     iconSvg: (
       <svg
         className="w-5 h-5 text-emerald-500"

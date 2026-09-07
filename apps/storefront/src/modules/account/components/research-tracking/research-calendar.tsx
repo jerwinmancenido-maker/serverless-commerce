@@ -259,7 +259,7 @@ export default function ResearchCalendar({
             </div>
             <div className="mt-5 rounded-lg bg-ui-bg-subtle p-4">
               <p className="text-xs uppercase tracking-wide text-ui-fg-muted">Planned amount</p>
-              <p className="mt-1 font-semibold">{formatResearchQuantity(selectedOccurrence.planned_quantity_base_units, defaultResearchUnitProfile(selectedOccurrence.base_unit))}</p>
+              <p className="mt-1 font-semibold">{formatResearchQuantity(selectedOccurrence.planned_quantity_base_units, defaultResearchUnitProfile(selectedOccurrence.base_unit, selectedOccurrence.label), selectedOccurrence.label)}</p>
               <p className="mt-3 text-xs uppercase tracking-wide text-ui-fg-muted">Status</p>
               <p className="mt-1 font-semibold">{statusLabel(selectedOccurrence, today)}</p>
               <p className="mt-3 text-xs text-ui-fg-muted">{selectedOccurrence.timezone}</p>

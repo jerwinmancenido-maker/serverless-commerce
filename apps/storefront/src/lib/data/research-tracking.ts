@@ -238,6 +238,8 @@ export type PurchasedItemCandidate = {
   label: string
   variant_id: string | null
   variant_sku: string | null
+  order_created_at?: string | null
+  order_status?: string | null
   eligibility: "eligible" | "ineligible" | "already_tracked"
   ineligibility_reason: PurchasedItemIneligibilityReason | null
   eligible_commerce_quantity: number | null

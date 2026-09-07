@@ -32,7 +32,7 @@ import type {
   ResearchSubmissionKeys,
   RoutineSubmissionKeys,
 } from "@lib/research-tracking-idempotency"
-import { useActionState } from "react"
+import { useActionState, useState } from "react"
 import { useFormStatus } from "react-dom"
 
 import Journal from "./journal"
@@ -41,7 +41,6 @@ import ProductsAndSupplies from "./products-and-supplies"
 import MyProtocols from "./my-protocols"
 import Measurements from "./measurements"
 import ActivityTimeline from "./activity-timeline"
-import Replenishment from "./replenishment"
 import ResearchCalendar from "./research-calendar"
 import ResearchToday from "./research-today"
 import ResearchCalculator from "./research-calculator"
@@ -51,12 +50,52 @@ import MeasurementSparkline from "./measurement-sparkline"
 import SupplyLevelBars from "./supply-level-bars"
 import RoutinesCalendarPanel from "./routines-calendar-panel"
 import type { RewardsSummary } from "@lib/data/rewards"
+import type { HttpTypes } from "@medusajs/types"
 import ProductRecommendations, {
   type ResearchRecommendationItem,
 } from "@modules/research-protocols/product-recommendations"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { clx } from "@modules/common/components/ui"
 import { Gift, SquaresPlus } from "@medusajs/icons"
+import { clx } from "@modules/common/components/ui"
+
+function ChartSquareIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M7 16v-4" />
+      <path d="M11 16v-8" />
+      <path d="M15 16v-2" />
+    </svg>
+  )
+}
+
+function BookOpenIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  )
+}
+
+function FlaskIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 2v7.31a2 2 0 0 1-.37 1.17l-5.26 7.89A2 2 0 0 0 6 21.5h12a2 2 0 0 0 1.63-3.13l-5.26-7.89A2 2 0 0 1 14 9.31V2" />
+      <path d="M8.5 2h7" />
+      <path d="M7 16h10" />
+    </svg>
+  )
+}
+
+function ClockHistoryIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  )
+}
 
 type ResearchTrackingProps = {
   section?: "overview" | "today" | "calendar" | "schedule" | "supplies" | "protocols" | "routines" | "calculator" | "progress" | "journal" | "timeline" | "rewards"
@@ -127,6 +166,7 @@ type ResearchTrackingProps = {
     handle: string
     items: ResearchRecommendationItem[]
   } | null
+  products?: HttpTypes.StoreProduct[]
 }
 
 const initialState: ResearchTrackingActionState = {
@@ -500,9 +540,9 @@ export default function ResearchTracking({
   calculations,
   calculationSubmissionKey,
   calculatorParams,
-  goals,
+  goals: _goals,
   routineStreak,
-  rewards,
+  rewards: _rewards,
   protocolRuntimeReady,
   protocolRoutineKeys,
   privateRecords,
@@ -528,7 +568,7 @@ export default function ResearchTracking({
   timelineRuntimeReady,
   routineLogs,
   replenishmentProjections,
-  replenishmentRuntimeReady,
+  replenishmentRuntimeReady: _replenishmentRuntimeReady,
   routineToday,
   routineRuntimeReady,
   routines,
@@ -539,7 +579,9 @@ export default function ResearchTracking({
   myProtocolsRecommendations,
   dashboardRecommendations,
   contextRecommendations,
+  products,
 }: ResearchTrackingProps) {
+  const [isCreateRoutineOpen, setIsCreateRoutineOpen] = useState(false)
   return (
     <div className="w-full" data-testid="research-tracking-page">
       {section === "overview" && (
@@ -602,13 +644,16 @@ export default function ResearchTracking({
         </div>
       )}
 
-      {/* Records & Tools sub-navigation toggle */}
+      {/* Records & Tools unified header with fluid segmented navigation */}
       {runtimeReady && profile && (section === "progress" || section === "journal" || section === "calculator" || section === "timeline") && (
         <div className="mb-6 flex flex-col gap-3 border-b border-ui-border-base pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-800">
-              Private Research Records & Analytics
-            </p>
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-800">
+                Private Research Records &amp; Analytics
+              </p>
+            </div>
             <h2 className="mt-0.5 text-xl font-bold tracking-tight text-slate-900">
               {section === "progress"
                 ? "Biometric Telemetry & Progress"
@@ -618,44 +663,41 @@ export default function ResearchTracking({
                     ? "Reconstitution Calculator"
                     : "Activity Audit Timeline"}
             </h2>
+            <p className="mt-0.5 text-[11px] text-slate-500 font-medium">
+              Encrypted Private Research Records · Philippine DPA 2012 Compliance
+            </p>
           </div>
-          <div className="inline-flex overflow-x-auto rounded-xl border border-slate-200 bg-slate-100/80 p-1 text-xs font-medium">
-            <LocalizedClientLink
-              href="/account/research-hub?section=progress"
-              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-bold text-slate-900 shadow-2xs": section === "progress",
-                "text-slate-600 hover:text-slate-900": section !== "progress",
-              })}
-            >
-              Measurements
-            </LocalizedClientLink>
-            <LocalizedClientLink
-              href="/account/research-hub?section=journal"
-              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-bold text-slate-900 shadow-2xs": section === "journal",
-                "text-slate-600 hover:text-slate-900": section !== "journal",
-              })}
-            >
-              Journal ({journalCount})
-            </LocalizedClientLink>
-            <LocalizedClientLink
-              href="/account/research-hub?section=calculator"
-              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-bold text-slate-900 shadow-2xs": section === "calculator",
-                "text-slate-600 hover:text-slate-900": section !== "calculator",
-              })}
-            >
-              Calculator
-            </LocalizedClientLink>
-            <LocalizedClientLink
-              href="/account/research-hub?section=timeline"
-              className={clx("whitespace-nowrap rounded-lg px-3.5 py-1.5 transition-all", {
-                "bg-white font-bold text-slate-900 shadow-2xs": section === "timeline",
-                "text-slate-600 hover:text-slate-900": section !== "timeline",
-              })}
-            >
-              Timeline
-            </LocalizedClientLink>
+          <div className="inline-flex items-center gap-1 overflow-x-auto rounded-2xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs font-medium no-scrollbar">
+            {[
+              { id: "progress", label: "Measurements", href: "/account/research-hub?section=progress", icon: ChartSquareIcon },
+              { id: "journal", label: "Journal", href: "/account/research-hub?section=journal", icon: BookOpenIcon, badge: journalCount },
+              { id: "calculator", label: "Calculator", href: "/account/research-hub?section=calculator", icon: FlaskIcon },
+              { id: "timeline", label: "Timeline", href: "/account/research-hub?section=timeline", icon: ClockHistoryIcon },
+            ].map((tab) => {
+              const isActive = section === tab.id
+              const Icon = tab.icon
+              return (
+                <LocalizedClientLink
+                  key={tab.id}
+                  href={tab.href}
+                  className={clx(
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer",
+                    {
+                      "bg-white text-slate-900 shadow-xs border border-slate-200/60 font-bold": isActive,
+                      "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent": !isActive,
+                    }
+                  )}
+                >
+                  <Icon className={clx("h-4 w-4 transition-colors", isActive ? "text-emerald-600" : "text-slate-400")} />
+                  <span>{tab.label}</span>
+                  {tab.badge !== undefined && tab.badge > 0 && (
+                    <span className="rounded-full bg-slate-200/80 px-1.5 py-0.2 text-[10px] font-bold text-slate-700">
+                      {tab.badge}
+                    </span>
+                  )}
+                </LocalizedClientLink>
+              )
+            })}
           </div>
         </div>
       )}
@@ -923,7 +965,7 @@ export default function ResearchTracking({
                     Manage →
                   </LocalizedClientLink>
                 </div>
-                <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} />
+                <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} />
                 {purchasedItems.some((p) => p.added_to_tracking_at === null && p.eligibility === "eligible") && (
                   <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
                     New purchases ready to activate. <LocalizedClientLink href="/account/research-hub?section=schedule" className="font-semibold underline">Activate now →</LocalizedClientLink>
@@ -1049,45 +1091,9 @@ export default function ResearchTracking({
         </div>
       )}
 
-      {/* Records & Laboratory Tools unified workspace with sticky sub-navigation */}
+      {/* Records & Laboratory Tools workspace */}
       {runtimeReady && profile && ["progress", "journal", "calculator", "timeline"].includes(section) && (
         <div className="space-y-6">
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-3 shadow-xs">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5 px-2">
-              <div className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                  Records & Laboratory Tools
-                </span>
-              </div>
-              <span className="text-[11px] text-slate-500 font-medium">
-                Encrypted Private Research Records · Philippine DPA 2012 Compliance
-              </span>
-            </div>
-            <div className="mt-2.5 flex flex-wrap gap-1.5" aria-label="Records sub-navigation">
-              {[
-                { id: "progress", label: "📊 Biometrics & Progress", href: "/account/research-hub?section=progress" },
-                { id: "journal", label: "📓 Research Journal", href: "/account/research-hub?section=journal" },
-                { id: "calculator", label: "📐 Reconstitution Math", href: "/account/research-hub?section=calculator" },
-                { id: "timeline", label: "⏱️ Audit Timeline", href: "/account/research-hub?section=timeline" },
-              ].map((subtab) => {
-                const isSubActive = section === subtab.id
-                return (
-                  <LocalizedClientLink
-                    key={subtab.id}
-                    href={subtab.href}
-                    className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all touch-manipulation shadow-2xs ${
-                      isSubActive
-                        ? "bg-emerald-700 text-white shadow-xs font-bold"
-                        : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/60"
-                    }`}
-                  >
-                    {subtab.label}
-                  </LocalizedClientLink>
-                )
-              })}
-            </div>
-          </div>
 
           {section === "progress" && (
             <Measurements
@@ -1169,6 +1175,11 @@ export default function ResearchTracking({
               occurrences={occurrences}
               today={routineToday}
               countryCode={countryCode}
+              canMutate={
+                profile.status === "active" &&
+                profile.consent_version === configuration.consent_version
+              }
+              onAddRoutine={() => setIsCreateRoutineOpen(true)}
             />
           </div>
           <PersonalRoutines
@@ -1184,6 +1195,10 @@ export default function ResearchTracking({
             runtimeReady={routineRuntimeReady}
             submissionKeys={routineSubmissionKeys}
             trackedMaterials={trackedMaterials}
+            products={products}
+            protocols={protocolAccesses}
+            isCreateOpen={isCreateRoutineOpen}
+            onOpenChange={setIsCreateRoutineOpen}
           />
           <div className="mt-8 rounded-2xl border border-ui-border-base bg-white p-5 shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ui-border-base pb-3">
@@ -1199,7 +1214,7 @@ export default function ResearchTracking({
               </LocalizedClientLink>
             </div>
             <div className="mt-4">
-              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} />
+              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} />
             </div>
           </div>
         </>
@@ -1213,6 +1228,11 @@ export default function ResearchTracking({
               occurrences={occurrences}
               today={routineToday}
               countryCode={countryCode}
+              canMutate={
+                profile.status === "active" &&
+                profile.consent_version === configuration.consent_version
+              }
+              onAddRoutine={() => setIsCreateRoutineOpen(true)}
             />
           </div>
           <PersonalRoutines
@@ -1228,6 +1248,10 @@ export default function ResearchTracking({
             runtimeReady={routineRuntimeReady}
             submissionKeys={routineSubmissionKeys}
             trackedMaterials={trackedMaterials}
+            products={products}
+            protocols={protocolAccesses}
+            isCreateOpen={isCreateRoutineOpen}
+            onOpenChange={setIsCreateRoutineOpen}
           />
           <div className="mt-8 rounded-2xl border border-ui-border-base bg-white p-5 shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ui-border-base pb-3">
@@ -1243,13 +1267,13 @@ export default function ResearchTracking({
               </LocalizedClientLink>
             </div>
             <div className="mt-4">
-              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} />
+              <SupplyLevelBars materials={trackedMaterials} projections={replenishmentProjections} products={products} />
             </div>
           </div>
         </>
       )}
 
-      {/* Dedicated Products & Supplies view */}
+      {/* Dedicated Products & Supplies view with fully integrated routine runout telemetry */}
       {runtimeReady && profile && section === "supplies" && (
         <div className="space-y-8">
           <ProductsAndSupplies
@@ -1261,11 +1285,8 @@ export default function ResearchTracking({
             runtimeReady={purchasedRuntimeReady}
             trackedMaterials={trackedMaterials}
             projections={replenishmentProjections}
-          />
-          <Replenishment
-            projections={replenishmentProjections}
-            runtimeReady={replenishmentRuntimeReady}
-            countryCode={countryCode}
+            routines={routines}
+            products={products}
           />
           {dashboardRecommendations?.items.length ? (
             <ProductRecommendations

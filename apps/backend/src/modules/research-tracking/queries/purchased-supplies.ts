@@ -42,6 +42,7 @@ const PURCHASED_ORDER_ITEM_FIELDS = [
   "raw_written_off_quantity",
   "item.id",
   "item.title",
+  "item.product_title",
   "item.variant_id",
   "item.variant_sku",
   "item.variant_title",
@@ -66,6 +67,7 @@ export type PurchasedOrderItemRecord = Pick<
   OrderLineItemDTO,
   "id" | "title" | "variant_id" | "variant_sku" | "variant_title"
 > & {
+  product_title?: string | null
   raw_quantity: BigNumberInput
   detail: RawOrderItemDetail
 }
@@ -97,7 +99,9 @@ type PurchasedOrderItemQueryRecord = Pick<OrderItemDTO, "id"> & {
   item: Pick<
     OrderLineItemDTO,
     "id" | "title" | "variant_id" | "variant_sku" | "variant_title"
-  >
+  > & {
+    product_title?: string | null
+  }
   order: PurchasedOrderRecord
 }
 
@@ -108,6 +112,8 @@ export type PurchasedItemCandidateProjection = {
   label: string
   variant_id: string | null
   variant_sku: string | null
+  order_created_at: Date
+  order_status: string
   eligibility: "eligible" | "ineligible" | "already_tracked"
   ineligibility_reason: PurchasedItemIneligibilityReason | null
   eligible_commerce_quantity: number | null
@@ -309,9 +315,10 @@ async function projectCandidate(
   eligibleSalesChannelIds: string[],
 ): Promise<PurchasedItemCandidateProjection> {
   const { content, tracking } = services(container)
-  const label = normalizeActivationLabel(
-    item.title || item.variant_title || item.variant_sku || "",
-  )
+  const resolvedCandidateLabel = item.product_title
+    ? `${item.product_title}${item.variant_title ? ` - ${item.variant_title}` : item.title ? ` - ${item.title}` : ""}`
+    : item.title || item.variant_title || item.variant_sku || ""
+  const label = normalizeActivationLabel(resolvedCandidateLabel)
   const base = {
     order_id: order.id,
     order_display_id: order.display_id,
@@ -319,6 +326,8 @@ async function projectCandidate(
     label,
     variant_id: item.variant_id ?? null,
     variant_sku: item.variant_sku ?? null,
+    order_created_at: new Date(order.created_at),
+    order_status: order.status,
   }
   const existing = await existingActivationProjection(
     tracking,
@@ -415,6 +424,8 @@ function ineligible(
     | "label"
     | "variant_id"
     | "variant_sku"
+    | "order_created_at"
+    | "order_status"
   >,
   reason: PurchasedItemIneligibilityReason,
 ): PurchasedItemCandidateProjection {

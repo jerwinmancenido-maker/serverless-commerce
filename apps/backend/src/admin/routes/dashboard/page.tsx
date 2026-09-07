@@ -154,7 +154,7 @@ function formatPhp(amountInCentavos: number): string {
   return phpFormatter.format(amountInCentavos / 100)
 }
 
-function relativeTime(iso: string): string {
+function relativeTime(iso: string | Date): string {
   const diffMs = Date.now() - new Date(iso).getTime()
   const m = Math.floor(diffMs / 60_000)
   if (m < 1) return "just now"
@@ -659,7 +659,7 @@ const DashboardPage = () => {
       </div>
 
       {/* High-Priority Action Banner */}
-      {(proofsCount > 0 || supportCount > 0) && (
+      {((proofsCount ?? 0) > 0 || (supportCount ?? 0) > 0) && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-amber-200/90 bg-amber-50/80 p-4 shadow-2xs">
           <div className="flex items-center gap-3">
             <div className="flex size-8 items-center justify-center rounded-xl bg-amber-100 text-amber-800 shrink-0">
@@ -667,7 +667,7 @@ const DashboardPage = () => {
             </div>
             <div>
               <p className="text-xs font-bold text-slate-900">
-                Action Required: {proofsCount > 0 ? `${proofsCount} pending manual payment ${proofsCount === 1 ? "proof" : "proofs"}` : ""}{proofsCount > 0 && supportCount > 0 ? " and " : ""}{supportCount > 0 ? `${supportCount} unread customer ${supportCount === 1 ? "inquiry" : "inquiries"}` : ""}
+                Action Required: {(proofsCount ?? 0) > 0 ? `${proofsCount} pending manual payment ${proofsCount === 1 ? "proof" : "proofs"}` : ""}{(proofsCount ?? 0) > 0 && (supportCount ?? 0) > 0 ? " and " : ""}{(supportCount ?? 0) > 0 ? `${supportCount} unread customer ${supportCount === 1 ? "inquiry" : "inquiries"}` : ""}
               </p>
               <p className="text-[11px] text-slate-600 mt-0.5">
                 Review and approve customer transactions and researcher queries to maintain SLAs.
@@ -675,7 +675,7 @@ const DashboardPage = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {proofsCount > 0 && (
+            {(proofsCount ?? 0) > 0 && (
               <Button
                 size="small"
                 onClick={() => navigate("/manual-payment-proofs")}
@@ -684,7 +684,7 @@ const DashboardPage = () => {
                 Review Proofs ({proofsCount})
               </Button>
             )}
-            {supportCount > 0 && (
+            {(supportCount ?? 0) > 0 && (
               <Button
                 size="small"
                 variant="secondary"

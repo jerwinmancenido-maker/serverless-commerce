@@ -5,12 +5,12 @@ import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ProductInfo from "@modules/products/templates/product-info"
+import { Beaker, DocumentText, CheckCircleSolid } from "@medusajs/icons"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 import { useEffect, useMemo, useState } from "react"
 import { StoreResearchProtocol } from "@lib/data/research-protocols"
-import { Beaker, DocumentText, CheckCircleSolid } from "@medusajs/icons"
 import { getCompoundProtocol, CompoundAnalyticalProtocol } from "@lib/data/compound-protocols"
 
 type ProductTabsProps = {
@@ -20,6 +20,17 @@ type ProductTabsProps = {
 
 const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
   const [activeTab, setActiveTab] = useState<string>("overview")
+
+  const compoundProto = useMemo(() => {
+    const protocolHandle =
+      (product.metadata?.protocol_handle as string) ||
+      (product.metadata?.protocol_id as string)
+    if (protocolHandle) {
+      const proto = getCompoundProtocol(protocolHandle)
+      if (proto && proto.id !== "generic-peptide") return proto
+    }
+    return getCompoundProtocol(product.handle || product.title)
+  }, [product.metadata, product.handle, product.title])
 
   useEffect(() => {
     const handleHash = () => {
@@ -42,7 +53,7 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
 
   const tabs: Array<{ id: string; label: string; badge?: string }> = [
     { id: "overview", label: "Description & Specs" },
-    { id: "protocol", label: "Protocol & Dosing", badge: "Analytical Standard" },
+    { id: "protocol", label: "Product Protocol & Handling", badge: "RUO Standard" },
     { id: "calculator", label: "Reconstitution Calculator" },
     {
       id: "customer_hub",
@@ -98,9 +109,27 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
         {activeTab === "overview" && (
           <div className="space-y-8 animate-fadeIn">
             <ProductInfo product={product} mode="description" />
+            {compoundProto?.longDescription && (
+              <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-2.5">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200/60">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-600 text-white text-xs font-bold font-mono">
+                      P
+                    </span>
+                    <h3 className="text-sm font-bold text-slate-900">Pharmacological Profile &amp; Mechanism of Action</h3>
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
+                    Research Monograph
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  {compoundProto.longDescription}
+                </p>
+              </div>
+            )}
             <div className="pt-6 border-t border-zinc-200">
-              <h3 className="text-sm font-bold text-zinc-900 mb-4">Compound Specifications</h3>
-              <ProductSpecsGrid product={product} />
+              <h3 className="text-sm font-bold text-zinc-900 mb-4">Compound &amp; Molecular Specifications</h3>
+              <ProductSpecsGrid product={product} compoundProto={compoundProto} />
             </div>
           </div>
         )}
@@ -110,6 +139,7 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
             <ResearchProtocolPanel
               protocol={linkedProtocol}
               product={product}
+              compoundProto={compoundProto}
               onNavigateToCalculator={() => setActiveTab("calculator")}
             />
           </div>
@@ -146,7 +176,13 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
 // ---------------------------------------------------------------------------
 // 1. Compound Specifications Grid
 // ---------------------------------------------------------------------------
-const ProductSpecsGrid = ({ product }: { product: HttpTypes.StoreProduct }) => {
+const ProductSpecsGrid = ({
+  product,
+  compoundProto,
+}: {
+  product: HttpTypes.StoreProduct
+  compoundProto?: CompoundAnalyticalProtocol
+}) => {
   const contentOption = product.options?.find(
     (o) =>
       o.title?.toLowerCase().includes("content") ||
@@ -156,22 +192,74 @@ const ProductSpecsGrid = ({ product }: { product: HttpTypes.StoreProduct }) => {
     o.title?.toLowerCase().includes("inclusion")
   )
 
+  const mol = compoundProto?.molecularDetails
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
         <span className="font-semibold text-zinc-900 text-xs">Target Category</span>
         <p className="text-zinc-600 text-xs mt-1">
-          {product.categories?.map((c) => c.name).join(", ") || "Research Compound"}
+          {compoundProto?.category || product.categories?.map((c) => c.name).join(", ") || "Research Compound"}
         </p>
       </div>
       <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
-        <span className="font-semibold text-zinc-900 text-xs">Intended Use</span>
-        <p className="text-zinc-600 text-xs mt-1">Laboratory &amp; In-Vitro Research Only</p>
+        <span className="font-semibold text-zinc-900 text-xs">Intended Application</span>
+        <p className="text-zinc-600 text-xs mt-1">Laboratory &amp; In-Vitro Research Only (RUO)</p>
       </div>
       <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
         <span className="font-semibold text-zinc-900 text-xs">Physical State</span>
         <p className="text-zinc-600 text-xs mt-1">Lyophilized Solid Powder</p>
       </div>
+
+      {mol?.casNumber && (
+        <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
+          <span className="font-semibold text-zinc-900 text-xs">CAS Registry Number</span>
+          <p className="text-zinc-700 font-mono text-xs mt-1">{mol.casNumber}</p>
+        </div>
+      )}
+
+      {mol?.pubchemCid && (
+        <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
+          <span className="font-semibold text-zinc-900 text-xs">PubChem CID</span>
+          <p className="text-xs mt-1">
+            <a
+              href={`https://pubchem.ncbi.nlm.nih.gov/compound/${mol.pubchemCid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-700 hover:text-emerald-800 hover:underline font-mono inline-flex items-center gap-1 font-semibold"
+            >
+              <span>{mol.pubchemCid}</span>
+              <span className="text-[10px]">&#8599;</span>
+            </a>
+          </p>
+        </div>
+      )}
+
+      {mol?.molecularWeightGPerMol && (
+        <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
+          <span className="font-semibold text-zinc-900 text-xs">Molecular Weight</span>
+          <p className="text-zinc-700 font-mono text-xs mt-1">{mol.molecularWeightGPerMol} g/mol</p>
+        </div>
+      )}
+
+      {mol?.sequenceOrFormula && (
+        <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50 sm:col-span-2">
+          <span className="font-semibold text-zinc-900 text-xs">Peptide Sequence / Formula</span>
+          <p className="text-zinc-700 font-mono text-[11px] mt-1 break-all bg-white p-1.5 rounded border border-zinc-200/60">
+            {mol.sequenceOrFormula}
+          </p>
+        </div>
+      )}
+
+      {compoundProto?.purityStandard && (
+        <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
+          <span className="font-semibold text-zinc-900 text-xs">HPLC Purity Standard</span>
+          <p className="text-emerald-800 font-semibold text-xs mt-1">
+            {compoundProto.purityStandard}
+          </p>
+        </div>
+      )}
+
       {contentOption && (
         <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
           <span className="font-semibold text-zinc-900 text-xs">Net Content Options</span>
@@ -193,26 +281,36 @@ const ProductSpecsGrid = ({ product }: { product: HttpTypes.StoreProduct }) => {
 }
 
 // ---------------------------------------------------------------------------
-// 2. Verified Research Protocol & Laboratory Dosing Panel (3-Stage Clinical Roadmap)
+// 2. Verified Research Protocol & Laboratory Handling Panel
 // ---------------------------------------------------------------------------
 const ResearchProtocolPanel = ({
   protocol,
   product,
+  compoundProto: passedProto,
   onNavigateToCalculator,
 }: {
   protocol?: StoreResearchProtocol | null
   product: HttpTypes.StoreProduct
+  compoundProto?: CompoundAnalyticalProtocol
   onNavigateToCalculator?: () => void
 }) => {
   const compoundProto = useMemo(() => {
+    if (passedProto) return passedProto
+    const protocolHandle =
+      (product.metadata?.protocol_handle as string) ||
+      (product.metadata?.protocol_id as string)
+    if (protocolHandle) {
+      const proto = getCompoundProtocol(protocolHandle)
+      if (proto && proto.id !== "generic-peptide") return proto
+    }
     return getCompoundProtocol(product.handle || product.title)
-  }, [product.handle, product.title])
+  }, [passedProto, product.metadata, product.handle, product.title])
 
-  const title = protocol?.title || `${compoundProto.compoundName} Laboratory Protocol & In-Vitro Dosing Standard`
+  const title = protocol?.title || `${compoundProto.compoundName} Laboratory Protocol & In-Vitro Handling Standard`
   const summary =
     protocol?.summary ||
     compoundProto.subtitle ||
-    `Verified analytical protocol, reconstitution dilution ratios, and laboratory titration guidance for ${product.title}.`
+    `Verified analytical protocol, reconstitution dilution ratios, and laboratory handling guidance for ${product.title}.`
 
   return (
     <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-xs space-y-8">
@@ -276,7 +374,7 @@ const ResearchProtocolPanel = ({
 
         <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-xs shadow-2xs">
           <span className="font-bold text-emerald-800 block text-[10px] uppercase tracking-wider">
-            Analytical Dose Range
+            Target Assay Concentration
           </span>
           <span className="font-bold text-emerald-950 mt-1 block text-sm font-mono tracking-tight">
             {compoundProto.dosing.standardDoseDisplay}
@@ -288,16 +386,38 @@ const ResearchProtocolPanel = ({
 
         <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs shadow-2xs">
           <span className="font-bold text-slate-500 block text-[10px] uppercase tracking-wider">
-            Syringe Tick Mark
+            Volumetric Mark
           </span>
           <span className="font-bold text-slate-900 mt-1 block text-sm font-mono tracking-tight">
             {compoundProto.syringeGuide.standardIUDisplay}
           </span>
           <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
-            Standard U-100 (100 units = 1.0 mL)
+            Standard U-100 (100 units = 1.0 mL = 1,000 µL)
           </p>
         </div>
       </div>
+
+      {/* Pharmacological Profile & Mechanism of Action */}
+      {compoundProto.longDescription && (
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-5 sm:p-6 space-y-2.5">
+          <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-200/60">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-600 text-white text-xs font-bold font-mono">
+                P
+              </span>
+              <h4 className="text-sm font-bold text-slate-900">
+                Pharmacological Profile &amp; Mechanism of Action
+              </h4>
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
+              Research Monograph
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            {compoundProto.longDescription}
+          </p>
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* 3-STAGE CLINICAL ROADMAP */}
@@ -367,7 +487,7 @@ const ResearchProtocolPanel = ({
         </div>
       </div>
 
-      {/* STAGE 2: Laboratory Research Dosing & Titration Matrix */}
+      {/* STAGE 2: In-Vitro Concentration & Assay Schedule */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6 space-y-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
@@ -376,10 +496,10 @@ const ResearchProtocolPanel = ({
             </span>
             <div>
               <h4 className="text-sm font-bold text-slate-900">
-                Stage 2: Laboratory Research Dosing &amp; Titration Matrix
+                Stage 2: In-Vitro Concentration &amp; Assay Schedule
               </h4>
               <p className="text-[11px] text-slate-500">
-                Peer-reviewed analytical dosing ranges, in-vitro half-life, and experimental escalation schedule.
+                Peer-reviewed analytical concentration ranges, in-vitro half-life, and experimental assay schedule.
               </p>
             </div>
           </div>
@@ -394,9 +514,9 @@ const ResearchProtocolPanel = ({
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-100/90 text-slate-700 border-b border-slate-200 font-bold uppercase text-[10px] tracking-wider">
-                <th className="py-2.5 px-3 sm:px-4">Protocol Stage</th>
+                <th className="py-2.5 px-3 sm:px-4">Assay Stage</th>
                 <th className="py-2.5 px-3 sm:px-4">Timeframe</th>
-                <th className="py-2.5 px-3 sm:px-4">Target Research Dose</th>
+                <th className="py-2.5 px-3 sm:px-4">Target Concentration / Mass</th>
                 <th className="py-2.5 px-3 sm:px-4">Cadence</th>
                 <th className="py-2.5 px-3 sm:px-4">Assay Focus &amp; Notes</th>
               </tr>
@@ -435,15 +555,15 @@ const ResearchProtocolPanel = ({
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 pt-1">
           <div>
-            Typical Trial Cycle: <span className="font-semibold text-slate-800">{compoundProto.dosing.typicalProtocolDuration}</span>
+            Typical Assay Cycle: <span className="font-semibold text-slate-800">{compoundProto.dosing.typicalProtocolDuration}</span>
           </div>
           <div>
-            Washout Period: <span className="font-semibold text-slate-800">{compoundProto.dosing.washoutPeriod}</span>
+            Receptor Washout Window: <span className="font-semibold text-slate-800">{compoundProto.dosing.washoutPeriod}</span>
           </div>
         </div>
       </div>
 
-      {/* STAGE 3: Syringe Measurement Cheat-Sheet (U-100 Insulin Syringe) */}
+      {/* STAGE 3: Volumetric Microliter (µL) Dispensing Matrix */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6 space-y-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
@@ -452,15 +572,15 @@ const ResearchProtocolPanel = ({
             </span>
             <div>
               <h4 className="text-sm font-bold text-slate-900">
-                Stage 3: Syringe Measurement Cheat-Sheet (U-100 Standard)
+                Stage 3: Volumetric Microliter (µL) Dispensing Matrix
               </h4>
               <p className="text-[11px] text-slate-500">
-                Direct translation from target dose to syringe units (IU) on a standard 100-unit syringe.
+                Volumetric conversion from target research mass (mcg) to dispensing volume in microliters (µL) and 0.01 mL graduations.
               </p>
             </div>
           </div>
           <span className="text-[10px] font-mono font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded-md">
-            100 IU = 1.0 mL
+            100 IU = 1.0 mL (1 IU = 10 µL)
           </span>
         </div>
 
@@ -477,7 +597,7 @@ const ResearchProtocolPanel = ({
             >
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                  Target Dose
+                  Target Assay Mass
                 </span>
                 {grad.doseMcg === compoundProto.dosing.standardDoseMcg && (
                   <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-md">
@@ -489,13 +609,13 @@ const ResearchProtocolPanel = ({
                 {grad.doseDisplay}
               </div>
               <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-slate-500 text-[11px]">Syringe Mark:</span>
+                <span className="text-slate-500 text-[11px]">Dispense Vol:</span>
                 <span className="font-bold text-emerald-800 font-mono">
-                  {grad.syringeIU.toFixed(1)} IU
+                  {(grad.volumeMl * 1000).toFixed(0)} µL
                 </span>
               </div>
-              <div className="text-[10px] text-slate-400 font-mono text-right mt-0.5">
-                ({grad.volumeMl.toFixed(2)} mL volume)
+              <div className="text-[10px] text-slate-500 font-mono text-right mt-0.5">
+                ({grad.syringeIU.toFixed(1)} IU / {grad.volumeMl.toFixed(2)} mL)
               </div>
             </div>
           ))}
@@ -729,10 +849,21 @@ const CustomerResearchHubPanel = ({
 const DILUENT_VOLUMES_ML = [1, 2, 3, 4, 5, 6, 8, 10]
 
 const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => {
-  const compoundProto = useMemo(
-    () => getCompoundProtocol(product.handle || product.title),
-    [product.handle, product.title]
-  )
+  const compoundProto = useMemo(() => {
+    const protocolHandle =
+      (product.metadata?.protocol_handle as string) ||
+      (product.metadata?.protocol_id as string)
+    if (protocolHandle) {
+      const proto = getCompoundProtocol(protocolHandle)
+      if (proto && proto.id !== "generic-peptide") return proto
+    }
+    return getCompoundProtocol(product.handle || product.title)
+  }, [product.metadata, product.handle, product.title])
+
+  const isIUCompound =
+    compoundProto.calculator?.targetAmountUnit === "IU" ||
+    compoundProto.id === "hgh-somatropin" ||
+    compoundProto.id === "hmg-75iu"
 
   const contentOption = product.options?.find(
     (o) =>
@@ -748,18 +879,43 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
         if (!match) return null
         const amount = parseFloat(match[1])
         const unit = match[2].toLowerCase()
-        const mcg = unit === "mg" ? amount * 1000 : unit === "iu" ? amount : amount
-        return { label: v.value, mcg }
+        let mcg = amount
+        if (unit === "mg") {
+          mcg = amount * 1000
+        } else if (unit === "iu") {
+          if (compoundProto.id === "hgh-somatropin") {
+            // 1 mg = 3.0 IU of Somatropin -> mcg = (amount / 3) * 1000
+            mcg = (amount / 3) * 1000
+          } else if (compoundProto.id === "hmg-75iu") {
+            // Standardized 75 IU menotropins vial
+            mcg = 1000
+          }
+        }
+        return { label: v.value, mcg, rawAmount: amount, unit }
       })
-      .filter(Boolean) as { label: string; mcg: number }[]
-  }, [contentOption])
+      .filter(Boolean) as { label: string; mcg: number; rawAmount: number; unit: string }[]
+  }, [contentOption, compoundProto.id])
 
   const defaultContent = contentValues[0] ?? {
-    label: `${compoundProto.reconstitution.defaultVialNetMg} mg`,
-    mcg: compoundProto.reconstitution.defaultVialNetMg * 1000,
+    label: isIUCompound && compoundProto.calculator?.defaultCompoundMass
+      ? `${compoundProto.calculator.defaultCompoundMass} IU`
+      : `${compoundProto.reconstitution.defaultVialNetMg} mg`,
+    mcg: isIUCompound && compoundProto.id === "hgh-somatropin"
+      ? (24 / 3) * 1000
+      : compoundProto.reconstitution.defaultVialNetMg * 1000,
+    rawAmount: isIUCompound ? (compoundProto.id === "hgh-somatropin" ? 24 : 75) : compoundProto.reconstitution.defaultVialNetMg,
+    unit: isIUCompound ? "iu" : "mg",
   }
 
   const dosePresets = useMemo(() => {
+    if (compoundProto.id === "hgh-somatropin") {
+      // Dose presets in mcg equivalent: 1 IU (333), 1.5 IU (500), 2 IU (667), 2.5 IU (833), 3 IU (1000), 4 IU (1333)
+      return [333, 500, 667, 833, 1000, 1333]
+    }
+    if (compoundProto.id === "hmg-75iu") {
+      // 25 IU (333), 37.5 IU (500), 50 IU (667), 75 IU (1000)
+      return [333, 500, 667, 1000]
+    }
     if (compoundProto.id === "tirzepatide") {
       return [1250, 2500, 5000, 7500, 10000, 15000]
     }
@@ -778,6 +934,33 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
   const unitsPerDose = volumePerDose * 100
   const dosesPerVial = selectedContent.mcg / doseMcg
 
+  const formatDosePresetLabel = (preset: number) => {
+    if (compoundProto.id === "hgh-somatropin") {
+      const iu = (preset * 3) / 1000
+      return `${Number(iu.toFixed(1))} IU`
+    }
+    if (compoundProto.id === "hmg-75iu") {
+      const iu = (preset / 1000) * 75
+      return `${Number(iu.toFixed(1))} IU`
+    }
+    return preset >= 1000 ? `${(preset / 1000).toFixed(preset % 1000 === 0 ? 0 : 2)} mg` : `${preset} mcg`
+  }
+
+  const concentrationDisplay = () => {
+    if (compoundProto.id === "hgh-somatropin") {
+      const totalIU = (selectedContent.mcg * 3) / 1000
+      const iuPerMl = totalIU / diluentMl
+      return `${iuPerMl.toFixed(1)} IU/mL (${(concentration / 1000).toFixed(1)} mg/mL)`
+    }
+    if (compoundProto.id === "hmg-75iu") {
+      const iuPerMl = 75 / diluentMl
+      return `${iuPerMl.toFixed(1)} IU/mL`
+    }
+    return concentration >= 1000
+      ? `${(concentration / 1000).toFixed(2)} mg/mL`
+      : `${concentration.toFixed(1)} mcg/mL`
+  }
+
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -791,7 +974,7 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
             </h3>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Calculate reconstitution dilution, per-dose volume, and syringe IU graduations for {product.title}.
+            Calculate reconstitution dilution, per-dose volume, and syringe graduations for {product.title}.
           </p>
         </div>
         <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200/80 text-[11px] text-emerald-900 font-medium">
@@ -850,9 +1033,7 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
             <p className="text-xs text-zinc-500">
               Resulting Concentration:{" "}
               <span className="font-bold text-zinc-800">
-                {concentration >= 1000
-                  ? `${(concentration / 1000).toFixed(2)} mg/mL`
-                  : `${concentration.toFixed(1)} mcg/mL`}
+                {concentrationDisplay()}
               </span>
             </p>
           </div>
@@ -862,7 +1043,7 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-zinc-700">3. Target Desired Dose</span>
               <span className="text-xs font-bold text-zinc-900 tabular-nums">
-                {doseMcg >= 1000 ? `${(doseMcg / 1000).toFixed(doseMcg % 1000 === 0 ? 0 : 2)} mg` : `${doseMcg} mcg`}
+                {formatDosePresetLabel(doseMcg)}
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -877,7 +1058,7 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
                       : "bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-50"
                   }`}
                 >
-                  {preset >= 1000 ? `${(preset / 1000).toFixed(preset % 1000 === 0 ? 0 : 2)} mg` : `${preset} mcg`}
+                  {formatDosePresetLabel(preset)}
                 </button>
               ))}
             </div>
@@ -900,11 +1081,11 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
             <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-2xs">
               <div className="text-xl font-bold text-emerald-800 tabular-nums">
                 {unitsPerDose < 0.1 ? "<0.1" : unitsPerDose.toFixed(1)}{" "}
-                <span className="text-xs font-normal text-zinc-500">IU</span>
+                <span className="text-xs font-normal text-zinc-500">Units</span>
               </div>
               <div className="text-[11px] text-zinc-500 mt-1">
                 Syringe Units
-                <span className="block text-[9px] text-zinc-400">(100 IU = 1 mL)</span>
+                <span className="block text-[9px] text-zinc-400">(100 Units = 1 mL)</span>
               </div>
             </div>
             <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-2xs">
@@ -920,7 +1101,7 @@ const ReconstitutionTab = ({ product }: { product: HttpTypes.StoreProduct }) => 
           </div>
           <p className="text-[11px] text-zinc-500 leading-relaxed border-t border-emerald-200/80 pt-3">
             Calculated for {selectedContent.label} vial reconstituted in {diluentMl} mL
-            Bacteriostatic Water at {doseMcg >= 1000 ? `${(doseMcg / 1000).toFixed(1)} mg` : `${doseMcg} mcg`}/dose.
+            Bacteriostatic Water at {formatDosePresetLabel(doseMcg)}/dose.
             For laboratory evaluation only.
           </p>
         </div>

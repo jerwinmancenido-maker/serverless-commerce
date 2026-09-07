@@ -142,13 +142,13 @@ export default function NotificationBell() {
     setOpen(true)
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (activeTimer) {
       clearTimeout(activeTimer)
       setActiveTimer(undefined)
     }
     setOpen(false)
-  }
+  }, [activeTimer])
 
   const openAndCancel = () => {
     if (activeTimer) {
@@ -182,7 +182,7 @@ export default function NotificationBell() {
         handleOtherPopover
       )
     }
-  }, [])
+  }, [handleClose])
 
   // Clean up timer on unmount
   useEffect(() => {
@@ -196,7 +196,7 @@ export default function NotificationBell() {
   // Close when route changes
   useEffect(() => {
     handleClose()
-  }, [pathname])
+  }, [pathname, handleClose])
 
   const refresh = useCallback(
     async (includeItems = open) => {

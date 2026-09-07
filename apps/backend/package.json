@@ -32,7 +32,9 @@
     "support:configure-roles": "medusa exec ./src/scripts/configure-support-roles.ts",
     "notifications:backfill": "medusa exec ./src/scripts/backfill-customer-notifications.ts",
     "promo:launch": "medusa exec ./src/scripts/configure-launch-promotions.ts",
-    "inventory:seed-master-supplies": "medusa exec ./src/scripts/seed-production-master-supplies.ts"
+    "inventory:seed-master-supplies": "medusa exec ./src/scripts/seed-production-master-supplies.ts",
+    "catalog:patch-ghk-cu": "medusa exec ./src/scripts/patch-ghk-cu-description.ts",
+    "protocols:rebrand-backfill": "medusa exec ./src/scripts/update-product-protocols.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",

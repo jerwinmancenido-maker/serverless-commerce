@@ -319,7 +319,7 @@ export default function ProductActions({
     ? formatAmount(discountedUnitPrice * quantity)
     : null
 
-  const totalVolumeSavings = volumeDiscountRate > 0 && unitPrice !== null
+  const totalVolumeSavings = volumeDiscountRate > 0 && unitPrice !== null && discountedUnitPrice !== null
     ? formatAmount((unitPrice - discountedUnitPrice) * quantity)
     : null
 

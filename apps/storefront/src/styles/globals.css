@@ -114,3 +114,73 @@
     @apply text-[32px] leading-[44px] font-semibold;
   }
 }
+
+@media print {
+  @page {
+    margin: 10mm 12mm 12mm 12mm;
+    size: auto;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Completely suppress website navigation, announcement bars, footers, support panels, and interactive buttons */
+  header:not(.print-header),
+  nav,
+  footer,
+  aside,
+  button,
+  .print-hidden,
+  [data-print-hidden="true"],
+  [data-testid="account-page"] > div > .mb-6,
+  [data-testid="support-panel"],
+  .support-pill,
+  .announcement-ticker,
+  div:has(> .bg-\[\#070A11\]) {
+    display: none !important;
+  }
+
+  /* Reset outer container constraints so content spans printable page width */
+  .content-container,
+  [data-testid="account-page"] > div,
+  [data-testid="account-page"] {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* Page-break safety: prevent sections, table rows, and analytical cards from splitting awkwardly */
+  .print-break-inside-avoid,
+  section,
+  article,
+  tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Compact typography and borders on paper */
+  h1, h2, h3, h4 {
+    color: #0f172a !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  th, td {
+    border-color: #cbd5e1 !important;
+  }
+}
+
+

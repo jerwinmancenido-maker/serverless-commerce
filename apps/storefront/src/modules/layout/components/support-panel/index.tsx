@@ -277,7 +277,7 @@ export default function SupportPanel({
     : allMessages
 
   return (
-    <div className="fixed bottom-4 right-4 z-[900] flex flex-col items-end small:bottom-6 small:right-6">
+    <div className="fixed bottom-4 right-4 z-[900] flex flex-col items-end small:bottom-6 small:right-6 print:hidden">
       {open ? (
         <aside
           ref={panelRef}

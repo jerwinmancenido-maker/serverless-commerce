@@ -9,8 +9,6 @@ import {
   ShieldCheck,
   LockClosedSolid,
   SquaresPlus,
-  Calendar,
-  ChartBar,
 } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"

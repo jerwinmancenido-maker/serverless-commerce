@@ -22,6 +22,7 @@ type Segment = {
 
 type ReplenishmentProjection = {
   routine_id: string
+  routine_label?: string
   routine_revision_id: string
   tracked_material_id: string
   tracked_material_label: string
@@ -29,6 +30,8 @@ type ReplenishmentProjection = {
   source_protocol_series_id: string | null
   source_protocol_revision_id: string | null
   source_product_id: string | null
+  source_product_handle?: string | null
+  source_product_title?: string | null
   source_product_variant_id: string | null
   current_phase: string
   base_unit: string
@@ -189,6 +192,7 @@ export async function listOwnedResearchReplenishmentProjections(input: {
 
     projections.push({
       routine_id: routine.id,
+      routine_label: revision.label,
       routine_revision_id: revision.id,
       tracked_material_id: material.id,
       tracked_material_label: material.label,
@@ -218,18 +222,24 @@ export async function listOwnedResearchReplenishmentProjections(input: {
   const { data: products } = productIds.length
     ? await query.graph({
         entity: "product",
-        fields: ["id", "handle"],
+        fields: ["id", "handle", "title"],
         filters: { id: productIds },
       })
     : { data: [] }
   const handleById = new Map(
     products.map((product: any) => [product.id, product.handle]),
   )
+  const titleById = new Map(
+    products.map((product: any) => [product.id, product.title]),
+  )
 
   return projections.map((projection) => ({
     ...projection,
     source_product_handle: projection.source_product_id
       ? handleById.get(projection.source_product_id) || null
+      : null,
+    source_product_title: projection.source_product_id
+      ? titleById.get(projection.source_product_id) || null
       : null,
   }))
 }

@@ -8,7 +8,6 @@ import {
 } from "@headlessui/react"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { Button } from "@modules/common/components/ui"
 import DeleteButton from "@modules/common/components/delete-button"
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
@@ -16,7 +15,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useEffect, useRef, useState, useCallback } from "react"
 
 const CartDropdown = ({
   cart: cartState,
@@ -37,13 +36,13 @@ const CartDropdown = ({
     setCartDropdownOpen(true)
   }
 
-  const close = () => {
+  const close = useCallback(() => {
     if (activeTimer) {
       clearTimeout(activeTimer)
       setActiveTimer(undefined)
     }
     setCartDropdownOpen(false)
-  }
+  }, [activeTimer])
 
   // Listen for other header popovers opening to maintain mutual exclusivity
   useEffect(() => {
@@ -61,7 +60,7 @@ const CartDropdown = ({
         handleOtherPopover
       )
     }
-  }, [])
+  }, [close])
 
   const totalItems =
     cartState?.items?.reduce((acc, item) => {
