@@ -35,7 +35,8 @@
     "inventory:seed-master-supplies": "medusa exec ./src/scripts/seed-production-master-supplies.ts",
     "catalog:patch-ghk-cu": "medusa exec ./src/scripts/patch-ghk-cu-description.ts",
     "protocols:rebrand-backfill": "medusa exec ./src/scripts/update-product-protocols.ts",
-    "protocols:sync": "npx tsx ./src/scripts/sync-protocols.ts"
+    "protocols:sync": "npx tsx ./src/scripts/sync-protocols.ts",
+    "catalog:seed-unified": "medusa exec ./src/scripts/seed-unified-catalog.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",
