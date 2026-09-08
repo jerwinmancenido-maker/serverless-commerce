@@ -81,11 +81,11 @@ const PublishedProtocolDocument = ({
       {(content.investigated_benefits?.length || content.adverse_observations?.length) ? (
         <div className="grid gap-4 md:grid-cols-2">
           {content.investigated_benefits?.length ? (
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50/40 p-4">
-              <Heading level="h3" className="text-sm font-bold text-emerald-950 mb-2">
+            <div className="rounded-lg border border-blue-200 bg-blue-50/40 p-4">
+              <Heading level="h3" className="text-sm font-bold text-blue-950 mb-2">
                 Investigated Research Actions
               </Heading>
-              <ul className="list-disc pl-4 space-y-1 text-xs text-emerald-900">
+              <ul className="list-disc pl-4 space-y-1 text-xs text-blue-900">
                 {content.investigated_benefits.map((b, i) => (
                   <li key={i}>{b}</li>
                 ))}
@@ -250,7 +250,7 @@ const PublicationReadinessCard = ({
             <div className="flex items-center gap-x-2 min-w-0">
               <span
                 className={`inline-block size-1.5 rounded-full shrink-0 ${
-                  item.passed ? "bg-emerald-500" : "bg-amber-400"
+                  item.passed ? "bg-blue-600" : "bg-amber-400"
                 }`}
               />
               <span
@@ -265,7 +265,7 @@ const PublicationReadinessCard = ({
             </div>
             <span
               className={`font-mono text-[10px] ${
-                item.passed ? "text-emerald-700" : "text-amber-700 font-semibold"
+                item.passed ? "text-blue-700" : "text-amber-700 font-semibold"
               }`}
             >
               {item.passed ? "Passed" : "Missing"}
@@ -275,7 +275,7 @@ const PublicationReadinessCard = ({
       </div>
 
       {evaluation.isReady ? (
-        <Text size="xsmall" className="text-emerald-800">
+        <Text size="xsmall" className="text-blue-800">
           All mandatory monograph publication requirements are satisfied.
         </Text>
       ) : (

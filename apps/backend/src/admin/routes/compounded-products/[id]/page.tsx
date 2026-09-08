@@ -35,6 +35,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { sdk } from "../../../lib/sdk"
 import { AdminCard } from "../../../components/admin-card"
 import { PageHeader } from "../../../components/page-header"
+import { AdminProductSlideDeckViewer } from "../../../components/catalog/admin-product-slide-deck-viewer"
 import { ProductOpsSidebar } from "./product-ops-sidebar"
 import { VariantBomMatrix } from "./variant-bom-matrix"
 import ProductDescriptionEditor from "../product-description-editor"
@@ -1289,6 +1290,13 @@ const CompoundedProductReadinessPage = () => {
                   )}
                 </AdminCard>
               </div>
+
+              {product.handle && (
+                <AdminProductSlideDeckViewer
+                  handle={product.handle}
+                  title={product.title}
+                />
+              )}
 
               {/* Product Description Card (In-Page Live Editor) */}
               <AdminCard

@@ -11,6 +11,13 @@ import { listProducts } from "@lib/data/products"
 import { formatPeptideDosage } from "@lib/research-quantity"
 import FullProtocol from "@modules/research-protocols/full-protocol"
 import ProductRecommendations from "@modules/research-protocols/product-recommendations"
+import type {
+  ResearchBlendConstituent,
+  ResearchBundleVial,
+  ResearchReconstitutionOption,
+  ResearchSyringeGuide,
+  ResearchVialStrengthOption,
+} from "@modules/research-protocols/types"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
@@ -384,6 +391,28 @@ export default async function ResearchProtocolPage({ params }: Props) {
           : null),
       reconstitution_details:
         backendProtocol?.content?.reconstitution_details || fallbackStore.content.reconstitution_details,
+      reconstitution_options:
+        backendProtocol?.content?.reconstitution_options ||
+        (staticProtocol?.reconstitutionOptions as unknown as Record<string, ResearchReconstitutionOption>) ||
+        null,
+      vial_strength_options:
+        backendProtocol?.content?.vial_strength_options ||
+        (staticProtocol?.vialStrengthOptions as unknown as ResearchVialStrengthOption[]) ||
+        [],
+      syringe_guide:
+        backendProtocol?.content?.syringe_guide ||
+        (staticProtocol?.syringeGuide as unknown as ResearchSyringeGuide) ||
+        null,
+      evidence_tier:
+        backendProtocol?.content?.evidence_tier || staticProtocol?.evidenceTier || null,
+      blend_constituents:
+        backendProtocol?.content?.blend_constituents ||
+        (staticProtocol?.blendConstituents as unknown as ResearchBlendConstituent[]) ||
+        [],
+      bundle_vials:
+        backendProtocol?.content?.bundle_vials ||
+        (staticProtocol?.bundleVials as unknown as ResearchBundleVial[]) ||
+        [],
       storage_details:
         backendProtocol?.content?.storage_details || fallbackStore.content.storage_details,
       purity_standard:

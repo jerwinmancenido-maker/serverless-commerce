@@ -13,10 +13,33 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const service = req.scope.resolve<ResearchContentModuleService>(
     RESEARCH_CONTENT_MODULE,
   )
-  const [series] = await service.listResearchProtocolSeries(
+  let [series] = await service.listResearchProtocolSeries(
     { protocol_key: req.params.handle, archived_at: null },
     { take: 1 },
   )
+
+  if (!series) {
+    const candidates = [
+      `${req.params.handle}-laboratory-handling`,
+      req.params.handle.replace(/-laboratory-handling$/, ""),
+      req.params.handle.replace(/-protocol$/, ""),
+      req.params.handle.replace(/-vial$/, ""),
+      req.params.handle.replace(/-500mg$/, ""),
+      req.params.handle.replace(/-1500mg$/, ""),
+    ].filter((k) => k !== req.params.handle)
+
+    for (const altKey of candidates) {
+      const [candidate] = await service.listResearchProtocolSeries(
+        { protocol_key: altKey, archived_at: null },
+        { take: 1 },
+      )
+      if (candidate) {
+        series = candidate
+        break
+      }
+    }
+  }
+
   if (!series) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,

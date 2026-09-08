@@ -797,5 +797,914 @@ export const CATEGORY_7_BLENDS_PROTOCOLS: CompoundAnalyticalProtocol[] = [
       "**Sensory Clarity Adjustment**: Enhanced sensory processing can make subjects more observant of environment and sounds.",
       "**Refrigeration & Light Shielding**: Both peptides are temperature-sensitive; store reconstituted solution strictly at 2°C–8°C away from heat and direct light."
     ]
+  },
+  {
+    "id": "cuv100-ghk-cu-kpv",
+    "compoundName": "CUV-100 (GHK-Cu + KPV Blend)",
+    "handles": [
+      "cuv100",
+      "cuv-100",
+      "cuv100-ghk-cu-kpv",
+      "cuv100-100mg",
+      "cuv100-ghk-cu-50mg-kpv-50mg-inj"
+    ],
+    "subtitle": "Copper-Tripeptide & Anti-Inflammatory Dual Complex (GHK-Cu 50mg + KPV 50mg) Standard",
+    "longDescription": "**What it is:** CUV-100 is an advanced dual-action research peptide formulation combining high-purity GHK-Cu (Copper Tripeptide-1, 50mg) and KPV (Lysine-Proline-Valine, 50mg) in an exact 1:1 ratio (100mg total lyophilized material per vial).\n\n**How it works:** CUV-100 achieves synergistic tissue remodeling and cytoprotection through complementary biochemical cascades: GHK-Cu upregulates pro-collagen I/III synthesis, elastin expression, and stimulates decorin and proteoglycan production while normalizing matrix metalloproteinases (MMPs). Concurrently, KPV acts as a potent tripeptide anti-inflammatory agent via the PepT1 transporter, directly blocking NF-κB nuclear translocation and suppressing pro-inflammatory cytokines (IL-1β, IL-6, TNF-α) without steroidal side effects.\n\n**Why researchers study it:** Investigated for accelerated dermal and soft-tissue wound repair, severe inflammatory tissue model resolution, extracellular matrix (ECM) reorganization, anti-fibrotic remodeling, and post-procedural tissue healing.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "cuv100-ghk-cu-kpv",
+    "isBlend": true,
+    "blendConstituents": [
+      {
+        "name": "GHK-Cu (Copper Tripeptide-1)",
+        "ratioMg": 50,
+        "percentageOfTotal": 50.0
+      },
+      {
+        "name": "KPV (Lys-Pro-Val)",
+        "ratioMg": 50,
+        "percentageOfTotal": 50.0
+      }
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 100,
+      "defaultDiluentMl": 5.0,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 5.0 mL diluent slowly down the glass vial wall. The solution immediately displays a characteristic brilliant azure blue tint from the chelated copper peptide complex. Swirl gently horizontally for 60 seconds until completely clear and particulate-free. Do not shake vigorously.",
+      "resultingConcentrationMgPerMl": 20.0,
+      "handlingRule": "Clear, deep blue aqueous solution. Each 1.0 mL contains 10.0 mg GHK-Cu and 10.0 mg KPV (20.0 mg total peptide mass). Store strictly refrigerated at 2°C–8°C and shield from direct ultraviolet light."
+    },
+    "dosing": {
+      "standardDoseDisplay": "2,000 mcg total blend daily (Yields 1,000 mcg GHK-Cu + 1,000 mcg KPV)",
+      "standardDoseMcg": 2000,
+      "cadence": "1x Daily (SubQ, preferably morning or localized to target tissue quadrant)",
+      "halfLife": "Multi-phase: GHK-Cu (~2 to 4 Hours) / KPV (~1 to 2 Hours central, sustained local tissue binding)",
+      "typicalProtocolDuration": "30 to 60 Days",
+      "washoutPeriod": "30 Days between cycles for physiological copper homeostasis",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Baseline Anti-Inflammatory Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "1,000 mcg total blend daily (500 mcg GHK-Cu + 500 mcg KPV)",
+          "doseMcg": 1000,
+          "cadence": "1x Daily (SubQ)",
+          "focus": "Establishment of baseline tissue tolerability, initial cytokine normalization, and endothelial cell priming",
+          "notes": "5.0 units (0.05 mL) on standard U-100 syringe at 20.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Dual-Matrix Remodeling",
+          "timeframe": "Days 8–45",
+          "doseDisplay": "2,000 mcg total blend daily (1,000 mcg GHK-Cu + 1,000 mcg KPV)",
+          "doseMcg": 2000,
+          "cadence": "1x Daily (SubQ)",
+          "focus": "Maximal pro-collagen I/III synthesis, MMP regulation, and rapid localized tissue remodeling",
+          "notes": "10.0 units (0.10 mL) on standard U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout & Homeostasis",
+          "timeframe": "Days 46–75",
+          "doseDisplay": "Observation & Rest Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Serum copper re-equilibration and longitudinal monitoring of extracellular matrix tensile integrity",
+          "notes": "Mandatory 30-day cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "10.0 units (0.10 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "1,000 mcg blend (500 mcg GHK / 500 mcg KPV)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "2,000 mcg blend (1,000 mcg GHK / 1,000 mcg KPV)",
+          "doseMcg": 2000,
+          "volumeMl": 0.10,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "4,000 mcg blend (2,000 mcg GHK / 2,000 mcg KPV)",
+          "doseMcg": 4000,
+          "volumeMl": 0.20,
+          "syringeIU": 20.0,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C desiccated and protected from moisture (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days. Protect strictly from direct UV/light exposure.",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 26236730",
+        "notes": "Pickart et al. Regenerative and protective actions of the GHK-Cu peptide in light of the new gene data."
+      },
+      {
+        "sourceReference": "PubMed PMID: 18451174",
+        "notes": "Dalmasso et al. PepT1-mediated transport of the tripeptide KPV and its anti-inflammatory effects in intestinal inflammation."
+      },
+      {
+        "sourceReference": "PubMed PMID: 12513904",
+        "notes": "Luger et al. Alpha-MSH and its C-terminal tripeptide KPV in immunomodulation and inflammation control."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for laboratory research and analytical calibration. Not approved for human, veterinary, or clinical use.",
+    "investigatedBenefits": [
+      "**Dual Matrix Remodeling & Anti-Inflammatory Synergy**: Simultaneously upregulates structural collagen while suppressing systemic and localized inflammatory cytokines.",
+      "**Enhanced Extracellular Matrix Synthesis**: Promotes collagen I/III, elastin, and proteoglycan gene expression while balancing tissue metalloproteinases.",
+      "**Targeted NF-κB Pathway Inhibition**: Downregulates acute inflammatory signaling via PepT1 transporter-mediated cellular uptake.",
+      "**Accelerated Soft-Tissue Wound Healing**: Stimulates localized microvascular perfusion and enhances fibroblast migration in damaged tissue models.",
+      "**Antioxidant & Free Radical Scavenging**: Copper-chelation activity increases superoxide dismutase (SOD) expression, reducing oxidative cellular stress."
+    ],
+    "adverseObservations": [
+      "Localized injection site erythema or mild stinging due to high copper concentration (mitigated by slow SubQ administration).",
+      "Excessive un-cycled administration may elevate systemic copper levels; mandatory 30-day washout recommended."
+    ]
+  },
+  {
+    "id": "ghk-cu-glutathione-bundle",
+    "compoundName": "GHK-Cu + Glutathione Bundle",
+    "handles": [
+      "ghk-cu-glutathione-bundle",
+      "ghk-glutathione-stack",
+      "copper-glutathione-bundle"
+    ],
+    "subtitle": "Dual-Vial Extracellular Matrix Remodeling & Systemic Redox Detoxification Protocol",
+    "longDescription": "**What it is:** A dual-vial research stack pairing GHK-Cu (100mg) and Reduced L-Glutathione (1500mg) as distinct, separately reconstituted analytical standards.\n\n**How it works:** GHK-Cu activates systemic tissue remodeling, collagen synthesis, and stem cell migration, while Glutathione acts as the master intracellular antioxidant buffer, quenching free radicals and supporting Phase II hepatic and cellular detoxification.\n\n**CRITICAL CLINICAL HANDLING:** Prepare each vial in separate sterile Bacteriostatic Water. NEVER combine dry cakes or aqueous solutions into a single vial; copper ions (Cu2+) catalyze the immediate oxidation and precipitation of glutathione thiols.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "ghk-cu-glutathione-bundle",
+    "purityStandard": "\u226599.0% Individual Lyophilized Assay Standards",
+    "investigatedBenefits": [
+      "Synergistic cellular detoxification and reactive oxygen species (ROS) neutralization",
+      "Accelerated connective tissue and dermal extracellular matrix remodeling",
+      "Mitochondrial membrane potential preservation and cellular longevity enhancement",
+      "Comprehensive skin vitality, elasticity, and anti-senescence signaling"
+    ],
+    "adverseObservations": [
+      "Injection site discomfort if GHK-Cu or Glutathione are inadequately diluted",
+      "Transient sulfur odor or taste following high-volume glutathione administration",
+      "Mild flushing or headache if administered too rapidly"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 1600,
+      "defaultDiluentMl": 10.0,
+      "solvent": "Bacteriostatic Water USP (2x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute each vial SEPARATELY. Add 5.0 mL BAC water to GHK-Cu 100mg vial (yields 20 mg/mL). Add 5.0 mL BAC water to Glutathione 1500mg vial (yields 300 mg/mL). Swirl gently until clear. Do not mix together.",
+      "resultingConcentrationMgPerMl": 160.0,
+      "handlingRule": "Maintain 2 separate refrigerated vials. Inspect both for optical clarity prior to sampling."
+    },
+    "dosing": {
+      "standardDoseDisplay": "GHK-Cu: 1.0\u20132.0 mg daily; Glutathione: 150\u2013300 mg (2\u20133x weekly)",
+      "standardDoseMcg": 2000,
+      "cadence": "GHK-Cu daily SubQ; Glutathione 2\u20133x weekly SubQ/IM",
+      "halfLife": "GHK-Cu: ~1\u20132 Hours; Glutathione: ~10\u201315 Minutes (intracellular buffering ~24\u201348h)",
+      "typicalProtocolDuration": "6 to 8 Weeks per analytical research block",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Dual-Compound Calibration",
+          "timeframe": "Week 1",
+          "doseDisplay": "GHK: 1.0 mg | GSH: 150 mg",
+          "doseMcg": 1000,
+          "cadence": "GHK daily; GSH 2x weekly",
+          "focus": "Systemic tolerance assessment and baseline antioxidant equilibration",
+          "notes": "GHK: 5 units (0.05 mL); GSH: 50 units (0.5 mL) via separate syringes"
+        },
+        {
+          "stage": "Phase 2: Target Therapeutic Synergy",
+          "timeframe": "Weeks 2\u20136",
+          "doseDisplay": "GHK: 2.0 mg | GSH: 300 mg",
+          "doseMcg": 2000,
+          "cadence": "GHK daily; GSH 3x weekly",
+          "focus": "Full extracellular matrix remodeling and heavy cellular redox defense",
+          "notes": "GHK: 10 units (0.10 mL); GSH: 100 units (1.0 mL) via separate injections"
+        },
+        {
+          "stage": "Phase 3: Taper & Consolidation",
+          "timeframe": "Weeks 7\u20138",
+          "doseDisplay": "GHK: 1.0 mg | GSH: 150 mg",
+          "doseMcg": 1000,
+          "cadence": "GHK alternate days; GSH 1x weekly",
+          "focus": "Consolidation of cellular repair and oxidative reserve evaluation",
+          "notes": "Maintain strict site rotation"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Dual Syringe Protocol: U-100 Insulin (GHK-Cu) & 1.0 mL/3.0 mL Luer-Lock (GSH)",
+      "standardIUDisplay": "GHK: 10 units (0.1 mL) | GSH: 50\u2013100 units (0.5\u20131.0 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "GHK 1.0 mg (0.05 mL)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GHK 2.0 mg (0.10 mL)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GSH 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "GSH 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20\u00b0C in desiccated dark storage (24 months shelf life)",
+      "reconstituted": "2\u00b0C\u20138\u00b0C refrigerated; GHK-Cu stable 30 days; Glutathione use within 21 days",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 22666519",
+        "notes": "Pickart L. GHK peptide as a natural modulator of multiple cellular pathways. Oxid Med Cell Longev. 2012;2012:648108."
+      },
+      {
+        "sourceReference": "PMID: 18796312",
+        "notes": "Forman HJ, Zhang H, Rinna A. Glutathione: overview of its protective roles, measurement, and biosynthesis. Mol Aspects Med. 2009;30(1-2):1-12."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Clinical Synergy Protocol",
+    "bundleVials": [
+      {
+        "compoundName": "GHK-Cu (Copper Tripeptide-1)",
+        "vialNetMass": "100 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly down vial wall. Swirl gently for 30s until deep royal blue.",
+        "targetDose": "1.0 mg \u2013 2.0 mg daily",
+        "cadence": "1x Daily SubQ",
+        "syringeUnits": "5 to 10 units (0.05\u20130.10 mL) on U-100 syringe"
+      },
+      {
+        "compoundName": "Glutathione Reduced (L-gamma-glutamyl-L-cysteinylglycine)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2\u20133 minutes for complete hydration. Swirl gently until water-clear.",
+        "targetDose": "150 mg \u2013 300 mg per dose",
+        "cadence": "2\u20133x Weekly SubQ or IM",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      }
+    ]
+  },
+  {
+    "id": "epithalon-glutathione-bundle",
+    "compoundName": "Epithalon + Glutathione Bundle",
+    "handles": [
+      "epithalon-glutathione-bundle",
+      "epithalon-glutathione-stack",
+      "longevity-redox-bundle"
+    ],
+    "subtitle": "Dual-Vial Telomerase Upregulation & Intracellular Redox Longevity Standard",
+    "longDescription": "**What it is:** A dual-action anti-senescence research stack combining Epithalon (10mg pineal tetrapeptide) and Reduced L-Glutathione (1500mg) in two separate analytical vials.\n\n**How it works:** Epithalon reactivates the telomerase reverse transcriptase (TERT) catalytic subunit to elongate telomeres and remodel chromatin, while Glutathione protects nuclear and mitochondrial DNA from mutagenic reactive oxygen species and environmental oxidative insults.\n\n**CRITICAL CLINICAL HANDLING:** Prepare each vial in its dedicated BAC water volume. Administer via separate injection sites.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "epithalon-glutathione-bundle",
+    "purityStandard": "\u226599.0% (HPLC Analytical Standard)",
+    "investigatedBenefits": [
+      "Telomeric repeat addition and chromosomal integrity preservation",
+      "Normalization of pineal neuroendocrine circadian rhythms and melatonin synthesis",
+      "High-capacity intracellular free-radical scavenging and lipid peroxidation inhibition",
+      "In-vitro attenuation of cellular senescence markers (beta-galactosidase)"
+    ],
+    "adverseObservations": [
+      "Mild transient site reaction at Glutathione injection site",
+      "Occasional vivid dreams during active Epithalon cycles",
+      "Temporary fatigue during initial detoxification phase"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 1510,
+      "defaultDiluentMl": 7.0,
+      "solvent": "Bacteriostatic Water USP (2x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute Epithalon (10mg) with 2.0 mL BAC water (5.0 mg/mL). Reconstitute Glutathione (1500mg) with 5.0 mL BAC water (300.0 mg/mL). Swirl both vials gently. Keep separate.",
+      "resultingConcentrationMgPerMl": 215.7,
+      "handlingRule": "Two distinct clear solutions. Store strictly refrigerated at 2\u00b0C\u20138\u00b0C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "Epithalon: 5.0\u201310.0 mg daily (pulse); Glutathione: 150\u2013300 mg (2\u20133x weekly)",
+      "standardDoseMcg": 5000,
+      "cadence": "Epithalon 10\u201320 day cycle; Glutathione ongoing 2\u20133x weekly",
+      "halfLife": "Epithalon: ~20\u201330 Minutes (biological epigenetic resets persist months); GSH: ~15 Minutes",
+      "typicalProtocolDuration": "10 to 20 Days for Epithalon; 4 to 8 Weeks for Glutathione",
+      "washoutPeriod": "4 to 6 Months between Epithalon pulse cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Pulse Activation Stage",
+          "timeframe": "Days 1\u201310",
+          "doseDisplay": "Epithalon: 5.0 mg daily | GSH: 150 mg 3x/wk",
+          "doseMcg": 5000,
+          "cadence": "Epithalon daily; GSH alternate days",
+          "focus": "Telomerase elongation induction and systemic oxidative buffering",
+          "notes": "Epithalon: 100 units (1.0 mL) from 5 mg/mL vial; GSH: 50 units (0.5 mL)"
+        },
+        {
+          "stage": "Phase 2: High-Intensity Longevity Cycle",
+          "timeframe": "Days 11\u201320",
+          "doseDisplay": "Epithalon: 10.0 mg daily | GSH: 300 mg 3x/wk",
+          "doseMcg": 10000,
+          "cadence": "Epithalon daily; GSH alternate days",
+          "focus": "Maximal TERT transcription and intracellular glutathione pool saturation",
+          "notes": "Epithalon: 2x 1.0 mL draws; GSH: 100 units (1.0 mL)"
+        },
+        {
+          "stage": "Phase 3: Epithalon Rest & Glutathione Maintenance",
+          "timeframe": "Weeks 4\u20138",
+          "doseDisplay": "Epithalon: 0 mg (washout) | GSH: 200 mg 2x/wk",
+          "doseMcg": 0,
+          "cadence": "Glutathione 2x weekly",
+          "focus": "Epigenetic consolidation during Epithalon washout window",
+          "notes": "Maintain weekly glutathione redox support"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Dual Syringe Protocol: U-100 Insulin Syringe (Epithalon & Glutathione)",
+      "standardIUDisplay": "Epithalon: 100 units (1.0 mL = 5.0 mg) | GSH: 50\u2013100 units (0.5\u20131.0 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "Epithalon 2.5 mg (0.50 mL)",
+          "doseMcg": 2500,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on U-100 syringe (Epithalon vial)"
+        },
+        {
+          "doseDisplay": "Epithalon 5.0 mg (1.00 mL)",
+          "doseMcg": 5000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Epithalon)"
+        },
+        {
+          "doseDisplay": "Glutathione 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "Glutathione 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Glutathione)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20\u00b0C desiccated (24 months shelf life)",
+      "reconstituted": "2\u00b0C\u20138\u00b0C refrigerated; use Epithalon within 20 days; Glutathione within 21 days",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 15372138",
+        "notes": "Khavinson VKh, et al. Peptide promotes overcoming of the division limit in human somatic cells. Bull Exp Biol Med. 2004;137(5):503-506."
+      },
+      {
+        "sourceReference": "PMID: 19166318",
+        "notes": "Ballatori N, et al. Glutathione dysregulation and the etiology and progression of human diseases. Biol Chem. 2009;390(3):191-214."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Clinical Longevity Standard",
+    "bundleVials": [
+      {
+        "compoundName": "Epithalon (Ala-Glu-Asp-Gly Synthetic Pineal Tetrapeptide)",
+        "vialNetMass": "10 mg",
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently for 30s.",
+        "targetDose": "5.0 mg \u2013 10.0 mg daily",
+        "cadence": "Daily pulse for 10\u201320 days",
+        "syringeUnits": "100 units (1.0 mL) = 5.0 mg"
+      },
+      {
+        "compoundName": "Glutathione Reduced (L-Glutathione)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Introduce 5.0 mL BAC water. Allow 2\u20133 minutes for complete hydration. Swirl gently.",
+        "targetDose": "150 mg \u2013 300 mg per session",
+        "cadence": "2\u20133x Weekly SubQ/IM",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      }
+    ]
+  },
+  {
+    "id": "epithalon-glutathione-nad-bundle",
+    "compoundName": "Epithalon + Glutathione + NAD+ Bundle",
+    "handles": [
+      "epithalon-glutathione-nad-bundle",
+      "triple-longevity-bundle",
+      "anti-aging-triad-bundle"
+    ],
+    "subtitle": "Triple-Vial Master Longevity Triad (Telomerase \u00b7 Sirtuin Activation \u00b7 Redox Defense)",
+    "longDescription": "**What it is:** The premier multi-vial anti-senescence research suite combining three distinct physiological powerhouses: Epithalon (10mg), Glutathione Reduced (1500mg), and NAD+ (500mg).\n\n**How it works:** Tackles cellular aging through three non-overlapping hallmarks: Epithalon upregulates telomerase to preserve chromosomal length; NAD+ drives mitochondrial oxidative phosphorylation and activates SIRT1/SIRT3 deacylases; Glutathione prevents lipid peroxidation and maintains reduced intracellular thiol pools.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute each of the three vials independently in its own BAC water volume. Never combine liquids into one vial.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "epithalon-glutathione-nad-bundle",
+    "purityStandard": "\u226599.0% (Triple HPLC Verified Standards)",
+    "investigatedBenefits": [
+      "Comprehensive cellular rejuvenation across telomeric, mitochondrial, and redox pathways",
+      "Mitochondrial ATP replenishment and Sirtuin (SIRT1/SIRT3) longevity pathway activation",
+      "Telomeric repeat addition and protection against replicative cellular exhaustion",
+      "Systemic quenching of reactive nitrogen and oxygen species (RNS/ROS)"
+    ],
+    "adverseObservations": [
+      "Subcutaneous stinging or local warmth if NAD+ is injected too rapidly",
+      "Temporary chest tightness or flushing with high-dose NAD+",
+      "Injection site fatigue requiring quadrant rotation"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 2010,
+      "defaultDiluentMl": 12.0,
+      "solvent": "Bacteriostatic Water USP (3x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute Epithalon 10mg with 2.0 mL BAC (5 mg/mL). Reconstitute Glutathione 1500mg with 5.0 mL BAC (300 mg/mL). Reconstitute NAD+ 500mg with 5.0 mL BAC (100 mg/mL). Store in 3 separate sterile vials.",
+      "resultingConcentrationMgPerMl": 167.5,
+      "handlingRule": "Three distinct aqueous preparations. Inspect all against dark background. Keep refrigerated at 2\u00b0C\u20138\u00b0C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "Epithalon: 5mg daily (pulse); GSH: 150\u2013300mg (2x/wk); NAD+: 50\u2013100mg (2\u20133x/wk)",
+      "standardDoseMcg": 5000,
+      "cadence": "Multi-cadence scheduled protocol",
+      "halfLife": "Epithalon: ~30m; GSH: ~15m; NAD+: ~15\u201330m (circulating)",
+      "typicalProtocolDuration": "10 to 20 Days (Epithalon) / 6 to 8 Weeks (NAD+ & GSH)",
+      "washoutPeriod": "4 to 6 Months between Epithalon pulses",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Triad System Equilibration",
+          "timeframe": "Week 1",
+          "doseDisplay": "Epithalon: 5mg | GSH: 150mg | NAD+: 50mg",
+          "doseMcg": 5000,
+          "cadence": "Epithalon daily; NAD+ & GSH alternate days",
+          "focus": "Initial mitochondrial and redox equilibration without injection discomfort",
+          "notes": "Epithalon: 100u; GSH: 50u; NAD+: 50u via separate injections"
+        },
+        {
+          "stage": "Phase 2: Peak Synergistic Longevity Pulse",
+          "timeframe": "Weeks 2\u20133",
+          "doseDisplay": "Epithalon: 10mg | GSH: 300mg | NAD+: 100mg",
+          "doseMcg": 10000,
+          "cadence": "Epithalon daily (10d); NAD+ 3x/wk; GSH 2x/wk",
+          "focus": "Maximal TERT induction, sirtuin deacetylation, and glutathione saturation",
+          "notes": "Epithalon: 2.0 mL; GSH: 1.0 mL; NAD+: 1.0 mL"
+        },
+        {
+          "stage": "Phase 3: Cellular Consolidation & Maintenance",
+          "timeframe": "Weeks 4\u20138",
+          "doseDisplay": "Epithalon: Washout | GSH: 150mg 2x/wk | NAD+: 50mg 2x/wk",
+          "doseMcg": 0,
+          "cadence": "NAD+ & GSH maintenance twice weekly",
+          "focus": "Long-term cellular bioenergetics maintenance post-Epithalon pulse",
+          "notes": "Rotate abdominal injection quadrants"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Triple Syringe Protocol: U-100 Insulin Syringes for each constituent",
+      "standardIUDisplay": "Epithalon: 100u (1.0 mL) | GSH: 50\u2013100u | NAD+: 50\u2013100u",
+      "graduations": [
+        {
+          "doseDisplay": "Epithalon 5.0 mg (1.00 mL)",
+          "doseMcg": 5000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Epithalon)"
+        },
+        {
+          "doseDisplay": "Glutathione 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "Glutathione 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Glutathione)"
+        },
+        {
+          "doseDisplay": "NAD+ 50 mg (0.50 mL)",
+          "doseMcg": 50000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (NAD+ vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 100 mg (1.00 mL)",
+          "doseMcg": 100000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe NAD+)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20\u00b0C dark desiccator (24 months shelf life)",
+      "reconstituted": "2\u00b0C\u20138\u00b0C refrigerated; use Epithalon within 20d; GSH within 21d; NAD+ within 28d",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 14501183",
+        "notes": "Anisimov VN, et al. Epitalon slows down aging and suppresses development of spontaneous tumors. Biogerontology. 2003;4(4):193-202."
+      },
+      {
+        "sourceReference": "PMID: 29514072",
+        "notes": "Rajman L, Chwalek K, Sinclair DA. Therapeutic Potential of NAD-Boosting Molecules: The In Vivo Evidence. Cell Metab. 2018;27(3):529-547."
+      },
+      {
+        "sourceReference": "PMID: 26770127",
+        "notes": "Pizzorno J. Glutathione! Integr Med (Encinitas). 2014;13(1):8-12."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Master Longevity Suite",
+    "bundleVials": [
+      {
+        "compoundName": "Epithalon (Telomerase Tetrapeptide)",
+        "vialNetMass": "10 mg",
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 2.0 mL BAC water down vial wall. Swirl gently for 30 seconds.",
+        "targetDose": "5.0 mg \u2013 10.0 mg daily",
+        "cadence": "10\u201320 Day Pulse Cycle",
+        "syringeUnits": "100 units (1.0 mL) = 5.0 mg"
+      },
+      {
+        "compoundName": "Glutathione Reduced (Redox Buffer)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2\u20133 minutes to dissolve completely.",
+        "targetDose": "150 mg \u2013 300 mg per dose",
+        "cadence": "2\u20133x Weekly SubQ/IM",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      },
+      {
+        "compoundName": "NAD+ (Beta-Nicotinamide Adenine Dinucleotide)",
+        "vialNetMass": "500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until clear and transparent.",
+        "targetDose": "50 mg \u2013 100 mg per dose",
+        "cadence": "2\u20133x Weekly SubQ",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      }
+    ]
+  },
+  {
+    "id": "glutathione-nad-ghk-cu-bundle",
+    "compoundName": "Glutathione + NAD+ + GHK-Cu Bundle",
+    "handles": [
+      "glutathione-nad-ghk-cu-bundle",
+      "mitochondrial-matrix-bundle",
+      "gsh-nad-ghk-stack"
+    ],
+    "subtitle": "Triple-Vial Cellular Bioenergetics, Detoxification & Matrix Remodeling Protocol",
+    "longDescription": "**What it is:** A comprehensive multi-vial analytical stack pairing Reduced Glutathione (1500mg), NAD+ (500mg), and GHK-Cu (100mg) for multi-tiered cellular investigation.\n\n**How it works:** Coordinates three essential physiological axes: Glutathione maintains intracellular redox homeostasis; NAD+ replenishes mitochondrial electron transport efficiency and fuels sirtuin enzymes; GHK-Cu activates fibroblast gene transcription, tissue remodeling, and collagen deposition.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute all three vials separately. Do NOT combine GHK-Cu with Glutathione in the same container to avoid copper-mediated thiol oxidation.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "glutathione-nad-ghk-cu-bundle",
+    "purityStandard": "\u226599.0% (Triple Analytical HPLC Standards)",
+    "investigatedBenefits": [
+      "Coordinated mitochondrial biogenesis and ATP synthesis enhancement",
+      "Extracellular matrix remodeling and collagen types I/III upregulation",
+      "High-efficiency neutralization of free radicals and lipid peroxidation products",
+      "Cellular longevity signaling through synergistic SIRT1 and TGF-beta cascades"
+    ],
+    "adverseObservations": [
+      "Injection site stinging from NAD+ or concentrated GHK-Cu if injected rapidly",
+      "Mild transient flushing following NAD+ administration",
+      "Occasional sulfur aftertaste from high-dose glutathione"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 2100,
+      "defaultDiluentMl": 15.0,
+      "solvent": "Bacteriostatic Water USP (3x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute Glutathione 1500mg with 5.0 mL BAC (300 mg/mL). Reconstitute NAD+ 500mg with 5.0 mL BAC (100 mg/mL). Reconstitute GHK-Cu 100mg with 5.0 mL BAC (20 mg/mL). Keep separate.",
+      "resultingConcentrationMgPerMl": 140.0,
+      "handlingRule": "Three distinct vials. Store refrigerated at 2\u00b0C\u20138\u00b0C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "GHK-Cu: 1.0\u20132.0mg daily; NAD+: 50\u2013100mg (2\u20133x/wk); GSH: 150\u2013300mg (2x/wk)",
+      "standardDoseMcg": 2000,
+      "cadence": "Scheduled multi-vial cadence",
+      "halfLife": "GHK: ~1\u20132h; NAD+: ~15\u201330m; GSH: ~15m",
+      "typicalProtocolDuration": "6 to 8 Weeks per analytical cycle",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Bioenergetic Calibration",
+          "timeframe": "Weeks 1\u20132",
+          "doseDisplay": "GHK: 1.0mg daily | NAD+: 50mg 2x/wk | GSH: 150mg 2x/wk",
+          "doseMcg": 1000,
+          "cadence": "Scheduled across weekdays",
+          "focus": "Establish baseline cellular tolerance and initiate mitochondrial support",
+          "notes": "GHK: 5u; NAD+: 50u; GSH: 50u"
+        },
+        {
+          "stage": "Phase 2: Full Matrix & Redox Optimization",
+          "timeframe": "Weeks 3\u20136",
+          "doseDisplay": "GHK: 2.0mg daily | NAD+: 100mg 3x/wk | GSH: 300mg 2x/wk",
+          "doseMcg": 2000,
+          "cadence": "High-intensity multi-pathway support",
+          "focus": "Maximal mitochondrial respiration, sirtuin activation, and matrix remodeling",
+          "notes": "GHK: 10u; NAD+: 100u; GSH: 100u"
+        },
+        {
+          "stage": "Phase 3: Consolidation & Washout Transition",
+          "timeframe": "Weeks 7\u20138",
+          "doseDisplay": "GHK: 1.0mg alt days | NAD+: 50mg 2x/wk | GSH: 150mg 1x/wk",
+          "doseMcg": 1000,
+          "cadence": "Step-down maintenance",
+          "focus": "Consolidation of mitochondrial and matrix gains prior to cycle rest",
+          "notes": "Monitor systemic markers"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Triple Syringe Protocol: U-100 Insulin Syringes for each vial",
+      "standardIUDisplay": "GHK: 10u (0.1 mL) | NAD+: 50\u2013100u | GSH: 50\u2013100u",
+      "graduations": [
+        {
+          "doseDisplay": "GHK-Cu 1.0 mg (0.05 mL)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GHK-Cu 2.0 mg (0.10 mL)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 50 mg (0.50 mL)",
+          "doseMcg": 50000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (NAD+ vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 100 mg (1.00 mL)",
+          "doseMcg": 100000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe NAD+)"
+        },
+        {
+          "doseDisplay": "Glutathione 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "Glutathione 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Glutathione)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20\u00b0C desiccated (24 months shelf life)",
+      "reconstituted": "2\u00b0C\u20138\u00b0C refrigerated; use GHK within 30d; NAD+ within 28d; GSH within 21d",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 24014316",
+        "notes": "Sinclair DA, Guarente L. Small-molecule SIRT1 activators for the treatment of aging and age-related diseases. Methods Mol Biol. 2014;1077:3-19."
+      },
+      {
+        "sourceReference": "PMID: 26264024",
+        "notes": "Pickart L, Vasquez-Soltero JM, Margolina A. GHK-Cu may prevent oxidative stress and NF-kB activation. Biomolecules. 2015;5(4):2545-2561."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: High-Synergy Research Suite",
+    "bundleVials": [
+      {
+        "compoundName": "Glutathione Reduced (Redox Buffer)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2\u20133 minutes to dissolve completely.",
+        "targetDose": "150 mg \u2013 300 mg per dose",
+        "cadence": "2x Weekly SubQ/IM",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      },
+      {
+        "compoundName": "NAD+ (Coenzyme 1)",
+        "vialNetMass": "500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until completely clear.",
+        "targetDose": "50 mg \u2013 100 mg per dose",
+        "cadence": "2\u20133x Weekly SubQ",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      },
+      {
+        "compoundName": "GHK-Cu (Tissue Remodeling Peptide)",
+        "vialNetMass": "100 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until characteristic deep blue.",
+        "targetDose": "1.0 mg \u2013 2.0 mg daily",
+        "cadence": "1x Daily SubQ",
+        "syringeUnits": "5 to 10 units (0.05\u20130.10 mL) on U-100 syringe"
+      }
+    ]
+  },
+  {
+    "id": "nad-ghk-cu-bundle",
+    "compoundName": "NAD+ + GHK-Cu Bundle",
+    "handles": [
+      "nad-ghk-cu-bundle",
+      "nad-copper-bundle",
+      "cellular-energy-matrix-bundle"
+    ],
+    "subtitle": "Dual-Vial Mitochondrial Bioenergetics & Extracellular Matrix Rejuvenation Standard",
+    "longDescription": "**What it is:** A high-impact dual-vial analytical stack pairing high-purity Beta-Nicotinamide Adenine Dinucleotide (NAD+ 500mg) and Copper Tripeptide-1 (GHK-Cu 100mg).\n\n**How it works:** NAD+ fuels the Krebs cycle, mitochondrial electron transport chain complex I, and sirtuin longevity enzymes, while GHK-Cu stimulates fibroblast gene expression, matrix metalloproteinase regulation, and systemic tissue remodeling.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately. Administer in separate injection sites.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "nad-ghk-cu-bundle",
+    "purityStandard": "\u226599.0% (HPLC Individual Assay Standards)",
+    "investigatedBenefits": [
+      "Mitochondrial respiratory capacity and intracellular NAD+/NADH ratio enhancement",
+      "Accelerated collagen types I/III and glycosaminoglycan synthesis",
+      "SIRT1 and PARP1 metabolic enzyme activation for DNA repair",
+      "Systemic cellular vitality and microvascular health optimization"
+    ],
+    "adverseObservations": [
+      "Injection site sting if NAD+ or GHK-Cu are administered too rapidly",
+      "Mild transient flushing or warmth following NAD+ injection",
+      "Occasional lightheadedness if injected while fasting"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 600,
+      "defaultDiluentMl": 10.0,
+      "solvent": "Bacteriostatic Water USP (2x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute NAD+ 500mg with 5.0 mL BAC water (100.0 mg/mL). Reconstitute GHK-Cu 100mg with 5.0 mL BAC water (20.0 mg/mL). Swirl both vials gently. Keep separate.",
+      "resultingConcentrationMgPerMl": 60.0,
+      "handlingRule": "Two distinct vials (1 clear aqueous NAD+, 1 deep royal blue GHK-Cu). Store refrigerated at 2\u00b0C\u20138\u00b0C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "GHK-Cu: 1.0\u20132.0mg daily; NAD+: 50\u2013100mg (2\u20133x weekly)",
+      "standardDoseMcg": 2000,
+      "cadence": "GHK-Cu daily SubQ; NAD+ 2\u20133x weekly SubQ",
+      "halfLife": "GHK: ~1\u20132h; NAD+: ~15\u201330m",
+      "typicalProtocolDuration": "6 to 8 Weeks per analytical research block",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Bioenergetic Initiation",
+          "timeframe": "Weeks 1\u20132",
+          "doseDisplay": "GHK: 1.0mg daily | NAD+: 50mg 2x/wk",
+          "doseMcg": 1000,
+          "cadence": "GHK daily; NAD+ Mon/Thu",
+          "focus": "Baseline cellular adaptation and injection tolerance assessment",
+          "notes": "GHK: 5 units (0.05 mL); NAD+: 50 units (0.5 mL)"
+        },
+        {
+          "stage": "Phase 2: Target Therapeutic Synergy",
+          "timeframe": "Weeks 3\u20136",
+          "doseDisplay": "GHK: 2.0mg daily | NAD+: 100mg 3x/wk",
+          "doseMcg": 2000,
+          "cadence": "GHK daily; NAD+ Mon/Wed/Fri",
+          "focus": "Full sirtuin pathway stimulation and maximal collagen matrix remodeling",
+          "notes": "GHK: 10 units (0.10 mL); NAD+: 100 units (1.0 mL)"
+        },
+        {
+          "stage": "Phase 3: Maintenance Phase",
+          "timeframe": "Weeks 7\u20138",
+          "doseDisplay": "GHK: 1.0mg alternate days | NAD+: 50mg 2x/wk",
+          "doseMcg": 1000,
+          "cadence": "Step-down maintenance",
+          "focus": "Sustained cellular vigor prior to experimental cycle washout",
+          "notes": "Alternate injection quadrants"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Dual Syringe Protocol: U-100 Insulin Syringes for each vial",
+      "standardIUDisplay": "GHK: 10u (0.1 mL) | NAD+: 50\u2013100u (0.5\u20131.0 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "GHK-Cu 1.0 mg (0.05 mL)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GHK-Cu 2.0 mg (0.10 mL)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 50 mg (0.50 mL)",
+          "doseMcg": 50000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (NAD+ vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 100 mg (1.00 mL)",
+          "doseMcg": 100000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe NAD+)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20\u00b0C desiccated in dark storage (24 months shelf life)",
+      "reconstituted": "2\u00b0C\u20138\u00b0C refrigerated; use GHK within 30 days; NAD+ within 28 days",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 33353981",
+        "notes": "Covarrubias AJ, et al. NAD+ metabolism and its roles in cellular processes during ageing. Nat Rev Mol Cell Biol. 2021;22(2):119-141."
+      },
+      {
+        "sourceReference": "PMID: 18644225",
+        "notes": "Pickart L. The human tri-peptide GHK and tissue remodeling. J Biomater Sci Polym Ed. 2008;19(8):969-988."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Bioenergetic Synergy Standard",
+    "bundleVials": [
+      {
+        "compoundName": "NAD+ (Nicotinamide Adenine Dinucleotide)",
+        "vialNetMass": "500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly down vial wall. Swirl gently until clear.",
+        "targetDose": "50 mg \u2013 100 mg per session",
+        "cadence": "2\u20133x Weekly SubQ",
+        "syringeUnits": "50 to 100 units (0.50\u20131.00 mL)"
+      },
+      {
+        "compoundName": "GHK-Cu (Copper Tripeptide-1)",
+        "vialNetMass": "100 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until deep blue.",
+        "targetDose": "1.0 mg \u2013 2.0 mg daily",
+        "cadence": "1x Daily SubQ",
+        "syringeUnits": "5 to 10 units (0.05\u20130.10 mL) on U-100 syringe"
+      }
+    ]
   }
 ]

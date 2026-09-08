@@ -22,17 +22,71 @@ export type ResearchProtocolStorageDetails = {
   light_protection: boolean
 }
 
+export type ResearchReconstitutionOption = {
+  diluentMl: number
+  concMgMl: number
+  label: string
+  tickConversion: string
+}
+
+export type ResearchVialStrengthOption = {
+  vialMg: number
+  diluentMl: number
+  concMgMl: number
+  badge: string
+}
+
+export type ResearchSyringeGraduation = {
+  doseDisplay: string
+  doseMcg: number
+  volumeMl: number
+  syringeIU: number
+  tickLabel: string
+}
+
+export type ResearchSyringeGuide = {
+  syringeType: string
+  standardIUDisplay?: string
+  needleGauge?: string
+  deadSpaceCorrection?: string
+  graduations: ResearchSyringeGraduation[]
+}
+
+export type ResearchBlendConstituent = {
+  name: string
+  ratioMg: number
+  percentageOfTotal: number
+}
+
+export type ResearchBundleVial = {
+  compoundName: string
+  vialNetMass: string
+  diluentMl: number
+  concMgMl: number
+  solvent: string
+  reconstitutionInstructions: string
+  targetDose: string
+  cadence: string
+  syringeUnits: string
+}
+
 export type ResearchProtocolContent = {
   compound_name: string | null
   short_introduction: string | null
   product_format: string | null
   category: string | null
-  protocol_category_type?: "single_peptide" | "blend" | null
+  protocol_category_type?: "single_peptide" | "blend" | "bundle" | "topical" | null
   full_description?: string | null
   investigated_benefits?: string[]
   adverse_observations?: string[]
   molecular_details?: ResearchProtocolMolecularDetails | null
   reconstitution_details?: ResearchProtocolReconstitutionDetails | null
+  reconstitution_options?: Record<string, ResearchReconstitutionOption> | null
+  vial_strength_options?: ResearchVialStrengthOption[]
+  syringe_guide?: ResearchSyringeGuide | null
+  evidence_tier?: string | null
+  blend_constituents?: ResearchBlendConstituent[]
+  bundle_vials?: ResearchBundleVial[]
   storage_details?: ResearchProtocolStorageDetails | null
   purity_standard?: string | null
   research_use_label: string
@@ -102,6 +156,12 @@ export type PublicResearchProtocolContent = Pick<
       | "adverse_observations"
       | "molecular_details"
       | "reconstitution_details"
+      | "reconstitution_options"
+      | "vial_strength_options"
+      | "syringe_guide"
+      | "evidence_tier"
+      | "blend_constituents"
+      | "bundle_vials"
       | "storage_details"
       | "purity_standard"
       | "calculator"

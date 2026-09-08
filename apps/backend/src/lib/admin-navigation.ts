@@ -16,23 +16,47 @@ ${ROUTINE_HIDDEN_ADMIN_PATHS.flatMap((path) => [
    Harmonized with the Founder Command Center Body Aesthetic
    ========================================================================== */
 
-/* 1. Clean Light Sidebar Shell matching Body */
+/* 1. Clean Light Sidebar Shell matching Linear / Shopify Polaris */
 aside,
 aside > div,
 [data-sidebar="true"] {
   background-color: #FFFFFF !important;
   border-right-color: #E2E8F0 !important;
-  color: #475569 !important;
+  color: #334155 !important;
+  font-family: inherit !important;
 }
 
-/* 2. Hide redundant search bar inside sidebar */
-aside button:has(kbd),
-aside [data-testid="search-button"] {
-  display: none !important;
+/* 2. Style Native Medusa Searchbar instead of hiding it */
+aside [data-testid="search-button"],
+aside button:has(kbd) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: calc(100% - 16px) !important;
+  margin: 4px 8px 6px 8px !important;
+  padding: 5px 9px !important;
+  height: 30px !important;
+  border-radius: 6px !important;
+  background-color: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #64748B !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+aside [data-testid="search-button"]:hover,
+aside button:has(kbd):hover {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
 }
 
-/* 3. Research Compounds Brand Card */
-button[data-rc-branded="true"] {
+/* 3. Research Compounds Brand Anchor & Storefront Link */
+[data-rc-branded="true"],
+button[data-rc-branded="true"],
+div[data-rc-branded="true"] {
   display: block !important;
   grid-template-columns: none !important;
   padding: 0 !important;
@@ -45,25 +69,30 @@ button[data-rc-branded="true"] {
 .rc-brand-card {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  padding: 8px 10px !important;
-  border-radius: 10px !important;
-  background-color: #F8FAFC !important;
-  border: 1px solid #E2E8F0 !important;
+  justify-content: space-between !important;
+  padding: 10px 12px 6px 12px !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  margin-bottom: 6px !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+  margin-bottom: 4px !important;
+}
+
+.rc-brand-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  min-width: 0 !important;
 }
 
 .rc-brand-icon {
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 8px !important;
-  background: linear-gradient(135deg, #059669 0%, #0D9488 100%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 7px !important;
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25) !important;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.25) !important;
   color: #FFFFFF !important;
   flex-shrink: 0 !important;
 }
@@ -77,7 +106,7 @@ button[data-rc-branded="true"] {
 
 .rc-brand-title {
   color: #0F172A !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   font-size: 13px !important;
   letter-spacing: -0.01em !important;
   line-height: 1.2 !important;
@@ -91,50 +120,119 @@ button[data-rc-branded="true"] {
   white-space: nowrap !important;
 }
 
-/* 4. Section Headers matching Body's Telemetry Label Styling */
-.rc-sidebar-section {
-  padding: 12px 10px 4px 10px !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  color: #94A3B8 !important;
+.rc-storefront-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  padding: 2px 7px !important;
+  border-radius: 5px !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  color: #2563EB !important;
+  background-color: #EFF6FF !important;
+  border: 1px solid #BFDBFE !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.rc-storefront-link:hover {
+  background-color: #DBEAFE !important;
+  color: #1D4ED8 !important;
 }
 
-/* 5. Navigation Links */
-aside a,
-aside nav a,
-aside ul a {
-  color: #475569 !important;
-  border-radius: 8px !important;
+/* 4. Minimalist Section Headers (Linear / Shopify Polaris style) */
+.rc-sidebar-section {
+  padding: 14px 10px 4px 10px !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #94A3B8 !important;
+  margin: 0 !important;
+}
+
+/* 5. Navigation Items: Strictly 1 Item Per Row */
+.rc-sidebar-item {
+  display: flex !important;
+  width: 100% !important;
+  height: 32px !important;
+  margin: 1px 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  box-sizing: border-box !important;
+}
+
+aside a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  width: 100% !important;
+  height: 32px !important;
+  padding: 0 10px !important;
+  border-radius: 6px !important;
   font-size: 13px !important;
   font-weight: 500 !important;
-  padding: 7px 10px !important;
-  transition: all 0.15s ease !important;
+  color: #334155 !important;
+  text-decoration: none !important;
+  transition: all 0.12s ease !important;
+  position: relative !important;
+  box-sizing: border-box !important;
 }
 
-aside a:hover,
-aside nav a:hover,
-aside ul a:hover {
-  background-color: #F1F5F9 !important;
+aside a span {
+  font-weight: inherit !important;
+  font-size: inherit !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+aside a svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: #64748B !important;
+  flex-shrink: 0 !important;
+  transition: color 0.12s ease !important;
+}
+
+aside a:hover {
+  background-color: #F8FAFC !important;
   color: #0F172A !important;
 }
 
-/* 6. Active Item - Soft Emerald Pill matching Body's Verified Ops Badge */
+aside a:hover svg {
+  color: #0F172A !important;
+}
+
+/* 6. Active Item - Linear / Shopify Polaris Signature Active Pill */
 aside a[aria-current="page"],
 aside a.bg-ui-bg-base,
 aside a[data-active="true"] {
-  background-color: #ECFDF5 !important;
-  color: #065F46 !important;
-  border: 1px solid rgba(16, 185, 129, 0.4) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+  background-color: #EFF6FF !important;
+  color: #1D4ED8 !important;
   font-weight: 600 !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 aside a[aria-current="page"] svg,
 aside a.bg-ui-bg-base svg,
 aside a[data-active="true"] svg {
-  color: #059669 !important;
+  color: #2563EB !important;
+}
+
+aside a[aria-current="page"]::before,
+aside a.bg-ui-bg-base::before,
+aside a[data-active="true"]::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 6px !important;
+  bottom: 6px !important;
+  width: 2.5px !important;
+  border-radius: 2px !important;
+  background-color: #2563EB !important;
 }
 
 /* 7. Badges inside Sidebar Links */
@@ -147,10 +245,17 @@ aside a[data-active="true"] svg {
   min-width: 18px !important;
   height: 18px !important;
   border-radius: 9999px !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
   line-height: 1 !important;
   box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+.rc-badge-blue {
+  background-color: #EFF6FF !important;
+  color: #1D4ED8 !important;
+  border: 1px solid #BFDBFE !important;
 }
 
 .rc-badge-rose {
@@ -167,29 +272,39 @@ aside a[data-active="true"] svg {
 
 /* 8. Bottom System & User Section */
 .rc-system-section {
-  padding: 10px 8px 6px 8px !important;
+  padding: 6px 8px 8px 8px !important;
   border-top: 1px solid #E2E8F0 !important;
   background-color: #FFFFFF !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
 }
 
 .rc-user-row {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  justify-content: space-between !important;
   padding: 5px 8px !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   background-color: #F8FAFC !important;
   border: 1px solid #E2E8F0 !important;
-  margin-bottom: 6px !important;
+  margin-top: 4px !important;
+}
+
+.rc-user-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
 }
 
 .rc-user-avatar {
-  width: 26px !important;
-  height: 26px !important;
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 9999px !important;
-  background-color: #0D9488 !important;
+  background-color: #1D4ED8 !important;
   color: #FFFFFF !important;
-  font-size: 11px !important;
+  font-size: 10.5px !important;
   font-weight: 700 !important;
   display: flex !important;
   align-items: center !important;
@@ -206,35 +321,36 @@ aside a[data-active="true"] svg {
 
 .rc-user-name {
   color: #0F172A !important;
-  font-size: 12px !important;
+  font-size: 11.5px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .rc-user-role {
   color: #64748B !important;
   font-size: 10px !important;
   line-height: 1.1 !important;
+  white-space: nowrap !important;
 }
 
 .rc-signout-btn {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  padding: 5px 8px !important;
-  border-radius: 6px !important;
+  justify-content: center !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
   color: #64748B !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
   text-decoration: none !important;
   transition: all 0.15s ease !important;
+  flex-shrink: 0 !important;
 }
 
 .rc-signout-btn:hover {
-  background-color: #F1F5F9 !important;
-  color: #0F172A !important;
+  background-color: #FFE4E6 !important;
+  color: #BE123C !important;
 }
 
 /* ==========================================================================
@@ -243,6 +359,17 @@ aside a[data-active="true"] svg {
    ========================================================================== */
 
 /* 1. Elevated Table Card Container */
+main div:has(> [data-rc-categories-header="true"]),
+main div:has(> div > [data-rc-categories-header="true"]),
+[data-rc-categories-header="true"] {
+  order: -1 !important;
+}
+
+main > div:has([data-rc-categories-header="true"]) {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
 .shadow-elevation-card-rest,
 main div:has(> table),
 main div:has(> div > table) {
@@ -312,11 +439,27 @@ table tbody tr:hover td:first-child {
   text-align: center !important;
 }
 
-/* Emerald Pill (Captured, Fulfilled, Shipped, Published, Registered) */
-.rc-status-emerald {
-  background-color: #ECFDF5 !important;
-  color: #047857 !important;
-  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+/* Eradicate nested borders, double outlines, and multiple concentric rings */
+.rc-status-pill .rc-status-pill,
+.rc-status-pill [class*="rounded-full"][class*="border"] {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+td:has([class*="rounded-full"][class*="border"]) > .rc-status-pill {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Clinical Blue Pill (Captured, Fulfilled, Shipped, Published, Registered, Active, Public) */
+.rc-status-emerald,
+.rc-status-blue {
+  background-color: #EFF6FF !important;
+  color: #1D4ED8 !important;
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
 }
 
 /* Amber Pill (Awaiting, Authorized, Pending) */
@@ -357,7 +500,7 @@ td a[href^="/app/draft-orders/"] span,
 }
 
 td a[href^="/app/orders/"]:hover span {
-  color: #059669 !important;
+  color: #2563EB !important;
 }
 
 .rc-price-cell,
@@ -371,7 +514,7 @@ td[data-table-cell-id="total"] {
 
 /* 6. Form Controls: Checkboxes & Filter/Search Toolbar */
 input[type="checkbox"] {
-  accent-color: #059669 !important;
+  accent-color: #2563EB !important;
   cursor: pointer !important;
 }
 
@@ -400,20 +543,20 @@ input[name="q"] {
 }
 
 input[name="q"]:focus {
-  border-color: #059669 !important;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
   background-color: #FFFFFF !important;
 }
 
 /* 7. Action Buttons (Create, Export) */
 button:has-text("Create"),
 a[href$="/create"] button {
-  background-color: #059669 !important;
+  background-color: #2563EB !important;
   color: #FFFFFF !important;
   border-radius: 8px !important;
   font-weight: 600 !important;
   border: none !important;
-  box-shadow: 0 1px 2px rgba(5, 150, 105, 0.3) !important;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.3) !important;
 }
 
 /* 8. Floating Bulk Actions Bar */
@@ -485,60 +628,69 @@ export const routineAdminNavigationCss = researchCompoundsSidebarCss
 export const researchCompoundsSidebarScript = `
 (function() {
   var desiredOrder = [
-    { section: 'COMMAND', href: '/app/dashboard' },
-    { section: 'COMMERCE & ORDERS', href: '/app/orders' },
+    { section: 'CORE', href: '/app/dashboard' },
+    { section: 'COMMERCE', href: '/app/orders' },
     { href: '/app/manual-payment-proofs' },
     { href: '/app/customers' },
-    { section: 'CLINICAL & BOM', href: '/app/products' },
+    { section: 'CATALOG', href: '/app/products' },
+    { href: '/app/categories' },
     { href: '/app/buildable-products' },
     { href: '/app/bundles' },
     { href: '/app/research-protocols' },
-    { href: '/app/inventory' },
+    { section: 'SUPPLY', href: '/app/inventory' },
     { href: '/app/price-lists' },
-    { section: 'ENGAGEMENT & SUPPORT', href: '/app/customer-support' },
     { href: '/app/promotions' },
+    { section: 'OPERATIONS', href: '/app/customer-support' },
     { href: '/app/notification-center' },
-    { href: '/app/rewards' }
+    { href: '/app/research-agreements' },
+    { href: '/app/rewards' },
+    { section: 'SYSTEM', href: '/app/settings' }
   ];
 
   function enhanceSidebar() {
     var aside = document.querySelector('aside');
     if (!aside) return;
 
-    // 1. Research Compounds Brand Card
+    // 1. Research Compounds Brand Anchor & Storefront Link
     var topSection = aside.querySelector('.sticky.top-0') || aside.firstElementChild;
     var storeTrigger = topSection ? (topSection.querySelector('[data-testid="store-name"]') || topSection.querySelector('.truncate')) : null;
     if (storeTrigger) {
       var parentBtn = storeTrigger.closest('button') || storeTrigger.closest('div');
       if (parentBtn && (!parentBtn.dataset.rcBranded || !parentBtn.querySelector('.rc-brand-card'))) {
         parentBtn.dataset.rcBranded = 'true';
-        parentBtn.style.display = 'block';
-        parentBtn.style.gridTemplateColumns = 'none';
-        parentBtn.style.padding = '0';
-        parentBtn.style.width = '100%';
-        parentBtn.style.border = 'none';
-        parentBtn.style.background = 'transparent';
-        parentBtn.style.boxShadow = 'none';
+        parentBtn.style.setProperty('display', 'block', 'important');
+        parentBtn.style.setProperty('grid-template-columns', 'none', 'important');
+        parentBtn.style.setProperty('width', '100%', 'important');
+        parentBtn.style.setProperty('padding', '0', 'important');
+        parentBtn.style.setProperty('border', 'none', 'important');
+        parentBtn.style.setProperty('background', 'transparent', 'important');
+        parentBtn.style.setProperty('box-shadow', 'none', 'important');
 
         var brandCard = document.createElement('div');
         brandCard.className = 'rc-brand-card';
         brandCard.innerHTML = [
-          '<div class="rc-brand-icon">',
-          '  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">',
-          '    <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"></path>',
-          '  </svg>',
+          '<div class="rc-brand-left">',
+          '  <div class="rc-brand-icon">',
+          '    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">',
+          '      <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"></path>',
+          '    </svg>',
+          '  </div>',
+          '  <div class="rc-brand-text">',
+          '    <span class="rc-brand-title">Research Compounds</span>',
+          '    <span class="rc-brand-sub">Founder Operations</span>',
+          '  </div>',
           '</div>',
-          '<div class="rc-brand-text">',
-          '  <span class="rc-brand-title">Research Compounds</span>',
-          '  <span class="rc-brand-sub">Founder Operations</span>',
-          '</div>'
+          '<a href="http://localhost:8000/ph" target="_blank" rel="noreferrer" class="rc-storefront-link" title="Open Customer Research Portal">',
+          '  <span>Store</span>',
+          '  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>',
+          '</a>'
         ].join('');
         parentBtn.innerHTML = '';
         parentBtn.appendChild(brandCard);
       }
     }
 
-    // 2. Navigation Ordering & Grouped Sections
+    // 2. Navigation Ordering: Strictly 1 Item Per Row, Decoupled List Items
     var links = Array.from(aside.querySelectorAll('a[href^="/app/"]'));
     if (links.length > 0) {
       var firstLink = links[0];
@@ -549,15 +701,62 @@ export const researchCompoundsSidebarScript = `
       container = container.parentElement;
 
       if (container) {
+        // Clean out empty list items before processing
+        Array.from(container.children).forEach(function(child) {
+          if (child.tagName === 'LI' && (!child.children.length || !child.querySelector('a'))) {
+            child.remove();
+          }
+        });
+
         var linkMap = {};
         links.forEach(function(l) {
           var h = l.getAttribute('href');
-          var w = l;
-          while (w.parentElement && w.parentElement !== container) {
-            w = w.parentElement;
+          if (!h) return;
+          var itemWrapper;
+          if (l.parentElement && l.parentElement.classList.contains('rc-sidebar-item')) {
+            itemWrapper = l.parentElement;
+          } else {
+            itemWrapper = document.createElement('li');
+            itemWrapper.className = 'rc-sidebar-item';
+            itemWrapper.appendChild(l);
           }
-          if (h && w) linkMap[h] = w;
+          linkMap[h] = itemWrapper;
         });
+
+        // Synthesize Categories if Medusa's collapsible is closed
+        if (!linkMap['/app/categories']) {
+          var catA = document.createElement('a');
+          catA.setAttribute('href', '/app/categories');
+          catA.className = 'flex items-center gap-x-2';
+          catA.innerHTML = [
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
+            '  <rect x="3" y="3" width="7" height="7"></rect>',
+            '  <rect x="14" y="3" width="7" height="7"></rect>',
+            '  <rect x="14" y="14" width="7" height="7"></rect>',
+            '  <rect x="3" y="14" width="7" height="7"></rect>',
+            '</svg>',
+            '<span>Categories</span>'
+          ].join('');
+          var catWrapper = document.createElement('li');
+          catWrapper.className = 'rc-sidebar-item';
+          catWrapper.appendChild(catA);
+          linkMap['/app/categories'] = catWrapper;
+        }
+
+        // Synthesize Settings if not already present in linkMap
+        if (!linkMap['/app/settings']) {
+          var setA = document.createElement('a');
+          setA.setAttribute('href', '/app/settings');
+          setA.className = 'flex items-center gap-x-2';
+          setA.innerHTML = [
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
+            '<span>Settings</span>'
+          ].join('');
+          var setWrapper = document.createElement('li');
+          setWrapper.className = 'rc-sidebar-item';
+          setWrapper.appendChild(setA);
+          linkMap['/app/settings'] = setWrapper;
+        }
 
         // Clean out existing custom headers before repopulating
         aside.querySelectorAll('.rc-sidebar-section').forEach(function(h) {
@@ -573,37 +772,59 @@ export const researchCompoundsSidebarScript = `
           }
 
           var el = linkMap[item.href];
-          if (el && el.parentElement === container) {
+          if (el) {
             container.appendChild(el);
           }
         });
       }
     }
 
-    // 3. System Section at the bottom of aside
+    // 3. System Section at the bottom of aside (User Profile)
     var bottomDiv = aside.querySelector('.sticky.bottom-0') || aside.lastElementChild;
     if (bottomDiv && !bottomDiv.querySelector('.rc-system-section')) {
       bottomDiv.innerHTML = '';
       var sysSection = document.createElement('div');
       sysSection.className = 'rc-system-section';
       sysSection.innerHTML = [
-        '<div class="rc-sidebar-section" style="padding:0 0 6px 0 !important; color:#94A3B8 !important;">SYSTEM</div>',
         '<div class="rc-user-row">',
-        '  <div class="rc-user-avatar">JM</div>',
-        '  <div class="rc-user-meta">',
-        '    <div class="rc-user-name">Jerwin Mancenido</div>',
-        '    <div class="rc-user-role">Founder Admin</div>',
+        '  <div class="rc-user-left">',
+        '    <div class="rc-user-avatar">JM</div>',
+        '    <div class="rc-user-meta">',
+        '      <div class="rc-user-name">Jerwin Mancenido</div>',
+        '      <div class="rc-user-role">Founder Admin</div>',
+        '    </div>',
         '  </div>',
-        '</div>',
-        '<a href="/app/logout" class="rc-signout-btn">',
-        '  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
-        '  <span>Sign Out</span>',
-        '</a>'
+        '  <a href="/app/logout" class="rc-signout-btn" title="Sign Out">',
+        '    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
+        '  </a>',
+        '</div>'
       ].join('');
       bottomDiv.appendChild(sysSection);
     }
 
-    // 4. Live Telemetry Badges
+    // 4. Live Telemetry Badges (Orders to pack, Support Chats, Payment Proofs)
+    var ordersLink = aside.querySelector('a[href="/app/orders"]');
+    if (ordersLink && !ordersLink.dataset.rcBadgePolling) {
+      ordersLink.dataset.rcBadgePolling = 'true';
+      function updateOrdersBadge() {
+        var match = document.title ? document.title.match(/\\((\\d+)\\s+to\\s+pack\\)/i) : null;
+        var toPack = match ? parseInt(match[1], 10) : 0;
+        var existingBadge = ordersLink.querySelector('.rc-badge-blue');
+        if (toPack > 0) {
+          if (!existingBadge) {
+            existingBadge = document.createElement('span');
+            existingBadge.className = 'rc-nav-badge rc-badge-blue';
+            ordersLink.appendChild(existingBadge);
+          }
+          existingBadge.textContent = toPack;
+        } else if (existingBadge) {
+          existingBadge.remove();
+        }
+      }
+      updateOrdersBadge();
+      setInterval(updateOrdersBadge, 4000);
+    }
+
     var chatsLink = aside.querySelector('a[href="/app/customer-support"]');
     if (chatsLink && !chatsLink.dataset.rcBadgePolling) {
       chatsLink.dataset.rcBadgePolling = 'true';
@@ -632,7 +853,7 @@ export const researchCompoundsSidebarScript = `
           }).catch(function() {});
       }
       updateChatsBadge();
-      setInterval(updateChatsBadge, 10000);
+      setInterval(updateChatsBadge, 15000);
     }
 
     var proofsLink = aside.querySelector('a[href="/app/manual-payment-proofs"]');
@@ -658,7 +879,7 @@ export const researchCompoundsSidebarScript = `
           }).catch(function() {});
       }
       updateProofsBadge();
-      setInterval(updateProofsBadge, 10000);
+      setInterval(updateProofsBadge, 15000);
     }
 
     // 5. Enhance Admin Tables (Orders, Customers, Products, etc.)
@@ -677,13 +898,41 @@ export const researchCompoundsSidebarScript = `
           var text = td.textContent ? td.textContent.trim() : '';
 
           if (!td.dataset.rcEnhancedStatus) {
+            var hasExistingBadge = td.querySelector('.rounded-full.border, .rc-status-pill, [data-badge]');
+            if (hasExistingBadge) {
+              td.dataset.rcEnhancedStatus = 'true';
+              var parentPill = hasExistingBadge.parentElement;
+              if (parentPill && parentPill.classList.contains('rc-status-pill')) {
+                parentPill.className = '';
+              }
+              return;
+            }
+
             var dot = td.querySelector('.bg-ui-tag-green-icon, .bg-ui-tag-orange-icon, .bg-ui-tag-red-icon');
-            if (dot || text === 'Draft' || text === 'Registered' || text === 'Published') {
+            var isStatusText = (
+              dot ||
+              text === 'Draft' ||
+              text === 'Registered' ||
+              text === 'Published' ||
+              text === 'Active' ||
+              text === 'Public' ||
+              text === 'Captured' ||
+              text === 'Shipped' ||
+              text === 'Fulfilled' ||
+              text === 'Awaiting' ||
+              text === 'Authorized' ||
+              text === 'Pending' ||
+              text === 'Not fulfilled' ||
+              text === 'Not paid' ||
+              text === 'Canceled'
+            );
+
+            if (isStatusText) {
               td.dataset.rcEnhancedStatus = 'true';
               var wrapper = td.querySelector('.flex.items-center') || td.firstElementChild;
               if (wrapper) {
-                if ((dot && dot.classList.contains('bg-ui-tag-green-icon')) || text === 'Captured' || text === 'Shipped' || text === 'Fulfilled' || text === 'Published' || text === 'Registered') {
-                  wrapper.className = 'rc-status-pill rc-status-emerald';
+                if ((dot && dot.classList.contains('bg-ui-tag-green-icon')) || text === 'Captured' || text === 'Shipped' || text === 'Fulfilled' || text === 'Published' || text === 'Registered' || text === 'Active' || text === 'Public') {
+                  wrapper.className = 'rc-status-pill rc-status-blue';
                 } else if ((dot && dot.classList.contains('bg-ui-tag-orange-icon')) || text === 'Awaiting' || text === 'Authorized' || text === 'Pending') {
                   wrapper.className = 'rc-status-pill rc-status-amber';
                 } else if ((dot && dot.classList.contains('bg-ui-tag-red-icon')) || text === 'Not fulfilled' || text === 'Not paid' || text === 'Canceled') {
@@ -705,6 +954,16 @@ export const researchCompoundsSidebarScript = `
             td.classList.add('rc-order-token');
           }
         });
+
+        // Ensure Categories Clinical Operations Header is placed before table
+        var catHeader = document.querySelector('[data-rc-categories-header="true"]');
+        if (catHeader) {
+          var tableEl = document.querySelector('table');
+          var card = tableEl ? (tableEl.closest('.shadow-elevation-card-rest') || tableEl.parentElement) : null;
+          if (card && card.parentElement && catHeader.parentElement && catHeader.nextElementSibling !== card) {
+            card.parentElement.insertBefore(catHeader, card);
+          }
+        }
       });
     }
 

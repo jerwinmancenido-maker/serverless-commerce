@@ -219,8 +219,8 @@ const OrderFulfillmentDispatchWidget = ({
             Receipt
           </Button>
           {order.payment_status === "captured" && !isFulfilledOrShipped && (
-            <Badge color="green">
-              <CheckCircleSolid className="mr-1 h-3 w-3 text-emerald-600" />
+            <Badge color="blue">
+              <CheckCircleSolid className="mr-1 h-3 w-3 text-blue-600" />
               Pack Ready (Paid)
             </Badge>
           )}
@@ -302,7 +302,7 @@ const OrderFulfillmentDispatchWidget = ({
                     <label className="flex items-center gap-2.5 cursor-pointer select-none">
                       <input
                         type="checkbox"
-                        className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                        className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                         defaultChecked={isFulfilledOrShipped}
                       />
                       <span className="text-slate-700 font-medium">Verified single vial / item packed</span>

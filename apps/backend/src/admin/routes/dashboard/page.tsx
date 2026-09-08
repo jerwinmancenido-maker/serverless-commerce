@@ -366,7 +366,7 @@ const CustomSalesTooltip = ({ active, payload }: CustomTooltipProps) => {
         <Text size="xsmall" className="text-ui-fg-subtle">captured</Text>
       </div>
       <div className="mt-1 flex items-center gap-1.5 text-xs text-ui-fg-subtle">
-        <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+        <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-600" />
         <span>{data.orderCount} {data.orderCount === 1 ? "order" : "orders"}</span>
       </div>
     </div>
@@ -626,8 +626,8 @@ const DashboardPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 border border-emerald-200/80">
-              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-bold text-blue-800 border border-blue-200/80">
+              <span className="size-1.5 rounded-full bg-blue-600 animate-pulse" />
               Verified Founder Operations
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-600 border border-slate-200">
@@ -958,7 +958,7 @@ const DashboardPage = () => {
                 size="small"
                 variant="transparent"
                 onClick={() => navigate("/orders")}
-                className="h-7 text-xs font-bold text-emerald-700 hover:text-emerald-900"
+                className="h-7 text-xs font-bold text-blue-700 hover:text-blue-900"
               >
                 View all orders &rarr;
               </Button>
@@ -990,7 +990,7 @@ const DashboardPage = () => {
                       className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-slate-50/70 transition-all cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-slate-100 border border-slate-200 text-slate-600 shrink-0 group-hover:border-emerald-300 group-hover:bg-emerald-50 group-hover:text-emerald-700 transition-colors">
+                        <div className="flex size-9 items-center justify-center rounded-xl bg-slate-100 border border-slate-200 text-slate-600 shrink-0 group-hover:border-blue-300 group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">
                           <ArchiveBox className="size-4" />
                         </div>
                         <div>
@@ -1035,18 +1035,18 @@ const DashboardPage = () => {
         {/* Right Column (5 cols): Founder Operational Action Suite */}
         <div className="lg:col-span-5 space-y-4">
           {/* Card A: Research Bundles & Synergy Stacks Health */}
-          <div className="rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-white via-emerald-50/20 to-white p-5 shadow-xs transition-all hover:border-emerald-300">
+          <div className="rounded-2xl border border-blue-200/80 bg-gradient-to-br from-white via-blue-50/20 to-white p-5 shadow-xs transition-all hover:border-blue-300">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                <div className="flex size-7 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
                   <Sparkles className="size-4" />
                 </div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-800">
                   3-Tier Bundling Suite
                 </span>
               </div>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200">
-                <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-800 border border-blue-200">
+                <span className="size-1 rounded-full bg-blue-600 animate-pulse" />
                 5 Stacks Active
               </span>
             </div>
@@ -1056,14 +1056,14 @@ const DashboardPage = () => {
             <p className="text-xs text-slate-600 mt-1 leading-relaxed">
               Curated synergy stacks active in catalog with 10%–15% package discounts and automatic prep kit tiering.
             </p>
-            <div className="mt-4 pt-3 border-t border-emerald-100 flex items-center justify-between">
+            <div className="mt-4 pt-3 border-t border-blue-100 flex items-center justify-between">
               <span className="text-[11px] font-semibold text-slate-500">
                 100% Shipping Profile Linked
               </span>
               <button
                 type="button"
                 onClick={() => navigate("/bundles")}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors cursor-pointer"
               >
                 <span>Manage Stacks</span>
                 <span>&rarr;</span>

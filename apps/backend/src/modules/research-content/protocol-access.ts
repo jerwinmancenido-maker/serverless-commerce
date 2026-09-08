@@ -21,6 +21,12 @@ export type ResearchProtocolAccessProjection = Pick<
   | "reconstitution_details"
   | "storage_details"
   | "purity_standard"
+  | "reconstitution_options"
+  | "vial_strength_options"
+  | "syringe_guide"
+  | "evidence_tier"
+  | "blend_constituents"
+  | "bundle_vials"
   | "research_use_label"
   | "last_reviewed_at"
   | "disclaimer"
@@ -158,6 +164,24 @@ export const buildResearchProtocolContentForAccess = (
   reconstitution_details: item("reconstitution_details", "public")
     ? content.reconstitution_details
     : null,
+  reconstitution_options: item("reconstitution_options", "public")
+    ? content.reconstitution_options
+    : null,
+  vial_strength_options: item("vial_strength_options", "public")
+    ? content.vial_strength_options
+    : [],
+  syringe_guide: item("syringe_guide", "public")
+    ? content.syringe_guide
+    : null,
+  evidence_tier: item("evidence_tier", "public")
+    ? content.evidence_tier
+    : null,
+  blend_constituents: item("blend_constituents", "public")
+    ? content.blend_constituents
+    : [],
+  bundle_vials: item("bundle_vials", "public")
+    ? content.bundle_vials
+    : [],
   storage_details: item("storage_details", "public")
     ? content.storage_details
     : null,

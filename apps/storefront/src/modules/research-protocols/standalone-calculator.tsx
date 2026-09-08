@@ -27,7 +27,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 2.0,
     targetAmount: 250,
     targetUnit: "mcg",
-    protocolHandle: "bpc-157-protocol",
+    protocolHandle: "bpc-157",
   },
   {
     id: "tirzepatide",
@@ -37,15 +37,17 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 2.0,
     targetAmount: 2.5,
     targetUnit: "mg",
+    protocolHandle: "tirzepatide",
   },
   {
     id: "ghk-cu",
     name: "GHK-Cu (50 mg)",
     mass: 50,
     massUnit: "mg",
-    volumeMl: 3.0,
+    volumeMl: 2.5,
     targetAmount: 2.0,
     targetUnit: "mg",
+    protocolHandle: "ghk-cu",
   },
   {
     id: "semaglutide",
@@ -55,6 +57,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 2.0,
     targetAmount: 0.25,
     targetUnit: "mg",
+    protocolHandle: "semaglutide",
   },
   {
     id: "hgh",
@@ -65,7 +68,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     targetAmount: 2.0,
     targetUnit: "IU",
     iuPerMg: 3,
-    protocolHandle: "hgh-somatropin-laboratory-handling",
+    protocolHandle: "hgh-somatropin",
   },
   {
     id: "hmg",
@@ -76,7 +79,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     targetAmount: 37.5,
     targetUnit: "IU",
     iuPerMg: 75,
-    protocolHandle: "hmg-75iu-laboratory-handling",
+    protocolHandle: "hmg-75iu",
   },
   {
     id: "tb-500",
@@ -86,16 +89,17 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 2.0,
     targetAmount: 2.0,
     targetUnit: "mg",
-    protocolHandle: "tb-500-laboratory-handling",
+    protocolHandle: "tb-500",
   },
   {
     id: "cjc-ipamorelin",
     name: "CJC-1295 + Ipamorelin (10 mg)",
     mass: 10,
     massUnit: "mg",
-    volumeMl: 2.0,
+    volumeMl: 2.5,
     targetAmount: 500,
     targetUnit: "mcg",
+    protocolHandle: "cjc-ipam-blend",
   },
   {
     id: "nad-plus",
@@ -105,6 +109,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 5.0,
     targetAmount: 50,
     targetUnit: "mg",
+    protocolHandle: "nad-plus",
   },
   {
     id: "epithalon",
@@ -114,6 +119,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 2.0,
     targetAmount: 500,
     targetUnit: "mcg",
+    protocolHandle: "epithalon",
   },
   {
     id: "adamax",
@@ -123,6 +129,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 5.0,
     targetAmount: 200,
     targetUnit: "mcg",
+    protocolHandle: "adamax-1032",
   },
   {
     id: "semax",
@@ -132,6 +139,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 5.0,
     targetAmount: 600,
     targetUnit: "mcg",
+    protocolHandle: "semax",
   },
   {
     id: "selank",
@@ -141,6 +149,7 @@ export const COMPOUND_PRESETS: CompoundPreset[] = [
     volumeMl: 5.0,
     targetAmount: 100,
     targetUnit: "mcg",
+    protocolHandle: "selank",
   },
 ]
 

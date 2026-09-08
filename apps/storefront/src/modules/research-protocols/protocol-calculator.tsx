@@ -21,7 +21,7 @@ export default function ProtocolCalculator({
   defaultVialNetMg,
   defaultDiluentMl,
   standardDoseMcg,
-  _standardDoseDisplay,
+  standardDoseDisplay: _standardDoseDisplay,
   dosePresets,
   initialRoute,
 }: ProtocolCalculatorProps) {

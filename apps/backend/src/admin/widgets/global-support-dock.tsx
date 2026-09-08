@@ -256,7 +256,7 @@ const GlobalSupportDock = () => {
           {/* Header */}
           <header className="flex items-center justify-between border-b border-zinc-200 bg-zinc-900 px-4 py-3 text-white">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400 text-sm font-bold">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400 text-sm font-bold">
                 💬
               </span>
               <div className="min-w-0">
@@ -419,8 +419,8 @@ const GlobalSupportDock = () => {
 
                 {/* Customer Typing Indicator */}
                 {detailQuery.data?.customer_typing && (
-                  <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-[11px] font-semibold text-emerald-800 animate-pulse w-fit">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  <div className="flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-[11px] font-semibold text-blue-800 animate-pulse w-fit">
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 animate-ping" />
                     Customer is typing…
                   </div>
                 )}
@@ -526,7 +526,7 @@ const GlobalSupportDock = () => {
                     setShowAttachMenu(false)
                     setPickerModal({ isOpen: true, tab: "product" })
                   }}
-                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-zinc-700 hover:bg-emerald-50 hover:text-emerald-950 transition-colors"
+                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-zinc-700 hover:bg-blue-50 hover:text-blue-950 transition-colors"
                 >
                   <span className="text-base">🧪</span>
                   <div>
@@ -668,7 +668,7 @@ const GlobalSupportDock = () => {
         type="button"
         data-testid="global-support-dock-trigger"
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-zinc-900 text-white shadow-xl hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/30"
+        className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-zinc-900 text-white shadow-xl hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-500/30"
         title="Open Live Customer Support Dock"
       >
         {isOpen ? (

@@ -295,8 +295,8 @@ const BundlesManagementPage = () => {
         title="Research Bundles & Stacks"
         subtitle="Operational management of multi-compound synergy stacks, package discounts, and Bill of Materials (BOM) inventory disaggregation."
         badge={
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 border border-emerald-200/80">
-            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-bold text-blue-800 border border-blue-200/80">
+            <span className="size-1.5 rounded-full bg-blue-600 animate-pulse" />
             {kpis.active} Active Stacks
           </span>
         }
@@ -309,7 +309,7 @@ const BundlesManagementPage = () => {
             <Text size="xsmall" weight="plus" className="text-slate-500 uppercase tracking-wider text-[11px] font-bold">
               Synergy Research Stacks
             </Text>
-            <span className="flex size-7 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+            <span className="flex size-7 items-center justify-center rounded-xl bg-blue-50 text-blue-700 border border-blue-200/80">
               <Sparkles className="size-4" />
             </span>
           </div>
@@ -374,8 +374,8 @@ const BundlesManagementPage = () => {
             <div className="text-2xl font-extrabold text-slate-900 font-mono tracking-tight">
               10% – 15% OFF
             </div>
-            <p className="text-xs text-emerald-700 mt-0.5 font-semibold">
-              Save up to ₱720 per stack
+            <p className="text-xs text-blue-700 mt-0.5 font-semibold">
+              Ready for one-click fulfillment
             </p>
           </div>
         </Container>
@@ -465,7 +465,7 @@ const BundlesManagementPage = () => {
                         Low Stock ({bomStatus.buildableQuantity} buildable)
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700 border border-blue-200">
                         In Stock ({bomStatus.buildableQuantity} buildable)
                       </span>
                     )}
@@ -483,7 +483,7 @@ const BundlesManagementPage = () => {
                         </span>
                       </div>
                       <div className="flex items-center lg:justify-end gap-1.5 mt-0.5">
-                        <span className="text-[11px] font-bold text-emerald-700">
+                        <span className="text-[11px] font-bold text-blue-700">
                           Save ₱{bundle.savingsAmount.toLocaleString()} ({bundle.savingsPercent}% OFF)
                         </span>
                       </div>
@@ -552,7 +552,7 @@ const BundlesManagementPage = () => {
                           ) : (
                             <span
                               className={`font-mono text-[10px] font-semibold ${
-                                comp.status === "low_stock" ? "text-amber-700" : "text-emerald-700"
+                                comp.status === "low_stock" ? "text-amber-700" : "text-blue-700"
                               }`}
                             >
                               {comp.availableStock} available

@@ -183,6 +183,7 @@ export default async function seedUnifiedCatalog({
           update: {
             title: item.title,
             description: item.description,
+            status: "published",
             thumbnail: item.thumbnail || undefined,
             images: item.images.map((url) => ({ url })),
             metadata: item.metadata,

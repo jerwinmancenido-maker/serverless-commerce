@@ -1013,5 +1013,141 @@ export const CATEGORY_1_TISSUE_REPAIR_PROTOCOLS: CompoundAnalyticalProtocol[] = 
       "**Optimal Diluent Volume**: Reconstitute gently in 2.0 mL Bacteriostatic Water or physiological saline.",
       "**Strict Light Protection**: Peptide sequence contains methionine; shield reconstituted solutions from direct UV light."
     ]
+  },
+  {
+    "id": "ghk-cu-anti-aging-serum",
+    "compoundName": "GHK-Cu Anti-Aging Serum",
+    "handles": [
+      "ghk-cu-anti-aging-serum",
+      "ghk-cu-serum",
+      "copper-peptide-serum"
+    ],
+    "subtitle": "Topical Cosmetic Formulation Standard & Dermal Extracellular Matrix Monograph",
+    "longDescription": "**What it is:** GHK-Cu Anti-Aging Serum is a standardized aqueous/hyaluronic topical formulation containing Copper Tripeptide-1 (1.0% to 2.0% active concentration), optimized for direct dermatological research.\n\n**How it works:** Topical GHK-Cu penetrates the stratum corneum to upregulate gene expression for collagen types I, III, and IV, elastin, and proteoglycans. It modulates matrix metalloproteinases (MMPs) to clear degraded proteins while suppressing pro-inflammatory cytokine expression (TNF-alpha, IL-6).\n\n**Why researchers study it:** Investigated for skin firming, fine line and wrinkle reduction, dermal elasticity, epidermal barrier repair, and post-procedural recovery in non-invasive cosmetic evaluation.",
+    "category": "Skin, Hair & Cellular Matrix",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "ghk-cu-anti-aging-serum",
+    "purityStandard": "\u226599.0% (Copper Tripeptide-1 Cosmetic Formulation Grade)",
+    "investigatedBenefits": [
+      "Stimulates dermal collagen types I & III and elastin biosynthesis",
+      "Accelerates epidermal barrier repair and post-treatment re-epithelialization",
+      "Enhances skin viscoelasticity, firmness, and dermal thickness",
+      "Quenches oxidative stress and suppresses inflammatory cytokine signaling"
+    ],
+    "adverseObservations": [
+      "Mild transient erythema or tingling at high application volumes",
+      "Temporary blue-green skin discoloration if applied in excessive concentration",
+      "Contact dermatitis in individuals with diagnosed copper sensitivities"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 500,
+      "defaultDiluentMl": 50.0,
+      "solvent": "Deionized Aqueous Base with Hyaluronic Acid (Ready-to-Use Topical)",
+      "dissolutionMethod": "Ready-to-use liquid topical serum. No reconstitution or sterile injection required. Invert bottle gently 3\u20135 times before dispensing with calibrated dropper pipette.",
+      "resultingConcentrationMgPerMl": 10.0,
+      "handlingRule": "Ready-to-use royal blue topical liquid. Protect from UV exposure and store at controlled room temperature (15\u00b0C\u201325\u00b0C) or refrigerated."
+    },
+    "dosing": {
+      "standardDoseDisplay": "0.5 mL \u2013 1.0 mL topical daily (10\u201320 drops)",
+      "standardDoseMcg": 10000,
+      "cadence": "1x Daily (Evening topical application)",
+      "halfLife": "Dermal reservoir effect; biological remodeling cascades persist 24\u201348 hours",
+      "typicalProtocolDuration": "8 to 12 Weeks per clinical evaluation cycle",
+      "washoutPeriod": "2 to 4 Weeks between comparative photographic assessments",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Dermal Tolerance & Patch Evaluation",
+          "timeframe": "Days 1\u20133",
+          "doseDisplay": "0.25 mL (5 drops)",
+          "doseMcg": 2500,
+          "cadence": "1x Daily (Evening)",
+          "focus": "Local skin tolerance assessment and barrier equilibration",
+          "notes": "Dispense 5 drops on clean inner forearm or target facial field"
+        },
+        {
+          "stage": "Phase 2: Standard Topical Research Protocol",
+          "timeframe": "Weeks 2\u20138",
+          "doseDisplay": "0.5 mL \u2013 1.0 mL (10\u201320 drops)",
+          "doseMcg": 10000,
+          "cadence": "1x Daily (Evening)",
+          "focus": "Full dermal matrix collagen remodeling and barrier enhancement",
+          "notes": "Smooth gently over target skin until completely absorbed"
+        },
+        {
+          "stage": "Phase 3: Maintenance & Elasticity Monitoring",
+          "timeframe": "Weeks 9+",
+          "doseDisplay": "0.5 mL (10 drops)",
+          "doseMcg": 5000,
+          "cadence": "3\u20134x Weekly",
+          "focus": "Sustained extracellular matrix maintenance and baseline comparison",
+          "notes": "Alternate-day evening application"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Calibrated 1.0 mL Cosmetic Dropper Pipette (0.05 mL per drop)",
+      "standardIUDisplay": "0.5 mL (approx. 10 drops)",
+      "graduations": [
+        {
+          "doseDisplay": "2.5 mg (0.25 mL)",
+          "doseMcg": 2500,
+          "volumeMl": 0.25,
+          "syringeIU": 25.0,
+          "tickLabel": "5 drops (0.25 mL mark on dropper)"
+        },
+        {
+          "doseDisplay": "5.0 mg (0.50 mL)",
+          "doseMcg": 5000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "10 drops (0.50 mL mark on dropper)"
+        },
+        {
+          "doseDisplay": "10.0 mg (1.00 mL)",
+          "doseMcg": 10000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "20 drops (1.00 mL full dropper)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "Controlled room temperature 15\u00b0C\u201325\u00b0C; shield from direct sunlight",
+      "reconstituted": "Store at 2\u00b0C\u20138\u00b0C for extended stability; use within 90 days of opening",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "49557-75-7",
+      "formula": "C14H24CuN6O4",
+      "pubchemCid": 73587,
+      "sequenceOrFormula": "C14H24CuN6O4 (Copper Tripeptide-1)",
+      "molecularWeightGPerMol": 403.92
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 29986520",
+        "notes": "Pickart L, Margolina A. Regenerative and Protective Actions of the GHK-Cu Peptide in the Light of the New Gene Data. Int J Mol Sci. 2018;19(7):1987."
+      },
+      {
+        "sourceReference": "PMID: 26649721",
+        "notes": "Badenhorst T, et al. In vitro percutaneous absorption of copper tripeptide-1. J Pharm Sci. 2016;105(1):289-294."
+      }
+    ],
+    "disclaimer": "Formulated strictly for topical laboratory evaluation, dermatological research, and analytical testing. Not for injection, ingestion, or clinical diagnosis.",
+    "evidenceTier": "Tier 1: Gold Standard In-Vitro Dermal Protocol",
+    "reconstitutionOptions": {
+      "standard50ml": {
+        "diluentMl": 50.0,
+        "concMgMl": 10.0,
+        "label": "50 mL Standard Serum (1.0% / 10.0 mg/mL)",
+        "tickConversion": "1 drop (0.05 mL) = 500 mcg"
+      },
+      "concentrated25ml": {
+        "diluentMl": 25.0,
+        "concMgMl": 20.0,
+        "label": "25 mL High-Potency Serum (2.0% / 20.0 mg/mL)",
+        "tickConversion": "1 drop (0.05 mL) = 1.0 mg"
+      }
+    }
   }
 ]

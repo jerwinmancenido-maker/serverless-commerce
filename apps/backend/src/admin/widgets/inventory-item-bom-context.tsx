@@ -269,7 +269,7 @@ const InventoryItemBomContextWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "inventory_item.details",
+  zone: "inventory_item.details.before",
   id: "pepstack:inventory-item-bom-context",
 })
 

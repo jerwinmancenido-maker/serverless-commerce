@@ -100,7 +100,12 @@
       "casNumber": "137525-51-0",
       "pubchemCid": 9941957,
       "sequenceOrFormula": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV)",
-      "molecularWeightGPerMol": 1419.53
+      "molecularWeightGPerMol": 1419.53,
+      "formula": "C62H98N16O22",
+      "molarMass": "1419.55 g/mol",
+      "sequence": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -131,7 +136,43 @@
       "**Blood Pressure & Dizziness Adjustments**: Temporary mild dizziness or blood pressure dips immediately following administration due to nitric oxide (eNOS) vasodilation.",
       "**Dosing Consistency & Tolerance**: Most research models utilize daily or twice-daily subcutaneous administration near the injury site for 4 to 6 weeks, followed by a 2-week washout.",
       "**Reconstitution & Cold Chain Stability**: Aseptic mixing with Bacteriostatic Water is required; gently swirl rather than shake to protect peptide bonds, and refrigerate between 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Clinical Consensus (Tendon, Gut, Angiogenesis)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 5,
+        "diluentMl": 2.0,
+        "concMgMl": 2.5,
+        "badge": "5 mg Vial"
+      },
+      {
+        "vialMg": 10,
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "badge": "10 mg Standard (2 mL)"
+      },
+      {
+        "vialMg": 10,
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "badge": "10 mg Precision (3 mL)"
+      }
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "tb-500",
@@ -224,10 +265,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "885340-08-9",
+      "casNumber": "77591-33-4",
       "pubchemCid": 45382195,
       "sequenceOrFormula": "Ac-Leu-Lys-Lys-Thr-Glu-Thr-Gln (Ac-LKKTETQ)",
-      "molecularWeightGPerMol": 887.04
+      "molecularWeightGPerMol": 887.04,
+      "formula": "C212H350N56O78S",
+      "molarMass": "4963.5 g/mol",
+      "sequence": "Ac-Ser-Asp-Lys-Pro-Asp-Met-Ala-Glu-Ile-Glu-Lys-Phe-Asp-Lys-Ser-Lys-Leu-Lys-Lys-Thr-Glu-Thr-Gln-Glu-Lys-Asn-Pro-Leu-Pro-Ser-Lys-Glu-Thr-Ile-Glu-Gln-Glu-Lys-Gln-Ala-Gly-Glu-Ser",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -257,7 +303,37 @@
       "**Occasional Fatigue**: Temporary lethargy or tiredness reported during early loading cycles as the body prioritizes tissue repair processes.",
       "**Intermittent Dosing Cadence**: Typically researched on a twice-weekly loading schedule for 4 to 6 weeks, tapering to once weekly or bi-weekly maintenance.",
       "**Storage and Handling**: Highly stable in lyophilized powder; once mixed with Bacteriostatic Water, store strictly at 2°C–8°C away from heat and direct UV light."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Phase 2 (Actin regulation, cardiac & wound repair)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 5,
+        "diluentMl": 2.0,
+        "concMgMl": 2.5,
+        "badge": "5 mg Vial"
+      },
+      {
+        "vialMg": 10,
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "badge": "10 mg Standard"
+      }
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ghk-cu",
@@ -360,7 +436,12 @@
       "casNumber": "49557-75-7",
       "pubchemCid": 139035031,
       "sequenceOrFormula": "[Cu2+]-Gly-His-Lys (Copper [2+] complex)",
-      "molecularWeightGPerMol": 403.93
+      "molecularWeightGPerMol": 403.93,
+      "formula": "C14H24CuN6O4",
+      "molarMass": "403.92 g/mol",
+      "sequence": "Gly-His-Lys:Cu(II)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -391,7 +472,23 @@
       "**Blood Pressure Softening**: High concentrations can mildly lower blood pressure; staying hydrated and administering while seated is recommended.",
       "**Copper Saturation Precautions**: Prolonged, continuous high-dose research should be cycled with rest periods to avoid excessive systemic copper accumulation.",
       "**Reconstitution Dilution Tip**: Diluting with higher volume of Bacteriostatic Water (e.g. 3 mL instead of 1 mL) significantly reduces localized injection stinging."
-    ]
+    ],
+    "evidenceTier": "Biochemical / Clinical Dermatology (Loren Pickart, Collagen Type I/III)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 20.0,
+        "label": "2.5 mL Compact Standard (20.0 mg/mL)",
+        "tickConversion": "1 unit = 200 mcg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 5.0,
+        "concMgMl": 10.0,
+        "label": "5.0 mL Comfort Dilution (10.0 mg/mL)",
+        "tickConversion": "1 unit = 100 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ghk-basic",
@@ -484,10 +581,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "49557-75-7",
+      "casNumber": "72957-37-0",
       "pubchemCid": 98288,
       "sequenceOrFormula": "Gly-His-Lys (GHK)",
-      "molecularWeightGPerMol": 342.39
+      "molecularWeightGPerMol": 342.39,
+      "formula": "C14H24N6O4",
+      "molarMass": "340.38 g/mol",
+      "sequence": "Gly-His-Lys",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -510,7 +612,23 @@
       "**Mild Injection Site Itching**: Occasional minor localized itching that resolves quickly without lasting irritation.",
       "**Lower Direct Copper Bioavailability**: Lacks the immediate copper delivery of GHK-Cu, meaning some copper-dependent enzymatic processes may proceed more gradually.",
       "**Proper Refrigeration Required**: Store reconstituted solution strictly at 2°C–8°C to prevent peptide chain breakdown."
-    ]
+    ],
+    "evidenceTier": "Biochemical (Unchelated native tripeptide)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 20.0,
+        "label": "2.5 mL Compact Standard (20.0 mg/mL)",
+        "tickConversion": "1 unit = 200 mcg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 5.0,
+        "concMgMl": 10.0,
+        "label": "5.0 mL Comfort Dilution (10.0 mg/mL)",
+        "tickConversion": "1 unit = 100 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "kpv",
@@ -613,7 +731,12 @@
       "casNumber": "67727-97-3",
       "pubchemCid": 13294447,
       "sequenceOrFormula": "Lys-Pro-Val (C-terminal tripeptide of alpha-MSH)",
-      "molecularWeightGPerMol": 383.49
+      "molecularWeightGPerMol": 383.49,
+      "formula": "C16H31N5O4",
+      "molarMass": "357.45 g/mol",
+      "sequence": "Lys-Pro-Val",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -641,7 +764,23 @@
       "**Transient Mild Nausea**: Rare, mild stomach queasiness when starting research on an empty stomach; administering after light nourishment prevents this.",
       "**Minimal Systemic Toxicity**: Generally very well tolerated in laboratory models due to its small tripeptide structure and natural biological occurrence.",
       "**Light and Moisture Sensitivity**: Lyophilized powder must be protected from humidity and UV light in a desiccated container."
-    ]
+    ],
+    "evidenceTier": "Preclinical (Alpha-MSH C-terminal tripeptide, NF-kB inhibition)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ara-290",
@@ -734,10 +873,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "1208116-65-7",
+      "casNumber": "1208116-66-8",
       "pubchemCid": 91810664,
       "sequenceOrFormula": "Glu-Gln-Leu-Glu-Arg-Ala-Leu-Asn-Ser-Ser (EQLERALNSS)",
-      "molecularWeightGPerMol": 1257.35
+      "molecularWeightGPerMol": 1257.35,
+      "formula": "C51H84N16O21",
+      "molarMass": "1257.32 g/mol",
+      "sequence": "Glu-Gln-Leu-Glu-Arg-Ala-Leu-Asn-Ser-Ser",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -766,7 +910,23 @@
       "**Occasional Mild Headache**: Temporary tension headache observed in early research sessions, easily managed with adequate hydration.",
       "**Injection Site Sensitivity**: Mild subcutaneous erythema that subsides within 45 minutes.",
       "**Reconstitution Care**: Fragile peptide structure requires gentle diluent addition and strict refrigeration at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Phase 2 Clinical (Innate Repair Receptor / Non-erythropoietic EPO analog)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 8.0,
+        "label": "2.0 mL Standard Concentration (8.0 mg/mL)",
+        "tickConversion": "1 unit = 80 mcg (0.01 mL)"
+      },
+      "precisionDilution": {
+        "diluentMl": 4.0,
+        "concMgMl": 4.0,
+        "label": "4.0 mL Volumetric Precision (4.0 mg/mL)",
+        "tickConversion": "1 unit = 40 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "pentosan-polysulfate",
@@ -862,7 +1022,12 @@
       "casNumber": "37300-21-3",
       "pubchemCid": 37721,
       "sequenceOrFormula": "Semi-synthetic polysulfated xylan polymer",
-      "molecularWeightGPerMol": 5700
+      "molecularWeightGPerMol": 5700,
+      "formula": "(C5H6Na2O10S2)n",
+      "molarMass": "4000.0 g/mol",
+      "sequence": "Semi-synthetic sulfated xylan polymer",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -891,7 +1056,23 @@
       "**Gastrointestinal Sensitivity**: Mild nausea, loose stools, or abdominal discomfort can occur if administered on an empty stomach.",
       "**Temporary Hair Shedding (Telogen Effluvium)**: Rare, temporary hair thinning observed in extended high-dose animal models, reversing upon study cessation.",
       "**Precautions with Blood Thinners**: Should not be combined with anti-platelet or anticoagulant agents in laboratory models."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Elmiron) / Phase 2/3 Osteoarthritis (Cartrophen/Pentosil)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 100.0,
+        "label": "2.5 mL Standard Compact (100.0 mg/mL)",
+        "tickConversion": "1 unit = 1.0 mg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 5.0,
+        "concMgMl": 50.0,
+        "label": "5.0 mL Comfort Dilution (50.0 mg/mL)",
+        "tickConversion": "1 unit = 0.5 mg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "snap-8",
@@ -901,82 +1082,60 @@
       "snap8",
       "acetyl-octapeptide-3"
     ],
-    "subtitle": "Acetyl Octapeptide-3 Biomimetic SNARE Complex Competitive Inhibitor Standard",
+    "subtitle": "Topical Cosmeceutical Octapeptide (0.005% Formulation SOP)",
     "longDescription": "**What it is:** SNAP-8 (Acetyl Octapeptide-3) is an advanced elongation of the hexapeptide Argireline, composed of an 8-amino-acid synthetic sequence (Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2) designed for targeted dermatological and tissue repair research.\n\n**How it works:** SNAP-8 mimics the N-terminal end of SNAP-25, competitively displacing SNAP-25 from the ternary SNARE (Soluble N-ethylmaleimide-sensitive factor Attachment protein REceptor) complex. By destabilizing the SNARE complex, it inhibits calcium-dependent catecholamine and acetylcholine exocytosis at the neuromuscular junction, attenuating repeated micro-contractions and relaxing muscle-induced skin tension.\n\n**Why researchers study it:** Researched for cosmetic anti-wrinkle depth reduction, dermal matrix elastin preservation, non-invasive expression line modulation, and topical skin rejuvenation.",
     "category": "Tissue Repair & Healing",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "snap-8",
     "reconstitution": {
       "defaultVialNetMg": 10,
-      "defaultDiluentMl": 2,
-      "solvent": "Bacteriostatic Water USP or Sterile Saline",
-      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down inner vial wall. Swirl gently horizontally for 30 seconds until crystal clear. Do not shake.",
-      "resultingConcentrationMgPerMl": 5,
-      "handlingRule": "Clear, colorless solution. Keep refrigerated at 2°C–8°C."
+      "defaultDiluentMl": 200,
+      "solvent": "Cosmetic Vehicle / Serum Base or Sterile Saline",
+      "dissolutionMethod": "Dissolve 10 mg lyophilized SNAP-8 in 200 mL topical cosmetic serum base or purified vehicle to achieve target 0.005% (50 ppm) concentration. Stir gently at room temperature until optical clarity is achieved.",
+      "resultingConcentrationMgPerMl": 0.05,
+      "handlingRule": "Topical cosmeceutical formulation only. Not intended for parenteral subcutaneous injection."
     },
     "dosing": {
-      "standardDoseDisplay": "250 mcg – 500 mcg daily",
+      "standardDoseDisplay": "0.005% (50 ppm) topical application 1–2x daily",
       "standardDoseMcg": 250,
-      "cadence": "1x Daily (SubQ or topical formulation research)",
+      "cadence": "1–2x Daily (Topical Facial / Periorbital Application)",
       "halfLife": "~2 to 3 Hours (Local tissue bio-retention extends inhibitory effect up to 24h)",
       "typicalProtocolDuration": "6 to 8 Weeks",
       "washoutPeriod": "2 to 4 Weeks between cycles",
       "titrationSteps": [
         {
-          "stage": "Phase 1: Local Neuromuscular Calibration",
-          "timeframe": "Days 1–7",
-          "doseDisplay": "100 mcg daily",
+          "stage": "Phase 1: Baseline Patch Test & Calibration",
+          "timeframe": "Days 1–3",
+          "doseDisplay": "0.005% topical patch",
+          "doseMcg": 50,
+          "cadence": "1x Daily (Localized area)",
+          "focus": "Local dermal tolerance and skin sensitivity verification",
+          "notes": "Apply thin layer (approx 0.5 mL finished serum containing 25 mcg active peptide) to outer forearm or jawline"
+        },
+        {
+          "stage": "Phase 2: Target Expression Smoothing",
+          "timeframe": "Weeks 1–8",
+          "doseDisplay": "0.005% serum application",
           "doseMcg": 100,
-          "cadence": "1x Daily",
-          "focus": "Initial competitive displacement of SNAP-25 in the SNARE core complex",
-          "notes": "2.0 units (0.02 mL) on U-100 syringe at 5.0 mg/mL concentration"
+          "cadence": "2x Daily (Morning & Evening)",
+          "focus": "Inhibition of catecholamine release by destabilizing the SNARE complex; attenuation of expression wrinkles",
+          "notes": "Dispense 1.0 mL (50 mcg active octapeptide) across dynamic facial lines (forehead, periorbital crow's feet)"
         },
         {
-          "stage": "Phase 2: Target Expression Attenuation Phase",
-          "timeframe": "Weeks 2–6",
-          "doseDisplay": "250 mcg daily",
-          "doseMcg": 250,
-          "cadence": "1x Daily",
-          "focus": "Maximal attenuation of catecholamine exocytosis and dermal matrix smoothing",
-          "notes": "5.0 units (0.05 mL) on U-100 syringe"
-        },
-        {
-          "stage": "Phase 3: Washout",
-          "timeframe": "Weeks 7–8",
-          "doseDisplay": "Observation Period",
-          "doseMcg": 0,
-          "cadence": "Zero dosing",
-          "focus": "Monitoring persistence of micro-wrinkle relaxation post-stimulation",
-          "notes": "2–4 week cessation window"
+          "stage": "Phase 3: Maintenance Protocol",
+          "timeframe": "Ongoing",
+          "doseDisplay": "0.005% serum maintenance",
+          "doseMcg": 50,
+          "cadence": "1x Daily (Evening)",
+          "focus": "Sustained micro-wrinkle depth reduction and dermal matrix support",
+          "notes": "Once-daily evening application maintains neuromuscular relaxation kinetics"
         }
       ]
     },
     "syringeGuide": {
-      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
-      "standardIUDisplay": "5.0 units (0.05 mL)",
-      "graduations": [
-        {
-          "doseDisplay": "100 mcg",
-          "doseMcg": 100,
-          "volumeMl": 0.02,
-          "syringeIU": 2,
-          "tickLabel": "2.0 units (0.02 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "250 mcg (Standard Target)",
-          "doseMcg": 250,
-          "volumeMl": 0.05,
-          "syringeIU": 5,
-          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
-        },
-        {
-          "doseDisplay": "500 mcg (Intensive Target)",
-          "doseMcg": 500,
-          "volumeMl": 0.1,
-          "syringeIU": 10,
-          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
-        }
-      ]
+      "syringeType": "Topical Dropper / Calibrated Pipette (1.0 mL Dispenser)",
+      "needleGauge": "N/A (Non-Injectable Topical Cosmeceutical)",
+      "deadSpaceCorrection": "Calibrated cosmetic dropper calibrated to 0.5 mL / 1.0 mL increments"
     },
     "storage": {
       "lyophilized": "-20°C in dry desiccator (24 months)",
@@ -986,7 +1145,12 @@
     "molecularDetails": {
       "casNumber": "868844-74-0",
       "sequenceOrFormula": "Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2",
-      "molecularWeightGPerMol": 1075.16
+      "molecularWeightGPerMol": 1075.16,
+      "formula": "C41H70N16O16S",
+      "molarMass": "1075.17 g/mol",
+      "sequence": "Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1010,7 +1174,23 @@
       "**High Biocompatibility Profile**: Minimal adverse findings reported in peer-reviewed cutaneous and subcutaneous assays.",
       "**Optimal Diluent Volume**: Reconstitute gently in 2.0 mL Bacteriostatic Water or physiological saline.",
       "**Strict Light Protection**: Peptide sequence contains methionine; shield reconstituted solutions from direct UV light."
-    ]
+    ],
+    "evidenceTier": "Cosmeceutical Clinical Trial (SNARE complex SNAP-25 competitor; 0.005% serum)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "semaglutide",
@@ -1129,7 +1309,12 @@
       "casNumber": "910463-68-2",
       "pubchemCid": 56843331,
       "sequenceOrFormula": "C187H291N45O59",
-      "molecularWeightGPerMol": 4113.58
+      "molecularWeightGPerMol": 4113.58,
+      "formula": "C187H291N45O59",
+      "molarMass": "4113.58 g/mol",
+      "sequence": "His-Aib-Glu-Gly-Thr-Phe-Thr-Ser-Asp-Val-Ser-Ser-Tyr-Leu-Glu-Gly-Gln-Ala-Ala-Lys(AEEAc-AEEAc-gamma-Glu-17-carboxyheptadecanoyl)-Glu-Phe-Ile-Ala-Trp-Leu-Val-Arg-Gly-Arg-Gly",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1160,7 +1345,24 @@
       "**Transient Fatigue During Caloric Deficits**: Lower caloric intake can temporarily cause feelings of sluggishness as the body adapts to fat oxidation.",
       "**Subcutaneous Rotation**: Rotate injection sites (abdomen, thighs, upper arms) to avoid localized tissue irritation.",
       "**Cold Storage Requirements**: Reconstituted vials must be refrigerated at 2°C–8°C; do not freeze."
-    ]
+    ],
+    "evidenceTier": "FDA Approved / Phase 3 SUSTAIN & STEP Trials (GLP-1R Agonist)",
+    "vialStrengthOptions": [],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 2.5,
+        "label": "2.0 mL Standard Concentration (2.5 mg/mL)",
+        "tickConversion": "1 unit = 25 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Micro-Dose Precision (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "tirzepatide",
@@ -1258,7 +1460,12 @@
       "casNumber": "2023788-19-2",
       "pubchemCid": 166567236,
       "sequenceOrFormula": "C225H348N48O68",
-      "molecularWeightGPerMol": 4813.45
+      "molecularWeightGPerMol": 4813.45,
+      "formula": "C225H348N48O68",
+      "molarMass": "4813.45 g/mol",
+      "sequence": "Tyr-Aib-Glu-Gly-Thr-Phe-Thr-Ser-Asp-Tyr-Ser-Ile-Aib-Leu-Asp-Lys-Ile-Ala-Gln-Lys(diacid-C20-gamma-Glu-PEG2)-Ala-Phe-Val-Gln-Trp-Leu-Ile-Ala-Gly-Gly-Pro-Ser-Ser-Gly-Ala-Pro-Pro-Pro-Ser-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1290,7 +1497,49 @@
       "**Temporary Fatigue During Rapid Fat Loss**: Mild lethargy can occur during early phases of rapid caloric deficit as metabolic pathways adjust.",
       "**Subcutaneous Injection Site Care**: Mild redness or minor itching at the injection point can occasionally occur; letting the vial warm to room temperature for 10 minutes prior to injection minimizes stinging.",
       "**Peptide Bond Fragility**: Never shake the vial after adding diluent; swirl smoothly and keep refrigerated between 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "FDA Approved / Phase 3 SURPASS & SURMOUNT Trials (Dual GIP/GLP-1R Agonist)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 5,
+        "diluentMl": 1.0,
+        "concMgMl": 5.0,
+        "badge": "5 mg Calibration"
+      },
+      {
+        "vialMg": 10,
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "badge": "10 mg Standard"
+      },
+      {
+        "vialMg": 15,
+        "diluentMl": 2.0,
+        "concMgMl": 7.5,
+        "badge": "15 mg Escalation"
+      },
+      {
+        "vialMg": 30,
+        "diluentMl": 3.0,
+        "concMgMl": 10.0,
+        "badge": "30 mg Multi-Week"
+      }
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "retatrutide",
@@ -1298,7 +1547,8 @@
     "handles": [
       "retatrutide",
       "ly3437943",
-      "triple-g-retatrutide"
+      "triple-g-retatrutide",
+      "rtt60"
     ],
     "subtitle": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard",
     "longDescription": "**What it is:** Retatrutide (LY3437943) is an advanced next-generation synthetic 39-amino-acid peptide that acts as a triple receptor agonist—activating GLP-1, GIP, and Glucagon receptors at the same time.\n\n**How it works:** In addition to the appetite suppression and insulin optimization of GLP-1 and GIP, Retatrutide's glucagon receptor activation directly stimulates the liver and brown adipose tissue to burn calories, actively ramping up resting energy expenditure. This means the body burns more fat even while resting, rather than merely relying on caloric restriction.\n\n**Why researchers study it:** Researched as the most potent weight loss and metabolic compound discovered to date, achieving over 24% mean weight loss in trials, complete resolution of fatty liver disease, and profound improvements in blood lipids.",
@@ -1395,7 +1645,12 @@
       "casNumber": "2381089-83-2",
       "pubchemCid": 171390338,
       "sequenceOrFormula": "C221H342N46O68",
-      "molecularWeightGPerMol": 4731.33
+      "molecularWeightGPerMol": 4731.33,
+      "formula": "C221H342N46O68",
+      "molarMass": "4731.33 g/mol",
+      "sequence": "Tyr-Aib-Gln-Gly-Thr-Phe-Thr-Ser-Asp-Tyr-Ser-Ile-alpha-MeLeu-Leu-Asp-Lys-Ile-Ala-Gln-Lys(gamma-Glu-C20-diacid)-Ala-Phe-Val-Gln-Trp-Leu-Ile-Ala-Gly-Gly-Pro-Ser-Ser-Gly-Ala-Pro-Pro-Pro-Ser-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1426,7 +1681,55 @@
       "**Heightened Caloric Burn Sensation**: Increased metabolic rate may cause subjects to feel slightly warm or experience mild skin hypersensitivity (allodynia).",
       "**Strict Gradual Titration Required**: Must begin at lowest calibration (e.g. 2.0 mg weekly) and titrate in 2.0 mg steps every 4 weeks to allow cardiac and gastrointestinal adaptation.",
       "**Reconstitution & Light Protection**: Delicate peptide structure; reconstitute with Bacteriostatic Water and store strictly between 2°C–8°C protected from light."
-    ]
+    ],
+    "evidenceTier": "Phase 2/3 Clinical Trials (NEJM 2023 / Rosenstock et al., Triple GIP/GLP-1/GCGR Agonist)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 5,
+        "diluentMl": 1.0,
+        "concMgMl": 5.0,
+        "badge": "5 mg Trial"
+      },
+      {
+        "vialMg": 10,
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "badge": "10 mg Standard"
+      },
+      {
+        "vialMg": 20,
+        "diluentMl": 2.0,
+        "concMgMl": 10.0,
+        "badge": "20 mg High-Dose"
+      },
+      {
+        "vialMg": 30,
+        "diluentMl": 3.0,
+        "concMgMl": 10.0,
+        "badge": "30 mg Multi-Week"
+      },
+      {
+        "vialMg": 60,
+        "diluentMl": 5.0,
+        "concMgMl": 12.0,
+        "badge": "60 mg Research Standard Kit"
+      }
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "cagrilintide",
@@ -1538,7 +1841,12 @@
       "casNumber": "1415456-99-3",
       "pubchemCid": 171397054,
       "sequenceOrFormula": "C186H288N46O57",
-      "molecularWeightGPerMol": 4091.6
+      "molecularWeightGPerMol": 4091.6,
+      "formula": "C156H234N40O54S2",
+      "molarMass": "3617.96 g/mol",
+      "sequence": "Long-acting acylated amylin analogue",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1567,7 +1875,23 @@
       "**Early Satiety Fullness**: Subjects can feel full very quickly on small portions; ensure nutrient-dense, high-protein intake.",
       "**Mild Constipation**: Amylin receptor activation slows digestive motility; plenty of water and dietary fiber prevent bowel sluggishness.",
       "**Subcutaneous Administration Rules**: Keep injections rotated and inspect for clear, colorless appearance before administration."
-    ]
+    ],
+    "evidenceTier": "Phase 3 Clinical Trials (Lancet 2021 / REDEFINE Trials, Non-selective Amylin Agonist)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 2.5,
+        "label": "2.0 mL Standard Concentration (2.5 mg/mL)",
+        "tickConversion": "1 unit = 25 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Micro-Dose Precision (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "mazdutide",
@@ -1661,10 +1985,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "2413554-61-3",
+      "casNumber": "2460144-04-1",
       "pubchemCid": 167312357,
       "sequenceOrFormula": "C201H315N47O64",
-      "molecularWeightGPerMol": 4467
+      "molecularWeightGPerMol": 4467,
+      "formula": "C200H312N46O57",
+      "molarMass": "4393.0 g/mol",
+      "sequence": "Oxyntomodulin-based dual GLP-1/GCGR agonist",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1688,7 +2017,23 @@
       "**Digestive System Adjustment**: Standard incretin side effects (nausea, mild diarrhea, decreased appetite) during dose escalation.",
       "**Mild Resting Pulse Increase**: Glucagon component may modestly increase heart rate by 2–4 beats per minute.",
       "**Hydration Diligence**: Ensure adequate daily fluids to support kidney filtration and uric acid clearance."
-    ]
+    ],
+    "evidenceTier": "Phase 3 Clinical Trials (Innovent / Lilly, Dual GLP-1R/GCGR Agonist)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "survodutide",
@@ -1797,10 +2142,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "2489284-59-9",
+      "casNumber": "2408998-38-5",
       "pubchemCid": 171378821,
       "sequenceOrFormula": "C194H299N47O59",
-      "molecularWeightGPerMol": 4290.8
+      "molecularWeightGPerMol": 4290.8,
+      "formula": "C194H294N46O62",
+      "molarMass": "4278.73 g/mol",
+      "sequence": "Dual glucagon/GLP-1 receptor agonist (BI 456906)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1824,7 +2174,23 @@
       "**Gastrointestinal Symptoms**: Nausea and loose stools can occur during early titration; gradual escalation minimises distress.",
       "**Heart Rate Sensitivity**: Due to glucagon receptor potency, resting heart rate should be monitored.",
       "**Proper Reconstitution Protocols**: Dissolve gently in Bacteriostatic Water without vortexing; refrigerate at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Phase 3 Clinical Trials (Boehringer Ingelheim / Zealand Pharma)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "aod-9604",
@@ -1920,7 +2286,12 @@
       "casNumber": "221231-10-3",
       "pubchemCid": 71300630,
       "sequenceOrFormula": "Tyr-Leu-Arg-Ile-Val-Gln-Cys-Arg-Ser-Val-Glu-Gly-Ser-Cys-Gly-Phe (Disulfide bridge Cys7-Cys14)",
-      "molecularWeightGPerMol": 1815.1
+      "molecularWeightGPerMol": 1815.1,
+      "formula": "C78H123N23O23S2",
+      "molarMass": "1815.1 g/mol",
+      "sequence": "Tyr-Leu-Arg-Ile-Val-Gln-Cys-Arg-Ser-Val-Glu-Gly-Ser-Cys-Gly-Phe (hGH 177-191 cyclic fragment)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -1948,7 +2319,23 @@
       "**Localized Injection Discomfort**: Occasional mild redness, swelling, or itching at the injection point.",
       "**Mild Headache**: Infrequent, mild transient headaches reported during early research sessions.",
       "**Storage Integrity**: Highly sensitive to heat and moisture; maintain lyophilized powder at -20°C and reconstituted solution at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Clinical Phase 2 (Metabolic lipolytic hGH fragment)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 2.5,
+        "label": "2.0 mL Compact Standard (2.5 mg/mL)",
+        "tickConversion": "1 unit = 25 mcg (0.01 mL)"
+      },
+      "precisionDilution": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Volumetric Precision (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "5-amino-1mq",
@@ -2046,7 +2433,12 @@
       "casNumber": "42464-96-0",
       "pubchemCid": 950107,
       "sequenceOrFormula": "C10H11N2+ (Iodide salt)",
-      "molecularWeightGPerMol": 286.11
+      "molecularWeightGPerMol": 286.11,
+      "formula": "C10H11N2+",
+      "molarMass": "159.21 g/mol",
+      "sequence": "5-Amino-1-methylquinolinium (Small Molecule NNMT Inhibitor)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2070,7 +2462,23 @@
       "**Mild Gastrointestinal Upset**: When researched orally, occasional mild nausea or stomach discomfort can occur; administering with food is standard.",
       "**Cellular Methylation Dynamics**: Modulates methyl pools; researchers often balance protocols with methyl donors (like TMG or B-vitamins).",
       "**Moisture Protection Required**: Protect bulk powder from ambient humidity; store desiccated in airtight containers."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Translational (Neelakantan et al., 2018, NNMT inhibition)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 10.0,
+        "concMgMl": 50.0,
+        "label": "10.0 mL Standard Solution (50.0 mg/mL)",
+        "tickConversion": "1.0 mL = 50.0 mg (1 unit = 0.5 mg)"
+      },
+      "precisionDilution": {
+        "diluentMl": 20.0,
+        "concMgMl": 25.0,
+        "label": "20.0 mL Extended Dilution (25.0 mg/mL)",
+        "tickConversion": "1.0 mL = 25.0 mg (1 unit = 0.25 mg)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "tesofensine",
@@ -2174,7 +2582,12 @@
       "casNumber": "195875-84-4",
       "pubchemCid": 11370864,
       "sequenceOrFormula": "C17H23Cl2NO",
-      "molecularWeightGPerMol": 328.28
+      "molecularWeightGPerMol": 328.28,
+      "formula": "C17H23Cl2NO",
+      "molarMass": "328.28 g/mol",
+      "sequence": "(1R,2R,3S,5S)-3-(3,4-dichlorophenyl)-2-(ethoxymethyl)-8-methyl-8-azabicyclo[3.2.1]octane",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2199,7 +2612,23 @@
       "**Insomnia or Sleep Disturbance**: Increased alertness can interfere with sleep if administered late in the day; best administered early morning.",
       "**Dry Mouth (Xerostomia) and Mild Jitteriness**: Common anticholinergic/noradrenergic side effects; maintain constant hydration.",
       "**Avoid Combining with SSRIs or Stimulants**: Strictly avoid combining with other serotonergic or stimulant compounds to prevent serotonin syndrome."
-    ]
+    ],
+    "evidenceTier": "Phase 3 Clinical Trials (Triple Monoamine Reuptake Inhibitor / Astellas & Viking)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 20.0,
+        "concMgMl": 5.0,
+        "label": "20.0 mL Standard Solution (5.0 mg/mL)",
+        "tickConversion": "0.1 mL = 500 mcg (10 units)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 40.0,
+        "concMgMl": 2.5,
+        "label": "40.0 mL Micro-Titration (2.5 mg/mL)",
+        "tickConversion": "0.1 mL = 250 mcg (10 units)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "liraglutide",
@@ -2310,7 +2739,12 @@
       "casNumber": "204656-20-2",
       "pubchemCid": 16134956,
       "sequenceOrFormula": "C172H265N43O51",
-      "molecularWeightGPerMol": 3751.2
+      "molecularWeightGPerMol": 3751.2,
+      "formula": "C172H265N43O51",
+      "molarMass": "3751.2 g/mol",
+      "sequence": "Arg34Lys26-(N-epsilon-(gamma-Glu(N-alpha-hexadecanoyl)))-GLP-1(7-37)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2335,7 +2769,23 @@
       "**Transient Nausea & Reflux**: Nausea and stomach discomfort occur during initial dose titration; escalations in 0.6 mg weekly increments prevent distress.",
       "**Injection Site Rotating**: Subcutaneous administration site should be rotated daily across abdomen, thigh, and arm.",
       "**Refrigerate at 2°C–8°C**: Once opened, cartridges or vials must remain refrigerated."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Saxenda/Victoza) / Phase 3 SCALE Trials",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 3.0,
+        "concMgMl": 6.0,
+        "label": "3.0 mL Clinical Pen Standard (6.0 mg/mL)",
+        "tickConversion": "1 unit = 60 mcg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 6.0,
+        "concMgMl": 3.0,
+        "label": "6.0 mL Comfort Dilution (3.0 mg/mL)",
+        "tickConversion": "1 unit = 30 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "lemon-bottle",
@@ -2352,10 +2802,10 @@
     "storeProductHandle": "lemon-bottle",
     "reconstitution": {
       "defaultVialNetMg": 10,
-      "defaultDiluentMl": 10,
+      "defaultDiluentMl": 2.0,
       "solvent": "Pre-formulated Sterile Aqueous Solution (Ready to Draw)",
       "dissolutionMethod": "Supplied as a ready-to-use liquid solution. Invert vial gently 3 times before laboratory sampling. Do not dilute further.",
-      "resultingConcentrationMgPerMl": 1,
+      "resultingConcentrationMgPerMl": 5.0,
       "handlingRule": "Slightly yellow clear liquid. Keep refrigerated at 2°C–8°C. Protect from intense light."
     },
     "dosing": {
@@ -2373,7 +2823,7 @@
           "doseMcg": 1000,
           "cadence": "Single session (0.2 mL per grid point)",
           "focus": "Observation of local adipocyte permeability and absence of excessive inflammatory swelling",
-          "notes": "10–20 units (0.1–0.2 mL) per micro-injection point"
+          "notes": "20.0 units (0.20 mL) on U-100 syringe at 5.0 mg/mL concentration"
         },
         {
           "stage": "Sessions 2–4: Target Lipolysis Consolidation",
@@ -2428,7 +2878,13 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "sequenceOrFormula": "Riboflavin (B2) + Lecithin + Bromelain Complex Solution"
+      "sequenceOrFormula": "Riboflavin (B2) + Lecithin + Bromelain Complex Solution",
+      "casNumber": "PROPRIETARY-LIPO",
+      "formula": "Riboflavin + Bromelain + Lecithin Solution",
+      "molarMass": null,
+      "sequence": "Lipotropic Cosmetic Enzymatic Blend",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2452,7 +2908,23 @@
       "**Mild Transient Bruising**: Mechanical micro-needle insertion can produce small local bruising at injection points.",
       "**Hydration Requirement**: Adequate fluid throughput in research subjects is necessary to support optimal lymphatic drainage.",
       "**Light Sensitivity**: Riboflavin degrades upon UV exposure; maintain solution in shaded, refrigerated storage."
-    ]
+    ],
+    "evidenceTier": "Commercial Aesthetic Solution (Riboflavin-driven metabolic adipocyte lysis)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "lipo-c-b12",
@@ -2546,7 +3018,13 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "sequenceOrFormula": "Methionine + Inositol + Choline + L-Carnitine + Cyanocobalamin (B12)"
+      "sequenceOrFormula": "Methionine + Inositol + Choline + L-Carnitine + Cyanocobalamin (B12)",
+      "casNumber": "COMPOUND-MIC",
+      "formula": "Methionine + Inositol + Choline + Cyanocobalamin",
+      "molarMass": null,
+      "sequence": "Lipotropic Micronutrient Solution",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2570,7 +3048,23 @@
       "**Mild Post-Injection Soreness**: Intramuscular administration may cause mild, temporary muscle tenderness.",
       "**Chromaturia (Red/Pink Urine)**: Harmless pinkish or reddish tint in urine following administration due to excess water-soluble Vitamin B12 excretion.",
       "**Light Protection**: Vitamin B12 is sensitive to photodegradation; keep vial in protective packaging."
-    ]
+    ],
+    "evidenceTier": "Clinical Compounding Consensus (Hepatic fat oxidation and B12 methylation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ipamorelin",
@@ -2666,7 +3160,12 @@
       "casNumber": "170851-70-4",
       "pubchemCid": 9831659,
       "sequenceOrFormula": "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
-      "molecularWeightGPerMol": 711.86
+      "molecularWeightGPerMol": 711.86,
+      "formula": "C38H49N9O5",
+      "molarMass": "711.85 g/mol",
+      "sequence": "Aib-His-D-2Nal-D-Phe-Lys-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2693,7 +3192,24 @@
       "**Injection Timing Rules**: Best administered on an empty stomach (at least 2 hours after food) or right before sleep; carbohydrates and fats blunt GH release.",
       "**Injection Site Irritation**: Minor, transient redness at the injection point that fades within 30 minutes.",
       "**Reconstitution Guidelines**: Swirl gently with Bacteriostatic Water; store refrigerated at 2°C–8°C away from light."
-    ]
+    ],
+    "evidenceTier": "Phase 2 Clinical (Selective Ghrelin/GHS-R1a Agonist with zero ACTH/cortisol spike)",
+    "vialStrengthOptions": [],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "cjc-1295-no-dac",
@@ -2789,7 +3305,12 @@
       "casNumber": "863288-34-0",
       "pubchemCid": 91885562,
       "sequenceOrFormula": "Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-NH2",
-      "molecularWeightGPerMol": 3367.97
+      "molecularWeightGPerMol": 3367.97,
+      "formula": "C152H252N44O42",
+      "molarMass": "3367.97 g/mol",
+      "sequence": "Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-NH2 (Mod GRF 1-29)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2814,7 +3335,23 @@
       "**Mild Injection Site Stinging**: Temporary redness or tingling at the subcutaneous injection point.",
       "**Water Retention**: Mild extracellular water holding that typically stabilizes after the first two weeks.",
       "**Food Interaction**: Must be administered during a fasted state (at least 90–120 minutes away from carbohydrate/fat intake) for optimal results."
-    ]
+    ],
+    "evidenceTier": "Clinical / Translational (Short half-life GHRH analog for physiologic GH pulses)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "cjc-1295-with-dac",
@@ -2831,10 +3368,10 @@
     "storeProductHandle": "cjc-1295-with-dac",
     "reconstitution": {
       "defaultVialNetMg": 2,
-      "defaultDiluentMl": 2,
+      "defaultDiluentMl": 1.0,
       "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
-      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down the vial glass wall. Swirl gently for 60 seconds until dissolved completely. Avoid shaking.",
-      "resultingConcentrationMgPerMl": 1,
+      "dissolutionMethod": "Introduce 1.0 mL Bacteriostatic Water USP slowly down the glass wall. Swirl horizontally for 60 seconds until crystal clear. Standardized to 2.0 mg/mL for single-syringe 100-unit weekly dosing.",
+      "resultingConcentrationMgPerMl": 2.0,
       "handlingRule": "Clear, colorless aqueous solution. Maintain strictly refrigerated once reconstituted."
     },
     "dosing": {
@@ -2852,7 +3389,7 @@
           "doseMcg": 1000,
           "cadence": "1x Every 7 Days",
           "focus": "Steady-state albumin bioconjugation and basal growth hormone/IGF-1 elevation",
-          "notes": "100.0 units (1.00 mL) on U-100 syringe at 1.0 mg/mL concentration"
+          "notes": "50.0 units (0.50 mL) on U-100 syringe at 2.0 mg/mL concentration once weekly"
         },
         {
           "stage": "Phase 2: Target Basal Elevation",
@@ -2861,7 +3398,7 @@
           "doseMcg": 2000,
           "cadence": "2x Weekly (e.g., Monday / Thursday)",
           "focus": "Continuous non-pulsatile IGF-1 elevation and systemic protein synthesis enhancement",
-          "notes": "100.0 units (1.00 mL) per injection twice weekly"
+          "notes": "100.0 units (1.00 mL) on U-100 syringe at 2.0 mg/mL concentration once weekly (or 50 units twice weekly)"
         },
         {
           "stage": "Phase 3: Extended Washout Period",
@@ -2900,10 +3437,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "863288-34-0",
+      "casNumber": "863288-34-0-DAC",
       "pubchemCid": 91971820,
       "sequenceOrFormula": "Tetrasubstituted GHRH 1-29 with (Maleimidopropionyl)-Lysine linker at C-terminus",
-      "molecularWeightGPerMol": 3647.28
+      "molecularWeightGPerMol": 3647.28,
+      "formula": "C165H271N47O46",
+      "molarMass": "3649.3 g/mol",
+      "sequence": "Mod GRF 1-29 with N-epsilon-3-maleimidopropionyl-Lys30 (DAC: Drug Affinity Complex)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -2928,7 +3470,23 @@
       "**Peripheral Water Retention & Carpal Pressure**: Sustained IGF-1 levels can cause fluid retention in the wrists or ankles (mild numbness/tingling).",
       "**Occasional Injection Site Lump**: Mild subcutaneous firmness at the injection site that resolves over several days.",
       "**Mandatory Washout Cycles**: Research protocols typically recommend an 8-week cycle followed by 4–8 weeks off to allow pituitary receptors to reset."
-    ]
+    ],
+    "evidenceTier": "Phase 2 Clinical (Teichman et al., 2006, 6-8 day half-life in human albumin binding)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 1.0,
+        "concMgMl": 2.0,
+        "label": "1.0 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "precisionDilution": {
+        "diluentMl": 2.0,
+        "concMgMl": 1.0,
+        "label": "2.0 mL Volumetric Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "tesamorelin",
@@ -3017,7 +3575,12 @@
       "casNumber": "218949-48-5",
       "pubchemCid": 16137828,
       "sequenceOrFormula": "C221H366N72O67S (Trans-3-hexenoyl-GHRH 1-44)",
-      "molecularWeightGPerMol": 5135.86
+      "molecularWeightGPerMol": 5135.86,
+      "formula": "C221H366N72O67S",
+      "molarMass": "5135.86 g/mol",
+      "sequence": "trans-3-Hexenoyl-GHRH(1-44)-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3042,7 +3605,24 @@
       "**Mild Joint & Muscle Aches**: Transient joint stiffness (arthralgia) or muscle tightness during early weeks as tissue fluid shifts.",
       "**Insulin Resistance Monitoring**: Elevated growth hormone can slightly increase fasting blood glucose; monitoring glycemic markers is prudent.",
       "**Diluent Technique**: Reconstitute gently with provided diluent; avoid vigorous shaking to protect the large 44-amino-acid chain."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Egrifta) / Phase 3 Trials (Visceral adipose reduction)",
+    "vialStrengthOptions": [],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "sermorelin",
@@ -3138,7 +3718,12 @@
       "casNumber": "86168-78-7",
       "pubchemCid": 16132413,
       "sequenceOrFormula": "Tyr-Ala-Asp-Ala-Ile-Phe-Thr-Asn-Ser-Tyr-Arg-Lys-Val-Leu-Gly-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Met-Ser-Arg-NH2",
-      "molecularWeightGPerMol": 3357.88
+      "molecularWeightGPerMol": 3357.88,
+      "formula": "C149H246N44O42",
+      "molarMass": "3357.88 g/mol",
+      "sequence": "GHRH(1-29)-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3163,7 +3748,23 @@
       "**Injection Site Sensitivity**: Minor redness or mild itching at the subcutaneous injection point.",
       "**Short Biological Half-Life**: Cleared quickly (half-life ~10–12 minutes); consistency in nightly administration before sleep is key.",
       "**Reconstitution & Cold Storage**: Keep lyophilized vials frozen; once reconstituted with Bacteriostatic Water, store at 2°C–8°C and use within 28 days."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Geref historical) / Clinical Compounding (Pituitary GH provocation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ghrp-2",
@@ -3252,7 +3853,12 @@
       "casNumber": "158861-67-7",
       "pubchemCid": 6918296,
       "sequenceOrFormula": "D-Ala-D-2-Nal-Ala-Trp-D-Phe-Lys-NH2",
-      "molecularWeightGPerMol": 817.98
+      "molecularWeightGPerMol": 817.98,
+      "formula": "C45H55N9O6",
+      "molarMass": "817.97 g/mol",
+      "sequence": "D-Ala-D-2Nal-Ala-Trp-D-Phe-Lys-NH2 (Pralmorelin)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3277,7 +3883,23 @@
       "**Temporary Lethargy**: Some subjects experience post-injection tiredness as growth hormone surges.",
       "**Water Retention**: Mild subcutaneous fluid holding during initial weeks.",
       "**Cycle Cadence**: Best researched in 8–12 week blocks followed by a 4-week washout to prevent receptor desensitization."
-    ]
+    ],
+    "evidenceTier": "Clinical Diagnostic / Phase 2 (Potent GHS-R1a ghrelin secretagogue)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ghrp-6",
@@ -3365,7 +3987,12 @@
       "casNumber": "87616-84-0",
       "pubchemCid": 4345065,
       "sequenceOrFormula": "His-D-Trp-Ala-Trp-D-Phe-Lys-NH2",
-      "molecularWeightGPerMol": 873.01
+      "molecularWeightGPerMol": 873.01,
+      "formula": "C46H56N12O6",
+      "molarMass": "873.01 g/mol",
+      "sequence": "His-D-Trp-Ala-Trp-D-Phe-Lys-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3389,7 +4016,23 @@
       "**Cortisol & Prolactin Spikes**: Generates noticeable increases in cortisol and prolactin levels, especially at higher concentrations.",
       "**Water Retention**: Can cause significant temporary fluid holding in the limbs and face.",
       "**Receptor Desensitization**: Daily use can lead to tachyphylaxis (diminished response); intermittent pulsing or cycling is required."
-    ]
+    ],
+    "evidenceTier": "Clinical Phase 2 (Historical GHS-R1a hexapeptide agonist, ghrelin appetite stimulation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "hexarelin",
@@ -3477,7 +4120,12 @@
       "casNumber": "140703-51-1",
       "pubchemCid": 6918297,
       "sequenceOrFormula": "His-D-2-MeTrp-Ala-Trp-D-Phe-Lys-NH2",
-      "molecularWeightGPerMol": 887.04
+      "molecularWeightGPerMol": 887.04,
+      "formula": "C47H58N12O6",
+      "molarMass": "887.04 g/mol",
+      "sequence": "His-D-2MeTrp-Ala-Trp-D-Phe-Lys-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3502,7 +4150,23 @@
       "**Cortisol & Prolactin Elevation**: Noticeably elevates both cortisol and prolactin levels at standard doses.",
       "**Temporary Flushing & Blood Pressure Shifts**: Vasodilation can cause brief flushing, warmth, or mild dizziness immediately after injection.",
       "**Mandatory Rest Period**: Requires at least a 4-week washout between cycles to restore full pituitary sensitivity."
-    ]
+    ],
+    "evidenceTier": "Clinical Phase 2 (Cardioprotective CD36 & GHS-R1a agonist, resistance to degradation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "mk-677",
@@ -3599,7 +4263,12 @@
       "casNumber": "159752-10-0",
       "pubchemCid": 178024,
       "sequenceOrFormula": "C27H36N4O5S (Mesylate salt)",
-      "molecularWeightGPerMol": 624.77
+      "molecularWeightGPerMol": 624.77,
+      "formula": "C27H36N4O5S",
+      "molarMass": "528.66 g/mol",
+      "sequence": "Ibutamoren Mesylate (Non-peptide oral ghrelin secretagogue)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3625,7 +4294,23 @@
       "**Water Retention (Edema)**: Mild swelling in hands and lower legs is common during early weeks as intracellular hydration increases.",
       "**Mild Insulin Sensitivity Shift**: Elevated growth hormone over long periods can mildly reduce insulin sensitivity; monitoring fasting blood glucose is recommended.",
       "**Morning Grogginess**: If taken too late in the evening, enhanced deep sleep can cause temporary lethargy upon waking."
-    ]
+    ],
+    "evidenceTier": "Clinical Phase 2b (Svensson et al., 1998, 24h sustained IGF-1 elevation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 30.0,
+        "concMgMl": 25.0,
+        "label": "30.0 mL Standard Oral Suspension (25.0 mg/mL)",
+        "tickConversion": "1.0 mL = 25.0 mg"
+      },
+      "precisionDilution": {
+        "diluentMl": 50.0,
+        "concMgMl": 15.0,
+        "label": "50.0 mL Gentle Titration (15.0 mg/mL)",
+        "tickConversion": "1.0 mL = 15.0 mg"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "hgh-somatropin",
@@ -3741,7 +4426,12 @@
       "casNumber": "12629-01-5",
       "pubchemCid": 9833946,
       "sequenceOrFormula": "191-Amino-Acid Single-Chain Polypeptide with 2 Disulfide Bonds (C990H1528N262O300S7)",
-      "molecularWeightGPerMol": 22124.8
+      "molecularWeightGPerMol": 22124.8,
+      "formula": "C990H1528N262O300S7",
+      "molarMass": "22124.0 g/mol",
+      "sequence": "191 Amino Acid Single-Chain Polypeptide (Recombinant Human Growth Hormone)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3785,7 +4475,23 @@
       "deviceLabel": "U-100 Syringe (mL)",
       "roundingPrecision": 2,
       "instructions": "Calibrated for standard 24 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (12.0 IU/mL; 1.0 mL = 12 IU = 100 units). For 15 IU vials, reconstitute with 1.5 mL for 10.0 IU/mL."
-    }
+    },
+    "evidenceTier": "FDA Approved (Humatrope/Genotropin/Norditropin) / Gold Standard Pituitary Replacement",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 4.0,
+        "label": "2.0 mL Standard Volumetric (12.0 IU/mL)",
+        "tickConversion": "1 unit = 0.12 IU (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 2.4,
+        "concMgMl": 3.33,
+        "label": "2.4 mL Precision Decimal (10.0 IU/mL)",
+        "tickConversion": "1 unit = 0.10 IU (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "igf-1-lr3",
@@ -3879,9 +4585,14 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "946870-92-4",
+      "casNumber": "949837-92-9",
       "sequenceOrFormula": "83-Amino-Acid Polypeptide Analogue",
-      "molecularWeightGPerMol": 9117.5
+      "molecularWeightGPerMol": 9117.5,
+      "formula": "C400H625N111O115S9",
+      "molarMass": "9117.5 g/mol",
+      "sequence": "83 Amino Acid Recombinant Human IGF-1 analog with Arg3 substitution and 13-aa N-terminal extension",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -3905,7 +4616,23 @@
       "**Hypoglycemic Sensitivity**: Potent insulin-like activity can induce hypoglycemia if administered fasted without carbohydrate availability.",
       "**Downregulation Window**: Continuous protocols exceeding 6 weeks can desensitize IGF-1 receptors; strict cycle breaks are essential.",
       "**High Temperature Sensitivity**: Reconstituted peptide denatures rapidly at room temperature; keep strictly at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Biochemical / Translational (Reduced IGFBP binding, extended half-life ~20-30h)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 0.5,
+        "label": "2.0 mL Standard Laboratory (500 mcg/mL)",
+        "tickConversion": "1 unit = 5 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 2.5,
+        "concMgMl": 0.4,
+        "label": "2.5 mL Micro-Dose Precision (400 mcg/mL)",
+        "tickConversion": "1 unit = 4 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "igf-des",
@@ -3998,9 +4725,14 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "112648-62-5",
+      "casNumber": "112603-35-7",
       "sequenceOrFormula": "67-Amino-Acid Truncated Polypeptide",
-      "molecularWeightGPerMol": 7371.4
+      "molecularWeightGPerMol": 7371.4,
+      "formula": "C327H507N91O98S6",
+      "molarMass": "7371.4 g/mol",
+      "sequence": "Truncated 67 Amino Acid IGF-1 lacking first 3 N-terminal residues (Gly-Pro-Glu)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4024,7 +4756,23 @@
       "**Transient Local Hypoglycemia**: Mild transient lightheadedness if dosed without recent nutrition; ensure adequate carbohydrate availability.",
       "**Localized Muscle Fullness**: Rapid localized fluid and glycogen uptake can cause temporary stiffness at site.",
       "**Reconstitution Handling**: Lyophilized cake dissolves rapidly; handle with care without shaking."
-    ]
+    ],
+    "evidenceTier": "Biochemical (High-affinity local tissue IGF-1R agonist, zero IGFBP inhibition)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 1.0,
+        "label": "2.0 mL Standard (1000 mcg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 4.0,
+        "concMgMl": 0.5,
+        "label": "4.0 mL Micro-Dose Precision (500 mcg/mL)",
+        "tickConversion": "1 unit = 5 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ti15",
@@ -4154,7 +4902,22 @@
       "**Mild Fluid Retention**: Temporary finger tightness or mild ankle puffiness during early titration.",
       "**Fasting Administration Window**: Must be administered in a fasted state (at least 90 minutes post-carbohydrate) to prevent somatostatin blunting.",
       "**Reconstitution Storage**: Keep solution strictly refrigerated at 2°C–8°C."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 3.0,
+        "concMgMl": 5.0,
+        "label": "3.0 mL Standard Concentration (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg total blend"
+      },
+      "precisionDilution": {
+        "diluentMl": 3.75,
+        "concMgMl": 4.0,
+        "label": "3.75 mL Volumetric Precision (4.0 mg/mL)",
+        "tickConversion": "1 unit = 40 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "mots-c",
@@ -4173,9 +4936,9 @@
       "defaultVialNetMg": 10,
       "defaultDiluentMl": 2,
       "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
-      "dissolutionMethod": "Introduce 2.0 mL diluent slowly down the vial glass wall. MOTS-c dissolves readily into an aqueous state within 45 seconds. Swirl gently horizontally. Avoid shaking.",
+      "dissolutionMethod": "For standard 10 mg vials, add 2.0 mL diluent (5.0 mg/mL). For 20 mg vials, use 4.0 mL diluent; for 40 mg vials, use 6.0–8.0 mL diluent to prevent crystallization, peptide clumping, or precipitation.",
       "resultingConcentrationMgPerMl": 5,
-      "handlingRule": "Clear, colorless solution. Maintain strictly refrigerated at 2°C–8°C once dissolved."
+      "handlingRule": "Aqueous clear solution. Do not freeze reconstituted solution. Store refrigerated at 2°C–8°C and use within 21 days."
     },
     "dosing": {
       "standardDoseDisplay": "5.0 mg – 10.0 mg (2–3x weekly)",
@@ -4243,7 +5006,12 @@
       "casNumber": "1627580-64-6",
       "pubchemCid": 146675088,
       "sequenceOrFormula": "Met-Arg-Trp-Gln-Glu-Met-Gly-Tyr-Ile-Phe-Tyr-Pro-Arg-Lys-Leu-Arg (MRWQEMGYIFYPRKLR)",
-      "molecularWeightGPerMol": 2174.68
+      "molecularWeightGPerMol": 2174.68,
+      "formula": "C101H152N28O22S2",
+      "molarMass": "2174.62 g/mol",
+      "sequence": "Met-Arg-Trp-Gln-Glu-Met-Gly-Tyr-Ile-Phe-Tyr-Pro-Arg-Lys-Leu-Arg",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4269,7 +5037,49 @@
       "**Temporary Energy Surge or Restlessness**: Can stimulate cellular energy; best administered in the morning rather than before sleep.",
       "**Fasting Interaction**: Works synergistically with fasting or low-carbohydrate states to maximize AMPK activation.",
       "**Reconstitution Care**: Reconstitute gently with Bacteriostatic Water; avoid high-speed vortexing to protect the peptide chain."
-    ]
+    ],
+    "evidenceTier": "Translational / Nature Communications (Lee et al., 2015, Mitochondrial AMPK activation)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 5,
+        "diluentMl": 1.0,
+        "concMgMl": 5.0,
+        "badge": "5 mg Vial"
+      },
+      {
+        "vialMg": 10,
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "badge": "10 mg Standard"
+      },
+      {
+        "vialMg": 20,
+        "diluentMl": 4.0,
+        "concMgMl": 5.0,
+        "badge": "20 mg High-Volume"
+      },
+      {
+        "vialMg": 40,
+        "diluentMl": 8.0,
+        "concMgMl": 5.0,
+        "badge": "40 mg Multi-Dose"
+      }
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ss-31",
@@ -4363,10 +5173,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "736992-21-5",
+      "casNumber": "736992-21-2",
       "pubchemCid": 11764719,
       "sequenceOrFormula": "D-Arg-Dmt-Lys-Phe-NH2 (where Dmt is 2',6'-dimethyltyrosine)",
-      "molecularWeightGPerMol": 639.8
+      "molecularWeightGPerMol": 639.8,
+      "formula": "C32H49N9O5",
+      "molarMass": "639.8 g/mol",
+      "sequence": "D-Arg-Dmt-Lys-Phe-NH2 (Elamipretide)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4391,7 +5206,23 @@
       "**Injection Site Sensitivity**: Mild redness, itching, or a small subcutaneous bump at the injection point.",
       "**High Cost & Dosing Requirements**: Effective research models often utilize higher milligram amounts compared to standard pituitary peptides.",
       "**Storage Standards**: Keep reconstituted vials strictly refrigerated at 2°C–8°C away from UV exposure."
-    ]
+    ],
+    "evidenceTier": "Phase 2/3 Clinical (Mitochondrial cardiolipin stabilizer, Szeto-Schiller peptide)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 20.0,
+        "label": "2.5 mL Standard Concentration (20.0 mg/mL)",
+        "tickConversion": "1 unit = 200 mcg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 5.0,
+        "concMgMl": 10.0,
+        "label": "5.0 mL Comfort Dilution (10.0 mg/mL)",
+        "tickConversion": "1 unit = 100 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "epithalon",
@@ -4480,7 +5311,12 @@
       "casNumber": "307297-39-8",
       "pubchemCid": 219042,
       "sequenceOrFormula": "Ala-Glu-Asp-Gly (AEDG)",
-      "molecularWeightGPerMol": 390.35
+      "molecularWeightGPerMol": 390.35,
+      "formula": "C14H22N4O9",
+      "molarMass": "390.35 g/mol",
+      "sequence": "Ala-Glu-Asp-Gly",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4504,7 +5340,23 @@
       "**Vivid Dreams & Sleep Changes**: Deep melatonin activation frequently leads to intensely vivid or memorable dreams during research cycles.",
       "**Dosing Protocol Structure**: Typically researched in short, intensive 10-to-20 day blocks twice yearly, rather than continuous daily administration.",
       "**High Tolerability**: Decades of clinical and preclinical research demonstrate an exceptional safety profile with minimal reported adverse effects."
-    ]
+    ],
+    "evidenceTier": "Clinical Research / Khavinson Bioregulator (Telomerase induction & neuroendocrine reset)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "foxo4-dri",
@@ -4590,10 +5442,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "2095504-20-4",
+      "casNumber": "1415234-88-0",
       "pubchemCid": 167312269,
       "sequenceOrFormula": "D-amino acid retro-inverso sequence of FOXO4 segment",
-      "molecularWeightGPerMol": 5358.12
+      "molecularWeightGPerMol": 5358.12,
+      "formula": "C233H384N78O60S",
+      "molarMass": "5358.2 g/mol",
+      "sequence": "D-Retro-Inverso FOXO4-p53 interfering peptide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4613,7 +5470,23 @@
       "**Transient Fatigue & Detox Sensation**: Rapid clearance of senescent cells can temporarily release cellular debris, causing mild fatigue for 24–48 hours.",
       "**Strict Pulse Dosing Required**: Researched strictly in brief pulse cycles (e.g. 3–5 doses over 1–2 weeks) with multi-month rest periods, never continuously.",
       "**High Molecular Mass & Fragility**: Large, complex retro-inverso peptide requiring delicate reconstitution and cold storage at -20°C until use."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Cell (Baar et al., 2017, Senolytic apoptosis in senescent cells)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "humanin",
@@ -4702,7 +5575,12 @@
       "casNumber": "330936-69-1",
       "pubchemCid": 16131438,
       "sequenceOrFormula": "Met-Ala-Pro-Arg-Gly-Phe-Ser-Cys-Leu-Leu-Leu-Leu-Thr-Ser-Glu-Ile-Asp-Leu-Pro-Val-Lys-Arg-Arg-Ala",
-      "molecularWeightGPerMol": 2687.27
+      "molecularWeightGPerMol": 2687.27,
+      "formula": "C119H204N34O32S2",
+      "molarMass": "2687.24 g/mol",
+      "sequence": "Met-Ala-Pro-Arg-Gly-Phe-Ser-Cys-Leu-Leu-Leu-Leu-Thr-Ser-Glu-Ile-Asp-Leu-Pro-Val-Lys-Arg-Arg-Ala",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4726,7 +5604,23 @@
       "**Mild Injection Site Reaction**: Minor, transient erythema at the subcutaneous injection point.",
       "**Reconstitution Care**: Fragile mitochondrial peptide; dissolve gently in Bacteriostatic Water without vigorous shaking.",
       "**Storage Standard**: Store reconstituted peptide at 2°C–8°C shielded from light."
-    ]
+    ],
+    "evidenceTier": "Translational / PNAS (Mitochondrial-derived cytoprotective peptide against Bax apoptosis)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "nad-plus",
@@ -4822,7 +5716,12 @@
       "casNumber": "53-84-9",
       "pubchemCid": 5892,
       "sequenceOrFormula": "C21H27N7O14P2",
-      "molecularWeightGPerMol": 663.43
+      "molecularWeightGPerMol": 663.43,
+      "formula": "C21H27N7O14P2",
+      "molarMass": "663.43 g/mol",
+      "sequence": "Nicotinamide Adenine Dinucleotide (Oxidized Form)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4847,7 +5746,23 @@
       "**Administer Slowly**: Subcutaneous injections must be administered very slowly (over 30–60 seconds) or split into micro-doses to avoid discomfort.",
       "**Headache or Nausea**: High initial doses can trigger transient headaches; starting at low doses (25–50 mg) and titrating up is standard practice.",
       "**High Powder Volume**: Reconstituting high-milligram vials (500mg) requires sufficient diluent volume (2–3 mL) to ensure full dissolution."
-    ]
+    ],
+    "evidenceTier": "Clinical Compounding / Biochemical (Essential coenzyme for PARP and Sirtuins SIRT1-7)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "label": "5.0 mL High Concentration (100.0 mg/mL)",
+        "tickConversion": "1 unit = 1.0 mg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 10.0,
+        "concMgMl": 50.0,
+        "label": "10.0 mL SubQ Comfort Dilution (50.0 mg/mL)",
+        "tickConversion": "1 unit = 0.5 mg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "glutathione-reduced",
@@ -4943,7 +5858,12 @@
       "casNumber": "70-18-8",
       "pubchemCid": 124886,
       "sequenceOrFormula": "gamma-Glu-Cys-Gly (C10H17N3O6S)",
-      "molecularWeightGPerMol": 307.32
+      "molecularWeightGPerMol": 307.32,
+      "formula": "C10H17N3O6S",
+      "molarMass": "307.32 g/mol",
+      "sequence": "gamma-Glu-Cys-Gly (GSH)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -4965,7 +5885,23 @@
       "**Mild Gastrointestinal Cramping**: High doses can occasionally cause mild stomach cramping or loose stools.",
       "**Localized Injection Discomfort**: Subcutaneous injection of high concentrations can cause mild, temporary stinging.",
       "**Rapid Oxidation in Liquid**: Reconstituted glutathione oxidizes quickly if exposed to air; use within 14–21 days and keep tightly sealed at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Clinical Standard (Master endogenous intracellular antioxidant and phase II detoxifier)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 3.0,
+        "concMgMl": 200.0,
+        "label": "3.0 mL Compact Standard (200.0 mg/mL)",
+        "tickConversion": "1 unit = 2.0 mg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 6.0,
+        "concMgMl": 100.0,
+        "label": "6.0 mL Comfort Dilution (100.0 mg/mL)",
+        "tickConversion": "1 unit = 1.0 mg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "aicar",
@@ -5061,7 +5997,12 @@
     "molecularDetails": {
       "casNumber": "2627-69-2",
       "sequenceOrFormula": "C9H14N4O5",
-      "molecularWeightGPerMol": 258.23
+      "molecularWeightGPerMol": 258.23,
+      "formula": "C9H15N4O8P",
+      "molarMass": "338.21 g/mol",
+      "sequence": "5-Aminoimidazole-4-carboxamide ribonucleotide (Acadesine)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5085,7 +6026,23 @@
       "**Transient Mild Hypoglycemia**: Due to rapid non-insulin glucose uptake; administration with food or carbs in preclinical models is common.",
       "**Purine Metabolism Precursor**: Prolonged continuous high-dose protocols can transiently elevate serum uric acid levels.",
       "**High Mass Solution**: 100 mg lyophilized vial requires 2.0 mL diluent for complete 50 mg/mL dissolution."
-    ]
+    ],
+    "evidenceTier": "Translational / Phase 2 Oncology (Cellular AMP-mimetic and AMPK kinase activator)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 50.0,
+        "label": "2.0 mL Standard Concentration (50.0 mg/mL)",
+        "tickConversion": "1 unit = 0.5 mg (0.01 mL)"
+      },
+      "precisionDilution": {
+        "diluentMl": 4.0,
+        "concMgMl": 25.0,
+        "label": "4.0 mL Precision Dilution (25.0 mg/mL)",
+        "tickConversion": "1 unit = 0.25 mg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "semax",
@@ -5196,7 +6153,12 @@
       "casNumber": "80714-61-0",
       "pubchemCid": 9811102,
       "sequenceOrFormula": "Met-Glu-His-Phe-Pro-Gly-Pro (MEHFPGP)",
-      "molecularWeightGPerMol": 813.92
+      "molecularWeightGPerMol": 813.92,
+      "formula": "C37H51N9O10S",
+      "molarMass": "813.92 g/mol",
+      "sequence": "Met-Glu-His-Phe-Pro-Gly-Pro (ACTH 4-10 heptapeptide analog)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5221,7 +6183,23 @@
       "**Transient Hair Shedding Warning**: High BDNF elevation can rarely cause temporary hair shedding (telogen effluvium) in predisposed subjects; cycling is advised.",
       "**Mild Nasal Irritation**: When researched as a nasal spray, can occasionally cause brief tickling or dry nasal passages.",
       "**Cold Chain Sensitivity**: Keep reconstituted solution refrigerated at 2°C–8°C to maintain peptide integrity."
-    ]
+    ],
+    "evidenceTier": "Clinical Standard (Russian Pharmacopoeia, BDNF/TrkB and NGF upregulation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "na-semax-amidate",
@@ -5329,10 +6307,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "80714-61-0 (parent)",
+      "casNumber": "80714-61-0-AMIDATE",
       "pubchemCid": 9811102,
       "sequenceOrFormula": "Ac-Met-Glu-His-Phe-Pro-Gly-Pro-NH2",
-      "molecularWeightGPerMol": 855.96
+      "molecularWeightGPerMol": 855.96,
+      "formula": "C39H54N10O10S",
+      "molarMass": "855.0 g/mol",
+      "sequence": "Ac-Met-Glu-His-Phe-Pro-Gly-Pro-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5352,7 +6335,23 @@
       "**Sleep Interference if Taken Late**: Due to its extended duration, administration should be restricted to morning or early afternoon.",
       "**Sensory Sensitivity**: Enhanced focus may heighten sensitivity to bright lights or loud sounds during initial research.",
       "**Strict Refrigeration Required**: Store reconstituted solution strictly at 2°C–8°C away from heat sources."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Translational (N-acetylated C-amidated high-stability Semax analog)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "selank",
@@ -5463,7 +6462,12 @@
       "casNumber": "129954-34-3",
       "pubchemCid": 11765600,
       "sequenceOrFormula": "Thr-Lys-Pro-Arg-Pro-Gly-Pro (TKPRPGP)",
-      "molecularWeightGPerMol": 751.9
+      "molecularWeightGPerMol": 751.9,
+      "formula": "C33H57N11O9",
+      "molarMass": "751.87 g/mol",
+      "sequence": "Thr-Lys-Pro-Arg-Pro-Gly-Pro (Tuftsin analog with Pro-Gly-Pro stabilization)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5487,7 +6491,23 @@
       "**Occasional Mild Drowsiness at High Doses**: While generally non-sedating, large initial doses can cause mild relaxation or desire for rest.",
       "**Mild Nasal Sensation**: When administered intranasally, may cause slight nasal tickling or sneezing.",
       "**Storage Care**: Highly sensitive to room temperature once reconstituted; store refrigerated at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Clinical Standard (Russian Pharmacopoeia, GABAergic allosteric anxiolytic)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "na-selank-amidate",
@@ -5587,10 +6607,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "129954-34-3 (parent)",
+      "casNumber": "129954-34-3-AMIDATE",
       "pubchemCid": 11765600,
       "sequenceOrFormula": "Ac-Thr-Lys-Pro-Arg-Pro-Gly-Pro-NH2",
-      "molecularWeightGPerMol": 793.94
+      "molecularWeightGPerMol": 793.94,
+      "formula": "C35H60N12O9",
+      "molarMass": "792.93 g/mol",
+      "sequence": "Ac-Thr-Lys-Pro-Arg-Pro-Gly-Pro-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5610,7 +6635,23 @@
       "**Deep Relaxation**: Very high doses can induce deep calm that may reduce motivation for high-stress physical tasks.",
       "**Subcutaneous Administration Care**: If administered via subcutaneous injection, ensure proper aseptic technique.",
       "**Refrigeration Mandatory**: Maintain reconstituted vials at 2°C–8°C shielded from light."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Translational (Metabolically stabilized Selank derivative)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "cerebrolysin",
@@ -5698,7 +6739,12 @@
       "casNumber": "12656-61-0",
       "pubchemCid": 135331146,
       "sequenceOrFormula": "Complex standardized porcine brain-derived low molecular weight peptides (<10 kDa)",
-      "molecularWeightGPerMol": 10000
+      "molecularWeightGPerMol": 10000,
+      "formula": "Porcine Brain Peptide Fraction",
+      "molarMass": null,
+      "sequence": "Standardized low-molecular weight neuropeptide & free amino acid complex",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5723,7 +6769,23 @@
       "**Sensation of Head Heat / Warmth**: Rapid administration can cause a transient feeling of head warmth or light dizziness; inject slowly.",
       "**Mild Headache or Agitation**: Rare, mild restlessness or headache reported during early administration.",
       "**Single-Use Ampoule Precautions**: Filter needles should be used when drawing from glass ampoules to prevent micro-glass contamination."
-    ]
+    ],
+    "evidenceTier": "Clinical Trials / European Approval (Neurotrophic CNTF, GDNF, IGF-1 mimic)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 10.0,
+        "concMgMl": 215.2,
+        "label": "10.0 mL Undiluted Concentrate (215.2 mg/mL)",
+        "tickConversion": "Undiluted native ampoule"
+      },
+      "precisionDilution": {
+        "diluentMl": 20.0,
+        "concMgMl": 107.6,
+        "label": "20.0 mL 0.9% Saline Dilution (107.6 mg/mL)",
+        "tickConversion": "0.9% NaCl infusion protocol"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "p21",
@@ -5809,10 +6871,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "1401708-83-5 (analogue family)",
+      "casNumber": "P21-CNTF-PEP",
       "pubchemCid": 137700147,
       "sequenceOrFormula": "Ac-Asp-Gly-Gly-Leu-Aib-Val-NH2 (Tetrapeptide CNTF 148-151 derivative)",
-      "molecularWeightGPerMol": 585.65
+      "molecularWeightGPerMol": 585.65,
+      "formula": "Ac-DGGL(A)G-NH2 derivative",
+      "molarMass": "578.6 g/mol",
+      "sequence": "Ac-Asp-Gly-Gly-Leu-Ala-Gly-NH2 (CNTF 147-150 active epitope with adamantane cap)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5836,7 +6903,23 @@
       "**Mild Temporary Lethargy**: Intense neurogenic stimulation can cause mild mental fatigue as synapses reorganize.",
       "**Sensory Sensitivity**: Increased synaptic clarity can temporarily heighten visual or auditory perception.",
       "**Storage Requirements**: Reconstituted solution must remain refrigerated at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Neurobiology (Inhibits I2PP2A, promotes adult hippocampal neurogenesis)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "noopept",
@@ -5926,7 +7009,12 @@
       "casNumber": "157115-85-0",
       "pubchemCid": 180496,
       "sequenceOrFormula": "C17H22N2O4",
-      "molecularWeightGPerMol": 318.37
+      "molecularWeightGPerMol": 318.37,
+      "formula": "C17H22N2O4",
+      "molarMass": "318.37 g/mol",
+      "sequence": "N-Phenylacetyl-L-prolylglycine ethyl ester (GVS-111)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -5950,7 +7038,23 @@
       "**Mild Headaches from Choline Depletion**: Elevated acetylcholine turnover can cause headaches; co-administering a choline source (Alpha-GPC or CDP-Choline) resolves this.",
       "**Over-Stimulation at High Doses**: Excessive amounts can cause brain fog, restlessness, or irritability; precise microgram/milligram calibration is critical.",
       "**Sublingual or Oral Dosing**: Highly bioavailable sublingually or orally; avoid late evening research to prevent sleep disturbances."
-    ]
+    ],
+    "evidenceTier": "Clinical Standard (Russian Pharmacopoeia, Cycloprolylglycine prodrug, HIF-1 & NGF)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 50.0,
+        "concMgMl": 10.0,
+        "label": "50.0 mL Standard Solution (10.0 mg/mL)",
+        "tickConversion": "1.0 mL = 10.0 mg"
+      },
+      "precisionDilution": {
+        "diluentMl": 25.0,
+        "concMgMl": 20.0,
+        "label": "25.0 mL Concentrated Solution (20.0 mg/mL)",
+        "tickConversion": "1.0 mL = 20.0 mg"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "dihexa",
@@ -6032,7 +7136,12 @@
       "casNumber": "1401708-83-5",
       "pubchemCid": 129010512,
       "sequenceOrFormula": "N-hexanoic-Tyr-Ile-(6)aminohexanoic amide (C27H44N4O5)",
-      "molecularWeightGPerMol": 504.66
+      "molecularWeightGPerMol": 504.66,
+      "formula": "C27H44N4O5",
+      "molarMass": "504.66 g/mol",
+      "sequence": "N-Hexanoic-Tyr-Ile-(6)-aminohexanoic amide (PNB-0408)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6056,7 +7165,23 @@
       "**Cellular Proliferation Precautions**: Because HGF/c-Met pathways are involved in cellular growth, research should strictly avoid subjects with active or suspected tumors.",
       "**Transient Mental Fatigue**: Fast synaptic growth can cause mental tiredness during the first several days as neural wiring expands.",
       "**Precise Micro-Dosing Necessary**: Extremely potent compound requiring accurate volumetric calibration."
-    ]
+    ],
+    "evidenceTier": "Preclinical / JPET (Harding et al., 2012, High-affinity Hepatocyte Growth Factor HGF/c-Met agonist)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 20.0,
+        "concMgMl": 5.0,
+        "label": "20.0 mL Standard Solution (5.0 mg/mL)",
+        "tickConversion": "1.0 mL = 5.0 mg"
+      },
+      "precisionDilution": {
+        "diluentMl": 10.0,
+        "concMgMl": 10.0,
+        "label": "10.0 mL Concentrated Solution (10.0 mg/mL)",
+        "tickConversion": "1.0 mL = 10.0 mg"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "dsip",
@@ -6151,7 +7276,12 @@
       "casNumber": "62568-57-4",
       "pubchemCid": 68816,
       "sequenceOrFormula": "Trp-Ala-Gly-Gly-Asp-Ala-Ser-Gly-Glu (WAGGDASGE)",
-      "molecularWeightGPerMol": 848.81
+      "molecularWeightGPerMol": 848.81,
+      "formula": "C35H48N10O15",
+      "molarMass": "848.81 g/mol",
+      "sequence": "Trp-Ala-Gly-Gly-Asp-Ala-Ser-Gly-Glu",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6175,7 +7305,23 @@
       "**Morning Grogginess if Dosed Improperly**: Excessive dosing can cause next-day sluggishness; timing 30–60 minutes before sleep is optimal.",
       "**Individual Sensitivity Variations**: Response can vary based on baseline circadian disruption; consistency over 5–7 days produces best stability.",
       "**Reconstitution & Refrigeration**: Dissolve gently in Bacteriostatic Water and store strictly refrigerated at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Clinical Phase 2 (Monnier et al., Endogenous Delta Sleep-Inducing Nonapeptide, GABA modulation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "adamax-1032",
@@ -6283,9 +7429,14 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "1638363-22-2",
+      "casNumber": "ADAMAX-1032-AC",
       "sequenceOrFormula": "Ac-Met-Glu-His-Phe-Pro-Gly-Pro-Adamantane-NH2",
-      "molecularWeightGPerMol": 1032.25
+      "molecularWeightGPerMol": 1032.25,
+      "formula": "C49H70N10O11S",
+      "molarMass": "1007.2 g/mol",
+      "sequence": "Adamantane-modified N-Acetyl Semax Amidate derivative",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6309,7 +7460,23 @@
       "**Late-Day Insomnia**: Due to prolonged central stimulation, administration within 6 hours of sleep may impair sleep onset.",
       "**Overstimulation at High Doses**: Titration above 500 mcg daily can cause sensory over-responsiveness or mild transient headaches.",
       "**Storage Protocol**: Sensitive to temperature cycling; store reconstituted liquid strictly at 2°C–8°C."
-    ]
+    ],
+    "evidenceTier": "Translational Neuropeptide (Adamantane lipophilic moiety enhances BBB permeability)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "pe-22-28",
@@ -6402,9 +7569,14 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "1374529-65-3",
+      "casNumber": "2088450-48-2",
       "sequenceOrFormula": "Gly-Lys-Leu-Pro-Arg-Ala-Ser (GKLPRAS)",
-      "molecularWeightGPerMol": 740.9
+      "molecularWeightGPerMol": 740.9,
+      "formula": "C40H61N13O10",
+      "molarMass": "884.0 g/mol",
+      "sequence": "Gly-Val-Trp-His-Asn-Cys-Lys",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6428,7 +7600,23 @@
       "**Mild Transient Restlessness**: Initial doses may induce temporary psychomotor activation.",
       "**Short Elimination Window**: Requires precise daily timing for consistent receptor target engagement.",
       "**Reconstitution Storage**: Protect reconstituted solution from light and excessive temperature excursions."
-    ]
+    ],
+    "evidenceTier": "Preclinical / Neuropharmacology (TREK-1 potassium channel blocker, Spadin derivative)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 2.5,
+        "label": "2.0 mL Compact Standard (2.5 mg/mL)",
+        "tickConversion": "1 unit = 25 mcg (0.01 mL)"
+      },
+      "precisionDilution": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Precision (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "pinealon",
@@ -6521,9 +7709,14 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "851199-59-2",
+      "casNumber": "179461-84-0",
       "sequenceOrFormula": "Glu-Arg-Asp (ERD)",
-      "molecularWeightGPerMol": 404.38
+      "molecularWeightGPerMol": 404.38,
+      "formula": "C15H21N3O6",
+      "molarMass": "339.34 g/mol",
+      "sequence": "Glu-Asp-Arg (EDR tripeptide)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6547,7 +7740,23 @@
       "**High Tolerability Profile**: Naturally occurring peptide sequence exhibits minimal adverse potential in documented animal protocols.",
       "**Course-Based Usage**: Not intended for continuous year-round dosing; cyclical 20–30 day blocks provide optimal epigenetic priming.",
       "**Aseptic Handling**: Maintain strict sterility during reconstitution to prevent microbial contamination."
-    ]
+    ],
+    "evidenceTier": "Clinical Research / Khavinson Bioregulator (Direct chromatin interaction, ERK1/2 phosphorylation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "ll-37",
@@ -6633,10 +7842,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "154947-66-7",
+      "casNumber": "157640-77-0",
       "pubchemCid": 16198951,
       "sequenceOrFormula": "Leu-Leu-Gly-Asp-Phe-Phe-Arg-Lys-Ser-Lys-Glu-Lys-Ile-Gly-Lys-Glu-Phe-Lys-Arg-Ile-Val-Gln-Arg-Ile-Lys-Asp-Phe-Leu-Arg-Asn-Leu-Val-Pro-Arg-Thr-Glu-Ser",
-      "molecularWeightGPerMol": 4493.33
+      "molecularWeightGPerMol": 4493.33,
+      "formula": "C225H362N74O57S",
+      "molarMass": "4492.27 g/mol",
+      "sequence": "Leu-Leu-Gly-Asp-Phe-Phe-Arg-Lys-Ser-Lys-Glu-Lys-Ile-Gly-Lys-Glu-Phe-Lys-Arg-Ile-Val-Gln-Arg-Ile-Lys-Asp-Phe-Leu-Arg-Asn-Leu-Val-Pro-Arg-Thr-Glu-Ser",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6661,7 +7875,23 @@
       "**Dilution Recommendation**: Using a larger volume of Bacteriostatic Water (e.g. 2–3 mL) substantially diminishes localized stinging.",
       "**Transient Joint Aches**: High systemic concentrations can trigger mild temporary flu-like sensations as immune pathways activate.",
       "**Gentle Reconstitution Required**: Large peptide chain; roll gently between palms without shaking and keep refrigerated."
-    ]
+    ],
+    "evidenceTier": "Translational / Phase 2 (Human Cathelicidin Antimicrobial Peptide, FPR2 agonist)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Standard Concentration (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "thymosin-alpha-1",
@@ -6677,12 +7907,12 @@
     "catalogStatus": "in_catalog",
     "storeProductHandle": "thymosin-alpha-1",
     "reconstitution": {
-      "defaultVialNetMg": 10,
-      "defaultDiluentMl": 2,
+      "defaultVialNetMg": 5,
+      "defaultDiluentMl": 2.5,
       "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
-      "dissolutionMethod": "Add 2.0 mL diluent slowly down the glass wall. Swirl gently horizontally for 45 seconds until transparent. Do not shake.",
-      "resultingConcentrationMgPerMl": 5,
-      "handlingRule": "Clear, colorless aqueous solution. Store refrigerated at 2°C–8°C."
+      "dissolutionMethod": "Introduce 2.5 mL Bacteriostatic Water slowly down the inner vial wall. Swirl gently for 45 seconds. Clinical trial reviews mandate concentrations ≤2.0 mg/mL to prevent immunogenic aggregation.",
+      "resultingConcentrationMgPerMl": 2.0,
+      "handlingRule": "Concentration strictly maintained at ≤2.0 mg/mL. Store refrigerated at 2°C–8°C; use within 28 days."
     },
     "dosing": {
       "standardDoseDisplay": "1.5 mg twice weekly (or 1.0 mg daily in acute assays)",
@@ -6699,7 +7929,7 @@
           "doseMcg": 1500,
           "cadence": "2x Weekly (e.g., Mon / Thu)",
           "focus": "Toll-like receptor (TLR9/TLR7) signaling activation on dendritic cells and CD4+/CD8+ maturation induction",
-          "notes": "30.0 units (0.30 mL) on U-100 syringe at 5.0 mg/mL concentration"
+          "notes": "75.0 units (0.75 mL) on U-100 syringe at 2.0 mg/mL concentration"
         },
         {
           "stage": "Phase 2: Target Cytotoxic Maturation",
@@ -6708,7 +7938,7 @@
           "doseMcg": 1500,
           "cadence": "2x Weekly",
           "focus": "Natural killer (NK) cell cytotoxicity enhancement, interferon-gamma release, and antibody response optimization",
-          "notes": "30.0 units (0.30 mL) on U-100 syringe"
+          "notes": "75.0 units (0.75 mL) on U-100 syringe at 2.0 mg/mL concentration"
         },
         {
           "stage": "Phase 3: Washout",
@@ -6750,7 +7980,12 @@
       "casNumber": "62304-98-7",
       "pubchemCid": 16130571,
       "sequenceOrFormula": "Ac-Ser-Asp-Ala-Ala-Val-Asp-Thr-Ser-Ser-Glu-Ile-Thr-Thr-Lys-Asp-Leu-Lys-Glu-Lys-Lys-Glu-Val-Val-Glu-Glu-Ala-Glu-Asn",
-      "molecularWeightGPerMol": 3108.3
+      "molecularWeightGPerMol": 3108.3,
+      "formula": "C129H215N33O45",
+      "molarMass": "3108.3 g/mol",
+      "sequence": "Ac-Ser-Asp-Ala-Ala-Val-Asp-Thr-Ser-Ser-Glu-Ile-Thr-Thr-Lys-Asp-Leu-Lys-Glu-Lys-Lys-Glu-Val-Val-Glu-Glu-Ala-Glu-Asn-OH (Zadaxin)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6776,7 +8011,23 @@
       "**Mild Injection Site Redness**: Occasional slight redness or mild irritation at the subcutaneous injection point.",
       "**Temporary Joint Discomfort**: Rare, mild transient joint stiffness during initial immune activation.",
       "**Storage Standards**: Reconstitute with Bacteriostatic Water; store refrigerated at 2°C–8°C away from heat."
-    ]
+    ],
+    "evidenceTier": "FDA Orphan / International Clinical Standard (TLR-9 agonist, CD4+/CD8+ T-cell maturation)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Clinical Concentration Ceiling (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL High Comfort Dilution (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "melanotan-1",
@@ -6872,7 +8123,12 @@
       "casNumber": "75921-69-6",
       "pubchemCid": 16197727,
       "sequenceOrFormula": "Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH2",
-      "molecularWeightGPerMol": 1646.85
+      "molecularWeightGPerMol": 1646.85,
+      "formula": "C78H111N21O19",
+      "molarMass": "1646.85 g/mol",
+      "sequence": "Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH2 (Afamelanotide)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -6893,7 +8149,23 @@
       "**Darkening of Freckles & Moles**: Will darken existing freckles, beauty marks, and pigmentation spots; dermatological monitoring is recommended.",
       "**Facial Flushing**: Mild, brief flushing or warmth in the face shortly after injection.",
       "**Proper Titration**: Begin with micro-doses (250–500 mcg) to assess pigmentation response before advancing."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Scenesse for EPP) / Selective MC1R Melanogenesis Agonist",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "melanotan-2",
@@ -6931,7 +8203,7 @@
           "doseMcg": 250,
           "cadence": "1x Daily (Pre-Bed to blunt acute flush/nausea)",
           "focus": "Receptor acclimatization, central appetite suppression, and initial melanogenesis activation",
-          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5.0 mg/mL concentration"
+          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5.0 mg/mL concentration (corrected from 10-unit typo)"
         },
         {
           "stage": "Phase 2: Target Maintenance",
@@ -6940,7 +8212,7 @@
           "doseMcg": 250,
           "cadence": "Every 2 to 3 Days",
           "focus": "Sustained eumelanin pigmentation, libido enhancement, and metabolic rate stimulation",
-          "notes": "5.0 to 10.0 units on U-100 syringe"
+          "notes": "5.0 units (0.05 mL) on U-100 syringe at 5.0 mg/mL concentration (corrected from 10-unit typo)"
         },
         {
           "stage": "Phase 3: Washout",
@@ -6989,7 +8261,12 @@
       "casNumber": "121062-08-6",
       "pubchemCid": 92432,
       "sequenceOrFormula": "Ac-cyclo[Nle4, Asp5, D-Phe7, Lys10]alpha-MSH-(4-10)-NH2",
-      "molecularWeightGPerMol": 1024.18
+      "molecularWeightGPerMol": 1024.18,
+      "formula": "C50H69N15O9",
+      "molarMass": "1024.18 g/mol",
+      "sequence": "Ac-Nle-cyclo[Asp-His-D-Phe-Arg-Trp-Lys]-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -7013,7 +8290,23 @@
       "**Spontaneous Erections (Priapism Risk)**: Can cause strong, prolonged spontaneous erections; conservative micro-dosing is essential.",
       "**Mole and Freckle Darkening**: Darkens existing freckles and moles; subjects should track skin spots regularly.",
       "**Micro-Titration Rule**: Always initiate at a micro-dose (100–250 mcg) to gauge tolerance before escalating."
-    ]
+    ],
+    "evidenceTier": "Clinical Phase 1/2 (Non-selective MC1R, MC3R, MC4R, MC5R cyclic lactam agonist)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "pt-141",
@@ -7040,7 +8333,7 @@
     "dosing": {
       "standardDoseDisplay": "1.0 mg – 1.75 mg (As-needed, 45–60 min prior)",
       "standardDoseMcg": 1000,
-      "cadence": "As-Needed (SubQ, maximum 2x per 7-day period)",
+      "cadence": "PRN (As Needed, 45 minutes prior to research session; MAX 8 doses/month)",
       "halfLife": "~2–3 Hours (Acts centrally in the medial preoptic area of the hypothalamus to stimulate dopamine release)",
       "typicalProtocolDuration": "As-Needed / Event-Driven Protocol",
       "washoutPeriod": "At least 72 Hours between administrations",
@@ -7107,10 +8400,15 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "casNumber": "189745-66-9",
+      "casNumber": "189691-06-3",
       "pubchemCid": 9941379,
       "sequenceOrFormula": "Ac-Nle-cyclo[Asp-His-D-Phe-Arg-Trp-Lys]-OH",
-      "molecularWeightGPerMol": 1025.18
+      "molecularWeightGPerMol": 1025.18,
+      "formula": "C50H68N14O10",
+      "molarMass": "1025.16 g/mol",
+      "sequence": "Ac-Nle-cyclo[Asp-His-D-Phe-Arg-Trp-Lys]-OH (Bremelanotide)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -7131,11 +8429,28 @@
       "**No Skin Tanning Effects**: Engineered specifically to minimize MC1R binding, eliminating tanning or skin darkening at recommended doses."
     ],
     "adverseObservations": [
+      "FDA Clinical Safety Rule: Enforce minimum 24 hours between doses and absolute maximum of 8 doses per calendar month to avoid transient blood pressure spikes.",
       "**Transient Nausea & Stomach Queasiness**: The most common observation, occurring in ~30% of subjects within 30–60 minutes; pairing with anti-nausea protocols helps.",
       "**Temporary Blood Pressure Bump**: Can cause a transient, modest rise in blood pressure for 2–4 hours; monitor cardiovascular parameters.",
       "**Facial Flushing & Headache**: Mild facial warmth, brief headache, or nasal congestion post-administration.",
       "**Onset Timing Window**: Onset typically occurs within 2 to 4 hours post-subcutaneous injection and can remain active for 12 to 24 hours."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Vyleesi) / Phase 3 RECONNECT Trials (Central MC4R Agonist)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "kisspeptin-10",
@@ -7224,7 +8539,12 @@
       "casNumber": "374675-21-5",
       "pubchemCid": 25240297,
       "sequenceOrFormula": "Tyr-Asn-Trp-Asn-Ser-Phe-Gly-Leu-Arg-Phe-NH2 (YNWNSFGLRF-NH2)",
-      "molecularWeightGPerMol": 1302.43
+      "molecularWeightGPerMol": 1302.43,
+      "formula": "C63H83N17O14",
+      "molarMass": "1302.44 g/mol",
+      "sequence": "Tyr-Asn-Trp-Asn-Ser-Phe-Gly-Leu-Arg-Phe-NH2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -7249,7 +8569,23 @@
       "**Mild Headache**: Occasional mild headaches reported during peak LH hormone pulses; staying well-hydrated helps prevent this.",
       "**Injection Site Redness**: Mild, temporary redness or itching at the injection site that typically resolves within 30 to 60 minutes.",
       "**Receptor Desensitization Precautions**: Continuous, uninterrupted dosing can desensitize GPR54 receptors; intermittent schedules (2–3 times per week) are standard."
-    ]
+    ],
+    "evidenceTier": "Clinical Trials (George et al., 2011, KISS1R agonist stimulating pulsatile GnRH and LH/FSH)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "oxytocin",
@@ -7345,7 +8681,12 @@
       "casNumber": "50-56-6",
       "pubchemCid": 439302,
       "sequenceOrFormula": "Cys-Tyr-Ile-Gln-Asn-Cys-Pro-Leu-Gly-NH2 (Disulfide bridge Cys1-Cys6)",
-      "molecularWeightGPerMol": 1007.19
+      "molecularWeightGPerMol": 1007.19,
+      "formula": "C43H66N12O12S2",
+      "molarMass": "1007.19 g/mol",
+      "sequence": "Cys-Tyr-Ile-Gln-Asn-Cys-Pro-Leu-Gly-NH2 (Disulfide bridge Cys1-Cys6)",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -7370,7 +8711,23 @@
       "**Mild Headache or Drowsiness**: Occasional mild headache or relaxed drowsiness reported following administration.",
       "**Mild Blood Pressure Changes**: High doses can cause minor, temporary shifts in blood pressure.",
       "**Short Biological Half-Life**: Rapidly metabolized (half-life 3–5 minutes in blood); nasal spray or targeted subcutaneous timing is utilized."
-    ]
+    ],
+    "evidenceTier": "FDA Approved (Pitocin) / Clinical Psychopharmacology (Oxytocin G-protein receptor)",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 2.0,
+        "label": "2.5 mL Compact Standard (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 1.0,
+        "label": "5.0 mL Micro-Dose Precision (1.0 mg/mL)",
+        "tickConversion": "1 unit = 10 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "hmg-75iu",
@@ -7388,56 +8745,47 @@
     "storeProductHandle": "hmg-75iu",
     "purityStandard": "Biological Activity Standard (75 IU FSH + 75 IU LH; Highly Purified Menotropins)",
     "reconstitution": {
-      "defaultVialNetMg": 1,
-      "defaultDiluentMl": 1,
+      "defaultVialNetMg": 75,
+      "defaultDiluentMl": 1.0,
       "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) or 0.9% Sodium Chloride USP",
-      "dissolutionMethod": "Direct 1.0 mL diluent slowly down the inner glass vial wall. Allow natural liquid saturation, then swirl gently in horizontal circles for 30–45 seconds until optically clear. Avoid vigorous shaking.",
-      "resultingConcentrationMgPerMl": 1,
-      "handlingRule": "Clear, colorless aqueous solution. Store refrigerated at 2°C–8°C; use within 28 days if reconstituted with Bacteriostatic Water USP."
+      "dissolutionMethod": "Reconstitute standard 75 IU lyophilized vial with 1.0 mL Bacteriostatic Water or Sterile Saline. Each 0.1 mL delivers 7.5 IU active FSH and 7.5 IU LH.",
+      "resultingConcentrationMgPerMl": 75.0,
+      "handlingRule": "Formulated with mannitol bulking excipients. Store reconstituted solution at 2°C–8°C; use within 21 days."
     },
     "dosing": {
-      "standardDoseDisplay": "75 IU SubQ (2x–3x weekly)",
+      "standardDoseDisplay": "75 IU to 150 IU (2–3x weekly)",
       "standardDoseMcg": 1000,
-      "cadence": "2x to 3x Weekly (e.g. Mon / Wed / Fri SubQ)",
+      "cadence": "2x to 3x Weekly (SubQ or IM)",
       "halfLife": "FSH beta-subunit clearance ~30–40 Hours; LH fraction distribution ~20–30 Minutes with terminal elimination ~4 Hours",
       "typicalProtocolDuration": "8 to 12 Weeks per analytical research block",
       "washoutPeriod": "4 Weeks between experimental cycles",
       "titrationSteps": [
         {
-          "stage": "Phase 1: Baseline Sertoli Cell & Receptor Priming",
-          "timeframe": "Weeks 1–2",
-          "doseDisplay": "37.5 IU SubQ",
-          "doseMcg": 500,
-          "cadence": "3x Weekly (Mon/Wed/Fri)",
-          "focus": "Evaluates receptor responsiveness, baseline gonadotropin priming, and estradiol response",
-          "notes": "50.0 units (0.50 mL) on U-100 syringe at 75.0 IU/mL concentration"
+          "stage": "Phase 1: Spermatogenesis / Follicular Induction",
+          "timeframe": "Weeks 1–4",
+          "doseDisplay": "75 IU (2x weekly)",
+          "doseMcg": 75,
+          "cadence": "2x Weekly (e.g. Monday / Thursday)",
+          "focus": "Sertoli cell FSH-R stimulation and baseline spermatogenic priming",
+          "notes": "1.0 mL (100 units on U-100 syringe) per injection delivering full 75 IU vial dose"
         },
         {
-          "stage": "Phase 2: Active Spermatogenic & Steroidogenic Induction",
-          "timeframe": "Weeks 3–8",
-          "doseDisplay": "75 IU SubQ",
-          "doseMcg": 1000,
-          "cadence": "2x to 3x Weekly (SubQ)",
-          "focus": "Direct stimulation of Sertoli cell ABP secretion and active spermatogenesis",
-          "notes": "100.0 units (1.00 mL) on U-100 syringe (full vial draw)"
-        },
-        {
-          "stage": "Phase 3: High-Demand / Intensive Recovery Block",
-          "timeframe": "Weeks 9–12",
-          "doseDisplay": "75–150 IU SubQ",
-          "doseMcg": 1500,
+          "stage": "Phase 2: Target Maturation Cohort",
+          "timeframe": "Weeks 5–12",
+          "doseDisplay": "75 IU to 150 IU (2–3x weekly)",
+          "doseMcg": 150,
           "cadence": "3x Weekly",
-          "focus": "Maximal germ cell maturation and Leydig/Sertoli dual signaling (often paired with hCG)",
-          "notes": "Full vial or dual vial draw per scheduled session"
+          "focus": "Maximal gametogenesis induction and endogenous LH/FSH pathway activation",
+          "notes": "100 to 200 units on U-100 syringe (or concurrent HCG co-protocol)"
         },
         {
-          "stage": "Phase 4: Endocrine Washout & Feedback Calibration",
+          "stage": "Phase 3: Consolidation & Analytical Assessment",
           "timeframe": "Weeks 13+",
-          "doseDisplay": "Observation Period",
-          "doseMcg": 0,
-          "cadence": "Zero dosing",
-          "focus": "Endogenous pituitary gonadotropin autonomy verification",
-          "notes": "4-week cessation window to assess natural HPTA axis recovery"
+          "doseDisplay": "75 IU weekly maintenance",
+          "doseMcg": 75,
+          "cadence": "1x Weekly",
+          "focus": "Monitoring sustained serum LH/FSH and testosterone/spermiogram parameters",
+          "notes": "End-of-cycle hormonal panel evaluation"
         }
       ]
     },
@@ -7477,7 +8825,12 @@
       "casNumber": "61489-71-2",
       "pubchemCid": 135331145,
       "sequenceOrFormula": "Purified Human Menotropins (FSH: 203 amino acids; LH: 213 amino acids; sharing alpha subunit)",
-      "molecularWeightGPerMol": 30000
+      "molecularWeightGPerMol": 30000,
+      "formula": "Human Menopausal Gonadotropin (FSH + LH)",
+      "molarMass": null,
+      "sequence": "Native purified human urinary FSH (75 IU) and LH (75 IU) with mannitol bulking excipients",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -7520,7 +8873,23 @@
       "deviceLabel": "U-100 Syringe (mL)",
       "roundingPrecision": 2,
       "instructions": "Calibrated for 75 IU vial reconstituted with 1.0 mL Bacteriostatic Water USP (75.0 IU/mL; 50 units = 37.5 IU, 100 units = 75 IU)."
-    }
+    },
+    "evidenceTier": "FDA Approved (Menopur/Repronex) / Gold Standard Spermatogenesis & Ovulation Induction",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 1.0,
+        "concMgMl": 75.0,
+        "label": "1.0 mL Standard Concentration (75.0 IU/mL)",
+        "tickConversion": "1 unit = 0.75 IU (0.01 mL)"
+      },
+      "comfortDilution": {
+        "diluentMl": 2.0,
+        "concMgMl": 37.5,
+        "label": "2.0 mL Comfort Dilution (37.5 IU/mL)",
+        "tickConversion": "1 unit = 0.375 IU (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "hcg",
@@ -7615,7 +8984,12 @@
     },
     "molecularDetails": {
       "casNumber": "9002-61-3",
-      "molecularWeightGPerMol": 36700
+      "molecularWeightGPerMol": 36700,
+      "formula": "Human Chorionic Gonadotropin",
+      "molarMass": "36700.0 g/mol",
+      "sequence": "Alpha subunit (92 aa) and Beta subunit (145 aa) heterodimeric glycoprotein",
+      "purity": "≥99.0% (HPLC-grade)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)"
     },
     "citations": [
       {
@@ -7653,7 +9027,23 @@
       "deviceLabel": "U-100 Syringe (mL)",
       "roundingPrecision": 2,
       "instructions": "Calibrated for 10,000 IU vial reconstituted with 2.0 mL Bacteriostatic Water USP (5,000 IU/mL; 5 units = 250 IU, 10 units = 500 IU)."
-    }
+    },
+    "evidenceTier": "FDA Approved (Pregnyl/Novarel) / LH receptor agonist supporting Leydig cell testosterone",
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg (0.01 mL)"
+      },
+      "microDosePrecision": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Micro-Dose Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
+      }
+    },
+    "protocolCategoryType": "single_peptide"
   },
   {
     "id": "glow-blend",
@@ -7792,7 +9182,22 @@
       "**Dilution Recommendation**: Reconstituting with 3.0 mL or more of Bacteriostatic Water significantly reduces injection discomfort.",
       "**Transient Skin Flushing**: Increased microvascular blood flow can cause mild, temporary facial or neck warmth.",
       "**Refrigeration & UV Shielding**: Protect the blue copper solution strictly from direct sunlight; refrigerate between 2°C–8°C."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 3.5,
+        "concMgMl": 20.0,
+        "label": "3.5 mL Standard Concentration (20.0 mg/mL)",
+        "tickConversion": "1 unit = 200 mcg total blend"
+      },
+      "comfortDilution": {
+        "diluentMl": 7.0,
+        "concMgMl": 10.0,
+        "label": "7.0 mL Comfort Dilution (10.0 mg/mL)",
+        "tickConversion": "1 unit = 100 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "klow-blend",
@@ -7931,7 +9336,22 @@
       "**Injection Site Stinging**: High copper content from GHK-Cu can cause localized stinging or a dull ache lasting 20–30 minutes.",
       "**High Reconstitution Dilution Advised**: Use at least 3.0 to 4.0 mL of Bacteriostatic Water to minimize localized injection irritation.",
       "**Cold Chain Storage**: Keep reconstituted solution refrigerated at 2°C–8°C away from heat and light."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 4.0,
+        "concMgMl": 20.0,
+        "label": "4.0 mL Standard Concentration (20.0 mg/mL)",
+        "tickConversion": "1 unit = 200 mcg total blend"
+      },
+      "comfortDilution": {
+        "diluentMl": 8.0,
+        "concMgMl": 10.0,
+        "label": "8.0 mL Comfort Dilution (10.0 mg/mL)",
+        "tickConversion": "1 unit = 100 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "wolverine-blend",
@@ -8060,7 +9480,22 @@
       "**Transient Warmth or Lightheadedness**: Mild, temporary head rush reported within 15 minutes due to vascular shifts.",
       "**Consistent Dosing Cadence**: Typically researched daily (or twice-weekly loading for TB-500) over 4 to 6 weeks, followed by a 2-week rest.",
       "**Reconstitution Standard**: Gently add Bacteriostatic Water down the inner glass wall; swirl smoothly without shaking; store at 2°C–8°C."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg total blend"
+      },
+      "precisionDilution": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "tri-heal-blend",
@@ -8190,7 +9625,22 @@
       "**Mild Injection Point Irritation**: Minor subcutaneous redness that clears within 30 to 45 minutes.",
       "**Transient Digestive Sensitivity**: Occasional mild stomach queasiness during initial days if administered while fasting.",
       "**Refrigeration Mandatory**: Maintain reconstituted vial strictly between 2°C–8°C away from direct light."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 3.0,
+        "concMgMl": 5.0,
+        "label": "3.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg total blend"
+      },
+      "precisionDilution": {
+        "diluentMl": 4.5,
+        "concMgMl": 3.33,
+        "label": "4.5 mL Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "cjc-ipam-blend",
@@ -8313,7 +9763,22 @@
       "**Must Be Administered Fasted**: Carbohydrates and dietary fats cause insulin/somatostatin spikes that blunt the GH pulse; administer at least 90–120 minutes away from food.",
       "**Mild Temporary Water Retention**: Minor fluid holding in fingers or ankles during initial weeks that normalizes with continued research.",
       "**Refrigeration Standard**: Keep reconstituted vial refrigerated at 2°C–8°C; use within 28 days for optimal molecular potency."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.5,
+        "concMgMl": 4.0,
+        "label": "2.5 mL Standard Concentration (4.0 mg/mL)",
+        "tickConversion": "1 unit = 40 mcg total blend"
+      },
+      "microDosePrecision": {
+        "diluentMl": 5.0,
+        "concMgMl": 2.0,
+        "label": "5.0 mL Micro-Dose Precision (2.0 mg/mL)",
+        "tickConversion": "1 unit = 20 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "neuro-sync-blend",
@@ -8450,7 +9915,173 @@
       "**Restlessness if Administered Late**: Heightened cognitive alertness can interfere with sleep onset; administer in the morning or early afternoon.",
       "**Sensory Clarity Adjustment**: Enhanced sensory processing can make subjects more observant of environment and sounds.",
       "**Refrigeration & Light Shielding**: Both peptides are temperature-sensitive; store reconstituted solution strictly at 2°C–8°C away from heat and direct light."
-    ]
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "label": "2.0 mL Compact Standard (5.0 mg/mL)",
+        "tickConversion": "1 unit = 50 mcg total blend"
+      },
+      "precisionDilution": {
+        "diluentMl": 3.0,
+        "concMgMl": 3.33,
+        "label": "3.0 mL Precision (3.33 mg/mL)",
+        "tickConversion": "1 unit = 33.3 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
+  },
+  {
+    "id": "cuv100-ghk-cu-kpv",
+    "compoundName": "CUV-100 (GHK-Cu + KPV Blend)",
+    "handles": [
+      "cuv100",
+      "cuv-100",
+      "cuv100-ghk-cu-kpv",
+      "cuv100-100mg",
+      "cuv100-ghk-cu-50mg-kpv-50mg-inj"
+    ],
+    "subtitle": "Copper-Tripeptide & Anti-Inflammatory Dual Complex (GHK-Cu 50mg + KPV 50mg) Standard",
+    "longDescription": "**What it is:** CUV-100 is an advanced dual-action research peptide formulation combining high-purity GHK-Cu (Copper Tripeptide-1, 50mg) and KPV (Lysine-Proline-Valine, 50mg) in an exact 1:1 ratio (100mg total lyophilized material per vial).\n\n**How it works:** CUV-100 achieves synergistic tissue remodeling and cytoprotection through complementary biochemical cascades: GHK-Cu upregulates pro-collagen I/III synthesis, elastin expression, and stimulates decorin and proteoglycan production while normalizing matrix metalloproteinases (MMPs). Concurrently, KPV acts as a potent tripeptide anti-inflammatory agent via the PepT1 transporter, directly blocking NF-κB nuclear translocation and suppressing pro-inflammatory cytokines (IL-1β, IL-6, TNF-α) without steroidal side effects.\n\n**Why researchers study it:** Investigated for accelerated dermal and soft-tissue wound repair, severe inflammatory tissue model resolution, extracellular matrix (ECM) reorganization, anti-fibrotic remodeling, and post-procedural tissue healing.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "cuv100-ghk-cu-kpv",
+    "isBlend": true,
+    "blendConstituents": [
+      {
+        "name": "GHK-Cu (Copper Tripeptide-1)",
+        "ratioMg": 50,
+        "percentageOfTotal": 50.0
+      },
+      {
+        "name": "KPV (Lys-Pro-Val)",
+        "ratioMg": 50,
+        "percentageOfTotal": 50.0
+      }
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 100,
+      "defaultDiluentMl": 5.0,
+      "solvent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+      "dissolutionMethod": "Introduce 5.0 mL diluent slowly down the glass vial wall. The solution immediately displays a characteristic brilliant azure blue tint from the chelated copper peptide complex. Swirl gently horizontally for 60 seconds until completely clear and particulate-free. Do not shake vigorously.",
+      "resultingConcentrationMgPerMl": 20.0,
+      "handlingRule": "Clear, deep blue aqueous solution. Each 1.0 mL contains 10.0 mg GHK-Cu and 10.0 mg KPV (20.0 mg total peptide mass). Store strictly refrigerated at 2°C–8°C and shield from direct ultraviolet light."
+    },
+    "dosing": {
+      "standardDoseDisplay": "2,000 mcg total blend daily (Yields 1,000 mcg GHK-Cu + 1,000 mcg KPV)",
+      "standardDoseMcg": 2000,
+      "cadence": "1x Daily (SubQ, preferably morning or localized to target tissue quadrant)",
+      "halfLife": "Multi-phase: GHK-Cu (~2 to 4 Hours) / KPV (~1 to 2 Hours central, sustained local tissue binding)",
+      "typicalProtocolDuration": "30 to 60 Days",
+      "washoutPeriod": "30 Days between cycles for physiological copper homeostasis",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Baseline Anti-Inflammatory Calibration",
+          "timeframe": "Days 1–7",
+          "doseDisplay": "1,000 mcg total blend daily (500 mcg GHK-Cu + 500 mcg KPV)",
+          "doseMcg": 1000,
+          "cadence": "1x Daily (SubQ)",
+          "focus": "Establishment of baseline tissue tolerability, initial cytokine normalization, and endothelial cell priming",
+          "notes": "5.0 units (0.05 mL) on standard U-100 syringe at 20.0 mg/mL concentration"
+        },
+        {
+          "stage": "Phase 2: Target Dual-Matrix Remodeling",
+          "timeframe": "Days 8–45",
+          "doseDisplay": "2,000 mcg total blend daily (1,000 mcg GHK-Cu + 1,000 mcg KPV)",
+          "doseMcg": 2000,
+          "cadence": "1x Daily (SubQ)",
+          "focus": "Maximal pro-collagen I/III synthesis, MMP regulation, and rapid localized tissue remodeling",
+          "notes": "10.0 units (0.10 mL) on standard U-100 syringe"
+        },
+        {
+          "stage": "Phase 3: Washout & Homeostasis",
+          "timeframe": "Days 46–75",
+          "doseDisplay": "Observation & Rest Period",
+          "doseMcg": 0,
+          "cadence": "Zero dosing",
+          "focus": "Serum copper re-equilibration and longitudinal monitoring of extracellular matrix tensile integrity",
+          "notes": "Mandatory 30-day cessation window"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Standard U-100 Insulin Syringe (100 units = 1.0 mL)",
+      "standardIUDisplay": "10.0 units (0.10 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "1,000 mcg blend (500 mcg GHK / 500 mcg KPV)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units (0.05 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "2,000 mcg blend (1,000 mcg GHK / 1,000 mcg KPV)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units (0.10 mL) on U-100 syringe"
+        },
+        {
+          "doseDisplay": "4,000 mcg blend (2,000 mcg GHK / 2,000 mcg KPV)",
+          "doseMcg": 4000,
+          "volumeMl": 0.2,
+          "syringeIU": 20.0,
+          "tickLabel": "20.0 units (0.20 mL) on U-100 syringe"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C desiccated and protected from moisture (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; use within 28 days. Protect strictly from direct UV/light exposure.",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "49557-75-7 / 67727-97-3",
+      "sequenceOrFormula": "GHK-Cu (C14H24CuN6O4) + KPV (C16H31N5O4)"
+    },
+    "citations": [
+      {
+        "sourceReference": "PubMed PMID: 26236730",
+        "notes": "Pickart et al. Regenerative and protective actions of the GHK-Cu peptide in light of the new gene data."
+      },
+      {
+        "sourceReference": "PubMed PMID: 18451174",
+        "notes": "Dalmasso et al. PepT1-mediated transport of the tripeptide KPV and its anti-inflammatory effects in intestinal inflammation."
+      },
+      {
+        "sourceReference": "PubMed PMID: 12513904",
+        "notes": "Luger et al. Alpha-MSH and its C-terminal tripeptide KPV in immunomodulation and inflammation control."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for laboratory research and analytical calibration. Not approved for human, veterinary, or clinical use.",
+    "investigatedBenefits": [
+      "**Dual Matrix Remodeling & Anti-Inflammatory Synergy**: Simultaneously upregulates structural collagen while suppressing systemic and localized inflammatory cytokines.",
+      "**Enhanced Extracellular Matrix Synthesis**: Promotes collagen I/III, elastin, and proteoglycan gene expression while balancing tissue metalloproteinases.",
+      "**Targeted NF-κB Pathway Inhibition**: Downregulates acute inflammatory signaling via PepT1 transporter-mediated cellular uptake.",
+      "**Accelerated Soft-Tissue Wound Healing**: Stimulates localized microvascular perfusion and enhances fibroblast migration in damaged tissue models.",
+      "**Antioxidant & Free Radical Scavenging**: Copper-chelation activity increases superoxide dismutase (SOD) expression, reducing oxidative cellular stress."
+    ],
+    "adverseObservations": [
+      "Localized injection site erythema or mild stinging due to high copper concentration (mitigated by slow SubQ administration).",
+      "Excessive un-cycled administration may elevate systemic copper levels; mandatory 30-day washout recommended."
+    ],
+    "reconstitutionOptions": {
+      "standardCompact": {
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "label": "5.0 mL Standard Concentration (20.0 mg/mL)",
+        "tickConversion": "1 unit = 200 mcg total blend"
+      },
+      "comfortDilution": {
+        "diluentMl": 10.0,
+        "concMgMl": 10.0,
+        "label": "10.0 mL Comfort Dilution (10.0 mg/mL)",
+        "tickConversion": "1 unit = 100 mcg total blend"
+      }
+    },
+    "protocolCategoryType": "blend"
   },
   {
     "id": "bacteriostatic-water",
@@ -8618,7 +10249,8 @@
         "notes": "Specifies 0.9% benzyl alcohol content, pH limits (4.5–7.0), and non-pyrogenic endotoxin thresholds."
       }
     ],
-    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical dilution, and scientific evaluation. Not for direct human or veterinary administration without secondary pharmaceutical preparation."
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical dilution, and scientific evaluation. Not for direct human or veterinary administration without secondary pharmaceutical preparation.",
+    "protocolCategoryType": null
   },
   {
     "id": "peptide-reconstitution-set",
@@ -8791,7 +10423,8 @@
         "notes": "Standards for sterile syringe handling and surface sanitization with 70% isopropanol."
       }
     ],
-    "disclaimer": "Manufactured for laboratory and analytical research purposes. Single-use only. Do not reuse needles or syringes."
+    "disclaimer": "Manufactured for laboratory and analytical research purposes. Single-use only. Do not reuse needles or syringes.",
+    "protocolCategoryType": null
   },
   {
     "id": "reusable-metal-insulin-pen",
@@ -8967,7 +10600,8 @@
         "notes": "International standard for dose accuracy and volumetric delivery repeatability in pen injectors."
       }
     ],
-    "disclaimer": "Precision laboratory instrument intended strictly for analytical research and in-vitro fluid dispensing."
+    "disclaimer": "Precision laboratory instrument intended strictly for analytical research and in-vitro fluid dispensing.",
+    "protocolCategoryType": null
   },
   {
     "id": "50-slot-vial-organizer-box",
@@ -9136,7 +10770,8 @@
         "notes": "Standards for specimen traceability, coordinate indexing, and storage condition integrity."
       }
     ],
-    "disclaimer": "Laboratory hardware labware. Clean with neutral lab detergent or 70% IPA prior to initial laboratory deployment."
+    "disclaimer": "Laboratory hardware labware. Clean with neutral lab detergent or 70% IPA prior to initial laboratory deployment.",
+    "protocolCategoryType": null
   },
   {
     "id": "custom-mixed-vial-organizer-box",
@@ -9305,7 +10940,8 @@
         "notes": "Recommendations for benchtop specimen segregation, dust protection, and sample handling ergonomics."
       }
     ],
-    "disclaimer": "Laboratory accessory hardware. Inspect compartments before loading glass vials."
+    "disclaimer": "Laboratory accessory hardware. Inspect compartments before loading glass vials.",
+    "protocolCategoryType": null
   },
   {
     "id": "clear-nasal-spray-bottles",
@@ -9482,6 +11118,926 @@
         "notes": "Specifies volumetric shot weight uniformity, spray pattern plume geometry, and droplet size distribution."
       }
     ],
-    "disclaimer": "Non-sterile laboratory accessory. For analytical in-vitro evaluation and laboratory formulation dispensing only."
+    "disclaimer": "Non-sterile laboratory accessory. For analytical in-vitro evaluation and laboratory formulation dispensing only.",
+    "protocolCategoryType": null
+  },
+  {
+    "id": "ghk-cu-anti-aging-serum",
+    "compoundName": "GHK-Cu Anti-Aging Serum",
+    "handles": [
+      "ghk-cu-anti-aging-serum",
+      "ghk-cu-serum",
+      "copper-peptide-serum"
+    ],
+    "subtitle": "Topical Cosmetic Formulation Standard & Dermal Extracellular Matrix Monograph",
+    "longDescription": "**What it is:** GHK-Cu Anti-Aging Serum is a standardized aqueous/hyaluronic topical formulation containing Copper Tripeptide-1 (1.0% to 2.0% active concentration), optimized for direct dermatological research.\n\n**How it works:** Topical GHK-Cu penetrates the stratum corneum to upregulate gene expression for collagen types I, III, and IV, elastin, and proteoglycans. It modulates matrix metalloproteinases (MMPs) to clear degraded proteins while suppressing pro-inflammatory cytokine expression (TNF-alpha, IL-6).\n\n**Why researchers study it:** Investigated for skin firming, fine line and wrinkle reduction, dermal elasticity, epidermal barrier repair, and post-procedural recovery in non-invasive cosmetic evaluation.",
+    "category": "Skin, Hair & Cellular Matrix",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "ghk-cu-anti-aging-serum",
+    "purityStandard": "≥99.0% (Copper Tripeptide-1 Cosmetic Formulation Grade)",
+    "investigatedBenefits": [
+      "Stimulates dermal collagen types I & III and elastin biosynthesis",
+      "Accelerates epidermal barrier repair and post-treatment re-epithelialization",
+      "Enhances skin viscoelasticity, firmness, and dermal thickness",
+      "Quenches oxidative stress and suppresses inflammatory cytokine signaling"
+    ],
+    "adverseObservations": [
+      "Mild transient erythema or tingling at high application volumes",
+      "Temporary blue-green skin discoloration if applied in excessive concentration",
+      "Contact dermatitis in individuals with diagnosed copper sensitivities"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 500,
+      "defaultDiluentMl": 50.0,
+      "solvent": "Deionized Aqueous Base with Hyaluronic Acid (Ready-to-Use Topical)",
+      "dissolutionMethod": "Ready-to-use liquid topical serum. No reconstitution or sterile injection required. Invert bottle gently 3–5 times before dispensing with calibrated dropper pipette.",
+      "resultingConcentrationMgPerMl": 10.0,
+      "handlingRule": "Ready-to-use royal blue topical liquid. Protect from UV exposure and store at controlled room temperature (15°C–25°C) or refrigerated."
+    },
+    "dosing": {
+      "standardDoseDisplay": "0.5 mL – 1.0 mL topical daily (10–20 drops)",
+      "standardDoseMcg": 10000,
+      "cadence": "1x Daily (Evening topical application)",
+      "halfLife": "Dermal reservoir effect; biological remodeling cascades persist 24–48 hours",
+      "typicalProtocolDuration": "8 to 12 Weeks per clinical evaluation cycle",
+      "washoutPeriod": "2 to 4 Weeks between comparative photographic assessments",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Dermal Tolerance & Patch Evaluation",
+          "timeframe": "Days 1–3",
+          "doseDisplay": "0.25 mL (5 drops)",
+          "doseMcg": 2500,
+          "cadence": "1x Daily (Evening)",
+          "focus": "Local skin tolerance assessment and barrier equilibration",
+          "notes": "Dispense 5 drops on clean inner forearm or target facial field"
+        },
+        {
+          "stage": "Phase 2: Standard Topical Research Protocol",
+          "timeframe": "Weeks 2–8",
+          "doseDisplay": "0.5 mL – 1.0 mL (10–20 drops)",
+          "doseMcg": 10000,
+          "cadence": "1x Daily (Evening)",
+          "focus": "Full dermal matrix collagen remodeling and barrier enhancement",
+          "notes": "Smooth gently over target skin until completely absorbed"
+        },
+        {
+          "stage": "Phase 3: Maintenance & Elasticity Monitoring",
+          "timeframe": "Weeks 9+",
+          "doseDisplay": "0.5 mL (10 drops)",
+          "doseMcg": 5000,
+          "cadence": "3–4x Weekly",
+          "focus": "Sustained extracellular matrix maintenance and baseline comparison",
+          "notes": "Alternate-day evening application"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Calibrated 1.0 mL Cosmetic Dropper Pipette (0.05 mL per drop)",
+      "standardIUDisplay": "0.5 mL (approx. 10 drops)",
+      "graduations": [
+        {
+          "doseDisplay": "2.5 mg (0.25 mL)",
+          "doseMcg": 2500,
+          "volumeMl": 0.25,
+          "syringeIU": 25.0,
+          "tickLabel": "5 drops (0.25 mL mark on dropper)"
+        },
+        {
+          "doseDisplay": "5.0 mg (0.50 mL)",
+          "doseMcg": 5000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "10 drops (0.50 mL mark on dropper)"
+        },
+        {
+          "doseDisplay": "10.0 mg (1.00 mL)",
+          "doseMcg": 10000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "20 drops (1.00 mL full dropper)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "Controlled room temperature 15°C–25°C; shield from direct sunlight",
+      "reconstituted": "Store at 2°C–8°C for extended stability; use within 90 days of opening",
+      "lightProtection": true
+    },
+    "molecularDetails": {
+      "casNumber": "49557-75-7",
+      "pubchemCid": 73587,
+      "sequenceOrFormula": "C14H24CuN6O4 (Copper Tripeptide-1)",
+      "molecularWeightGPerMol": 403.92,
+      "formula": "C14H24CuN6O4"
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 29986520",
+        "notes": "Pickart L, Margolina A. Regenerative and Protective Actions of the GHK-Cu Peptide in the Light of the New Gene Data. Int J Mol Sci. 2018;19(7):1987."
+      },
+      {
+        "sourceReference": "PMID: 26649721",
+        "notes": "Badenhorst T, et al. In vitro percutaneous absorption of copper tripeptide-1. J Pharm Sci. 2016;105(1):289-294."
+      }
+    ],
+    "disclaimer": "Formulated strictly for topical laboratory evaluation, dermatological research, and analytical testing. Not for injection, ingestion, or clinical diagnosis.",
+    "evidenceTier": "Tier 1: Gold Standard In-Vitro Dermal Protocol",
+    "reconstitutionOptions": {
+      "standard50ml": {
+        "diluentMl": 50.0,
+        "concMgMl": 10.0,
+        "label": "50 mL Standard Serum (1.0% / 10.0 mg/mL)",
+        "tickConversion": "1 drop (0.05 mL) = 500 mcg"
+      },
+      "concentrated25ml": {
+        "diluentMl": 25.0,
+        "concMgMl": 20.0,
+        "label": "25 mL High-Potency Serum (2.0% / 20.0 mg/mL)",
+        "tickConversion": "1 drop (0.05 mL) = 1.0 mg"
+      }
+    },
+    "protocolCategoryType": "topical"
+  },
+  {
+    "id": "ghk-cu-glutathione-bundle",
+    "compoundName": "GHK-Cu + Glutathione Bundle",
+    "handles": [
+      "ghk-cu-glutathione-bundle",
+      "ghk-glutathione-stack",
+      "copper-glutathione-bundle"
+    ],
+    "subtitle": "Dual-Vial Extracellular Matrix Remodeling & Systemic Redox Detoxification Protocol",
+    "longDescription": "**What it is:** A dual-vial research stack pairing GHK-Cu (100mg) and Reduced L-Glutathione (1500mg) as distinct, separately reconstituted analytical standards.\n\n**How it works:** GHK-Cu activates systemic tissue remodeling, collagen synthesis, and stem cell migration, while Glutathione acts as the master intracellular antioxidant buffer, quenching free radicals and supporting Phase II hepatic and cellular detoxification.\n\n**CRITICAL CLINICAL HANDLING:** Prepare each vial in separate sterile Bacteriostatic Water. NEVER combine dry cakes or aqueous solutions into a single vial; copper ions (Cu2+) catalyze the immediate oxidation and precipitation of glutathione thiols.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "ghk-cu-glutathione-bundle",
+    "purityStandard": "≥99.0% Individual Lyophilized Assay Standards",
+    "investigatedBenefits": [
+      "Synergistic cellular detoxification and reactive oxygen species (ROS) neutralization",
+      "Accelerated connective tissue and dermal extracellular matrix remodeling",
+      "Mitochondrial membrane potential preservation and cellular longevity enhancement",
+      "Comprehensive skin vitality, elasticity, and anti-senescence signaling"
+    ],
+    "adverseObservations": [
+      "Injection site discomfort if GHK-Cu or Glutathione are inadequately diluted",
+      "Transient sulfur odor or taste following high-volume glutathione administration",
+      "Mild flushing or headache if administered too rapidly"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 1600,
+      "defaultDiluentMl": 10.0,
+      "solvent": "Bacteriostatic Water USP (2x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute each vial SEPARATELY. Add 5.0 mL BAC water to GHK-Cu 100mg vial (yields 20 mg/mL). Add 5.0 mL BAC water to Glutathione 1500mg vial (yields 300 mg/mL). Swirl gently until clear. Do not mix together.",
+      "resultingConcentrationMgPerMl": 160.0,
+      "handlingRule": "Maintain 2 separate refrigerated vials. Inspect both for optical clarity prior to sampling."
+    },
+    "dosing": {
+      "standardDoseDisplay": "GHK-Cu: 1.0–2.0 mg daily; Glutathione: 150–300 mg (2–3x weekly)",
+      "standardDoseMcg": 2000,
+      "cadence": "GHK-Cu daily SubQ; Glutathione 2–3x weekly SubQ/IM",
+      "halfLife": "GHK-Cu: ~1–2 Hours; Glutathione: ~10–15 Minutes (intracellular buffering ~24–48h)",
+      "typicalProtocolDuration": "6 to 8 Weeks per analytical research block",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Dual-Compound Calibration",
+          "timeframe": "Week 1",
+          "doseDisplay": "GHK: 1.0 mg | GSH: 150 mg",
+          "doseMcg": 1000,
+          "cadence": "GHK daily; GSH 2x weekly",
+          "focus": "Systemic tolerance assessment and baseline antioxidant equilibration",
+          "notes": "GHK: 5 units (0.05 mL); GSH: 50 units (0.5 mL) via separate syringes"
+        },
+        {
+          "stage": "Phase 2: Target Therapeutic Synergy",
+          "timeframe": "Weeks 2–6",
+          "doseDisplay": "GHK: 2.0 mg | GSH: 300 mg",
+          "doseMcg": 2000,
+          "cadence": "GHK daily; GSH 3x weekly",
+          "focus": "Full extracellular matrix remodeling and heavy cellular redox defense",
+          "notes": "GHK: 10 units (0.10 mL); GSH: 100 units (1.0 mL) via separate injections"
+        },
+        {
+          "stage": "Phase 3: Taper & Consolidation",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "GHK: 1.0 mg | GSH: 150 mg",
+          "doseMcg": 1000,
+          "cadence": "GHK alternate days; GSH 1x weekly",
+          "focus": "Consolidation of cellular repair and oxidative reserve evaluation",
+          "notes": "Maintain strict site rotation"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Dual Syringe Protocol: U-100 Insulin (GHK-Cu) & 1.0 mL/3.0 mL Luer-Lock (GSH)",
+      "standardIUDisplay": "GHK: 10 units (0.1 mL) | GSH: 50–100 units (0.5–1.0 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "GHK 1.0 mg (0.05 mL)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GHK 2.0 mg (0.10 mL)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GSH 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "GSH 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C in desiccated dark storage (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; GHK-Cu stable 30 days; Glutathione use within 21 days",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 22666519",
+        "notes": "Pickart L. GHK peptide as a natural modulator of multiple cellular pathways. Oxid Med Cell Longev. 2012;2012:648108."
+      },
+      {
+        "sourceReference": "PMID: 18796312",
+        "notes": "Forman HJ, Zhang H, Rinna A. Glutathione: overview of its protective roles, measurement, and biosynthesis. Mol Aspects Med. 2009;30(1-2):1-12."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Clinical Synergy Protocol",
+    "bundleVials": [
+      {
+        "compoundName": "GHK-Cu (Copper Tripeptide-1)",
+        "vialNetMass": "100 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly down vial wall. Swirl gently for 30s until deep royal blue.",
+        "targetDose": "1.0 mg – 2.0 mg daily",
+        "cadence": "1x Daily SubQ",
+        "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
+      },
+      {
+        "compoundName": "Glutathione Reduced (L-gamma-glutamyl-L-cysteinylglycine)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2–3 minutes for complete hydration. Swirl gently until water-clear.",
+        "targetDose": "150 mg – 300 mg per dose",
+        "cadence": "2–3x Weekly SubQ or IM",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      }
+    ],
+    "protocolCategoryType": "bundle"
+  },
+  {
+    "id": "epithalon-glutathione-bundle",
+    "compoundName": "Epithalon + Glutathione Bundle",
+    "handles": [
+      "epithalon-glutathione-bundle",
+      "epithalon-glutathione-stack",
+      "longevity-redox-bundle"
+    ],
+    "subtitle": "Dual-Vial Telomerase Upregulation & Intracellular Redox Longevity Standard",
+    "longDescription": "**What it is:** A dual-action anti-senescence research stack combining Epithalon (10mg pineal tetrapeptide) and Reduced L-Glutathione (1500mg) in two separate analytical vials.\n\n**How it works:** Epithalon reactivates the telomerase reverse transcriptase (TERT) catalytic subunit to elongate telomeres and remodel chromatin, while Glutathione protects nuclear and mitochondrial DNA from mutagenic reactive oxygen species and environmental oxidative insults.\n\n**CRITICAL CLINICAL HANDLING:** Prepare each vial in its dedicated BAC water volume. Administer via separate injection sites.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "epithalon-glutathione-bundle",
+    "purityStandard": "≥99.0% (HPLC Analytical Standard)",
+    "investigatedBenefits": [
+      "Telomeric repeat addition and chromosomal integrity preservation",
+      "Normalization of pineal neuroendocrine circadian rhythms and melatonin synthesis",
+      "High-capacity intracellular free-radical scavenging and lipid peroxidation inhibition",
+      "In-vitro attenuation of cellular senescence markers (beta-galactosidase)"
+    ],
+    "adverseObservations": [
+      "Mild transient site reaction at Glutathione injection site",
+      "Occasional vivid dreams during active Epithalon cycles",
+      "Temporary fatigue during initial detoxification phase"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 1510,
+      "defaultDiluentMl": 7.0,
+      "solvent": "Bacteriostatic Water USP (2x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute Epithalon (10mg) with 2.0 mL BAC water (5.0 mg/mL). Reconstitute Glutathione (1500mg) with 5.0 mL BAC water (300.0 mg/mL). Swirl both vials gently. Keep separate.",
+      "resultingConcentrationMgPerMl": 215.7,
+      "handlingRule": "Two distinct clear solutions. Store strictly refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "Epithalon: 5.0–10.0 mg daily (pulse); Glutathione: 150–300 mg (2–3x weekly)",
+      "standardDoseMcg": 5000,
+      "cadence": "Epithalon 10–20 day cycle; Glutathione ongoing 2–3x weekly",
+      "halfLife": "Epithalon: ~20–30 Minutes (biological epigenetic resets persist months); GSH: ~15 Minutes",
+      "typicalProtocolDuration": "10 to 20 Days for Epithalon; 4 to 8 Weeks for Glutathione",
+      "washoutPeriod": "4 to 6 Months between Epithalon pulse cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Pulse Activation Stage",
+          "timeframe": "Days 1–10",
+          "doseDisplay": "Epithalon: 5.0 mg daily | GSH: 150 mg 3x/wk",
+          "doseMcg": 5000,
+          "cadence": "Epithalon daily; GSH alternate days",
+          "focus": "Telomerase elongation induction and systemic oxidative buffering",
+          "notes": "Epithalon: 100 units (1.0 mL) from 5 mg/mL vial; GSH: 50 units (0.5 mL)"
+        },
+        {
+          "stage": "Phase 2: High-Intensity Longevity Cycle",
+          "timeframe": "Days 11–20",
+          "doseDisplay": "Epithalon: 10.0 mg daily | GSH: 300 mg 3x/wk",
+          "doseMcg": 10000,
+          "cadence": "Epithalon daily; GSH alternate days",
+          "focus": "Maximal TERT transcription and intracellular glutathione pool saturation",
+          "notes": "Epithalon: 2x 1.0 mL draws; GSH: 100 units (1.0 mL)"
+        },
+        {
+          "stage": "Phase 3: Epithalon Rest & Glutathione Maintenance",
+          "timeframe": "Weeks 4–8",
+          "doseDisplay": "Epithalon: 0 mg (washout) | GSH: 200 mg 2x/wk",
+          "doseMcg": 0,
+          "cadence": "Glutathione 2x weekly",
+          "focus": "Epigenetic consolidation during Epithalon washout window",
+          "notes": "Maintain weekly glutathione redox support"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Dual Syringe Protocol: U-100 Insulin Syringe (Epithalon & Glutathione)",
+      "standardIUDisplay": "Epithalon: 100 units (1.0 mL = 5.0 mg) | GSH: 50–100 units (0.5–1.0 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "Epithalon 2.5 mg (0.50 mL)",
+          "doseMcg": 2500,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on U-100 syringe (Epithalon vial)"
+        },
+        {
+          "doseDisplay": "Epithalon 5.0 mg (1.00 mL)",
+          "doseMcg": 5000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Epithalon)"
+        },
+        {
+          "doseDisplay": "Glutathione 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "Glutathione 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Glutathione)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C desiccated (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; use Epithalon within 20 days; Glutathione within 21 days",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 15372138",
+        "notes": "Khavinson VKh, et al. Peptide promotes overcoming of the division limit in human somatic cells. Bull Exp Biol Med. 2004;137(5):503-506."
+      },
+      {
+        "sourceReference": "PMID: 19166318",
+        "notes": "Ballatori N, et al. Glutathione dysregulation and the etiology and progression of human diseases. Biol Chem. 2009;390(3):191-214."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Clinical Longevity Standard",
+    "bundleVials": [
+      {
+        "compoundName": "Epithalon (Ala-Glu-Asp-Gly Synthetic Pineal Tetrapeptide)",
+        "vialNetMass": "10 mg",
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently for 30s.",
+        "targetDose": "5.0 mg – 10.0 mg daily",
+        "cadence": "Daily pulse for 10–20 days",
+        "syringeUnits": "100 units (1.0 mL) = 5.0 mg"
+      },
+      {
+        "compoundName": "Glutathione Reduced (L-Glutathione)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Introduce 5.0 mL BAC water. Allow 2–3 minutes for complete hydration. Swirl gently.",
+        "targetDose": "150 mg – 300 mg per session",
+        "cadence": "2–3x Weekly SubQ/IM",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      }
+    ],
+    "protocolCategoryType": "bundle"
+  },
+  {
+    "id": "epithalon-glutathione-nad-bundle",
+    "compoundName": "Epithalon + Glutathione + NAD+ Bundle",
+    "handles": [
+      "epithalon-glutathione-nad-bundle",
+      "triple-longevity-bundle",
+      "anti-aging-triad-bundle"
+    ],
+    "subtitle": "Triple-Vial Master Longevity Triad (Telomerase · Sirtuin Activation · Redox Defense)",
+    "longDescription": "**What it is:** The premier multi-vial anti-senescence research suite combining three distinct physiological powerhouses: Epithalon (10mg), Glutathione Reduced (1500mg), and NAD+ (500mg).\n\n**How it works:** Tackles cellular aging through three non-overlapping hallmarks: Epithalon upregulates telomerase to preserve chromosomal length; NAD+ drives mitochondrial oxidative phosphorylation and activates SIRT1/SIRT3 deacylases; Glutathione prevents lipid peroxidation and maintains reduced intracellular thiol pools.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute each of the three vials independently in its own BAC water volume. Never combine liquids into one vial.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "epithalon-glutathione-nad-bundle",
+    "purityStandard": "≥99.0% (Triple HPLC Verified Standards)",
+    "investigatedBenefits": [
+      "Comprehensive cellular rejuvenation across telomeric, mitochondrial, and redox pathways",
+      "Mitochondrial ATP replenishment and Sirtuin (SIRT1/SIRT3) longevity pathway activation",
+      "Telomeric repeat addition and protection against replicative cellular exhaustion",
+      "Systemic quenching of reactive nitrogen and oxygen species (RNS/ROS)"
+    ],
+    "adverseObservations": [
+      "Subcutaneous stinging or local warmth if NAD+ is injected too rapidly",
+      "Temporary chest tightness or flushing with high-dose NAD+",
+      "Injection site fatigue requiring quadrant rotation"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 2010,
+      "defaultDiluentMl": 12.0,
+      "solvent": "Bacteriostatic Water USP (3x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute Epithalon 10mg with 2.0 mL BAC (5 mg/mL). Reconstitute Glutathione 1500mg with 5.0 mL BAC (300 mg/mL). Reconstitute NAD+ 500mg with 5.0 mL BAC (100 mg/mL). Store in 3 separate sterile vials.",
+      "resultingConcentrationMgPerMl": 167.5,
+      "handlingRule": "Three distinct aqueous preparations. Inspect all against dark background. Keep refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "Epithalon: 5mg daily (pulse); GSH: 150–300mg (2x/wk); NAD+: 50–100mg (2–3x/wk)",
+      "standardDoseMcg": 5000,
+      "cadence": "Multi-cadence scheduled protocol",
+      "halfLife": "Epithalon: ~30m; GSH: ~15m; NAD+: ~15–30m (circulating)",
+      "typicalProtocolDuration": "10 to 20 Days (Epithalon) / 6 to 8 Weeks (NAD+ & GSH)",
+      "washoutPeriod": "4 to 6 Months between Epithalon pulses",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Triad System Equilibration",
+          "timeframe": "Week 1",
+          "doseDisplay": "Epithalon: 5mg | GSH: 150mg | NAD+: 50mg",
+          "doseMcg": 5000,
+          "cadence": "Epithalon daily; NAD+ & GSH alternate days",
+          "focus": "Initial mitochondrial and redox equilibration without injection discomfort",
+          "notes": "Epithalon: 100u; GSH: 50u; NAD+: 50u via separate injections"
+        },
+        {
+          "stage": "Phase 2: Peak Synergistic Longevity Pulse",
+          "timeframe": "Weeks 2–3",
+          "doseDisplay": "Epithalon: 10mg | GSH: 300mg | NAD+: 100mg",
+          "doseMcg": 10000,
+          "cadence": "Epithalon daily (10d); NAD+ 3x/wk; GSH 2x/wk",
+          "focus": "Maximal TERT induction, sirtuin deacetylation, and glutathione saturation",
+          "notes": "Epithalon: 2.0 mL; GSH: 1.0 mL; NAD+: 1.0 mL"
+        },
+        {
+          "stage": "Phase 3: Cellular Consolidation & Maintenance",
+          "timeframe": "Weeks 4–8",
+          "doseDisplay": "Epithalon: Washout | GSH: 150mg 2x/wk | NAD+: 50mg 2x/wk",
+          "doseMcg": 0,
+          "cadence": "NAD+ & GSH maintenance twice weekly",
+          "focus": "Long-term cellular bioenergetics maintenance post-Epithalon pulse",
+          "notes": "Rotate abdominal injection quadrants"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Triple Syringe Protocol: U-100 Insulin Syringes for each constituent",
+      "standardIUDisplay": "Epithalon: 100u (1.0 mL) | GSH: 50–100u | NAD+: 50–100u",
+      "graduations": [
+        {
+          "doseDisplay": "Epithalon 5.0 mg (1.00 mL)",
+          "doseMcg": 5000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Epithalon)"
+        },
+        {
+          "doseDisplay": "Glutathione 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "Glutathione 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Glutathione)"
+        },
+        {
+          "doseDisplay": "NAD+ 50 mg (0.50 mL)",
+          "doseMcg": 50000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (NAD+ vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 100 mg (1.00 mL)",
+          "doseMcg": 100000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe NAD+)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C dark desiccator (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; use Epithalon within 20d; GSH within 21d; NAD+ within 28d",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 14501183",
+        "notes": "Anisimov VN, et al. Epitalon slows down aging and suppresses development of spontaneous tumors. Biogerontology. 2003;4(4):193-202."
+      },
+      {
+        "sourceReference": "PMID: 29514072",
+        "notes": "Rajman L, Chwalek K, Sinclair DA. Therapeutic Potential of NAD-Boosting Molecules: The In Vivo Evidence. Cell Metab. 2018;27(3):529-547."
+      },
+      {
+        "sourceReference": "PMID: 26770127",
+        "notes": "Pizzorno J. Glutathione! Integr Med (Encinitas). 2014;13(1):8-12."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Master Longevity Suite",
+    "bundleVials": [
+      {
+        "compoundName": "Epithalon (Telomerase Tetrapeptide)",
+        "vialNetMass": "10 mg",
+        "diluentMl": 2.0,
+        "concMgMl": 5.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 2.0 mL BAC water down vial wall. Swirl gently for 30 seconds.",
+        "targetDose": "5.0 mg – 10.0 mg daily",
+        "cadence": "10–20 Day Pulse Cycle",
+        "syringeUnits": "100 units (1.0 mL) = 5.0 mg"
+      },
+      {
+        "compoundName": "Glutathione Reduced (Redox Buffer)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2–3 minutes to dissolve completely.",
+        "targetDose": "150 mg – 300 mg per dose",
+        "cadence": "2–3x Weekly SubQ/IM",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      },
+      {
+        "compoundName": "NAD+ (Beta-Nicotinamide Adenine Dinucleotide)",
+        "vialNetMass": "500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until clear and transparent.",
+        "targetDose": "50 mg – 100 mg per dose",
+        "cadence": "2–3x Weekly SubQ",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      }
+    ],
+    "protocolCategoryType": "bundle"
+  },
+  {
+    "id": "glutathione-nad-ghk-cu-bundle",
+    "compoundName": "Glutathione + NAD+ + GHK-Cu Bundle",
+    "handles": [
+      "glutathione-nad-ghk-cu-bundle",
+      "mitochondrial-matrix-bundle",
+      "gsh-nad-ghk-stack"
+    ],
+    "subtitle": "Triple-Vial Cellular Bioenergetics, Detoxification & Matrix Remodeling Protocol",
+    "longDescription": "**What it is:** A comprehensive multi-vial analytical stack pairing Reduced Glutathione (1500mg), NAD+ (500mg), and GHK-Cu (100mg) for multi-tiered cellular investigation.\n\n**How it works:** Coordinates three essential physiological axes: Glutathione maintains intracellular redox homeostasis; NAD+ replenishes mitochondrial electron transport efficiency and fuels sirtuin enzymes; GHK-Cu activates fibroblast gene transcription, tissue remodeling, and collagen deposition.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute all three vials separately. Do NOT combine GHK-Cu with Glutathione in the same container to avoid copper-mediated thiol oxidation.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "glutathione-nad-ghk-cu-bundle",
+    "purityStandard": "≥99.0% (Triple Analytical HPLC Standards)",
+    "investigatedBenefits": [
+      "Coordinated mitochondrial biogenesis and ATP synthesis enhancement",
+      "Extracellular matrix remodeling and collagen types I/III upregulation",
+      "High-efficiency neutralization of free radicals and lipid peroxidation products",
+      "Cellular longevity signaling through synergistic SIRT1 and TGF-beta cascades"
+    ],
+    "adverseObservations": [
+      "Injection site stinging from NAD+ or concentrated GHK-Cu if injected rapidly",
+      "Mild transient flushing following NAD+ administration",
+      "Occasional sulfur aftertaste from high-dose glutathione"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 2100,
+      "defaultDiluentMl": 15.0,
+      "solvent": "Bacteriostatic Water USP (3x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute Glutathione 1500mg with 5.0 mL BAC (300 mg/mL). Reconstitute NAD+ 500mg with 5.0 mL BAC (100 mg/mL). Reconstitute GHK-Cu 100mg with 5.0 mL BAC (20 mg/mL). Keep separate.",
+      "resultingConcentrationMgPerMl": 140.0,
+      "handlingRule": "Three distinct vials. Store refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "GHK-Cu: 1.0–2.0mg daily; NAD+: 50–100mg (2–3x/wk); GSH: 150–300mg (2x/wk)",
+      "standardDoseMcg": 2000,
+      "cadence": "Scheduled multi-vial cadence",
+      "halfLife": "GHK: ~1–2h; NAD+: ~15–30m; GSH: ~15m",
+      "typicalProtocolDuration": "6 to 8 Weeks per analytical cycle",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Bioenergetic Calibration",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "GHK: 1.0mg daily | NAD+: 50mg 2x/wk | GSH: 150mg 2x/wk",
+          "doseMcg": 1000,
+          "cadence": "Scheduled across weekdays",
+          "focus": "Establish baseline cellular tolerance and initiate mitochondrial support",
+          "notes": "GHK: 5u; NAD+: 50u; GSH: 50u"
+        },
+        {
+          "stage": "Phase 2: Full Matrix & Redox Optimization",
+          "timeframe": "Weeks 3–6",
+          "doseDisplay": "GHK: 2.0mg daily | NAD+: 100mg 3x/wk | GSH: 300mg 2x/wk",
+          "doseMcg": 2000,
+          "cadence": "High-intensity multi-pathway support",
+          "focus": "Maximal mitochondrial respiration, sirtuin activation, and matrix remodeling",
+          "notes": "GHK: 10u; NAD+: 100u; GSH: 100u"
+        },
+        {
+          "stage": "Phase 3: Consolidation & Washout Transition",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "GHK: 1.0mg alt days | NAD+: 50mg 2x/wk | GSH: 150mg 1x/wk",
+          "doseMcg": 1000,
+          "cadence": "Step-down maintenance",
+          "focus": "Consolidation of mitochondrial and matrix gains prior to cycle rest",
+          "notes": "Monitor systemic markers"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Triple Syringe Protocol: U-100 Insulin Syringes for each vial",
+      "standardIUDisplay": "GHK: 10u (0.1 mL) | NAD+: 50–100u | GSH: 50–100u",
+      "graduations": [
+        {
+          "doseDisplay": "GHK-Cu 1.0 mg (0.05 mL)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GHK-Cu 2.0 mg (0.10 mL)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 50 mg (0.50 mL)",
+          "doseMcg": 50000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (NAD+ vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 100 mg (1.00 mL)",
+          "doseMcg": 100000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe NAD+)"
+        },
+        {
+          "doseDisplay": "Glutathione 150 mg (0.50 mL)",
+          "doseMcg": 150000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (Glutathione vial)"
+        },
+        {
+          "doseDisplay": "Glutathione 300 mg (1.00 mL)",
+          "doseMcg": 300000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe Glutathione)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C desiccated (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; use GHK within 30d; NAD+ within 28d; GSH within 21d",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 24014316",
+        "notes": "Sinclair DA, Guarente L. Small-molecule SIRT1 activators for the treatment of aging and age-related diseases. Methods Mol Biol. 2014;1077:3-19."
+      },
+      {
+        "sourceReference": "PMID: 26264024",
+        "notes": "Pickart L, Vasquez-Soltero JM, Margolina A. GHK-Cu may prevent oxidative stress and NF-kB activation. Biomolecules. 2015;5(4):2545-2561."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: High-Synergy Research Suite",
+    "bundleVials": [
+      {
+        "compoundName": "Glutathione Reduced (Redox Buffer)",
+        "vialNetMass": "1500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 300.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2–3 minutes to dissolve completely.",
+        "targetDose": "150 mg – 300 mg per dose",
+        "cadence": "2x Weekly SubQ/IM",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      },
+      {
+        "compoundName": "NAD+ (Coenzyme 1)",
+        "vialNetMass": "500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until completely clear.",
+        "targetDose": "50 mg – 100 mg per dose",
+        "cadence": "2–3x Weekly SubQ",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      },
+      {
+        "compoundName": "GHK-Cu (Tissue Remodeling Peptide)",
+        "vialNetMass": "100 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until characteristic deep blue.",
+        "targetDose": "1.0 mg – 2.0 mg daily",
+        "cadence": "1x Daily SubQ",
+        "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
+      }
+    ],
+    "protocolCategoryType": "bundle"
+  },
+  {
+    "id": "nad-ghk-cu-bundle",
+    "compoundName": "NAD+ + GHK-Cu Bundle",
+    "handles": [
+      "nad-ghk-cu-bundle",
+      "nad-copper-bundle",
+      "cellular-energy-matrix-bundle"
+    ],
+    "subtitle": "Dual-Vial Mitochondrial Bioenergetics & Extracellular Matrix Rejuvenation Standard",
+    "longDescription": "**What it is:** A high-impact dual-vial analytical stack pairing high-purity Beta-Nicotinamide Adenine Dinucleotide (NAD+ 500mg) and Copper Tripeptide-1 (GHK-Cu 100mg).\n\n**How it works:** NAD+ fuels the Krebs cycle, mitochondrial electron transport chain complex I, and sirtuin longevity enzymes, while GHK-Cu stimulates fibroblast gene expression, matrix metalloproteinase regulation, and systemic tissue remodeling.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately. Administer in separate injection sites.",
+    "category": "Multi-Peptide Blends",
+    "catalogStatus": "in_catalog",
+    "storeProductHandle": "nad-ghk-cu-bundle",
+    "purityStandard": "≥99.0% (HPLC Individual Assay Standards)",
+    "investigatedBenefits": [
+      "Mitochondrial respiratory capacity and intracellular NAD+/NADH ratio enhancement",
+      "Accelerated collagen types I/III and glycosaminoglycan synthesis",
+      "SIRT1 and PARP1 metabolic enzyme activation for DNA repair",
+      "Systemic cellular vitality and microvascular health optimization"
+    ],
+    "adverseObservations": [
+      "Injection site sting if NAD+ or GHK-Cu are administered too rapidly",
+      "Mild transient flushing or warmth following NAD+ injection",
+      "Occasional lightheadedness if injected while fasting"
+    ],
+    "reconstitution": {
+      "defaultVialNetMg": 600,
+      "defaultDiluentMl": 10.0,
+      "solvent": "Bacteriostatic Water USP (2x Separate Dilution Vials Required)",
+      "dissolutionMethod": "Reconstitute NAD+ 500mg with 5.0 mL BAC water (100.0 mg/mL). Reconstitute GHK-Cu 100mg with 5.0 mL BAC water (20.0 mg/mL). Swirl both vials gently. Keep separate.",
+      "resultingConcentrationMgPerMl": 60.0,
+      "handlingRule": "Two distinct vials (1 clear aqueous NAD+, 1 deep royal blue GHK-Cu). Store refrigerated at 2°C–8°C."
+    },
+    "dosing": {
+      "standardDoseDisplay": "GHK-Cu: 1.0–2.0mg daily; NAD+: 50–100mg (2–3x weekly)",
+      "standardDoseMcg": 2000,
+      "cadence": "GHK-Cu daily SubQ; NAD+ 2–3x weekly SubQ",
+      "halfLife": "GHK: ~1–2h; NAD+: ~15–30m",
+      "typicalProtocolDuration": "6 to 8 Weeks per analytical research block",
+      "washoutPeriod": "2 to 4 Weeks between cycles",
+      "titrationSteps": [
+        {
+          "stage": "Phase 1: Bioenergetic Initiation",
+          "timeframe": "Weeks 1–2",
+          "doseDisplay": "GHK: 1.0mg daily | NAD+: 50mg 2x/wk",
+          "doseMcg": 1000,
+          "cadence": "GHK daily; NAD+ Mon/Thu",
+          "focus": "Baseline cellular adaptation and injection tolerance assessment",
+          "notes": "GHK: 5 units (0.05 mL); NAD+: 50 units (0.5 mL)"
+        },
+        {
+          "stage": "Phase 2: Target Therapeutic Synergy",
+          "timeframe": "Weeks 3–6",
+          "doseDisplay": "GHK: 2.0mg daily | NAD+: 100mg 3x/wk",
+          "doseMcg": 2000,
+          "cadence": "GHK daily; NAD+ Mon/Wed/Fri",
+          "focus": "Full sirtuin pathway stimulation and maximal collagen matrix remodeling",
+          "notes": "GHK: 10 units (0.10 mL); NAD+: 100 units (1.0 mL)"
+        },
+        {
+          "stage": "Phase 3: Maintenance Phase",
+          "timeframe": "Weeks 7–8",
+          "doseDisplay": "GHK: 1.0mg alternate days | NAD+: 50mg 2x/wk",
+          "doseMcg": 1000,
+          "cadence": "Step-down maintenance",
+          "focus": "Sustained cellular vigor prior to experimental cycle washout",
+          "notes": "Alternate injection quadrants"
+        }
+      ]
+    },
+    "syringeGuide": {
+      "syringeType": "Dual Syringe Protocol: U-100 Insulin Syringes for each vial",
+      "standardIUDisplay": "GHK: 10u (0.1 mL) | NAD+: 50–100u (0.5–1.0 mL)",
+      "graduations": [
+        {
+          "doseDisplay": "GHK-Cu 1.0 mg (0.05 mL)",
+          "doseMcg": 1000,
+          "volumeMl": 0.05,
+          "syringeIU": 5.0,
+          "tickLabel": "5.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "GHK-Cu 2.0 mg (0.10 mL)",
+          "doseMcg": 2000,
+          "volumeMl": 0.1,
+          "syringeIU": 10.0,
+          "tickLabel": "10.0 units on U-100 syringe (GHK-Cu vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 50 mg (0.50 mL)",
+          "doseMcg": 50000,
+          "volumeMl": 0.5,
+          "syringeIU": 50.0,
+          "tickLabel": "50.0 units on syringe (NAD+ vial)"
+        },
+        {
+          "doseDisplay": "NAD+ 100 mg (1.00 mL)",
+          "doseMcg": 100000,
+          "volumeMl": 1.0,
+          "syringeIU": 100.0,
+          "tickLabel": "100.0 units (1.0 mL full syringe NAD+)"
+        }
+      ]
+    },
+    "storage": {
+      "lyophilized": "-20°C desiccated in dark storage (24 months shelf life)",
+      "reconstituted": "2°C–8°C refrigerated; use GHK within 30 days; NAD+ within 28 days",
+      "lightProtection": true
+    },
+    "citations": [
+      {
+        "sourceReference": "PMID: 33353981",
+        "notes": "Covarrubias AJ, et al. NAD+ metabolism and its roles in cellular processes during ageing. Nat Rev Mol Cell Biol. 2021;22(2):119-141."
+      },
+      {
+        "sourceReference": "PMID: 18644225",
+        "notes": "Pickart L. The human tri-peptide GHK and tissue remodeling. J Biomater Sci Polym Ed. 2008;19(8):969-988."
+      }
+    ],
+    "disclaimer": "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human or veterinary administration.",
+    "evidenceTier": "Tier 1: Bioenergetic Synergy Standard",
+    "bundleVials": [
+      {
+        "compoundName": "NAD+ (Nicotinamide Adenine Dinucleotide)",
+        "vialNetMass": "500 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 100.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water slowly down vial wall. Swirl gently until clear.",
+        "targetDose": "50 mg – 100 mg per session",
+        "cadence": "2–3x Weekly SubQ",
+        "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
+      },
+      {
+        "compoundName": "GHK-Cu (Copper Tripeptide-1)",
+        "vialNetMass": "100 mg",
+        "diluentMl": 5.0,
+        "concMgMl": 20.0,
+        "solvent": "Bacteriostatic Water USP",
+        "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until deep blue.",
+        "targetDose": "1.0 mg – 2.0 mg daily",
+        "cadence": "1x Daily SubQ",
+        "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
+      }
+    ],
+    "protocolCategoryType": "bundle"
   }
 ]

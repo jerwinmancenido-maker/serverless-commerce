@@ -207,7 +207,7 @@ const BuildableProductsPage = () => {
               ))}
             </div>
           ) : (
-            <span className="text-emerald-700 dark:text-emerald-300 text-xs font-medium">✓ None (Fully stocked)</span>
+            <span className="text-blue-700 dark:text-blue-400 text-xs font-medium">✓ None (Fully stocked)</span>
           )
         },
       }),

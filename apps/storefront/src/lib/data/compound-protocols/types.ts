@@ -64,6 +64,18 @@ export type SupplyGuide = {
   inclusions?: [string, string][]
 }
 
+export type BundleVial = {
+  compoundName: string
+  vialNetMass: string
+  diluentMl: number
+  concMgMl: number
+  solvent?: string
+  reconstitutionInstructions?: string
+  targetDose: string
+  cadence?: string
+  syringeUnits: string
+}
+
 export type CompoundAnalyticalProtocol = {
   id: string                 // e.g., "bpc-157", "retatrutide", "klow-blend"
   compoundName: string       // Full display name e.g., "BPC-157 (10mg Vial)"
@@ -74,6 +86,7 @@ export type CompoundAnalyticalProtocol = {
   adverseObservations?: string[]  // Practical adverse observations, safety notes, and sensitivities
   category: 
     | "Tissue Repair & Healing"
+    | "Skin, Hair & Cellular Matrix"
     | "Metabolic Signaling & Incretins"
     | "Growth Hormone Axis"
     | "Mitochondrial & Cellular Longevity"
@@ -85,8 +98,28 @@ export type CompoundAnalyticalProtocol = {
   catalogStatus: "in_catalog" | "reference_only"
   storeProductHandle?: string // Defined only if catalogStatus === "in_catalog"
   purityStandard?: string
+  evidenceTier?: string
   isBlend?: boolean
+  protocolCategoryType?: "single_peptide" | "blend" | "bundle" | "topical"
+  bundleVials?: BundleVial[]
   blendConstituents?: BlendConstituent[]
+  reconstitutionOptions?: Record<
+    string,
+    {
+      label: string
+      diluentMl: number
+      concMgMl: number
+      badge?: string
+      tickConversion?: string
+    }
+  >
+  vialStrengthOptions?: Array<{
+    vialMg: number
+    diluentMl: number
+    concMgMl: number
+    badge: string
+    isStandard?: boolean
+  }>
   // Optional: specifies which routes are clinically applicable for this compound.
   // When absent or undefined, defaults to ["subq"] (standard injectable).
   deliveryRoutes?: DeliveryRoute[]
@@ -126,6 +159,8 @@ export type CompoundAnalyticalProtocol = {
   }
   molecularDetails?: {
     casNumber?: string
+    formula?: string
+    molarMass?: string
     pubchemCid?: number
     sequenceOrFormula?: string
     molecularWeightGPerMol?: number

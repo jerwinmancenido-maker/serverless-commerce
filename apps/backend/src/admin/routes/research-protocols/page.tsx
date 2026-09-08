@@ -1,7 +1,6 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { BookOpen, MagnifyingGlass, Plus, XMark } from "@medusajs/icons"
 import {
-  Badge,
   Button,
   Container,
   createDataTableColumnHelper,
@@ -16,9 +15,12 @@ import { useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { EmptyState } from "../../components/empty-state"
-import { FilterPillGroup } from "../../components/filter-pill-group"
 import { KpiCard } from "../../components/kpi-card"
 import { PageHeader } from "../../components/page-header"
+import { AdminBadge } from "../../components/ui/admin-badge"
+import { AdminSegmentedTabs } from "../../components/ui/admin-segmented-tabs"
+import { AdminReconstitutionCalculator } from "../../components/clinical/admin-reconstitution-calculator"
+import { CustomerMonographPreviewModal } from "../../components/protocols/customer-monograph-preview-modal"
 import { sdk } from "../../lib/sdk"
 import type {
   ResearchProtocolListResponse,
@@ -28,6 +30,20 @@ import { evaluatePublicationReadiness } from "./readiness-evaluator"
 
 const PAGE_SIZE = 20
 const columnHelper = createDataTableColumnHelper<ResearchProtocolSeries>()
+
+const isSupplyProtocol = (p: ResearchProtocolSeries) => {
+  const content = p.revisions[0]?.content
+  const cat = content?.category
+  const isSupplyFlag = Boolean((content as Record<string, unknown> | undefined)?.isSupply)
+  const format = content?.product_format?.toLowerCase() || ""
+  return (
+    cat === "Laboratory Supplies" ||
+    isSupplyFlag ||
+    format.includes("consumable") ||
+    format.includes("hardware") ||
+    format.includes("labware")
+  )
+}
 
 const statusDetails = (protocol: ResearchProtocolSeries) => {
   const published = protocol.revisions.find(
@@ -84,20 +100,11 @@ const ProtocolStatusBadge = ({
   color: "green" | "purple" | "blue" | "orange" | "grey"
   className?: string
 }) => {
-  const colorStyles = {
-    green: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    purple: "bg-purple-50 text-purple-700 border-purple-200",
-    blue: "bg-blue-50 text-blue-700 border-blue-200",
-    orange: "bg-amber-50 text-amber-700 border-amber-200",
-    grey: "bg-zinc-100 text-zinc-600 border-zinc-200",
-  }
-
+  const variant = color === "green" ? "blue" : color === "orange" ? "amber" : color === "grey" ? "slate" : color
   return (
-    <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${colorStyles[color]} ${className}`}
-    >
+    <AdminBadge variant={variant} className={className}>
       {children}
-    </span>
+    </AdminBadge>
   )
 }
 
@@ -108,6 +115,8 @@ const ResearchProtocolsPage = () => {
   })
   const [activeFilter, setActiveFilter] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [previewProtocol, setPreviewProtocol] = useState<ResearchProtocolSeries | null>(null)
+  const [showCalculatorWorkbench, setShowCalculatorWorkbench] = useState<boolean>(false)
 
   const protocolsQuery = useQuery({
     queryKey: ["research-protocols", "catalog-all"],
@@ -129,11 +138,12 @@ const ResearchProtocolsPage = () => {
   // Compute accurate global KPIs across the entire catalog
   const kpis = useMemo(() => {
     const total = protocolsQuery.data?.count ?? allProtocols.length
-    const singlePeptides = allProtocols.filter(
-      (p) => p.revisions[0]?.content?.protocol_category_type !== "blend",
-    ).length
+    const supplies = allProtocols.filter((p) => isSupplyProtocol(p)).length
     const blends = allProtocols.filter(
-      (p) => p.revisions[0]?.content?.protocol_category_type === "blend",
+      (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type === "blend",
+    ).length
+    const singlePeptides = allProtocols.filter(
+      (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type !== "blend",
     ).length
     const published = allProtocols.filter(
       (p) => p.revisions.some((r) => r.status === "published"),
@@ -146,7 +156,7 @@ const ResearchProtocolsPage = () => {
       0,
     )
 
-    return { total, singlePeptides, blends, published, draft, totalLinked }
+    return { total, singlePeptides, blends, supplies, published, draft, totalLinked }
   }, [allProtocols, protocolsQuery.data?.count])
 
   // Filter and search over all protocols
@@ -155,12 +165,14 @@ const ResearchProtocolsPage = () => {
 
     if (activeFilter === "singles") {
       result = result.filter(
-        (p) => p.revisions[0]?.content?.protocol_category_type !== "blend",
+        (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type !== "blend",
       )
     } else if (activeFilter === "blends") {
       result = result.filter(
-        (p) => p.revisions[0]?.content?.protocol_category_type === "blend",
+        (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type === "blend",
       )
+    } else if (activeFilter === "supplies") {
+      result = result.filter((p) => isSupplyProtocol(p))
     } else if (activeFilter === "published") {
       result = result.filter((p) =>
         p.revisions.some((r) => r.status === "published"),
@@ -230,16 +242,24 @@ const ResearchProtocolsPage = () => {
         id: "classification",
         header: "Classification",
         cell: ({ row }) => {
+          const isSupply = isSupplyProtocol(row.original)
+          if (isSupply) {
+            return (
+              <AdminBadge variant="slate" dot className="font-mono text-[10px]">
+                Laboratory Supply
+              </AdminBadge>
+            )
+          }
           const latest = row.original.revisions[0]
           const isBlend = latest?.content?.protocol_category_type === "blend"
           return isBlend ? (
-            <ProtocolStatusBadge color="purple" className="font-mono text-[10px]">
+            <AdminBadge variant="purple" dot className="font-mono text-[10px]">
               Multi-Peptide Blend
-            </ProtocolStatusBadge>
+            </AdminBadge>
           ) : (
-            <ProtocolStatusBadge color="blue" className="font-mono text-[10px]">
+            <AdminBadge variant="blue" dot className="font-mono text-[10px]">
               Single Peptide
-            </ProtocolStatusBadge>
+            </AdminBadge>
           )
         },
       }),
@@ -249,9 +269,9 @@ const ResearchProtocolsPage = () => {
         cell: ({ row }) => {
           const count = row.original.product_links?.length || 0
           return count > 0 ? (
-            <ProtocolStatusBadge color="blue" className="font-mono text-[11px]">
+            <AdminBadge variant="blue" dot className="font-mono text-[10px]">
               {count} {count === 1 ? "product" : "products"}
-            </ProtocolStatusBadge>
+            </AdminBadge>
           ) : (
             <span className="text-ui-fg-muted text-xs italic">None</span>
           )
@@ -262,10 +282,11 @@ const ResearchProtocolsPage = () => {
         header: "Status",
         cell: ({ row }) => {
           const status = statusDetails(row.original)
+          const variant = status.color === "green" ? "blue" : status.color === "orange" ? "amber" : "slate"
           return (
-            <ProtocolStatusBadge color={status.color}>
+            <AdminBadge variant={variant} dot>
               {status.label}
-            </ProtocolStatusBadge>
+            </AdminBadge>
           )
         },
       }),
@@ -283,10 +304,11 @@ const ResearchProtocolsPage = () => {
         header: "Readiness Check",
         cell: ({ row }) => {
           const readiness = readinessDetails(row.original)
+          const variant = readiness.color === "green" ? "blue" : readiness.color === "orange" ? "amber" : "slate"
           return (
-            <ProtocolStatusBadge color={readiness.color} className="capitalize text-[10px]">
+            <AdminBadge variant={variant} className="capitalize text-[10px]">
               {readiness.label}
-            </ProtocolStatusBadge>
+            </AdminBadge>
           )
         },
       }),
@@ -306,7 +328,15 @@ const ResearchProtocolsPage = () => {
         id: "actions",
         header: "",
         cell: ({ row }) => (
-          <div className="flex justify-end">
+          <div className="flex items-center justify-end gap-1.5">
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => setPreviewProtocol(row.original)}
+              className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white"
+            >
+              Customer Preview
+            </Button>
             <Button asChild size="small" variant="secondary" className="h-7 text-xs">
               <Link to={`/research-protocols/${row.original.id}/preview`}>
                 Preview
@@ -340,13 +370,23 @@ const ResearchProtocolsPage = () => {
           { label: "Product Protocols" },
         ]}
         title="Product Protocols"
-        subtitle="Manage independent, versioned product analytical protocols, stoichiometry, and dosage routines across single peptides and multi-peptide blends."
+        subtitle="Manage independent, versioned product analytical protocols, stoichiometry, and dosage routines across single peptides, multi-peptide blends, and laboratory supplies."
         actions={
-          <Button asChild size="small" className="h-8 text-xs inline-flex items-center gap-1">
-            <Link to="/research-protocols/new">
-              <Plus /> Add protocol
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              size="small"
+              variant={showCalculatorWorkbench ? "primary" : "secondary"}
+              onClick={() => setShowCalculatorWorkbench((prev) => !prev)}
+              className="h-8 text-xs font-semibold"
+            >
+              {showCalculatorWorkbench ? "Hide Syringe Workbench" : "Syringe Workbench"}
+            </Button>
+            <Button asChild size="small" className="h-8 text-xs inline-flex items-center gap-1">
+              <Link to="/research-protocols/new">
+                <Plus /> Add protocol
+              </Link>
+            </Button>
+          </div>
         }
       />
 
@@ -371,29 +411,45 @@ const ResearchProtocolsPage = () => {
           subtext="Multi-compound formulations"
         />
         <KpiCard
-          title="Product Links"
-          value={kpis.totalLinked}
+          title="Laboratory Supplies"
+          value={kpis.supplies}
           status="info"
-          subtext="Cross-catalog associations"
+          subtext="Cryo labware & reconstitution"
         />
       </div>
 
-      {/* 3. Main Data Container */}
-      <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base">
-        {/* Filter Pills Toolbar & Live Search Input */}
-        <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-ui-bg-subtle/20 border-b border-ui-border-base">
-          <FilterPillGroup
-            items={[
-              { id: "all", label: "All Protocols", count: kpis.total },
-              { id: "singles", label: "Single Peptides", count: kpis.singlePeptides, badgeColor: "blue" },
-              { id: "blends", label: "Multi-Peptide Blends", count: kpis.blends, badgeColor: "purple" },
-              { id: "published", label: "Published", count: kpis.published, badgeColor: "green" },
-              { id: "draft", label: "Draft", count: kpis.draft, badgeColor: "orange" },
-              { id: "linked", label: "Linked Products", count: kpis.totalLinked },
-            ]}
-            selectedId={activeFilter}
-            onSelect={(id) => setActiveFilter(id)}
-          />
+      {/* 3. Clinical Calculator Workbench (Optional Drawer) */}
+      {showCalculatorWorkbench && (
+        <AdminReconstitutionCalculator
+          compoundName="Clinical Stoichiometry Workbench"
+          initialMass={10}
+          initialDiluentMl={2.0}
+          initialTargetDose={250}
+        />
+      )}
+
+      {/* 4. Main Data Container with Storefront-Harmonized Tabs */}
+      <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base overflow-hidden rounded-2xl">
+        {/* Harmonized Segmented Tabs */}
+        <AdminSegmentedTabs
+          tabs={[
+            { id: "all", label: "All Protocols", count: kpis.total },
+            { id: "singles", label: "Single Peptides", count: kpis.singlePeptides },
+            { id: "blends", label: "Multi-Peptide Blends", count: kpis.blends },
+            { id: "supplies", label: "Laboratory Supplies", count: kpis.supplies },
+            { id: "published", label: "Published", count: kpis.published },
+            { id: "draft", label: "Draft", count: kpis.draft },
+            { id: "linked", label: "Linked Products", count: kpis.totalLinked },
+          ]}
+          activeTab={activeFilter}
+          onChange={(id) => setActiveFilter(id)}
+        />
+
+        {/* Live Search Input Toolbar */}
+        <div className="flex items-center justify-between gap-3 p-3 bg-slate-50/50 border-b border-slate-100">
+          <span className="text-xs text-slate-500">
+            Showing {filteredProtocols.length} {filteredProtocols.length === 1 ? "protocol" : "protocols"}
+          </span>
 
           <div className="relative flex items-center">
             <MagnifyingGlass className="absolute left-2.5 size-3.5 text-ui-fg-muted pointer-events-none" />
@@ -402,7 +458,7 @@ const ResearchProtocolsPage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search protocol or compound..."
-              className="h-8 pl-8 pr-7 text-xs w-64"
+              className="h-8 pl-8 pr-7 text-xs w-64 bg-white"
             />
             {searchQuery ? (
               <button
@@ -446,6 +502,13 @@ const ResearchProtocolsPage = () => {
           </DataTable>
         )}
       </Container>
+
+      {/* 5. Customer Monograph Live Preview Modal */}
+      <CustomerMonographPreviewModal
+        open={Boolean(previewProtocol)}
+        onClose={() => setPreviewProtocol(null)}
+        protocol={previewProtocol}
+      />
     </div>
   )
 }
@@ -457,3 +520,4 @@ export const config = defineRouteConfig({
 })
 
 export default ResearchProtocolsPage
+

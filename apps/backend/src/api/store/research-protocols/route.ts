@@ -27,19 +27,46 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const [revisions, policies] = await Promise.all([
     service.listResearchProtocols(
       { series_id: seriesIds, status: "published" },
-      { order: { published_at: "DESC" }, relations: ["series"] },
+      { order: { revision: "DESC", published_at: "DESC" }, relations: ["series"] },
     ),
     service.listResearchProtocolVisibilityPolicies({ series_id: seriesIds }),
   ])
   const policyBySeries = new Map(
     policies.map((policy) => [policy.series_id, policy]),
   )
-  const visibleRevisions = revisions.filter((revision) =>
-    normalizeResearchProtocolVisibilityPolicy(
-      policyBySeries.get(revision.series_id),
-    ).public_page_enabled,
+
+  // 1. Isolate the latest published revision per series_id
+  const latestRevisionBySeries = new Map<string, (typeof revisions)[0]>()
+  for (const rev of revisions) {
+    if (!latestRevisionBySeries.has(rev.series_id)) {
+      latestRevisionBySeries.set(rev.series_id, rev)
+    }
+  }
+
+  // 2. Filter by public visibility policy
+  const visibleRevisions = Array.from(latestRevisionBySeries.values()).filter(
+    (revision) =>
+      normalizeResearchProtocolVisibilityPolicy(
+        policyBySeries.get(revision.series_id),
+      ).public_page_enabled,
   )
-  const pagedRevisions = visibleRevisions.slice(offset, offset + limit)
+
+  // 3. Defense-in-depth: Deduplicate by base compound key and title
+  const seenCompoundKeys = new Set<string>()
+  const deduplicatedRevisions = visibleRevisions.filter((revision) => {
+    const normKey = revision.series.protocol_key
+      .replace(/-laboratory-handling$/, "")
+      .replace(/-protocol$/, "")
+    const compoundName = revision.title.toLowerCase().trim()
+    const dedupeKey = `${normKey}::${compoundName}`
+    if (seenCompoundKeys.has(dedupeKey)) {
+      return false
+    }
+    seenCompoundKeys.add(dedupeKey)
+    return true
+  })
+
+  const pagedRevisions = deduplicatedRevisions.slice(offset, offset + limit)
 
   const links = await service.listResearchProtocolProductLinks({
     series_id: pagedRevisions.map((revision) => revision.series_id),
@@ -105,7 +132,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   res.setHeader("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
   res.json({
     protocols,
-    count: visibleRevisions.length,
+    count: deduplicatedRevisions.length,
     limit,
     offset,
   })

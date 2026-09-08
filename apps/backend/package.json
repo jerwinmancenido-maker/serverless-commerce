@@ -36,7 +36,8 @@
     "catalog:patch-ghk-cu": "medusa exec ./src/scripts/patch-ghk-cu-description.ts",
     "protocols:rebrand-backfill": "medusa exec ./src/scripts/update-product-protocols.ts",
     "protocols:sync": "npx tsx ./src/scripts/sync-protocols.ts",
-    "catalog:seed-unified": "medusa exec ./src/scripts/seed-unified-catalog.ts"
+    "catalog:seed-unified": "medusa exec ./src/scripts/seed-unified-catalog.ts",
+    "inventory:enrich-titles": "medusa exec ./src/scripts/enrich-inventory-item-titles.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",

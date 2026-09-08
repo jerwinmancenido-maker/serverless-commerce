@@ -116,7 +116,7 @@ test("extracts IU-based presets for HGH and HMG gonadotropins", () => {
   assert.equal(formatDosePresetLabel(hmgPresets[3], hmg.id), "75 IU")
 })
 
-test("guarantees valid, non-empty, strictly positive, sorted presets for all 76 compounds", () => {
+test("guarantees valid, non-empty, strictly positive, sorted presets for all 77 compounds", () => {
   for (const protocol of ALL_COMPOUND_PROTOCOLS) {
     const presets = extractDosePresets(protocol)
     assert.ok(presets.length >= 2, `Protocol ${protocol.id} must have >= 2 presets`)

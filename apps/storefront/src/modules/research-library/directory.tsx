@@ -22,6 +22,32 @@ type TabType = "articles" | "comparisons" | "protocols" | "calculator" | "coa"
 const normalize = (value: string | null | undefined) =>
   (value || "").trim().toLocaleLowerCase()
 
+// Helper to identify supplies
+const isSupplyProtocol = (p: StoreResearchProtocol) =>
+  p.content?.category === "Laboratory Supplies" ||
+  Boolean(
+    (p.content as Record<string, unknown> | null | undefined)?.isSupply
+  ) ||
+  Boolean(p.content?.product_format?.toLowerCase().includes("consumable")) ||
+  Boolean(p.content?.product_format?.toLowerCase().includes("hardware")) ||
+  Boolean(p.content?.product_format?.toLowerCase().includes("labware"))
+
+// Helper to identify bundles
+const isBundleProtocol = (p: StoreResearchProtocol) =>
+  !isSupplyProtocol(p) &&
+  (p.content?.protocol_category_type === "bundle" ||
+    Boolean(p.content?.bundle_vials && p.content.bundle_vials.length > 0))
+
+// Helper to identify blends
+const isBlendProtocol = (p: StoreResearchProtocol) =>
+  !isSupplyProtocol(p) &&
+  !isBundleProtocol(p) &&
+  p.content?.protocol_category_type === "blend"
+
+// Helper to identify single/topical
+const isSingleProtocol = (p: StoreResearchProtocol) =>
+  !isSupplyProtocol(p) && !isBundleProtocol(p) && !isBlendProtocol(p)
+
 export default function ResearchLibraryDirectory({
   protocols,
   articles,
@@ -31,7 +57,9 @@ export default function ResearchLibraryDirectory({
   const [activeTab, setActiveTab] = useState<TabType>(initialTab || "articles")
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState("all")
-  const [protocolSegment, setProtocolSegment] = useState<"all" | "single_peptide" | "blend">("all")
+  const [protocolSegment, setProtocolSegment] = useState<
+    "all" | "single_peptide" | "blend" | "bundle" | "supply"
+  >("all")
 
   // Hash deep-linking listener
   useEffect(() => {
@@ -51,7 +79,7 @@ export default function ResearchLibraryDirectory({
             if (el) {
               el.scrollIntoView({ behavior: "smooth", block: "start" })
             }
-          }, 100)
+          }, 50)
         }
       }
     }
@@ -63,22 +91,33 @@ export default function ResearchLibraryDirectory({
     return () => window.removeEventListener("hashchange", onHashChange)
   }, [])
 
-  // Sanitize protocols: filter out any internal test protocols like community-board-acceptance
+  // Sanitize protocols: filter out any internal test protocols and collapse any duplicate handles
   const sanitizedProtocols = useMemo(() => {
-    return protocols.filter((p) => p.handle !== "community-board-acceptance")
+    const seen = new Set<string>()
+    return protocols.filter((p) => {
+      if (p.handle === "community-board-acceptance") return false
+      const norm = p.handle.replace(/-laboratory-handling$/, "").replace(/-protocol$/, "")
+      if (seen.has(norm)) return false
+      seen.add(norm)
+      return true
+    })
   }, [protocols])
 
-  // Count singles and blends
-  const singleCount = useMemo(() => {
-    return sanitizedProtocols.filter(
-      (p) => p.content?.protocol_category_type !== "blend",
-    ).length
+  // Count supplies, bundles, blends, and single peptides accurately
+  const supplyCount = useMemo(() => {
+    return sanitizedProtocols.filter((p) => isSupplyProtocol(p)).length
+  }, [sanitizedProtocols])
+
+  const bundleCount = useMemo(() => {
+    return sanitizedProtocols.filter((p) => isBundleProtocol(p)).length
   }, [sanitizedProtocols])
 
   const blendCount = useMemo(() => {
-    return sanitizedProtocols.filter(
-      (p) => p.content?.protocol_category_type === "blend",
-    ).length
+    return sanitizedProtocols.filter((p) => isBlendProtocol(p)).length
+  }, [sanitizedProtocols])
+
+  const singleCount = useMemo(() => {
+    return sanitizedProtocols.filter((p) => isSingleProtocol(p)).length
   }, [sanitizedProtocols])
 
   // Collect unique categories across both protocols and articles
@@ -116,11 +155,17 @@ export default function ResearchLibraryDirectory({
   const visibleProtocols = useMemo(() => {
     const q = normalize(query)
     return sanitizedProtocols.filter((protocol) => {
+      const isSupply = isSupplyProtocol(protocol)
+      const isBundle = isBundleProtocol(protocol)
+      const isBlend = isBlendProtocol(protocol)
+      const isSingle = isSingleProtocol(protocol)
+
       const matchesSegment =
         protocolSegment === "all" ||
-        (protocolSegment === "blend"
-          ? protocol.content?.protocol_category_type === "blend"
-          : protocol.content?.protocol_category_type !== "blend")
+        (protocolSegment === "supply" && isSupply) ||
+        (protocolSegment === "bundle" && isBundle) ||
+        (protocolSegment === "blend" && isBlend) ||
+        (protocolSegment === "single_peptide" && isSingle)
 
       const matchesQuery =
         !q ||
@@ -504,6 +549,36 @@ export default function ResearchLibraryDirectory({
                 {blendCount}
               </span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setProtocolSegment("bundle")}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 border ${
+                protocolSegment === "bundle"
+                  ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                  : "bg-white text-slate-600 border-slate-200 hover:bg-indigo-50/50 hover:border-indigo-200"
+              }`}
+            >
+              <span>📦 Compound Bundles</span>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${protocolSegment === "bundle" ? "bg-indigo-700 text-white" : "bg-indigo-50 text-indigo-700 border border-indigo-200"}`}>
+                {bundleCount}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setProtocolSegment("supply")}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 border ${
+                protocolSegment === "supply"
+                  ? "bg-amber-600 text-white border-amber-600 shadow-xs"
+                  : "bg-white text-slate-600 border-slate-200 hover:bg-amber-50/50 hover:border-amber-200"
+              }`}
+            >
+              <span>🔬 Laboratory Supplies</span>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${protocolSegment === "supply" ? "bg-amber-700 text-white" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
+                {supplyCount}
+              </span>
+            </button>
           </div>
 
           {/* Protocols Search & Category Filter */}
@@ -550,7 +625,13 @@ export default function ResearchLibraryDirectory({
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {visibleProtocols.map((protocol) => {
-                const isBlend = protocol.content?.protocol_category_type === "blend"
+                const isSupply = isSupplyProtocol(protocol)
+                const isBundle = isBundleProtocol(protocol)
+                const isBlend = isBlendProtocol(protocol)
+                const isTopical =
+                  !isSupply &&
+                  (protocol.content?.protocol_category_type === "topical" ||
+                    (protocol.handle || "").includes("serum"))
                 const rawTitle = protocol.content?.compound_name || protocol.title || "Protocol"
                 const cleanTitle = rawTitle
                   .replace(/\s*(?:Laboratory\s+(?:Reconstitution\s+&\s+)?Handling\s+Standard|Product\s+Protocol|Protocol)\s*$/i, "")
@@ -565,7 +646,19 @@ export default function ResearchLibraryDirectory({
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2 flex-wrap">
-                        {isBlend ? (
+                        {isSupply ? (
+                          <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full uppercase flex items-center gap-1">
+                            <span>🔬</span> Laboratory Supply
+                          </span>
+                        ) : isBundle ? (
+                          <span className="text-[10px] font-bold text-indigo-800 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-full uppercase flex items-center gap-1">
+                            <span>📦</span> Multi-Vial Bundle
+                          </span>
+                        ) : isTopical ? (
+                          <span className="text-[10px] font-bold text-rose-800 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-full uppercase flex items-center gap-1">
+                            <span>✨</span> Topical Serum
+                          </span>
+                        ) : isBlend ? (
                           <span className="text-[10px] font-bold text-purple-800 bg-purple-50 border border-purple-200/80 px-2 py-0.5 rounded-full uppercase flex items-center gap-1">
                             <span>🧬</span> Multi-Peptide Blend
                           </span>

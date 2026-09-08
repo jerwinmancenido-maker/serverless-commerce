@@ -18,17 +18,17 @@ import {
   getProtocolById,
 } from "./data/compound-protocols.ts"
 
-test("contains all 74 verified analytical protocols across 8 categories", () => {
-  assert.equal(CATEGORY_1_TISSUE_REPAIR_PROTOCOLS.length, 8)
+test("contains all 81 verified analytical protocols across 8 categories", () => {
+  assert.equal(CATEGORY_1_TISSUE_REPAIR_PROTOCOLS.length, 9)
   assert.equal(CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS.length, 12)
   assert.equal(CATEGORY_3_GH_AXIS_PROTOCOLS.length, 13)
   assert.equal(CATEGORY_4_LONGEVITY_PROTOCOLS.length, 8)
   assert.equal(CATEGORY_5_NEURO_PROTOCOLS.length, 12)
   assert.equal(CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS.length, 9)
-  assert.equal(CATEGORY_7_BLENDS_PROTOCOLS.length, 6)
+  assert.equal(CATEGORY_7_BLENDS_PROTOCOLS.length, 12)
   assert.equal(CATEGORY_8_SUPPLIES_PROTOCOLS.length, 6)
 
-  const expectedTotal = 8 + 12 + 13 + 8 + 12 + 9 + 6 + 6
+  const expectedTotal = 9 + 12 + 13 + 8 + 12 + 9 + 12 + 6
   assert.equal(ALL_COMPOUND_PROTOCOLS.length, expectedTotal)
   assert.equal(COMPOUND_ANALYTICAL_PROTOCOLS.length, expectedTotal)
 })
@@ -72,6 +72,23 @@ test("verifies stoichiometric dilution and syringe unit math for every compound"
     if (protocol.isSupply || protocol.category === "Laboratory Supplies") {
       continue
     }
+
+    // If it's a multi-compound bundle, verify constituent vials individually
+    if (protocol.bundleVials && protocol.bundleVials.length) {
+      for (const v of protocol.bundleVials) {
+        const massMatch = v.vialNetMass.match(/(\d+(?:\.\d+)?)/)
+        if (massMatch) {
+          const mass = parseFloat(massMatch[1])
+          const expectedConc = mass / v.diluentMl
+          assert.ok(
+            Math.abs(v.concMgMl - expectedConc) < 0.1,
+            `Vial concentration mismatch in bundle ${protocol.id} for ${v.compoundName}`
+          )
+        }
+      }
+      continue
+    }
+
     const { defaultVialNetMg, defaultDiluentMl, resultingConcentrationMgPerMl } = protocol.reconstitution
     const expectedConcentration = defaultVialNetMg / defaultDiluentMl
     const concDiff = Math.abs(resultingConcentrationMgPerMl - expectedConcentration)
@@ -135,6 +152,22 @@ test("resolves protocols accurately via getCompoundProtocol", () => {
   const semax = getCompoundProtocol("semax peptide")
   assert.equal(semax.id, "semax")
 
+  // Hyphenated vs condensed alias
+  const bpcCondensed = getCompoundProtocol("bpc157")
+  assert.equal(bpcCondensed.id, "bpc-157")
+
+  // Complex multi-peptide blend
+  const glow = getCompoundProtocol("glow70")
+  assert.equal(glow.id, "glow-blend")
+  assert.equal(glow.isBlend, true)
+  assert.equal(glow.blendConstituents?.length, 3)
+
+  // Hardware supply SKU
+  const pen = getCompoundProtocol("reusable-metal-insulin-pen")
+  assert.equal(pen.id, "reusable-metal-insulin-pen")
+  assert.equal(pen.isSupply, true)
+  assert.ok(pen.supplyGuide)
+
   // Fallback for unknown compound
   const unknown = getCompoundProtocol("Unknown Custom Fragment 99")
   assert.equal(unknown.id, "generic-peptide")
@@ -147,6 +180,7 @@ test("Safeguard 3: strips dosage and packaging suffixes via normalizeProductHand
   assert.equal(normalizeProductHandle("tb-500-10mg-vial"), "tb-500")
   assert.equal(normalizeProductHandle("kisspeptin-10-10mg"), "kisspeptin-10")
   assert.equal(normalizeProductHandle("kisspeptin-10"), "kisspeptin-10")
+  assert.equal(normalizeProductHandle("50-slot-vial-organizer-box"), "50-slot")
 
   const bpc5mg = getCompoundProtocol("bpc-157-5mg")
   assert.equal(bpc5mg.id, "bpc-157")
@@ -172,7 +206,7 @@ test("filters protocols by category and catalog status", () => {
   assert.equal(incretinProtocols.length, 12)
 
   const inCatalog = getProtocolsByCatalogStatus("in_catalog")
-  assert.equal(inCatalog.length, 74)
+  assert.equal(inCatalog.length, 81)
 
   const supplyProtocols = getProtocolsByCategory("Laboratory Supplies")
   assert.equal(supplyProtocols.length, 6)

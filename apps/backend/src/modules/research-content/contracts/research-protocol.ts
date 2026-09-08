@@ -155,17 +155,71 @@ const ResearchStorageDetails = z.strictObject({
   light_protection: z.boolean().default(true),
 })
 
+const ResearchReconstitutionOption = z.strictObject({
+  diluentMl: z.number().positive(),
+  concMgMl: z.number().positive(),
+  label: z.string().trim().max(255),
+  tickConversion: z.string().trim().max(255),
+})
+
+const ResearchVialStrengthOption = z.strictObject({
+  vialMg: z.number().positive(),
+  diluentMl: z.number().positive(),
+  concMgMl: z.number().positive(),
+  badge: z.string().trim().max(120),
+})
+
+const ResearchSyringeGraduation = z.strictObject({
+  doseDisplay: z.string().trim().max(120),
+  doseMcg: z.number().nonnegative(),
+  volumeMl: z.number().nonnegative(),
+  syringeIU: z.number().nonnegative(),
+  tickLabel: z.string().trim().max(255),
+})
+
+const ResearchSyringeGuide = z.strictObject({
+  syringeType: z.string().trim().max(255),
+  standardIUDisplay: z.string().trim().max(120).optional(),
+  needleGauge: z.string().trim().max(120).optional(),
+  deadSpaceCorrection: z.string().trim().max(255).optional(),
+  graduations: z.array(ResearchSyringeGraduation).default([]),
+})
+
+const ResearchBlendConstituent = z.strictObject({
+  name: z.string().trim().max(255),
+  ratioMg: z.number().nonnegative(),
+  percentageOfTotal: z.number().nonnegative(),
+})
+
+export const ResearchBundleVial = z.object({
+  compoundName: z.string().trim().min(1).max(255),
+  vialNetMass: z.string().trim().min(1).max(100),
+  diluentMl: z.number().positive(),
+  concMgMl: z.number().positive(),
+  solvent: z.string().trim().min(1).max(255),
+  reconstitutionInstructions: z.string().trim().min(1).max(2000),
+  targetDose: z.string().trim().min(1).max(255),
+  cadence: z.string().trim().min(1).max(255),
+  syringeUnits: z.string().trim().min(1).max(255),
+})
+
 export const ResearchProtocolContent = z.strictObject({
   compound_name: z.string().trim().max(255).nullable().default(null),
   short_introduction: z.string().trim().max(2_000).nullable().default(null),
   product_format: z.string().trim().max(120).nullable().default(null),
   category: z.string().trim().max(255).nullable().default(null),
-  protocol_category_type: z.enum(["single_peptide", "blend"]).nullable().default(null),
+  protocol_category_type: z.enum(["single_peptide", "blend", "bundle", "topical"]).nullable().default(null),
   full_description: z.string().trim().max(10_000).nullable().default(null),
   investigated_benefits: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
   adverse_observations: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
   molecular_details: ResearchMolecularDetails.nullable().default(null),
   reconstitution_details: ResearchReconstitutionDetails.nullable().default(null),
+  reconstitution_options: z.record(z.string(), ResearchReconstitutionOption).nullable().optional(),
+  vial_strength_options: z.array(ResearchVialStrengthOption).optional(),
+  syringe_guide: ResearchSyringeGuide.nullable().optional(),
+  evidence_tier: z.string().trim().max(255).nullable().optional(),
+  blend_constituents: z.array(ResearchBlendConstituent).optional(),
+  bundle_vials: z.array(ResearchBundleVial).optional(),
   storage_details: ResearchStorageDetails.nullable().default(null),
   purity_standard: z.string().trim().max(255).nullable().default(null),
   research_use_label: z.string().trim().min(1).max(120).default("Research use only"),
