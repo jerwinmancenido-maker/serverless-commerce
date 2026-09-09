@@ -1,5 +1,14 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/research-protocols/community-thread.tsx
+ * @module  CommunityThread (Research Protocols Storefront)
+ * @purpose Renders the thread detail discussion view, replies, and interactive reply/reaction actions.
+ * @contracts
+ *   Fetches: createResearchCommunityReplyAction() · reactResearchCommunityCommentAction()
+ *   API:     POST /store/research-community/:handle/threads/:threadId/comments
+ */
+
 import {
   createResearchCommunityReplyAction,
   editResearchCommunityCommentAction,
@@ -22,13 +31,13 @@ export default function CommunityThread({ countryCode, handle, protocolTitle, th
     <div className="mx-auto max-w-4xl space-y-5">
       <div className="flex items-center justify-between text-xs">
         <LocalizedClientLink
-          href="/account/community"
+          href={`/research-protocols/${handle}/community`}
           className="inline-flex items-center gap-1 font-semibold text-emerald-800 hover:text-emerald-950 transition-colors"
         >
-          <span>← Back to Protocol Community</span>
+          <span>← Back to {protocolTitle} Community</span>
         </LocalizedClientLink>
         <LocalizedClientLink
-          href={`/account/research-hub/my-protocols/${handle}`}
+          href={`/research-protocols/${handle}`}
           className="text-ui-fg-subtle hover:text-ui-fg-base hover:underline transition-colors"
         >
           View Protocol Specifications →

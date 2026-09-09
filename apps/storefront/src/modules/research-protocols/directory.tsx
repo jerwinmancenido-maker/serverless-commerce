@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/research-protocols/directory.tsx
+ * @module  ResearchProtocolDirectory (Research Protocols Storefront)
+ * @purpose Storefront directory for searching and filtering research compound protocols.
+ * @contracts
+ *   Service: ResearchProtocolModuleService · ResearchContentModuleService
+ */
+
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useMemo, useState } from "react"
 
@@ -18,10 +26,7 @@ export default function ResearchProtocolDirectory({ protocols }: Props) {
   const [format, setFormat] = useState("all")
   const [segment, setSegment] = useState<"all" | "single_peptide" | "blend">("all")
 
-  // Filter out internal test protocols
-  const sanitizedProtocols = useMemo(() => {
-    return protocols.filter((p) => p.handle !== "community-board-acceptance")
-  }, [protocols])
+  const sanitizedProtocols = protocols
 
   const singleCount = useMemo(() => {
     return sanitizedProtocols.filter(

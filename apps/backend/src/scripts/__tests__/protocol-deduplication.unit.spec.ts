@@ -26,14 +26,14 @@ describe("Protocol Deduplication and Canonical Registry Regression Suite", () =>
     protocols = JSON.parse(rawData)
   })
 
-  it("contains exactly 75 canonical protocols with zero duplicate IDs", () => {
-    expect(protocols.length).toBe(75)
+  it("contains exactly 81 canonical protocols with zero duplicate IDs", () => {
+    expect(protocols.length).toBe(81)
     const ids = protocols.map((p) => p.id)
     const uniqueIds = new Set(ids)
     expect(uniqueIds.size).toBe(protocols.length)
   })
 
-  it("guarantees 100% unique canonical protocol keys across all 75 compounds", () => {
+  it("guarantees 100% unique canonical protocol keys across all 81 compounds", () => {
     const keys = protocols.map((p) => {
       return (p.storeProductHandle || p.id)
         .toLowerCase()

@@ -20,9 +20,23 @@ export const ProtocolCalculator = ({ configuration }: { configuration: ResearchP
       <label className="text-small-semi text-ui-fg-base">Target amount<input className="mt-2 w-full rounded-md border border-ui-border-base bg-ui-bg-field px-3 py-2" inputMode="decimal" value={targetAmount} onChange={(event) => setTargetAmount(event.target.value)} /><span className="mt-1 block text-small-regular text-ui-fg-subtle">{configuration.target_amount_unit}</span></label>
     </div>
     <div className="mt-6 grid gap-3 small:grid-cols-2 medium:grid-cols-4">
-      <Result label="Concentration" value={`${display(result?.concentrationMgPerMl)} mg/mL`} />
+      <Result
+        label="Concentration"
+        value={
+          result?.concentrationIuPerMl != null
+            ? `${display(result.concentrationIuPerMl)} IU/mL`
+            : `${display(result?.concentrationMgPerMl)} mg/mL`
+        }
+      />
       <Result label="Volume" value={`${display(result?.volumeMl)} mL`} />
-      <Result label={configuration.device_label || "Device measurements"} value={display(result?.deviceMeasurements)} />
+      <Result
+        label={configuration.device_label || "Device measurements"}
+        value={
+          result?.volumeMl != null
+            ? `${(result.volumeMl * 100).toFixed(configuration.rounding_precision > 0 ? 1 : 0)} Units (${display(result.volumeMl)} mL)`
+            : "—"
+        }
+      />
       <Result label="Uses per container" value={display(result?.usesPerContainer)} />
     </div>
   </section>

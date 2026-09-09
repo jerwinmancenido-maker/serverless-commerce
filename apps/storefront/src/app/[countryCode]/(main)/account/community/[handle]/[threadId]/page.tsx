@@ -1,23 +1,21 @@
-import type { Metadata } from "next"
-import { notFound } from "next/navigation"
+/**
+ * @file    apps/storefront/src/app/[countryCode]/(main)/account/community/[handle]/[threadId]/page.tsx
+ * @module  AccountCommunityThreadRedirect (Research Protocols Storefront)
+ * @purpose Redirects legacy account community thread URL to canonical research protocol thread route.
+ * @contracts
+ *   API:     GET /account/community/:handle/:threadId -> 308 /research-protocols/:handle/community/:threadId
+ */
 
-import {
-  retrieveCustomerResearchProtocol,
-  retrieveResearchCommunityThread,
-} from "@lib/data/research-protocols"
-import CommunityThread from "@modules/research-protocols/community-thread"
+import { redirect, RedirectType } from "next/navigation"
 
-export const metadata: Metadata = {
-  title: "Protocol Discussion",
-  robots: { index: false, follow: false },
-}
-
-export default async function AccountCommunityThreadPage({ params }: { params: Promise<{ countryCode: string; handle: string; threadId: string }> }) {
+export default async function AccountCommunityThreadRedirect({
+  params,
+}: {
+  params: Promise<{ countryCode: string; handle: string; threadId: string }>
+}) {
   const { countryCode, handle, threadId } = await params
-  const [protocolResult, threadResult] = await Promise.all([
-    retrieveCustomerResearchProtocol(handle).catch(() => null),
-    retrieveResearchCommunityThread(handle, threadId).catch(() => null),
-  ])
-  if (!protocolResult || !threadResult) notFound()
-  return <CommunityThread countryCode={countryCode} handle={handle} protocolTitle={protocolResult.protocol.title} thread={threadResult.thread} />
+  redirect(
+    `/${countryCode}/research-protocols/${encodeURIComponent(handle)}/community/${encodeURIComponent(threadId)}`,
+    RedirectType.replace,
+  )
 }

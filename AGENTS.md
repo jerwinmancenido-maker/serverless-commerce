@@ -176,3 +176,62 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 - `.env` / `.env.local` — never commit, print, or copy secret values out of them. Edit `.env.template` instead when documenting a new variable.
 - Existing migrations in `src/modules/*/migrations/` — add a new migration rather than rewriting one that may already have run.
 - Don't run destructive DB commands (drops, `db:migrate --help`-style flags that reset state) against the user's database without explicit confirmation.
+
+## Progressive File Context Anchoring (Docblock Rule)
+
+Whenever you create a new file or make a meaningful edit to an existing source file,
+add the following docblock **opportunistically** — only to the file you are already editing.
+
+**Docblock format:**
+
+```ts
+/**
+ * @file    apps/backend/src/api/store/customers/me/research-tracking/protocols/route.ts
+ * @module  ResearchTrackingProtocolsRoute (Research Tracking Module)
+ * @purpose One concise sentence explaining what this file owns or exposes.
+ * @contracts
+ *   API:     GET /store/customers/me/research-tracking/protocols
+ *   Service: ResearchTrackingModuleService · ResearchContentModuleService
+ */
+```
+
+**Placement rules by file type:**
+
+| File type | Placement |
+|---|---|
+| `src/api/store/*/route.ts` | Top of file, before imports |
+| `src/api/admin/*/route.ts` | Top of file, before imports |
+| `src/modules/*/service.ts` | Top of file, before imports |
+| `src/modules/*/models/*.ts` | Top of file, before imports |
+| `src/workflows/*.ts` | Top of file, before imports |
+| `src/workflows/steps/*.ts` | Top of file, before imports |
+| `src/jobs/*.ts` | Top of file, before imports |
+| `src/subscribers/*.ts` | Top of file, before imports |
+| `src/links/*.ts` | Top of file, before imports |
+| Storefront `page.tsx` (server component) | Top of file, before imports |
+| Storefront `page.tsx` (client component) | Immediately after `"use client"` |
+| Storefront `src/lib/data/*.ts` | Top of file, before imports |
+| Storefront `src/modules/**/*.tsx` | Top of file (server) or after `"use client"` (client) |
+
+**`@contracts` field conventions by file type:**
+
+- **Route files**: `API: METHOD /store/<path>` or `API: METHOD /admin/<path>`
+- **Service files**: `Service: <ModuleName>ModuleService` + model names
+- **Workflow files**: `Workflow: <workflowName>` + steps it composes
+- **Step files**: `Step: <stepName>` + services it calls
+- **Job files**: `Job: <jobName>` + schedule + services it calls
+- **Storefront pages**: `Fetches: <dataFunction>()` + `API: <backend route>`
+- **Data lib files**: `API: METHOD /store/<path>` it wraps
+
+**Critical constraint — NO COSMETIC MASS EDITS:**
+
+DO NOT open clean, working files just to add docblocks.
+Add them only when you are already inside that file fixing a real issue or implementing a feature.
+Violating this rule wastes tokens and risks introducing accidental changes.
+
+**Never add docblocks to:**
+- `.json` files (including `medusa-config.ts` module lists, `package.json`)
+- Migration files (`src/modules/*/migrations/Migration*.ts`)
+- Generated files (`.medusa/`, `dist/`, `.next/`)
+- `AGENTS.md`, `README.md`, or any markdown file
+- `turbo.json`, `eslint.config.ts`, lockfiles

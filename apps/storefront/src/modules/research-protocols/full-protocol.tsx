@@ -1022,20 +1022,22 @@ export default function FullProtocol({
                         let vol = g.volumeMl
                         let units = g.syringeIU
                         if (activeMetrics.conc > 0) {
-                          let doseVal = g.doseMcg
-                          if (!doseVal) {
-                            const match = g.doseDisplay.match(/(\d+(?:\.\d+)?)\s*(mcg|mg|iu)/i)
-                            if (match) {
-                              const num = parseFloat(match[1])
-                              const unit = match[2].toLowerCase()
-                              doseVal = unit === "mg" ? num * 1000 : num
+                          const iuMatch = g.doseDisplay.match(/(\d+(?:\.\d+)?)\s*iu/i)
+                          if (isHmg && iuMatch) {
+                            const iuDose = parseFloat(iuMatch[1])
+                            vol = Number((iuDose / activeMetrics.conc).toFixed(3))
+                            units = Number(((iuDose / activeMetrics.conc) * 100).toFixed(1))
+                          } else {
+                            let doseVal = g.doseMcg
+                            if (!doseVal) {
+                              const match = g.doseDisplay.match(/(\d+(?:\.\d+)?)\s*(mcg|mg)/i)
+                              if (match) {
+                                const num = parseFloat(match[1])
+                                const unit = match[2].toLowerCase()
+                                doseVal = unit === "mg" ? num * 1000 : num
+                              }
                             }
-                          }
-                          if (doseVal) {
-                            if (isHmg) {
-                              vol = Number((doseVal / activeMetrics.conc).toFixed(3))
-                              units = Number(((doseVal / activeMetrics.conc) * 100).toFixed(1))
-                            } else {
+                            if (doseVal && !isHmg) {
                               vol = Number(((doseVal / 1000.0) / activeMetrics.conc).toFixed(3))
                               units = Number(
                                 (((doseVal / 1000.0) / activeMetrics.conc) * 100).toFixed(1)

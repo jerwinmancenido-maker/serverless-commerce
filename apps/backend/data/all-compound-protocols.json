@@ -1510,19 +1510,37 @@
         "vialMg": 10,
         "diluentMl": 2.0,
         "concMgMl": 5.0,
-        "badge": "10 mg Standard"
+        "badge": "10 mg Standard (2 mL)"
       },
       {
         "vialMg": 15,
         "diluentMl": 2.0,
         "concMgMl": 7.5,
-        "badge": "15 mg Escalation"
+        "badge": "15 mg Escalation Standard"
+      },
+      {
+        "vialMg": 20,
+        "diluentMl": 2.0,
+        "concMgMl": 10.0,
+        "badge": "20 mg Dual-Incretin Maintenance"
       },
       {
         "vialMg": 30,
         "diluentMl": 3.0,
         "concMgMl": 10.0,
         "badge": "30 mg Multi-Week"
+      },
+      {
+        "vialMg": 40,
+        "diluentMl": 4.0,
+        "concMgMl": 10.0,
+        "badge": "40 mg Extended Titration"
+      },
+      {
+        "vialMg": 50,
+        "diluentMl": 5.0,
+        "concMgMl": 10.0,
+        "badge": "50 mg Research Standard Kit"
       }
     ],
     "reconstitutionOptions": {
@@ -1688,13 +1706,19 @@
         "vialMg": 5,
         "diluentMl": 1.0,
         "concMgMl": 5.0,
-        "badge": "5 mg Trial"
+        "badge": "5 mg Calibration Standard"
       },
       {
         "vialMg": 10,
         "diluentMl": 2.0,
         "concMgMl": 5.0,
-        "badge": "10 mg Standard"
+        "badge": "10 mg Standard (2 mL)"
+      },
+      {
+        "vialMg": 15,
+        "diluentMl": 2.0,
+        "concMgMl": 7.5,
+        "badge": "15 mg Escalation Standard"
       },
       {
         "vialMg": 20,
@@ -1706,7 +1730,13 @@
         "vialMg": 30,
         "diluentMl": 3.0,
         "concMgMl": 10.0,
-        "badge": "30 mg Multi-Week"
+        "badge": "30 mg Multi-Week Protocol"
+      },
+      {
+        "vialMg": 40,
+        "diluentMl": 4.0,
+        "concMgMl": 10.0,
+        "badge": "40 mg Extended Titration"
       },
       {
         "vialMg": 60,
@@ -4878,7 +4908,10 @@
       "lightProtection": true
     },
     "molecularDetails": {
-      "sequenceOrFormula": "Tesamorelin (10mg) + Ipamorelin (5mg) Dual Standard"
+      "sequenceOrFormula": "Tesamorelin (10mg) + Ipamorelin (5mg) Dual Standard",
+      "purity": "≥99.0% (Total Peptide Blend Purity)",
+      "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)",
+      "endotoxin": "<0.05 EU/mg"
     },
     "citations": [
       {
@@ -6199,7 +6232,8 @@
         "tickConversion": "1 unit = 33.3 mcg (0.01 mL)"
       }
     },
-    "protocolCategoryType": "single_peptide"
+    "protocolCategoryType": "single_peptide",
+    "vialStrengthOptions": []
   },
   {
     "id": "na-semax-amidate",
@@ -8795,21 +8829,21 @@
       "graduations": [
         {
           "doseDisplay": "25 IU (Low Calibration)",
-          "doseMcg": 333,
+          "doseMcg": 25,
           "volumeMl": 0.333,
           "syringeIU": 33.3,
           "tickLabel": "33.3 units (0.33 mL) on U-100 syringe"
         },
         {
           "doseDisplay": "37.5 IU (Half-Vial Induction)",
-          "doseMcg": 500,
+          "doseMcg": 37.5,
           "volumeMl": 0.5,
           "syringeIU": 50,
           "tickLabel": "50.0 units (0.50 mL) on U-100 syringe"
         },
         {
           "doseDisplay": "75 IU (Full Vial Target)",
-          "doseMcg": 1000,
+          "doseMcg": 75,
           "volumeMl": 1,
           "syringeIU": 100,
           "tickLabel": "100.0 units (1.00 mL) on U-100 syringe"
@@ -9197,7 +9231,12 @@
         "tickConversion": "1 unit = 100 mcg total blend"
       }
     },
-    "protocolCategoryType": "blend"
+    "protocolCategoryType": "blend",
+    "molecularDetails": {
+      "purity": "≥99.0% (Co-Lyophilized Matrix HPLC)",
+      "analyticalVerification": "RP-HPLC (Individual Peak Area Integration) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "klow-blend",
@@ -9351,7 +9390,12 @@
         "tickConversion": "1 unit = 100 mcg total blend"
       }
     },
-    "protocolCategoryType": "blend"
+    "protocolCategoryType": "blend",
+    "molecularDetails": {
+      "purity": "≥99.0% (Co-Lyophilized Quad-Matrix HPLC)",
+      "analyticalVerification": "RP-HPLC (Gradient Elution Multi-Wavelength UV) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "wolverine-blend",
@@ -9495,7 +9539,12 @@
         "tickConversion": "1 unit = 33.3 mcg total blend"
       }
     },
-    "protocolCategoryType": "blend"
+    "protocolCategoryType": "blend",
+    "molecularDetails": {
+      "purity": "≥99.0% (Dual Active Component HPLC)",
+      "analyticalVerification": "RP-HPLC (BPC-157 / TB-500 Baseline Separation) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "tri-heal-blend",
@@ -9640,7 +9689,12 @@
         "tickConversion": "1 unit = 33.3 mcg total blend"
       }
     },
-    "protocolCategoryType": "blend"
+    "protocolCategoryType": "blend",
+    "molecularDetails": {
+      "purity": "≥99.0% (Tri-Active Synergistic HPLC)",
+      "analyticalVerification": "RP-HPLC (Triple Component Resolution) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "cjc-ipam-blend",
@@ -9778,7 +9832,12 @@
         "tickConversion": "1 unit = 20 mcg total blend"
       }
     },
-    "protocolCategoryType": "blend"
+    "protocolCategoryType": "blend",
+    "molecularDetails": {
+      "purity": "≥99.0% (Dual GHRH/GHRP Axis HPLC)",
+      "analyticalVerification": "RP-HPLC (Dual Baseline Peak Integration) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "neuro-sync-blend",
@@ -9930,7 +9989,12 @@
         "tickConversion": "1 unit = 33.3 mcg total blend"
       }
     },
-    "protocolCategoryType": "blend"
+    "protocolCategoryType": "blend",
+    "molecularDetails": {
+      "purity": "≥99.0% (Dual Heptapeptide HPLC)",
+      "analyticalVerification": "RP-HPLC (Semax / Selank Resolution) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "cuv100-ghk-cu-kpv",
@@ -10039,7 +10103,10 @@
     },
     "molecularDetails": {
       "casNumber": "49557-75-7 / 67727-97-3",
-      "sequenceOrFormula": "GHK-Cu (C14H24CuN6O4) + KPV (C16H31N5O4)"
+      "sequenceOrFormula": "GHK-Cu (C14H24CuN6O4) + KPV (C16H31N5O4)",
+      "purity": "≥99.0% (Dual Matrix HPLC)",
+      "analyticalVerification": "RP-HPLC (GHK-Cu / KPV Resolution) & ESI-MS",
+      "endotoxin": "<0.05 EU/mg"
     },
     "citations": [
       {
@@ -11228,7 +11295,10 @@
       "pubchemCid": 73587,
       "sequenceOrFormula": "C14H24CuN6O4 (Copper Tripeptide-1)",
       "molecularWeightGPerMol": 403.92,
-      "formula": "C14H24CuN6O4"
+      "formula": "C14H24CuN6O4",
+      "purity": "≥99.0% (HPLC Certified Active Tripeptide)",
+      "analyticalVerification": "Reversed-Phase HPLC (Active GHK-Cu in HA Carrier Matrix)",
+      "endotoxin": "<0.05 EU/mL"
     },
     "citations": [
       {
@@ -11403,7 +11473,12 @@
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       }
     ],
-    "protocolCategoryType": "bundle"
+    "protocolCategoryType": "bundle",
+    "molecularDetails": {
+      "purity": "≥99.0% (Dual Individual HPLC Certified)",
+      "analyticalVerification": "Individual RP-HPLC & Mass Spectrometry per Separate Sterile Vial",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "epithalon-glutathione-bundle",
@@ -11550,7 +11625,12 @@
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       }
     ],
-    "protocolCategoryType": "bundle"
+    "protocolCategoryType": "bundle",
+    "molecularDetails": {
+      "purity": "≥99.0% (Dual Individual HPLC Certified)",
+      "analyticalVerification": "Individual RP-HPLC & Mass Spectrometry per Separate Sterile Vial",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "epithalon-glutathione-nad-bundle",
@@ -11719,7 +11799,12 @@
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       }
     ],
-    "protocolCategoryType": "bundle"
+    "protocolCategoryType": "bundle",
+    "molecularDetails": {
+      "purity": "≥99.0% (Tri-Vial Individual HPLC Certified)",
+      "analyticalVerification": "Individual RP-HPLC & Mass Spectrometry per Separate Sterile Vial",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "glutathione-nad-ghk-cu-bundle",
@@ -11891,7 +11976,12 @@
         "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
       }
     ],
-    "protocolCategoryType": "bundle"
+    "protocolCategoryType": "bundle",
+    "molecularDetails": {
+      "purity": "≥99.0% (Tri-Vial Individual HPLC Certified)",
+      "analyticalVerification": "Individual RP-HPLC & Mass Spectrometry per Separate Sterile Vial",
+      "endotoxin": "<0.05 EU/mg"
+    }
   },
   {
     "id": "nad-ghk-cu-bundle",
@@ -12038,6 +12128,11 @@
         "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
       }
     ],
-    "protocolCategoryType": "bundle"
+    "protocolCategoryType": "bundle",
+    "molecularDetails": {
+      "purity": "≥99.0% (Dual Individual HPLC Certified)",
+      "analyticalVerification": "Individual RP-HPLC & Mass Spectrometry per Separate Sterile Vial",
+      "endotoxin": "<0.05 EU/mg"
+    }
   }
 ]

@@ -26,6 +26,16 @@ aside > div,
   font-family: inherit !important;
 }
 
+aside:not([data-collapsed="true"]):not([data-state="collapsed"]) {
+  width: 248px !important;
+  min-width: 248px !important;
+}
+
+aside .sticky.top-0,
+aside > div:first-child {
+  padding: 0 !important;
+}
+
 /* 2. Style Native Medusa Searchbar instead of hiding it */
 aside [data-testid="search-button"],
 aside button:has(kbd) {
@@ -70,18 +80,20 @@ div[data-rc-branded="true"] {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 10px 12px 6px 12px !important;
+  padding: 8px 8px 8px 8px !important;
   width: 100% !important;
   box-sizing: border-box !important;
   border-bottom: 1px solid #F1F5F9 !important;
   margin-bottom: 4px !important;
+  gap: 5px !important;
 }
 
 .rc-brand-left {
   display: flex !important;
   align-items: center !important;
-  gap: 9px !important;
+  gap: 7px !important;
   min-width: 0 !important;
+  flex: 1 1 auto !important;
 }
 
 .rc-brand-icon {
@@ -101,32 +113,36 @@ div[data-rc-branded="true"] {
   display: flex !important;
   flex-direction: column !important;
   min-width: 0 !important;
+  flex: 1 1 auto !important;
   text-align: left !important;
 }
 
 .rc-brand-title {
   color: #0F172A !important;
   font-weight: 600 !important;
-  font-size: 13px !important;
-  letter-spacing: -0.01em !important;
-  line-height: 1.2 !important;
+  font-size: 12px !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
   white-space: nowrap !important;
 }
 
 .rc-brand-sub {
   color: #64748B !important;
-  font-size: 10.5px !important;
+  font-size: 9.5px !important;
   font-weight: 500 !important;
+  line-height: 1.2 !important;
   white-space: nowrap !important;
 }
 
-.rc-storefront-link {
+.rc-storefront-link,
+aside a.rc-storefront-link {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 3px !important;
-  padding: 2px 7px !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  padding: 2px 5px !important;
   border-radius: 5px !important;
-  font-size: 10.5px !important;
+  font-size: 10px !important;
   font-weight: 600 !important;
   color: #2563EB !important;
   background-color: #EFF6FF !important;
@@ -134,36 +150,51 @@ div[data-rc-branded="true"] {
   text-decoration: none !important;
   transition: all 0.15s ease !important;
   white-space: nowrap !important;
+  width: auto !important;
+  max-width: fit-content !important;
+  height: 22px !important;
   flex-shrink: 0 !important;
+  box-sizing: border-box !important;
 }
-.rc-storefront-link:hover {
+.rc-storefront-link:hover,
+aside a.rc-storefront-link:hover {
   background-color: #DBEAFE !important;
   color: #1D4ED8 !important;
 }
 
-/* 4. Minimalist Section Headers (Linear / Shopify Polaris style) */
+/* 4. Minimalist Section Headers - Hidden for Unified Single-Flow Navigation */
 .rc-sidebar-section {
-  padding: 14px 10px 4px 10px !important;
-  font-size: 10.5px !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: #94A3B8 !important;
-  margin: 0 !important;
+  display: none !important;
 }
 
-/* 5. Navigation Items: Strictly 1 Item Per Row */
+/* 4b. Eradicate Native Medusa Radix Collapsibles and Hidden Accordion Wrappers */
+aside nav div:has(> [data-state]),
+aside nav [data-state],
+aside nav [data-radix-collapsible-content],
+aside nav button[aria-controls],
+aside nav div.px-3.flex.flex-col > div:not(ul) {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+/* 5. Navigation Items: Strictly 1 Item Per Row, Balanced 32px SaaS Layout */
 .rc-sidebar-item {
   display: flex !important;
   width: 100% !important;
   height: 32px !important;
-  margin: 1px 0 !important;
+  margin: 2px 0 !important;
   padding: 0 !important;
   list-style: none !important;
   box-sizing: border-box !important;
 }
 
-aside a {
+aside a:not(.rc-storefront-link):not(.rc-signout-btn) {
   display: flex !important;
   align-items: center !important;
   gap: 9px !important;
@@ -180,7 +211,7 @@ aside a {
   box-sizing: border-box !important;
 }
 
-aside a span {
+aside a:not(.rc-storefront-link):not(.rc-signout-btn) span {
   font-weight: inherit !important;
   font-size: inherit !important;
   white-space: nowrap !important;
@@ -188,7 +219,7 @@ aside a span {
   text-overflow: ellipsis !important;
 }
 
-aside a svg {
+aside a:not(.rc-storefront-link):not(.rc-signout-btn) svg {
   width: 16px !important;
   height: 16px !important;
   color: #64748B !important;
@@ -196,19 +227,19 @@ aside a svg {
   transition: color 0.12s ease !important;
 }
 
-aside a:hover {
+aside a:not(.rc-storefront-link):not(.rc-signout-btn):hover {
   background-color: #F8FAFC !important;
   color: #0F172A !important;
 }
 
-aside a:hover svg {
+aside a:not(.rc-storefront-link):not(.rc-signout-btn):hover svg {
   color: #0F172A !important;
 }
 
 /* 6. Active Item - Linear / Shopify Polaris Signature Active Pill */
-aside a[aria-current="page"],
-aside a.bg-ui-bg-base,
-aside a[data-active="true"] {
+aside a[aria-current="page"]:not(.rc-storefront-link):not(.rc-signout-btn),
+aside a.bg-ui-bg-base:not(.rc-storefront-link):not(.rc-signout-btn),
+aside a[data-active="true"]:not(.rc-storefront-link):not(.rc-signout-btn) {
   background-color: #EFF6FF !important;
   color: #1D4ED8 !important;
   font-weight: 600 !important;
@@ -216,15 +247,15 @@ aside a[data-active="true"] {
   box-shadow: none !important;
 }
 
-aside a[aria-current="page"] svg,
-aside a.bg-ui-bg-base svg,
-aside a[data-active="true"] svg {
+aside a[aria-current="page"]:not(.rc-storefront-link):not(.rc-signout-btn) svg,
+aside a.bg-ui-bg-base:not(.rc-storefront-link):not(.rc-signout-btn) svg,
+aside a[data-active="true"]:not(.rc-storefront-link):not(.rc-signout-btn) svg {
   color: #2563EB !important;
 }
 
-aside a[aria-current="page"]::before,
-aside a.bg-ui-bg-base::before,
-aside a[data-active="true"]::before {
+aside a[aria-current="page"]:not(.rc-storefront-link):not(.rc-signout-btn)::before,
+aside a.bg-ui-bg-base:not(.rc-storefront-link):not(.rc-signout-btn)::before,
+aside a[data-active="true"]:not(.rc-storefront-link):not(.rc-signout-btn)::before {
   content: "" !important;
   position: absolute !important;
   left: 0 !important;
@@ -233,6 +264,43 @@ aside a[data-active="true"]::before {
   width: 2.5px !important;
   border-radius: 2px !important;
   background-color: #2563EB !important;
+}
+
+/* Scroll clearance for navigation container */
+aside > div:nth-child(2),
+aside nav,
+aside ul,
+aside .gap-y-1 {
+  overflow-y: auto !important;
+  max-height: calc(100vh - 130px) !important;
+  padding-bottom: 24px !important;
+  scrollbar-width: thin !important;
+}
+
+/* Collapsed Sidebar Adaptation */
+aside[data-collapsed="true"] .rc-brand-text,
+aside[data-collapsed="true"] .rc-storefront-link,
+aside[data-collapsed="true"] .rc-sidebar-section,
+aside[data-collapsed="true"] .rc-user-meta,
+aside[data-collapsed="true"] aside a span,
+aside[data-state="collapsed"] .rc-brand-text,
+aside[data-state="collapsed"] .rc-storefront-link,
+aside[data-state="collapsed"] .rc-sidebar-section,
+aside[data-state="collapsed"] .rc-user-meta,
+aside[data-state="collapsed"] aside a span {
+  display: none !important;
+}
+
+aside[data-collapsed="true"] .rc-brand-card,
+aside[data-state="collapsed"] .rc-brand-card {
+  justify-content: center !important;
+  padding: 8px 4px !important;
+}
+
+aside[data-collapsed="true"] .rc-user-row,
+aside[data-state="collapsed"] .rc-user-row {
+  justify-content: center !important;
+  padding: 4px !important;
 }
 
 /* 7. Badges inside Sidebar Links */
@@ -278,17 +346,22 @@ aside a[data-active="true"]::before {
   display: flex !important;
   flex-direction: column !important;
   gap: 2px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .rc-user-row {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 5px 8px !important;
+  padding: 6px 8px !important;
   border-radius: 6px !important;
   background-color: #F8FAFC !important;
   border: 1px solid #E2E8F0 !important;
   margin-top: 4px !important;
+  gap: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .rc-user-left {
@@ -296,6 +369,8 @@ aside a[data-active="true"]::before {
   align-items: center !important;
   gap: 8px !important;
   min-width: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
 }
 
 .rc-user-avatar {
@@ -316,7 +391,9 @@ aside a[data-active="true"]::before {
   display: flex !important;
   flex-direction: column !important;
   min-width: 0 !important;
+  flex: 1 1 auto !important;
   text-align: left !important;
+  overflow: hidden !important;
 }
 
 .rc-user-name {
@@ -334,23 +411,46 @@ aside a[data-active="true"]::before {
   font-size: 10px !important;
   line-height: 1.1 !important;
   white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
+aside a.rc-signout-btn,
 .rc-signout-btn {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 4px !important;
-  border-radius: 4px !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 5px !important;
   color: #64748B !important;
   text-decoration: none !important;
   transition: all 0.15s ease !important;
   flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
 }
 
-.rc-signout-btn:hover {
-  background-color: #FFE4E6 !important;
-  color: #BE123C !important;
+aside a.rc-signout-btn svg,
+.rc-signout-btn svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: #64748B !important;
+  stroke: currentColor !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+.rc-signout-btn:hover,
+aside a.rc-signout-btn:hover {
+  background-color: #FEE2E2 !important;
+  color: #DC2626 !important;
+}
+
+.rc-signout-btn:hover svg,
+aside a.rc-signout-btn:hover svg {
+  color: #DC2626 !important;
+  stroke: #DC2626 !important;
 }
 
 /* ==========================================================================
@@ -628,23 +728,23 @@ export const routineAdminNavigationCss = researchCompoundsSidebarCss
 export const researchCompoundsSidebarScript = `
 (function() {
   var desiredOrder = [
-    { section: 'CORE', href: '/app/dashboard' },
-    { section: 'COMMERCE', href: '/app/orders' },
+    { href: '/app/dashboard' },
+    { href: '/app/orders' },
     { href: '/app/manual-payment-proofs' },
     { href: '/app/customers' },
-    { section: 'CATALOG', href: '/app/products' },
+    { href: '/app/products' },
     { href: '/app/categories' },
     { href: '/app/buildable-products' },
     { href: '/app/bundles' },
     { href: '/app/research-protocols' },
-    { section: 'SUPPLY', href: '/app/inventory' },
+    { href: '/app/inventory' },
     { href: '/app/price-lists' },
     { href: '/app/promotions' },
-    { section: 'OPERATIONS', href: '/app/customer-support' },
+    { href: '/app/customer-support' },
     { href: '/app/notification-center' },
     { href: '/app/research-agreements' },
     { href: '/app/rewards' },
-    { section: 'SYSTEM', href: '/app/settings' }
+    { href: '/app/settings' }
   ];
 
   function enhanceSidebar() {
@@ -723,65 +823,133 @@ export const researchCompoundsSidebarScript = `
           linkMap[h] = itemWrapper;
         });
 
-        // Synthesize Categories if Medusa's collapsible is closed
-        if (!linkMap['/app/categories']) {
-          var catA = document.createElement('a');
-          catA.setAttribute('href', '/app/categories');
-          catA.className = 'flex items-center gap-x-2';
-          catA.innerHTML = [
-            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
-            '  <rect x="3" y="3" width="7" height="7"></rect>',
-            '  <rect x="14" y="3" width="7" height="7"></rect>',
-            '  <rect x="14" y="14" width="7" height="7"></rect>',
-            '  <rect x="3" y="14" width="7" height="7"></rect>',
-            '</svg>',
-            '<span>Categories</span>'
-          ].join('');
-          var catWrapper = document.createElement('li');
-          catWrapper.className = 'rc-sidebar-item';
-          catWrapper.appendChild(catA);
-          linkMap['/app/categories'] = catWrapper;
-        }
+        var routeIcons = {
+          '/app/dashboard': '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+          '/app/orders': '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path>',
+          '/app/manual-payment-proofs': '<rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line>',
+          '/app/customers': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+          '/app/products': '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path>',
+          '/app/categories': '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+          '/app/buildable-products': '<path d="M12 2 2 7l10 5 10-5-10-5Z"></path><path d="m2 17 10 5 10-5"></path><path d="m2 12 10 5 10-5"></path>',
+          '/app/bundles': '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+          '/app/research-protocols': '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path>',
+          '/app/inventory': '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
+          '/app/price-lists': '<circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path>',
+          '/app/promotions': '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>',
+          '/app/customer-support': '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>',
+          '/app/notification-center': '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>',
+          '/app/research-agreements': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+          '/app/rewards': '<circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>',
+          '/app/settings': '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>'
+        };
 
-        // Synthesize Settings if not already present in linkMap
-        if (!linkMap['/app/settings']) {
-          var setA = document.createElement('a');
-          setA.setAttribute('href', '/app/settings');
-          setA.className = 'flex items-center gap-x-2';
-          setA.innerHTML = [
-            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
-            '<span>Settings</span>'
-          ].join('');
-          var setWrapper = document.createElement('li');
-          setWrapper.className = 'rc-sidebar-item';
-          setWrapper.appendChild(setA);
-          linkMap['/app/settings'] = setWrapper;
-        }
+        var routeLabels = {
+          '/app/dashboard': 'Dashboard',
+          '/app/orders': 'Orders',
+          '/app/manual-payment-proofs': 'Payment Proofs',
+          '/app/customers': 'Customers',
+          '/app/products': 'Products',
+          '/app/categories': 'Categories',
+          '/app/buildable-products': 'Component Inventory',
+          '/app/bundles': 'Bundles',
+          '/app/research-protocols': 'Research Protocols',
+          '/app/inventory': 'Inventory',
+          '/app/price-lists': 'Price Lists',
+          '/app/promotions': 'Promotions',
+          '/app/customer-support': 'Customer Support',
+          '/app/notification-center': 'Notification Center',
+          '/app/research-agreements': 'Research Agreements',
+          '/app/rewards': 'Rewards Program',
+          '/app/settings': 'Settings'
+        };
 
         // Clean out existing custom headers before repopulating
         aside.querySelectorAll('.rc-sidebar-section').forEach(function(h) {
           h.remove();
         });
 
+        // Eradicate native Medusa Radix accordion wrappers that create ghost gaps
+        if (container.parentElement) {
+          Array.from(container.parentElement.children).forEach(function(sibling) {
+            if (sibling !== container && sibling.tagName !== 'UL') {
+              sibling.style.setProperty('display', 'none', 'important');
+              sibling.style.setProperty('height', '0px', 'important');
+              sibling.style.setProperty('min-height', '0px', 'important');
+              sibling.style.setProperty('max-height', '0px', 'important');
+              sibling.style.setProperty('margin', '0px', 'important');
+              sibling.style.setProperty('padding', '0px', 'important');
+              sibling.style.setProperty('overflow', 'hidden', 'important');
+            }
+          });
+        }
+
+        // Ensure container and parent scroll smoothly with compact padding
+        container.style.setProperty('padding-bottom', '24px', 'important');
+        container.style.setProperty('overflow-y', 'auto', 'important');
+        container.style.setProperty('max-height', 'calc(100vh - 120px)', 'important');
+        if (container.parentElement) {
+          container.parentElement.style.setProperty('overflow-y', 'auto', 'important');
+          container.parentElement.style.setProperty('max-height', 'calc(100vh - 110px)', 'important');
+          container.parentElement.style.setProperty('padding-bottom', '24px', 'important');
+        }
+
+        var currentPath = window.location.pathname;
+
         desiredOrder.forEach(function(item) {
-          if (item.section) {
-            var sectionHeader = document.createElement('div');
-            sectionHeader.className = 'rc-sidebar-section';
-            sectionHeader.textContent = item.section;
-            container.appendChild(sectionHeader);
+          var el = linkMap[item.href];
+          if (!el) {
+            var a = document.createElement('a');
+            a.setAttribute('href', item.href);
+            a.className = 'flex items-center gap-x-2';
+            var iconSvg = routeIcons[item.href] || '';
+            var labelText = routeLabels[item.href] || item.href.replace('/app/', '');
+            a.innerHTML = [
+              '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
+              iconSvg,
+              '</svg>',
+              '<span>' + labelText + '</span>'
+            ].join('');
+            var wrapper = document.createElement('li');
+            wrapper.className = 'rc-sidebar-item';
+            wrapper.appendChild(a);
+            el = wrapper;
+            linkMap[item.href] = el;
           }
 
-          var el = linkMap[item.href];
-          if (el) {
-            container.appendChild(el);
+          var linkEl = el.querySelector('a');
+          if (linkEl) {
+            linkEl.classList.remove('pl-[34px]', 'pl-8', 'pl-7');
+            if (!linkEl.querySelector('svg') && routeIcons[item.href]) {
+              var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+              svg.setAttribute('viewBox', '0 0 24 24');
+              svg.setAttribute('width', '16');
+              svg.setAttribute('height', '16');
+              svg.setAttribute('fill', 'none');
+              svg.setAttribute('stroke', 'currentColor');
+              svg.setAttribute('stroke-width', '2');
+              svg.setAttribute('stroke-linecap', 'round');
+              svg.setAttribute('stroke-linejoin', 'round');
+              svg.innerHTML = routeIcons[item.href];
+              linkEl.insertBefore(svg, linkEl.firstChild);
+            }
+
+            var isExact = currentPath === item.href;
+            var isNested = currentPath.startsWith(item.href + '/') && item.href !== '/app';
+            if (isExact || isNested) {
+              linkEl.setAttribute('data-active', 'true');
+            } else {
+              linkEl.removeAttribute('data-active');
+            }
           }
+
+          container.appendChild(el);
         });
       }
     }
 
     // 3. System Section at the bottom of aside (User Profile)
     var bottomDiv = aside.querySelector('.sticky.bottom-0') || aside.lastElementChild;
-    if (bottomDiv && !bottomDiv.querySelector('.rc-system-section')) {
+    if (bottomDiv && (!bottomDiv.querySelector('.rc-system-section') || !bottomDiv.querySelector('.rc-signout-btn'))) {
       bottomDiv.innerHTML = '';
       var sysSection = document.createElement('div');
       sysSection.className = 'rc-system-section';

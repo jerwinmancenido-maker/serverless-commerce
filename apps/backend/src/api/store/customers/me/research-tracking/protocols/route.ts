@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/api/store/customers/me/research-tracking/protocols/route.ts
+ * @module  ResearchTrackingProtocolsRoute (Research Tracking Module)
+ * @purpose Exposes active customer research protocols with real-time active series verification.
+ * @contracts
+ *   API:     GET /store/customers/me/research-tracking/protocols
+ *   Service: ResearchTrackingModuleService · ResearchContentModuleService
+ */
+
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -39,19 +48,39 @@ export async function GET(
     return res.json({ protocols: [] })
   }
 
-  const seriesIds = Array.from(
+  const rawSeriesIds = Array.from(
     new Set(accesses.map((access) => access.protocol_series_id)),
   )
-  const orderAccessIds = accesses.map(
+  const activeSeries = await contentService.listResearchProtocolSeries(
+    { id: rawSeriesIds, archived_at: null },
+    { select: ["id", "archived_at"] },
+  )
+  const activeSeriesIds = new Set(
+    activeSeries
+      .filter((series) => series.archived_at === null)
+      .map((series) => series.id),
+  )
+  const validAccesses = accesses.filter((access) =>
+    activeSeriesIds.has(access.protocol_series_id),
+  )
+
+  if (!validAccesses.length) {
+    return res.json({ protocols: [] })
+  }
+
+  const seriesIds = Array.from(
+    new Set(validAccesses.map((access) => access.protocol_series_id)),
+  )
+  const orderAccessIds = validAccesses.map(
     (access) => access.order_protocol_access_id,
   )
   const revisionIds = Array.from(
-    new Set(accesses.map((access) => access.protocol_revision_id)),
+    new Set(validAccesses.map((access) => access.protocol_revision_id)),
   )
   const productIds = Array.from(
-    new Set(accesses.map((access) => access.product_id)),
+    new Set(validAccesses.map((access) => access.product_id)),
   )
-  const orderIds = Array.from(new Set(accesses.map((access) => access.order_id)))
+  const orderIds = Array.from(new Set(validAccesses.map((access) => access.order_id)))
   const [currentRevisions, orderAccesses, preservedRevisions] = await Promise.all([
     contentService.listResearchProtocols(
       { series_id: seriesIds, status: "published" },
@@ -91,7 +120,7 @@ export async function GET(
   const orderById = new Map(orders.map((order) => [order.id, order]))
 
   res.json({
-    protocols: accesses.map((access) => {
+    protocols: validAccesses.map((access) => {
       const currentRevision =
         currentRevisionBySeries.get(access.protocol_series_id) ??
         access.revision_number_snapshot

@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/research-library/directory.tsx
+ * @module  ResearchLibraryDirectory (Research Library Storefront)
+ * @purpose Renders the comprehensive research library directory, protocol search, calculators, and comparisons.
+ * @contracts
+ *   Service: ResearchProtocolModuleService · ResearchContentModuleService
+ */
+
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useEffect, useMemo, useState } from "react"
 import type { StoreResearchProtocol } from "@lib/data/research-protocols"
@@ -91,11 +99,10 @@ export default function ResearchLibraryDirectory({
     return () => window.removeEventListener("hashchange", onHashChange)
   }, [])
 
-  // Sanitize protocols: filter out any internal test protocols and collapse any duplicate handles
+  // Sanitize protocols: collapse any duplicate handles
   const sanitizedProtocols = useMemo(() => {
     const seen = new Set<string>()
     return protocols.filter((p) => {
-      if (p.handle === "community-board-acceptance") return false
       const norm = p.handle.replace(/-laboratory-handling$/, "").replace(/-protocol$/, "")
       if (seen.has(norm)) return false
       seen.add(norm)

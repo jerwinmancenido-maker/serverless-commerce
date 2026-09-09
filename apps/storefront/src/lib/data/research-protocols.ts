@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/lib/data/research-protocols.ts
+ * @module  ResearchProtocolsData (Research Protocols Storefront)
+ * @purpose Data access layer and server actions for research protocols and community discussions.
+ * @contracts
+ *   API: GET /store/research-protocols · GET /store/customers/me/research-protocol-community/:handle/threads
+ */
+
 "use server"
 
 import { sdk } from "@lib/config"
@@ -285,8 +293,15 @@ const communityState = (error?: unknown): CommunityActionState =>
   error
     ? { success: false, error: error instanceof Error ? error.message : "The community action could not be completed." }
     : { success: true, error: null }
-const communityPath = (countryCode: string, suffix = "") =>
-  `/${countryCode}/account/community${suffix}`
+const communityPath = (countryCode: string, handle?: string, threadId?: string) => {
+  if (handle && threadId) {
+    return `/${countryCode}/research-protocols/${encodeURIComponent(handle)}/community/${encodeURIComponent(threadId)}`
+  }
+  if (handle) {
+    return `/${countryCode}/research-protocols/${encodeURIComponent(handle)}/community`
+  }
+  return `/${countryCode}/account/community`
+}
 
 export async function updateResearchCommunityIdentityAction(
   _state: CommunityActionState,
@@ -301,7 +316,8 @@ export async function updateResearchCommunityIdentityAction(
         show_verified_badge: formData.get("show_verified_badge") === "on",
       },
     })
-    revalidatePath(communityPath(String(formData.get("country_code") || "ph")), "layout")
+    const countryCode = String(formData.get("country_code") || "ph")
+    revalidatePath(communityPath(countryCode), "layout")
     return communityState()
   } catch (error) {
     return communityState(error)
@@ -328,6 +344,7 @@ export async function createResearchCommunityThreadAction(
         },
       },
     )
+    revalidatePath(communityPath(countryCode, handle), "page")
     revalidatePath(communityPath(countryCode), "page")
     return communityState()
   } catch (error) {
@@ -354,7 +371,9 @@ export async function createResearchCommunityReplyAction(
         },
       },
     )
-    revalidatePath(communityPath(countryCode, `/${handle}/${threadId}`), "page")
+    revalidatePath(communityPath(countryCode, handle, threadId), "page")
+    revalidatePath(communityPath(countryCode, handle), "page")
+    revalidatePath(communityPath(countryCode), "page")
     return communityState()
   } catch (error) {
     return communityState(error)
@@ -374,7 +393,8 @@ export async function reactResearchCommunityCommentAction(formData: FormData) {
       ...(active ? {} : { body: { reaction: String(formData.get("reaction") || "helpful") } }),
     },
   )
-  revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+  const countryCode = String(formData.get("country_code") || "ph")
+  revalidatePath(communityPath(countryCode, handle, threadId), "page")
 }
 
 export async function followResearchCommunityThreadAction(formData: FormData) {
@@ -388,7 +408,8 @@ export async function followResearchCommunityThreadAction(formData: FormData) {
       body: { subscribed: formData.get("subscribed") !== "true" },
     },
   )
-  revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+  const countryCode = String(formData.get("country_code") || "ph")
+  revalidatePath(communityPath(countryCode, handle, threadId), "page")
 }
 
 export async function reportResearchCommunityContentAction(
@@ -429,7 +450,8 @@ export async function editResearchCommunityCommentAction(
       `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/comments/${encodeURIComponent(commentId)}/edit`,
       { method: "POST", headers: await getAuthHeaders(), body: { body: String(formData.get("body") || "") } },
     )
-    revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+    const countryCode = String(formData.get("country_code") || "ph")
+    revalidatePath(communityPath(countryCode, handle, threadId), "page")
     return communityState()
   } catch (error) {
     return communityState(error)
@@ -444,5 +466,6 @@ export async function removeResearchCommunityCommentAction(formData: FormData) {
     `/store/customers/me/research-protocol-community/${encodeURIComponent(handle)}/comments/${encodeURIComponent(commentId)}/remove`,
     { method: "POST", headers: await getAuthHeaders(), body: {} },
   )
-  revalidatePath(communityPath(String(formData.get("country_code") || "ph"), `/${handle}/${threadId}`), "page")
+  const countryCode = String(formData.get("country_code") || "ph")
+  revalidatePath(communityPath(countryCode, handle, threadId), "page")
 }

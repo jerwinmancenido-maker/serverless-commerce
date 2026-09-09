@@ -1,31 +1,43 @@
+/**
+ * @file    apps/storefront/src/app/[countryCode]/(main)/account/community/page.tsx
+ * @module  AccountCommunityPage (Research Protocols Storefront)
+ * @purpose Customer portal hub listing all accessible protocol community boards and researcher profile.
+ * @contracts
+ *   Fetches: retrieveResearchProtocolAccesses() · retrieveResearchCommunityIdentity()
+ *   API:     GET /store/customers/me/research-tracking/protocols · GET /store/customers/me/research-community/identity
+ */
+
 import type { Metadata } from "next"
 
-import {
-  listResearchCommunityThreads,
-  listResearchCommunityReports,
-  retrieveResearchCommunityIdentity,
-} from "@lib/data/research-protocols"
+import { retrieveResearchCommunityIdentity } from "@lib/data/research-protocols"
 import { retrieveResearchProtocolAccesses } from "@lib/data/research-tracking"
-import CommunityDirectory from "@modules/research-protocols/community-directory"
+import AccountCommunityHub from "./account-community-hub"
 
 export const metadata: Metadata = {
-  title: "Protocol Community",
+  title: "Your Protocol Communities",
   robots: { index: false, follow: false },
 }
 
-export default async function AccountCommunityPage({ params }: { params: Promise<{ countryCode: string }> }) {
+export default async function AccountCommunityPage({
+  params,
+}: {
+  params: Promise<{ countryCode: string }>
+}) {
   const { countryCode } = await params
-  const accesses = await retrieveResearchProtocolAccesses().catch(() => [])
-  const unique = Array.from(new Map(accesses.map((access) => [access.protocol_handle, access])).values())
-  const [identityResult, protocolThreads] = await Promise.all([
+  const [accesses, identityResult] = await Promise.all([
+    retrieveResearchProtocolAccesses().catch(() => []),
     retrieveResearchCommunityIdentity().catch(() => ({ identity: null })),
-    Promise.all(unique.map(async (access) => ({
-      handle: access.protocol_handle,
-      title: access.protocol_title,
-      threads: await listResearchCommunityThreads(access.protocol_handle).then((result) => result.threads).catch(() => []),
-      reports: await listResearchCommunityReports(access.protocol_handle).then((result) => result.reports).catch(() => []),
-    }))),
   ])
 
-  return <CommunityDirectory countryCode={countryCode} identity={identityResult.identity} protocols={protocolThreads} />
+  const uniqueAccesses = Array.from(
+    new Map(accesses.map((access) => [access.protocol_handle, access])).values(),
+  )
+
+  return (
+    <AccountCommunityHub
+      countryCode={countryCode}
+      accesses={uniqueAccesses}
+      identity={identityResult.identity}
+    />
+  )
 }

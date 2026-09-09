@@ -265,7 +265,13 @@ export default function StandaloneReconstitutionCalculator({
     const summaryText = `[PEPSTACK RECONSTITUTION RECIPE]
 Compound: ${compoundName} (${compoundMass} ${compoundMassUnit})
 Diluent: ${diluentVolume} mL Bacteriostatic Water
-Concentration: ${result?.concentrationMgPerMl ? result.concentrationMgPerMl.toFixed(2) : "—"} mg/mL
+Concentration: ${
+  compoundMassUnit === "IU" && numVolume > 0
+    ? `${(numMass / numVolume).toFixed(1)} IU/mL`
+    : result?.concentrationMgPerMl
+    ? `${result.concentrationMgPerMl.toFixed(2)} mg/mL`
+    : "—"
+}
 Target Dose: ${targetDose} ${targetDoseUnit} (${result?.volumeMl ? result.volumeMl.toFixed(3) : "—"} mL)
 Syringe Draw: ${unitsOnU100 != null ? unitsOnU100 : "—"} Units on U-100 syringe
 Total Yield: ${result?.usesPerContainer ? Math.floor(result.usesPerContainer) : "—"} doses
@@ -612,12 +618,16 @@ Storage: 2°C - 8°C (Refrigerate once reconstituted)`
                   Final Concentration
                 </p>
                 <p className="mt-1.5 text-lg font-bold text-slate-900 tabular-nums">
-                  {result?.concentrationMgPerMl != null
+                  {compoundMassUnit === "IU" && numVolume > 0
+                    ? `${(numMass / numVolume).toFixed(1)} IU/mL`
+                    : result?.concentrationMgPerMl != null
                     ? `${result.concentrationMgPerMl.toFixed(2)} mg/mL`
                     : "—"}
                 </p>
                 <p className="mt-0.5 text-[10px] text-slate-400">
-                  {result?.concentrationMgPerMl != null
+                  {compoundMassUnit === "IU" && numVolume > 0
+                    ? `${((numMass / numVolume) / 100).toFixed(2)} IU / U-100 Unit`
+                    : result?.concentrationMgPerMl != null
                     ? `${(result.concentrationMgPerMl * 1000).toLocaleString()} mcg/mL`
                     : ""}
                 </p>

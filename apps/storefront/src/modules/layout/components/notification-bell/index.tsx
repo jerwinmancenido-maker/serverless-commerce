@@ -99,8 +99,18 @@ export const resolveNotificationHref = (item: CustomerNotification) => {
   switch (item.target.kind) {
     case "support_conversation":
       return id ? `/account/support/${encodeURIComponent(id)}` : "/account/support"
-    case "community_thread":
+    case "community_thread": {
+      const metadata = (item as { metadata?: Record<string, unknown> }).metadata
+      const protocolHandle =
+        typeof metadata?.protocol_handle === "string" ? metadata.protocol_handle : null
+      if (protocolHandle && id) {
+        return `/research-protocols/${encodeURIComponent(protocolHandle)}/community/${encodeURIComponent(id)}`
+      }
+      if (protocolHandle) {
+        return `/research-protocols/${encodeURIComponent(protocolHandle)}/community`
+      }
       return "/account/community"
+    }
     case "protocol":
       return id
         ? `/account/research-hub/my-protocols/${encodeURIComponent(id)}`

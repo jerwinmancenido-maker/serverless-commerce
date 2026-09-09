@@ -347,11 +347,28 @@ export default function MyProtocols({
       </div>
 
       {/* 2. Executive Metric Cards */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-ui-border-base bg-white p-4 shadow-2xs">
-          <span className="text-[11px] font-semibold text-ui-fg-muted uppercase tracking-wider">
-            Active Compounds
-          </span>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3" role="tablist" aria-label="Protocol View Modes">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={viewMode === "grouped"}
+          onClick={() => setViewMode("grouped")}
+          className={`group rounded-xl p-4 text-left transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 ${
+            viewMode === "grouped"
+              ? "border-2 border-slate-900 bg-slate-50/80 shadow-xs ring-1 ring-slate-900/10"
+              : "border border-ui-border-base bg-white hover:border-slate-300 hover:shadow-2xs"
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-ui-fg-muted uppercase tracking-wider">
+              Active Compounds
+            </span>
+            {viewMode === "grouped" && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white">
+                Active View ✓
+              </span>
+            )}
+          </div>
           <div className="mt-1.5 flex items-baseline gap-2">
             <span className="text-2xl font-bold font-mono text-ui-fg-base">
               {groupedProtocols.length}
@@ -360,12 +377,29 @@ export default function MyProtocols({
               Verified Formulations
             </span>
           </div>
-        </div>
+        </button>
 
-        <div className="rounded-xl border border-ui-border-base bg-white p-4 shadow-2xs">
-          <span className="text-[11px] font-semibold text-ui-fg-muted uppercase tracking-wider">
-            Preserved Delivery Batches
-          </span>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={viewMode === "batches"}
+          onClick={() => setViewMode("batches")}
+          className={`group rounded-xl p-4 text-left transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
+            viewMode === "batches"
+              ? "border-2 border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-600/10"
+              : "border border-ui-border-base bg-white hover:border-blue-200 hover:shadow-2xs"
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-ui-fg-muted uppercase tracking-wider">
+              Preserved Delivery Batches
+            </span>
+            {viewMode === "batches" && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-semibold text-white">
+                Active View ✓
+              </span>
+            )}
+          </div>
           <div className="mt-1.5 flex items-baseline gap-2">
             <span className="text-2xl font-bold font-mono text-ui-fg-base">
               {protocols.length}
@@ -374,12 +408,17 @@ export default function MyProtocols({
               Archived Snapshots
             </span>
           </div>
-        </div>
+        </button>
 
         <div className="rounded-xl border border-ui-border-base bg-white p-4 shadow-2xs">
-          <span className="text-[11px] font-semibold text-ui-fg-muted uppercase tracking-wider">
-            Reconstitution Standard
-          </span>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-ui-fg-muted uppercase tracking-wider">
+              Reconstitution Standard
+            </span>
+            <span className="text-[10px] font-medium text-slate-500 font-mono">
+              USP 797
+            </span>
+          </div>
           <div className="mt-1.5 flex items-baseline gap-2">
             <span className="text-xl font-bold font-mono text-ui-fg-base truncate">
               28-Day Stability

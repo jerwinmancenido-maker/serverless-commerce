@@ -69,6 +69,7 @@ interface RawProtocol {
   supplyGuide?: SupplyGuide
   catalogStatus: "in_catalog" | "reference_only"
   storeProductHandle?: string
+  protocolCategoryType?: "single_peptide" | "blend" | "bundle" | "topical"
   purityStandard: string
   investigatedBenefits?: string[]
   adverseObservations?: string[]
@@ -168,7 +169,7 @@ export default async function seedAllCompoundProtocols({
   for (const protocol of protocols) {
     try {
       // Standardize on clean canonical protocol id as protocol key
-      const protocolKey = (protocol.id || protocol.storeProductHandle)
+      const protocolKey = (protocol.id || protocol.storeProductHandle || "")
         .toLowerCase()
         .replace(/[^a-z0-9-]+/g, "-")
         .replace(/-+/g, "-")

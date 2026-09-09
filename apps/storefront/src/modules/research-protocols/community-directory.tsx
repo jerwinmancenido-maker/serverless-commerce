@@ -1,5 +1,14 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/research-protocols/community-directory.tsx
+ * @module  CommunityDirectory (Research Protocols Storefront)
+ * @purpose Renders the protocol community directory, topic threads, and discussion starter form.
+ * @contracts
+ *   Fetches: createResearchCommunityThreadAction() · updateResearchCommunityIdentityAction()
+ *   API:     POST /store/research-community/:handle/threads · POST /store/customers/me/research-community/identity
+ */
+
 import {
   createResearchCommunityThreadAction,
   updateResearchCommunityIdentityAction,
@@ -37,10 +46,14 @@ export default function CommunityDirectory({
   countryCode,
   identity,
   protocols,
+  protocolHandle,
+  protocolTitle,
 }: {
   countryCode: string
   identity: ResearchCommunityIdentity | null
   protocols: ProtocolDiscussions[]
+  protocolHandle?: string
+  protocolTitle?: string
 }) {
   const [identityState, identityAction, identityPending] = useActionState(updateResearchCommunityIdentityAction, initialState)
   const [threadState, threadAction, threadPending] = useActionState(createResearchCommunityThreadAction, initialState)
@@ -63,27 +76,49 @@ export default function CommunityDirectory({
       {/* Top breadcrumb navigation */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ui-border-base pb-3 text-xs">
         <div className="flex items-center gap-2 text-ui-fg-muted">
-          <LocalizedClientLink
-            href="/account"
-            className="hover:text-ui-fg-base hover:underline transition-colors"
-          >
-            Account
-          </LocalizedClientLink>
-          <span>/</span>
-          <LocalizedClientLink
-            href="/account/research-hub"
-            className="hover:text-ui-fg-base hover:underline transition-colors"
-          >
-            Research Hub
-          </LocalizedClientLink>
-          <span>/</span>
-          <span className="font-semibold text-ui-fg-base">Community</span>
+          {protocolHandle ? (
+            <>
+              <LocalizedClientLink
+                href="/research-protocols"
+                className="hover:text-ui-fg-base hover:underline transition-colors"
+              >
+                Protocols
+              </LocalizedClientLink>
+              <span>/</span>
+              <LocalizedClientLink
+                href={`/research-protocols/${protocolHandle}`}
+                className="hover:text-ui-fg-base hover:underline transition-colors"
+              >
+                {protocolTitle || protocolHandle}
+              </LocalizedClientLink>
+              <span>/</span>
+              <span className="font-semibold text-ui-fg-base">Community</span>
+            </>
+          ) : (
+            <>
+              <LocalizedClientLink
+                href="/account"
+                className="hover:text-ui-fg-base hover:underline transition-colors"
+              >
+                Account
+              </LocalizedClientLink>
+              <span>/</span>
+              <LocalizedClientLink
+                href="/account/research-hub"
+                className="hover:text-ui-fg-base hover:underline transition-colors"
+              >
+                Research Hub
+              </LocalizedClientLink>
+              <span>/</span>
+              <span className="font-semibold text-ui-fg-base">Community</span>
+            </>
+          )}
         </div>
         <LocalizedClientLink
-          href="/account/research-hub"
+          href={protocolHandle ? `/research-protocols/${protocolHandle}` : "/account/research-hub"}
           className="inline-flex items-center gap-1 font-semibold text-emerald-800 hover:text-emerald-950 transition-colors"
         >
-          <span>← Back to Research Hub Workspace</span>
+          <span>{protocolHandle ? "← Back to Protocol Specifications" : "← Back to Research Hub Workspace"}</span>
         </LocalizedClientLink>
       </div>
 
@@ -98,10 +133,12 @@ export default function CommunityDirectory({
               </p>
             </div>
             <h1 className="mt-2 text-2xl font-bold tracking-tight text-ui-fg-base">
-              Protocol Discussions & Peer Research
+              {protocolTitle ? `${protocolTitle} Community & Peer Research` : "Protocol Discussions & Peer Research"}
             </h1>
             <p className="mt-2 max-w-2xl text-xs leading-relaxed text-ui-fg-subtle">
-              Protected peer forum for verified researchers and clients. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity under Philippine DPA 2012 compliance.
+              {protocolTitle
+                ? `Protected peer forum for researchers investigating ${protocolTitle}. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity under Philippine DPA 2012 compliance.`
+                : "Protected peer forum for verified researchers and clients. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity under Philippine DPA 2012 compliance."}
             </p>
           </div>
 
@@ -139,7 +176,7 @@ export default function CommunityDirectory({
                     </p>
                   </div>
                   <LocalizedClientLink
-                    href={`/account/research-hub/my-protocols/${protocol.handle}`}
+                    href={`/research-protocols/${protocol.handle}`}
                     className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 hover:text-emerald-950 transition-colors"
                   >
                     <span>View Protocol Specs →</span>
@@ -150,7 +187,7 @@ export default function CommunityDirectory({
                     {protocol.threads.map((thread) => (
                       <LocalizedClientLink
                         key={thread.id}
-                        href={`/account/community/${protocol.handle}/${thread.id}`}
+                        href={`/research-protocols/${protocol.handle}/community/${thread.id}`}
                         className="block p-5 transition-colors hover:bg-emerald-50/20"
                       >
                         <div className="flex flex-wrap items-center gap-2">
@@ -277,6 +314,7 @@ export default function CommunityDirectory({
                 Protocol Target
                 <select
                   name="protocol_handle"
+                  defaultValue={protocolHandle || (protocols[0]?.handle ?? "")}
                   className="mt-1.5 w-full rounded-lg border border-ui-border-base bg-white px-3 py-2 text-xs focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
                 >
                   {protocols.map((protocol) => (
