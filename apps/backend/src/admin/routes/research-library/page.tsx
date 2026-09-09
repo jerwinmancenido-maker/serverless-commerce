@@ -1,22 +1,26 @@
 /**
- * @file apps/backend/src/admin/routes/research-library/page.tsx
- * @module AdminRoute · ResearchLibrary
+ * @file    apps/backend/src/admin/routes/research-library/page.tsx
+ * @module  ResearchLibraryAdminRoute (Admin Extension)
  * @purpose Medusa Admin page for managing peer-reviewed scientific articles and head-to-head peptide comparison matrices.
- * @contracts Admin UI extension mounted at /app/research-library
+ * @contracts
+ *   Route:   /app/research-library
+ *   API:     GET /admin/research-articles, GET /admin/peptide-comparisons
  */
 
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { DocumentText, MagnifyingGlass, Sparkles } from "@medusajs/icons"
+import { ArrowUpRightOnBox, DocumentText, MagnifyingGlass, Sparkles } from "@medusajs/icons"
 import {
   Badge,
   Button,
   Container,
   createDataTableColumnHelper,
   DataTable,
+  DataTablePaginationState,
   Heading,
   Input,
   Tabs,
   Text,
+  TooltipProvider,
   useDataTable,
 } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
@@ -60,6 +64,14 @@ export const ResearchLibraryPage = () => {
   const [activeTab, setActiveTab] = useState<"articles" | "comparisons">("articles")
   const [articleSearch, setArticleSearch] = useState("")
   const [comparisonSearch, setComparisonSearch] = useState("")
+  const [articlePagination, setArticlePagination] = useState<DataTablePaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
+  const [comparisonPagination, setComparisonPagination] = useState<DataTablePaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
 
   // 1. Fetch Articles
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery({
@@ -147,6 +159,28 @@ export const ResearchLibraryPage = () => {
           </Badge>
         ),
       }),
+      articleColumnHelper.display({
+        id: "actions",
+        header: () => <div className="text-right">Live View</div>,
+        cell: ({ row }) => (
+          <div className="flex justify-end">
+            <Button
+              size="small"
+              variant="secondary"
+              className="gap-x-1 text-xs"
+              onClick={() => {
+                const storefrontUrl = window.location.origin.includes("localhost")
+                  ? `http://localhost:8000/ph/research-library/${row.original.slug}`
+                  : `/ph/research-library/${row.original.slug}`
+                window.open(storefrontUrl, "_blank")
+              }}
+            >
+              <ArrowUpRightOnBox className="w-3.5 h-3.5" />
+              Storefront
+            </Button>
+          </div>
+        ),
+      }),
     ],
     []
   )
@@ -196,6 +230,28 @@ export const ResearchLibraryPage = () => {
           </Badge>
         ),
       }),
+      comparisonColumnHelper.display({
+        id: "actions",
+        header: () => <div className="text-right">Live View</div>,
+        cell: ({ row }) => (
+          <div className="flex justify-end">
+            <Button
+              size="small"
+              variant="secondary"
+              className="gap-x-1 text-xs"
+              onClick={() => {
+                const storefrontUrl = window.location.origin.includes("localhost")
+                  ? `http://localhost:8000/ph/research-library/comparisons/${row.original.slug}`
+                  : `/ph/research-library/comparisons/${row.original.slug}`
+                window.open(storefrontUrl, "_blank")
+              }}
+            >
+              <ArrowUpRightOnBox className="w-3.5 h-3.5" />
+              Monograph
+            </Button>
+          </div>
+        ),
+      }),
     ],
     []
   )
@@ -206,6 +262,10 @@ export const ResearchLibraryPage = () => {
     getRowId: (row) => row.id,
     rowCount: articles.length,
     isLoading: isLoadingArticles,
+    pagination: {
+      state: articlePagination,
+      onPaginationChange: setArticlePagination,
+    },
   })
 
   const comparisonTable = useDataTable({
@@ -214,72 +274,78 @@ export const ResearchLibraryPage = () => {
     getRowId: (row) => row.id,
     rowCount: comparisons.length,
     isLoading: isLoadingComparisons,
+    pagination: {
+      state: comparisonPagination,
+      onPaginationChange: setComparisonPagination,
+    },
   })
 
   return (
-    <div className="flex flex-col gap-y-4 p-6">
-      <PageHeader
-        title="Research Library & Scientific Publications"
-        subtitle="Authoritative repository of peer-reviewed peptide monographs, in-vitro signaling articles, and head-to-head clinical comparison matrices."
-      />
+    <TooltipProvider>
+      <div className="flex flex-col gap-y-4 p-6">
+        <PageHeader
+          title="Research Library & Scientific Publications"
+          subtitle="Authoritative repository of peer-reviewed peptide monographs, in-vitro signaling articles, and head-to-head clinical comparison matrices."
+        />
 
-      <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)}>
-        <Tabs.List>
-          <Tabs.Trigger value="articles" className="gap-x-2">
-            <DocumentText />
-            Scientific Articles ({articles.length})
-          </Tabs.Trigger>
-          <Tabs.Trigger value="comparisons" className="gap-x-2">
-            <Sparkles />
-            Peptide Comparisons ({comparisons.length})
-          </Tabs.Trigger>
-        </Tabs.List>
+        <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)}>
+          <Tabs.List>
+            <Tabs.Trigger value="articles" className="gap-x-2">
+              <DocumentText />
+              Scientific Articles ({articles.length})
+            </Tabs.Trigger>
+            <Tabs.Trigger value="comparisons" className="gap-x-2">
+              <Sparkles />
+              Peptide Comparisons ({comparisons.length})
+            </Tabs.Trigger>
+          </Tabs.List>
 
-        {/* 1. Scientific Articles Tab */}
-        <Tabs.Content value="articles" className="mt-4">
-          <Container className="p-0 overflow-hidden">
-            <div className="p-4 border-b border-ui-border-base flex items-center justify-between gap-4">
-              <div className="relative flex-1 max-w-md">
-                <Input
-                  size="small"
-                  placeholder="Search articles by title, compound tag, or category..."
-                  value={articleSearch}
-                  onChange={(e) => setArticleSearch(e.target.value)}
-                />
+          {/* 1. Scientific Articles Tab */}
+          <Tabs.Content value="articles" className="mt-4">
+            <Container className="p-0 overflow-hidden">
+              <div className="p-4 border-b border-ui-border-base flex items-center justify-between gap-4">
+                <div className="relative flex-1 max-w-md">
+                  <Input
+                    size="small"
+                    placeholder="Search articles by title, compound tag, or category..."
+                    value={articleSearch}
+                    onChange={(e) => setArticleSearch(e.target.value)}
+                  />
+                </div>
+                <Badge color="blue">{articles.length} Published Articles in Database</Badge>
               </div>
-              <Badge color="blue">{articles.length} Published Articles in Database</Badge>
-            </div>
 
-            <DataTable instance={articleTable}>
-              <DataTable.Table />
-              <DataTable.Pagination />
-            </DataTable>
-          </Container>
-        </Tabs.Content>
+              <DataTable instance={articleTable}>
+                <DataTable.Table />
+                <DataTable.Pagination />
+              </DataTable>
+            </Container>
+          </Tabs.Content>
 
-        {/* 2. Peptide Comparisons Tab */}
-        <Tabs.Content value="comparisons" className="mt-4">
-          <Container className="p-0 overflow-hidden">
-            <div className="p-4 border-b border-ui-border-base flex items-center justify-between gap-4">
-              <div className="relative flex-1 max-w-md">
-                <Input
-                  size="small"
-                  placeholder="Search comparisons by compound name or category..."
-                  value={comparisonSearch}
-                  onChange={(e) => setComparisonSearch(e.target.value)}
-                />
+          {/* 2. Peptide Comparisons Tab */}
+          <Tabs.Content value="comparisons" className="mt-4">
+            <Container className="p-0 overflow-hidden">
+              <div className="p-4 border-b border-ui-border-base flex items-center justify-between gap-4">
+                <div className="relative flex-1 max-w-md">
+                  <Input
+                    size="small"
+                    placeholder="Search comparisons by compound name or category..."
+                    value={comparisonSearch}
+                    onChange={(e) => setComparisonSearch(e.target.value)}
+                  />
+                </div>
+                <Badge color="orange">{comparisons.length} Head-to-Head Matrices in Database</Badge>
               </div>
-              <Badge color="orange">{comparisons.length} Head-to-Head Matrices in Database</Badge>
-            </div>
 
-            <DataTable instance={comparisonTable}>
-              <DataTable.Table />
-              <DataTable.Pagination />
-            </DataTable>
-          </Container>
-        </Tabs.Content>
-      </Tabs>
-    </div>
+              <DataTable instance={comparisonTable}>
+                <DataTable.Table />
+                <DataTable.Pagination />
+              </DataTable>
+            </Container>
+          </Tabs.Content>
+        </Tabs>
+      </div>
+    </TooltipProvider>
   )
 }
 

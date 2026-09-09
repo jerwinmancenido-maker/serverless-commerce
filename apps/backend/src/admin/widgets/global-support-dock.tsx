@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/widgets/global-support-dock.tsx
+ * @module  GlobalSupportDock (Admin Extension)
+ * @purpose Floating real-time customer support drawer and quick response dock across Medusa Admin.
+ * @contracts
+ *   API: /admin/customer-support/conversations
+ *   Widget: Global admin overlay
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { ChatBubbleLeftRight, XMark, ArrowUpRightOnBox } from "@medusajs/icons"
 import { Badge, Button, Text, Textarea } from "@medusajs/ui"
@@ -700,31 +709,18 @@ const GlobalSupportDock = () => {
 
 export const config = defineWidgetConfig({
   zone: [
-    "order.list.before",
     "order.list.after",
-    "order.details.before",
     "order.details.after",
-    "draft_order.list.before",
     "draft_order.list.after",
-    "draft_order.details.before",
     "draft_order.details.after",
-    "product.list.before",
     "product.list.after",
-    "product.details.before",
     "product.details.after",
-    "customer.list.before",
     "customer.list.after",
-    "customer.details.before",
     "customer.details.after",
-    "inventory_item.list.before",
     "inventory_item.list.after",
-    "inventory_item.details.before",
     "inventory_item.details.after",
-    "promotion.list.before",
     "promotion.list.after",
-    "price_list.list.before",
     "price_list.list.after",
-    "campaign.list.before",
     "campaign.list.after",
   ],
 })

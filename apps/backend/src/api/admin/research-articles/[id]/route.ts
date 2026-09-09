@@ -1,8 +1,10 @@
 /**
- * @file apps/backend/src/api/admin/research-articles/[id]/route.ts
- * @module AdminAPI · ResearchArticleItem
+ * @file    apps/backend/src/api/admin/research-articles/[id]/route.ts
+ * @module  AdminResearchArticleItemRoute
  * @purpose Admin endpoint for retrieving, updating, and deleting a scientific article by ID.
- * @contracts GET/POST/DELETE /admin/research-articles/:id
+ * @contracts
+ *   API:      GET/POST/DELETE /admin/research-articles/:id
+ *   Workflow: updateResearchArticleWorkflow · deleteResearchArticleWorkflow
  */
 
 import type {
@@ -12,6 +14,10 @@ import type {
 import { MedusaError } from "@medusajs/framework/utils"
 import { RESEARCH_CONTENT_MODULE } from "../../../../modules/research-content"
 import type ResearchContentModuleService from "../../../../modules/research-content/service"
+import {
+  deleteResearchArticleWorkflow,
+  updateResearchArticleWorkflow,
+} from "../../../../workflows/manage-research-library"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
@@ -82,7 +88,9 @@ export async function POST(
     updateData.published_at = null
   }
 
-  const updated = await service.updateResearchArticles(updateData)
+  const { result: updated } = await updateResearchArticleWorkflow(req.scope).run({
+    input: updateData as any,
+  })
 
   return res.json({ article: updated })
 }
@@ -91,16 +99,10 @@ export async function DELETE(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse,
 ) {
-  const service = req.scope.resolve<ResearchContentModuleService>(
-    RESEARCH_CONTENT_MODULE,
-  )
-
   const { id } = req.params
-  await service.deleteResearchArticles([id])
-
-  return res.json({
-    id,
-    object: "research_article",
-    deleted: true,
+  const { result } = await deleteResearchArticleWorkflow(req.scope).run({
+    input: { id },
   })
+
+  return res.json(result)
 }

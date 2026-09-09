@@ -1,8 +1,10 @@
 /**
- * @file apps/backend/src/api/admin/peptide-comparisons/[id]/route.ts
- * @module AdminAPI · PeptideComparisonItem
+ * @file    apps/backend/src/api/admin/peptide-comparisons/[id]/route.ts
+ * @module  AdminPeptideComparisonItemRoute
  * @purpose Admin endpoint for retrieving, updating, and deleting a head-to-head comparison by ID.
- * @contracts GET/POST/DELETE /admin/peptide-comparisons/:id
+ * @contracts
+ *   API:      GET/POST/DELETE /admin/peptide-comparisons/:id
+ *   Workflow: updatePeptideComparisonWorkflow · deletePeptideComparisonWorkflow
  */
 
 import type {
@@ -12,6 +14,10 @@ import type {
 import { MedusaError } from "@medusajs/framework/utils"
 import { RESEARCH_CONTENT_MODULE } from "../../../../modules/research-content"
 import type ResearchContentModuleService from "../../../../modules/research-content/service"
+import {
+  deletePeptideComparisonWorkflow,
+  updatePeptideComparisonWorkflow,
+} from "../../../../workflows/manage-research-library"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
@@ -81,7 +87,9 @@ export async function POST(
     updateData.published_at = null
   }
 
-  const updated = await service.updatePeptideComparisons(updateData)
+  const { result: updated } = await updatePeptideComparisonWorkflow(req.scope).run({
+    input: updateData as any,
+  })
 
   return res.json({ comparison: updated })
 }
@@ -90,16 +98,10 @@ export async function DELETE(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse,
 ) {
-  const service = req.scope.resolve<ResearchContentModuleService>(
-    RESEARCH_CONTENT_MODULE,
-  )
-
   const { id } = req.params
-  await service.deletePeptideComparisons([id])
-
-  return res.json({
-    id,
-    object: "peptide_comparison",
-    deleted: true,
+  const { result } = await deletePeptideComparisonWorkflow(req.scope).run({
+    input: { id },
   })
+
+  return res.json(result)
 }

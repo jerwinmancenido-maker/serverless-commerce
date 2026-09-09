@@ -1,8 +1,10 @@
 /**
- * @file apps/backend/src/api/admin/peptide-comparisons/route.ts
- * @module AdminAPI · PeptideComparisons
+ * @file    apps/backend/src/api/admin/peptide-comparisons/route.ts
+ * @module  AdminPeptideComparisonsRoute
  * @purpose Admin endpoint for listing and creating head-to-head peptide comparison matrices.
- * @contracts GET/POST /admin/peptide-comparisons -> { comparisons: PeptideComparison[] } | { comparison: PeptideComparison }
+ * @contracts
+ *   API:      GET /admin/peptide-comparisons, POST /admin/peptide-comparisons
+ *   Workflow: createPeptideComparisonWorkflow
  */
 
 import type {
@@ -12,6 +14,7 @@ import type {
 import { MedusaError } from "@medusajs/framework/utils"
 import { RESEARCH_CONTENT_MODULE } from "../../../modules/research-content"
 import type ResearchContentModuleService from "../../../modules/research-content/service"
+import { createPeptideComparisonWorkflow } from "../../../workflows/manage-research-library"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
@@ -55,10 +58,6 @@ export async function POST(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse,
 ) {
-  const service = req.scope.resolve<ResearchContentModuleService>(
-    RESEARCH_CONTENT_MODULE,
-  )
-
   const body = req.body as Record<string, any>
   if (!body.title || !body.slug || !body.compound_a || !body.compound_b) {
     throw new MedusaError(
@@ -83,7 +82,9 @@ export async function POST(
     metadata: body.metadata || null,
   }
 
-  const comparison = await service.createPeptideComparisons(payload)
+  const { result: comparison } = await createPeptideComparisonWorkflow(req.scope).run({
+    input: payload,
+  })
 
   return res.status(201).json({ comparison })
 }

@@ -1,8 +1,10 @@
 /**
- * @file apps/backend/src/api/admin/research-articles/route.ts
- * @module AdminAPI · ResearchArticles
+ * @file    apps/backend/src/api/admin/research-articles/route.ts
+ * @module  AdminResearchArticlesRoute
  * @purpose Admin endpoint for listing and creating scientific articles in the research library.
- * @contracts GET/POST /admin/research-articles -> { articles: ResearchArticle[] } | { article: ResearchArticle }
+ * @contracts
+ *   API:      GET /admin/research-articles, POST /admin/research-articles
+ *   Workflow: createResearchArticleWorkflow
  */
 
 import type {
@@ -12,6 +14,7 @@ import type {
 import { MedusaError } from "@medusajs/framework/utils"
 import { RESEARCH_CONTENT_MODULE } from "../../../modules/research-content"
 import type ResearchContentModuleService from "../../../modules/research-content/service"
+import { createResearchArticleWorkflow } from "../../../workflows/manage-research-library"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
@@ -55,10 +58,6 @@ export async function POST(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse,
 ) {
-  const service = req.scope.resolve<ResearchContentModuleService>(
-    RESEARCH_CONTENT_MODULE,
-  )
-
   const body = req.body as Record<string, any>
   if (!body.title || !body.slug) {
     throw new MedusaError(
@@ -84,7 +83,9 @@ export async function POST(
     metadata: body.metadata || null,
   }
 
-  const article = await service.createResearchArticles(payload)
+  const { result: article } = await createResearchArticleWorkflow(req.scope).run({
+    input: payload,
+  })
 
   return res.status(201).json({ article })
 }

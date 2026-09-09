@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/widgets/merchant-product-details-redirect.tsx
+ * @module  MerchantProductDetailsRedirect (Admin Extension)
+ * @purpose Redirects compounded merchant products to the specialized compounded-products view.
+ * @contracts
+ *   Route: /compounded-products/:id
+ *   Widget: product.details.before
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import type { DetailWidgetProps } from "@medusajs/framework/types"
 import type { HttpTypes } from "@medusajs/types"
@@ -18,7 +27,8 @@ const MerchantProductDetailsRedirect = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details",
+  zone: "product.details.before",
 })
 
 export default MerchantProductDetailsRedirect
+
