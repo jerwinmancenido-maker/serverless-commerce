@@ -36,11 +36,11 @@
 ---
 
 ## Phase 3: Workflow 2 — End-to-End Checkout & Order Mutation
-- [ ] Add in-stock compound (e.g. BPC-157 / MOTS-c) to cart
-- [ ] Test real-time cart quantity adjustments (+ / - quantity, remove item), subtotal, shipping, and taxes
-- [ ] Complete checkout: Contact Email -> Shipping Address -> Shipping Method -> Payment (Manual QR)
-- [ ] Verify order confirmation summary page (`/order/<order_id>/confirmed`)
-- [ ] Database assertion: Query PostgreSQL `order`, `order_line_item`, and `payment_collection` for new order
+- [x] Add in-stock compound (GHK-Cu 50MG / Vial Only `variant_01M1RR3WM732DQQHMY5NA2FSC1`) to cart
+- [x] Test real-time cart quantity adjustments (+ / - quantity), subtotal doubled (₱720 -> ₱1,440 -> ₱720), shipping, and taxes
+- [x] Complete checkout: Contact Email -> Shipping Address -> Shipping Method (J&T Express ₱150) -> Payment (Manual QR)
+- [x] Verify order confirmation summary page (`/ph/order/order_01M21YFFAD15D512RKTH8XCZ78/confirmed`) with monospace telemetry `#15`, ₱870.00
+- [x] Database assertion: Query PostgreSQL `order`, `order_item`, `order_line_item`, and `payment_collection` for new order #15
 
 ---
 
