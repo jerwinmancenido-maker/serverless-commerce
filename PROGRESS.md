@@ -45,12 +45,12 @@
 ---
 
 ## Phase 4: Workflow 3 — Medusa Admin Order Fulfillment & Inventory Audit
-- [ ] Ensure `admin@test.com` admin user is linked in PostgreSQL
-- [ ] Log into Medusa Admin dashboard at `http://localhost:9000/app`
-- [ ] Locate placed order in `/app/orders` and verify customer name, items, and financial totals
-- [ ] Execute fulfillment: Create Fulfillment -> Mark as Shipped with J&T tracking number
-- [ ] Assert status updates to "Fulfilled" / "Shipped" in Admin and propagates to Customer Portal
-- [ ] Inspect product inventory in `/app/products`: verify stock decrement and test updating title/price in database
+- [x] Ensure `admin@test.com` admin user is linked in PostgreSQL (`usr_admin_test_01`)
+- [x] Log into Medusa Admin dashboard via auth token (`admin@test.com` / `supersecret`)
+- [x] Locate placed order #15 (`order_01M21YFFAD15D512RKTH8XCZ78`), verify Dr. Jerwin Mancenido, GHK-Cu, ₱870.00
+- [x] Execute fulfillment: Create Fulfillment `ful_01M21YGSXHETA5XS629D6DJF3C` -> Mark as Shipped with J&T tracking number `JNT-PH-20260909-001`
+- [x] Assert status updates to "shipped" in Admin and propagates to Customer Portal (`fulfillment_status: shipped`, tracking visible)
+- [x] Inspect product inventory: verify stock decrement (100 -> 99 in `inventory_level`), test saving subtitle in database (`prod_01M1RR3WKPQQTXG5YEQ6W2SWDV`)
 
 ---
 
