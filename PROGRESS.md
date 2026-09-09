@@ -55,8 +55,8 @@
 ---
 
 ## Phase 5: Workflow 4 — Protocol Series & Custom Metadata Sync
-- [ ] Verify custom protocol relationships in Medusa Admin product views
-- [ ] Verify public visibility policy: unauthenticated visitors load monographs (`/ph/research-protocols/bpc-157`) and library (`/ph/research-library`) with HTTP 200
+- [x] Verify custom protocol relationships in Medusa Admin product views (`/admin/products/prod_01M1RR3WKPQQTXG5YEQ6W2SWDV/research-protocols`)
+- [x] Verify public visibility policy: unauthenticated visitors load monographs (`/ph/research-protocols/bpc-157`, `ghk-cu`), catalog (`/ph/products/bpc-157`), and library (`/ph/research-library`) with HTTP 200 without 401/403 blocks
 
 ---
 
