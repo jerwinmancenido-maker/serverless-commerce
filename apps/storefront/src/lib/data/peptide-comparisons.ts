@@ -50,12 +50,48 @@ export type PeptideComparison = {
   citations: Array<{ number: number; text: string; url: string }>
 }
 
+type ProtocolReferenceItem = {
+  title?: string
+  authors?: string
+  journal?: string
+  year?: string | number
+  published_at?: string
+  doi?: string
+  pmid?: string
+  url?: string
+  notes?: string
+  text?: string
+  sourceReference?: string
+}
+
+type ProtocolContentShape = {
+  compound_name?: string
+  product_format?: string
+  protocol_category_type?: string
+  category?: string
+  short_introduction?: string
+  purity_standard?: string
+  molecular_details?: {
+    sequence_or_formula?: string
+    cas_number?: string
+    molecular_weight_g_per_mol?: number
+  }
+  reconstitution_details?: {
+    default_diluent_ml?: number
+    default_vial_net_mg?: number
+    resulting_concentration_mg_per_ml?: number
+    solvent?: string
+  }
+  quick_reference?: Array<{ key?: string; label?: string; value?: string }>
+  references?: ProtocolReferenceItem[]
+}
+
 /**
  * Transforms a canonical StoreResearchProtocol into a standardized CompoundProfile
  * suitable for head-to-head analytical comparisons.
  */
 export function protocolToCompoundProfile(protocol: StoreResearchProtocol): CompoundProfile {
-  const content = protocol.content as Record<string, any> | undefined
+  const content = protocol.content as ProtocolContentShape | undefined
   const mol = content?.molecular_details
   const recon = content?.reconstitution_details
   const quickRef = (content?.quick_reference || []) as Array<{ key: string; label: string; value: string }>
@@ -112,7 +148,7 @@ export function protocolToCompoundProfile(protocol: StoreResearchProtocol): Comp
   const halfLife = halfLifeRef?.value || "Experimental Model Dependent"
 
   // Citations
-  const citations = (content?.references || []).map((ref: any, idx: number) => {
+  const citations = (content?.references || []).map((ref: ProtocolReferenceItem, idx: number) => {
     let text = ref.notes || ref.title || ref.text || ""
     if (!text && ref.authors) {
       text = `${ref.authors}. ${ref.journal || ""} ${ref.published_at ? `(${ref.published_at}).` : ""}`.trim()
@@ -626,20 +662,49 @@ export function getDynamicComparison(
   }
 }
 
+export type RawComparisonRecord = {
+  slug?: string
+  title?: string
+  subtitle?: string
+  category?: string
+  compoundA?: CompoundProfile
+  compoundB?: CompoundProfile
+  compound_a?: CompoundProfile
+  compound_b?: CompoundProfile
+  summary?: string
+  synergy_verdict?: string
+  synergyVerdict?: string
+  vectors?: ComparisonVector[]
+  citations?: Array<{ number: number; text: string; url: string }>
+}
+
 /**
  * Normalizes backend Medusa DML records (compound_a, compound_b) to Storefront types (compoundA, compoundB)
  */
-export function normalizePeptideComparison(raw: any): PeptideComparison {
-  if (!raw) return raw
+export function normalizePeptideComparison(raw: RawComparisonRecord | null | undefined): PeptideComparison {
+  if (!raw) {
+    return {
+      slug: "",
+      title: "",
+      subtitle: "",
+      category: "",
+      compoundA: COMPARABLE_COMPOUNDS["bpc-157"],
+      compoundB: COMPARABLE_COMPOUNDS["tb-500"],
+      summary: "",
+      synergy_verdict: "",
+      vectors: [],
+      citations: [],
+    }
+  }
   return {
-    slug: raw.slug,
-    title: raw.title,
-    subtitle: raw.subtitle,
-    category: raw.category,
-    compoundA: raw.compoundA || raw.compound_a,
-    compoundB: raw.compoundB || raw.compound_b,
-    summary: raw.summary,
-    synergy_verdict: raw.synergy_verdict || raw.synergyVerdict,
+    slug: raw.slug || "",
+    title: raw.title || "",
+    subtitle: raw.subtitle || "",
+    category: raw.category || "General Research",
+    compoundA: raw.compoundA || raw.compound_a || COMPARABLE_COMPOUNDS["bpc-157"],
+    compoundB: raw.compoundB || raw.compound_b || COMPARABLE_COMPOUNDS["tb-500"],
+    summary: raw.summary || "",
+    synergy_verdict: raw.synergy_verdict || raw.synergyVerdict || "",
     vectors: raw.vectors || [],
     citations: raw.citations || [],
   }
@@ -647,7 +712,7 @@ export function normalizePeptideComparison(raw: any): PeptideComparison {
 
 export const listPeptideComparisons = async (): Promise<PeptideComparison[]> => {
   try {
-    const response = await sdk.client.fetch<{ comparisons: any[]; count: number }>(
+    const response = await sdk.client.fetch<{ comparisons: RawComparisonRecord[]; count: number }>(
       "/store/peptide-comparisons?limit=100",
       { method: "GET", cache: "no-store" }
     )
@@ -664,7 +729,7 @@ export const retrievePeptideComparison = async (
   slug: string
 ): Promise<PeptideComparison | null> => {
   try {
-    const response = await sdk.client.fetch<{ comparison: any }>(
+    const response = await sdk.client.fetch<{ comparison: RawComparisonRecord }>(
       `/store/peptide-comparisons/${encodeURIComponent(slug)}`,
       { method: "GET", cache: "no-store" }
     )

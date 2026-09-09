@@ -6,7 +6,7 @@
  */
 
 import type { MedusaContainer } from "@medusajs/framework"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
 import * as fs from "fs"
 import * as path from "path"
 import { RESEARCH_CONTENT_MODULE } from "../modules/research-content"
@@ -122,7 +122,10 @@ export default async function seedProtocolComparisons({
 
   const protocolsPath = path.resolve(__dirname, "../../data/all-compound-protocols.json")
   if (!fs.existsSync(protocolsPath)) {
-    throw new Error(`Protocols file not found at ${protocolsPath}`)
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Protocols file not found at ${protocolsPath}`
+    )
   }
 
   const rawProtocols: any[] = JSON.parse(fs.readFileSync(protocolsPath, "utf-8"))

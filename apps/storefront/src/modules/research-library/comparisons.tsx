@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/research-library/comparisons.tsx
+ * @module  PeptideComparisonsModule (Research Library)
+ * @purpose Interactive client module for side-by-side peptide comparison matrix and dynamic pair evaluation.
+ * @contracts
+ *   Imports: getDynamicComparison · protocolToCompoundProfile · COMPARABLE_COMPOUNDS
+ */
+
 import { useState, useMemo, useRef, useEffect } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
@@ -272,7 +280,7 @@ export default function PeptideComparisonsDirectory({
       const nonSupplies = protocols.filter(
         (p) =>
           p.content?.category !== "Laboratory Supplies" &&
-          !Boolean((p.content as any)?.isSupply) &&
+          !Boolean((p.content as Record<string, unknown>)?.isSupply) &&
           !Boolean(p.content?.product_format?.toLowerCase().includes("consumable")) &&
           !Boolean(p.content?.product_format?.toLowerCase().includes("hardware")) &&
           !Boolean(p.content?.product_format?.toLowerCase().includes("labware"))

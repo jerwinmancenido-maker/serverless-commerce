@@ -14,7 +14,7 @@ import {
 } from "@lib/data/peptide-comparisons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
-import { CheckCircleSolid, Sparkles, ArrowRightMini } from "@medusajs/icons"
+import { Sparkles, ArrowRightMini } from "@medusajs/icons"
 
 type Props = {
   params: Promise<{
