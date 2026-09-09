@@ -112,15 +112,22 @@ export function protocolToCompoundProfile(protocol: StoreResearchProtocol): Comp
   const halfLife = halfLifeRef?.value || "Experimental Model Dependent"
 
   // Citations
-  const citations = (content?.references || []).map((ref: any, idx: number) => ({
-    number: idx + 1,
-    text: `${ref.authors ? ref.authors + ". " : ""}${ref.title}${
-      ref.published_at ? ` (${ref.published_at}).` : ""
-    }`,
-    url:
-      ref.url ||
-      (ref.doi ? `https://doi.org/${ref.doi}` : "https://pubmed.ncbi.nlm.nih.gov/"),
-  }))
+  const citations = (content?.references || []).map((ref: any, idx: number) => {
+    let text = ref.notes || ref.title || ref.text || ""
+    if (!text && ref.authors) {
+      text = `${ref.authors}. ${ref.journal || ""} ${ref.published_at ? `(${ref.published_at}).` : ""}`.trim()
+    }
+    if (ref.sourceReference && !text.includes(ref.sourceReference)) {
+      text = text ? `${text} [${ref.sourceReference}]` : ref.sourceReference
+    }
+    return {
+      number: idx + 1,
+      text: text.trim() || `Reference monograph citation for ${protocol.title}`,
+      url:
+        ref.url ||
+        (ref.doi ? `https://doi.org/${ref.doi}` : "https://pubmed.ncbi.nlm.nih.gov/"),
+    }
+  })
 
   const name = content?.compound_name || protocol.title
   const handle = protocol.products?.[0]?.handle || protocol.handle
@@ -619,38 +626,57 @@ export function getDynamicComparison(
   }
 }
 
+/**
+ * Normalizes backend Medusa DML records (compound_a, compound_b) to Storefront types (compoundA, compoundB)
+ */
+export function normalizePeptideComparison(raw: any): PeptideComparison {
+  if (!raw) return raw
+  return {
+    slug: raw.slug,
+    title: raw.title,
+    subtitle: raw.subtitle,
+    category: raw.category,
+    compoundA: raw.compoundA || raw.compound_a,
+    compoundB: raw.compoundB || raw.compound_b,
+    summary: raw.summary,
+    synergy_verdict: raw.synergy_verdict || raw.synergyVerdict,
+    vectors: raw.vectors || [],
+    citations: raw.citations || [],
+  }
+}
+
 export const listPeptideComparisons = async (): Promise<PeptideComparison[]> => {
   try {
-    const response = await sdk.client.fetch<{ comparisons: PeptideComparison[]; count: number }>(
+    const response = await sdk.client.fetch<{ comparisons: any[]; count: number }>(
       "/store/peptide-comparisons?limit=100",
       { method: "GET", cache: "no-store" }
     )
     if (response?.comparisons && response.comparisons.length > 0) {
-      return response.comparisons
+      return response.comparisons.map(normalizePeptideComparison)
     }
   } catch (err) {
     console.warn("[listPeptideComparisons] Medusa API call failed or offline, falling back to static cache:", err)
   }
-  return PEPTIDE_COMPARISONS
+  return PEPTIDE_COMPARISONS.map(normalizePeptideComparison)
 }
 
 export const retrievePeptideComparison = async (
   slug: string
 ): Promise<PeptideComparison | null> => {
   try {
-    const response = await sdk.client.fetch<{ comparison: PeptideComparison }>(
+    const response = await sdk.client.fetch<{ comparison: any }>(
       `/store/peptide-comparisons/${encodeURIComponent(slug)}`,
       { method: "GET", cache: "no-store" }
     )
     if (response?.comparison) {
-      return response.comparison
+      return normalizePeptideComparison(response.comparison)
     }
   } catch (err) {
     console.warn(`[retrievePeptideComparison] Medusa API call for '${slug}' failed, falling back to local resolver:`, err)
   }
 
   const comparison = PEPTIDE_COMPARISONS.find((c) => c.slug === slug)
-  if (comparison) return comparison
+  if (comparison) return normalizePeptideComparison(comparison)
 
   const parts = slug.split("-vs-")
   if (parts.length === 2) {

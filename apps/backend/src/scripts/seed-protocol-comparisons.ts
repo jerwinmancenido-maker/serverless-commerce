@@ -55,11 +55,33 @@ function toCompoundProfile(proto: any) {
       ? `${recon.defaultDiluentMl} mL / ${recon.defaultVialNetMg} mg`
       : undefined
 
-  const formattedCitations = citations.map((c: any, idx: number) => ({
-    number: idx + 1,
-    text: `${c.authors ? c.authors + ". " : ""}${c.title} ${c.journal ? c.journal + "." : ""} ${c.year ? `(${c.year}).` : ""}`,
-    url: c.url || (c.doi ? `https://doi.org/${c.doi}` : (c.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${c.pmid}/` : "https://pubmed.ncbi.nlm.nih.gov/")),
-  }))
+  const formattedCitations = citations.map((c: any, idx: number) => {
+    let text = c.notes || c.title || c.text || ""
+    if (!text && c.authors) {
+      text = `${c.authors}. ${c.journal || ""} ${c.year ? `(${c.year}).` : ""}`.trim()
+    }
+    if (c.sourceReference && !text.includes(c.sourceReference)) {
+      text = text ? `${text} [${c.sourceReference}]` : c.sourceReference
+    }
+    let pmid = c.pmid
+    if (!pmid && c.sourceReference) {
+      const match = c.sourceReference.match(/PMID:\s*(\d+)/i)
+      if (match) pmid = match[1]
+    }
+    const url =
+      c.url ||
+      (c.doi
+        ? `https://doi.org/${c.doi}`
+        : pmid
+        ? `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`
+        : "https://pubmed.ncbi.nlm.nih.gov/")
+
+    return {
+      number: idx + 1,
+      text: text.trim() || `Preclinical Reference Monograph for ${proto.compoundName || "Compound"}`,
+      url,
+    }
+  })
 
   return {
     id: proto.id,
