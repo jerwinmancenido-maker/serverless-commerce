@@ -28,10 +28,10 @@
 ---
 
 ## Phase 2: Workflow 1 — Storefront Customer Account & Research Cockpit
-- [ ] Verify customer login with authenticated Store API session (`jerwin@example.com`)
-- [ ] Verify profile inspection & address management (Add address, field validation, edit, database persistence)
-- [ ] Verify order history, line items, thumbnails, status pills, tracking links, download invoice, re-order
-- [ ] Verify single/multi-dosage selector: multi-dosage items switch titration matrices smoothly, single-dosage products lock gracefully to default vial mass
+- [x] Verify customer login with authenticated Store API session (`jerwin@example.com`)
+- [x] Verify profile inspection & address management (Add address, field validation, edit, database persistence `cuaddr_01M21XEAV2BEBDAXK6SVJ4T14F`)
+- [x] Verify order history, line items, thumbnails, status pills, tracking links, download invoice, re-order (Order #13 `order_01M1TKZFN965W7RNTZ7YRVRC92`)
+- [x] Verify single/multi-dosage selector: multi-dosage items switch titration matrices smoothly, single-dosage products lock gracefully to default vial mass
 
 ---
 
