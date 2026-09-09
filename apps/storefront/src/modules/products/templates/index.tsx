@@ -12,6 +12,7 @@ import { HttpTypes } from "@medusajs/types"
 import ProductActionsWrapper from "./product-actions-wrapper"
 
 import { listResearchProtocols } from "@lib/data/research-protocols"
+import { listResearchArticles } from "@lib/data/research-articles"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -30,9 +31,11 @@ const ProductTemplate = async ({
     return notFound()
   }
 
-  const { protocols } = await listResearchProtocols().catch(() => ({
-    protocols: [],
-  }))
+  const [{ protocols }, articles] = await Promise.all([
+    listResearchProtocols().catch(() => ({ protocols: [] })),
+    listResearchArticles().catch(() => []),
+  ])
+
   const protocolHandle =
     (product.metadata?.protocol_handle as string) ||
     (product.metadata?.protocol_id as string)
@@ -45,6 +48,24 @@ const ProductTemplate = async ({
       (product.handle &&
         p.handle.toLowerCase().includes(product.handle.split("-")[0]))
   )
+
+  const rawHandle = (product.handle || "").toLowerCase()
+  const compoundStem = rawHandle
+    .replace(/-vial$|-protocol$|-nasal$|-solution$|-set$/, "")
+    .trim()
+  const productTitleLower = (product.title || "").toLowerCase()
+
+  const linkedArticle =
+    articles.find((a) => {
+      const slug = (a.slug || "").toLowerCase()
+      const tag = (a.compound_tag || "").toLowerCase()
+      return (
+        slug.includes(compoundStem) ||
+        tag.includes(compoundStem) ||
+        compoundStem.includes(slug) ||
+        (productTitleLower && (tag.includes(productTitleLower) || productTitleLower.includes(tag)))
+      )
+    }) || null
 
   return (
     <>
@@ -98,7 +119,12 @@ const ProductTemplate = async ({
 
       {/* 2. Scientific & Compliance Workspace (Below the Fold, Full Width) */}
       <div id="scientific-workspace" className="content-container py-12 border-t border-zinc-200 mt-6">
-        <ProductTabs product={product} linkedProtocol={linkedProtocol} />
+        <ProductTabs
+          product={product}
+          linkedProtocol={linkedProtocol}
+          linkedArticle={linkedArticle}
+          countryCode={countryCode}
+        />
       </div>
 
       {/* 3. Level 3 Upsell: Synergistic Research Compounds */}

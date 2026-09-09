@@ -59,3 +59,5 @@ Thumbs.db
 
 # Data sync backups
 *.backup.json
+**/data/.backups/
+apps/backend/static/private-*

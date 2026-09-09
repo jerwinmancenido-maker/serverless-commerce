@@ -5,17 +5,20 @@ import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ProductInfo from "@modules/products/templates/product-info"
-import { Beaker, DocumentText, CheckCircleSolid } from "@medusajs/icons"
+import { Beaker, DocumentText, CheckCircleSolid, ArrowRightMini } from "@medusajs/icons"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 import { useEffect, useMemo, useState } from "react"
 import { StoreResearchProtocol } from "@lib/data/research-protocols"
 import { getCompoundProtocol, CompoundAnalyticalProtocol } from "@lib/data/compound-protocols"
+import type { ResearchArticle } from "@lib/data/research-articles"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
   linkedProtocol?: StoreResearchProtocol | null
+  linkedArticle?: ResearchArticle | null
+  countryCode?: string
 }
 
 function renderFormattedParagraphs(text?: string | null) {
@@ -57,7 +60,12 @@ function renderFormattedParagraphs(text?: string | null) {
   )
 }
 
-const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
+const ProductTabs = ({
+  product,
+  linkedProtocol,
+  linkedArticle,
+  countryCode,
+}: ProductTabsProps) => {
   const [activeTab, setActiveTab] = useState<string>("overview")
 
   const compoundProto = useMemo(() => {
@@ -76,6 +84,7 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
       const hash = window.location.hash.toLowerCase().replace("#", "")
       if (
         hash === "protocol" ||
+        hash === "monograph" ||
         hash === "customer_hub" ||
         hash === "calculator" ||
         hash === "compliance" ||
@@ -96,6 +105,15 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
 
   const tabs: Array<{ id: string; label: string; badge?: string }> = [
     { id: "overview", label: "Description & Specs" },
+    ...(linkedArticle
+      ? [
+          {
+            id: "monograph",
+            label: "Clinical Monograph",
+            badge: "6-Chapter Dossier",
+          },
+        ]
+      : []),
     {
       id: "protocol",
       label: isSupply ? "Labware Specs & SOP" : "Product Protocol & Handling",
@@ -183,6 +201,15 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
           </div>
         )}
 
+        {activeTab === "monograph" && linkedArticle && (
+          <div className="animate-fadeIn">
+            <ClinicalMonographTabPanel
+              article={linkedArticle}
+              countryCode={countryCode}
+            />
+          </div>
+        )}
+
         {activeTab === "protocol" && (
           <div className="animate-fadeIn">
             <ResearchProtocolPanel
@@ -217,6 +244,190 @@ const ProductTabs = ({ product, linkedProtocol }: ProductTabsProps) => {
             <ShippingInfoTab />
           </div>
         )}
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// 0. Peer-Reviewed Clinical Research Monograph Panel
+// ---------------------------------------------------------------------------
+const ClinicalMonographTabPanel = ({
+  article,
+  countryCode = "ph",
+}: {
+  article: ResearchArticle
+  countryCode?: string
+}) => {
+  return (
+    <div className="space-y-8 animate-fadeIn">
+      {/* Monograph Header Banner */}
+      <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white border border-slate-700 shadow-lg relative overflow-hidden">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none" />
+        <div className="relative z-10 space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              Peer-Reviewed Clinical Monograph
+            </span>
+            <span className="text-[10px] font-medium text-slate-300 bg-white/10 px-2.5 py-1 rounded-md">
+              ⏱ {article.reading_time || "12 min read"}
+            </span>
+            <span className="text-[10px] font-medium text-slate-300 bg-white/10 px-2.5 py-1 rounded-md">
+              ISSN 2835-4912
+            </span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-snug">
+            {article.title}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
+            {article.subtitle}
+          </p>
+          <div className="pt-2 flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+            <span>
+              Reviewed by:{" "}
+              <strong className="text-slate-200">
+                {article.reviewed_by || "Scientific Review Board"}
+              </strong>
+            </span>
+            <span>•</span>
+            <span>
+              Category:{" "}
+              <strong className="text-emerald-300">{article.category}</strong>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2-Column Grid: Abstract & TOC on Left, Telemetry & Citations on Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: Abstract & Chapters (8 cols) */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Shaded Preclinical Abstract Box */}
+          <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-emerald-600 text-white text-[10px] font-bold font-mono">
+                §
+              </span>
+              <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-950">
+                Preclinical Abstract &amp; Mechanistic Scope
+              </h4>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-serif">
+              {article.abstract}
+            </p>
+          </div>
+
+          {/* Section Chapters (6 Chapters) */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+              <h4 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Investigational Chapters ({article.sections?.length || 0} Sections)
+              </h4>
+              <span className="text-[11px] text-slate-500 font-mono">
+                Full-Text Available
+              </span>
+            </div>
+            <div className="space-y-3">
+              {article.sections?.map((sec, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 hover:border-slate-300 transition-all"
+                >
+                  <h5 className="text-xs sm:text-sm font-bold text-slate-900 mb-1.5 flex items-center gap-2">
+                    <span className="text-emerald-700 font-mono text-xs font-bold">
+                      {idx + 1}.
+                    </span>
+                    <span>{sec.title.replace(/^\d+\.\s*/, "")}</span>
+                  </h5>
+                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                    {sec.paragraphs?.[0]}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Direct CTA to Full Article Reader */}
+          <div className="pt-2">
+            <LocalizedClientLink
+              href={`/research-library/${article.slug}`}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer"
+            >
+              <span>📖 Read Full 6-Chapter Research Monograph</span>
+              <ArrowRightMini className="w-4 h-4" />
+            </LocalizedClientLink>
+          </div>
+        </div>
+
+        {/* Right Column: Telemetry & Citations (4 cols) */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Metadata Card */}
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 pb-2 border-b border-slate-100">
+              Dossier Telemetry
+            </h4>
+            <dl className="space-y-2.5 text-xs">
+              <div className="flex justify-between py-1 border-b border-slate-50">
+                <dt className="text-slate-500">Compound</dt>
+                <dd className="font-bold text-slate-800">
+                  {article.compound_tag}
+                </dd>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-50">
+                <dt className="text-slate-500">Discipline</dt>
+                <dd className="font-medium text-slate-800">
+                  {article.category}
+                </dd>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-50">
+                <dt className="text-slate-500">Editorial Status</dt>
+                <dd className="font-bold text-emerald-700">Published RUO</dd>
+              </div>
+              <div className="flex justify-between py-1">
+                <dt className="text-slate-500">Peer Citations</dt>
+                <dd className="font-mono font-bold text-indigo-600">
+                  {article.citations?.length || 0} Studies
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* PubMed Citations Card */}
+          {article.citations && article.citations.length > 0 && (
+            <div className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 pb-2 border-b border-slate-200/60">
+                NCBI PubMed Citations ({article.citations.length})
+              </h4>
+              <div className="space-y-2.5 max-h-80 overflow-y-auto pr-1 text-[11px]">
+                {article.citations.map((c, i) => (
+                  <div
+                    key={i}
+                    className="p-2.5 rounded-lg bg-white border border-slate-200/60 space-y-1"
+                  >
+                    <p className="font-medium text-slate-800 leading-snug line-clamp-2">
+                      {c.title}
+                    </p>
+                    <div className="flex items-center justify-between text-[10px] text-slate-500">
+                      <span>
+                        {c.journal} {c.year ? `(${c.year})` : ""}
+                      </span>
+                      {c.url && (
+                        <a
+                          href={c.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono text-indigo-600 hover:text-indigo-800 font-bold underline"
+                        >
+                          {c.pmid ? `PMID:${c.pmid}` : "Link ↗"}
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
