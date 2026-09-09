@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/dashboard/page.tsx
+ * @module  DashboardAdminRoute (Command Center Dashboard)
+ * @purpose Main Founder Operations command center overview and real-time KPI metrics.
+ * @contracts
+ *   API:     GET /admin/dashboard
+ *   Service: BomModuleService · ManualPaymentProofModuleService
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import {
   ArchiveBox,

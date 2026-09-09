@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/manual-payment-proofs/page.tsx
+ * @module  ManualPaymentProofsAdminRoute (Manual Payment Proofs Module)
+ * @purpose Admin dashboard review table and one-click capture for customer payment proofs.
+ * @contracts
+ *   API:     GET /admin/manual-payment-proofs
+ *   Service: ManualPaymentProofModuleService
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { CreditCard, CurrencyDollar, DocumentText } from "@medusajs/icons"
 import {
@@ -237,7 +246,7 @@ const ManualPaymentProofsPage = () => {
 export const config = defineRouteConfig({
   label: "Payment Proofs",
   icon: CreditCard,
-  rank: 7,
+  rank: 2,
 })
 
 export default ManualPaymentProofsPage

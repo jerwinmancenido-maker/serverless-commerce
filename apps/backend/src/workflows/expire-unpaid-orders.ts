@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/workflows/expire-unpaid-orders.ts
+ * @module  ExpireUnpaidOrdersWorkflow (Order & Payment Operations)
+ * @purpose Cancels unpaid orders, releases inventory reservations, expires pending payment proofs, and revokes research protocol tokens.
+ * @contracts
+ *   Workflow: expireUnpaidOrderWorkflow
+ *   Steps: validateUnpaidOrderEligibilityStep · cancelOrderAndReleaseBOMStep · revokeOrderResearchProtocolsStep · finalizeUnpaidOrderCancellationStep
+ */
+
 import {
   createStep,
   createWorkflow,
@@ -13,6 +22,7 @@ import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
 
 import { MANUAL_PAYMENT_MODULE } from "../modules/manual-payment"
 import type ManualPaymentModuleService from "../modules/manual-payment/service"
+import { revokeOrderResearchProtocolsStep } from "./steps/revoke-order-research-protocols"
 
 export type ExpireUnpaidOrderInput = {
   order_id: string
@@ -129,6 +139,10 @@ export const expireUnpaidOrderWorkflow = createWorkflow(
   function (input: ExpireUnpaidOrderInput) {
     validateUnpaidOrderEligibilityStep(input)
     cancelOrderAndReleaseBOMStep({ order_id: input.order_id })
+    revokeOrderResearchProtocolsStep({
+      order_id: input.order_id,
+      reason: "order_expired_unpaid",
+    })
     const finalizeInput = transform({ input }, ({ input }) => ({
       order_id: input.order_id,
       reason: input.reason || "unpaid_timeout",

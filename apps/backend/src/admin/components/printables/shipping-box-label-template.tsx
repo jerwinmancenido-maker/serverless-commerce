@@ -1,4 +1,13 @@
-import type { HttpTypes } from "@medusajs/types"
+/**
+ * @file    apps/backend/src/admin/components/printables/shipping-box-label-template.tsx
+ * @module  ShippingBoxLabelTemplate (Printable Documents)
+ * @purpose Printable standard domestic dispatch box label with Philippine address hierarchy and fragile handling stickers.
+ * @contracts
+ *   Service: OrderFulfillmentDispatchWidget · J&T Express Philippines Standard Domestic Dispatch
+ */
+
+import type { HttpTypes } from "@medusajs/framework/types"
+import { extractBarangay } from "../../../lib/jnt-express-helper"
 
 export const ShippingBoxLabelTemplate = ({
   order,
@@ -12,6 +21,11 @@ export const ShippingBoxLabelTemplate = ({
     waybillNumber ||
     ((order.fulfillments?.[0] as any)?.labels?.[0]?.tracking_number as string) ||
     ((order.fulfillments?.[0]?.metadata?.waybill_number as string) ?? "JT-PH-PENDING")
+
+  const barangay = extractBarangay(addr?.address_1, addr?.address_2)
+  const hasBarangayInAddress1 = addr?.address_1
+    ? /(?:b(?:aran)?g(?:a)?y\.?|brgy\.?)/i.test(addr.address_1)
+    : false
 
   return (
     <div className="printable-document bg-white text-zinc-950 p-6 font-sans max-w-md mx-auto border-2 border-zinc-950 rounded-lg print:border-2 print:p-4 print:max-w-none">
@@ -88,8 +102,10 @@ export const ShippingBoxLabelTemplate = ({
           <p className="font-bold text-zinc-800 text-xs mt-0.5">
             {addr?.address_1}
           </p>
-          {addr?.address_2 && (
-            <p className="text-zinc-700 text-xs">{addr?.address_2}</p>
+          {barangay && !hasBarangayInAddress1 && (
+            <p className="font-bold text-zinc-800 text-xs">
+              Brgy. {barangay}
+            </p>
           )}
           <p className="font-bold text-zinc-900 text-xs">
             {addr?.city}, {addr?.province} {addr?.postal_code}
@@ -103,17 +119,18 @@ export const ShippingBoxLabelTemplate = ({
 
       {/* Handling & Warnings Footer */}
       <div className="mt-3 pt-3 border-t-2 border-zinc-950 grid grid-cols-2 gap-2 text-center text-[10px] font-bold">
-        <div className="bg-amber-100 text-amber-900 p-1.5 rounded border border-amber-300 flex items-center justify-center gap-1">
+        <div className="bg-amber-100 text-amber-950 p-1.5 rounded border border-amber-300 flex items-center justify-center gap-1">
           <span>⚠️ FRAGILE / GLASS VIALS</span>
         </div>
-        <div className="bg-blue-100 text-blue-900 p-1.5 rounded border border-blue-300 flex items-center justify-center gap-1">
-          <span>❄ KEEP COOL / DO NOT HEAT</span>
+        <div className="bg-zinc-100 text-zinc-900 p-1.5 rounded border border-zinc-300 flex items-center justify-center gap-1">
+          <span>🧪 LABORATORY REAGENTS</span>
         </div>
       </div>
 
       <div className="mt-2 text-center text-[9px] text-zinc-400 font-mono">
-        Ref #{order.display_id || order.id.slice(-8)} · Sealed Packaging Guarantee
+        Ref #{order.display_id || order.id.slice(-8)} · Sealed Protective Lab Packaging
       </div>
     </div>
   )
 }
+

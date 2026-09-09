@@ -1,4 +1,12 @@
-import type { HttpTypes } from "@medusajs/types"
+/**
+ * @file    apps/backend/src/admin/components/printables/vial-labels-template.tsx
+ * @module  VialLabelsTemplate (Printable Documents)
+ * @purpose Printable individual research vial labels with lot numbers and item identifiers.
+ * @contracts
+ *   Service: OrderFulfillmentDispatchWidget · Laboratory Vial Packaging
+ */
+
+import type { HttpTypes } from "@medusajs/framework/types"
 
 export const VialLabelsTemplate = ({ order }: { order: HttpTypes.AdminOrder }) => {
   // Expand line items into individual units to print 1 label per vial/bottle

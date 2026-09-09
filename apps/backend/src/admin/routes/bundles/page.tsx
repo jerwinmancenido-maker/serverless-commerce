@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/bundles/page.tsx
+ * @module  BundlesAdminRoute (BOM & Bundles Management)
+ * @purpose Admin dashboard management for multi-compound synergy stacks, discounts, and BOM stock buildability.
+ * @contracts
+ *   API:     GET /admin/bom/buildable-products
+ *   Service: BomModuleService
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import {
   ArchiveBox,
@@ -581,7 +590,7 @@ const BundlesManagementPage = () => {
 export const config = defineRouteConfig({
   label: "Bundles",
   icon: SquaresPlus,
-  rank: 4,
+  rank: 8,
 })
 
 export default BundlesManagementPage

@@ -1,4 +1,12 @@
-import type { HttpTypes } from "@medusajs/types"
+/**
+ * @file    apps/backend/src/admin/components/printables/packing-slip-template.tsx
+ * @module  PackingSlipTemplate (Printable Documents)
+ * @purpose Printable laboratory packing slip for order fulfillment and constituent pick & pack verification.
+ * @contracts
+ *   Service: OrderFulfillmentDispatchWidget · J&T Express Philippines Standard Domestic Dispatch
+ */
+
+import type { HttpTypes } from "@medusajs/framework/types"
 
 export const PackingSlipTemplate = ({ order }: { order: HttpTypes.AdminOrder }) => {
   const addr = order.shipping_address
@@ -45,8 +53,8 @@ export const PackingSlipTemplate = ({ order }: { order: HttpTypes.AdminOrder }) 
         <div className="border-l border-zinc-200 pl-4 space-y-2">
           <div>
             <span className="font-bold uppercase text-zinc-500 text-[10px] block">Storage & Packaging Requirement</span>
-            <span className="inline-block bg-blue-50 text-blue-900 text-[11px] font-semibold px-2 py-0.5 rounded mt-0.5">
-              ❄ Cold-Pack Insulated Pouch (2°C – 8°C)
+            <span className="inline-block bg-zinc-100 text-zinc-900 text-[11px] font-semibold px-2 py-0.5 rounded mt-0.5 border border-zinc-200">
+              📦 Protective Lab Packaging (Ambient Stable Lyophilized Vials)
             </span>
           </div>
           <div>

@@ -1,4 +1,12 @@
-import type { HttpTypes } from "@medusajs/types"
+/**
+ * @file    apps/backend/src/admin/components/printables/order-receipt-template.tsx
+ * @module  OrderReceiptTemplate (Printable Documents)
+ * @purpose Printable laboratory sales receipt for order fulfillment records.
+ * @contracts
+ *   Service: OrderFulfillmentDispatchWidget · Order Documentation
+ */
+
+import type { HttpTypes } from "@medusajs/framework/types"
 
 function formatPhp(amountInCentavos: number): string {
   return new Intl.NumberFormat("en-PH", {

@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/widgets/order-fulfillment-dispatch.tsx
+ * @module  OrderFulfillmentDispatchWidget (Medusa Admin Widget)
+ * @purpose Admin order fulfillment widget with constituents pick & pack checklist, print station, and J&T VIP QuickOrder assistant.
+ * @contracts
+ *   Zone:    order.details.after
+ *   Service: J&T Express Philippines Domestic Dispatch
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import type { DetailWidgetProps } from "@medusajs/framework/types"
 import type { HttpTypes } from "@medusajs/types"
@@ -25,6 +34,11 @@ import {
   PackingStationDrawer,
   type PrintableDocumentType,
 } from "../components/printables/packing-station-drawer"
+import { JntQuickOrderDrawer } from "../components/logistics/jnt-quick-order-drawer"
+import {
+  cleanJntWaybill,
+  isValidJntWaybill,
+} from "../../lib/jnt-express-helper"
 import { sdk } from "../lib/sdk"
 
 function buildJntTrackingUrl(trackingNumber: string): string {
@@ -96,6 +110,7 @@ const OrderFulfillmentDispatchWidget = ({
   const [waybillNumber, setWaybillNumber] = useState("")
   const [isFulfilling, setIsFulfilling] = useState(false)
   const [printDrawerOpen, setPrintDrawerOpen] = useState(false)
+  const [quickOrderDrawerOpen, setQuickOrderDrawerOpen] = useState(false)
   const [activePrintDoc, setActivePrintDoc] = useState<PrintableDocumentType>("packing-slip")
 
   const openPrintStation = (doc: PrintableDocumentType) => {
@@ -116,7 +131,14 @@ const OrderFulfillmentDispatchWidget = ({
   const dispatchMutation = useMutation({
     mutationFn: async () => {
       setIsFulfilling(true)
-      const tracking = waybillNumber.trim()
+      const tracking = cleanJntWaybill(waybillNumber)
+
+      if (waybillNumber.trim() && !isValidJntWaybill(tracking)) {
+        toast.error("Please enter a valid 12-digit Philippine J&T waybill number (e.g. 781234567890)")
+        setIsFulfilling(false)
+        throw new Error("Invalid 12-digit Philippine J&T waybill number")
+      }
+
       const trackingUrl = buildJntTrackingUrl(tracking)
 
       // 1. Pack items from the order
@@ -181,11 +203,18 @@ const OrderFulfillmentDispatchWidget = ({
             </Badge>
           </div>
           <Text size="xsmall" className="mt-0.5 text-ui-fg-subtle">
-            Philippine Courier Fulfillment & Temperature-Protected Dispatch
+            Philippine Courier Fulfillment &amp; Protective Ambient Dispatch
           </Text>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="small"
+            variant="secondary"
+            onClick={() => setQuickOrderDrawerOpen(true)}
+          >
+            🚚 J&amp;T VIP QuickOrder
+          </Button>
           <Button
             size="small"
             variant="secondary"
@@ -234,7 +263,7 @@ const OrderFulfillmentDispatchWidget = ({
             Fulfillment Packing Checklist ({order.items?.length ?? 0} line items)
           </Text>
           <Text size="xsmall" className="text-slate-400">
-            Verify constituent vials before sealing temperature-shield pouch
+            Verify constituent vials before sealing protective lab packaging
           </Text>
         </div>
         <div className="divide-y divide-slate-200/80 rounded-xl border border-slate-200/80 bg-slate-50/50 overflow-hidden">
@@ -383,14 +412,27 @@ const OrderFulfillmentDispatchWidget = ({
             </Text>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="w-full sm:w-72">
+          <div className="flex flex-wrap items-start gap-3">
+            <div className="flex flex-col gap-1 w-full sm:w-72">
               <Input
                 placeholder="J&T Waybill (e.g. 781234567890)"
                 size="small"
                 value={waybillNumber}
                 onChange={(e) => setWaybillNumber(e.target.value)}
               />
+              {cleanJntWaybill(waybillNumber).length > 0 && (
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  {isValidJntWaybill(cleanJntWaybill(waybillNumber)) ? (
+                    <Badge color="green">
+                      ✓ Valid 12-Digit J&amp;T Waybill
+                    </Badge>
+                  ) : (
+                    <Badge color="orange">
+                      ⚠️ Standard J&amp;T waybill is 12 digits ({cleanJntWaybill(waybillNumber).length}/12)
+                    </Badge>
+                  )}
+                </div>
+              )}
             </div>
             <Button
               size="small"
@@ -399,7 +441,7 @@ const OrderFulfillmentDispatchWidget = ({
               onClick={() => dispatchMutation.mutate()}
             >
               <ArchiveBox className="mr-1.5 h-3.5 w-3.5" />
-              Fulfill & Dispatch Parcel
+              Fulfill &amp; Dispatch Parcel
             </Button>
           </div>
         </div>
@@ -411,6 +453,12 @@ const OrderFulfillmentDispatchWidget = ({
         onOpenChange={setPrintDrawerOpen}
         initialDoc={activePrintDoc}
         waybillNumber={waybillNumber}
+      />
+
+      <JntQuickOrderDrawer
+        order={order}
+        open={quickOrderDrawerOpen}
+        onOpenChange={setQuickOrderDrawerOpen}
       />
     </Container>
   )

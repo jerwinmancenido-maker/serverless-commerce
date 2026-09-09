@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/buildable-products/page.tsx
+ * @module  BuildableProductsAdminRoute (BOM Module)
+ * @purpose Admin dashboard table for component inventory and BOM buildability matrix.
+ * @contracts
+ *   API:     GET /admin/bom/buildable-products
+ *   Service: BomModuleService
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { ArrowUpRightOnBox, Component } from "@medusajs/icons"
 import {
@@ -401,7 +410,7 @@ const BuildableProductsPage = () => {
 export const config = defineRouteConfig({
   label: "Component Inventory",
   icon: Component,
-  rank: 3,
+  rank: 7,
 })
 
 export default BuildableProductsPage

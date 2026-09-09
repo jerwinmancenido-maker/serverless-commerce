@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/api/admin/orders/[id]/research-protocol-delivery/route.ts
+ * @module  AdminOrderResearchProtocolDeliveryRoute (Research Content Module)
+ * @purpose Manages order protocol entitlement delivery, token inspection, re-binding, and administrative revocation.
+ * @contracts
+ *   API: GET · POST · DELETE /admin/orders/:id/research-protocol-delivery
+ *   Service: ResearchContentModuleService · ResearchTrackingModuleService
+ */
+
 import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
@@ -6,6 +15,7 @@ import type ResearchContentModuleService from "../../../../../modules/research-c
 import { RESEARCH_TRACKING_MODULE } from "../../../../../modules/research-tracking"
 import type ResearchTrackingModuleService from "../../../../../modules/research-tracking/service"
 import { bindOrderResearchProtocolsWorkflow } from "../../../../../workflows/bind-order-research-protocols"
+import { revokeOrderResearchProtocolsWorkflow } from "../../../../../workflows/revoke-order-research-protocols"
 
 async function delivery(req: AuthenticatedMedusaRequest) {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -71,4 +81,18 @@ export async function POST(req: AuthenticatedMedusaRequest, res: MedusaResponse)
   })
   const result = await delivery(req)
   res.json({ protocol_delivery: result })
+}
+
+export async function DELETE(req: AuthenticatedMedusaRequest, res: MedusaResponse) {
+  const { result: revokeResult } = await revokeOrderResearchProtocolsWorkflow(
+    req.scope,
+  ).run({
+    input: {
+      order_id: req.params.id,
+      reason: "admin_manual_revocation",
+    },
+  })
+
+  const result = await delivery(req)
+  res.json({ protocol_delivery: result, revocation: revokeResult })
 }

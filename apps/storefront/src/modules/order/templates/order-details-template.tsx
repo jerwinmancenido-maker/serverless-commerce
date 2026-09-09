@@ -23,16 +23,22 @@ import {
   FulfillmentStatusBadge,
   PaymentStatusBadge,
 } from "@modules/order/components/order-status-badge"
+import type { OrderResearchProtocolAccess } from "@lib/data/research-protocols"
+import { ResearchProtocolAccess } from "@modules/order/components/research-protocol-access"
 import React from "react"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
   manualPaymentProof: ManualPaymentProofResponse | null
+  protocolAccesses?: OrderResearchProtocolAccess[]
+  countryCode?: string
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
   manualPaymentProof,
+  protocolAccesses = [],
+  countryCode = "ph",
 }) => {
   return (
     <div className="flex flex-col justify-center gap-y-4">
@@ -98,6 +104,12 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />
+        {protocolAccesses && protocolAccesses.length > 0 ? (
+          <ResearchProtocolAccess
+            accesses={protocolAccesses}
+            countryCode={countryCode}
+          />
+        ) : null}
         <Help />
       </div>
     </div>
