@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/modules/common/components/line-item-unit-price/index.tsx
+ * @module PricingEngine (Clinical Laboratory Standard)
+ * @purpose Renders line item unit prices with monospace telemetry and decimal integrity.
+ * @contracts Cart/Order Item -> Formatted localized unit price
+ */
+
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import { clx } from "@modules/common/components/ui"
@@ -30,7 +37,7 @@ const LineItemUnitPrice = ({
               <span className="text-ui-fg-muted">Original: </span>
             )}
             <span
-              className="line-through"
+              className="line-through font-mono tracking-tight font-medium"
               data-testid="product-unit-original-price"
             >
               {convertToLocale({
@@ -40,12 +47,12 @@ const LineItemUnitPrice = ({
             </span>
           </p>
           {style === "default" && (
-            <span className="text-ui-fg-interactive">-{percentage_diff}%</span>
+            <span className="text-ui-fg-interactive font-mono text-xs font-semibold">-{percentage_diff}%</span>
           )}
         </>
       )}
       <span
-        className={clx("text-base-regular", {
+        className={clx("text-base-regular font-mono tracking-tight font-extrabold", {
           "text-ui-fg-interactive": hasReducedPrice,
         })}
         data-testid="product-unit-price"

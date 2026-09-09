@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/modules/account/components/order-card/index.tsx
+ * @module CustomerPortal (Order History Item Card)
+ * @purpose Displays order summary, human-readable display ID, tracking telemetry, and real line-item thumbnails.
+ * @contracts Section 3 Clinical Usability Standard | Routes: /account/orders
+ */
+
 import { useMemo } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { convertToLocale } from "@lib/util/money"
@@ -146,8 +153,11 @@ const OrderCard = ({ order }: OrderCardProps) => {
       {/* Row 1: Header with Order #, Date, Status Badges, Total, and Arrow */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-100">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <span className="text-sm font-bold text-gray-900">
-            #<span data-testid="order-display-id">{order.display_id}</span>
+          <span className="text-sm text-gray-900 flex items-center gap-0.5">
+            <span className="text-gray-500 font-medium">#</span>
+            <span className="font-mono tracking-tight font-extrabold text-slate-900" data-testid="order-display-id">
+              {order.display_id}
+            </span>
           </span>
           <span className="text-gray-300">·</span>
           <span
@@ -172,7 +182,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
         <div className="flex items-center gap-3">
           <span
-            className="text-sm font-bold text-gray-900"
+            className="text-sm font-mono tracking-tight font-extrabold text-gray-900"
             data-testid="order-amount"
           >
             {convertToLocale({
@@ -272,7 +282,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
               {banner.trackingNumber ? (
                 <>
                   {" "}· Tracking:{" "}
-                  <span className="font-mono font-semibold">
+                  <span className="font-mono tracking-tight font-extrabold">
                     {banner.trackingNumber}
                   </span>
                 </>

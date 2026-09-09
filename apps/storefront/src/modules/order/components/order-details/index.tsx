@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/modules/order/components/order-details/index.tsx
+ * @module OrderComponents (Order Telemetry & Identification)
+ * @purpose Displays order human identifier, dispatch email, timestamp, and fulfillment status pills.
+ * @contracts Section 3 Clinical Usability Standard | Route: /account/orders/details/[id]
+ */
+
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@modules/common/components/ui"
 
@@ -31,8 +38,11 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
           {new Date(order.created_at).toDateString()}
         </span>
       </Text>
-      <Text className="mt-2 text-ui-fg-interactive">
-        Order number: <span data-testid="order-id">{order.display_id}</span>
+      <Text className="mt-2 text-ui-fg-interactive flex items-center gap-1">
+        Order number:{" "}
+        <span className="font-mono tracking-tight font-extrabold text-slate-900" data-testid="order-id">
+          #{order.display_id}
+        </span>
       </Text>
 
       <div className="flex items-center text-compact-small gap-x-4 mt-4">
@@ -48,7 +58,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
               Payment status:{" "}
               <span
                 className="text-ui-fg-subtle "
-                sata-testid="order-payment-status"
+                data-testid="order-payment-status"
               >
                 {formatStatus(order.payment_status)}
               </span>
@@ -61,3 +71,4 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
 }
 
 export default OrderDetails
+

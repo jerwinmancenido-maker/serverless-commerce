@@ -1,22 +1,42 @@
-import { Label } from "@modules/common/components/ui"
+/**
+ * @file apps/storefront/src/modules/common/components/input/index.tsx
+ * @module CommonComponents (Clinical Form Controls)
+ * @purpose Renders human-accessible form inputs with contextual placeholders, floating labels, and field-level validation feedback.
+ * @contracts Section 3 Clinical Usability Standard | Components: Input
+ */
+
+import { Label, clx } from "@modules/common/components/ui"
 import React, { useEffect, useImperativeHandle, useState } from "react"
 
 import Eye from "@modules/common/icons/eye"
 import EyeOff from "@modules/common/icons/eye-off"
 
-type InputProps = Omit<
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
-  "placeholder"
-> & {
+type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> & {
   label: string
   errors?: Record<string, unknown>
   touched?: Record<string, unknown>
   name: string
   topLabel?: string
+  errorMessage?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type, name, label, touched: _touched, required, topLabel, ...props }, ref) => {
+  (
+    {
+      type,
+      name,
+      label,
+      touched: _touched,
+      required,
+      topLabel,
+      placeholder,
+      errorMessage,
+      errors,
+      className,
+      ...props
+    },
+    ref
+  ) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
@@ -33,6 +53,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     useImperativeHandle(ref, () => inputRef.current!)
 
+    const activeError =
+      errorMessage ||
+      (errors && typeof errors[name] === "string" ? (errors[name] as string) : undefined)
+
     return (
       <div className="flex flex-col w-full">
         {topLabel && (
@@ -42,19 +66,33 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             type={inputType}
             name={name}
-            placeholder=" "
+            id={name}
+            placeholder={placeholder || " "}
             required={required}
-            className="pt-4 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active border-ui-border-base hover:bg-ui-bg-field-hover"
+            className={clx(
+              "pt-4 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 placeholder:text-slate-400/80 hover:bg-ui-bg-field-hover transition-colors",
+              {
+                "border-rose-500 focus:border-rose-600 focus:shadow-none": activeError,
+                "border-ui-border-base focus:shadow-borders-interactive-with-active": !activeError,
+              },
+              className
+            )}
             {...props}
             ref={inputRef}
           />
           <label
             htmlFor={name}
             onClick={() => inputRef.current?.focus()}
-            className="flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 top-3 -z-1 origin-0 text-ui-fg-subtle"
+            className={clx(
+              "flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 top-3 -z-1 origin-0",
+              {
+                "text-rose-600 font-medium": activeError,
+                "text-ui-fg-subtle": !activeError,
+              }
+            )}
           >
             {label}
-            {required && <span className="text-rose-500">*</span>}
+            {required && <span className="text-rose-500 ml-0.5">*</span>}
           </label>
           {type === "password" && (
             <button
@@ -66,6 +104,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
+        {activeError && (
+          <span
+            className="text-xs text-rose-600 font-medium mt-1 tracking-tight flex items-center gap-1"
+            data-testid={`${name}-error`}
+          >
+            <span>⚠</span>
+            <span>{activeError}</span>
+          </span>
+        )}
       </div>
     )
   }
@@ -74,3 +121,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input"
 
 export default Input
+

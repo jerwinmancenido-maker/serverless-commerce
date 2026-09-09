@@ -1,5 +1,12 @@
 "use client"
 
+/**
+ * @file apps/storefront/src/modules/account/components/order-overview/index.tsx
+ * @module CustomerPortal (Order History)
+ * @purpose Displays customer order history or an actionable clinical empty state.
+ * @contracts Medusa Store API: /store/orders | Route: /account/orders
+ */
+
 import { Button } from "@modules/common/components/ui"
 
 import OrderCard from "../order-card"
@@ -23,17 +30,17 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
       className="w-full flex flex-col items-center justify-center p-8 rounded-xl border border-dashed border-slate-300 bg-slate-50/70 text-center gap-y-3"
       data-testid="no-orders-container"
     >
-      <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500">
-        <ArchiveBox className="w-5 h-5" />
+      <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shadow-sm">
+        <ArchiveBox className="w-6 h-6" />
       </div>
-      <h2 className="text-base font-semibold text-slate-900">No verified orders yet</h2>
+      <h2 className="text-base font-semibold text-slate-900">No Research Orders Found</h2>
       <p className="text-sm text-slate-500 max-w-md">
-        Your verified research orders, temperature-controlled J&amp;T delivery tracking, and official invoices will be archived here once placed.
+        Your verified research orders, temperature-controlled cold-chain J&amp;T delivery tracking, and batch certificates will appear here once confirmed.
       </p>
       <div className="mt-2">
         <LocalizedClientLink href="/store">
-          <Button data-testid="continue-shopping-button">
-            Explore Compound Catalog
+          <Button data-testid="continue-shopping-button" className="font-medium">
+            Browse Research Catalog →
           </Button>
         </LocalizedClientLink>
       </div>

@@ -9,9 +9,9 @@
 ---
 
 ## Phase 1: Section 3 Usability & Clinical Laboratory Standard Hardening
-- [ ] **Input Component Form Ergonomics**: Contextual placeholders, field-level error messages below inputs, red border highlighting (`apps/storefront/src/modules/common/components/input/index.tsx`)
-- [ ] **Currency Decimal & Integrity**: Enforce standard thousands separator & 2 decimal places (`minimumFractionDigits: 2`, `maximumFractionDigits: 2`) in `apps/storefront/src/lib/util/money.ts` and `apps/storefront/src/modules/products/components/product-actions/index.tsx`
-- [ ] **Monospace Telemetry**: Apply `font-mono tracking-tight font-extrabold` to:
+- [x] **Input Component Form Ergonomics**: Contextual placeholders, field-level error messages below inputs, red border highlighting (`apps/storefront/src/modules/common/components/input/index.tsx`)
+- [x] **Currency Decimal & Integrity**: Enforce standard thousands separator & 2 decimal places (`minimumFractionDigits: 2`, `maximumFractionDigits: 2`) in `apps/storefront/src/lib/util/money.ts` and `apps/storefront/src/modules/products/components/product-actions/index.tsx`
+- [x] **Monospace Telemetry**: Apply `font-mono tracking-tight font-extrabold` to:
   - Order numbers & amounts in `order-card/index.tsx`
   - Order details & status in `order-details/index.tsx`
   - Order summary line items in `order-summary/index.tsx`
@@ -19,10 +19,11 @@
   - Cart totals in `cart-totals/index.tsx`
   - Product price in `product-price/index.tsx`
   - Line item price in `line-item-price/index.tsx`
-- [ ] **Actionable Empty States**:
+  - Line item unit price in `line-item-unit-price/index.tsx`
+- [x] **Actionable Empty States**:
   - Address Book: Add dedicated empty state illustration, title ("No Saved Addresses Found"), explanation, and CTA ("Add Delivery Address →") in `address-book/index.tsx`
   - Order Overview: Title ("No Research Orders Found"), 1-sentence explanation, and CTA ("Browse Research Catalog →") in `order-overview/index.tsx`
-- [ ] **Order Details Action Bar**: Printable "Download Invoice" action and "Re-order Items" CTA in `order-details-template.tsx`
+- [x] **Order Details Action Bar**: Printable "Download Invoice" action and "Re-order Items" CTA in `order-details-template.tsx`
 
 ---
 

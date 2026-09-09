@@ -1,5 +1,12 @@
 "use client"
 
+/**
+ * @file apps/storefront/src/modules/account/components/address-card/add-address.tsx
+ * @module CustomerPortal (Address Book)
+ * @purpose Modal and trigger for adding a new clinical delivery address.
+ * @contracts Medusa Store API: POST /store/customers/me/addresses | Route: /account/addresses
+ */
+
 import { Plus } from "@medusajs/icons"
 import { Button, Heading } from "@modules/common/components/ui"
 import { useActionState, useEffect, useState } from "react"
@@ -15,9 +22,11 @@ import PhilippineAddressFields from "@modules/common/components/philippine-addre
 
 const AddAddress = ({
   region,
+  customTrigger,
 }: {
   region: HttpTypes.StoreRegion
   addresses: HttpTypes.StoreCustomerAddress[]
+  customTrigger?: (open: () => void) => React.ReactNode
 }) => {
   const defaultCountryCode =
     region.countries?.find((country) => country.iso_2 === "ph")?.iso_2 ||
@@ -50,14 +59,18 @@ const AddAddress = ({
 
   return (
     <>
-      <button
-        className="border border-ui-border-base rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between"
-        onClick={open}
-        data-testid="add-address-button"
-      >
-        <span className="text-base-semi">New address</span>
-        <Plus />
-      </button>
+      {customTrigger ? (
+        customTrigger(open)
+      ) : (
+        <button
+          className="border border-ui-border-base rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between"
+          onClick={open}
+          data-testid="add-address-button"
+        >
+          <span className="text-base-semi">New address</span>
+          <Plus />
+        </button>
+      )}
 
       <Modal isOpen={state} close={close} data-testid="add-address-modal">
         <Modal.Title>

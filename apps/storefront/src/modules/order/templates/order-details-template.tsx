@@ -1,9 +1,17 @@
 "use client"
 
-import { ArrowLeft } from "@medusajs/icons"
+/**
+ * @file apps/storefront/src/modules/order/templates/order-details-template.tsx
+ * @module CustomerPortal (Order Details)
+ * @purpose Displays full clinical order details, fulfillment telemetry, and invoice/reorder actions.
+ * @contracts Medusa Store API: /store/orders/:id | Route: /account/orders/details/:id
+ */
+
+import { ArrowDownTray, ArrowLeft, ArrowPath } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import type { ManualPaymentProofResponse } from "@lib/data/manual-payment"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { Button } from "@modules/common/components/ui"
 import Help from "@modules/order/components/help"
 import Items from "@modules/order/components/items"
 import ManualPaymentProof from "@modules/order/components/manual-payment-proof"
@@ -28,7 +36,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
 }) => {
   return (
     <div className="flex flex-col justify-center gap-y-4">
-      <div className="flex gap-2 justify-between items-center">
+      <div className="flex flex-col sm:flex-row gap-3 justify-between sm:items-center">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl-semi">Order details</h1>
           <div className="flex items-center gap-2">
@@ -44,16 +52,34 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
             )}
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <Button
+            variant="secondary"
+            onClick={() => window.print()}
+            className="flex items-center gap-1.5 text-xs sm:text-sm font-medium h-9"
+            data-testid="download-invoice-button"
+          >
+            <ArrowDownTray className="w-4 h-4" />
+            Download Invoice
+          </Button>
+          <LocalizedClientLink href="/store">
+            <Button
+              className="flex items-center gap-1.5 text-xs sm:text-sm font-medium h-9"
+              data-testid="reorder-items-button"
+            >
+              <ArrowPath className="w-4 h-4" />
+              Re-order Items
+            </Button>
+          </LocalizedClientLink>
           <LocalizedClientLink
             href={`/account/support?orderId=${encodeURIComponent(order.id)}`}
-            className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium"
+            className="rounded-lg border border-ui-border-base px-3 py-2 text-sm font-medium text-ui-fg-subtle hover:text-ui-fg-base"
           >
             Contact support
           </LocalizedClientLink>
           <LocalizedClientLink
             href="/account/orders"
-            className="flex gap-2 items-center text-ui-fg-subtle hover:text-ui-fg-base"
+            className="flex gap-2 items-center text-ui-fg-subtle hover:text-ui-fg-base text-sm font-medium"
             data-testid="back-to-overview-button"
           >
             <ArrowLeft /> Back to overview

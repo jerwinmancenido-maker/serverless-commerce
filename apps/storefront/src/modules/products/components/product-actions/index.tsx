@@ -1,5 +1,12 @@
 "use client"
 
+/**
+ * @file apps/storefront/src/modules/products/components/product-actions/index.tsx
+ * @module ProductActions (Compound Merchandising & Formulation Selector)
+ * @purpose Renders variant selectors, reconstitution diluent calculators, volume tier pricing, and cart actions.
+ * @contracts Section 3 Clinical Usability Standard | Routes: /products/[handle]
+ */
+
 import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { getProductPrice } from "@lib/util/get-product-price"
@@ -299,7 +306,8 @@ export default function ProductActions({
     new Intl.NumberFormat("en-PH", {
       style: "currency",
       currency: currencyCode,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     }).format(amount)
 
   // Tier 2: Volume / Multi-Pack Discounts (Single Products Only)

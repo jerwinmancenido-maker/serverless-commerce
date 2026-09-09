@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/modules/products/components/product-price/index.tsx
+ * @module ProductComponents (Formulation Pricing & Telemetry)
+ * @purpose Renders current variant or cheapest price with strike-through sale telemetry and clinical monospace font.
+ * @contracts Section 3 Clinical Usability Standard | Routes: /products/[handle]
+ */
+
 import { clx } from "@modules/common/components/ui"
 
 import { getProductPrice } from "@lib/util/get-product-price"
@@ -30,6 +37,7 @@ export default function ProductPrice({
       >
         {!variant && "From "}
         <span
+          className="font-mono tracking-tight font-extrabold"
           data-testid="product-price"
           data-value={selectedPrice.calculated_price_number}
         >
@@ -41,14 +49,14 @@ export default function ProductPrice({
           <p>
             <span className="text-ui-fg-subtle">Original: </span>
             <span
-              className="line-through"
+              className="line-through font-mono tracking-tight font-extrabold text-ui-fg-muted"
               data-testid="original-product-price"
               data-value={selectedPrice.original_price_number}
             >
               {selectedPrice.original_price}
             </span>
           </p>
-          <span className="text-ui-fg-interactive">
+          <span className="text-ui-fg-interactive font-mono tracking-tight font-extrabold">
             -{selectedPrice.percentage_diff}%
           </span>
         </>
@@ -56,3 +64,4 @@ export default function ProductPrice({
     </div>
   )
 }
+

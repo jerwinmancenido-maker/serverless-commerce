@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/lib/util/money.ts
+ * @module Util (Currency & Financial Telemetry)
+ * @purpose Formats clinical currency amounts with thousands separators and guaranteed two decimal places.
+ * @contracts Section 3 Clinical Usability Standard | Currency: PHP / en-PH
+ */
+
 import { isEmpty } from "./isEmpty"
 
 type ConvertToLocaleParams = {
@@ -11,16 +18,23 @@ type ConvertToLocaleParams = {
 export const convertToLocale = ({
   amount,
   currency_code,
-  minimumFractionDigits,
-  maximumFractionDigits,
-  locale = "en-US",
+  minimumFractionDigits = 2,
+  maximumFractionDigits = 2,
+  locale,
 }: ConvertToLocaleParams) => {
-  return currency_code && !isEmpty(currency_code)
-    ? new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: currency_code,
-        minimumFractionDigits,
-        maximumFractionDigits,
-      }).format(amount)
-    : amount.toString()
+  if (!currency_code || isEmpty(currency_code)) {
+    return amount.toString()
+  }
+
+  const normalizedCurrency = currency_code.toUpperCase()
+  const resolvedLocale =
+    locale || (normalizedCurrency === "PHP" ? "en-PH" : "en-US")
+
+  return new Intl.NumberFormat(resolvedLocale, {
+    style: "currency",
+    currency: normalizedCurrency,
+    minimumFractionDigits,
+    maximumFractionDigits,
+  }).format(amount)
 }
+

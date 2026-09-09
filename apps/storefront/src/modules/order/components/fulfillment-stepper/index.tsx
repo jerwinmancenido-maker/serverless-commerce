@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/modules/order/components/fulfillment-stepper/index.tsx
+ * @module OrderComponents (Cold-Chain Fulfillment Progression)
+ * @purpose Renders visual dispatch stepper with J&T Express tracking telemetry and external query bridge.
+ * @contracts Section 3 Clinical Usability Standard | Route: /account/orders/details/[id]
+ */
+
 import { HttpTypes } from "@medusajs/types"
 
 type StepState = "complete" | "active" | "upcoming"
@@ -130,7 +137,7 @@ const FulfillmentStepper = ({ order }: { order: HttpTypes.StoreOrder }) => {
           <span className="text-slate-500 flex-shrink-0">📦 J&T Tracking:</span>
           {trackingNumber ? (
             <>
-              <span className="font-mono font-medium text-slate-800">{trackingNumber}</span>
+              <span className="font-mono tracking-tight font-extrabold text-slate-900">{trackingNumber}</span>
               <a
                 href={`https://www.jtexpress.ph/index/query/gzquery.html?bills=${encodeURIComponent(trackingNumber)}`}
                 target="_blank"

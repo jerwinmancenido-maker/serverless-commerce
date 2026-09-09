@@ -1,3 +1,10 @@
+/**
+ * @file apps/storefront/src/modules/common/components/line-item-price/index.tsx
+ * @module CartComponents (Line Item Financial Totals)
+ * @purpose Renders line-item calculated price and original discount strike-through in clinical monospace font.
+ * @contracts Section 3 Clinical Usability Standard | Route: /cart, /checkout, /account/orders/details/[id]
+ */
+
 import { getPercentageDiff } from "@lib/util/get-percentage-diff"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
@@ -29,7 +36,7 @@ const LineItemPrice = ({
                 <span className="text-ui-fg-subtle">Original: </span>
               )}
               <span
-                className="line-through text-ui-fg-muted"
+                className="line-through text-ui-fg-muted font-mono tracking-tight font-extrabold"
                 data-testid="product-original-price"
               >
                 {convertToLocale({
@@ -39,14 +46,14 @@ const LineItemPrice = ({
               </span>
             </p>
             {style === "default" && (
-              <span className="text-ui-fg-interactive">
+              <span className="text-ui-fg-interactive font-mono tracking-tight font-extrabold">
                 -{getPercentageDiff(originalPrice, currentPrice || 0)}%
               </span>
             )}
           </>
         )}
         <span
-          className={clx("text-base-regular", {
+          className={clx("text-base-regular font-mono tracking-tight font-extrabold text-slate-900", {
             "text-ui-fg-interactive": hasReducedPrice,
           })}
           data-testid="product-price"
@@ -62,3 +69,4 @@ const LineItemPrice = ({
 }
 
 export default LineItemPrice
+
