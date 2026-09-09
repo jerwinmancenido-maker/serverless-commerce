@@ -1,3 +1,13 @@
+/**
+ * @file    apps/storefront/src/lib/data/peptide-comparisons.ts
+ * @module  PeptideComparisonsData (Storefront Peptide Comparisons)
+ * @purpose Data access layer for head-to-head peptide comparison matrices with Medusa backend API and dynamic synthesis fallback.
+ * @contracts
+ *   API: GET /store/peptide-comparisons · GET /store/peptide-comparisons/:slug
+ */
+
+import { sdk } from "@lib/config"
+
 export type ComparisonVector = {
   feature: string
   compoundA_val: string
@@ -426,12 +436,35 @@ export function getDynamicComparison(
 }
 
 export const listPeptideComparisons = async (): Promise<PeptideComparison[]> => {
+  try {
+    const response = await sdk.client.fetch<{ comparisons: PeptideComparison[]; count: number }>(
+      "/store/peptide-comparisons?limit=100",
+      { method: "GET", cache: "no-store" }
+    )
+    if (response?.comparisons && response.comparisons.length > 0) {
+      return response.comparisons
+    }
+  } catch (err) {
+    console.warn("[listPeptideComparisons] Medusa API call failed or offline, falling back to static cache:", err)
+  }
   return PEPTIDE_COMPARISONS
 }
 
 export const retrievePeptideComparison = async (
   slug: string
 ): Promise<PeptideComparison | null> => {
+  try {
+    const response = await sdk.client.fetch<{ comparison: PeptideComparison }>(
+      `/store/peptide-comparisons/${encodeURIComponent(slug)}`,
+      { method: "GET", cache: "no-store" }
+    )
+    if (response?.comparison) {
+      return response.comparison
+    }
+  } catch (err) {
+    console.warn(`[retrievePeptideComparison] Medusa API call for '${slug}' failed, falling back to local resolver:`, err)
+  }
+
   const comparison = PEPTIDE_COMPARISONS.find((c) => c.slug === slug)
   if (comparison) return comparison
 
@@ -445,8 +478,9 @@ export const retrievePeptideComparison = async (
 export const listComparisonsForCompound = async (
   compoundNameOrHandle: string
 ): Promise<PeptideComparison[]> => {
+  const comparisons = await listPeptideComparisons()
   const query = compoundNameOrHandle.toLowerCase()
-  return PEPTIDE_COMPARISONS.filter(
+  return comparisons.filter(
     (c) =>
       c.compoundA.name.toLowerCase().includes(query) ||
       c.compoundA.handle.toLowerCase().includes(query) ||

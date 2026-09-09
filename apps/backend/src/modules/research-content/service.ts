@@ -1,3 +1,10 @@
+/**
+ * @file apps/backend/src/modules/research-content/service.ts
+ * @module ResearchContentModuleService
+ * @purpose Core service orchestrating clinical research content, protocols, scientific articles, and peptide comparisons.
+ * @contracts Inputs: DML entity definitions | Outputs: Service API methods
+ */
+
 import { MedusaService } from "@medusajs/framework/utils"
 
 import CalculatorMaterialProfile from "./models/calculator-material-profile"
@@ -18,6 +25,8 @@ import ResearchProtocolReaction from "./models/research-protocol-reaction"
 import ResearchProtocolReport from "./models/research-protocol-report"
 import ResearchProtocolSubscription from "./models/research-protocol-subscription"
 import ResearchProtocolModerationEvent from "./models/research-protocol-moderation-event"
+import ResearchArticle from "./models/research-article"
+import PeptideComparison from "./models/peptide-comparison"
 
 class ResearchContentModuleService extends MedusaService({
   CalculatorMaterialProfile,
@@ -38,6 +47,8 @@ class ResearchContentModuleService extends MedusaService({
   ResearchProtocolReport,
   ResearchProtocolSubscription,
   ResearchProtocolModerationEvent,
+  ResearchArticle,
+  PeptideComparison,
 }) {}
 
 export default ResearchContentModuleService

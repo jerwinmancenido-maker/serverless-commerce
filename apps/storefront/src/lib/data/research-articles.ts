@@ -1,3 +1,13 @@
+/**
+ * @file    apps/storefront/src/lib/data/research-articles.ts
+ * @module  ResearchArticlesData (Storefront Research Articles)
+ * @purpose Data access layer for scientific research articles with Medusa backend API and static fallback.
+ * @contracts
+ *   API: GET /store/research-articles · GET /store/research-articles/:slug
+ */
+
+import { sdk } from "@lib/config"
+
 export type ResearchCitation = {
   number: number
   authors: string
@@ -282,12 +292,34 @@ export const RESEARCH_ARTICLES: ResearchArticle[] = [
 ]
 
 export const listResearchArticles = async (): Promise<ResearchArticle[]> => {
+  try {
+    const response = await sdk.client.fetch<{ articles: ResearchArticle[]; count: number }>(
+      "/store/research-articles?limit=100",
+      { method: "GET", cache: "no-store" }
+    )
+    if (response?.articles && response.articles.length > 0) {
+      return response.articles
+    }
+  } catch (err) {
+    console.warn("[listResearchArticles] Medusa API call failed or offline, falling back to static cache:", err)
+  }
   return RESEARCH_ARTICLES
 }
 
 export const retrieveResearchArticle = async (
   slug: string
 ): Promise<ResearchArticle | null> => {
+  try {
+    const response = await sdk.client.fetch<{ article: ResearchArticle }>(
+      `/store/research-articles/${encodeURIComponent(slug)}`,
+      { method: "GET", cache: "no-store" }
+    )
+    if (response?.article) {
+      return response.article
+    }
+  } catch (err) {
+    console.warn(`[retrieveResearchArticle] Medusa API call for '${slug}' failed, falling back to static cache:`, err)
+  }
   const article = RESEARCH_ARTICLES.find((a) => a.slug === slug)
   return article || null
 }
@@ -295,8 +327,9 @@ export const retrieveResearchArticle = async (
 export const listArticlesForCompound = async (
   compoundTagOrHandle: string
 ): Promise<ResearchArticle[]> => {
+  const articles = await listResearchArticles()
   const query = compoundTagOrHandle.toLowerCase()
-  return RESEARCH_ARTICLES.filter(
+  return articles.filter(
     (a) =>
       a.compound_tag.toLowerCase().includes(query) ||
       a.referenced_compound?.handle.toLowerCase().includes(query) ||
