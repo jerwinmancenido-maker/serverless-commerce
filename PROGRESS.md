@@ -61,8 +61,8 @@
 ---
 
 ## Phase 6: Monorepo Quality Gate & Completion
-- [ ] `npm run typecheck` exits 0
-- [ ] `npm run lint` exits 0
-- [ ] `npm run test` (backend: 84 suites, 543 tests) passes
-- [ ] `cd apps/storefront && npm run test` (105 tests) passes
-- [ ] Clean working tree with atomic commits
+- [x] `npm run typecheck` exits 0 across both backend and storefront workspaces
+- [x] `npm run lint` exits 0 across both backend and storefront workspaces
+- [x] `npm run test` (backend: 84 suites, 543 tests) passes
+- [x] `cd apps/storefront && npm run test` (105 tests) passes
+- [x] Clean working tree with atomic commits

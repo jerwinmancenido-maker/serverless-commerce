@@ -56,7 +56,7 @@ type PeptideComparisonItem = {
 const articleColumnHelper = createDataTableColumnHelper<ResearchArticleItem>()
 const comparisonColumnHelper = createDataTableColumnHelper<PeptideComparisonItem>()
 
-export function ResearchLibraryPage() {
+export const ResearchLibraryPage = () => {
   const [activeTab, setActiveTab] = useState<"articles" | "comparisons">("articles")
   const [articleSearch, setArticleSearch] = useState("")
   const [comparisonSearch, setComparisonSearch] = useState("")
