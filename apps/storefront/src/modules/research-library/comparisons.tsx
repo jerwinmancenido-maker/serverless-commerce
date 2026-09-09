@@ -6,19 +6,22 @@ import { getCanonicalProductSlug } from "@lib/util/product-handles"
 import {
   COMPARABLE_COMPOUNDS,
   getDynamicComparison,
+  protocolToCompoundProfile,
   type PeptideComparison,
   type CompoundProfile,
 } from "@lib/data/peptide-comparisons"
+import type { StoreResearchProtocol } from "@lib/data/research-protocols"
 import { CheckCircleSolid } from "@medusajs/icons"
 
 type Props = {
   comparisons?: PeptideComparison[]
+  protocols?: StoreResearchProtocol[]
 }
 
 const PRESET_MATCHUPS = [
   {
     label: "BPC-157 vs. TB-500",
-    tag: "Wolverine Synergy",
+    tag: "The Wolverine Synergy",
     a: "bpc-157",
     b: "tb-500",
   },
@@ -29,8 +32,20 @@ const PRESET_MATCHUPS = [
     b: "semaglutide",
   },
   {
+    label: "Retatrutide vs. Tirzepatide",
+    tag: "Triple vs. Dual Incretin",
+    a: "retatrutide",
+    b: "tirzepatide",
+  },
+  {
+    label: "CJC-1295 vs. Ipamorelin",
+    tag: "Somatotroph Pulse Amplification",
+    a: "cjc-1295-dac",
+    b: "ipamorelin",
+  },
+  {
     label: "BPC-157 vs. GHK-Cu",
-    tag: "Angiogenesis vs. Collagen",
+    tag: "Angiogenesis vs. Pro-Collagen",
     a: "bpc-157",
     b: "ghk-cu",
   },
@@ -41,14 +56,20 @@ const PRESET_MATCHUPS = [
     b: "epithalon",
   },
   {
-    label: "Tesamorelin vs. BPC-157",
-    tag: "Anabolic Healing Axis",
-    a: "tesamorelin",
-    b: "bpc-157",
+    label: "MOTS-c vs. SS-31",
+    tag: "Mitochondrial Dual-Axis",
+    a: "mots-c",
+    b: "ss-31",
+  },
+  {
+    label: "Semax vs. Selank",
+    tag: "BDNF vs. Anxiolytic Heptapeptide",
+    a: "semax",
+    b: "selank",
   },
 ]
 
-// Custom Dropdown Selector Component
+// Custom Dropdown Selector Component with Real-Time Search & Category Grouping
 function CompoundDropdown({
   value,
   onChange,
@@ -61,12 +82,31 @@ function CompoundDropdown({
   side: "a" | "b"
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const selected = useMemo(
-    () => compounds.find((c) => c.id === value) || compounds[0],
+    () => compounds.find((c) => c.id === value) || compounds[0] || {
+      id: value,
+      name: value,
+      tag: "Research Compound",
+      category: "General Research",
+      molecular_mass: "Standard",
+    },
     [compounds, value]
   )
+
+  const filteredCompounds = useMemo(() => {
+    if (!searchQuery.trim()) return compounds
+    const q = searchQuery.toLowerCase()
+    return compounds.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) ||
+        c.category.toLowerCase().includes(q) ||
+        c.tag.toLowerCase().includes(q) ||
+        (c.sequence_or_class && c.sequence_or_class.toLowerCase().includes(q))
+    )
+  }, [compounds, searchQuery])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -86,7 +126,10 @@ function CompoundDropdown({
       {/* Trigger Button */}
       <button
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          setIsOpen((prev) => !prev)
+          setSearchQuery("")
+        }}
         className={`w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 bg-white shadow-2xs ${
           isOpen
             ? side === "a"
@@ -129,76 +172,128 @@ function CompoundDropdown({
         </div>
       </button>
 
-      {/* Popover List */}
+      {/* Popover List with Integrated Filter */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-2 z-30 max-h-80 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl animate-fadeIn space-y-1">
-          <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-100">
-            Select {side === "a" ? "Primary" : "Comparative"} Research Compound
+        <div className="absolute left-0 right-0 top-full mt-2 z-30 max-h-96 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl animate-fadeIn flex flex-col">
+          {/* Header Search Filter */}
+          <div className="p-2.5 border-b border-slate-100 bg-slate-50/80">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={`Search ${compounds.length} catalog peptides...`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                className="w-full text-xs py-2 pl-3 pr-8 rounded-lg border border-slate-200 bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
+                >
+                  &times;
+                </button>
+              )}
+            </div>
           </div>
-          {compounds.map((c) => {
-            const isSelected = c.id === value
-            return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => {
-                  onChange(c.id)
-                  setIsOpen(false)
-                }}
-                className={`w-full text-left px-3 py-2.5 rounded-lg text-xs transition-colors flex items-center justify-between gap-2 cursor-pointer ${
-                  isSelected
-                    ? side === "a"
-                      ? "bg-emerald-50 text-emerald-950 font-bold"
-                      : "bg-indigo-50 text-indigo-950 font-bold"
-                    : "text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900">{c.name}</span>
-                    <span className="text-[10px] font-semibold text-slate-600 px-1.5 py-0.5 rounded-md bg-slate-100">
-                      {c.category}
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-slate-600 block truncate mt-0.5">
-                    {c.tag}
-                  </span>
-                </div>
 
-                <div className="shrink-0 text-right">
-                  <span className="font-mono text-[11px] text-slate-600 block">
-                    {c.molecular_mass}
-                  </span>
-                  {isSelected && (
-                    <span
-                      className={`text-[10px] font-bold ${
-                        side === "a" ? "text-emerald-800" : "text-indigo-800"
-                      }`}
-                    >
-                      Active &check;
-                    </span>
-                  )}
-                </div>
-              </button>
-            )
-          })}
+          {/* Results List */}
+          <div className="overflow-y-auto p-1.5 space-y-1 max-h-72">
+            {filteredCompounds.length === 0 ? (
+              <div className="text-center py-6 text-xs text-slate-400">
+                No compounds matching &ldquo;{searchQuery}&rdquo;
+              </div>
+            ) : (
+              filteredCompounds.map((c) => {
+                const isSelected = c.id === value
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => {
+                      onChange(c.id)
+                      setIsOpen(false)
+                    }}
+                    className={`w-full text-left px-3 py-2.5 rounded-lg text-xs transition-colors flex items-center justify-between gap-2 cursor-pointer ${
+                      isSelected
+                        ? side === "a"
+                          ? "bg-emerald-50 text-emerald-950 font-bold"
+                          : "bg-indigo-50 text-indigo-950 font-bold"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-slate-900">{c.name}</span>
+                        <span className="text-[10px] font-semibold text-slate-600 px-1.5 py-0.5 rounded-md bg-slate-100">
+                          {c.category}
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-slate-600 block truncate mt-0.5">
+                        {c.tag}
+                      </span>
+                    </div>
+
+                    <div className="shrink-0 text-right">
+                      <span className="font-mono text-[11px] text-slate-600 block">
+                        {c.molecular_mass}
+                      </span>
+                      {isSelected && (
+                        <span
+                          className={`text-[10px] font-bold ${
+                            side === "a" ? "text-emerald-800" : "text-indigo-800"
+                          }`}
+                        >
+                          Active &check;
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                )
+              })
+            )}
+          </div>
         </div>
       )}
     </div>
   )
 }
 
-export default function PeptideComparisonsDirectory({ comparisons: _comparisons }: Props) {
+export default function PeptideComparisonsDirectory({
+  comparisons: _comparisons,
+  protocols,
+}: Props) {
   const [compoundAId, setCompoundAId] = useState<string>("bpc-157")
   const [compoundBId, setCompoundBId] = useState<string>("tb-500")
 
   const compoundList = useMemo(() => {
+    if (protocols && protocols.length > 0) {
+      const nonSupplies = protocols.filter(
+        (p) =>
+          p.content?.category !== "Laboratory Supplies" &&
+          !Boolean((p.content as any)?.isSupply) &&
+          !Boolean(p.content?.product_format?.toLowerCase().includes("consumable")) &&
+          !Boolean(p.content?.product_format?.toLowerCase().includes("hardware")) &&
+          !Boolean(p.content?.product_format?.toLowerCase().includes("labware"))
+      )
+      const mapped = nonSupplies.map(protocolToCompoundProfile)
+      return mapped.length > 0 ? mapped : Object.values(COMPARABLE_COMPOUNDS)
+    }
     return Object.values(COMPARABLE_COMPOUNDS)
-  }, [])
+  }, [protocols])
+
+  const compoundProfileMap = useMemo(() => {
+    const map: Record<string, CompoundProfile> = { ...COMPARABLE_COMPOUNDS }
+    for (const c of compoundList) {
+      map[c.id] = c
+    }
+    return map
+  }, [compoundList])
 
   const activeComparison = useMemo(() => {
-    return getDynamicComparison(compoundAId, compoundBId)
-  }, [compoundAId, compoundBId])
+    return getDynamicComparison(compoundAId, compoundBId, compoundProfileMap)
+  }, [compoundAId, compoundBId, compoundProfileMap])
 
   const handleSwap = () => {
     const temp = compoundAId

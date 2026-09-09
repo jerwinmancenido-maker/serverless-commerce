@@ -7,6 +7,10 @@
  */
 
 import { sdk } from "@lib/config"
+import {
+  type StoreResearchProtocol,
+  retrieveResearchProtocol,
+} from "./research-protocols"
 
 export type ComparisonVector = {
   feature: string
@@ -20,7 +24,7 @@ export type CompoundProfile = {
   name: string
   handle: string
   tag: string
-  category: "Tissue Repair & Healing" | "Metabolic & GLP-1" | "Growth Hormone Axis" | "Cellular Longevity"
+  category: string
   sequence_or_class: string
   molecular_mass: string
   primary_target: string
@@ -37,13 +41,111 @@ export type PeptideComparison = {
   slug: string
   title: string
   subtitle: string
-  category: "Tissue Repair & Healing" | "Metabolic & GLP-1" | "Growth Hormone Axis" | "Cellular Longevity"
+  category: string
   compoundA: CompoundProfile
   compoundB: CompoundProfile
   summary: string
   synergy_verdict: string
   vectors: ComparisonVector[]
   citations: Array<{ number: number; text: string; url: string }>
+}
+
+/**
+ * Transforms a canonical StoreResearchProtocol into a standardized CompoundProfile
+ * suitable for head-to-head analytical comparisons.
+ */
+export function protocolToCompoundProfile(protocol: StoreResearchProtocol): CompoundProfile {
+  const content = protocol.content as Record<string, any> | undefined
+  const mol = content?.molecular_details
+  const recon = content?.reconstitution_details
+  const quickRef = (content?.quick_reference || []) as Array<{ key: string; label: string; value: string }>
+
+  // Primary target receptor or molecular pathway
+  const targetRef = quickRef.find((r) =>
+    r.key?.toLowerCase().includes("target") ||
+    r.key?.toLowerCase().includes("mechanism") ||
+    r.label?.toLowerCase().includes("target") ||
+    r.label?.toLowerCase().includes("mechanism")
+  )
+  const primaryTarget =
+    targetRef?.value ||
+    content?.short_introduction ||
+    protocol.summary ||
+    "Selective biological receptor / pathway signaling"
+
+  // Cadence / Dosing
+  const cadenceRef = quickRef.find((r) =>
+    r.key?.toLowerCase().includes("cadence") ||
+    r.key?.toLowerCase().includes("frequency") ||
+    r.label?.toLowerCase().includes("cadence") ||
+    r.label?.toLowerCase().includes("frequency")
+  )
+  const typicalCadence = cadenceRef?.value || "Standard analytical laboratory cadence"
+
+  // Primary focus
+  const focusRef = quickRef.find((r) =>
+    r.key?.toLowerCase().includes("focus") ||
+    r.key?.toLowerCase().includes("application") ||
+    r.label?.toLowerCase().includes("focus") ||
+    r.label?.toLowerCase().includes("application")
+  )
+  const primaryFocus =
+    focusRef?.value ||
+    protocol.summary ||
+    content?.short_introduction ||
+    "Preclinical molecular research"
+
+  // Standard dilution
+  const standardDilution =
+    recon?.default_diluent_ml && recon?.default_vial_net_mg
+      ? `${recon.default_diluent_ml} mL / ${recon.default_vial_net_mg} mg (${
+          recon.resulting_concentration_mg_per_ml ||
+          (recon.default_vial_net_mg / recon.default_diluent_ml).toFixed(1)
+        } mg/mL)`
+      : undefined
+
+  // Half-life
+  const halfLifeRef = quickRef.find((r) =>
+    r.key?.toLowerCase().includes("half") ||
+    r.label?.toLowerCase().includes("half")
+  )
+  const halfLife = halfLifeRef?.value || "Experimental Model Dependent"
+
+  // Citations
+  const citations = (content?.references || []).map((ref: any, idx: number) => ({
+    number: idx + 1,
+    text: `${ref.authors ? ref.authors + ". " : ""}${ref.title}${
+      ref.published_at ? ` (${ref.published_at}).` : ""
+    }`,
+    url:
+      ref.url ||
+      (ref.doi ? `https://doi.org/${ref.doi}` : "https://pubmed.ncbi.nlm.nih.gov/"),
+  }))
+
+  const name = content?.compound_name || protocol.title
+  const handle = protocol.products?.[0]?.handle || protocol.handle
+
+  return {
+    id: protocol.handle,
+    name,
+    handle,
+    tag: content?.product_format || content?.protocol_category_type || "Research Peptide",
+    category: content?.category || "General Research",
+    sequence_or_class:
+      mol?.sequence_or_formula ||
+      (mol?.cas_number ? `CAS ${mol.cas_number}` : "Synthetic Amino Acid Sequence"),
+    molecular_mass: mol?.molecular_weight_g_per_mol
+      ? `${mol.molecular_weight_g_per_mol.toFixed(2)} Da`
+      : "Monoisotopic Standard",
+    primary_target: primaryTarget,
+    half_life: halfLife,
+    reconstitution_diluent: recon?.solvent || "Bacteriostatic Water USP (0.9% Benzyl Alcohol)",
+    standard_dilution: standardDilution,
+    primary_focus: primaryFocus,
+    purity: content?.purity_standard || "≥99.0% (HPLC Verified)",
+    typical_cadence: typicalCadence,
+    citations,
+  }
 }
 
 export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
@@ -323,14 +425,114 @@ export const PEPTIDE_COMPARISONS: PeptideComparison[] = [
 ]
 
 /**
+ * Evaluates physiological and molecular synergy across peptide classes
+ */
+export function calculateSynergyVerdict(compA: CompoundProfile, compB: CompoundProfile): string {
+  if (compA.id === compB.id) {
+    return "Identical Reference Standard: Select two distinct compounds from the dropdowns to evaluate comparative pharmacodynamics and receptor affinity."
+  }
+
+  const catA = (compA.category || "").toLowerCase()
+  const catB = (compB.category || "").toLowerCase()
+  const nameA = (compA.name || "").toLowerCase()
+  const nameB = (compB.name || "").toLowerCase()
+
+  // Specific canonical synergy pairs
+  if (
+    (nameA.includes("bpc-157") && nameB.includes("tb-500")) ||
+    (nameA.includes("tb-500") && nameB.includes("bpc-157"))
+  ) {
+    return "The Wolverine Synergy: Angiogenic microvascular sprouting from BPC-157 provides nutrient perfusion, while TB-500 accelerates tenocyte and myoblast migration into the repaired zone."
+  }
+  if (
+    (nameA.includes("cjc") && nameB.includes("ipamorelin")) ||
+    (nameA.includes("ipamorelin") && nameB.includes("cjc"))
+  ) {
+    return "Dual Somatotrophic Amplification: GHRH receptor stimulation synergizes with selective GHSR ghrelin-mimetic secretagogue pulses to elevate endogenous IGF-1 without desensitization."
+  }
+  if (
+    (nameA.includes("tirzepatide") && nameB.includes("semaglutide")) ||
+    (nameA.includes("semaglutide") && nameB.includes("tirzepatide"))
+  ) {
+    return "Incretin Receptor Benchmark: Semaglutide functions selectively as a GLP-1 mono-agonist, whereas Tirzepatide adds GIP co-agonism for direct adipose lipid buffering and reduced emetic distress."
+  }
+  if (
+    (nameA.includes("retatrutide") && (nameB.includes("tirzepatide") || nameB.includes("semaglutide"))) ||
+    ((nameA.includes("tirzepatide") || nameA.includes("semaglutide")) && nameB.includes("retatrutide"))
+  ) {
+    return "Triple vs. Dual/Mono Incretin Hierarchy: Retatrutide introduces glucagon receptor agonism to stimulate hepatic fatty acid oxidation and thermogenesis beyond GLP-1/GIP incretin boundaries."
+  }
+  if (
+    (nameA.includes("mots-c") && nameB.includes("ss-31")) ||
+    (nameA.includes("ss-31") && nameB.includes("mots-c"))
+  ) {
+    return "Mitochondrial Dual-Axis Synergy: SS-31 selectively binds cardiolipin to restore electron transport chain efficiency, while MOTS-c activates AMPK to enhance metabolic cellular glucose handling."
+  }
+  if (
+    (nameA.includes("semax") && nameB.includes("selank")) ||
+    (nameA.includes("selank") && nameB.includes("semax"))
+  ) {
+    return "Neuro-Restorative Equilibrium: Semax stimulates BDNF/TrkB for cognitive focus and neuroprotection, while Selank modulates GABAergic and enkephalin pathways to dampen anxiogenic tone."
+  }
+
+  // Generalized Category Synergy Rules
+  if (catA.includes("tissue") && catB.includes("tissue")) {
+    return "High Regenerative Synergy: Angiogenic microvascular scaffolding combined with cellular motility and structural matrix reorganization."
+  }
+  if (catA.includes("metabolic") && catB.includes("metabolic")) {
+    return "Receptor Competency & Incretin Modulation: Evaluates mono vs. multi-receptor co-agonism (GLP-1 / GIP / Glucagon) for energy expenditure and glycemic homeostasis."
+  }
+  if (catA.includes("growth") && catB.includes("growth")) {
+    return "Neuroendocrine Somatotroph Synergy: Pituitary GHRH receptor induction paired with GHSR secretagogue pulsatile amplification."
+  }
+  if (catA.includes("longevity") && catB.includes("longevity")) {
+    return "Epigenetic & Cellular Longevity Synergy: Telomerase activation and mitochondrial redox stabilization working in tandem with extracellular matrix decorin regulation."
+  }
+  if (
+    (catA.includes("tissue") && catB.includes("longevity")) ||
+    (catA.includes("longevity") && catB.includes("tissue"))
+  ) {
+    return "Regenerative & Epigenetic Matrix: Localized angiogenic repair complemented by broad-spectrum extracellular collagen and gene reset signaling."
+  }
+  if (
+    (catA.includes("growth") && catB.includes("tissue")) ||
+    (catA.includes("tissue") && catB.includes("growth"))
+  ) {
+    return "Anabolic & Structural Healing Synergy: Pituitary IGF-1 upregulation complements localized microvascular tenocyte collagen remodeling."
+  }
+  if (
+    (catA.includes("metabolic") && catB.includes("growth")) ||
+    (catA.includes("growth") && catB.includes("metabolic"))
+  ) {
+    return "Metabolic Partitioning Axis: Adipose lipolysis combined with somatotroph lean tissue preservation."
+  }
+  if (catA.includes("nootropic") || catB.includes("nootropic") || catA.includes("neuro") || catB.includes("neuro")) {
+    return "Neurotrophic & Neuropeptide Signaling: BDNF/TrkB activation paired with neuromodulatory neurotransmitter equilibrium."
+  }
+  if (catA.includes("immuno") || catB.includes("immuno") || catA.includes("antimicrobial") || catB.includes("antimicrobial")) {
+    return "Host Defense & Immunological Calibration: Thymic peptide T-cell differentiation combined with broad-spectrum cathelicidin membrane barrier reinforcement."
+  }
+
+  return "Cross-Domain Evaluation: Multi-pathway laboratory analysis comparing distinct physiological and molecular mechanisms."
+}
+
+/**
  * Generate or resolve a comparison dynamically for ANY two compound IDs
  */
 export function getDynamicComparison(
   compoundAId: string,
-  compoundBId: string
+  compoundBId: string,
+  customRegistry?: Record<string, CompoundProfile>
 ): PeptideComparison {
-  const compA = COMPARABLE_COMPOUNDS[compoundAId] || COMPARABLE_COMPOUNDS["bpc-157"]
-  const compB = COMPARABLE_COMPOUNDS[compoundBId] || COMPARABLE_COMPOUNDS["tb-500"]
+  const registry = customRegistry || COMPARABLE_COMPOUNDS
+  const compA =
+    registry[compoundAId] ||
+    COMPARABLE_COMPOUNDS[compoundAId] ||
+    COMPARABLE_COMPOUNDS["bpc-157"]
+  const compB =
+    registry[compoundBId] ||
+    COMPARABLE_COMPOUNDS[compoundBId] ||
+    COMPARABLE_COMPOUNDS["tb-500"]
 
   // Check if an authored monograph exists (direct or inverted)
   const authored = PEPTIDE_COMPARISONS.find(
@@ -357,25 +559,7 @@ export function getDynamicComparison(
     }
   }
 
-  // Dynamic synergy verdict evaluation
-  let synergyVerdict = "Cross-Domain Evaluation: Multi-pathway laboratory analysis comparing distinct physiological and molecular mechanisms."
-  if (compA.id === compB.id) {
-    synergyVerdict = "Identical Reference Standard: Select two distinct compounds from the dropdowns to evaluate comparative pharmacodynamics and receptor affinity."
-  } else if (compA.category === "Tissue Repair & Healing" && compB.category === "Tissue Repair & Healing") {
-    synergyVerdict = "High Regenerative Synergy: Angiogenic microvascular scaffolding combined with cellular motility and structural matrix reorganization."
-  } else if (compA.category === "Metabolic & GLP-1" && compB.category === "Metabolic & GLP-1") {
-    synergyVerdict = "Mutually Exclusive Receptor Targeting: Both compounds compete for incretin receptor sites; evaluated independently in research models."
-  } else if (
-    (compA.category === "Tissue Repair & Healing" && compB.category === "Cellular Longevity") ||
-    (compA.category === "Cellular Longevity" && compB.category === "Tissue Repair & Healing")
-  ) {
-    synergyVerdict = "Regenerative & Epigenetic Matrix: Localized angiogenic repair complemented by broad-spectrum extracellular collagen and gene reset signaling."
-  } else if (
-    (compA.category === "Growth Hormone Axis" && compB.category === "Tissue Repair & Healing") ||
-    (compA.category === "Tissue Repair & Healing" && compB.category === "Growth Hormone Axis")
-  ) {
-    synergyVerdict = "Anabolic & Structural Healing Synergy: Pituitary IGF-1 upregulation complements localized microvascular tenocyte collagen remodeling."
-  }
+  const synergyVerdict = calculateSynergyVerdict(compA, compB)
 
   const citations = [
     ...(compA.citations || []),
@@ -470,6 +654,23 @@ export const retrievePeptideComparison = async (
 
   const parts = slug.split("-vs-")
   if (parts.length === 2) {
+    try {
+      const [resA, resB] = await Promise.all([
+        retrieveResearchProtocol(parts[0]).catch(() => null),
+        retrieveResearchProtocol(parts[1]).catch(() => null),
+      ])
+      if (resA?.protocol && resB?.protocol) {
+        const profileA = protocolToCompoundProfile(resA.protocol)
+        const profileB = protocolToCompoundProfile(resB.protocol)
+        return getDynamicComparison(profileA.id, profileB.id, {
+          [profileA.id]: profileA,
+          [profileB.id]: profileB,
+        })
+      }
+    } catch (protocolErr) {
+      console.warn(`[retrievePeptideComparison] Protocol resolution for ${slug} failed:`, protocolErr)
+    }
+
     return getDynamicComparison(parts[0], parts[1])
   }
   return null

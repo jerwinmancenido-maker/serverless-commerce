@@ -503,7 +503,7 @@ export default function ResearchLibraryDirectory({
       {/* ── TAB 2: PEPTIDE COMPARISONS ── */}
       {activeTab === "comparisons" && (
         <div className="animate-fadeIn">
-          <PeptideComparisonsDirectory comparisons={comparisons} />
+          <PeptideComparisonsDirectory comparisons={comparisons} protocols={protocols} />
         </div>
       )}
 
