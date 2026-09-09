@@ -1,3 +1,10 @@
+/**
+ * @file apps/backend/src/scripts/seed-all-compound-protocols.ts
+ * @module ProtocolEngine (Medusa Ingestion)
+ * @purpose Seeds and links 81 canonical protocols to all 82 storefront products with public field visibility.
+ * @contracts Inputs: all-compound-protocols.json | Outputs: Medusa ResearchProtocolSeries, Product Links
+ */
+
 import * as fs from "fs"
 import * as path from "path"
 
@@ -657,41 +664,45 @@ export default async function seedAllCompoundProtocols({
 
       // Link product if catalogStatus === "in_catalog" and storeProductHandle exists
       if (protocol.catalogStatus === "in_catalog" && protocol.storeProductHandle) {
-        const { data: products } = await query.graph({
-          entity: "product",
-          fields: ["id", "title", "handle"],
-          filters: { handle: protocol.storeProductHandle },
-        })
+        const candidateHandles = Array.from(
+          new Set([protocol.storeProductHandle, ...(protocol.handles || [])])
+        ).filter(Boolean) as string[]
 
-        if (products.length > 0) {
-          const targetProduct = products[0]
-          const existingLinks = await service.listResearchProtocolProductLinks(
-            { series_id: seriesId, product_id: targetProduct.id, archived_at: null },
-            { take: 1 },
-          )
+        for (const targetHandle of candidateHandles) {
+          const { data: products } = await query.graph({
+            entity: "product",
+            fields: ["id", "title", "handle"],
+            filters: { handle: targetHandle },
+          })
 
-          if (!existingLinks.length) {
-            logger.info(`Linking series ${seriesId} to product ${targetProduct.id} (${targetProduct.handle})...`)
-            try {
-              await linkResearchProtocolProductWorkflow(container).run({
-                input: {
-                  series_id: seriesId,
-                  product_id: targetProduct.id,
-                  applicability_scope: "entire_product",
-                  variant_ids: [],
-                  is_primary: true,
-                  actorId: "system-seed",
-                },
-              })
-              linkedCount++
-            } catch (linkErr: any) {
-              logger.info(
-                `Link already exists or primary guide assigned for ${targetProduct.handle}: ${linkErr?.message || linkErr}`,
-              )
+          if (products.length > 0) {
+            const targetProduct = products[0]
+            const existingLinks = await service.listResearchProtocolProductLinks(
+              { series_id: seriesId, product_id: targetProduct.id, archived_at: null },
+              { take: 1 },
+            )
+
+            if (!existingLinks.length) {
+              logger.info(`Linking series ${seriesId} to product ${targetProduct.id} (${targetProduct.handle})...`)
+              try {
+                await linkResearchProtocolProductWorkflow(container).run({
+                  input: {
+                    series_id: seriesId,
+                    product_id: targetProduct.id,
+                    applicability_scope: "entire_product",
+                    variant_ids: [],
+                    is_primary: true,
+                    actorId: "system-seed",
+                  },
+                })
+                linkedCount++
+              } catch (linkErr: any) {
+                logger.info(
+                  `Link already exists or primary guide assigned for ${targetProduct.handle}: ${linkErr?.message || linkErr}`,
+                )
+              }
             }
           }
-        } else {
-          logger.warn(`Product with handle '${protocol.storeProductHandle}' not found in Medusa graph.`)
         }
       }
 
