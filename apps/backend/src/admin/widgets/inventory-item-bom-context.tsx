@@ -1,5 +1,14 @@
+/**
+ * @file    apps/backend/src/admin/widgets/inventory-item-bom-context.tsx
+ * @module  InventoryItemBomContextWidget (Admin Extension)
+ * @purpose Displays Bill of Materials component profile and linked compounded products on inventory items.
+ * @contracts
+ *   Route: /admin/bom/inventory-items/:id/context
+ *   Widget: inventory_item.details.after
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { PencilSquare, Spinner } from "@medusajs/icons"
+import { ArchiveBox, PencilSquare, Spinner } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Badge, Button, Container, Heading, Text } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
@@ -8,6 +17,7 @@ import { Link } from "react-router-dom"
 
 import { sdk } from "../lib/sdk"
 import { ComponentProfileDrawer } from "../routes/bom/component-profile-drawer"
+import { ReceiveShipmentDrawer, type ReceiveComponentTarget } from "../routes/bom/receive-shipment-drawer"
 import type {
   BomBaseUnit,
   BomComponentClassification,
@@ -113,6 +123,7 @@ const InventoryItemBomContextWidget = ({
   data,
 }: InventoryItemBomContextWidgetProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [receiveDrawerOpen, setReceiveDrawerOpen] = useState(false)
   const query = useQuery({
     queryKey: ["bom-inventory-item-context", data.id],
     queryFn: () =>
@@ -125,6 +136,34 @@ const InventoryItemBomContextWidget = ({
   const usage = query.data?.recipe_usage || []
   const usageCount = query.data?.recipe_usage_count || 0
 
+  const receiveComponentTarget: ReceiveComponentTarget | null = profile
+    ? {
+        id: data.id,
+        title: data.title || "Inventory Item",
+        sku: data.sku || null,
+        baseUnit: profile.base_unit,
+        displayUnit: profile.display_unit,
+        supplierUnit: profile.supplier_unit,
+        unitsPerSupplierUnit: Number(
+          profile.inventory_units_per_supplier_unit || 1,
+        ),
+        lotTracking: Boolean(profile.lot_tracking_required),
+        expiryTracking: Boolean(profile.expiry_tracking_required),
+        stocked: Number(
+          data.location_levels?.[0]?.stocked_quantity ??
+            (data as { stocked_quantity?: number }).stocked_quantity ??
+            0,
+        ),
+        available: Number(
+          data.location_levels?.[0]?.available_quantity ??
+            (data as { available_quantity?: number }).available_quantity ??
+            0,
+        ),
+      }
+    : null
+
+  const defaultLocationId = data.location_levels?.[0]?.location_id || null
+
   return (
     <>
       <Container className="divide-y p-0">
@@ -135,14 +174,26 @@ const InventoryItemBomContextWidget = ({
               Classification, units, purchasing conversion, and reorder policy.
             </Text>
           </div>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => setDrawerOpen(true)}
-          >
-            <PencilSquare />
-            {profile ? "Edit component settings" : "Configure component"}
-          </Button>
+          <div className="flex items-center gap-2">
+            {profile && (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => setReceiveDrawerOpen(true)}
+              >
+                <ArchiveBox />
+                Receive stock
+              </Button>
+            )}
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => setDrawerOpen(true)}
+            >
+              <PencilSquare />
+              {profile ? "Edit component settings" : "Configure component"}
+            </Button>
+          </div>
         </div>
 
         {query.isLoading ? (
@@ -223,7 +274,7 @@ const InventoryItemBomContextWidget = ({
                       {row.product_id ? (
                         <Link
                           className="min-w-0 hover:text-ui-fg-interactive"
-                          to={`/products/${row.product_id}/variants/${row.variant_id}`}
+                          to={`/compounded-products/${row.product_id}?variant=${row.variant_id}`}
                         >
                           {content}
                         </Link>
@@ -263,6 +314,13 @@ const InventoryItemBomContextWidget = ({
         profile={profile || undefined}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
+      />
+
+      <ReceiveShipmentDrawer
+        open={receiveDrawerOpen}
+        onOpenChange={setReceiveDrawerOpen}
+        component={receiveComponentTarget}
+        selectedLocationId={defaultLocationId}
       />
     </>
   )
