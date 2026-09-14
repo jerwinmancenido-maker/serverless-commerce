@@ -54,6 +54,8 @@ export function resolveVariantImageIndex(
 
   if (
     combinedLabel.includes("subq") ||
+    combinedLabel.includes("analytical") ||
+    combinedLabel.includes("lab set") ||
     combinedLabel.includes("complete") ||
     combinedLabel.includes("prep set") ||
     (combinedLabel.includes("kit") && !combinedLabel.includes("bac"))
