@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${title} Community & Peer Discussions`,
-    description: `Peer discussions, reconstitution observations, and laboratory notes for ${title}. Protected under Philippine DPA 2012 compliance.`,
+    description: `Peer discussions, reconstitution observations, and laboratory notes for ${title}. Protected peer discussion.`,
   }
 }
 
@@ -72,7 +72,7 @@ export default async function ResearchProtocolCommunityPage({ params }: Props) {
   ]
 
   return (
-    <div className="content-container py-8 small:py-12 max-w-5xl mx-auto">
+    <div className="content-container py-8 small:py-12">
       <CommunityDirectory
         countryCode={countryCode}
         identity={identityResult.identity}

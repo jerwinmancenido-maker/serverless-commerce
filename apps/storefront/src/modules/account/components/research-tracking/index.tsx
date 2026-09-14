@@ -600,7 +600,7 @@ export default function ResearchTracking({
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 border border-slate-200">
-              DPA 2012 Protected
+              Private &amp; Confidential
             </span>
           </div>
         </div>
@@ -664,7 +664,7 @@ export default function ResearchTracking({
                     : "Activity Audit Timeline"}
             </h2>
             <p className="mt-0.5 text-[11px] text-slate-500 font-medium">
-              Encrypted Private Research Records · Philippine DPA 2012 Compliance
+              Encrypted Private Research Records · Confidential Protocol Space
             </p>
           </div>
           <div className="inline-flex items-center gap-1 overflow-x-auto rounded-2xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs font-medium no-scrollbar">
@@ -1306,7 +1306,7 @@ export default function ResearchTracking({
             <span className="size-1.5 rounded-full bg-emerald-500" />
             <span className="font-semibold text-slate-700">Client-Side Controlled Records</span>
             <span>&bull;</span>
-            <span>Compliant with Philippine Data Privacy Act (DPA 2012)</span>
+            <span>Protected by Secure Client Privacy Standards</span>
           </div>
           <LocalizedClientLink
             href="/account/settings/privacy"

@@ -8,6 +8,7 @@ import {
   createProductVariantsWorkflow,
   updateProductOptionsWorkflow,
   updateProductsWorkflow,
+  updateProductVariantsWorkflow,
 } from "@medusajs/medusa/core-flows"
 
 type UnifiedVariant = {
@@ -59,7 +60,9 @@ type ExistingProductRecord = {
   title: string
   variants?: {
     id: string
-    sku: string | null
+    title?: string | null
+    sku?: string | null
+    metadata?: Record<string, unknown> | null
   }[]
   options?: {
     id: string
@@ -151,7 +154,9 @@ export default async function seedUnifiedCatalog({
       "handle",
       "title",
       "variants.id",
+      "variants.title",
       "variants.sku",
+      "variants.metadata",
       "options.id",
       "options.title",
       "options.values.id",
@@ -224,6 +229,50 @@ export default async function seedUnifiedCatalog({
         }
       }
 
+      // Update metadata on existing variants (e.g. variation thumbnails & image_urls)
+      const variantsToUpdate: { id: string; metadata: Record<string, unknown> }[] = []
+      if (existing.variants) {
+        for (const ev of existing.variants) {
+          const matchedItemVariant = item.variants.find(
+            (v) => v.sku === ev.sku || (v.title && ev.title && v.title.toLowerCase() === ev.title.toLowerCase())
+          )
+          const vTitle = (ev.title || "").toLowerCase()
+          let thumbUrl = (matchedItemVariant as any)?.thumbnail
+          if (!thumbUrl) {
+            if (vTitle.includes("bac") || vTitle.includes("water") || vTitle.includes("reconstitution")) {
+              thumbUrl = `http://localhost:9000/static/catalog/${item.handle}/variant_vial_bac.webp`
+            } else if (vTitle.includes("subq") || vTitle.includes("kit") || vTitle.includes("set") || vTitle.includes("prep")) {
+              thumbUrl = `http://localhost:9000/static/catalog/${item.handle}/variant_complete_set.webp`
+            } else {
+              thumbUrl = `http://localhost:9000/static/catalog/${item.handle}/variant_vial.webp`
+            }
+          }
+          variantsToUpdate.push({
+            id: ev.id,
+            metadata: {
+              ...(ev.metadata || {}),
+              pepstack_code: matchedItemVariant?.pepstack_code || (ev.metadata as any)?.pepstack_code,
+              lazada_benchmark_price: matchedItemVariant?.lazada_benchmark_price || (ev.metadata as any)?.lazada_benchmark_price,
+              thumbnail: thumbUrl,
+              image_urls: [thumbUrl],
+            },
+          })
+        }
+      }
+      if (variantsToUpdate.length > 0) {
+        try {
+          await updateProductVariantsWorkflow(container).run({
+            input: {
+              product_variants: variantsToUpdate,
+            },
+          })
+        } catch (uErr: any) {
+          logger.warn(
+            `Could not update existing variants on '${item.handle}': ${uErr?.message || uErr}`,
+          )
+        }
+      }
+
       // Check for missing variants to add (e.g. Tier 1: Vial + BAC Water, Complete SubQ Set)
       const existingSkus = new Set(existing.variants?.map((v) => v.sku) || [])
       const missingVariants = item.variants.filter((v) => !existingSkus.has(v.sku))
@@ -250,6 +299,8 @@ export default async function seedUnifiedCatalog({
                 metadata: {
                   pepstack_code: v.pepstack_code,
                   lazada_benchmark_price: v.lazada_benchmark_price,
+                  thumbnail: (v as any).thumbnail,
+                  image_urls: (v as any).thumbnail ? [(v as any).thumbnail] : undefined,
                 },
               })),
             },
@@ -294,6 +345,8 @@ export default async function seedUnifiedCatalog({
                 metadata: {
                   pepstack_code: v.pepstack_code,
                   lazada_benchmark_price: v.lazada_benchmark_price,
+                  thumbnail: (v as any).thumbnail,
+                  image_urls: (v as any).thumbnail ? [(v as any).thumbnail] : undefined,
                 },
               })),
               metadata: item.metadata,

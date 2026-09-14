@@ -6,9 +6,19 @@ import {
   formatPhilippinePhone,
   generateJntBatchCsv,
   isValidJntWaybill,
+  sanitizeJntText,
 } from "../jnt-express-helper"
 
 describe("J&T Express Logistics Helper", () => {
+  describe("sanitizeJntText", () => {
+    it("strips emojis and unprintable characters that break VIP QuickOrder", () => {
+      expect(sanitizeJntText("Jerwin 🧪🔬 Mancenido")).toBe("Jerwin Mancenido")
+      expect(sanitizeJntText("Unit 402 📦 Tower 1")).toBe("Unit 402 Tower 1")
+      expect(sanitizeJntText("")).toBe("")
+      expect(sanitizeJntText(null)).toBe("")
+    })
+  })
+
   describe("cleanJntWaybill", () => {
     it("cleans hyphens, underscores, and extra whitespace", () => {
       expect(cleanJntWaybill(" 781-234-567-890 ")).toBe("781234567890")
@@ -53,8 +63,9 @@ describe("J&T Express Logistics Helper", () => {
   })
 
   describe("formatPhilippinePhone", () => {
-    it("normalizes international and local formats to 09XXXXXXXXX", () => {
+    it("normalizes international, domestic, and +630 formats to 09XXXXXXXXX", () => {
       expect(formatPhilippinePhone("+639171234567")).toBe("09171234567")
+      expect(formatPhilippinePhone("+6309171234567")).toBe("09171234567")
       expect(formatPhilippinePhone("639171234567")).toBe("09171234567")
       expect(formatPhilippinePhone("9171234567")).toBe("09171234567")
       expect(formatPhilippinePhone("09171234567")).toBe("09171234567")
@@ -108,14 +119,36 @@ describe("J&T Express Logistics Helper", () => {
       expect(fields.remarks).not.toContain("Cold-Chain")
     })
 
-    it("sets COD amount equal to declared value for uncaptured orders", () => {
-      const uncapturedOrder = {
+    it("enforces 0 COD for uncaptured digital payments to prevent double charging", () => {
+      const uncapturedDigitalOrder = {
         ...mockOrder,
         payment_status: "awaiting",
       } as HttpTypes.AdminOrder
 
-      const fields = buildJntQuickOrderFields(uncapturedOrder)
+      const fields = buildJntQuickOrderFields(uncapturedDigitalOrder)
+      expect(fields.codAmount).toBe(0)
+    })
+
+    it("sets COD amount equal to declared value ONLY when order is explicitly marked as COD", () => {
+      const codOrder = {
+        ...mockOrder,
+        payment_status: "awaiting",
+        metadata: { is_cod: true },
+      } as HttpTypes.AdminOrder
+
+      const fields = buildJntQuickOrderFields(codOrder)
       expect(fields.codAmount).toBe(3500)
+    })
+
+    it("enforces 0 COD when an explicit COD order has already been captured", () => {
+      const capturedCodOrder = {
+        ...mockOrder,
+        payment_status: "captured",
+        metadata: { is_cod: true },
+      } as HttpTypes.AdminOrder
+
+      const fields = buildJntQuickOrderFields(capturedCodOrder)
+      expect(fields.codAmount).toBe(0)
     })
   })
 

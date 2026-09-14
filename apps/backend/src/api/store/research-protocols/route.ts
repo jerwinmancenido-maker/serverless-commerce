@@ -13,7 +13,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const service = req.scope.resolve<ResearchContentModuleService>(
     RESEARCH_CONTENT_MODULE,
   )
-  const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 100)
+  const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 250)
   const offset = Math.max(Number(req.query.offset) || 0, 0)
   const series = await service.listResearchProtocolSeries(
     { archived_at: null },

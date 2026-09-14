@@ -35,12 +35,20 @@ export type StoreResearchProtocol = {
 }
 
 export const listResearchProtocols = async (params?: { limit?: number; offset?: number }) => {
-  const limit = params?.limit ?? 100
+  const limit = params?.limit ?? 250
   const offset = params?.offset ?? 0
-  return sdk.client.fetch<{ protocols: StoreResearchProtocol[]; count: number }>(
-    `/store/research-protocols?limit=${limit}&offset=${offset}`,
-    { method: "GET", cache: "no-store" }
-  )
+  try {
+    const res = await sdk.client.fetch<{ protocols: StoreResearchProtocol[]; count: number }>(
+      `/store/research-protocols?limit=${limit}&offset=${offset}`,
+      { method: "GET", cache: "no-store" }
+    )
+    if (res?.protocols) {
+      return res
+    }
+  } catch (err) {
+    console.warn("[listResearchProtocols] Medusa API call failed or offline:", err)
+  }
+  return { protocols: [], count: 0 }
 }
 
 export const retrieveResearchProtocol = async (handle: string) => sdk.client.fetch<{ protocol: StoreResearchProtocol }>(`/store/research-protocols/${encodeURIComponent(handle)}`, { method: "GET", cache: "no-store" })

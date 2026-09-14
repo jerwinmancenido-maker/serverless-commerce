@@ -12,6 +12,7 @@ describe("routine Admin navigation", () => {
       "/app/product-options",
       "/app/reservations",
       "/app/customer-groups",
+      "/app/settings/tax-regions",
     ])
     expect(routineAdminNavigationCss).not.toContain("/app/categories")
     expect(routineAdminNavigationCss).not.toContain('a[href="/app/inventory"]')

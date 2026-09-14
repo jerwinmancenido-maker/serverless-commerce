@@ -946,7 +946,7 @@ export default function StackCompatibilityChecker({
                           downloadStackPdf({ stackEvaluation, selectedProfiles, bundleVials })
                         }}
                         className="w-full sm:w-auto inline-flex items-center justify-center gap-1 rounded-lg bg-emerald-700/80 hover:bg-emerald-600 active:scale-95 text-white font-semibold px-2.5 py-1.5 text-xs transition-colors cursor-pointer border border-emerald-500/30"
-                        title="Download authentic ISO 9001 GLP vector PDF file directly"
+                        title="Download authentic GLP vector PDF file directly"
                       >
                         <span>📥</span>
                         <span>Download PDF</span>
@@ -1248,7 +1248,7 @@ export default function StackCompatibilityChecker({
                   downloadStackPdf({ stackEvaluation, selectedProfiles, bundleVials })
                 }}
                 className="rounded-lg px-3 py-2 transition-all cursor-pointer flex items-center gap-1.5 text-emerald-700 font-semibold hover:bg-emerald-50"
-                title="Download ISO 9001 GLP Analytical Stack Dossier (.pdf)"
+                title="Download GLP Analytical Stack Dossier (.pdf)"
               >
                 <span>📥</span> Download PDF
               </button>
@@ -1261,7 +1261,7 @@ export default function StackCompatibilityChecker({
                   }
                 }}
                 className="rounded-lg px-3 py-2 transition-all cursor-pointer flex items-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-white"
-                title="Open ISO 9001 GLP Analytical Dossier in print view"
+                title="Open GLP Analytical Dossier in print view"
               >
                 <span>🖨️</span> Print SOP
               </button>
@@ -1448,7 +1448,7 @@ export default function StackCompatibilityChecker({
                     </p>
                   </div>
                   <span className="text-xs font-mono text-emerald-800 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-                    USP &lt;797&gt; Sterile Math
+                    GLP Volumetric Math
                   </span>
                 </div>
 

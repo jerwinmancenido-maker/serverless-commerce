@@ -166,7 +166,7 @@ const InventoryItemBomContextWidget = ({
 
   return (
     <>
-      <Container className="divide-y p-0">
+      <div className="rounded-xl border border-slate-200/80 bg-white divide-y divide-slate-100 shadow-2xs mb-4 overflow-hidden">
         <div className="flex items-center justify-between gap-4 px-6 py-4">
           <div>
             <Heading level="h2">Component and receiving</Heading>
@@ -307,7 +307,7 @@ const InventoryItemBomContextWidget = ({
             )}
           </div>
         )}
-      </Container>
+      </div>
 
       <ComponentProfileDrawer
         inventoryItem={data}

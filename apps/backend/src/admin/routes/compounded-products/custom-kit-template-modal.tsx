@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/custom-kit-template-modal.tsx
+ * @module  CustomKitTemplateModal
+ * @purpose Reusable inventory kit template creator drawer for compounded products.
+ * @contracts
+ *   Service: InventoryModuleService
+ */
+
 import type { HttpTypes } from "@medusajs/types"
 import {
   Button,
@@ -102,11 +110,15 @@ export const CustomKitTemplateModal = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Content className="max-w-xl overflow-y-auto">
         <Drawer.Header>
-          <Heading level="h2">Create Reusable Kit Template</Heading>
-          <Text size="small" className="text-ui-fg-subtle">
-            Save a custom bundle of accessories & supplies. You can apply it to
-            any product combination with 1 click.
-          </Text>
+          <Drawer.Title asChild>
+            <h2 className="text-base font-bold text-slate-900">Create Reusable Kit Template</h2>
+          </Drawer.Title>
+          <Drawer.Description asChild>
+            <p className="text-xs text-slate-500">
+              Save a custom bundle of accessories & supplies. You can apply it to
+              any product combination with 1 click.
+            </p>
+          </Drawer.Description>
         </Drawer.Header>
 
         <Drawer.Body className="flex flex-col gap-y-5 px-6 py-4">

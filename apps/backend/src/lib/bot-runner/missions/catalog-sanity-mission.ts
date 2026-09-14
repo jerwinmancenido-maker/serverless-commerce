@@ -292,13 +292,13 @@ export async function executeCatalogSanityMission(ctx: MissionContext): Promise<
 
   if (
     researchContentService &&
-    typeof researchContentService.listProtocolMonographs === "function"
+    typeof (researchContentService as any).listResearchProtocols === "function"
   ) {
-    const monographs = await researchContentService.listProtocolMonographs(
+    const protocols = await (researchContentService as any).listResearchProtocols(
       {},
       { take: 50 }
     )
-    monographsCount = monographs.length
+    monographsCount = protocols.length
   }
 
   artifacts.monographsCount = monographsCount

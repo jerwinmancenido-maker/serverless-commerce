@@ -1,3 +1,10 @@
+/**
+ * @file    apps/backend/src/scripts/__tests__/protocol-deduplication.unit.spec.ts
+ * @module  ProtocolDeduplicationUnitSpec (Backend Tests)
+ * @purpose Regression suite validating canonical protocols uniqueness, stoichiometry, and supply SOP specs.
+ * @contracts
+ *   Service: ProtocolRegistry · all-compound-protocols.json
+ */
 import fs from "fs"
 import path from "path"
 
@@ -26,14 +33,14 @@ describe("Protocol Deduplication and Canonical Registry Regression Suite", () =>
     protocols = JSON.parse(rawData)
   })
 
-  it("contains exactly 81 canonical protocols with zero duplicate IDs", () => {
-    expect(protocols.length).toBe(81)
+  it("contains exactly 176 canonical protocols with zero duplicate IDs", () => {
+    expect(protocols.length).toBe(176)
     const ids = protocols.map((p) => p.id)
     const uniqueIds = new Set(ids)
     expect(uniqueIds.size).toBe(protocols.length)
   })
 
-  it("guarantees 100% unique canonical protocol keys across all 81 compounds", () => {
+  it("guarantees 100% unique canonical protocol keys across all 176 compounds", () => {
     const keys = protocols.map((p) => {
       return (p.storeProductHandle || p.id)
         .toLowerCase()
@@ -105,11 +112,11 @@ describe("Protocol Deduplication and Canonical Registry Regression Suite", () =>
     }
   })
 
-  it("identifies all 6 Category 8 laboratory supplies with valid specs and SOP steps", () => {
+  it("identifies all 15 Category 8 laboratory supplies with valid specs and SOP steps", () => {
     const supplies = protocols.filter(
       (p) => p.isSupply || p.category === "Laboratory Supplies"
     )
-    expect(supplies.length).toBe(6)
+    expect(supplies.length).toBe(15)
 
     for (const supply of supplies) {
       expect(supply.supplyGuide).toBeDefined()

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/product-description-editor.tsx
+ * @module  ProductDescriptionEditor
+ * @purpose Rich text TipTap editor for research product descriptions and clinical notes.
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Color from "@tiptap/extension-color";

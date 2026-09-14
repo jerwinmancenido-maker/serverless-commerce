@@ -1,10 +1,22 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/[protocolId]/page.tsx
+ * @module  ResearchProtocolDetailRoute (Admin Dashboard Extension)
+ * @purpose Admin dashboard route for research protocol detail, clinical dosage schedule, and publication editor.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols/:id/*
+ *   Service: ResearchProtocolModuleService
+ */
+
 import { EllipsisHorizontal, PencilSquare, Spinner } from "@medusajs/icons"
-import { Badge, Button, Container, DropdownMenu, Heading, Input, Label, Text, toast } from "@medusajs/ui"
+import { Badge, Button, DropdownMenu, Heading, Input, Label, Text, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { sdk } from "../../../lib/sdk"
+import { SovereignPageSkeleton } from "../../../components/ui/sovereign-page-skeleton"
+import { SovereignEmptyState } from "../../../components/ui/sovereign-empty-state"
+import { PageHeader } from "../../../components/page-header"
 import { ProtocolEditorFields } from "../../compounded-products/protocol-editor-fields"
 import type { ResearchProtocolDetailResponse, ResearchProtocolMutationBody, ResearchProtocolRevision } from "../../compounded-products/research-protocol-types"
 import { CompatibleProducts } from "../compatible-products"
@@ -344,9 +356,10 @@ const ResearchProtocolEditorPage = () => {
   })
 
   const revisionMutation = useMutation({
-    mutationFn: () => {
-      if (decisionReason.trim().length < 3) throw new Error("Enter a revision reason of at least 3 characters")
-      return sdk.client.fetch(`/admin/research-protocols/${protocolId}/revisions`, { method: "POST", body: { reason: decisionReason.trim() } })
+    mutationFn: (customReason?: string | void) => {
+      const reasonToUse = (typeof customReason === "string" && customReason.trim()) || decisionReason.trim() || "Monograph content update"
+      if (reasonToUse.length < 3) throw new Error("Enter a revision reason of at least 3 characters")
+      return sdk.client.fetch(`/admin/research-protocols/${protocolId}/revisions`, { method: "POST", body: { reason: reasonToUse } })
     },
     onSuccess: async () => { setDecisionReason(""); setShowReasonInput(false); setPendingAction(null); toast.success("New draft revision created"); await refresh() },
     onError: (error) => toast.error(messageFromError(error, "Draft revision could not be created")),
@@ -378,7 +391,7 @@ const ResearchProtocolEditorPage = () => {
   const triggerAction = (action: "publish" | "revision" | "withdraw" | "archive") => {
     setPendingAction(action)
     setShowReasonInput(true)
-    setDecisionReason("")
+    setDecisionReason(action === "revision" ? "Monograph content update" : "")
   }
 
   const confirmAction = () => {
@@ -401,13 +414,24 @@ const ResearchProtocolEditorPage = () => {
     withdrawMutation.isPending ||
     archiveMutation.isPending
 
-  if (protocolQuery.isLoading || !form) return <Container className="flex min-h-96 items-center justify-center"><Spinner /></Container>
-  if (protocolQuery.isError || !protocol || !displayedRevision) return <Container className="flex flex-col gap-y-2 px-6 py-4"><Heading>Research guide unavailable</Heading><Text size="small" className="text-ui-fg-error">The research guide could not be loaded.</Text></Container>
+  if (protocolQuery.isLoading || !form) {
+    return <SovereignPageSkeleton cards={4} rows={10} />
+  }
+  if (protocolQuery.isError || !protocol || !displayedRevision) {
+    return (
+      <div className="p-8">
+        <SovereignEmptyState
+          heading="Research guide unavailable"
+          subtext="The research guide could not be resolved from Medusa backend services."
+        />
+      </div>
+    )
+  }
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
       {/* ── Top Header ── */}
-      <Container className="px-6 py-4">
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex flex-col gap-y-1">
             <div className="flex items-center gap-x-2">
@@ -453,7 +477,9 @@ const ResearchProtocolEditorPage = () => {
               <Button
                 size="small"
                 disabled={isMutating}
-                onClick={() => triggerAction("revision")}
+                isLoading={revisionMutation.isPending}
+                onClick={() => revisionMutation.mutate("Monograph content update")}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <PencilSquare className="mr-1.5 size-3.5" /> Edit Protocol
               </Button>
@@ -490,11 +516,11 @@ const ResearchProtocolEditorPage = () => {
             </DropdownMenu>
           </div>
         </div>
-      </Container>
+      </div>
 
       {/* ── Contextual Reason Prompt ── */}
       {showReasonInput && pendingAction ? (
-        <Container className="px-6 py-4">
+        <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs">
           <div className="flex flex-col gap-y-3">
             <Text size="small" weight="plus">
               {pendingAction === "revision" && "Create new draft revision"}
@@ -532,14 +558,14 @@ const ResearchProtocolEditorPage = () => {
               </div>
             </div>
           </div>
-        </Container>
+        </div>
       ) : null}
 
       {/* ── Main content grid ── */}
       <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
         <div className="flex min-w-0 flex-col gap-y-3">
           {draft ? (
-            <Container className="sticky top-2 z-10 flex flex-wrap gap-2 px-4 py-3">
+            <div className="sticky top-2 z-10 flex flex-wrap gap-2 rounded-xl border border-slate-200/80 bg-white/90 p-3 shadow-2xs backdrop-blur-md">
               {[
                 ["Overview", "#overview"],
                 ["Dosage schedule", "#dosage-schedule"],
@@ -551,31 +577,50 @@ const ResearchProtocolEditorPage = () => {
                   <a href={href}>{label}</a>
                 </Button>
               ))}
-            </Container>
+            </div>
           ) : null}
-          <Container id="overview" className="scroll-mt-24 px-6 py-4">
+          <div id="overview" className="scroll-mt-24 rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs">
             {draft ? (
               <ProtocolEditorFields value={form} onChange={setForm} />
             ) : (
-              <PublishedProtocolDocument revision={displayedRevision} />
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl border border-blue-200/80 bg-blue-50/50">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-xs font-bold text-blue-950">Active Published Monograph (Read-Only)</span>
+                    <span className="text-[11px] text-blue-800">
+                      To modify dosages, reconstitution parameters, molecular specs, or guidance sections, initiate a working revision.
+                    </span>
+                  </div>
+                  <Button
+                    size="small"
+                    disabled={isMutating}
+                    isLoading={revisionMutation.isPending}
+                    onClick={() => revisionMutation.mutate("Monograph content update")}
+                    className="shrink-0 h-8 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-2xs"
+                  >
+                    <PencilSquare className="mr-1.5 size-3.5" /> Start Editing Protocol
+                  </Button>
+                </div>
+                <PublishedProtocolDocument revision={displayedRevision} />
+              </div>
             )}
-          </Container>
+          </div>
         </div>
 
         {/* ── Right sidebar (readiness checklist, compatible products, merchandising, visibility, history) ── */}
         <div className="flex flex-col gap-y-4">
           {draft ? (
-            <Container className="flex flex-col gap-y-4 px-6 py-4">
+            <div className="flex flex-col gap-y-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs">
               <PublicationReadinessCard content={form?.content} />
-            </Container>
+            </div>
           ) : null}
-          <Container className="flex flex-col gap-y-4 px-6 py-4"><CompatibleProducts protocolId={protocolId} /></Container>
-          <Container className="flex flex-col gap-y-4 px-6 py-4"><ProductMerchandising protocolId={protocolId} /></Container>
-          <Container className="flex flex-col gap-y-4 px-6 py-4"><ProtocolVisibility protocolId={protocolId} content={displayedRevision.content} /></Container>
-          <Container className="flex flex-col gap-y-4 px-6 py-4"><CommunityModeration protocolId={protocolId} compact /></Container>
+          <div className="flex flex-col gap-y-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs"><CompatibleProducts protocolId={protocolId} /></div>
+          <div className="flex flex-col gap-y-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs"><ProductMerchandising protocolId={protocolId} /></div>
+          <div className="flex flex-col gap-y-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs"><ProtocolVisibility protocolId={protocolId} content={displayedRevision.content} /></div>
+          <div className="flex flex-col gap-y-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs"><CommunityModeration protocolId={protocolId} compact /></div>
 
           {/* Revision history */}
-          <Container className="flex flex-col gap-y-3 px-6 py-4">
+          <div className="flex flex-col gap-y-3 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs">
             <Text size="small" leading="compact" weight="plus">Revision history</Text>
             {protocol.revisions.map((revision) => (
               <div key={revision.id} className="flex items-center justify-between gap-x-3">
@@ -586,10 +631,10 @@ const ResearchProtocolEditorPage = () => {
                 <Badge color={revision.status === "published" ? "green" : revision.status === "draft" ? "orange" : "grey"}>{revision.status}</Badge>
               </div>
             ))}
-          </Container>
+          </div>
 
           {/* Activity history */}
-          <Container className="flex flex-col gap-y-3 px-6 py-4">
+          <div className="flex flex-col gap-y-3 rounded-xl border border-slate-200/80 bg-white p-5 shadow-2xs">
             <div className="flex flex-col gap-y-1">
               <Text size="small" leading="compact" weight="plus">Activity history</Text>
               <Text size="small" leading="compact" className="text-ui-fg-subtle">Immutable protocol and product-link decisions.</Text>
@@ -603,7 +648,7 @@ const ResearchProtocolEditorPage = () => {
                 {event.reason ? <Text size="small" className="text-ui-fg-subtle">{event.reason}</Text> : null}
               </div>
             )) : <Text size="small" className="text-ui-fg-subtle">No activity recorded yet.</Text>}
-          </Container>
+          </div>
 
         </div>
       </div>

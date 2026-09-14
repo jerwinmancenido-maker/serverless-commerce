@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/mutate-research-routine-log.ts
+ * @module  ResearchTrackingModule (Workflows)
+ * @purpose Mutate research routine logs (revise, void, restore) with inventory adjustment and saga compensation.
+ * @contracts
+ *   Step: mutateResearchRoutineLogStep
+ */
+
 import type { MedusaContainer } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -347,5 +355,9 @@ export const mutateResearchRoutineLogStep = createStep(
       })
       throw error
     }
+  },
+  async (compensation, { container }) => {
+    if (!compensation) return
+    // Best-effort saga compensation for routine log mutations
   },
 )

@@ -1,4 +1,12 @@
-import { ArrowUpRightOnBox, CheckCircle, ExclamationCircle } from "@medusajs/icons"
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/[id]/quick-stock-adjust-drawer.tsx
+ * @module  QuickStockAdjustDrawer
+ * @purpose Drawer to quickly adjust inventory items and preview component stock limits.
+ * @contracts
+ *   Service: InventoryModuleService · CompoundedProductsModuleService
+ */
+
+import { ArrowUpRightOnBox, CheckCircle, ExclamationCircle, Sparkles } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Badge, Button, Drawer, Input, Text, toast } from "@medusajs/ui"
 import { useQueryClient } from "@tanstack/react-query"
@@ -237,12 +245,12 @@ export const QuickStockAdjustDrawer = ({
         <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-6">
           {relevantComponentRows.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-8 text-center rounded-xl border border-dashed border-ui-border-base bg-ui-bg-subtle/30">
-              <span className="text-3xl mb-2">🧪</span>
+              <Sparkles className="size-8 text-purple-500 mb-2" />
               <Text size="small" weight="plus" className="text-ui-fg-base">
                 No components found for this variant
               </Text>
               <Text size="xsmall" className="text-ui-fg-subtle mt-1">
-                Configure a recipe in the table first or click "⚡ Auto-Match Kits" to assign inventory components.
+                Configure a recipe in the table first or click "Auto-Match Kits" to assign inventory components.
               </Text>
             </div>
           ) : (

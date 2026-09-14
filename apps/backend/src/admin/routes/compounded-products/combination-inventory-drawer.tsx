@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/combination-inventory-drawer.tsx
+ * @module  CombinationInventoryDrawer
+ * @purpose Inventory assembly requirements and physical kit contents drawer per variant combination.
+ * @contracts
+ *   Service: InventoryModuleService · CompoundedProductModuleService
+ */
+
 import { Trash } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import {

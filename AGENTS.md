@@ -235,3 +235,12 @@ Violating this rule wastes tokens and risks introducing accidental changes.
 - Generated files (`.medusa/`, `dist/`, `.next/`)
 - `AGENTS.md`, `README.md`, or any markdown file
 - `turbo.json`, `eslint.config.ts`, lockfiles
+
+## Zero Personal Liability & Non-FDA RUO Operating Invariant
+
+- **NEVER INTRODUCE INDIVIDUAL HUMAN NAMES**: Under no circumstances should any code, UI, comment, commit message, template, print dossier, or document include individual person names, employee names, fictitious doctors, or fake analytical chemists (e.g. `J. Vance`, `Dr. A. Vance`, `R. Castillo`).
+- **NO FORGED OR FICTITIOUS REGULATORY CREDENTIALS**: Do not claim or simulate personal professional titles regulated by law (e.g. `RCh` - Registered Chemist under Philippine RA 10657, `M.D.`, `Ph.D.` sign-offs) or state-sponsored regulatory certifications.
+- **NEVER CLAIM GOVERNMENT OR FDA ACCREDITATION**: Do not claim that products, facilities, or protocols are evaluated, cleared, approved, or accredited by the Philippine FDA, US FDA, or any public health agency.
+- **SOVEREIGN RUO POSITIONING**: Every compound is strictly defined as an **In-Vitro Analytical Reference Standard**. Quality is verified exclusively through objective chemical testing specifications (e.g. `RP-HPLC Purity ≥ 98.0%`, `LC-MS Molecular Mass Match`, `Cryptographic Batch Release Hash`).
+- **MANDATORY NON-FDA LEGAL DISCLAIMER**: Every analytical report, dossier, and COA must carry the explicit declaration:
+  *"Strictly for in-vitro laboratory research and analytical calibration. Not for human, veterinary, diagnostic, or therapeutic consumption. Not evaluated or approved by the FDA."*

@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/product-merchandising.tsx
+ * @module  ProductMerchandising
+ * @purpose Protocol product upsell and merchandising recommendation drawer and list.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols/:id/merchandising
+ *   Service: ResearchTrackingModuleService · ProductModuleService
+ */
+
 import type { HttpTypes } from "@medusajs/framework/types"
 import {
   Badge,
@@ -18,6 +27,7 @@ import {
 } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
 
+import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { sdk } from "../../lib/sdk"
 import type {
   ResearchProtocolMerchandisingLink,
@@ -254,12 +264,10 @@ export const ProductMerchandising = ({ protocolId }: Props) => {
           </div>
         ))
       ) : (
-        <div className="rounded-lg border border-dashed border-ui-border-base p-4">
-          <Text size="small" weight="plus">No recommendations configured.</Text>
-          <Text size="small" className="text-ui-fg-subtle">
-            Customers will not see an upsell from this guide until one is added.
-          </Text>
-        </div>
+        <SovereignEmptyState
+          heading="No recommendations configured"
+          description="Customers will not see an upsell from this guide until one is added."
+        />
       )}
 
       <Drawer open={open} onOpenChange={setOpen}>

@@ -80,6 +80,17 @@ interface RawProtocol {
   purityStandard: string
   investigatedBenefits?: string[]
   adverseObservations?: string[]
+  clinicalAdverseObservations?: string[]
+  communityReportedObservations?: string[]
+  adverseMechanisms?: Record<string, string>
+  mitigationProtocols?: string[]
+  scientificDossier?: {
+    title?: string
+    documentPath?: string
+    webUrl?: string
+    keyReceptors?: string[]
+    hasCommunityAdverseProfile?: boolean
+  }
   reconstitution: {
     defaultVialNetMg: number
     defaultDiluentMl: number
@@ -109,9 +120,18 @@ interface RawProtocol {
   }
   molecularDetails?: {
     casNumber?: string
+    casNumberAlternate?: string
+    casNotes?: string
+    formula?: string
+    molarMass?: string
     pubchemCid?: number
+    sequence?: string
     sequenceOrFormula?: string
     molecularWeightGPerMol?: number
+    purity?: string
+    analyticalVerification?: string
+    stoichiometryNote?: string
+    endotoxin?: string
   }
   citations?: ProtocolCitation[]
   disclaimer?: string
@@ -213,8 +233,8 @@ export default async function seedAllCompoundProtocols({
       const defaultReference = isSupply
         ? {
             reference_key: "ref-1",
-            title: "ISO 11137 / USP <797> Sterilization and Compounding Standards",
-            authors: "International Organization for Standardization & USP",
+            title: "ISO 11137 / GLP Laboratory Sterilization & Handling Standards",
+            authors: "International Organization for Standardization & GLP Standards",
             published_at: "Current Edition",
             url: null,
             doi: null,
@@ -497,6 +517,15 @@ export default async function seedAllCompoundProtocols({
               "Inspect solution for clarity prior to assay calibration",
               "Biohazard laboratory disposal according to institutional chemical safety guidelines",
             ],
+        clinical_adverse_observations: protocol.clinicalAdverseObservations || [],
+        community_reported_observations: protocol.communityReportedObservations || [],
+        adverse_mechanisms: protocol.adverseMechanisms || null,
+        mitigation_protocols: protocol.mitigationProtocols || [],
+        scientific_dossier: protocol.scientificDossier || null,
+        oral_guide: (protocol as any).oralGuide || null,
+        nasal_guide: (protocol as any).nasalGuide || null,
+        topical_guide: (protocol as any).topicalGuide || null,
+        supply_guide: (protocol as any).supplyGuide || null,
         molecular_details: protocol.molecularDetails ? {
           cas_number: protocol.molecularDetails.casNumber || null,
           pubchem_cid: protocol.molecularDetails.pubchemCid && protocol.molecularDetails.pubchemCid > 0
@@ -506,6 +535,8 @@ export default async function seedAllCompoundProtocols({
           molecular_weight_g_per_mol: protocol.molecularDetails.molecularWeightGPerMol && protocol.molecularDetails.molecularWeightGPerMol > 0
             ? protocol.molecularDetails.molecularWeightGPerMol
             : null,
+          purity: protocol.molecularDetails.purity || null,
+          analytical_verification: protocol.molecularDetails.analyticalVerification || null,
         } : null,
         reconstitution_details: {
           default_vial_net_mg: protocol.reconstitution.defaultVialNetMg && protocol.reconstitution.defaultVialNetMg > 0
@@ -521,11 +552,25 @@ export default async function seedAllCompoundProtocols({
             : null,
           handling_rule: protocol.reconstitution.handlingRule || null,
         },
+        primary_delivery_route: (protocol as any).primaryDeliveryRoute || (protocol.dosing as any)?.deliveryRoute || null,
+        delivery_routes: (protocol as any).deliveryRoutes || [],
         reconstitution_options: protocol.reconstitutionOptions || null,
-        vial_strength_options: protocol.vialStrengthOptions || [],
+        vial_strength_options: (protocol.vialStrengthOptions || []).map((opt: any) => ({
+          vialMg: opt.vialMg,
+          diluentMl: opt.diluentMl,
+          concMgMl: opt.concMgMl,
+          badge: opt.badge || opt.label || `${opt.vialMg}mg`,
+        })),
         syringe_guide: protocol.syringeGuide ? {
           syringeType: protocol.syringeGuide.syringeType,
           standardIUDisplay: protocol.syringeGuide.standardIUDisplay,
+          needleGauge: (protocol.syringeGuide as any).needleGauge || null,
+          needleLength: (protocol.syringeGuide as any).needleLength || null,
+          hubType: (protocol.syringeGuide as any).hubType || null,
+          deadSpaceCorrection: (protocol.syringeGuide as any).deadSpaceCorrection || null,
+          recommendedBarrel: (protocol.syringeGuide as any).recommendedBarrel || null,
+          transferNeedle: (protocol.syringeGuide as any).transferNeedle || null,
+          calibratedInstrument: (protocol.syringeGuide as any).calibratedInstrument || null,
           graduations: (protocol.syringeGuide.graduations || []).map(g => ({
             doseDisplay: g.doseDisplay,
             doseMcg: g.doseMcg,
@@ -535,8 +580,16 @@ export default async function seedAllCompoundProtocols({
           })),
         } : null,
         evidence_tier: protocol.evidenceTier || null,
-        blend_constituents: protocol.blendConstituents || [],
+        blend_constituents: (protocol.blendConstituents || []).map((bc: any) => ({
+          name: bc.name || bc.compoundName || "Constituent",
+          compoundName: bc.compoundName || bc.name,
+          ratioMg: typeof bc.ratioMg === "number" ? bc.ratioMg : (parseFloat(bc.ratio) || 0),
+          ratio: bc.ratio || (bc.ratioMg ? `${bc.ratioMg}mg` : ""),
+          percentageOfTotal: typeof bc.percentageOfTotal === "number" ? bc.percentageOfTotal : 50,
+          primaryPathway: bc.primaryPathway || null,
+        })),
         bundle_vials: protocol.bundleVials || [],
+
         storage_details: {
           lyophilized: protocol.storage.lyophilized,
           reconstituted: protocol.storage.reconstituted,
@@ -562,9 +615,11 @@ export default async function seedAllCompoundProtocols({
                   const iuMatch = step.doseDisplay?.match(/([\d.]+)\s*IU/i)
                   const stepDose = (protocol.calculator?.targetAmountUnit === "IU" && iuMatch)
                     ? { amount: iuMatch[1], unit: "IU" as const }
+                    : step.doseMcg === 0 || step.cadence?.toLowerCase().includes("zero")
+                    ? { amount: "0", unit: "mcg" as const }
                     : step.doseMcg >= 1000
                     ? { amount: String(Number((step.doseMcg / 1000).toFixed(3))), unit: "mg" as const }
-                    : { amount: String(step.doseMcg || 250), unit: "mcg" as const }
+                    : { amount: String(step.doseMcg ?? 250), unit: "mcg" as const }
                   return {
                     row_key: `step-${idx + 1}`,
                     period: step.timeframe || `Phase ${idx + 1}`,

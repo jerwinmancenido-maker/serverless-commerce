@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/create-compounded-product-governance-audit-events.ts
+ * @module  CompoundedProductModule (Workflows)
+ * @purpose Persist immutable governance audit events for compounded product catalog changes.
+ * @contracts
+ *   Step: createCompoundedProductGovernanceAuditEventsStep
+ */
+
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import { COMPOUNDED_PRODUCT_MODULE } from "../../modules/compounded-product"
@@ -22,6 +30,10 @@ export const createCompoundedProductGovernanceAuditEventsStep = createStep(
     )
     const events = await service.createGovernanceAuditEvents(input)
 
-    return new StepResponse(events)
+    return new StepResponse(events, events)
+  },
+  async (compensationEvents) => {
+    // Governance audit events are immutable audit records under compounding compliance and cannot be deleted.
+    if (!compensationEvents?.length) return
   },
 )

@@ -1,5 +1,11 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/layout/components/notification-bell/index.tsx
+ * @module  NotificationBellComponent (Storefront Layout)
+ * @purpose Customer notification drawer popover with order, protocol, and rewards alerts.
+ */
+
 import {
   Popover,
   PopoverButton,
@@ -141,16 +147,6 @@ export default function NotificationBell() {
   const [pending, startTransition] = useTransition()
   const channelRef = useRef<BroadcastChannel | null>(null)
 
-  const handleOpen = () => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(
-        new CustomEvent("pepstack:header-popover-opened", {
-          detail: "notifications",
-        })
-      )
-    }
-    setOpen(true)
-  }
 
   const handleClose = useCallback(() => {
     if (activeTimer) {
@@ -159,22 +155,6 @@ export default function NotificationBell() {
     }
     setOpen(false)
   }, [activeTimer])
-
-  const openAndCancel = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
-      setActiveTimer(undefined)
-    }
-    handleOpen()
-  }
-
-  const handleMouseLeave = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
-    }
-    const timer = setTimeout(handleClose, 120)
-    setActiveTimer(timer)
-  }
 
   // Listen for other header popovers opening to maintain mutual exclusivity
   useEffect(() => {
@@ -292,11 +272,7 @@ export default function NotificationBell() {
   }
 
   return (
-    <div
-      className="h-full z-50 relative flex items-center"
-      onMouseEnter={openAndCancel}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="h-full z-50 relative flex items-center">
       <Popover className="relative h-full flex items-center">
         <PopoverButton
           className="relative flex h-9 w-9 items-center justify-center rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-all cursor-pointer focus:outline-none"
@@ -504,7 +480,7 @@ export default function NotificationBell() {
       {open && (
         <div className="small:hidden">
           <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-[940]"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[940]"
             onClick={handleClose}
             aria-hidden="true"
           />

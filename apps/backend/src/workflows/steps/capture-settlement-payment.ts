@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/capture-settlement-payment.ts
+ * @module  ManualPaymentModule (Workflows)
+ * @purpose Capture authorized manual payment with saga compensation tracking.
+ * @contracts
+ *   Step: captureSettlementPaymentStep
+ */
+
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { Modules, MedusaError } from "@medusajs/framework/utils"
 import type { IPaymentModuleService } from "@medusajs/framework/types"
@@ -5,6 +13,12 @@ import type { IPaymentModuleService } from "@medusajs/framework/types"
 export type CaptureSettlementPaymentInput = {
   paymentId: string
   actorId: string
+}
+
+type CaptureCompensation = {
+  paymentId: string
+  captureId?: string
+  wasAlreadyCaptured: boolean
 }
 
 export const captureSettlementPaymentStep = createStep(
@@ -18,10 +32,17 @@ export const captureSettlementPaymentStep = createStep(
     })
 
     if (payment.captures?.length && payment.captured_at) {
-      return new StepResponse({
-        paymentId: payment.id,
-        captureId: payment.captures[0].id,
-      })
+      return new StepResponse(
+        {
+          paymentId: payment.id,
+          captureId: payment.captures[0].id,
+        },
+        {
+          paymentId: payment.id,
+          captureId: payment.captures[0].id,
+          wasAlreadyCaptured: true,
+        } satisfies CaptureCompensation,
+      )
     }
 
     const capturedPayment = await paymentModule.capturePayment({
@@ -38,9 +59,22 @@ export const captureSettlementPaymentStep = createStep(
       )
     }
 
-    return new StepResponse({
-      paymentId: capturedPayment.id,
-      captureId,
-    })
+    return new StepResponse(
+      {
+        paymentId: capturedPayment.id,
+        captureId,
+      },
+      {
+        paymentId: capturedPayment.id,
+        captureId,
+        wasAlreadyCaptured: false,
+      } satisfies CaptureCompensation,
+    )
+  },
+  async (compensation: CaptureCompensation | undefined) => {
+    if (!compensation || compensation.wasAlreadyCaptured) {
+      return
+    }
+    // Financial ledger integrity: captured payments cannot be dropped without audit trail
   },
 )

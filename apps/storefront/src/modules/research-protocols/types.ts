@@ -44,11 +44,27 @@ export type ResearchSyringeGraduation = {
   tickLabel: string
 }
 
+export type CalibratedInstrument = {
+  instrumentType: "u100_insulin_syringe" | "oral_dispenser" | "nasal_atomizer" | "cosmetic_dropper" | string
+  barrelStandard: string
+  needleGauge: string
+  needleLength: string
+  needleWall: string
+  hubType: string
+  recommendedBarrel: string
+  transferNeedle: string
+}
+
 export type ResearchSyringeGuide = {
   syringeType: string
   standardIUDisplay?: string
   needleGauge?: string
+  needleLength?: string
+  hubType?: string
   deadSpaceCorrection?: string
+  recommendedBarrel?: string
+  transferNeedle?: string
+  calibratedInstrument?: CalibratedInstrument
   graduations: ResearchSyringeGraduation[]
 }
 
@@ -61,11 +77,13 @@ export type ResearchBlendConstituent = {
 export type ResearchBundleVial = {
   compoundName: string
   vialNetMass: string
+  netMg?: number
   diluentMl: number
   concMgMl: number
   solvent: string
   reconstitutionInstructions: string
   targetDose: string
+  targetDoseMcg?: number
   cadence: string
   syringeUnits: string
 }
@@ -74,8 +92,10 @@ export type ResearchProtocolContent = {
   compound_name: string | null
   short_introduction: string | null
   product_format: string | null
+  primary_delivery_route?: string | null
+  delivery_routes?: string[]
   category: string | null
-  protocol_category_type?: "single_peptide" | "blend" | "bundle" | "topical" | null
+  protocol_category_type?: "single_peptide" | "blend" | "bundle" | "topical" | "nasal" | null
   full_description?: string | null
   investigated_benefits?: string[]
   adverse_observations?: string[]
@@ -84,6 +104,7 @@ export type ResearchProtocolContent = {
   reconstitution_options?: Record<string, ResearchReconstitutionOption> | null
   vial_strength_options?: ResearchVialStrengthOption[]
   syringe_guide?: ResearchSyringeGuide | null
+  nasal_guide?: unknown | null
   evidence_tier?: string | null
   blend_constituents?: ResearchBlendConstituent[]
   bundle_vials?: ResearchBundleVial[]

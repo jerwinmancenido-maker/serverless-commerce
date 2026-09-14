@@ -523,7 +523,7 @@ export async function executeE2eSmokeMission(ctx: MissionContext): Promise<void>
   // Bind order research protocols
   try {
     await bindOrderResearchProtocolsWorkflow(container).run({
-      input: { orderId: order.id },
+      input: { order_id: order.id },
     })
   } catch {
     // Protocol binding safe fallback

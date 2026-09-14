@@ -121,7 +121,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
           doseMcg: 0,
           cadence: "Cycle completion",
           focus: "Microbial protection limit",
-          notes: "USP <797> standard",
+          notes: "GLP stability window standard",
         },
       ],
     },
@@ -159,7 +159,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     },
     citations: [
       {
-        sourceReference: "USP <797> Pharmaceutical Compounding — Sterile Preparations",
+        sourceReference: "GLP Laboratory Handling Guidelines — Sterile & Aseptic Preparations",
         notes: "Establishes sterility, multi-dose vial puncture standards, and 28-day beyond-use dating (BUD).",
       },
       {
@@ -179,7 +179,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     handles: ["peptide-reconstitution-set", "reconstitution-set", "reconstitution-kit"],
     subtitle: "Aseptic Peptide Preparation & Volumetric Transfer Kit",
     longDescription:
-      "The Peptide Reconstitution Set is a consolidated laboratory consumable kit engineered for sterile reconstitution, precision volumetric dilution, and controlled transfer of lyophilized research compounds. The kit integrates ultra-clear U-100 insulin syringes with low dead-space needle hubs, a high-volume 5cc diluent syringe for initial solvent addition, and individual 70% isopropyl prep pads, ensuring USP <797> compliant aseptic protocol execution without external particulate contamination.",
+      "The Peptide Reconstitution Set is a consolidated laboratory consumable kit engineered for sterile reconstitution, precision volumetric dilution, and controlled transfer of lyophilized research compounds. The kit integrates ultra-clear U-100 insulin syringes with low dead-space needle hubs, a high-volume 5cc diluent syringe for initial solvent addition, and individual 70% isopropyl prep pads, ensuring GLP compliant aseptic protocol execution without external particulate contamination.",
     category: "Laboratory Supplies",
     catalogStatus: "in_catalog",
     storeProductHandle: "peptide-reconstitution-set",
@@ -322,7 +322,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
         notes: "International standard for volumetric accuracy, dead space limits, and biocompatibility.",
       },
       {
-        sourceReference: "USP <797> / <800> Aseptic Compounding Guidelines",
+        sourceReference: "GLP Clean-Bench Aseptic Handling Guidelines",
         notes: "Standards for sterile syringe handling and surface sanitization with 70% isopropanol.",
       },
     ],
@@ -498,9 +498,9 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     id: "50-slot-vial-organizer-box",
     compoundName: "50-Slot Vial Organizer Box",
     handles: ["50-slot-vial-organizer-box", "50-slot-vial-box", "vial-organizer-50"],
-    subtitle: "Heavy-Duty Medical Vial Storage & Cold-Chain Organizer",
+    subtitle: "Heavy-Duty Medical Vial Storage & Refrigerator Organizer",
     longDescription:
-      "The 50-Slot Vial Organizer Box is an impact-resistant cryo-grade labware container designed to safely organize, catalog, and protect up to fifty 2.0 mL to 3.0 mL research vials in ultra-low temperature and cold-chain environments. Molded with an integrated 10x5 alphanumeric coordinate grid (A–E, 1–10) and secured by heavy-duty dual snap-lock latches, it withstands thermal cycling from -80°C deep freezing to +121°C autoclave cycles without polymer embrittlement or dimensional warping.",
+      "The 50-Slot Vial Organizer Box is an impact-resistant cryo-grade labware container designed to safely organize, catalog, and protect up to fifty 2.0 mL to 3.0 mL research vials in ultra-low temperature and refrigerated laboratory environments. Molded with an integrated 10x5 alphanumeric coordinate grid (A–E, 1–10) and secured by heavy-duty dual snap-lock latches, it withstands thermal cycling from -80°C deep freezing to +121°C autoclave cycles without polymer embrittlement or dimensional warping.",
     category: "Laboratory Supplies",
     catalogStatus: "in_catalog",
     storeProductHandle: "50-slot-vial-organizer-box",
@@ -537,7 +537,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
         },
         {
           stepNumber: 4,
-          title: "Cold-Chain Storage Management",
+          title: "Laboratory Storage Management",
           instruction: "Place organizer into refrigerator (2°C–8°C) or ultra-low temperature freezer (-20°C / -80°C) without risk of cracking.",
         },
       ],
@@ -578,7 +578,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     dosing: {
       standardDoseDisplay: "50-Vial Grid Capacity",
       standardDoseMcg: 0,
-      cadence: "Long-term cold-chain specimen containment",
+      cadence: "Long-term specimen containment",
       halfLife: "Polymer service life: 10+ years thermal cycling",
       typicalProtocolDuration: "Permanent Laboratory Labware",
       washoutPeriod: "N/A",
@@ -634,7 +634,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     },
     storage: {
       lyophilized: "Operating temperature range: -80°C to +121°C.",
-      reconstituted: "Compatible with standard cold-chain refrigeration (2°C–8°C) and -20°C / -80°C freezers.",
+      reconstituted: "Compatible with standard laboratory refrigeration (2°C–8°C) and -20°C / -80°C freezers.",
       lightProtection: true,
     },
     citations: [
@@ -664,7 +664,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     supplyGuide: {
       isHardware: true,
       physicalState: "Modular Multi-Diameter Storage Labware",
-      sterilityStandard: "Wipeable Surface · Cold-Chain Refrigeration Safe",
+      sterilityStandard: "Wipeable Surface · Refrigeration Safe",
       material: "High-Density Engineering Polymer (Two-Tone Finish)",
       specs: {
         "Configuration": "Multi-Size Hybrid Grid (10 mL, 5 mL, 2 mL Vials & Ampoules)",
@@ -733,7 +733,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     dosing: {
       standardDoseDisplay: "Multi-Diameter Hybrid Capacity",
       standardDoseMcg: 0,
-      cadence: "Benchtop & cold-chain specimen organization",
+      cadence: "Benchtop & refrigerated specimen organization",
       halfLife: "Durable polymer engineering labware",
       typicalProtocolDuration: "Continuous Laboratory Deployment",
       washoutPeriod: "N/A",
@@ -789,7 +789,7 @@ export const CATEGORY_8_SUPPLIES_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     },
     storage: {
       lyophilized: "Store at ambient room temperature (15°C–30°C) or inside laboratory refrigerator (2°C–8°C).",
-      reconstituted: "Cold-chain refrigeration safe.",
+      reconstituted: "Laboratory refrigeration safe.",
       lightProtection: true,
     },
     citations: [

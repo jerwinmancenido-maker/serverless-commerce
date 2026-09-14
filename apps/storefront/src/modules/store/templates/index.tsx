@@ -27,7 +27,7 @@ export default async function StoreTemplate({
     <div className="content-container py-8 max-w-7xl mx-auto px-4 sm:px-6 min-h-[70vh]">
       <CatalogHeader
         title="Analytical Reference Compounds & Reagents"
-        description="High-purity lyophilized research peptides and biochemical reference standards. Cold-chain insulated packaging with temperature monitoring dispatched nationwide."
+        description="High-purity lyophilized research peptides and biochemical reference standards. Custom insulation foam packaging with shock-buffering dispatched nationwide."
         badge="LABORATORY REFERENCE CATALOG"
       />
 

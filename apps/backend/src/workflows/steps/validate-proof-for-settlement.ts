@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/validate-proof-for-settlement.ts
+ * @module  ManualPaymentModule (Workflows)
+ * @purpose Validate payment proof eligibility and order linkages before acquiring settlement lock.
+ * @contracts
+ *   Step: validateProofForSettlementStep
+ */
+
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
 import { MANUAL_PAYMENT_MODULE } from "../../modules/manual-payment"
@@ -35,10 +43,10 @@ export const validateProofForSettlementStep = createStep(
       )
     }
 
-    if (proof.status !== "pending") {
+    if (proof.status !== "pending" && proof.status !== "approved") {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Proof is not pending — current status is ${proof.status}`,
+        `Proof is not pending or approved — current status is ${proof.status}`,
       )
     }
 

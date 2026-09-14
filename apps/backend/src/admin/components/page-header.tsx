@@ -12,6 +12,9 @@ export type PageHeaderProps = {
   title: ReactNode
   subtitle?: ReactNode
   breadcrumbs?: BreadcrumbItem[]
+  eyebrow?: ReactNode
+  eyebrowText?: string
+  eyebrowBadge?: ReactNode
   badge?: ReactNode
   statusDropdown?: ReactNode
   actions?: ReactNode
@@ -23,6 +26,9 @@ export const PageHeader = ({
   title,
   subtitle,
   breadcrumbs,
+  eyebrow,
+  eyebrowText,
+  eyebrowBadge,
   badge,
   statusDropdown,
   actions,
@@ -66,6 +72,20 @@ export const PageHeader = ({
             )
           })}
         </nav>
+      )}
+
+      {/* Tier 1 Eyebrow Row */}
+      {(eyebrow || eyebrowText) && (
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+          {eyebrowText && (
+            <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider font-mono">
+              {eyebrowText}
+            </span>
+          )}
+          {eyebrowBadge}
+          {eyebrow}
+        </div>
       )}
 
       {/* Main Title + Action Row */}

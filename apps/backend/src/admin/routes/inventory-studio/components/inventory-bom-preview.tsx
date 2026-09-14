@@ -18,7 +18,7 @@ interface InventoryBomPreviewProps {
 export const InventoryBomPreview: React.FC<InventoryBomPreviewProps> = ({ state, locations }) => {
   const selectedLocation = locations.find((l) => l.id === state.locationId) || {
     id: "default",
-    name: "Main Cleanroom Vault (Makati HQ)",
+    name: "Central Storage Vault (Makati HQ)",
   }
 
   // Calculate estimated formulation yield (assuming 5mg active ingredient per finished vial)
@@ -52,7 +52,7 @@ export const InventoryBomPreview: React.FC<InventoryBomPreviewProps> = ({ state,
   const storage = getStorageBadge()
 
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
       {/* ── CARD 1: Cold-Chain Storage & Quality Compliance ── */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-4 border-b border-slate-100 bg-slate-50/75 flex items-center justify-between">
@@ -117,7 +117,7 @@ export const InventoryBomPreview: React.FC<InventoryBomPreviewProps> = ({ state,
 
         <div className="space-y-2 text-xs pt-2 border-t border-slate-100">
           <div className="flex items-center justify-between text-slate-600">
-            <span>Cleanroom Allocation:</span>
+            <span>Vault Allocation:</span>
             <span className="font-bold text-slate-800">{selectedLocation.name}</span>
           </div>
           <div className="flex items-center justify-between text-slate-600">
@@ -137,7 +137,7 @@ export const InventoryBomPreview: React.FC<InventoryBomPreviewProps> = ({ state,
           <span>HACIEN ERP General Ledger Attribution</span>
         </div>
         <p className="text-[11px] leading-relaxed text-slate-500">
-          Receiving this item into active stock posts a balanced debit to Cleanroom Raw Inventory Asset (₱0.00 drift parity) and tracks lot genealogy under FDA 21 CFR compliance.
+          Receiving this item into active stock posts a balanced debit to Compound Raw Inventory Asset (₱0.00 drift parity) and tracks analytical lot genealogy.
         </p>
       </div>
     </div>

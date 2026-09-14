@@ -1,11 +1,13 @@
 import { listCategories } from "@lib/data/categories"
 import { storeConfig } from "@lib/store-config"
+import { getNavMetrics } from "@lib/data/navigation-data"
 import { Text } from "@modules/common/components/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import NewsletterLeadWidget from "@modules/layout/components/newsletter-lead-widget"
 import { ExclamationCircle } from "@medusajs/icons"
 
 export default async function Footer() {
+  const metrics = getNavMetrics()
   const productCategories = await listCategories()
 
   return (
@@ -115,7 +117,7 @@ export default async function Footer() {
                   href="/store"
                   className="transition-colors hover:text-emerald-700"
                 >
-                  Single Peptides (88 Compounds)
+                  Single Peptides ({metrics.totalCompounds} Compounds)
                 </LocalizedClientLink>
               </li>
               <li className="group flex items-center gap-1.5">
@@ -281,10 +283,10 @@ export default async function Footer() {
               </li>
             </ul>
 
-            {/* Cold-Chain Signal */}
+            {/* Protective Packaging Signal */}
             <div className="mt-1 rounded-xl border border-emerald-200 bg-emerald-50/70 p-2 text-[11px] font-medium text-emerald-900">
-              <span className="font-bold block text-emerald-950">Cold-Chain Logistics:</span>
-              Metro Manila Direct Dispatch &middot; J&amp;T Express Nationwide
+              <span className="font-bold block text-emerald-950">Protective Packaging:</span>
+              Insulation Foam Cushioning &middot; J&amp;T Express Nationwide
             </div>
 
             {/* Payment Badges */}

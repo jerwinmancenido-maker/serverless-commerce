@@ -1,707 +1,424 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
+/**
+ * @file    apps/storefront/src/modules/research-protocols/standalone-calculator.tsx
+ * @module  StandaloneReconstitutionCalculator (Research Protocols Module)
+ * @purpose Flagship universal reconstitution console with interactive SVG micro-barrel stoichiometry,
+ *          delivery route mode toggling (SubQ vs Nasal vs Oral), and 88-compound catalog presets.
+ * @contracts
+ *   Component: StandaloneReconstitutionCalculator
+ *   Consumer:  ResearchLibraryDirectory (Tab 4: calculator)
+ */
+
+import React, { Suspense, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import SyringeVisualizer from "@modules/account/components/research-tracking/syringe-visualizer"
-import { calculateProtocol } from "./calculate-protocol"
+import {
+  ChevronUpDown,
+  MagnifyingGlass,
+} from "@medusajs/icons"
+import InteractiveSyringeStoichiometry, {
+  type CalibrationMetricsPayload,
+} from "./components/interactive-syringe-stoichiometry"
+import { ALL_COMPOUND_PROTOCOLS, getCompoundProtocol } from "@lib/data/compound-protocols"
 
-export type CompoundPreset = {
-  id: string
-  name: string
-  mass: number
-  massUnit: "mg" | "mcg" | "g" | "IU"
-  volumeMl: number
-  targetAmount: number
-  targetUnit: "mcg" | "mg" | "IU"
-  iuPerMg?: number
-  protocolHandle?: string
-}
-
-export const COMPOUND_PRESETS: CompoundPreset[] = [
-  {
-    id: "bpc-157",
-    name: "BPC-157 (10 mg)",
-    mass: 10,
-    massUnit: "mg",
-    volumeMl: 2.0,
-    targetAmount: 250,
-    targetUnit: "mcg",
-    protocolHandle: "bpc-157",
-  },
-  {
-    id: "tirzepatide",
-    name: "Tirzepatide (10 mg)",
-    mass: 10,
-    massUnit: "mg",
-    volumeMl: 2.0,
-    targetAmount: 2.5,
-    targetUnit: "mg",
-    protocolHandle: "tirzepatide",
-  },
-  {
-    id: "ghk-cu",
-    name: "GHK-Cu (50 mg)",
-    mass: 50,
-    massUnit: "mg",
-    volumeMl: 2.5,
-    targetAmount: 2.0,
-    targetUnit: "mg",
-    protocolHandle: "ghk-cu",
-  },
-  {
-    id: "semaglutide",
-    name: "Semaglutide (5 mg)",
-    mass: 5,
-    massUnit: "mg",
-    volumeMl: 2.0,
-    targetAmount: 0.25,
-    targetUnit: "mg",
-    protocolHandle: "semaglutide",
-  },
-  {
-    id: "hgh",
-    name: "HGH (24 IU)",
-    mass: 24,
-    massUnit: "IU",
-    volumeMl: 2.0,
-    targetAmount: 2.0,
-    targetUnit: "IU",
-    iuPerMg: 3,
-    protocolHandle: "hgh-somatropin",
-  },
-  {
-    id: "hmg",
-    name: "HMG (75 IU)",
-    mass: 75,
-    massUnit: "IU",
-    volumeMl: 1.0,
-    targetAmount: 37.5,
-    targetUnit: "IU",
-    iuPerMg: 75,
-    protocolHandle: "hmg-75iu",
-  },
-  {
-    id: "tb-500",
-    name: "TB-500 (10 mg)",
-    mass: 10,
-    massUnit: "mg",
-    volumeMl: 2.0,
-    targetAmount: 2.0,
-    targetUnit: "mg",
-    protocolHandle: "tb-500",
-  },
-  {
-    id: "cjc-ipamorelin",
-    name: "CJC-1295 + Ipamorelin (10 mg)",
-    mass: 10,
-    massUnit: "mg",
-    volumeMl: 2.5,
-    targetAmount: 500,
-    targetUnit: "mcg",
-    protocolHandle: "cjc-ipam-blend",
-  },
-  {
-    id: "nad-plus",
-    name: "NAD+ (500 mg)",
-    mass: 500,
-    massUnit: "mg",
-    volumeMl: 5.0,
-    targetAmount: 50,
-    targetUnit: "mg",
-    protocolHandle: "nad-plus",
-  },
-  {
-    id: "epithalon",
-    name: "Epithalon (10 mg)",
-    mass: 10,
-    massUnit: "mg",
-    volumeMl: 2.0,
-    targetAmount: 500,
-    targetUnit: "mcg",
-    protocolHandle: "epithalon",
-  },
-  {
-    id: "adamax",
-    name: "Adamax (10 mg · Nasal)",
-    mass: 10,
-    massUnit: "mg",
-    volumeMl: 5.0,
-    targetAmount: 200,
-    targetUnit: "mcg",
-    protocolHandle: "adamax-1032",
-  },
-  {
-    id: "semax",
-    name: "Semax (30 mg · Nasal)",
-    mass: 30,
-    massUnit: "mg",
-    volumeMl: 5.0,
-    targetAmount: 600,
-    targetUnit: "mcg",
-    protocolHandle: "semax",
-  },
-  {
-    id: "selank",
-    name: "Selank (5 mg · Nasal)",
-    mass: 5,
-    massUnit: "mg",
-    volumeMl: 5.0,
-    targetAmount: 100,
-    targetUnit: "mcg",
-    protocolHandle: "selank",
-  },
+const POPULAR_INSTRUMENT_PRESETS = [
+  { id: "bpc-157", label: "BPC-157 (5mg)", route: "subq", doseDisplay: "250 mcg", category: "Tissue Repair" },
+  { id: "tb-500", label: "TB-500 (10mg)", route: "subq", doseDisplay: "2.5 mg", category: "Tissue Repair" },
+  { id: "retatrutide", label: "Retatrutide (10mg)", route: "subq", doseDisplay: "2 mg", category: "Incretin" },
+  { id: "tirzepatide", label: "Tirzepatide (10mg)", route: "subq", doseDisplay: "2.5 mg", category: "Incretin" },
+  { id: "semaglutide", label: "Semaglutide (5mg)", route: "subq", doseDisplay: "0.25 mg", category: "Incretin" },
+  { id: "semax", label: "Semax (10mg Nasal)", route: "nasal", doseDisplay: "200 mcg / spray", category: "Cognitive" },
+  { id: "selank", label: "Selank (10mg Nasal)", route: "nasal", doseDisplay: "200 mcg / spray", category: "Cognitive" },
+  { id: "ghk-cu", label: "GHK-Cu (50mg)", route: "subq", doseDisplay: "2.0 mg", category: "Cellular Matrix" },
+  { id: "nad-plus", label: "NAD+ (500mg)", route: "subq", doseDisplay: "50 mg", category: "Longevity" },
+  { id: "cjc-1295-no-dac", label: "CJC-1295 (5mg)", route: "subq", doseDisplay: "100 mcg", category: "GH Axis" },
 ]
 
-export default function StandaloneReconstitutionCalculator({
+function StandaloneCalculatorInner({
   initialPresetId,
 }: {
   initialPresetId?: string
 }) {
   const searchParams = useSearchParams()
 
-  const [activePreset, setActivePreset] = useState<string>(
-    initialPresetId || "bpc-157"
-  )
-  const [compoundName, setCompoundName] = useState("BPC-157")
-  const [compoundMass, setCompoundMass] = useState("10")
-  const [compoundMassUnit, setCompoundMassUnit] = useState<"mg" | "mcg" | "g" | "IU">("mg")
-  const [diluentVolume, setDiluentVolume] = useState("2.0")
-  const [targetDose, setTargetDose] = useState("250")
-  const [targetDoseUnit, setTargetDoseUnit] = useState<"mcg" | "mg" | "IU">("mcg")
-  const [iuPerMg, setIuPerMg] = useState<number | null>(null)
-  const [activeProtocolHandle, setActiveProtocolHandle] = useState<string | undefined>("bpc-157-protocol")
+  const presetFromParam = searchParams.get("preset") || searchParams.get("compound")
+  const activeInitialId = presetFromParam || initialPresetId || "bpc-157"
+
+  const [activeMetrics, setActiveMetrics] = useState<CalibrationMetricsPayload | null>(null)
+  const [selectedPresetId, setSelectedPresetId] = useState<string>(activeInitialId)
+  const [routeMode, setRouteMode] = useState<"subq" | "nasal" | "oral">("subq")
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null)
   const [shareFeedback, setShareFeedback] = useState<string | null>(null)
+  const [catalogSearch, setCatalogSearch] = useState("")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  // Hydrate from search params if provided
-  useEffect(() => {
-    const pName = searchParams.get("name")
-    const pMass = searchParams.get("mass")
-    const pUnit = searchParams.get("unit")
-    const pVolume = searchParams.get("volume")
-    const pDose = searchParams.get("dose")
-    const pDoseUnit = searchParams.get("doseUnit")
-    const pPreset = searchParams.get("preset")
+  const allAvailableProtocols = useMemo(() => {
+    return ALL_COMPOUND_PROTOCOLS.filter(
+      (p) => p.category !== "Laboratory Supplies" && !p.isSupply
+    )
+  }, [])
 
-    if (pPreset) {
-      const found = COMPOUND_PRESETS.find((p) => p.id === pPreset)
-      if (found) {
-        selectPreset(found)
-        return
+  const filteredCatalogProtocols = useMemo(() => {
+    if (!catalogSearch.trim()) return allAvailableProtocols
+    const q = catalogSearch.toLowerCase().trim()
+    return allAvailableProtocols.filter(
+      (p) =>
+        p.compoundName.toLowerCase().includes(q) ||
+        p.id.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        (p.subtitle && p.subtitle.toLowerCase().includes(q))
+    )
+  }, [allAvailableProtocols, catalogSearch])
+
+  // Construct private hub bridge URL
+  const bridgeUrl = useMemo(() => {
+    const params = new URLSearchParams()
+    if (activeMetrics) {
+      params.set("mass", activeMetrics.mass.toString())
+      params.set("diluent", activeMetrics.diluent.toString())
+      params.set("dose", activeMetrics.targetDose.toString())
+      params.set("unit", activeMetrics.targetDoseUnit)
+      if (selectedPresetId) {
+        params.set("compound", selectedPresetId)
       }
     }
+    return `/account/research-hub?${params.toString()}`
+  }, [activeMetrics, selectedPresetId])
 
-    if (pMass || pVolume || pDose) {
-      setActivePreset("custom")
-      if (pName) setCompoundName(pName)
-      if (pMass) setCompoundMass(pMass)
-      if (pUnit && (pUnit === "mg" || pUnit === "mcg" || pUnit === "g" || pUnit === "IU")) {
-        setCompoundMassUnit(pUnit)
-      }
-      if (pVolume) setDiluentVolume(pVolume)
-      if (pDose) setTargetDose(pDose)
-      if (pDoseUnit && (pDoseUnit === "mcg" || pDoseUnit === "mg" || pDoseUnit === "IU")) {
-        setTargetDoseUnit(pDoseUnit)
-      }
+  // Resolve active protocol metadata
+  const activeProtocol = useMemo(() => {
+    return getCompoundProtocol(selectedPresetId)
+  }, [selectedPresetId])
+
+  // Nasal calculation parameters (if nasal mode)
+  const nasalStats = useMemo(() => {
+    const massMg = activeMetrics?.mass || activeProtocol?.reconstitution?.defaultVialNetMg || 10
+    const diluentMl = activeMetrics?.diluent || 5.0
+    const pumpVolumeMl = 0.10 // standard metered pump
+    const totalSprays = Math.floor(diluentMl / pumpVolumeMl)
+    const concMgMl = diluentMl > 0 ? massMg / diluentMl : 2.0
+    const mcgPerSpray = Math.round(concMgMl * pumpVolumeMl * 1000)
+    return {
+      massMg,
+      diluentMl,
+      totalSprays,
+      mcgPerSpray,
+      concMgMl: concMgMl.toFixed(2),
     }
-  }, [searchParams])
+  }, [activeMetrics, activeProtocol])
 
-  const selectPreset = (preset: CompoundPreset) => {
-    setActivePreset(preset.id)
-    setCompoundName(preset.name.split(" ")[0])
-    setCompoundMass(String(preset.mass))
-    setCompoundMassUnit(preset.massUnit)
-    setDiluentVolume(String(preset.volumeMl))
-    setTargetDose(String(preset.targetAmount))
-    setTargetDoseUnit(preset.targetUnit)
-    setIuPerMg(preset.iuPerMg ?? null)
-    setActiveProtocolHandle(preset.protocolHandle)
-  }
-
-  const setCustom = () => {
-    setActivePreset("custom")
-    setActiveProtocolHandle(undefined)
-  }
-
-  const numMass = Number(compoundMass) || 0
-  const numVolume = Number(diluentVolume) || 0
-  const numTarget = Number(targetDose) || 0
-
-  const resolvedIuPerMg = iuPerMg ?? (activePreset === "hgh" ? 3 : activePreset === "hmg" ? 75 : null)
-
-  const result = useMemo(() => {
-    return calculateProtocol({
-      compoundMass: numMass,
-      compoundMassUnit,
-      finalVolumeMl: numVolume,
-      targetAmount: numTarget,
-      targetAmountUnit: targetDoseUnit,
-      iuPerMg: resolvedIuPerMg,
-    })
-  }, [numMass, compoundMassUnit, numVolume, numTarget, targetDoseUnit, resolvedIuPerMg])
-
-  // Conversion check for sanity warnings
-  const massInMg = useMemo(() => {
-    if (compoundMassUnit === "mcg") return numMass / 1000
-    if (compoundMassUnit === "g") return numMass * 1000
-    if (compoundMassUnit === "IU" && resolvedIuPerMg) return numMass / resolvedIuPerMg
-    return numMass
-  }, [numMass, compoundMassUnit, resolvedIuPerMg])
-
-  const targetInMg = useMemo(() => {
-    if (targetDoseUnit === "mcg") return numTarget / 1000
-    if (targetDoseUnit === "IU" && resolvedIuPerMg) return numTarget / resolvedIuPerMg
-    return numTarget
-  }, [numTarget, targetDoseUnit, resolvedIuPerMg])
-
-  const isDoseExceedingVial = targetInMg > 0 && massInMg > 0 && targetInMg > massInMg
-  const isVolumeOver1mL = result?.volumeMl != null && result.volumeMl > 1.0
-
-  const unitsOnU100 = result?.volumeMl != null ? Number((result.volumeMl * 100).toFixed(1)) : null
-
-  // Copy lab recipe to clipboard
   const handleCopyRecipe = async () => {
-    const summaryText = `[PEPSTACK RECONSTITUTION RECIPE]
-Compound: ${compoundName} (${compoundMass} ${compoundMassUnit})
-Diluent: ${diluentVolume} mL Bacteriostatic Water
-Concentration: ${
-  compoundMassUnit === "IU" && numVolume > 0
-    ? `${(numMass / numVolume).toFixed(1)} IU/mL`
-    : result?.concentrationMgPerMl
-    ? `${result.concentrationMgPerMl.toFixed(2)} mg/mL`
-    : "—"
-}
-Target Dose: ${targetDose} ${targetDoseUnit} (${result?.volumeMl ? result.volumeMl.toFixed(3) : "—"} mL)
-Syringe Draw: ${unitsOnU100 != null ? unitsOnU100 : "—"} Units on U-100 syringe
-Total Yield: ${result?.usesPerContainer ? Math.floor(result.usesPerContainer) : "—"} doses
-Reconstitution: Angle BAC water stream against inner glass wall. Swirl gently. Do not shake.
-Storage: 2°C - 8°C (Refrigerate once reconstituted)`
+    if (!activeMetrics) return
+    const text = [
+      `🧪 RECONSTITUTION PROTOCOL RECIPE: ${activeProtocol?.compoundName || selectedPresetId.toUpperCase()}`,
+      `Active Compound Mass: ${activeMetrics.mass} ${activeMetrics.massUnit}`,
+      `Diluent Added: ${activeMetrics.diluent} mL (Bacteriostatic Water USP)`,
+      `Resulting Concentration: ${activeMetrics.conc.toFixed(2)} mg/mL`,
+      `Target Assay Dose: ${activeMetrics.targetDose} ${activeMetrics.targetDoseUnit}`,
+      routeMode === "nasal"
+        ? `Nasal Atomizer Yield: ~${nasalStats.mcgPerSpray} mcg per 0.10 mL spray (${nasalStats.totalSprays} total sprays / ${nasalStats.diluentMl} mL bottle)`
+        : `U-100 Syringe Draw Mark: ${activeMetrics.units.toFixed(1)} Units (${activeMetrics.volumeMl.toFixed(3)} mL)`,
+      `Single Vial Protocol Yield: ~${Math.floor(activeMetrics.totalDoses)} Standard Doses`,
+      `Analytical Standard: GLP Aseptic Reconstitution / 28-Day Refrigerated Stability Window`,
+      `Calculated via PepStack Universal Stoichiometry Engine`,
+    ].join("\n")
 
     try {
-      await navigator.clipboard.writeText(summaryText)
-      setCopyFeedback("Recipe copied to clipboard")
+      await navigator.clipboard.writeText(text)
+      setCopyFeedback("Copied to clipboard!")
       setTimeout(() => setCopyFeedback(null), 3000)
     } catch {
-      setCopyFeedback("Unable to copy automatically")
+      setCopyFeedback("Copy failed")
+      setTimeout(() => setCopyFeedback(null), 3000)
     }
   }
 
-  // Share link
-  const handleShareLink = async () => {
-    const url = new URL(window.location.href)
-    url.searchParams.set("mass", compoundMass)
-    url.searchParams.set("unit", compoundMassUnit)
-    url.searchParams.set("volume", diluentVolume)
-    url.searchParams.set("dose", targetDose)
-    url.searchParams.set("doseUnit", targetDoseUnit)
-    url.searchParams.set("name", compoundName)
-    url.searchParams.set("preset", activePreset)
-
+  const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(url.toString())
-      setShareFeedback("Deep link copied")
+      await navigator.clipboard.writeText(window.location.href)
+      setShareFeedback("URL link copied!")
       setTimeout(() => setShareFeedback(null), 3000)
     } catch {
-      setShareFeedback("Unable to copy link")
+      setShareFeedback("Share link failed")
+      setTimeout(() => setShareFeedback(null), 3000)
     }
   }
 
-  // Smart bridge link to customer private hub
-  const bridgeUrl = `/account/research-hub?section=calculator&mass=${encodeURIComponent(
-    compoundMass
-  )}&unit=${encodeURIComponent(compoundMassUnit)}&name=${encodeURIComponent(
-    compoundName
-  )}`
+  const handleSelectPreset = (presetId: string, route?: string) => {
+    setSelectedPresetId(presetId)
+    if (route === "nasal") {
+      setRouteMode("nasal")
+    } else if (route === "oral") {
+      setRouteMode("oral")
+    } else {
+      setRouteMode("subq")
+    }
+  }
 
   return (
-    <div id="calculator" className="scroll-mt-24 space-y-8">
-      {/* ── Main Calculator Console (Clean Clinical Light) ── */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm">
-        {/* Top Control Bar with Presets */}
-        <div className="border-b border-slate-200 bg-slate-50/70 p-5 small:p-6">
-          <div className="flex flex-col gap-4 medium:flex-row medium:items-center medium:justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-                  Interactive Math Engine
-                </span>
-              </div>
-              <h2 className="mt-1 text-xl font-bold text-slate-900 small:text-2xl">
-                Peptide Reconstitution &amp; Syringe Calculator
-              </h2>
-            </div>
+    <div className="space-y-6">
+      {/* Eyebrow & Headline */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-sky-800 bg-sky-50 border border-sky-200/80 px-2.5 py-0.5 rounded-full inline-block mb-1.5">
+              Flagship Stoichiometric Instrument
+            </span>
+            <span className="text-[11px] font-mono font-bold text-slate-500">
+              88 Analytical Protocols Calibrated
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Universal Reconstitution &amp; Micro-Plunger Console
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Calibrated analytical stoichiometry with live graphical feedback, 88-compound catalog presets, and delivery route calibrations.
+          </p>
+        </div>
 
-            {/* Actions: Share & Copy */}
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={handleShareLink}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs transition-colors hover:bg-slate-50 hover:text-slate-900"
-                title="Share calculation link"
-              >
-                <svg className="h-3.5 w-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
-                  <polyline points="16 6 12 2 8 6" />
-                  <line x1="12" y1="2" x2="12" y2="15" />
-                </svg>
-                {shareFeedback || "Share Link"}
-              </button>
+        {/* Quick Utilities: Copy & Share */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={handleCopyRecipe}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
+          >
+            <span>📋</span>
+            <span>{copyFeedback || "Copy Lab Recipe"}</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
+          >
+            <span>🔗</span>
+            <span>{shareFeedback || "Share Link"}</span>
+          </button>
+        </div>
+      </div>
 
-              <button
-                type="button"
-                onClick={handleCopyRecipe}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 shadow-2xs transition-colors hover:bg-emerald-100"
-                title="Copy formatted recipe for lab notebook"
-              >
-                <svg className="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-                </svg>
-                {copyFeedback || "Copy Lab Recipe"}
-              </button>
-            </div>
+      {/* Delivery Route Mode Toggle Bar */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+              Delivery Route &amp; Dispensing Instrument Mode:
+            </span>
+            <span className="text-[11px] text-slate-500">
+              Select dispensing instrument to simulate micro-barrel syringe draw or metered pump volume.
+            </span>
           </div>
 
-          {/* Preset Selector Chips */}
-          <div className="mt-5">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-              Quick Compound Presets
-            </p>
-            <div className="mt-2.5 flex flex-wrap gap-2">
-              {COMPOUND_PRESETS.map((preset) => {
-                const isSelected = activePreset === preset.id
-                return (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    onClick={() => selectPreset(preset)}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                      isSelected
-                        ? "bg-emerald-600 text-white font-semibold shadow-xs"
-                        : "border border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:text-emerald-700"
-                    }`}
-                  >
-                    {preset.name}
-                  </button>
-                )
-              })}
-              <button
-                type="button"
-                onClick={setCustom}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                  activePreset === "custom"
-                    ? "bg-emerald-600 text-white font-semibold shadow-xs"
-                    : "border border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:text-emerald-700"
-                }`}
-              >
-                Custom Parameter
-              </button>
-            </div>
+          <div className="inline-flex rounded-xl border border-slate-300 bg-slate-100 p-1">
+            <button
+              type="button"
+              onClick={() => setRouteMode("subq")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                routeMode === "subq"
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              💉 SubQ Syringe (U-100)
+            </button>
+            <button
+              type="button"
+              onClick={() => setRouteMode("nasal")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                routeMode === "nasal"
+                  ? "bg-purple-800 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              👃 Intranasal Spray (0.10 mL)
+            </button>
+            <button
+              type="button"
+              onClick={() => setRouteMode("oral")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                routeMode === "oral"
+                  ? "bg-amber-800 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              💧 Oral Solution (Pipette)
+            </button>
           </div>
         </div>
 
-        {/* ── Inputs & Real-Time Readout Grid ── */}
-        <div className="grid gap-6 p-6 small:p-8 large:grid-cols-12">
-          {/* Left Column: Input Form (5 cols) */}
-          <div className="space-y-5 large:col-span-5">
-            {/* Compound Name */}
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
-                Compound Name
-              </label>
-              <input
-                type="text"
-                value={compoundName}
-                onChange={(e) => {
-                  setCompoundName(e.target.value)
-                  setActivePreset("custom")
-                }}
-                placeholder="e.g. BPC-157"
-                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-medium text-slate-900 outline-none transition-colors focus:border-emerald-500 focus:bg-white"
-              />
+        {/* 88-Compound Searchable Quick-Fill Selector & Active Protocol Header */}
+        <div className="mt-4 pt-3.5 border-t border-slate-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                Active Protocol:
+              </span>
+              <span className="text-xs font-bold text-sky-700 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-md">
+                {activeProtocol?.compoundName || selectedPresetId.toUpperCase()}
+              </span>
+              <span className="text-[11px] text-slate-500 font-mono">
+                ({activeProtocol?.reconstitution?.defaultVialNetMg || 10}mg default)
+              </span>
             </div>
 
-            {/* Mass in Vial */}
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
-                  Vial Content Mass
-                </label>
-                <div className="flex rounded-md border border-slate-200 bg-slate-100 p-0.5 text-xs">
-                  {(["mg", "mcg", "g", "IU"] as const).map((unit) => (
-                    <button
-                      key={unit}
-                      type="button"
-                      onClick={() => {
-                        setCompoundMassUnit(unit)
-                        setActivePreset("custom")
-                      }}
-                      className={`rounded px-2 py-0.5 text-[11px] font-semibold transition-colors ${
-                        compoundMassUnit === unit
-                          ? "bg-white text-slate-900 shadow-xs"
-                          : "text-slate-500 hover:text-slate-800"
-                      }`}
-                    >
-                      {unit}
-                    </button>
-                  ))}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsDropdownOpen((prev) => !prev)}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 shadow-xs cursor-pointer"
+              >
+                <MagnifyingGlass className="h-3.5 w-3.5 text-slate-500" />
+                <span>Search All 88 Protocols...</span>
+                <ChevronUpDown className="h-3.5 w-3.5 text-slate-400" />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute right-0 top-full mt-1.5 z-50 w-80 sm:w-96 rounded-2xl border border-slate-200 bg-white p-2.5 shadow-xl">
+                  <div className="relative mb-2">
+                    <input
+                      type="text"
+                      value={catalogSearch}
+                      onChange={(e) => setCatalogSearch(e.target.value)}
+                      placeholder="Search by name, CAS, category..."
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1.5 pl-8 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-sky-500 focus:outline-none"
+                      autoFocus
+                    />
+                    <MagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                  </div>
+                  <div className="max-h-60 overflow-y-auto space-y-1 pr-1">
+                    {filteredCatalogProtocols.length === 0 ? (
+                      <div className="py-4 text-center text-xs text-slate-400">
+                        No compounds found matching &quot;{catalogSearch}&quot;
+                      </div>
+                    ) : (
+                      filteredCatalogProtocols.map((proto) => {
+                        const isCurrent = selectedPresetId === proto.id
+                        const route = proto.primaryDeliveryRoute || "subq"
+                        return (
+                          <button
+                            key={proto.id}
+                            type="button"
+                            onClick={() => {
+                              handleSelectPreset(proto.id, route)
+                              setIsDropdownOpen(false)
+                              setCatalogSearch("")
+                            }}
+                            className={`w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-left text-xs transition-colors cursor-pointer ${
+                              isCurrent
+                                ? "bg-sky-50 text-sky-900 font-bold border border-sky-200"
+                                : "hover:bg-slate-50 text-slate-800"
+                            }`}
+                          >
+                            <div className="min-w-0 pr-2">
+                              <span className="font-semibold block truncate">
+                                {proto.compoundName}
+                              </span>
+                              <span className="text-[10px] text-slate-500 block truncate">
+                                {proto.category}
+                              </span>
+                            </div>
+                            <div className="shrink-0 flex items-center gap-1.5">
+                              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                                {proto.reconstitution?.defaultVialNetMg || 10}mg
+                              </span>
+                              <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-sky-100 text-sky-800">
+                                {route}
+                              </span>
+                            </div>
+                          </button>
+                        )
+                      })
+                    )}
+                  </div>
                 </div>
-              </div>
-              <input
-                type="number"
-                inputMode="decimal"
-                step="any"
-                min="0"
-                value={compoundMass}
-                onChange={(e) => {
-                  setCompoundMass(e.target.value)
-                  setActivePreset("custom")
-                }}
-                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-medium text-slate-900 outline-none transition-colors focus:border-emerald-500 focus:bg-white"
-              />
-            </div>
-
-            {/* Diluent Added (BAC Water) */}
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
-                  Bacteriostatic Water Added
-                </label>
-                <span className="text-xs text-slate-500 font-medium">mL</span>
-              </div>
-              <input
-                type="number"
-                inputMode="decimal"
-                step="0.1"
-                min="0.1"
-                value={diluentVolume}
-                onChange={(e) => {
-                  setDiluentVolume(e.target.value)
-                  setActivePreset("custom")
-                }}
-                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-medium text-slate-900 outline-none transition-colors focus:border-emerald-500 focus:bg-white"
-              />
-              {/* Quick volume chips */}
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {["1.0", "2.0", "3.0", "5.0"].map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    onClick={() => {
-                      setDiluentVolume(v)
-                      setActivePreset("custom")
-                    }}
-                    className={`rounded border px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                      diluentVolume === v
-                        ? "border-emerald-500 bg-emerald-50 text-emerald-800 font-semibold"
-                        : "border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300 hover:bg-white"
-                    }`}
-                  >
-                    {v} mL
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Target Research Dose */}
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
-                  Target Research Dose
-                </label>
-                <div className="flex rounded-md border border-slate-200 bg-slate-100 p-0.5 text-xs">
-                  {(["mcg", "mg", "IU"] as const).map((unit) => (
-                    <button
-                      key={unit}
-                      type="button"
-                      onClick={() => {
-                        setTargetDoseUnit(unit)
-                        setActivePreset("custom")
-                      }}
-                      className={`rounded px-2 py-0.5 text-[11px] font-semibold transition-colors ${
-                        targetDoseUnit === unit
-                          ? "bg-white text-slate-900 shadow-xs"
-                          : "text-slate-500 hover:text-slate-800"
-                      }`}
-                    >
-                      {unit}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <input
-                type="number"
-                inputMode="decimal"
-                step="any"
-                min="0"
-                value={targetDose}
-                onChange={(e) => {
-                  setTargetDose(e.target.value)
-                  setActivePreset("custom")
-                }}
-                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-medium text-slate-900 outline-none transition-colors focus:border-emerald-500 focus:bg-white"
-              />
+              )}
             </div>
           </div>
 
-          {/* Right Column: Calculated Results & Metrics (7 cols) */}
-          <div className="flex flex-col justify-between space-y-6 large:col-span-7">
-            {/* Safety Alerts (if any) */}
-            {isDoseExceedingVial ? (
-              <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900">
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-0.5 inline-block h-2 w-2 shrink-0 rounded-full bg-amber-500" />
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-amber-900">
-                      Unit Verification Warning
-                    </p>
-                    <p className="mt-1 text-xs text-amber-800 leading-relaxed">
-                      Target dose ({targetDose} {targetDoseUnit}) exceeds total vial mass ({compoundMass} {compoundMassUnit}). Please verify if your intended target is in <strong>mcg</strong> instead of <strong>mg</strong>.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {isVolumeOver1mL && !isDoseExceedingVial ? (
-              <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900">
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-0.5 inline-block h-2 w-2 shrink-0 rounded-full bg-amber-500" />
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-amber-900">
-                      High Draw Volume
-                    </p>
-                    <p className="mt-1 text-xs text-amber-800 leading-relaxed">
-                      Calculated draw volume is {result?.volumeMl?.toFixed(2)} mL, exceeding standard 1.0 mL insulin syringe capacity. Check reconstitution diluent ratio or target dose units.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {/* Primary Hero Readout Card */}
-            <div className="rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 via-teal-50/30 to-white p-5 small:p-6 shadow-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
-                  Recommended Syringe Draw
-                </span>
-                <span className="rounded-full border border-emerald-300 bg-emerald-100/70 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800">
-                  U-100 Standard
-                </span>
-              </div>
-
-              <div className="mt-4 flex items-baseline gap-3">
-                <span className="text-4xl font-extrabold text-slate-900 tabular-nums small:text-5xl">
-                  {unitsOnU100 != null ? unitsOnU100 : "—"}
-                </span>
-                <span className="text-xl font-bold text-emerald-600">Units</span>
-                {result?.volumeMl != null && (
-                  <span className="text-sm font-medium text-slate-500">
-                    ({result.volumeMl.toFixed(3)} mL)
+          {/* Quick Popular Presets Carousel */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+            <span className="text-[10px] uppercase font-bold text-slate-400 shrink-0 mr-1">Popular:</span>
+            {POPULAR_INSTRUMENT_PRESETS.map((preset) => {
+              const isSelected = selectedPresetId === preset.id
+              return (
+                <button
+                  key={preset.id}
+                  type="button"
+                  onClick={() => handleSelectPreset(preset.id, preset.route)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                    isSelected
+                      ? "bg-sky-600 text-white shadow-xs"
+                      : "bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100"
+                  }`}
+                >
+                  {preset.label}
+                  <span className="text-[10px] font-sans font-normal opacity-80 ml-1">
+                    ({preset.doseDisplay})
                   </span>
-                )}
-              </div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
 
-              <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                Draw solution until the front sealing ring of the plunger reaches mark{" "}
-                <strong className="text-slate-900">{unitsOnU100 != null ? unitsOnU100 : "—"}</strong>{" "}
-                on your standard 100-unit insulin syringe.
+      {/* Route-Specific Helper Callout: Nasal Mode */}
+      {routeMode === "nasal" && (
+        <div className="rounded-2xl border border-purple-200 bg-purple-50/70 p-4 text-xs text-purple-950 shadow-xs">
+          <div className="flex items-start gap-3">
+            <span className="text-xl">👃</span>
+            <div className="space-y-1">
+              <span className="font-bold text-purple-900 text-sm block">
+                Metered Intranasal Atomizer Calibration Mode
+              </span>
+              <p className="text-[11px] leading-relaxed text-purple-900/90">
+                Calibrated for a standard metered nasal pump discharging exactly <strong>0.10 mL per actuation</strong>. Reconstituting a <strong>{nasalStats.massMg} mg</strong> neuropeptide vial with <strong>{nasalStats.diluentMl} mL</strong> Bacteriostatic Water yields a concentration of <strong>{nasalStats.concMgMl} mg/mL</strong>, delivering approximately <strong>{nasalStats.mcgPerSpray} mcg per single spray</strong> across <strong>{nasalStats.totalSprays} total sprays</strong> per bottle.
               </p>
             </div>
-
-            {/* Supporting Clinical Metrics Grid */}
-            <div className="grid grid-cols-2 gap-3 small:grid-cols-3">
-              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                  Final Concentration
-                </p>
-                <p className="mt-1.5 text-lg font-bold text-slate-900 tabular-nums">
-                  {compoundMassUnit === "IU" && numVolume > 0
-                    ? `${(numMass / numVolume).toFixed(1)} IU/mL`
-                    : result?.concentrationMgPerMl != null
-                    ? `${result.concentrationMgPerMl.toFixed(2)} mg/mL`
-                    : "—"}
-                </p>
-                <p className="mt-0.5 text-[10px] text-slate-400">
-                  {compoundMassUnit === "IU" && numVolume > 0
-                    ? `${((numMass / numVolume) / 100).toFixed(2)} IU / U-100 Unit`
-                    : result?.concentrationMgPerMl != null
-                    ? `${(result.concentrationMgPerMl * 1000).toLocaleString()} mcg/mL`
-                    : ""}
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                  Draw Volume
-                </p>
-                <p className="mt-1.5 text-lg font-bold text-slate-900 tabular-nums">
-                  {result?.volumeMl != null ? `${result.volumeMl.toFixed(3)} mL` : "—"}
-                </p>
-                <p className="mt-0.5 text-[10px] text-slate-400">per target dose</p>
-              </div>
-
-              <div className="col-span-2 rounded-xl border border-slate-200 bg-slate-50/70 p-4 small:col-span-1">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                  Doses Per Vial
-                </p>
-                <p className="mt-1.5 text-lg font-bold text-slate-900 tabular-nums">
-                  {result?.usesPerContainer != null
-                    ? `${Math.floor(result.usesPerContainer)} Doses`
-                    : "—"}
-                </p>
-                <p className="mt-0.5 text-[10px] text-slate-400">at current target dose</p>
-              </div>
-            </div>
-
-            {/* Protocol Link (if preset is associated with an active protocol) */}
-            {activeProtocolHandle ? (
-              <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3">
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold text-slate-800">
-                    Published {compoundName} Protocol Available
-                  </p>
-                  <p className="text-[11px] text-slate-500">
-                    Review storage temps, handling precautions, and published literature.
-                  </p>
-                </div>
-                <LocalizedClientLink
-                  href={`/research-protocols/${activeProtocolHandle}`}
-                  className="shrink-0 text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline"
-                >
-                  View Dossier →
-                </LocalizedClientLink>
-              </div>
-            ) : null}
           </div>
         </div>
-      </div>
+      )}
 
-      {/* ── Visual Syringe Gauge (Integrated & Calibrated) ── */}
-      <div>
-        <SyringeVisualizer
-          volumeMl={result?.volumeMl}
-          compoundName={compoundName}
-          deviceLabel="U-100 Insulin Syringe"
-        />
-      </div>
+      {/* Route-Specific Helper Callout: Oral Solution Mode */}
+      {routeMode === "oral" && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-xs text-amber-950 shadow-xs">
+          <div className="flex items-start gap-3">
+            <span className="text-xl">💧</span>
+            <div className="space-y-1">
+              <span className="font-bold text-amber-900 text-sm block">
+                Oral Gastro-Resistant Solution Mode (Arg Salt / Liquid Suspension)
+              </span>
+              <p className="text-[11px] leading-relaxed text-amber-900/90">
+                For non-injectable oral research formulations (e.g. stable Arginate BPC-157, 5-Amino-1MQ, MK-677). Administer using a calibrated 1.0 mL oral pipette. Store aqueous suspensions refrigerated at +2°C to +8°C and use within 30 days.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* ── Smart Bridge: Public Visitor vs. Customer Private Hub ── */}
-      <div className="rounded-2xl border border-emerald-200/90 bg-gradient-to-r from-emerald-50/80 via-teal-50/40 to-white p-6 small:p-8 shadow-xs">
-        <div className="flex flex-col gap-6 medium:flex-row medium:items-center medium:justify-between">
+      {/* Flagship Interactive Stoichiometry Console */}
+      <InteractiveSyringeStoichiometry
+        key={selectedPresetId}
+        enableCatalogPicker={true}
+        initialCompoundId={selectedPresetId}
+        onCalibrationChange={setActiveMetrics}
+      />
+
+      {/* Smart Bridge: Public Visitor vs. Customer Private Hub */}
+      <div className="rounded-2xl border border-sky-200/90 bg-gradient-to-r from-sky-50/80 via-blue-50/40 to-white p-6 sm:p-8 shadow-xs">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-emerald-600" />
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+              <span className="h-2 w-2 rounded-full bg-sky-600" />
+              <p className="text-xs font-semibold uppercase tracking-wider text-sky-800">
                 Customer Research Hub Integration
               </p>
             </div>
-            <h3 className="mt-2 text-xl font-bold text-slate-900">
+            <h3 className="mt-2 text-lg sm:text-xl font-bold text-slate-900">
               Save This Calculation to Your Private Vial Inventory
             </h3>
-            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
               Every verified PepStack order grants full access to the encrypted Private Vial Hub. Log reconstitution dates, track remaining doses per vial, configure custom administration calendars, and unlock protected titration schedules.
             </p>
           </div>
@@ -709,14 +426,14 @@ Storage: 2°C - 8°C (Refrigerate once reconstituted)`
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <LocalizedClientLink
               href={bridgeUrl}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-emerald-500"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3 text-xs sm:text-sm font-semibold text-white shadow-xs transition-all hover:bg-sky-500"
             >
               Open in Private Vial Hub
               <span aria-hidden="true">→</span>
             </LocalizedClientLink>
             <LocalizedClientLink
               href="/store"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-xs transition-all hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-xs sm:text-sm font-semibold text-slate-700 shadow-xs transition-all hover:bg-slate-50"
             >
               Browse Catalog
             </LocalizedClientLink>
@@ -724,40 +441,58 @@ Storage: 2°C - 8°C (Refrigerate once reconstituted)`
         </div>
       </div>
 
-      {/* ── Handling Guidelines ── */}
-      <div className="grid gap-4 small:grid-cols-2 large:grid-cols-4">
-        <div className="rounded-xl border border-ui-border-base bg-white p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-ui-fg-muted">Step 1: Sanitize</p>
-          <p className="mt-2 text-xs font-medium text-ui-fg-base">Alcohol Swab Seal</p>
-          <p className="mt-1 text-xs text-ui-fg-subtle leading-relaxed">
+      {/* Handling Guidelines */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Step 1: Sanitize</p>
+          <p className="mt-1.5 text-xs font-bold text-slate-900">Alcohol Swab Septum</p>
+          <p className="mt-1 text-xs text-slate-500 leading-relaxed">
             Clean rubber septums of both BAC water and peptide vials with sterile 70% isopropyl alcohol. Allow to air dry completely.
           </p>
         </div>
 
-        <div className="rounded-xl border border-ui-border-base bg-white p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-ui-fg-muted">Step 2: Wall Intro</p>
-          <p className="mt-2 text-xs font-medium text-ui-fg-base">Slow Stream Down Wall</p>
-          <p className="mt-1 text-xs text-ui-fg-subtle leading-relaxed">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Step 2: Wall Intro</p>
+          <p className="mt-1.5 text-xs font-bold text-slate-900">Slow Stream Down Wall</p>
+          <p className="mt-1 text-xs text-slate-500 leading-relaxed">
             Angle needle so diluent trickles down the inner glass wall. Never spray diluent directly onto the lyophilized cake.
           </p>
         </div>
 
-        <div className="rounded-xl border border-ui-border-base bg-white p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-ui-fg-muted">Step 3: Dissolve</p>
-          <p className="mt-2 text-xs font-medium text-ui-fg-base">Do Not Agitate or Shake</p>
-          <p className="mt-1 text-xs text-ui-fg-subtle leading-relaxed">
-            Allow lyophilized compound to dissolve spontaneously. Swirl gently if necessary. Never shake shear-sensitive peptide bonds.
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Step 3: Dissolve</p>
+          <p className="mt-1.5 text-xs font-bold text-slate-900">Do Not Agitate or Shake</p>
+          <p className="mt-1 text-xs text-slate-500 leading-relaxed">
+            Allow lyophilized compound to dissolve spontaneously. Swirl gently horizontally. Never shake shear-sensitive peptide chains.
           </p>
         </div>
 
-        <div className="rounded-xl border border-ui-border-base bg-white p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-ui-fg-muted">Step 4: Cold-Chain</p>
-          <p className="mt-2 text-xs font-medium text-ui-fg-base">Store at 2°C to 8°C</p>
-          <p className="mt-1 text-xs text-ui-fg-subtle leading-relaxed">
-            Refrigerate immediately after reconstitution. Protect from direct ultraviolet light exposure. Use within stability window.
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Step 4: Refrigerated Storage</p>
+          <p className="mt-1.5 text-xs font-bold text-slate-900">Store at 2°C to 8°C</p>
+          <p className="mt-1 text-xs text-slate-500 leading-relaxed">
+            Refrigerate immediately after reconstitution. Protect from direct ultraviolet light exposure. Use within 28-day stability window.
           </p>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function StandaloneReconstitutionCalculator({
+  initialPresetId,
+}: {
+  initialPresetId?: string
+}) {
+  return (
+    <Suspense
+      fallback={
+        <div className="p-8 text-center text-xs text-slate-500">
+          Loading universal stoichiometric console...
+        </div>
+      }
+    >
+      <StandaloneCalculatorInner initialPresetId={initialPresetId} />
+    </Suspense>
   )
 }

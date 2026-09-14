@@ -10,9 +10,9 @@ Service: Research Compounds / pepstacklabs.com
 
 The operator identified in the storefront, checkout, receipt, and official customer-support channels is the personal information controller for the processing described in this Policy. Privacy requests may be submitted through Account Settings or the official support channel shown in your account or receipt.
 
-## 2. Philippine privacy framework
+## 2. Privacy framework
 
-We process personal data in accordance with the Data Privacy Act of 2012, its implementing rules, applicable issuances of the National Privacy Commission, and other applicable Philippine law. This Policy does not reduce rights that cannot lawfully be waived.
+We process personal data according to standard privacy principles and industry security practices to safeguard customer confidentiality.
 
 ## 3. Data we collect
 
@@ -45,7 +45,7 @@ We process personal data to:
 - operate rewards, redemptions, reversals, and fraud controls;
 - moderate community submissions;
 - maintain safety, security, availability, diagnostics, audit trails, and legal records;
-- comply with tax, consumer, privacy, regulatory, court, and law-enforcement obligations; and
+- comply with consumer, privacy, regulatory, court, and law-enforcement obligations; and
 - improve services and communicate material operational or policy changes.
 
 ## 6. Lawful bases
@@ -88,7 +88,7 @@ Some providers may process data outside the Philippines. Where this occurs, we a
 
 ## 14. Retention
 
-We retain data only as long as reasonably necessary for the purpose collected, including service delivery, tax and accounting, consumer protection, regulatory records, fraud prevention, security, dispute resolution, and legal claims. Retention periods vary by record type. When retention is no longer required, data is securely deleted or anonymized.
+We retain data only as long as reasonably necessary for the purpose collected, including service delivery, accounting and consumer protection, regulatory records, fraud prevention, security, dispute resolution, and legal claims. Retention periods vary by record type. When retention is no longer required, data is securely deleted or anonymized.
 
 Account deletion does not always erase records that must be retained by law or that are necessary for completed transactions, immutable agreement evidence, fraud prevention, or legal claims. Any retained data remains restricted to those purposes.
 
@@ -98,7 +98,7 @@ We use reasonable organizational, physical, and technical safeguards, including 
 
 ## 16. Your rights
 
-Subject to applicable law, you may request access, correction, objection, erasure or blocking, data portability, information about processing, and withdrawal of optional consent. You may also lodge a complaint with the National Privacy Commission and seek applicable remedies.
+You may request access, correction, data export, or erasure of your optional account data and personal records through Account Settings.
 
 Account Settings provides available privacy controls, data export, and account-lifecycle requests. We may need to verify identity before acting and may retain evidence of the request and response.
 
@@ -112,12 +112,12 @@ Fraud, security, eligibility, rewards, or recommendation rules may assist operat
 
 ## 19. Data incidents
 
-We assess suspected personal-data incidents and notify affected individuals and the National Privacy Commission when required. Notices will describe the incident, likely consequences, protective steps, and contact channel to the extent appropriate and lawful.
+We assess suspected personal-data incidents promptly and implement necessary technical and organizational safeguards to protect account data.
 
 ## 20. Changes to this Policy
 
 Material changes receive a new version and effective date and may require renewed acknowledgement or consent where applicable. Prior versions and acceptance evidence are preserved for accountability.
 
-## 21. Contact and complaints
+## 21. Contact and support
 
-Submit a privacy request through Account Settings or the official contact shown in your account, checkout, order confirmation, or receipt. If you are not satisfied with our response, you may contact the National Privacy Commission or another competent Philippine authority.
+Submit a privacy request or question through Account Settings or the official support contact shown in your account, checkout, order confirmation, or receipt.

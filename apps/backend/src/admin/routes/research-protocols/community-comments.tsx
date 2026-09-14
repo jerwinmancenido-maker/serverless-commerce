@@ -1,7 +1,17 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/community-comments.tsx
+ * @module  CommunityComments
+ * @purpose Protocol community discussion and researcher comment moderation panel.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols/:id/comments
+ *   Service: ResearchTrackingModuleService
+ */
+
 import { Badge, Button, Input, Select, Text, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 
+import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { sdk } from "../../lib/sdk"
 
 type CommentStatus = "pending" | "approved" | "rejected" | "hidden"
@@ -122,7 +132,10 @@ export const CommunityComments = ({ protocolId }: { protocolId: string }) => {
           ))}
         </div>
       ) : (
-        <Text size="small" className="text-ui-fg-subtle">No {status === "all" ? "" : `${status} `}comments.</Text>
+        <SovereignEmptyState
+          heading={status === "all" ? "No comments yet" : `No ${status} comments`}
+          description="Community feedback and protocol notes will appear here."
+        />
       )}
     </div>
   )

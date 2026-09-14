@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/set-compounded-product-variant-recipe.ts
+ * @module  CompoundedProductModule (Workflows)
+ * @purpose Prepare and validate compounded product variant recipes and resolve catalog readiness.
+ * @contracts
+ *   Step: prepareCompoundedProductVariantRecipeStep · resolveCompoundedProductRecipeReadinessStep
+ */
+
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   ContainerRegistrationKeys,

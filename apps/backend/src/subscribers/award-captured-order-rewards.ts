@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/subscribers/award-captured-order-rewards.ts
+ * @module  AwardCapturedOrderRewardsSubscriber (Rewards & Loyalty Module)
+ * @purpose Event subscriber listening to payment.captured to award loyalty rewards and qualify referrals with idempotency protection.
+ * @contracts
+ *   Event:    payment.captured
+ *   Workflow: awardRewardEventSafely · manageReferralsWorkflow · emitCustomerNotificationWorkflow
+ */
+
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
@@ -13,37 +22,42 @@ export default async function awardCapturedOrderRewards({
   event: { data },
   container,
 }: SubscriberArgs<CapturedPaymentEvent>) {
-  const query = container.resolve(ContainerRegistrationKeys.QUERY)
-  const { data: orders } = await query.graph({
-    entity: "order",
-    fields: [
-      "id",
-      "customer_id",
-      "currency_code",
-      "total",
-      "payment_collections.payments.id",
-      "items.product_id",
-    ],
-    filters: {
-      payment_collections: {
-        payments: { id: data.id },
-      },
-    } as never,
-    pagination: { take: 1 },
-  })
-  const order = orders[0]
-  if (!order?.customer_id) return
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
-  await awardRewardEventSafely(container, {
-    customer_id: order.customer_id,
-    event_type: "purchase_confirmed",
-    source_type: "purchase_confirmed",
-    source_id: data.id,
-    order_id: order.id,
-    eligible_amount: Number(order.total || 0),
-    status: "available",
-    idempotency_key: `captured-payment:${data.id}`,
-  })
+  try {
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
+    const { data: orders } = await query.graph({
+      entity: "order",
+      fields: [
+        "id",
+        "customer_id",
+        "currency_code",
+        "total",
+        "metadata",
+        "payment_collections.payments.id",
+        "items.product_id",
+      ],
+      filters: {
+        payment_collections: {
+          payments: { id: data.id },
+        },
+      } as never,
+      pagination: { take: 1 },
+    })
+    const order = orders[0]
+    if (!order?.customer_id || (order.metadata?.captured_payments_awarded as string[] | undefined)?.includes(data.id)) return
+
+    await awardRewardEventSafely(container, {
+      customer_id: order.customer_id,
+      event_type: "purchase_confirmed",
+      source_type: "purchase_confirmed",
+      source_id: data.id,
+      order_id: order.id,
+      eligible_amount: Number(order.total || 0),
+      status: "available",
+      idempotency_key: `captured-payment:${data.id}`,
+    })
+
 
   try {
     const { result } = await manageReferralsWorkflow(container).run({
@@ -98,14 +112,17 @@ export default async function awardCapturedOrderRewards({
         target_id: null,
         metadata: {},
       } })))
+      }
+    } catch (error) {
+      logger.warn(
+        `Referral qualification was not applied: ${
+          error instanceof Error ? error.message : "unknown error"
+        }`,
+      )
     }
-  } catch (error) {
-    const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
-    logger.warn(
-      `Referral qualification was not applied: ${
-        error instanceof Error ? error.message : "unknown error"
-      }`,
-    )
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    logger.error(`Error processing captured order rewards for payment ${data.id}: ${message}`, err as Error)
   }
 }
 

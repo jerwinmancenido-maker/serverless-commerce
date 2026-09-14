@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/bom/recipe-history-drawer.tsx
+ * @module  RecipeHistoryDrawer
+ * @purpose Version history drawer for variant BOM recipes and component configuration changes.
+ * @contracts
+ *   Service: InventoryModuleService · CompoundedProductModuleService
+ */
+
 import type { HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -9,6 +17,7 @@ import {
 } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
 
+import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { sdk } from "../../lib/sdk"
 import type { RecipeHistoryResponse } from "./types"
 
@@ -122,11 +131,11 @@ export function RecipeHistoryDrawer({
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center gap-1 py-12 text-center">
-              <Heading level="h3">No recipe history</Heading>
-              <Text className="text-ui-fg-subtle" size="small">
-                A snapshot appears after the variant recipe changes.
-              </Text>
+            <div className="py-8">
+              <SovereignEmptyState
+                heading="No recipe history"
+                description="A snapshot appears after the variant recipe changes."
+              />
             </div>
           )}
         </Drawer.Body>

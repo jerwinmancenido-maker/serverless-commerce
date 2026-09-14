@@ -37,13 +37,13 @@ const InventoryCreateRedirect = () => {
           </div>
           <div>
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <span>Cleanroom Inventory & Raw Materials</span>
+              <span>Physical Inventory & Raw Materials</span>
               <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200">
                 Slide-Over Drawer
               </span>
             </h3>
             <p className="text-xs text-slate-300">
-              Register cleanroom active powders, sterile diluents, and containers with cryo storage standards and yield calculation.
+              Register active powders, diluents, and containers with storage standards and yield calculation.
             </p>
           </div>
         </div>

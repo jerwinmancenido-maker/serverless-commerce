@@ -56,23 +56,56 @@ const AccountNav = ({
     return first
   })()
 
+  const initials = (() => {
+    const first = customer?.first_name?.replace(/^dr\.?\s*/i, "").trim() || ""
+    const last = customer?.last_name?.trim() || ""
+    const firstChar = first.charAt(0).toUpperCase()
+    const lastChar = last.charAt(0).toUpperCase()
+    return `${firstChar}${lastChar}` || "RC"
+  })()
+
   return (
     <nav aria-label="Order and Account Navigation" className="w-full">
-      {/* Account Identity Header (without duplicate Sign Out) */}
-      <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200/80">
-        <div>
-          <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              Account &amp; Orders
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200/80">
-              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Verified Lab
-            </span>
+      {/* Authoritative Clinical Identity Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 mb-5 border-b border-slate-200/80 gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="size-11 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white font-mono font-bold flex items-center justify-center text-sm shadow-xs shrink-0 border border-slate-700/50">
+            {initials}
           </div>
-          <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-            Welcome, {clientGreeting}
-          </h2>
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-0.5">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Laboratory Client Portal
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200/80">
+                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Verified Lab Researcher
+              </span>
+              <span className="hidden sm:inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 border border-slate-200/80">
+                RUO Standard
+              </span>
+            </div>
+            <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+              Welcome, {clientGreeting}
+            </h1>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Signed in as{" "}
+              <span className="font-semibold text-slate-700 font-mono">
+                {customer?.email}
+              </span>
+              <span className="hidden md:inline"> · Region: PH (₱) · Encrypted Privacy</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="hidden lg:flex items-center gap-2 text-xs">
+          <LocalizedClientLink
+            href="/account/support"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-2xs"
+          >
+            <ChatBubble className="h-3.5 w-3.5 text-slate-400" />
+            <span>Support Desk</span>
+          </LocalizedClientLink>
         </div>
       </div>
 

@@ -3,7 +3,7 @@
 /**
  * @file apps/storefront/src/modules/common/components/cart-totals/index.tsx
  * @module CartComponents (Cart & Checkout Financial Totals)
- * @purpose Renders order subtotal, shipping, applied discounts, VAT/taxes, and grand total with clinical monospace formatting.
+ * @purpose Renders order subtotal, shipping, applied discounts, and grand total with clinical monospace formatting.
  * @contracts Section 3 Clinical Usability Standard | Route: /cart, /checkout
  */
 
@@ -26,7 +26,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const {
     currency_code,
     total,
-    tax_total,
     item_subtotal,
     shipping_subtotal,
     discount_subtotal,
@@ -62,14 +61,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
                 amount: discount_subtotal ?? 0,
                 currency_code,
               })}
-            </span>
-          </div>
-        )}
-        {!!tax_total && tax_total > 0 && (
-          <div className="flex justify-between">
-            <span className="flex gap-x-1 items-center ">Taxes</span>
-            <span className="font-mono tracking-tight font-extrabold text-slate-900" data-testid="cart-taxes" data-value={tax_total || 0}>
-              {convertToLocale({ amount: tax_total ?? 0, currency_code })}
             </span>
           </div>
         )}

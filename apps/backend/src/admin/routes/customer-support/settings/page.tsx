@@ -1,7 +1,15 @@
+/**
+ * @file    apps/backend/src/admin/routes/customer-support/settings/page.tsx
+ * @module  CustomerSupportSettingsPage
+ * @purpose Admin configuration for customer support widget, business hours, and auto-acknowledgements.
+ * @contracts
+ *   API:     GET/POST /admin/customer-support-settings
+ *   Service: CustomerSupportModuleService
+ */
+
 import {
   Badge,
   Button,
-  Container,
   Heading,
   Input,
   Label,
@@ -14,6 +22,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
+import { PageHeader } from "../../../components/page-header"
+import { SovereignPageSkeleton } from "../../../components/ui/sovereign-page-skeleton"
 import { sdk } from "../../../lib/sdk"
 
 type BusinessDay = {
@@ -109,53 +119,164 @@ const CustomerSupportSettingsPage = () => {
     onSuccess: () => client.invalidateQueries({ queryKey: ["support-saved-responses"] }),
   })
 
-  if (!settings) return <Container><Text>Loading support settings…</Text></Container>
-
-  return <div className="flex flex-col gap-4">
-    <Container className="divide-y p-0">
-      <div className="flex items-start justify-between px-6 py-4">
-        <div><Heading>Support settings</Heading><Text size="small" leading="compact" className="text-ui-fg-subtle">Manage the private customer Support experience without changing source code.</Text></div>
-        <Link to="/customer-support"><Button size="small" variant="secondary">Back to inbox</Button></Link>
+  if (!settings) {
+    return (
+      <div className="sovereign-page px-6 pt-6 pb-8">
+        <SovereignPageSkeleton cards={2} rows={8} />
       </div>
-      <div className="grid gap-5 px-6 py-5 md:grid-cols-2">
-        <Toggle label="Support enabled" description="Allows signed-in customers to create and continue conversations." checked={settings.support_enabled} onChange={(support_enabled) => setSettings({ ...settings, support_enabled })} />
-        <Toggle label="Side panel enabled" description="Shows the compact launcher throughout the storefront." checked={settings.side_panel_enabled} onChange={(side_panel_enabled) => setSettings({ ...settings, side_panel_enabled })} />
-        <Field label="Display name"><Input value={settings.display_name} onChange={(event) => setSettings({ ...settings, display_name: event.target.value })} /></Field>
-        <Field label="Time zone"><Input value={settings.timezone} onChange={(event) => setSettings({ ...settings, timezone: event.target.value })} /></Field>
-        <Field label="Response-time message"><Input value={settings.response_time_message} onChange={(event) => setSettings({ ...settings, response_time_message: event.target.value })} /></Field>
-        <Field label="Offline message"><Input value={settings.offline_message} onChange={(event) => setSettings({ ...settings, offline_message: event.target.value })} /></Field>
-        <Field label="Customer messages per hour"><Input type="number" min={1} max={100} value={settings.customer_message_limit_per_hour} onChange={(event) => setSettings({ ...settings, customer_message_limit_per_hour: Number(event.target.value) })} /></Field>
-        <Field label="Maximum attachment size (MiB)"><Input type="number" min={1} max={25} value={Math.floor(settings.maximum_attachment_size_bytes / 1024 / 1024)} onChange={(event) => setSettings({ ...settings, maximum_attachment_size_bytes: Number(event.target.value) * 1024 * 1024 })} /></Field>
-        <Toggle label="Attachments enabled" description="Accepts validated private PDF, PNG, and JPEG files." checked={settings.attachment_uploads_enabled} onChange={(attachment_uploads_enabled) => setSettings({ ...settings, attachment_uploads_enabled })} />
-        <Toggle label="Business hours enabled" description="Uses the structured weekly schedule shown below." checked={settings.business_hours_enabled} onChange={(business_hours_enabled) => setSettings({ ...settings, business_hours_enabled })} />
-        <Toggle label="Automatic acknowledgement" description="Clearly labels the configured receipt as automated." checked={settings.auto_acknowledgement_enabled} onChange={(auto_acknowledgement_enabled) => setSettings({ ...settings, auto_acknowledgement_enabled })} />
-        <Toggle label="Email notifications" description="Keep disabled until an authorized email provider is configured." checked={settings.email_notifications_enabled} onChange={(email_notifications_enabled) => setSettings({ ...settings, email_notifications_enabled })} />
-        <div className="md:col-span-2"><Field label="Automatic acknowledgement text"><Textarea value={settings.auto_acknowledgement_text} onChange={(event) => setSettings({ ...settings, auto_acknowledgement_text: event.target.value })} /></Field></div>
+    )
+  }
+
+  return (
+    <div className="sovereign-page px-6 pt-6 pb-8 flex flex-col gap-y-6 w-full">
+      <PageHeader
+        title="Support Settings"
+        subtitle="Manage the customer support experience, business hours, SLA response times, and automated acknowledgements."
+        eyebrowText="Customer Support · Settings & Operations"
+        actions={
+          <Link to="/app/customer-support">
+            <Button size="small" variant="secondary" className="h-8 text-xs font-semibold">Back to inbox</Button>
+          </Link>
+        }
+      />
+
+      {/* Card 1: General Settings & Throttling */}
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs flex flex-col gap-y-6">
+        <div>
+          <Heading level="h2" className="text-sm font-semibold text-slate-900">General Support &amp; Availability</Heading>
+          <Text size="small" className="text-slate-500 mt-0.5">Control customer-facing launcher visibility, messaging quotas, and auto-acknowledgement wording.</Text>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <Toggle label="Support Enabled" description="Allows signed-in researchers and customers to open conversations." checked={settings.support_enabled} onChange={(support_enabled) => setSettings({ ...settings, support_enabled })} />
+          <Toggle label="Side Panel Dock Launcher" description="Displays the floating support bubble throughout the storefront." checked={settings.side_panel_enabled} onChange={(side_panel_enabled) => setSettings({ ...settings, side_panel_enabled })} />
+          <Field label="Display Name"><Input value={settings.display_name} onChange={(event) => setSettings({ ...settings, display_name: event.target.value })} className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" /></Field>
+          <Field label="Time Zone"><Input value={settings.timezone} onChange={(event) => setSettings({ ...settings, timezone: event.target.value })} className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" /></Field>
+          <Field label="Response-Time SLA Message"><Input value={settings.response_time_message} onChange={(event) => setSettings({ ...settings, response_time_message: event.target.value })} className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" /></Field>
+          <Field label="Offline Message"><Input value={settings.offline_message} onChange={(event) => setSettings({ ...settings, offline_message: event.target.value })} className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" /></Field>
+          <Field label="Customer Messages Per Hour Limit"><Input type="number" min={1} max={100} value={settings.customer_message_limit_per_hour} onChange={(event) => setSettings({ ...settings, customer_message_limit_per_hour: Number(event.target.value) })} className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" /></Field>
+          <Field label="Maximum Attachment Size (MiB)"><Input type="number" min={1} max={25} value={Math.floor(settings.maximum_attachment_size_bytes / 1024 / 1024)} onChange={(event) => setSettings({ ...settings, maximum_attachment_size_bytes: Number(event.target.value) * 1024 * 1024 })} className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" /></Field>
+          <Toggle label="Attachments Enabled" description="Accepts validated private PDF, PNG, and JPEG files." checked={settings.attachment_uploads_enabled} onChange={(attachment_uploads_enabled) => setSettings({ ...settings, attachment_uploads_enabled })} />
+          <Toggle label="Business Hours Filter" description="Labels staff presence based on structured weekly schedule." checked={settings.business_hours_enabled} onChange={(business_hours_enabled) => setSettings({ ...settings, business_hours_enabled })} />
+          <Toggle label="Automatic Acknowledgement" description="Instantly acknowledges inbound customer messages." checked={settings.auto_acknowledgement_enabled} onChange={(auto_acknowledgement_enabled) => setSettings({ ...settings, auto_acknowledgement_enabled })} />
+          <Toggle label="Email Notifications Gate" description="Requires an authorized transactional email provider." checked={settings.email_notifications_enabled} onChange={(email_notifications_enabled) => setSettings({ ...settings, email_notifications_enabled })} />
+          <div className="md:col-span-2">
+            <Field label="Automatic Acknowledgement Body">
+              <Textarea value={settings.auto_acknowledgement_text} onChange={(event) => setSettings({ ...settings, auto_acknowledgement_text: event.target.value })} className="text-xs bg-slate-50 border-slate-200/80 focus:bg-white min-h-[72px]" />
+            </Field>
+          </div>
+        </div>
+
+        {/* Business Hours Matrix */}
+        <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
+          <div>
+            <Text size="small" weight="plus" className="text-slate-900">Weekly Operating Schedule</Text>
+            <Text size="small" className="text-slate-500">Philippine Standard Time (PST, UTC+8).</Text>
+          </div>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {settings.business_hours.map((day, index) => (
+              <div key={day.day} className="flex items-center gap-3 rounded-lg border border-slate-200/80 bg-slate-50/50 p-2.5">
+                <Switch checked={day.open} onCheckedChange={(open) => setSettings({ ...settings, business_hours: settings.business_hours.map((item, itemIndex) => itemIndex === index ? { ...item, open } : item) })} />
+                <span className="text-xs font-semibold w-24 text-slate-700">{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day.day]}</span>
+                <Input type="time" disabled={!day.open} value={day.opens_at || "09:00"} onChange={(event) => setSettings({ ...settings, business_hours: settings.business_hours.map((item, itemIndex) => itemIndex === index ? { ...item, opens_at: event.target.value } : item) })} className="h-7 text-xs bg-white" />
+                <Input type="time" disabled={!day.open} value={day.closes_at || "17:00"} onChange={(event) => setSettings({ ...settings, business_hours: settings.business_hours.map((item, itemIndex) => itemIndex === index ? { ...item, closes_at: event.target.value } : item) })} className="h-7 text-xs bg-white" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-3 border-t border-slate-100">
+          <Button size="small" isLoading={saveSettings.isPending} disabled={saveSettings.isPending} onClick={() => saveSettings.mutate()} className="h-8 text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800">
+            Save Support Settings
+          </Button>
+        </div>
       </div>
-      <div className="px-6 py-5">
-        <Text size="small" leading="compact" weight="plus">Business hours</Text>
-        <Text size="small" leading="compact" className="text-ui-fg-subtle">Philippine time by default. This does not claim real-time staff presence.</Text>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">{settings.business_hours.map((day, index) => <div key={day.day} className="flex items-center gap-3 rounded-lg bg-ui-bg-subtle p-3"><Switch checked={day.open} onCheckedChange={(open) => setSettings({ ...settings, business_hours: settings.business_hours.map((item, itemIndex) => itemIndex === index ? { ...item, open } : item) })} /><Text size="small" weight="plus" className="w-20">{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day.day]}</Text><Input type="time" disabled={!day.open} value={day.opens_at || "09:00"} onChange={(event) => setSettings({ ...settings, business_hours: settings.business_hours.map((item, itemIndex) => itemIndex === index ? { ...item, opens_at: event.target.value } : item) })} /><Input type="time" disabled={!day.open} value={day.closes_at || "17:00"} onChange={(event) => setSettings({ ...settings, business_hours: settings.business_hours.map((item, itemIndex) => itemIndex === index ? { ...item, closes_at: event.target.value } : item) })} /></div>)}</div>
+
+      {/* Card 2: Customer Inquiry Categories */}
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs flex flex-col gap-y-4">
+        <div>
+          <Heading level="h2" className="text-sm font-semibold text-slate-900">Inquiry Categories</Heading>
+          <Text size="small" className="text-slate-500 mt-0.5">Define structured inquiry categories to route customer support tickets effectively.</Text>
+        </div>
+        <div className="divide-y divide-slate-100 border border-slate-200/80 rounded-lg overflow-hidden">
+          {categories.map((category, index) => (
+            <div key={category.key} className="grid gap-3 p-3.5 sm:grid-cols-[160px_1fr_auto] items-center hover:bg-slate-50/50 transition-colors">
+              <div>
+                <span className="text-xs font-mono font-bold text-slate-900">{category.key}</span>
+                <div className="mt-1">
+                  <Badge size="small" color={category.enabled ? "green" : "grey"} className="text-[10px]">
+                    {category.enabled ? "Enabled" : "Disabled"}
+                  </Badge>
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <Input value={category.label} onChange={(event) => setCategories(categories.map((item, itemIndex) => itemIndex === index ? { ...item, label: event.target.value } : item))} placeholder="Label" className="h-7 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" />
+                <Input value={category.guidance || ""} placeholder="Optional customer guidance text" onChange={(event) => setCategories(categories.map((item, itemIndex) => itemIndex === index ? { ...item, guidance: event.target.value || null } : item))} className="h-7 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch checked={category.enabled} onCheckedChange={(enabled) => setCategories(categories.map((item, itemIndex) => itemIndex === index ? { ...item, enabled } : item))} />
+                <Button size="small" variant="secondary" isLoading={saveCategory.isPending} onClick={() => saveCategory.mutate(category)} className="h-7 text-xs font-semibold">
+                  Save
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="flex justify-end px-6 py-4"><Button isLoading={saveSettings.isPending} disabled={saveSettings.isPending} onClick={() => saveSettings.mutate()}>Save settings</Button></div>
-    </Container>
 
-    <Container className="divide-y p-0">
-      <div className="px-6 py-4"><Heading level="h2">Customer categories</Heading><Text size="small" leading="compact" className="text-ui-fg-subtle">Internal keys remain stable when labels or guidance change.</Text></div>
-      <div className="divide-y">{categories.map((category, index) => <div key={category.key} className="grid gap-3 px-6 py-4 md:grid-cols-[160px_1fr_auto]"><div><Text size="small" weight="plus">{category.key}</Text><Badge color={category.enabled ? "green" : "grey"}>{category.enabled ? "Enabled" : "Disabled"}</Badge></div><div className="grid gap-2"><Input value={category.label} onChange={(event) => setCategories(categories.map((item, itemIndex) => itemIndex === index ? { ...item, label: event.target.value } : item))} /><Input value={category.guidance || ""} placeholder="Optional customer guidance" onChange={(event) => setCategories(categories.map((item, itemIndex) => itemIndex === index ? { ...item, guidance: event.target.value || null } : item))} /></div><div className="flex items-center gap-2"><Switch checked={category.enabled} onCheckedChange={(enabled) => setCategories(categories.map((item, itemIndex) => itemIndex === index ? { ...item, enabled } : item))} /><Button size="small" variant="secondary" isLoading={saveCategory.isPending} onClick={() => saveCategory.mutate(category)}>Save</Button></div></div>)}</div>
-    </Container>
+      {/* Card 3: Support Roles Note */}
+      <div className="rounded-xl border border-blue-200/80 bg-blue-50/40 p-4 shadow-2xs flex items-start gap-3">
+        <span className="text-blue-600 font-bold text-sm">ℹ</span>
+        <div>
+          <span className="text-xs font-bold text-slate-900">Support Access Control</span>
+          <p className="text-xs text-slate-600 mt-0.5">
+            Support Agent and Support Manager permissions utilize Medusa’s native RBAC roles. Assign team members from Settings → Users.
+          </p>
+        </div>
+      </div>
 
-    <Container>
-      <Heading level="h2">Support roles</Heading>
-      <Text size="small" leading="compact" className="text-ui-fg-subtle">Support Agent and Support Manager use Medusa’s existing roles and permissions. Assign staff from Settings → Users; other Admin roles receive no Support permission by default.</Text>
-    </Container>
+      {/* Card 4: Saved Responses */}
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs flex flex-col gap-y-4">
+        <div>
+          <Heading level="h2" className="text-sm font-semibold text-slate-900">Saved Canned Responses</Heading>
+          <Text size="small" className="text-slate-500 mt-0.5">Pre-approved response library. Agents can insert these drafts directly into live chat.</Text>
+        </div>
 
-    <Container>
-      <Heading level="h2">Saved responses</Heading><Text size="small" leading="compact" className="text-ui-fg-subtle">Agents insert active drafts; managers control this library. Staff must review every response before sending.</Text>
-      <div className="mt-4 space-y-2">{savedQuery.data?.responses.map((response) => <div key={response.id} className="flex items-start justify-between rounded-lg bg-ui-bg-subtle p-3"><div><Text size="small" weight="plus">{response.title}</Text><Text size="xsmall" className="text-ui-fg-subtle">{response.body.slice(0, 120)}</Text></div><Button size="small" variant="danger" onClick={() => removeSaved.mutate(response.id)}>Remove</Button></div>)}</div>
-      <div className="mt-5 grid gap-3"><Field label="Response title"><Input value={savedTitle} onChange={(event) => setSavedTitle(event.target.value)} /></Field><Field label="Response text"><Textarea value={savedBody} onChange={(event) => setSavedBody(event.target.value)} /></Field><Button size="small" disabled={savedTitle.trim().length < 3 || savedBody.trim().length < 3} isLoading={createSaved.isPending} onClick={() => createSaved.mutate()}>Create saved response</Button></div>
-    </Container>
-  </div>
+        <div className="space-y-2">
+          {savedQuery.data?.responses.map((response) => (
+            <div key={response.id} className="flex items-start justify-between rounded-lg border border-slate-200/80 bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
+              <div>
+                <span className="text-xs font-bold text-slate-900">{response.title}</span>
+                <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{response.body}</p>
+              </div>
+              <Button size="small" variant="danger" onClick={() => removeSaved.mutate(response.id)} className="h-7 text-xs font-semibold ml-4 shrink-0">
+                Remove
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
+          <span className="text-xs font-bold text-slate-900">Create New Canned Response</span>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Response Title">
+              <Input value={savedTitle} onChange={(event) => setSavedTitle(event.target.value)} placeholder="e.g. Standard Protocol Dosage Guidance" className="h-8 text-xs bg-slate-50 border-slate-200/80 focus:bg-white" />
+            </Field>
+            <div className="sm:col-span-2">
+              <Field label="Response Body Text">
+                <Textarea value={savedBody} onChange={(event) => setSavedBody(event.target.value)} placeholder="Enter the complete response text..." className="text-xs bg-slate-50 border-slate-200/80 focus:bg-white min-h-[80px]" />
+              </Field>
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button size="small" disabled={savedTitle.trim().length < 3 || savedBody.trim().length < 3} isLoading={createSaved.isPending} onClick={() => createSaved.mutate()} className="h-8 text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800">
+              Create Saved Response
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) { return <div className="flex flex-col gap-y-2"><Label>{label}</Label>{children}</div> }

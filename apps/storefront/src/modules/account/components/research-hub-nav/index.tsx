@@ -111,7 +111,50 @@ export default function ResearchHubNav() {
   const activeSection = search.get("section") || "overview"
 
   return (
-    <nav aria-label="Research Hub" className="mb-6 w-full">
+    <nav aria-label="Research Hub" className="mb-8 w-full">
+      {/* Research Workspace Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 mb-5 border-b border-slate-200/80 gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="size-11 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white flex items-center justify-center shadow-xs shrink-0 border border-slate-700/50">
+            <svg className="size-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 2v7.31a2 2 0 0 1-.37 1.17l-5.26 7.89A2 2 0 0 0 6 21.5h12a2 2 0 0 0 1.63-3.13l-5.26-7.89A2 2 0 0 1 14 9.31V2" />
+              <path d="M8.5 2h7" />
+              <path d="M7 16h10" />
+            </svg>
+          </div>
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-0.5">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Clinical Research Workspace
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200/80">
+                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Active Protocol Suite
+              </span>
+              <span className="hidden sm:inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 border border-slate-200/80">
+                RUO Standard
+              </span>
+            </div>
+            <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+              Research Hub
+            </h1>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Private protocol adherence, stability telemetry, vial supplies &amp; reconstitution logs
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 text-xs">
+          <LocalizedClientLink
+            href="/account"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 transition-colors shadow-2xs"
+          >
+            <span>&larr; User Account (Orders &amp; Settings)</span>
+          </LocalizedClientLink>
+        </div>
+      </div>
+
+      {/* Horizontal Tabs Navigation */}
       <ul className="flex flex-wrap small:flex-nowrap items-center gap-1.5 p-1.5 bg-slate-100/90 border border-slate-200/80 rounded-2xl overflow-x-auto no-scrollbar w-full">
         {tabs.map((tab) => {
           const isActive = tab.matches.includes(activeSection)

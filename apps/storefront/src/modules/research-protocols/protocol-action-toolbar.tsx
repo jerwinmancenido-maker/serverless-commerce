@@ -78,12 +78,23 @@ export default function ProtocolActionToolbar({
     }
   }, [qrTargetUrl])
 
-  // Extract quick reference values for email
-  const solvent = content.reconstitution_details?.solvent ||
-    content.quick_reference?.find((q) => q.key === "target_solvent")?.value || null
-  const diluentRatio = content.quick_reference?.find((q) => q.key === "diluent_ratio")?.value || null
-  const storage = content.storage_details?.reconstituted ||
-    content.quick_reference?.find((q) => q.key === "liquid_stability")?.value || null
+  // Extract quick reference values for email (case-insensitive and delimiter-agnostic)
+  const getQuickRefValue = (targetKey: string) => {
+    const normalized = targetKey.replace(/[_-]/g, "").toLowerCase()
+    return (
+      content.quick_reference?.find(
+        (q) => q.key?.replace(/[_-]/g, "").toLowerCase() === normalized
+      )?.value || null
+    )
+  }
+
+  const solvent =
+    content.reconstitution_details?.solvent ||
+    getQuickRefValue("target_solvent")
+  const diluentRatio = getQuickRefValue("diluent_ratio")
+  const storage =
+    content.storage_details?.reconstituted ||
+    getQuickRefValue("liquid_stability")
 
   const mailtoUrl = useMemo(() => {
     return buildProtocolMailtoUrl({
@@ -308,7 +319,7 @@ export default function ProtocolActionToolbar({
               </p>
               <p className="text-[11px] text-slate-500 mt-0.5 max-w-xs">
                 {matchedProduct
-                  ? "Point camera to purchase batch-tested HPLC reference vials directly."
+                  ? "Point camera to purchase laboratory reference vials directly."
                   : "Point camera to open the full verified laboratory standard."}
               </p>
             </div>
@@ -399,7 +410,7 @@ export default function ProtocolActionToolbar({
               </h3>
             </div>
             <p className="text-xs text-slate-500 mb-4">
-              Select your publication preset for <strong>{cleanTitle}</strong>. Formatted strictly for ISO 9001:2015 laboratory standards.
+              Select your publication preset for <strong>{cleanTitle}</strong>. Formatted strictly for analytical laboratory research standards.
             </p>
 
             {/* 3 Preset Option Cards */}
@@ -421,7 +432,7 @@ export default function ProtocolActionToolbar({
                         Complete Analytical Monograph
                       </span>
                       <span className="text-[11px] text-slate-600 block mt-0.5">
-                        Comprehensive dossier with molecular identity, volumetric math, vector syringe/atomizer graphics, titration ladder, cold-chain kinetics, and QA sign-off block.
+                        Comprehensive dossier with molecular identity, volumetric math, vector syringe/atomizer graphics, titration ladder, storage degradation kinetics, and QA sign-off block.
                       </span>
                     </div>
                   </div>
@@ -533,7 +544,7 @@ export default function ProtocolActionToolbar({
                     setShowPrintModal(false)
                   }}
                   className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex-1 sm:flex-none"
-                  title="Open standalone cleanroom document in new window"
+                  title="Open standalone protocol document in new window"
                 >
                   <span>↗</span>
                   <span>Print View (New Window)</span>

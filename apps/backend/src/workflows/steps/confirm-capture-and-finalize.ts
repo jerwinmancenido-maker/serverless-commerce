@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/confirm-capture-and-finalize.ts
+ * @module  ManualPaymentModule (Workflows)
+ * @purpose Finalize payment proof and settlement projection with saga compensation rollback.
+ * @contracts
+ *   Step: confirmCaptureAndFinalizeStep
+ */
+
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
 import { MANUAL_PAYMENT_MODULE } from "../../modules/manual-payment"
@@ -6,6 +14,11 @@ import {
   toManualPaymentSettlementEventDml,
 } from "../../modules/manual-payment/contracts/payment-settlement"
 import type ManualPaymentModuleService from "../../modules/manual-payment/service"
+
+type ConfirmCaptureCompensation = {
+  proofId: string
+  settlementId: string
+}
 
 export type ConfirmCaptureAndFinalizeInput = {
   proofId: string
@@ -96,6 +109,28 @@ export const confirmCaptureAndFinalizeStep = createStep(
       captureId: input.captureId,
     }
 
-    return new StepResponse(output)
+    return new StepResponse(output, {
+      proofId: input.proofId,
+      settlementId: input.settlementId,
+    } satisfies ConfirmCaptureCompensation)
+  },
+  async (compensation: ConfirmCaptureCompensation | undefined, { container }) => {
+    if (!compensation) return
+    const service = container.resolve<ManualPaymentModuleService>(MANUAL_PAYMENT_MODULE)
+    const now = new Date()
+    try {
+      await service.updateManualPaymentProofs({
+        id: compensation.proofId,
+        status: "pending",
+      })
+      await service.updateManualPaymentSettlements({
+        id: compensation.settlementId,
+        status: "failed",
+        last_error_category: "internal_error",
+        failed_at: now,
+      })
+    } catch {
+      // Best-effort rollback
+    }
   },
 )

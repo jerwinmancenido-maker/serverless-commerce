@@ -212,7 +212,7 @@ export default function CommunityThread({ countryCode, handle, protocolTitle, th
         </form>
       )}
       <p className="text-center text-[11px] text-ui-fg-muted">
-        Protected peer discussion under DPA 2012. Do not share personally identifiable contact or shipping details.
+        Protected peer discussion. Do not share personally identifiable contact or shipping details.
       </p>
     </div>
   )

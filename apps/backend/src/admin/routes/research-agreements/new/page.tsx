@@ -1,9 +1,19 @@
-import { Button, Container, Heading, Text, toast } from "@medusajs/ui"
+/**
+ * @file    apps/backend/src/admin/routes/research-agreements/new/page.tsx
+ * @module  NewResearchAgreementRoute (Admin Dashboard Extension)
+ * @purpose Admin route for creating and drafting new legal agreement bundles.
+ * @contracts
+ *   API:     POST /admin/research-agreements
+ *   Service: ResearchAgreementModuleService
+ */
+
+import { Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 import { sdk } from "../../../lib/sdk"
+import { PageHeader } from "../../../components/page-header"
 import { ResearchAgreementForm } from "../agreement-form"
 import type { ResearchAgreementBundle, ResearchAgreementFormValue } from "../types"
 
@@ -40,14 +50,34 @@ const NewResearchAgreementPage = () => {
   })
 
   return (
-    <div className="flex flex-col gap-4">
-      <Container className="flex items-start justify-between px-6 py-4">
-        <div><Heading>New customer agreement</Heading><Text size="small" className="mt-1 text-ui-fg-subtle">Create the immutable source bundle customers will review once.</Text></div>
-        <Button asChild size="small" variant="secondary"><Link to="/research-agreements">Cancel</Link></Button>
-      </Container>
-      <Container className="px-6 py-4">
+    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
+      <PageHeader
+        eyebrowText="Customer Agreements · New Compliance Bundle"
+        breadcrumbs={[
+          { label: "Agreements", href: "/research-agreements" },
+          { label: "New Agreement Bundle" },
+        ]}
+        title="New Customer Agreement"
+        subtitle="Create the immutable source bundle customers will review once."
+        actions={
+          <div className="flex items-center gap-2">
+            <Button asChild size="small" variant="secondary">
+              <Link to="/research-agreements">Cancel</Link>
+            </Button>
+            <Button
+              size="small"
+              isLoading={mutation.isPending}
+              disabled={!form.public_version.trim() || !form.terms_url.trim()}
+              onClick={() => mutation.mutate()}
+            >
+              Create Draft
+            </Button>
+          </div>
+        }
+      />
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs">
         <ResearchAgreementForm value={form} onChange={setForm} onSave={() => mutation.mutate()} saving={mutation.isPending} />
-      </Container>
+      </div>
     </div>
   )
 }

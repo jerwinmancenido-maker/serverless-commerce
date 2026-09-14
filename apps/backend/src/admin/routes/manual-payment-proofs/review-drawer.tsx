@@ -134,7 +134,10 @@ export const ManualPaymentProofReviewDrawer = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Content className="sm:max-w-lg">
         <Drawer.Header>
-          <Drawer.Title>Review Manual QR Proof</Drawer.Title>
+          <Drawer.Title className="text-base font-bold text-slate-900">Review Manual QR Proof</Drawer.Title>
+          <Drawer.Description className="text-xs text-slate-500">
+            Inspect customer payment slip, match reference number, and settle order balance.
+          </Drawer.Description>
         </Drawer.Header>
         <Drawer.Body className="flex-1 overflow-auto p-0">
           {detailsQuery.isLoading ? (

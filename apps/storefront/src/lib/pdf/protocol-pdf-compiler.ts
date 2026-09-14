@@ -1,8 +1,8 @@
 /**
  * @file    apps/storefront/src/lib/pdf/protocol-pdf-compiler.ts
  * @module  ProtocolPdfCompiler
- * @purpose Pure-TypeScript Vector PDF Compiler generating publication-grade ISO 9001:2015
- *          and Good Laboratory Practice (GLP) analytical protocol dossiers.
+ * @purpose Pure-TypeScript Vector PDF Compiler generating publication-grade
+ *          Good Laboratory Practice (GLP) analytical protocol dossiers.
  *          Zero external npm packages — outputs authentic %PDF-1.4 binary streams.
  * @contracts
  *   Function: generateProtocolPdfBlob(protocol, preset)
@@ -328,14 +328,16 @@ export function generateProtocolPdfBlob(
   doc.drawLine(margin, cursorY, margin + pWidth, cursorY, { color: COLORS.slate700, lineWidth: 1 })
   cursorY -= 12
 
-  // Key-Value Grid for Identity
+  // Key-Value Grid for Identity (8-item balanced 4x2 GLP specification matrix)
   const identityGrid = [
     { label: "Compound Name", value: cleanTitle },
     { label: "Category", value: content.category || canonical?.category || "Bioactive Peptide" },
-    { label: "Format / Physical State", value: content.product_format || "Lyophilized Powder" },
-    { label: "Analytical Purity", value: content.purity_standard || "≥98.0% (RP-HPLC / ESI-MS)" },
+    { label: "Format / Physical State", value: content.product_format || "Certified Lyophilized Solid Cake" },
+    { label: "Analytical Purity", value: content.purity_standard || canonical?.molecularDetails?.purity || "≥99.0% (RP-HPLC / ESI-MS)" },
     { label: "CAS Registry No.", value: canonical?.molecularDetails?.casNumber || "Verified Reference Standard" },
-    { label: "Sequence / Composition", value: canonical?.molecularDetails?.formula || canonical?.molecularDetails?.sequenceOrFormula || "Analytical Grade" },
+    { label: "PubChem Identifier", value: canonical?.molecularDetails?.pubchemCid ? `CID ${canonical.molecularDetails.pubchemCid}` : "Analytical Standard" },
+    { label: "Sequence / Formula", value: canonical?.molecularDetails?.formula || canonical?.molecularDetails?.sequenceOrFormula || "Analytical Grade" },
+    { label: "Molar Mass", value: canonical?.molecularDetails?.molecularWeightGPerMol ? `${canonical.molecularDetails.molecularWeightGPerMol} g/mol` : canonical?.molecularDetails?.molarMass || "Standard Reference Mass" },
   ]
 
   const colW = pWidth / 2
@@ -462,7 +464,7 @@ export function generateProtocolPdfBlob(
   cursorY -= 10
 
   // Section 4: Aseptic Preparation SOP
-  doc.drawText("4. ASEPTIC LABORATORY COMPOUNDING DIRECTIVE (USP <797>)", margin, cursorY, {
+  doc.drawText("4. ASEPTIC LABORATORY RECONSTITUTION DIRECTIVE", margin, cursorY, {
     font: "/F2",
     size: 9,
     color: COLORS.slate900,
@@ -475,7 +477,7 @@ export function generateProtocolPdfBlob(
     { step: "Step 1: Sanitize", desc: "Decontaminate rubber septums with sterile 70% isopropyl alcohol. Allow 30s to air dry." },
     { step: "Step 2: Stream Wall", desc: "Introduce diluent slowly angling needle against inner vial glass wall. Never spray cake." },
     { step: "Step 3: Dissolve", desc: "Swirl horizontally with gentle circular motions. Do not agitate, vortex, or shake." },
-    { step: "Step 4: Cold-Chain", desc: "Quarantine in laboratory refrigeration at +2°C to +8°C. Protect from direct UV exposure." },
+    { step: "Step 4: Refrigeration", desc: "Quarantine in laboratory refrigeration at +2°C to +8°C. Protect from direct UV exposure." },
   ]
 
   for (const s of sopSteps) {
@@ -560,8 +562,8 @@ export function generateProtocolPdfBlob(
 
     cursorY -= 14
 
-    // Section 6: USP <797> Storage Stability Kinetics
-    doc.drawText("6. USP <797> STORAGE STABILITY & COLD-CHAIN KINETICS", margin, cursorY, {
+    // Section 6: Physicochemical Storage Stability Kinetics
+    doc.drawText("6. PHYSICOCHEMICAL STABILITY & REFRIGERATED KINETICS", margin, cursorY, {
       font: "/F2",
       size: 9,
       color: COLORS.slate900,

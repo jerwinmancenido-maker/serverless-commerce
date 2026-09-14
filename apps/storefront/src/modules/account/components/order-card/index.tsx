@@ -13,6 +13,7 @@ import {
   FulfillmentStatusBadge,
   PaymentStatusBadge,
 } from "@modules/order/components/order-status-badge"
+import { getLineItemThumbnail } from "@lib/util/get-line-item-thumbnail"
 
 type OrderCardProps = {
   order: HttpTypes.StoreOrder
@@ -98,7 +99,7 @@ function getActionBanner(order: HttpTypes.StoreOrder): BannerVariant | null {
   ) {
     return {
       color: "blue",
-      message: "Payment confirmed — being packed for cold-chain dispatch",
+      message: "Payment confirmed — being packed for express dispatch",
       actionText: "View order",
     }
   }
@@ -215,10 +216,10 @@ const OrderCard = ({ order }: OrderCardProps) => {
               className="w-12 h-12 rounded-lg overflow-hidden border border-gray-100 flex-shrink-0 bg-gray-50"
               data-testid="order-item"
             >
-              {i.thumbnail ? (
+              {getLineItemThumbnail(i) ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={i.thumbnail}
+                  src={getLineItemThumbnail(i)}
                   alt={i.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                 />

@@ -56,7 +56,7 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
   const complianceScore = Math.round((passedChecks / checks.length) * 100)
 
   return (
-    <div className="flex flex-col gap-5 sticky top-6">
+    <div className="flex flex-col gap-5 w-full">
       {/* Header Banner */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

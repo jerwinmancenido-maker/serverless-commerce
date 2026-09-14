@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/protocol-visibility.tsx
+ * @module  ProtocolVisibility
+ * @purpose Protocol visibility scopes, community permissions, and public access controls.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols/:id/visibility
+ *   Service: ResearchTrackingModuleService
+ */
+
 import { Button, Input, Label, Switch, Text, Textarea, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"

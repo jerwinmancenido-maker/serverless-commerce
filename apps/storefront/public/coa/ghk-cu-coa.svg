@@ -230,33 +230,31 @@
     <text x="635" y="202" class="pass">PASS</text>
   </g>
 
-  <!-- ==================== SECTION 4: AUTHORIZED SIGN-OFF & ACCREDITATION ==================== -->
+  <!-- ==================== SECTION 4: ANALYTICAL SPECIFICATION & RUO COMPLIANCE ==================== -->
   <g transform="translate(60, 875)">
     <rect x="0" y="0" width="680" height="150" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
     
-    <!-- Signatures -->
-    <g transform="translate(20, 20)">
-      <text x="0" y="15" class="header-meta">ANALYZED BY:</text>
-      <text x="0" y="45" font-family="'Brush Script MT', cursive, sans-serif" font-size="24" fill="#1e293b">Dr. A. Vance</text>
-      <line x1="0" y1="55" x2="190" y2="55" stroke="#94a3b8" stroke-width="1" />
-      <text x="0" y="70" class="value bold">Dr. A. Vance, Ph.D.</text>
-      <text x="0" y="84" class="header-meta">Senior Analytical Chemist, LC/MS</text>
+    <g transform="translate(25, 20)">
+      <text x="0" y="15" class="header-meta">ANALYTICAL ASSAY SPECIFICATION:</text>
+      <text x="0" y="42" class="value bold" font-size="13">RP-HPLC / LC-MS In-Vitro Assay</text>
+      <line x1="0" y1="52" x2="200" y2="52" stroke="#94a3b8" stroke-width="1" />
+      <text x="0" y="70" class="value">Purity Standard: ≥ 98.0% Area</text>
+      <text x="0" y="86" class="header-meta">Reversed-Phase C18 Chromatography</text>
     </g>
 
     <g transform="translate(250, 20)">
-      <text x="0" y="15" class="header-meta">REVIEWED &amp; APPROVED BY:</text>
-      <text x="0" y="45" font-family="'Brush Script MT', cursive, sans-serif" font-size="24" fill="#1e293b">R. Castillo</text>
-      <line x1="0" y1="55" x2="190" y2="55" stroke="#94a3b8" stroke-width="1" />
-      <text x="0" y="70" class="value bold">R. Castillo, RCh, M.Sc.</text>
-      <text x="0" y="84" class="header-meta">Quality Assurance Director</text>
+      <text x="0" y="15" class="header-meta">REGULATORY &amp; COMPLIANCE STATUS:</text>
+      <text x="0" y="42" class="value bold" font-size="13" fill="#b45309">Research Use Only (RUO)</text>
+      <line x1="0" y1="52" x2="200" y2="52" stroke="#94a3b8" stroke-width="1" />
+      <text x="0" y="70" class="value bold" fill="#dc2626">NOT EVALUATED OR APPROVED BY FDA</text>
+      <text x="0" y="86" class="header-meta">In-Vitro Reference Standard Only</text>
     </g>
 
-    <!-- Lab Seal Block (Right) -->
     <g transform="translate(480, 16)">
       <rect x="0" y="0" width="180" height="115" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
       <circle cx="90" cy="42" r="28" fill="none" stroke="#047857" stroke-width="2" stroke-dasharray="4,2" />
-      <text x="90" y="38" text-anchor="middle" class="mono bold" fill="#047857" font-size="8">ISO/IEC 17025</text>
-      <text x="90" y="48" text-anchor="middle" class="mono" fill="#047857" font-size="7">ACCREDITED</text>
+      <text x="90" y="38" text-anchor="middle" class="mono bold" fill="#047857" font-size="8">ANALYTICAL</text>
+      <text x="90" y="48" text-anchor="middle" class="mono" fill="#047857" font-size="7">RUO VALIDATED</text>
       <text x="90" y="85" text-anchor="middle" class="mono bold" fill="#0f172a" font-size="8.5">QC RELEASED</text>
       <text x="90" y="98" text-anchor="middle" class="mono" fill="#64748b" font-size="7">CRYPTOGRAPHIC HASH: 8f2b..4e91</text>
     </g>
@@ -265,10 +263,10 @@
   <!-- Footer Disclaimer -->
   <g transform="translate(60, 1045)">
     <text x="340" y="0" text-anchor="middle" class="header-meta" font-size="8.5">
-      Synthesized strictly for in-vitro laboratory research, analytical calibration, and preclinical scientific investigation. Not for human or veterinary administration.
+      MANDATORY NOTICE: Strictly for in-vitro scientific research and laboratory calibration. Not for human, veterinary, diagnostic, or therapeutic use.
     </text>
     <text x="340" y="14" text-anchor="middle" class="header-meta" font-size="8">
-      Document valid with authorized electronic signature · Page 1 of 1 · © 2026 BioAnalytical Standards Facility
+      Analytical In-Vitro Batch Dossier · Page 1 of 1 · © 2026 Analytical Reference Standards
     </text>
   </g>
 </svg>

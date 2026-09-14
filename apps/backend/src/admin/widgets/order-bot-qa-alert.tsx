@@ -11,7 +11,7 @@ import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { ArrowUpRightOnBox, CircleWarningSolid, Trash } from "@medusajs/icons"
 import type { DetailWidgetProps } from "@medusajs/framework/types"
 import type { HttpTypes } from "@medusajs/types"
-import { Badge, Button, Container, Heading, Text, toast } from "@medusajs/ui"
+import { Badge, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 
@@ -65,7 +65,7 @@ const OrderBotQaAlertWidget = ({
   const runId = (order?.metadata?.bot_run_id as string) || "Unknown Run"
 
   return (
-    <Container className="mb-4 border-2 border-amber-300 bg-amber-50/70 p-4 shadow-sm rounded-xl">
+    <div className="mb-4 rounded-xl border border-amber-300/80 bg-amber-50/80 p-4 shadow-2xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="p-2 rounded-lg bg-amber-100 text-amber-700 mt-0.5">
@@ -125,7 +125,7 @@ const OrderBotQaAlertWidget = ({
           )}
         </div>
       </div>
-    </Container>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 /**
  * @file apps/storefront/src/modules/order/components/order-summary/index.tsx
  * @module OrderComponents (Financial Receipt Summary)
- * @purpose Renders financial breakdown of line items, discounts, shipping, taxes, and grand total with clinical precision.
+ * @purpose Renders financial breakdown of line items, discounts, shipping, and grand total with clinical precision.
  * @contracts Section 3 Clinical Usability Standard | Route: /account/orders/details/[id]
  */
 
@@ -49,12 +49,6 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
             <span>Shipping</span>
             <span className="font-mono tracking-tight font-extrabold">{getAmount(order.shipping_total)}</span>
           </div>
-          {!!order.tax_total && order.tax_total > 0 && (
-            <div className="flex items-center justify-between">
-              <span>Taxes</span>
-              <span className="font-mono tracking-tight font-extrabold">{getAmount(order.tax_total)}</span>
-            </div>
-          )}
         </div>
         <div className="h-px w-full border-b border-gray-200 border-dashed my-4" />
         <div className="flex items-center justify-between text-base-regular text-ui-fg-base mb-2">

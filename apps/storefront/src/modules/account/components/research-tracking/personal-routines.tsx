@@ -619,7 +619,7 @@ function CreateRoutineCard({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
       role="presentation"
       onMouseDown={(e) => {
         if (e.currentTarget === e.target) {

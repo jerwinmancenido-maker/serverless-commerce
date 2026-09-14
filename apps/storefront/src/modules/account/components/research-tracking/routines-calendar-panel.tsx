@@ -721,7 +721,7 @@ export default function RoutinesCalendarPanel({
       {/* Slide-over Action Drawer */}
       {selectedOccurrence ? (
         <div
-          className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs transition-opacity"
+          className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-opacity"
           role="presentation"
           onMouseDown={(event) => {
             if (event.currentTarget === event.target) {

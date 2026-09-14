@@ -1,3 +1,12 @@
+/**
+ * @file    apps/storefront/src/app/[countryCode]/(main)/research-library/page.tsx
+ * @module  ResearchLibraryPage
+ * @purpose Server component loading articles, comparisons, and protocols for the research library directory.
+ * @contracts
+ *   Fetches: listResearchProtocols(), listResearchArticles(), listPeptideComparisons()
+ *   API:     GET /store/research-protocols, GET /store/research-articles, GET /store/peptide-comparisons
+ */
+
 import { Metadata } from "next"
 import { listResearchProtocols } from "@lib/data/research-protocols"
 import { listResearchArticles } from "@lib/data/research-articles"
@@ -11,13 +20,15 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-  searchParams: Promise<{ tab?: string }>
+  params: Promise<{ countryCode: string }>
+  searchParams: Promise<{ tab?: string; compounds?: string }>
 }
 
-export default async function ResearchLibraryPage({ searchParams }: Props) {
-  const [{ tab }, protocolsData, articles, comparisons] = await Promise.all([
+export default async function ResearchLibraryPage({ params, searchParams }: Props) {
+  const [{ countryCode }, { tab, compounds }, protocolsData, articles, comparisons] = await Promise.all([
+    params,
     searchParams,
-    listResearchProtocols(),
+    listResearchProtocols({ limit: 250 }),
     listResearchArticles(),
     listPeptideComparisons(),
   ])
@@ -27,18 +38,22 @@ export default async function ResearchLibraryPage({ searchParams }: Props) {
     tab === "calculator" ||
     tab === "comparisons" ||
     tab === "articles" ||
+    tab === "stacks" ||
+    tab === "chart" ||
     tab === "coa"
       ? tab
       : undefined
 
-  const protocols = protocolsData.protocols
+  const protocols = protocolsData?.protocols || []
 
   return (
     <ResearchLibraryDirectory
       protocols={protocols}
       articles={articles}
       comparisons={comparisons}
+      countryCode={countryCode}
       initialTab={initialTab}
+      initialCompoundsQuery={compounds}
     />
   )
 }

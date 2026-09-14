@@ -1,0 +1,476 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "glossary": [
+    {
+      "term": "Agonist",
+      "category": "Pharmacodynamics",
+      "definition": "A chemical or endogenous ligand that binds to a biological receptor and activates it to produce a physiological response.",
+      "relatedCompounds": [
+        "Semaglutide",
+        "Tirzepatide",
+        "Ipamorelin"
+      ]
+    },
+    {
+      "term": "Antagonist",
+      "category": "Pharmacodynamics",
+      "definition": "A substance that binds to a receptor without triggering activation, thereby competitively or non-competitively blocking agonist action.",
+      "relatedCompounds": [
+        "Naloxone",
+        "Cetrorelix"
+      ]
+    },
+    {
+      "term": "Angiogenesis",
+      "category": "Physiology",
+      "definition": "The physiological formation of new blood vessels from pre-existing microvasculature, vital for tissue granulation and wound healing.",
+      "relatedCompounds": [
+        "BPC-157",
+        "TB-500"
+      ]
+    },
+    {
+      "term": "Bacteriostatic Water (BAC)",
+      "category": "Laboratory Supplies",
+      "definition": "USP grade sterile water containing 0.9% (9 mg/mL) Benzyl Alcohol as an antimicrobial preservative to inhibit bacterial replication in multi-dose vials.",
+      "relatedCompounds": [
+        "Bacteriostatic Water USP"
+      ]
+    },
+    {
+      "term": "Bioavailability",
+      "category": "Pharmacokinetics",
+      "definition": "The fraction of an administered compound that gains entry into systemic circulation intact, dependent on route and degradation kinetics.",
+      "relatedCompounds": [
+        "BPC-157 (Oral/Arg)",
+        "Semaglutide"
+      ]
+    },
+    {
+      "term": "Co-Agonist",
+      "category": "Pharmacodynamics",
+      "definition": "A single engineered biomolecule that concurrently stimulates two distinct receptor classes with balanced or biased potency.",
+      "relatedCompounds": [
+        "Tirzepatide (GIP/GLP-1)",
+        "Retatrutide (GIP/GLP-1/Glucagon)"
+      ]
+    },
+    {
+      "term": "Desensitization",
+      "category": "Pharmacodynamics",
+      "definition": "The progressive loss of receptor responsiveness following prolonged, high-frequency, or continuous ligand saturation.",
+      "relatedCompounds": [
+        "GHRP-6",
+        "CJC-1295"
+      ]
+    },
+    {
+      "term": "Endotoxin (LPS)",
+      "category": "Analytical Quality",
+      "definition": "Lipopolysaccharide complex from Gram-negative bacterial walls. Strict analytical peptide reference lots require <0.02 EU/mg.",
+      "relatedCompounds": [
+        "All Analytical Reference Standards"
+      ]
+    },
+    {
+      "term": "GIP Receptor",
+      "category": "Metabolic Signaling",
+      "definition": "Glucose-dependent Insulinotropic Polypeptide receptor regulating postprandial insulin release and subcutaneous lipid buffering.",
+      "relatedCompounds": [
+        "Tirzepatide",
+        "Retatrutide"
+      ]
+    },
+    {
+      "term": "GLP-1 Receptor",
+      "category": "Metabolic Signaling",
+      "definition": "Glucagon-Like Peptide-1 receptor stimulating incretin-mediated glucose control and central hypothalamic satiety signaling.",
+      "relatedCompounds": [
+        "Semaglutide",
+        "Tirzepatide",
+        "Retatrutide"
+      ]
+    },
+    {
+      "term": "Half-Life (t½)",
+      "category": "Pharmacokinetics",
+      "definition": "The duration required for 50% of the active compound to be cleared or metabolized from an in vitro or in vivo biological matrix.",
+      "relatedCompounds": [
+        "Semaglutide (~168 hrs)",
+        "BPC-157 (~4 hrs)"
+      ]
+    },
+    {
+      "term": "HPLC Purity",
+      "category": "Analytical Quality",
+      "definition": "High-Performance Liquid Chromatography area percentage measuring chemical purity, sequence fidelity, and related substance limits (≥99.0%).",
+      "relatedCompounds": [
+        "All Lots"
+      ]
+    },
+    {
+      "term": "Incretin",
+      "category": "Metabolic Signaling",
+      "definition": "Gut-derived metabolic hormones (GLP-1, GIP) released after nutrient ingestion that potentiate insulin secretion and delay gastric emptying.",
+      "relatedCompounds": [
+        "Semaglutide",
+        "Tirzepatide",
+        "Cagrilintide"
+      ]
+    },
+    {
+      "term": "Low Dead Space (LDS)",
+      "category": "Laboratory Supplies",
+      "definition": "Syringe design where the plunger seal extends into the needle hub, reducing residual waste volume from ~0.05 mL to <0.005 mL per draw.",
+      "relatedCompounds": [
+        "U-100 LDS Syringes"
+      ]
+    },
+    {
+      "term": "Lyophilization",
+      "category": "Bioprocessing",
+      "definition": "Freeze-drying dehydration process operating under high vacuum and sublimation, stabilizing fragile polypeptide chains into a dry cake.",
+      "relatedCompounds": [
+        "All Lyophilized Vials"
+      ]
+    },
+    {
+      "term": "Mass Spectrometry (ESI-MS)",
+      "category": "Analytical Quality",
+      "definition": "Analytical method measuring the exact mass-to-charge ratio of peptide ions to definitively authenticate molecular formula and mass.",
+      "relatedCompounds": [
+        "All Reference Lots"
+      ]
+    },
+    {
+      "term": "Reconstitution",
+      "category": "Laboratory Procedures",
+      "definition": "The sterile dissolution of dry lyophilized cake by introducing an aqueous solvent (e.g. Bacteriostatic Water) along the inner vial wall.",
+      "relatedCompounds": [
+        "All Compounds"
+      ]
+    },
+    {
+      "term": "Secretagogue",
+      "category": "Endocrinology",
+      "definition": "A compound that induces endogenous cellular release of another physiological hormone (e.g., GHRH analogs triggering pituitary GH pulses).",
+      "relatedCompounds": [
+        "Ipamorelin",
+        "CJC-1295",
+        "Sermorelin"
+      ]
+    },
+    {
+      "term": "Stoichiometry",
+      "category": "Chemistry",
+      "definition": "Quantitative relationship between masses, molecular weights, and solution volumes in analytical dilution calculations.",
+      "relatedCompounds": [
+        "All Protocols"
+      ]
+    },
+    {
+      "term": "Titration",
+      "category": "Pharmacokinetics",
+      "definition": "Stepwise escalation of microgram dosage over defined weekly phases to determine cellular tolerability and prevent receptor down-regulation.",
+      "relatedCompounds": [
+        "Tirzepatide",
+        "Semaglutide",
+        "Retatrutide"
+      ]
+    },
+    {
+      "term": "U-100 Standard",
+      "category": "Laboratory Supplies",
+      "definition": "Calibrated insulin barrel standard where 100 units represents exactly 1.0 mL of liquid volume (1 unit = 0.01 mL).",
+      "relatedCompounds": [
+        "U-100 Syringes"
+      ]
+    },
+    {
+      "term": "Washout Period",
+      "category": "Pharmacodynamics",
+      "definition": "Prescribed rest interval following a research cycle that permits complete metabolic clearance and prevents permanent receptor desensitization.",
+      "relatedCompounds": [
+        "Growth Hormone Secretagogues",
+        "Incretins"
+      ]
+    },
+    {
+      "term": "Khavinson Bioregulation",
+      "category": "Epigenetics & Gerontology",
+      "definition": "Tissue-specific short regulatory peptides (di-, tri-, and tetrapeptides) that cross cellular and nuclear membranes to bind nucleosomal histone complexes, reactivating silenced genes and normalizing cellular protein synthesis.",
+      "relatedCompounds": [
+        "Epithalon",
+        "Vesugen",
+        "Cardiogen",
+        "Cortagen",
+        "Chonluten"
+      ]
+    },
+    {
+      "term": "Amylin Co-Agonism",
+      "category": "Metabolic Signaling",
+      "definition": "Concurrent activation of calcitonin/RAMP receptor complexes alongside GLP-1 receptors, producing cooperative suppression of hypothalamic hunger centers, deceleration of gastric emptying, and reduction in hedonic feeding.",
+      "relatedCompounds": [
+        "CagriSema",
+        "Cagrilintide",
+        "Pramlintide"
+      ]
+    },
+    {
+      "term": "Small-Molecule GLP-1",
+      "category": "Pharmacology",
+      "definition": "Synthetic non-peptide heterocyclic ligands that bind allosterically within the transmembrane pocket of the GLP-1 receptor, achieving high oral bioavailability without requiring permeation enhancers.",
+      "relatedCompounds": [
+        "Orforglipron (LY3502970)"
+      ]
+    },
+    {
+      "term": "PES Membrane Filtration",
+      "category": "Laboratory Consumables",
+      "definition": "Polyethersulfone 0.22-micrometer sterile syringe filtration membranes providing high flow rates and low protein-binding characteristics for cold sterilization of reconstituted research solutions.",
+      "relatedCompounds": [
+        "0.22um PES Syringe Filters"
+      ]
+    },
+    {
+      "term": "Reconstituted Solution Stability",
+      "category": "Storage & Stability",
+      "definition": "The stability window governed by GLP laboratory and ISO standards during which an aqueous peptide solution in Bacteriostatic Water maintains >=95% potency under 2°C–8°C refrigeration.",
+      "relatedCompounds": [
+        "All Reconstituted Compounds"
+      ]
+    },
+    {
+      "term": "Subcutaneous Depot Kinetics",
+      "category": "Pharmacokinetics",
+      "definition": "Sustained interstitial release of therapeutic macromolecules from subcutaneous adipose tissue into local capillary networks, blunting plasma Cmax spikes and extending systemic duration.",
+      "relatedCompounds": [
+        "Semaglutide",
+        "Tirzepatide",
+        "Retatrutide"
+      ]
+    },
+    {
+      "term": "Actomyosin Cross-Bridge Remodeling",
+      "category": "Tissue Repair",
+      "definition": "Cellular process of actin filament sequestration and microvascular alignment driven by Thymosin Beta-4 and BPC-157, preventing disordered keloid scar formation while restoring biomechanical elasticity.",
+      "relatedCompounds": [
+        "TB-500",
+        "BPC-157",
+        "Wolverine Blend"
+      ]
+    },
+    {
+      "term": "Epigenetic Telomerase Reactivation",
+      "category": "Cellular Longevity",
+      "definition": "Direct binding of Ala-Glu-Asp-Gly (Epithalon) to telomeric and promoter chromatin regions, inducing transcription of the catalytic subunit of telomerase (hTERT) in somatic cells.",
+      "relatedCompounds": [
+        "Epithalon"
+      ]
+    },
+    {
+      "term": "Mitochondrial Uncoupling",
+      "category": "Cellular Bioenergetics",
+      "definition": "The deliberate dissipation of the proton motive gradient across the inner mitochondrial membrane via protonophore molecules (BAM15), burning calories as heat without hyperthermic toxicity.",
+      "relatedCompounds": [
+        "BAM15",
+        "MOTS-c"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "category": "Reconstitution & Handling",
+      "questions": [
+        {
+          "q": "How much Bacteriostatic Water should I add to a 10mg peptide vial?",
+          "a": "For most 10mg vials (such as BPC-157 or TB-500), adding 2.0 mL of Bacteriostatic Water USP creates an ideal concentration of 5.0 mg/mL (5,000 mcg/mL). At this concentration, each 1.0 unit on a U-100 syringe represents exactly 50 mcg, making a standard 250 mcg dose exactly 5.0 units."
+        },
+        {
+          "q": "Why is it dangerous to shake a peptide vial after adding water?",
+          "a": "Peptides consist of delicate linear amino acid chains stabilized by weak hydrogen and disulfide bonds. Shaking, swirling violently, or vortexing creates severe mechanical shear forces and foaming, causing peptide cleavage, aggregation, and loss of biological integrity. Always roll the vial gently between your palms."
+        },
+        {
+          "q": "Can I use plain sterile water instead of Bacteriostatic Water?",
+          "a": "Plain sterile water contains no preservative. Once punctured, bacterial endotoxins can multiply within 24–48 hours. Bacteriostatic Water USP contains 0.9% Benzyl Alcohol, preventing bacterial growth and maintaining sterile stability for 21–28 days refrigerated at 2°C–8°C."
+        },
+        {
+          "q": "What should I do if the peptide solution appears cloudy or has floaters?",
+          "a": "A properly reconstituted peptide must be 100% crystal-clear and free of particulates. If cloudiness persists after gentle rolling, it indicates either incomplete dissolution, solvent pH incompatibility, or denaturation. Do not use cloudy solutions."
+        },
+        {
+          "q": "Why do Low Dead Space (LDS) syringes matter for expensive peptide research?",
+          "a": "Standard detachable-needle syringes retain up to 0.08 mL (8 units) of fluid inside the needle hub after full depression. With a high-concentration 10 mg/mL solution, that discarded dead space represents 800 mcg of peptide wasted per injection. PepStack LDS syringes integrate the needle directly into the barrel, reducing dead space to under 0.005 mL (<0.5 units) to conserve maximum active compound."
+        },
+        {
+          "q": "What is the difference between BPC-157 Arginate salt and standard BPC-157 Acetate?",
+          "a": "Standard BPC-157 is synthesized as an acetate salt, which is optimal for subcutaneous injection but hydrolyzes rapidly in gastric acid (pH <2.0). BPC-157 Arginate is a stabilized L-arginine salt that survives simulated gastric juice for over 5 hours, making it the premier benchmark for oral solution delivery and lower GI tract research."
+        }
+      ]
+    },
+    {
+      "category": "Cold-Chain Logistics & Delivery",
+      "questions": [
+        {
+          "q": "How are peptide orders shipped within Metro Manila and nationwide?",
+          "a": "Metro Manila orders are dispatched via direct express courier inside thermal barrier insulated packaging with cold gel buffers. Nationwide provincial deliveries are handled via J&T Express with priority tracking."
+        },
+        {
+          "q": "Will ambient tropical heat in the Philippines degrade the powder during transit?",
+          "a": "In their lyophilized (freeze-dried) cake state, peptides are thermodynamically stable and withstand ambient temperatures (20°C–25°C) for up to 72–96 hours without measurable loss of purity. Refrigeration (2°C–8°C) is strictly required only after adding diluent."
+        },
+        {
+          "q": "What should I do immediately upon receiving my package?",
+          "a": "Unpack the shipment immediately and transfer all unopened lyophilized peptide vials into a -20°C freezer (for long-term storage up to 36 months) or a 2°C–8°C refrigerator (for use within 6–12 months). Keep vials protected from UV light."
+        },
+        {
+          "q": "How does aqueous stability dating apply to reconstituted peptide multi-dose vials?",
+          "a": "Under standard GLP laboratory protocols for multi-dose preserved vials, solutions reconstituted with 0.9% Benzyl Alcohol (Bacteriostatic Water) maintained under continuous refrigeration (2°C–8°C) possess a validated 28-day analytical stability window. Freezing reconstituted solutions is strictly discouraged, as ice crystal formation shears peptide bonds."
+        }
+      ]
+    },
+    {
+      "category": "Payment & Settlement",
+      "questions": [
+        {
+          "q": "What payment methods are supported in the Philippines?",
+          "a": "We support instant QR Ph (interoperable across all Philippine banking apps and e-wallets), GCash, Maya, and manual online bank transfers (BDO, BPI, UnionBank)."
+        },
+        {
+          "q": "How does automated payment verification work?",
+          "a": "When paying via QR Ph or GCash, upload your transaction reference or receipt screenshot at checkout. Our automated settlement bot verifies the reference ID against the transaction ledger, updating your order to 'Payment Verified' within minutes."
+        }
+      ]
+    },
+    {
+      "category": "Regulatory & Quality Standards",
+      "questions": [
+        {
+          "q": "Are these compounds approved for human consumption?",
+          "a": "Strictly NO. All compounds, formulations, and diluents distributed by PepStack Labs are manufactured exclusively for in vitro laboratory research, analytical chemical assays, and receptor affinity studies. They are not intended for human or animal diagnostic, therapeutic, or clinical administration."
+        },
+        {
+          "q": "How can I verify the purity of my batch?",
+          "a": "Every batch produced is tested via Reverse-Phase High-Performance Liquid Chromatography (RP-HPLC) and Electrospray Ionization Mass Spectrometry (ESI-MS). You can view third-party Certificates of Analysis directly in our CoA Directory (/research-library#coa)."
+        },
+        {
+          "q": "Why is a 4-week stepwise titration strictly enforced for dual/triple incretins?",
+          "a": "GLP-1, GIP, and Amylin receptors in the area postrema and enteric nervous system require progressive receptor adaptation. Escalating doses at 4-week intervals (e.g. 2.5mg -> 5.0mg -> 7.5mg for Tirzepatide) prevents acute receptor saturation, severe nausea, and vomiting while ensuring steady-state pharmacokinetics."
+        }
+      ]
+    }
+  ],
+  "storageGuidelines": {
+    "tiers": [
+      {
+        "tempRange": "-20°C to -80°C",
+        "label": "Deep Cryo Freezer",
+        "state": "Lyophilized Cake (Dry Powder)",
+        "stabilityWindow": "24 to 36 Months",
+        "notes": "Maximum thermodynamic stability. Protect from freeze-thaw cycles and direct light."
+      },
+      {
+        "tempRange": "2°C to 8°C",
+        "label": "Laboratory Refrigerator",
+        "state": "Lyophilized Cake (Dry Powder)",
+        "stabilityWindow": "12 to 18 Months",
+        "notes": "Stable medium-term preservation prior to solvent reconstitution."
+      },
+      {
+        "tempRange": "2°C to 8°C",
+        "label": "Laboratory Refrigerator",
+        "state": "Reconstituted Aqueous Solution (with BAC Water)",
+        "stabilityWindow": "21 to 28 Days",
+        "notes": "Benzyl alcohol prevents bacterial replication; slow hydrolytic degradation begins."
+      },
+      {
+        "tempRange": "20°C to 25°C",
+        "label": "Ambient Courier Transit",
+        "state": "Insulated Lyophilized Cake",
+        "stabilityWindow": "48 to 72 Hours",
+        "notes": "Safe transit window for Metro Manila and nationwide express courier dispatch."
+      },
+      {
+        "tempRange": ">37°C",
+        "label": "Heat Stress / Direct Sunlight",
+        "state": "Any Physical State",
+        "stabilityWindow": "<6 Hours",
+        "notes": "Severe degradation hazard. Thermal breakdown of peptide bonds and precipitation."
+      }
+    ],
+    "fragilityRankings": {
+      "high": [
+        "CJC-1295 No DAC",
+        "GHRP-2",
+        "GHRP-6",
+        "GHK-Cu Copper Tripeptide",
+        "Epithalon"
+      ],
+      "moderate": [
+        "BPC-157",
+        "TB-500",
+        "Semaglutide",
+        "Tirzepatide",
+        "Retatrutide",
+        "NAD+"
+      ],
+      "low": [
+        "PT-141 (Bremelanotide)",
+        "Melanotan II",
+        "MOTS-c",
+        "Selank",
+        "Semax"
+      ]
+    }
+  },
+  "beginnerSopSteps": [
+    {
+      "step": 1,
+      "title": "Sterile Workstation & Disinfection",
+      "instruction": "Clean laboratory benchtop with 70% Isopropyl Alcohol (IPA). Inspect the glass vial for micro-cracks. Pop the plastic flip-top seal and vigorously swab the rubber septum with a sterile alcohol pad. Allow 30 seconds to air-dry completely."
+    },
+    {
+      "step": 2,
+      "title": "Diluent Draw & Vacuum Management",
+      "instruction": "Using a sterile 20G–22G reconstitution syringe, draw the exact volume of Bacteriostatic Water USP (typically 2.0 mL for a 10mg vial). Note that lyophilized vials are factory-sealed under vacuum; maintain firm grip on the plunger to avoid sudden snap-back."
+    },
+    {
+      "step": 3,
+      "title": "45° Glass Wall Injection",
+      "instruction": "Insert the needle through the center of the rubber stopper at a 45-degree angle pointing directly against the inner glass wall. Slowly depress plunger so diluent runs smoothly down the glass. NEVER spray diluent directly onto the powder cake, as impact causes protein shearing."
+    },
+    {
+      "step": 4,
+      "title": "Circular Rolling Dissolution",
+      "instruction": "Withdraw needle. Gently roll the vial horizontally between your palms or in slow circular motions on the benchtop for 60–90 seconds. NEVER shake, shake-mix, or vortex. Once solution is 100% transparent and particulate-free, transfer immediately to 2°C–8°C refrigeration."
+    }
+  ],
+  "syringeSpecs": [
+    {
+      "capacity": "0.3 mL",
+      "units": 30,
+      "tickInterval": "1 Unit (0.01 mL)",
+      "needle": "31G × 5/16\" (8mm)",
+      "recommendedDoseRange": "50 mcg – 300 mcg",
+      "bestFor": "Micro-precision dosing, daily GHRH/GHRP secretagogues, and low-volume titrations."
+    },
+    {
+      "capacity": "0.5 mL",
+      "units": 50,
+      "tickInterval": "1 Unit (0.01 mL)",
+      "needle": "31G × 5/16\" (8mm)",
+      "recommendedDoseRange": "250 mcg – 1,000 mcg",
+      "bestFor": "Standard laboratory workhorse for BPC-157, TB-500, and weekly metabolic incretins."
+    },
+    {
+      "capacity": "1.0 mL",
+      "units": 100,
+      "tickInterval": "2 Units (0.02 mL)",
+      "needle": "30G × 1/2\" (12.7mm)",
+      "recommendedDoseRange": "1,000 mcg – 5,000 mcg",
+      "bestFor": "High-volume diluent transfers, large-dose GHK-Cu matrix protocols, and multi-vial reconstitution."
+    }
+  ]
+}

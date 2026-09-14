@@ -10,6 +10,7 @@ import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
 import SupportPanel from "@modules/layout/components/support-panel"
 import { retrieveSupportConfiguration } from "@lib/data/customer-support"
+import FirstVisitDisclaimerModal from "@modules/layout/components/first-visit-disclaimer-modal"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -50,6 +51,7 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
           configuration={supportConfiguration}
         />
       ) : null}
+      <FirstVisitDisclaimerModal />
       <Footer />
     </>
   )

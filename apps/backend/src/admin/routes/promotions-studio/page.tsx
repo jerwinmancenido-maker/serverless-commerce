@@ -21,19 +21,19 @@ import { sdk } from "../../lib/sdk"
 
 const DEFAULT_PROMOTION_STATE: PromotionStudioState = {
   type: "percentage",
-  code: "VIP-SUMMER-20",
-  title: "VIP Summer Peptide Protocol (20% Off)",
-  description: "Exclusive compounding voucher for verified research institutions.",
-  value: 20,
+  code: "",
+  title: "",
+  description: "",
+  value: 0,
   currencyCode: "PHP",
   allocation: "across",
-  minOrderValue: 3500,
-  targetCategories: ["peptides"],
+  minOrderValue: 0,
+  targetCategories: [],
   customerGroups: [],
   startDate: new Date().toISOString().slice(0, 10),
-  endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-  hasEndDate: true,
-  maxRedemptions: 150,
+  endDate: "",
+  hasEndDate: false,
+  maxRedemptions: null,
   maxPerCustomer: 1,
 }
 
@@ -189,7 +189,7 @@ export const PromotionsStudioPage: React.FC = () => {
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-24">
       {/* ── TOP STUDIO NAVIGATION BAR ── */}
       <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-6 py-3.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="w-full flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -242,7 +242,7 @@ export const PromotionsStudioPage: React.FC = () => {
 
       {/* ── RESTORED DRAFT BANNER ── */}
       {!isEditMode && draftRestored && (
-        <div className="max-w-7xl mx-auto px-6 pt-4">
+        <div className="w-full px-6 pt-4">
           <div className="bg-blue-50/80 border border-blue-200 text-blue-900 text-xs px-4 py-2.5 rounded-xl flex items-center justify-between">
             <span>
               ℹ️ We automatically restored your unsaved promotion draft from your previous session.
@@ -262,16 +262,16 @@ export const PromotionsStudioPage: React.FC = () => {
       )}
 
       {/* ── MAIN STUDIO WORKSPACE ── */}
-      <div className="max-w-7xl mx-auto px-6 pt-6">
+      <div className="px-6 pt-6 flex flex-col gap-6 w-full">
         {/* 1-Click Clinical Presets */}
         {!isEditMode && (
           <PresetPills onSelectPreset={handleSelectPreset} activeCode={formState.code} />
         )}
 
-        {/* Two-Column Split Canvas */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column (62%): Form Flow */}
-          <div className="lg:col-span-7 xl:col-span-8">
+        {/* Maximized Workspace Canvas */}
+        <div className="w-full flex flex-col gap-8">
+          {/* Primary Form Flow */}
+          <div className="w-full">
             <PromotionStudioForm
               state={formState}
               onChange={handleUpdate}
@@ -279,8 +279,8 @@ export const PromotionsStudioPage: React.FC = () => {
             />
           </div>
 
-          {/* Right Column (38%): Sticky Live Preview & Simulation */}
-          <div className="lg:col-span-5 xl:col-span-4">
+          {/* Live Preview & Simulation Dock */}
+          <div className="w-full mt-6">
             <PromotionLivePreview
               state={formState}
               lastSaved={lastSaved}

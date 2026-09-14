@@ -72,7 +72,7 @@ export const validateUnpaidOrderEligibilityStep = createStep(
       )
     }
 
-    // Safety check: Check if manual payment proof is currently under review (pending)
+    // Safety check: Check if manual payment proof is currently under review or already approved
     const manualPaymentService = container.resolve<ManualPaymentModuleService>(
       MANUAL_PAYMENT_MODULE
     )
@@ -82,10 +82,15 @@ export const validateUnpaidOrderEligibilityStep = createStep(
     )
 
     const activeProof = proofs[0]
-    if (activeProof && activeProof.status === "pending") {
+    if (
+      activeProof &&
+      (activeProof.status === "pending" || activeProof.status === "approved")
+    ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Cannot cancel order ${input.order_id}: payment proof is currently pending review`
+        `Cannot cancel order ${input.order_id}: payment proof is currently ${
+          activeProof.status === "pending" ? "pending review" : "already approved"
+        }`
       )
     }
 

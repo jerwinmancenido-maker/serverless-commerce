@@ -80,7 +80,7 @@ export default async function PaginatedProducts({
           Compounds in this Category are Currently Under Assay
         </h3>
         <p className="mt-2 text-sm text-slate-500 max-w-md leading-relaxed">
-          Analytical reference standards in this research domain are undergoing purity verification and cold-chain formulation.
+          Analytical reference standards in this research domain are undergoing purity verification and laboratory formulation.
         </p>
         <div className="mt-6">
           <LocalizedClientLink href="/store">

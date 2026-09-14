@@ -1,9 +1,17 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/page.tsx
+ * @module  CompoundedProductsCreatePage
+ * @purpose Multi-step compounded product builder and inventory rule authoring wizard.
+ * @contracts
+ *   API:     POST /admin/compounded-products
+ *   Service: CompoundedProductModuleService
+ */
+
 import { Spinner } from "@medusajs/icons"
 import {
   Badge,
   Button,
   Checkbox,
-  Container,
   Drawer,
   Heading,
   Input,
@@ -18,6 +26,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import { PageHeader } from "../../components/page-header"
+import { SovereignPageSkeleton } from "../../components/ui/sovereign-page-skeleton"
+import { CompoundingSubnav } from "../../components/compounding-subnav"
 import { merchantProductErrorMessage } from "../../../lib/admin-product-error"
 import { sdk } from "../../lib/sdk"
 import { loadAllAdminPages } from "../../lib/load-all-pages"
@@ -838,28 +849,28 @@ const CompoundedProductsPage = () => {
 
   if (isLoadingReferenceData) {
     return (
-      <Container className="flex min-h-96 items-center justify-center">
-        <Spinner />
-      </Container>
+      <div className="sovereign-page px-6 pt-6 pb-8">
+        <SovereignPageSkeleton cards={2} rows={8} />
+      </div>
     )
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-y-3 pb-8">
-      <div className="flex flex-col gap-y-1 px-1 py-1">
-        <Heading>Create product</Heading>
-        <Text size="small" leading="compact" className="text-ui-fg-subtle">
-          Add product information, images, variations, and prices.
-        </Text>
-      </div>
+    <div className="sovereign-page px-6 pt-6 pb-8 flex flex-col gap-y-6">
+      <PageHeader
+        title="Create product"
+        subtitle="Add product information, images, variations, and prices."
+        eyebrowText="Compounded Products · Product Builder"
+      />
+      <CompoundingSubnav activeTab="governance" />
 
       {referenceDataError ? (
-        <Container className="px-6 py-4">
+        <div className="rounded-xl border border-rose-200 bg-rose-50/70 p-4 shadow-2xs">
           <Text size="small" className="text-ui-fg-error">
             Required Medusa reference data could not be loaded. Refresh the page
             before creating a product.
           </Text>
-        </Container>
+        </div>
       ) : null}
 
       <div className="grid gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
@@ -1287,7 +1298,7 @@ const CompoundedProductsPage = () => {
         }}
       />
 
-      <Container className="flex flex-col gap-2 border border-ui-border-base px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="sticky bottom-4 z-20 flex flex-col gap-2 rounded-xl border border-slate-200/80 bg-white/95 px-5 py-3.5 shadow-md backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 flex-col gap-y-1">
           {productSaveBlockers.length ? (
             <Text size="small" leading="compact" className="text-ui-fg-error">
@@ -1331,7 +1342,7 @@ const CompoundedProductsPage = () => {
             Save draft
           </Button>
         </div>
-      </Container>
+      </div>
 
       <AdvancedSettingsDrawer
         open={advancedSettingsOpen}

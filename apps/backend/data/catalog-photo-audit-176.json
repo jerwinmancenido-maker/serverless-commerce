@@ -1,0 +1,1416 @@
+{
+  "total": 176,
+  "existingCount": 176,
+  "missingCount": 0,
+  "existing": [
+    {
+      "index": 1,
+      "handle": "5-amino-1mq",
+      "title": "5-Amino-1MQ",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "5-amino-1mq",
+      "exists": true
+    },
+    {
+      "index": 2,
+      "handle": "aod-9604",
+      "title": "AOD-9604",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "aod-9604",
+      "exists": true
+    },
+    {
+      "index": 3,
+      "handle": "cagrilintide",
+      "title": "Cagrilintide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "cagrilintide",
+      "exists": true
+    },
+    {
+      "index": 4,
+      "handle": "lemon-bottle",
+      "title": "Lemon Bottle",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "lemon-bottle",
+      "exists": true
+    },
+    {
+      "index": 5,
+      "handle": "lipo-c-b12",
+      "title": "Lipo-C + B12",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "lipo-c-b12",
+      "exists": true
+    },
+    {
+      "index": 6,
+      "handle": "mots-c",
+      "title": "MOTS-C",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "mots-c",
+      "exists": true
+    },
+    {
+      "index": 7,
+      "handle": "retatrutide",
+      "title": "Retatrutide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "retatrutide",
+      "exists": true
+    },
+    {
+      "index": 8,
+      "handle": "rtt60",
+      "title": "RTT60",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "rtt60",
+      "exists": true
+    },
+    {
+      "index": 9,
+      "handle": "semaglutide",
+      "title": "Semaglutide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "semaglutide",
+      "exists": true
+    },
+    {
+      "index": 10,
+      "handle": "tirzepatide",
+      "title": "Tirzepatide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "tirzepatide",
+      "exists": true
+    },
+    {
+      "index": 11,
+      "handle": "ara-290",
+      "title": "ARA-290",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "ara-290",
+      "exists": true
+    },
+    {
+      "index": 12,
+      "handle": "bpc-157-vial",
+      "title": "BPC-157",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "bpc-157-vial",
+      "exists": true
+    },
+    {
+      "index": 13,
+      "handle": "adamax-1032",
+      "title": "ADAMAX 1032",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "adamax-1032",
+      "exists": true
+    },
+    {
+      "index": 14,
+      "handle": "dihexa",
+      "title": "DIHEXA",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "dihexa",
+      "exists": true
+    },
+    {
+      "index": 15,
+      "handle": "pe-22-28",
+      "title": "PE-22-28",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "pe-22-28",
+      "exists": true
+    },
+    {
+      "index": 16,
+      "handle": "pinealon",
+      "title": "Pinealon",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "pinealon",
+      "exists": true
+    },
+    {
+      "index": 17,
+      "handle": "selank",
+      "title": "Selank",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "selank",
+      "exists": true
+    },
+    {
+      "index": 18,
+      "handle": "semax",
+      "title": "Semax",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "semax",
+      "exists": true
+    },
+    {
+      "index": 19,
+      "handle": "selank-semax-combo",
+      "title": "Selank + Semax Combo",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "selank-semax-combo",
+      "exists": true
+    },
+    {
+      "index": 20,
+      "handle": "cjc-1295-ipamorelin",
+      "title": "CJC-1295 + Ipamorelin",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "cjc-1295-ipamorelin",
+      "exists": true
+    },
+    {
+      "index": 21,
+      "handle": "ghrp-2",
+      "title": "GHRP-2",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "ghrp-2",
+      "exists": true
+    },
+    {
+      "index": 22,
+      "handle": "ghrp-6",
+      "title": "GHRP-6",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "ghrp-6",
+      "exists": true
+    },
+    {
+      "index": 23,
+      "handle": "hgh-somatropin",
+      "title": "HGH",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "hgh-somatropin",
+      "exists": true
+    },
+    {
+      "index": 24,
+      "handle": "igf-1-lr3",
+      "title": "IGF-1 LR3",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "igf-1-lr3",
+      "exists": true
+    },
+    {
+      "index": 25,
+      "handle": "igf-des",
+      "title": "IGF-DES",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "igf-des",
+      "exists": true
+    },
+    {
+      "index": 26,
+      "handle": "ipamorelin",
+      "title": "Ipamorelin",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "ipamorelin",
+      "exists": true
+    },
+    {
+      "index": 27,
+      "handle": "tesamorelin",
+      "title": "Tesamorelin",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "tesamorelin",
+      "exists": true
+    },
+    {
+      "index": 28,
+      "handle": "ti15",
+      "title": "TI15",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "ti15",
+      "exists": true
+    },
+    {
+      "index": 29,
+      "handle": "aicar",
+      "title": "AICAR",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "aicar",
+      "exists": true
+    },
+    {
+      "index": 30,
+      "handle": "epithalon",
+      "title": "Epithalon",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "epithalon",
+      "exists": true
+    },
+    {
+      "index": 31,
+      "handle": "glutathione-1500mg",
+      "title": "Glutathione",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "glutathione-1500mg",
+      "exists": true
+    },
+    {
+      "index": 32,
+      "handle": "nad-plus-500mg",
+      "title": "NAD+",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "nad-plus-500mg",
+      "exists": true
+    },
+    {
+      "index": 33,
+      "handle": "ss-31",
+      "title": "SS-31",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "ss-31",
+      "exists": true
+    },
+    {
+      "index": 34,
+      "handle": "cuv100-ghk-cu-kpv",
+      "title": "CUV100",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "cuv100-ghk-cu-kpv",
+      "exists": true
+    },
+    {
+      "index": 35,
+      "handle": "ghk-cu",
+      "title": "GHK-Cu",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "ghk-cu",
+      "exists": true
+    },
+    {
+      "index": 36,
+      "handle": "ghk-cu-anti-aging-serum",
+      "title": "GHK-Cu Anti-Aging Serum",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "ghk-cu-anti-aging-serum",
+      "exists": true
+    },
+    {
+      "index": 37,
+      "handle": "glow70",
+      "title": "GLOW70",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "glow70",
+      "exists": true
+    },
+    {
+      "index": 38,
+      "handle": "snap-8",
+      "title": "SNAP-8",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "snap-8",
+      "exists": true
+    },
+    {
+      "index": 39,
+      "handle": "klow80",
+      "title": "KLOW80",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "klow80",
+      "exists": true
+    },
+    {
+      "index": 40,
+      "handle": "kpv",
+      "title": "KPV",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "kpv",
+      "exists": true
+    },
+    {
+      "index": 41,
+      "handle": "thymosin-alpha-1",
+      "title": "Thymosin Alpha-1",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "thymosin-alpha-1",
+      "exists": true
+    },
+    {
+      "index": 42,
+      "handle": "hcg",
+      "title": "HCG",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "hcg",
+      "exists": true
+    },
+    {
+      "index": 43,
+      "handle": "hmg-75iu",
+      "title": "HMG",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "hmg-75iu",
+      "exists": true
+    },
+    {
+      "index": 44,
+      "handle": "kisspeptin-10",
+      "title": "Kisspeptin-10",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "kisspeptin-10",
+      "exists": true
+    },
+    {
+      "index": 45,
+      "handle": "pt-141",
+      "title": "PT-141",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "pt-141",
+      "exists": true
+    },
+    {
+      "index": 46,
+      "handle": "dsip",
+      "title": "DSIP",
+      "category": "sleep-circadian-research-peptides",
+      "folder": "dsip",
+      "exists": true
+    },
+    {
+      "index": 47,
+      "handle": "bacteriostatic-water",
+      "title": "Bacteriostatic Water",
+      "category": "research-supplies-accessories",
+      "folder": "bacteriostatic-water",
+      "exists": true
+    },
+    {
+      "index": 48,
+      "handle": "peptide-reconstitution-set",
+      "title": "Peptide Reconstitution Set",
+      "category": "research-supplies-accessories",
+      "folder": "peptide-reconstitution-set",
+      "exists": true
+    },
+    {
+      "index": 49,
+      "handle": "reusable-metal-insulin-pen",
+      "title": "Reusable Metal Insulin Pen",
+      "category": "research-supplies-accessories",
+      "folder": "reusable-metal-insulin-pen",
+      "exists": true
+    },
+    {
+      "index": 50,
+      "handle": "50-slot-vial-organizer-box",
+      "title": "50-Slot Vial Organizer Box",
+      "category": "research-supplies-accessories",
+      "folder": "50-slot-vial-organizer-box",
+      "exists": true
+    },
+    {
+      "index": 51,
+      "handle": "custom-mixed-vial-organizer-box",
+      "title": "Custom Mixed Vial Organizer Box",
+      "category": "research-supplies-accessories",
+      "folder": "custom-mixed-vial-organizer-box",
+      "exists": true
+    },
+    {
+      "index": 52,
+      "handle": "clear-nasal-spray-bottles",
+      "title": "Clear Nasal Spray Bottles",
+      "category": "research-supplies-accessories",
+      "folder": "clear-nasal-spray-bottles",
+      "exists": true
+    },
+    {
+      "index": 53,
+      "handle": "ghk-cu-glutathione-bundle",
+      "title": "GHK-Cu + Glutathione Bundle",
+      "category": "multi-compound-research-bundles",
+      "folder": "ghk-cu-glutathione-bundle",
+      "exists": true
+    },
+    {
+      "index": 54,
+      "handle": "epithalon-glutathione-bundle",
+      "title": "Epithalon + Glutathione Bundle",
+      "category": "multi-compound-research-bundles",
+      "folder": "epithalon-glutathione-bundle",
+      "exists": true
+    },
+    {
+      "index": 55,
+      "handle": "epithalon-glutathione-nad-bundle",
+      "title": "Epithalon + Glutathione + NAD+ Bundle",
+      "category": "multi-compound-research-bundles",
+      "folder": "epithalon-glutathione-nad-bundle",
+      "exists": true
+    },
+    {
+      "index": 56,
+      "handle": "glutathione-nad-ghk-cu-bundle",
+      "title": "Glutathione + NAD+ + GHK-Cu Bundle",
+      "category": "multi-compound-research-bundles",
+      "folder": "glutathione-nad-ghk-cu-bundle",
+      "exists": true
+    },
+    {
+      "index": 57,
+      "handle": "nad-ghk-cu-bundle",
+      "title": "NAD+ + GHK-Cu Bundle",
+      "category": "multi-compound-research-bundles",
+      "folder": "nad-ghk-cu-bundle",
+      "exists": true
+    },
+    {
+      "index": 58,
+      "handle": "tb-500",
+      "title": "TB-500",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "tb-500",
+      "exists": true
+    },
+    {
+      "index": 59,
+      "handle": "ghk-basic",
+      "title": "GHK Basic",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "ghk-basic",
+      "exists": true
+    },
+    {
+      "index": 60,
+      "handle": "pentosan-polysulfate",
+      "title": "Pentosan Polysulfate Sodium",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "pentosan-polysulfate",
+      "exists": true
+    },
+    {
+      "index": 61,
+      "handle": "mazdutide",
+      "title": "Mazdutide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "mazdutide",
+      "exists": true
+    },
+    {
+      "index": 62,
+      "handle": "survodutide",
+      "title": "Survodutide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "survodutide",
+      "exists": true
+    },
+    {
+      "index": 63,
+      "handle": "tesofensine",
+      "title": "Tesofensine",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "tesofensine",
+      "exists": true
+    },
+    {
+      "index": 64,
+      "handle": "liraglutide",
+      "title": "Liraglutide",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "liraglutide",
+      "exists": true
+    },
+    {
+      "index": 65,
+      "handle": "cjc-1295-no-dac",
+      "title": "CJC-1295 No DAC",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "cjc-1295-no-dac",
+      "exists": true
+    },
+    {
+      "index": 66,
+      "handle": "cjc-1295-with-dac",
+      "title": "CJC-1295 with DAC",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "cjc-1295-with-dac",
+      "exists": true
+    },
+    {
+      "index": 67,
+      "handle": "sermorelin",
+      "title": "Sermorelin",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "sermorelin",
+      "exists": true
+    },
+    {
+      "index": 68,
+      "handle": "hexarelin",
+      "title": "Hexarelin",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "hexarelin",
+      "exists": true
+    },
+    {
+      "index": 69,
+      "handle": "mk-677",
+      "title": "MK-677",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "mk-677",
+      "exists": true
+    },
+    {
+      "index": 70,
+      "handle": "foxo4-dri",
+      "title": "FOXO4-DRI",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "foxo4-dri",
+      "exists": true
+    },
+    {
+      "index": 71,
+      "handle": "humanin",
+      "title": "Humanin",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "humanin",
+      "exists": true
+    },
+    {
+      "index": 72,
+      "handle": "na-semax-amidate",
+      "title": "N-Acetyl Semax Amidate",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "na-semax-amidate",
+      "exists": true
+    },
+    {
+      "index": 73,
+      "handle": "na-selank-amidate",
+      "title": "N-Acetyl Selank Amidate",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "na-selank-amidate",
+      "exists": true
+    },
+    {
+      "index": 74,
+      "handle": "cerebrolysin",
+      "title": "Cerebrolysin",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "cerebrolysin",
+      "exists": true
+    },
+    {
+      "index": 75,
+      "handle": "p21",
+      "title": "P21",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "p21",
+      "exists": true
+    },
+    {
+      "index": 76,
+      "handle": "noopept",
+      "title": "Noopept",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "noopept",
+      "exists": true
+    },
+    {
+      "index": 77,
+      "handle": "ll-37",
+      "title": "LL-37",
+      "category": "antimicrobial-host-defense-peptides",
+      "folder": "ll-37",
+      "exists": true
+    },
+    {
+      "index": 78,
+      "handle": "melanotan-1",
+      "title": "Melanotan I",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "melanotan-1",
+      "exists": true
+    },
+    {
+      "index": 79,
+      "handle": "melanotan-2",
+      "title": "Melanotan II",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "melanotan-2",
+      "exists": true
+    },
+    {
+      "index": 80,
+      "handle": "oxytocin",
+      "title": "Oxytocin",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "oxytocin",
+      "exists": true
+    },
+    {
+      "index": 81,
+      "handle": "wolverine-blend",
+      "title": "Wolverine Blend",
+      "category": "multi-compound-research-bundles",
+      "folder": "wolverine-blend",
+      "exists": true
+    },
+    {
+      "index": 82,
+      "handle": "tri-heal-blend",
+      "title": "Tri-Heal Matrix Blend",
+      "category": "multi-compound-research-bundles",
+      "folder": "tri-heal-blend",
+      "exists": true
+    },
+    {
+      "index": 83,
+      "handle": "cagrisema-blend",
+      "title": "CagriSema (10mg Dual Incretin Blend)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "cagrisema-blend",
+      "exists": true
+    },
+    {
+      "index": 84,
+      "handle": "orforglipron",
+      "title": "Orforglipron (12mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "orforglipron",
+      "exists": true
+    },
+    {
+      "index": 85,
+      "handle": "pemvidutide",
+      "title": "Pemvidutide (10mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "pemvidutide",
+      "exists": true
+    },
+    {
+      "index": 86,
+      "handle": "cotadutide",
+      "title": "Cotadutide (10mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "cotadutide",
+      "exists": true
+    },
+    {
+      "index": 87,
+      "handle": "ecnoglutide",
+      "title": "Ecnoglutide (10mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "ecnoglutide",
+      "exists": true
+    },
+    {
+      "index": 88,
+      "handle": "slu-pp-332",
+      "title": "SLU-PP-332 (10mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "slu-pp-332",
+      "exists": true
+    },
+    {
+      "index": 89,
+      "handle": "adipotide",
+      "title": "Adipotide / FTPP (10mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "adipotide",
+      "exists": true
+    },
+    {
+      "index": 90,
+      "handle": "l-carnitine",
+      "title": "Injectable L-Carnitine (600mg/mL 10mL Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "l-carnitine",
+      "exists": true
+    },
+    {
+      "index": 91,
+      "handle": "pramlintide",
+      "title": "Pramlintide (5mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "pramlintide",
+      "exists": true
+    },
+    {
+      "index": 92,
+      "handle": "sr9009",
+      "title": "SR9009 / Stenabolic (20mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "sr9009",
+      "exists": true
+    },
+    {
+      "index": 93,
+      "handle": "vesugen",
+      "title": "Vesugen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "vesugen",
+      "exists": true
+    },
+    {
+      "index": 94,
+      "handle": "chonluten",
+      "title": "Chonluten (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "chonluten",
+      "exists": true
+    },
+    {
+      "index": 95,
+      "handle": "cardiogen",
+      "title": "Cardiogen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "cardiogen",
+      "exists": true
+    },
+    {
+      "index": 96,
+      "handle": "cortagen",
+      "title": "Cortagen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "cortagen",
+      "exists": true
+    },
+    {
+      "index": 97,
+      "handle": "livagen",
+      "title": "Livagen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "livagen",
+      "exists": true
+    },
+    {
+      "index": 98,
+      "handle": "ovagen",
+      "title": "Ovagen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "ovagen",
+      "exists": true
+    },
+    {
+      "index": 99,
+      "handle": "prostamax",
+      "title": "Prostamax (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "prostamax",
+      "exists": true
+    },
+    {
+      "index": 100,
+      "handle": "testagen",
+      "title": "Testagen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "testagen",
+      "exists": true
+    },
+    {
+      "index": 101,
+      "handle": "vilon",
+      "title": "Vilon (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "vilon",
+      "exists": true
+    },
+    {
+      "index": 102,
+      "handle": "bronchogen",
+      "title": "Bronchogen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "bronchogen",
+      "exists": true
+    },
+    {
+      "index": 103,
+      "handle": "pancragen",
+      "title": "Pancragen (20mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "pancragen",
+      "exists": true
+    },
+    {
+      "index": 104,
+      "handle": "cortexin",
+      "title": "Cortexin (10mg Khavinson Bioregulator)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "cortexin",
+      "exists": true
+    },
+    {
+      "index": 105,
+      "handle": "peg-mgf",
+      "title": "PEG-MGF (2mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "peg-mgf",
+      "exists": true
+    },
+    {
+      "index": 106,
+      "handle": "mgf",
+      "title": "MGF Native (5mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "mgf",
+      "exists": true
+    },
+    {
+      "index": 107,
+      "handle": "follistatin-344",
+      "title": "Follistatin-344 (1mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "follistatin-344",
+      "exists": true
+    },
+    {
+      "index": 108,
+      "handle": "follistatin-315",
+      "title": "Follistatin-315 (1mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "follistatin-315",
+      "exists": true
+    },
+    {
+      "index": 109,
+      "handle": "ace-031",
+      "title": "Ace-031 / ActRIIB-Fc (1mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "ace-031",
+      "exists": true
+    },
+    {
+      "index": 110,
+      "handle": "gonadorelin",
+      "title": "Gonadorelin / GnRH (2mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "gonadorelin",
+      "exists": true
+    },
+    {
+      "index": 111,
+      "handle": "triptorelin",
+      "title": "Triptorelin (100mcg Single-Dose Reset Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "triptorelin",
+      "exists": true
+    },
+    {
+      "index": 112,
+      "handle": "buserelin",
+      "title": "Buserelin Acetate (5mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "buserelin",
+      "exists": true
+    },
+    {
+      "index": 113,
+      "handle": "fgl",
+      "title": "FGL Peptide (10mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "fgl",
+      "exists": true
+    },
+    {
+      "index": 114,
+      "handle": "vip",
+      "title": "VIP / Vasoactive Intestinal Peptide (5mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "vip",
+      "exists": true
+    },
+    {
+      "index": 115,
+      "handle": "coluracetam",
+      "title": "Coluracetam (20mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "coluracetam",
+      "exists": true
+    },
+    {
+      "index": 116,
+      "handle": "j-147",
+      "title": "J-147 (10mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "j-147",
+      "exists": true
+    },
+    {
+      "index": 117,
+      "handle": "idra-21",
+      "title": "IDRA-21 (10mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "idra-21",
+      "exists": true
+    },
+    {
+      "index": 118,
+      "handle": "emoxypine",
+      "title": "Emoxypine / Mexidol (50mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "emoxypine",
+      "exists": true
+    },
+    {
+      "index": 119,
+      "handle": "pnc-27",
+      "title": "PNC-27 (30mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "pnc-27",
+      "exists": true
+    },
+    {
+      "index": 120,
+      "handle": "neuroxelin",
+      "title": "Neuroxelin (48mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "neuroxelin",
+      "exists": true
+    },
+    {
+      "index": 121,
+      "handle": "bpc-157-arginate",
+      "title": "BPC-157 Arginate Salt (10mg Acid-Stable Vial)",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "bpc-157-arginate",
+      "exists": true
+    },
+    {
+      "index": 122,
+      "handle": "tb-4-full-length",
+      "title": "Thymosin Beta-4 / TB-4 (5mg Full-Length 43AA Vial)",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "tb-4-full-length",
+      "exists": true
+    },
+    {
+      "index": 123,
+      "handle": "ahk-cu",
+      "title": "AHK-Cu / Copper Tripeptide-3 (50mg Research Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "ahk-cu",
+      "exists": true
+    },
+    {
+      "index": 124,
+      "handle": "capixyl-acetyl-tetrapeptide-3",
+      "title": "Capixyl / Acetyl Tetrapeptide-3 (50mg Research Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "capixyl-acetyl-tetrapeptide-3",
+      "exists": true
+    },
+    {
+      "index": 125,
+      "handle": "procapil-biotinoyl-tripeptide-1",
+      "title": "Procapil / Biotinoyl Tripeptide-1 (50mg Research Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "procapil-biotinoyl-tripeptide-1",
+      "exists": true
+    },
+    {
+      "index": 126,
+      "handle": "argireline-amplified",
+      "title": "Argireline Amplified (50mg Research Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "argireline-amplified",
+      "exists": true
+    },
+    {
+      "index": 127,
+      "handle": "matrixyl-synthe-6",
+      "title": "Matrixyl Synthe'6 (50mg Research Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "matrixyl-synthe-6",
+      "exists": true
+    },
+    {
+      "index": 128,
+      "handle": "palmitoyl-tetrapeptide-20",
+      "title": "Palmitoyl Tetrapeptide-20 / Greyverse (50mg Research Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "palmitoyl-tetrapeptide-20",
+      "exists": true
+    },
+    {
+      "index": 129,
+      "handle": "thymulin",
+      "title": "Thymulin / Zinc-FTS (10mg Research Vial)",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "thymulin",
+      "exists": true
+    },
+    {
+      "index": 130,
+      "handle": "thymopentin-tp5",
+      "title": "Thymopentin / TP-5 (10mg Research Vial)",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "thymopentin-tp5",
+      "exists": true
+    },
+    {
+      "index": 131,
+      "handle": "shlp-2",
+      "title": "SHLP-2 (10mg Research Vial)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "shlp-2",
+      "exists": true
+    },
+    {
+      "index": 132,
+      "handle": "urolithin-a",
+      "title": "Urolithin A (500mg Analytical Standard)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "urolithin-a",
+      "exists": true
+    },
+    {
+      "index": 133,
+      "handle": "bam15",
+      "title": "BAM15 (25mg Research Vial)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "bam15",
+      "exists": true
+    },
+    {
+      "index": 134,
+      "handle": "cjc-1295-ghrp-2-blend",
+      "title": "CJC-1295 + GHRP-2 (10mg Dual Blend)",
+      "category": "multi-compound-research-bundles",
+      "folder": "cjc-1295-ghrp-2-blend",
+      "exists": true
+    },
+    {
+      "index": 135,
+      "handle": "tesamorelin-ipamorelin-blend",
+      "title": "Tesamorelin + Ipamorelin (10mg Dual Blend)",
+      "category": "multi-compound-research-bundles",
+      "folder": "tesamorelin-ipamorelin-blend",
+      "exists": true
+    },
+    {
+      "index": 136,
+      "handle": "aod-cjc-ipam-blend",
+      "title": "AOD-9604 + CJC + Ipamorelin (12mg Triple Blend)",
+      "category": "multi-compound-research-bundles",
+      "folder": "aod-cjc-ipam-blend",
+      "exists": true
+    },
+    {
+      "index": 137,
+      "handle": "ghk-cu-bpc-157-blend",
+      "title": "GHK-Cu + BPC-157 (60mg Regeneration Blend)",
+      "category": "multi-compound-research-bundles",
+      "folder": "ghk-cu-bpc-157-blend",
+      "exists": true
+    },
+    {
+      "index": 138,
+      "handle": "epithalon-ta1-blend",
+      "title": "Epithalon + Thymosin Alpha-1 (15mg Longevity Blend)",
+      "category": "multi-compound-research-bundles",
+      "folder": "epithalon-ta1-blend",
+      "exists": true
+    },
+    {
+      "index": 139,
+      "handle": "igf1-lr3-peg-mgf-bundle",
+      "title": "IGF-1 LR3 + PEG-MGF (Multi-Vial Hypertrophy Kit)",
+      "category": "multi-compound-research-bundles",
+      "folder": "igf1-lr3-peg-mgf-bundle",
+      "exists": true
+    },
+    {
+      "index": 140,
+      "handle": "triple-metabolic-bundle",
+      "title": "Triple Metabolic Incretin Stack (Reta + Cagri + AOD)",
+      "category": "multi-compound-research-bundles",
+      "folder": "triple-metabolic-bundle",
+      "exists": true
+    },
+    {
+      "index": 141,
+      "handle": "pes-syringe-filters-022um",
+      "title": "0.22 \u00b5m PES Syringe Filters (Pack of 50)",
+      "category": "research-supplies-accessories",
+      "folder": "pes-syringe-filters-022um",
+      "exists": true
+    },
+    {
+      "index": 142,
+      "handle": "u100-lds-syringes-03ml-100ct",
+      "title": "U-100 LDS Syringes 0.3 mL 31G (Box of 100)",
+      "category": "research-supplies-accessories",
+      "folder": "u100-lds-syringes-03ml-100ct",
+      "exists": true
+    },
+    {
+      "index": 143,
+      "handle": "u100-lds-syringes-05ml-100ct",
+      "title": "U-100 LDS Syringes 0.5 mL 30G (Box of 100)",
+      "category": "research-supplies-accessories",
+      "folder": "u100-lds-syringes-05ml-100ct",
+      "exists": true
+    },
+    {
+      "index": 144,
+      "handle": "blunt-fill-filter-needles-18g",
+      "title": "18G Blunt Fill Filter Needles 5\u00b5m (Box of 100)",
+      "category": "research-supplies-accessories",
+      "folder": "blunt-fill-filter-needles-18g",
+      "exists": true
+    },
+    {
+      "index": 145,
+      "handle": "sterile-amber-vials-10ml",
+      "title": "Sterile Amber Vials 10 mL (Pack of 20)",
+      "category": "research-supplies-accessories",
+      "folder": "sterile-amber-vials-10ml",
+      "exists": true
+    },
+    {
+      "index": 146,
+      "handle": "alcohol-prep-swabs-200ct",
+      "title": "Alcohol Prep Swabs 70% IPA (Box of 200)",
+      "category": "research-supplies-accessories",
+      "folder": "alcohol-prep-swabs-200ct",
+      "exists": true
+    },
+    {
+      "index": 147,
+      "handle": "bacteriostatic-sodium-chloride-30ml",
+      "title": "Bacteriostatic 0.9% NaCl (30 mL Multi-Dose Vial)",
+      "category": "research-supplies-accessories",
+      "folder": "bacteriostatic-sodium-chloride-30ml",
+      "exists": true
+    },
+    {
+      "index": 148,
+      "handle": "cold-chain-transport-case",
+      "title": "Cold-Chain Digital Peltier Cooler Case (2\u00b0C\u20138\u00b0C)",
+      "category": "research-supplies-accessories",
+      "folder": "cold-chain-transport-case",
+      "exists": true
+    },
+    {
+      "index": 149,
+      "handle": "cartalax-20mg",
+      "title": "Cartalax (20mg Cartilage Bioregulator)",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "cartalax-20mg",
+      "exists": true
+    },
+    {
+      "index": 150,
+      "handle": "bpc-157-tb-500-bundle",
+      "title": "BPC-157 + TB-500 Stack (Dual-Vial Tissue Repair Kit)",
+      "category": "multi-compound-research-bundles",
+      "folder": "bpc-157-tb-500-bundle",
+      "exists": true
+    },
+    {
+      "index": 151,
+      "handle": "cjc-1295-ipamorelin-bundle",
+      "title": "CJC-1295 + Ipamorelin Stack (Dual-Vial GH Axis Kit)",
+      "category": "multi-compound-research-bundles",
+      "folder": "cjc-1295-ipamorelin-bundle",
+      "exists": true
+    },
+    {
+      "index": 152,
+      "handle": "tirzepatide-aod9604-bundle",
+      "title": "Tirzepatide + AOD-9604 Stack (Dual-Vial Metabolic Kit)",
+      "category": "multi-compound-research-bundles",
+      "folder": "tirzepatide-aod9604-bundle",
+      "exists": true
+    },
+    {
+      "index": 153,
+      "handle": "melanotan-2-pt-141-bundle",
+      "title": "Melanotan II + PT-141 Stack (Dual-Vial Melanocortin Kit)",
+      "category": "multi-compound-research-bundles",
+      "folder": "melanotan-2-pt-141-bundle",
+      "exists": true
+    },
+    {
+      "index": 154,
+      "handle": "semax-selank-bundle",
+      "title": "Semax + Selank Stack (Dual-Vial Nootropic Kit)",
+      "category": "multi-compound-research-bundles",
+      "folder": "semax-selank-bundle",
+      "exists": true
+    },
+    {
+      "index": 155,
+      "handle": "b7-33",
+      "title": "B7-33 / Relaxin-2 Receptor Mimetic (10mg Research Vial)",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "b7-33",
+      "exists": true
+    },
+    {
+      "index": 156,
+      "handle": "crystagen-20mg",
+      "title": "Crystagen (20mg Khavinson Bioregulator)",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "crystagen-20mg",
+      "exists": true
+    },
+    {
+      "index": 157,
+      "handle": "n-acetyl-epitalon-amidate-5mg",
+      "title": "N-Acetyl Epitalon Amidate (5mg Research Vial)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "n-acetyl-epitalon-amidate-5mg",
+      "exists": true
+    },
+    {
+      "index": 158,
+      "handle": "thymalin-10mg",
+      "title": "Thymalin (10mg Natural Thymic Complex)",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "thymalin-10mg",
+      "exists": true
+    },
+    {
+      "index": 159,
+      "handle": "dulaglutide",
+      "title": "Dulaglutide / Trulicity Analog (10mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "dulaglutide",
+      "exists": true
+    },
+    {
+      "index": 160,
+      "handle": "retatrutide-cagrilintide-blend-10mg",
+      "title": "Retatrutide + Cagrilintide Blend (10mg Co-Lyophilized Dual Agonist)",
+      "category": "multi-compound-research-bundles",
+      "folder": "retatrutide-cagrilintide-blend-10mg",
+      "exists": true
+    },
+    {
+      "index": 161,
+      "handle": "glp-1-native-5mg",
+      "title": "GLP-1 Native (7-36 Amide) (5mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "glp-1-native-5mg",
+      "exists": true
+    },
+    {
+      "index": 162,
+      "handle": "teriparatide-10mg",
+      "title": "Teriparatide / rhPTH (1-34) (10mg Research Vial)",
+      "category": "healing-tissue-repair-peptides",
+      "folder": "teriparatide-10mg",
+      "exists": true
+    },
+    {
+      "index": 163,
+      "handle": "hgh-fragment-176-191",
+      "title": "HGH Fragment 176-191 Unmodified (5mg Research Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "hgh-fragment-176-191",
+      "exists": true
+    },
+    {
+      "index": 164,
+      "handle": "gdf-8-1mg",
+      "title": "GDF-8 / Myostatin Propeptide (1mg Research Vial)",
+      "category": "growth-hormone-recovery-peptides",
+      "folder": "gdf-8-1mg",
+      "exists": true
+    },
+    {
+      "index": 165,
+      "handle": "acth-1-39-5mg",
+      "title": "ACTH 1-39 (5mg Research Vial)",
+      "category": "immune-inflammation-research-peptides",
+      "folder": "acth-1-39-5mg",
+      "exists": true
+    },
+    {
+      "index": 166,
+      "handle": "dermorphin-5mg",
+      "title": "Dermorphin (5mg Research Vial)",
+      "category": "cognitive-neuroprotective-peptides",
+      "folder": "dermorphin-5mg",
+      "exists": true
+    },
+    {
+      "index": 167,
+      "handle": "epo-3000iu",
+      "title": "EPO / Recombinant Erythropoietin (3000 IU Research Vial)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "epo-3000iu",
+      "exists": true
+    },
+    {
+      "index": 168,
+      "handle": "alprostadil-20mcg",
+      "title": "Alprostadil / PGE1 (20mcg x 5 Vials)",
+      "category": "sexual-reproductive-research-peptides",
+      "folder": "alprostadil-20mcg",
+      "exists": true
+    },
+    {
+      "index": 169,
+      "handle": "melatonin-10mg",
+      "title": "Melatonin (10mg Research Grade Lyophilized)",
+      "category": "sleep-circadian-research-peptides",
+      "folder": "melatonin-10mg",
+      "exists": true
+    },
+    {
+      "index": 170,
+      "handle": "botulinum-toxin-100iu",
+      "title": "Botulinum Toxin Type A (100 IU Research Standard)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "botulinum-toxin-100iu",
+      "exists": true
+    },
+    {
+      "index": 171,
+      "handle": "hyaluronic-acid-5mg",
+      "title": "Hyaluronic Acid Research Matrix (5mg / 5mL Vial)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "hyaluronic-acid-5mg",
+      "exists": true
+    },
+    {
+      "index": 172,
+      "handle": "hhb-blend-10mg",
+      "title": "HHB Complex (10mg Hair, Skin & Nails Multi-Peptide Blend)",
+      "category": "skin-hair-cosmetic-peptides",
+      "folder": "hhb-blend-10mg",
+      "exists": true
+    },
+    {
+      "index": 173,
+      "handle": "acetic-acid-water-0-6",
+      "title": "0.6% Acetic Acid Water (10 mL Laboratory Reagent)",
+      "category": "research-supplies-accessories",
+      "folder": "acetic-acid-water-0-6",
+      "exists": true
+    },
+    {
+      "index": 174,
+      "handle": "b12-liquid",
+      "title": "Pure Vitamin B12 / Cyanocobalamin (10mg / 10mL Vial)",
+      "category": "longevity-cellular-health-peptides",
+      "folder": "b12-liquid",
+      "exists": true
+    },
+    {
+      "index": 175,
+      "handle": "lc120",
+      "title": "LC120 Lipotropic Research Solution (10 mL Vial)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "lc120",
+      "exists": true
+    },
+    {
+      "index": 176,
+      "handle": "insulin-3ml",
+      "title": "Recombinant Human Insulin (3 mL / 100 IU/mL Research Standard)",
+      "category": "metabolic-weight-management-peptides",
+      "folder": "insulin-3ml",
+      "exists": true
+    }
+  ],
+  "missing": []
+}

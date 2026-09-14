@@ -28,49 +28,18 @@ import { sdk } from "../../lib/sdk"
 
 const DRAFT_STORAGE_KEY = "hacien_price_list_studio_draft_v1"
 
-const DEFAULT_ITEMS: PriceOverrideItem[] = [
-  {
-    productId: "prod_bpc157",
-    productTitle: "BPC-157 5mg Vial",
-    variantId: "variant_bpc157_5mg",
-    variantTitle: "High Purity Lyophilized (99.4%)",
-    sku: "BPC-157-5MG",
-    defaultPrice: 4200,
-    customPrice: 3360, // 20% off
-    estimatedCost: 1680,
-  },
-  {
-    productId: "prod_tb500",
-    productTitle: "TB-500 10mg Vial",
-    variantId: "variant_tb500_10mg",
-    variantTitle: "Sterile Lyophilized Compound",
-    sku: "TB-500-10MG",
-    defaultPrice: 5800,
-    customPrice: 4350, // 25% off
-    estimatedCost: 2200,
-  },
-  {
-    productId: "prod_ghkcu",
-    productTitle: "GHK-Cu 50mg Tripeptide",
-    variantId: "variant_ghkcu_50mg",
-    variantTitle: "Cosmeceutical Grade Powder",
-    sku: "GHK-CU-50MG",
-    defaultPrice: 3200,
-    customPrice: 2560, // 20% off
-    estimatedCost: 1100,
-  },
-]
+const DEFAULT_ITEMS: PriceOverrideItem[] = []
 
 const DEFAULT_STATE: PriceListStudioState = {
   type: "override",
-  title: "B2B Partner Clinic Tier (2026)",
-  description: "Special institutional wholesale pricing for verified compounding clinics.",
+  title: "",
+  description: "",
   status: "active",
   customerGroupIds: [],
   startsAt: new Date().toISOString().slice(0, 10),
   endsAt: "",
   hasEndDate: false,
-  prices: DEFAULT_ITEMS,
+  prices: [],
 }
 
 export const PriceListsStudioPage: React.FC = () => {
@@ -104,12 +73,7 @@ export const PriceListsStudioPage: React.FC = () => {
         }
       })
       .catch(() => {
-        // Fallback default groups if none seeded yet
-        setCustomerGroups([
-          { id: "cg_clinics", name: "Partner Clinics & MDs" },
-          { id: "cg_institutions", name: "Research Institutions" },
-          { id: "cg_vip", name: "VIP Compounding Tier" },
-        ])
+        setCustomerGroups([])
       })
 
     // Fetch catalog products
@@ -121,13 +85,50 @@ export const PriceListsStudioPage: React.FC = () => {
         }
       })
       .catch(() => {
-        // Keep default items
+        setAvailableProducts([])
       })
   }, [])
 
-  // 2. Draft Storage (Load on mount, autosave on change)
+  // 2. Draft Storage & Live Price List Retrieval
   useEffect(() => {
-    if (!isEditMode) {
+    if (isEditMode && priceListId) {
+      sdk.admin.priceList
+        .retrieve(priceListId, { fields: "*prices,*prices.variant,*rules" })
+        .then((res: any) => {
+          const pl = res.price_list
+          if (pl) {
+            const customerGroupRules =
+              pl.rules?.find((r: any) => r.attribute === "customer_group_id")?.value || []
+            const mappedPrices: PriceOverrideItem[] = (pl.prices || []).map((pr: any) => ({
+              productId: pr.variant?.product_id || pr.variant?.product?.id || "",
+              productTitle: pr.variant?.product?.title || "Product",
+              variantId: pr.variant_id,
+              variantTitle: pr.variant?.title || "Variant",
+              sku: pr.variant?.sku || "",
+              defaultPrice: pr.amount || 0,
+              customPrice: pr.amount || 0,
+              estimatedCost: Math.round((pr.amount || 0) * 0.4),
+            }))
+            setFormState({
+              type: pl.type || "override",
+              title: pl.title || "",
+              description: pl.description || "",
+              status: pl.status || "active",
+              customerGroupIds: Array.isArray(customerGroupRules)
+                ? customerGroupRules
+                : [customerGroupRules].filter(Boolean),
+              startsAt: pl.starts_at ? pl.starts_at.slice(0, 10) : "",
+              endsAt: pl.ends_at ? pl.ends_at.slice(0, 10) : "",
+              hasEndDate: Boolean(pl.ends_at),
+              prices: mappedPrices,
+            })
+          }
+        })
+        .catch((err: any) => {
+          console.error("Failed to load price list:", err)
+          toast.error("Failed to load price list.")
+        })
+    } else {
       try {
         const raw = localStorage.getItem(DRAFT_STORAGE_KEY)
         if (raw) {
@@ -141,7 +142,7 @@ export const PriceListsStudioPage: React.FC = () => {
         console.error("Draft load error:", e)
       }
     }
-  }, [isEditMode])
+  }, [isEditMode, priceListId])
 
   useEffect(() => {
     if (!isEditMode && formState) {
@@ -295,7 +296,7 @@ export const PriceListsStudioPage: React.FC = () => {
     <div className="min-h-screen bg-slate-100 text-slate-900 pb-24">
       {/* ── STICKY TOP STUDIO BAR ── */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-6 py-3.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="w-full flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               type="button"
@@ -362,7 +363,7 @@ export const PriceListsStudioPage: React.FC = () => {
       {/* Restored Draft Alert Banner */}
       {draftRestored && (
         <div className="bg-blue-50 border-b border-blue-200 px-6 py-2 text-xs text-blue-900 flex items-center justify-between">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <div className="w-full flex items-center justify-between">
             <span className="flex items-center gap-2 font-medium">
               <CheckCircle className="w-4 h-4 text-blue-600" />
               <span>Restored unpublished draft from your local session.</span>
@@ -383,10 +384,10 @@ export const PriceListsStudioPage: React.FC = () => {
         </div>
       )}
 
-      {/* ── MAIN SPLIT-CANVAS WORKSPACE ── */}
-      <main className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* ── LEFT CANVAS: Configuration & Price Matrix (8 Cols) ── */}
-        <section className="lg:col-span-7 xl:col-span-8 space-y-6">
+      {/* ── MAIN MAXIMIZED WORKSPACE ── */}
+      <main className="w-full px-6 py-6 flex flex-col gap-6">
+        {/* ── PRIMARY CANVAS: Configuration & Price Matrix ── */}
+        <section className="w-full space-y-6">
           {/* Card 1: Pricing Model Selector */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
@@ -564,11 +565,9 @@ export const PriceListsStudioPage: React.FC = () => {
           />
         </section>
 
-        {/* ── RIGHT CANVAS: Live Simulator & Margin Gauge (4-5 Cols) ── */}
-        <aside className="lg:col-span-5 xl:col-span-4 space-y-4">
-          <div className="sticky top-20">
-            <PriceListPreview state={formState} availableCustomerGroups={customerGroups} />
-          </div>
+        {/* ── HORIZONTAL DOCK: Live Simulator & Margin Gauge ── */}
+        <aside className="w-full mt-6">
+          <PriceListPreview state={formState} availableCustomerGroups={customerGroups} />
         </aside>
       </main>
 

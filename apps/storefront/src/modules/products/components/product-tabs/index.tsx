@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/products/components/product-tabs/index.tsx
+ * @module  ProductTabsComponent (Storefront)
+ * @purpose Tabbed interface for product specifications, clinical monographs, protocol monographs, and shipping details.
+ * @contracts
+ *   Fetches: getCompoundProtocol()
+ */
+
 import Back from "@modules/common/icons/back"
 import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
@@ -8,6 +16,7 @@ import ProductInfo from "@modules/products/templates/product-info"
 import { Beaker, DocumentText, CheckCircleSolid, ArrowRightMini } from "@medusajs/icons"
 
 import Accordion from "./accordion"
+import InteractiveSyringeStoichiometry from "@modules/research-protocols/components/interactive-syringe-stoichiometry"
 import { HttpTypes } from "@medusajs/types"
 import { useEffect, useMemo, useState } from "react"
 import { StoreResearchProtocol } from "@lib/data/research-protocols"
@@ -134,7 +143,7 @@ const ProductTabs = ({
   ]
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full">
       {/* Section Eyebrow & Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
         <div>
@@ -254,7 +263,7 @@ const ProductTabs = ({
 // ---------------------------------------------------------------------------
 const ClinicalMonographTabPanel = ({
   article,
-  countryCode = "ph",
+  countryCode: _countryCode = "ph",
 }: {
   article: ResearchArticle
   countryCode?: string
@@ -515,7 +524,7 @@ const ProductSpecsGrid = ({
 
       {compoundProto?.purityStandard && (
         <div className="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
-          <span className="font-semibold text-zinc-900 text-xs">HPLC Purity Standard</span>
+          <span className="font-semibold text-zinc-900 text-xs">Purity Specification</span>
           <p className="text-emerald-800 font-semibold text-xs mt-1">
             {compoundProto.purityStandard}
           </p>
@@ -800,80 +809,186 @@ const ResearchProtocolPanel = ({
       </div>
 
       {/* STAGE 2: In-Vitro Concentration & Assay Schedule */}
-      <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6 space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-white text-xs font-bold font-mono shadow-2xs">
-              2
-            </span>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">
-                Stage 2: In-Vitro Concentration &amp; Assay Schedule
-              </h4>
-              <p className="text-[11px] text-slate-500">
-                Peer-reviewed analytical concentration ranges, in-vitro half-life, and experimental assay schedule.
-              </p>
+      {(() => {
+        const primaryRoute =
+          compoundProto.primaryDeliveryRoute ||
+          compoundProto.dosing?.deliveryRoute ||
+          (compoundProto.oralGuide ? "oral" : compoundProto.nasalGuide ? "nasal" : "subq")
+
+        const routeConfig = {
+          subq: {
+            label: "Subcutaneous (SubQ) Protocol",
+            icon: "💉",
+            badge: "bg-emerald-50 text-emerald-800 border-emerald-200/80",
+          },
+          oral: {
+            label: "Oral Liquid / Suspension Protocol",
+            icon: "🧪",
+            badge: "bg-amber-50 text-amber-800 border-amber-200/80",
+          },
+          nasal: {
+            label: "Intranasal Metered Spray Protocol",
+            icon: "👃",
+            badge: "bg-sky-50 text-sky-800 border-sky-200/80",
+          },
+          topical: {
+            label: "Topical Cosmeceutical Protocol",
+            icon: "🧴",
+            badge: "bg-purple-50 text-purple-800 border-purple-200/80",
+          },
+        }[primaryRoute] || {
+          label: "Subcutaneous (SubQ) Protocol",
+          icon: "💉",
+          badge: "bg-emerald-50 text-emerald-800 border-emerald-200/80",
+        }
+
+        const displayRouteLabel = compoundProto.dosing?.routeLabel || routeConfig.label
+
+        return (
+          <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-white text-xs font-bold font-mono shadow-2xs">
+                  2
+                </span>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="text-sm font-bold text-slate-900">
+                      Stage 2: Dosing Architecture &amp; Titration Timelines
+                    </h4>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${routeConfig.badge}`}>
+                      {routeConfig.icon} {displayRouteLabel}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Peer-reviewed analytical concentration ranges, in-vitro half-life, and experimental assay schedule.
+                  </p>
+                </div>
+              </div>
+              <div className="text-right hidden sm:block">
+                <span className="text-[10px] font-bold text-slate-500 uppercase block">In-Vitro Half-Life</span>
+                <span className="text-xs font-bold text-slate-900 font-mono">{compoundProto.dosing.halfLife}</span>
+              </div>
+            </div>
+
+            {/* Multi-Route Notice */}
+            {compoundProto.deliveryRoutes && compoundProto.deliveryRoutes.length > 1 && (
+              <div className="flex items-center justify-between gap-2 p-3 rounded-xl bg-blue-50/80 border border-blue-200 text-[11px] text-blue-900">
+                <div>
+                  <strong>Multi-Route Literature Profile:</strong> Documented in scientific research for both{" "}
+                  <strong>{compoundProto.deliveryRoutes.map((r) => r.toUpperCase()).join(" & ")}</strong> administration.
+                  Below schedule calibrated for primary <strong>{displayRouteLabel}</strong>.
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-blue-200/80 text-blue-900 px-2 py-0.5 rounded whitespace-nowrap">
+                  Dual-Route Compound
+                </span>
+              </div>
+            )}
+
+            {/* Titration Steps Ladder */}
+            <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs">
+              <table className="table-fixed w-full min-w-[780px] text-left text-xs border-collapse">
+                <colgroup>
+                  <col className="w-[22%]" />
+                  <col className="w-[11%]" />
+                  <col className="w-[21%]" />
+                  <col className="w-[18%]" />
+                  <col className="w-[28%]" />
+                </colgroup>
+                <thead>
+                  <tr className="bg-slate-100/90 text-slate-700 border-b border-slate-200 font-bold uppercase text-[10px] tracking-wider">
+                    <th className="py-3 px-3.5 sm:px-4">Assay Stage</th>
+                    <th className="py-3 px-3.5 sm:px-4">Timeframe</th>
+                    <th className="py-3 px-3.5 sm:px-4">Target Mass / Concentration</th>
+                    <th className="py-3 px-3.5 sm:px-4">Administration Cadence</th>
+                    <th className="py-3 px-3.5 sm:px-4">Assay Focus &amp; Clinical Notes</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {compoundProto.dosing.titrationSteps.map((step, idx) => {
+                    const doseMatch = step.doseDisplay.match(/^(.*?)\s*\((or\s+[^)]+)\)$/i)
+                    const mainDose = doseMatch ? doseMatch[1].trim() : step.doseDisplay
+                    const altDose = doseMatch ? doseMatch[2].trim() : null
+
+                    return (
+                      <tr
+                        key={idx}
+                        className={`hover:bg-slate-50/80 transition-colors ${
+                          step.doseMcg > 0 && idx === 0 ? "bg-emerald-50/20" : ""
+                        }`}
+                      >
+                        <td className="py-3.5 px-3.5 sm:px-4 align-top">
+                          <div className="font-bold text-slate-900 text-xs leading-snug">
+                            {step.stage}
+                          </div>
+                          {idx === 0 && step.doseMcg > 0 && (
+                            <span className="mt-1.5 inline-flex items-center gap-1 rounded bg-emerald-100/80 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200/80">
+                              Starting Baseline
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-3.5 sm:px-4 align-top">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200/80 font-mono text-slate-700 text-[11px] font-semibold whitespace-nowrap shadow-2xs">
+                            {step.timeframe}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-3.5 sm:px-4 align-top">
+                          <div className="flex flex-col items-start gap-1">
+                            <span
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-mono font-bold text-xs whitespace-nowrap shadow-2xs border ${
+                                step.doseMcg > 0
+                                  ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                                  : "bg-slate-100 border-slate-200 text-slate-700"
+                              }`}
+                            >
+                              <span
+                                className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                                  step.doseMcg > 0 ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
+                                }`}
+                              />
+                              <span>{mainDose}</span>
+                            </span>
+                            {altDose && (
+                              <span className="text-[10px] font-mono font-medium text-slate-500 pl-0.5 whitespace-nowrap">
+                                ({altDose})
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-3.5 sm:px-4 align-top">
+                          <div className="text-xs font-semibold text-slate-800 leading-snug">
+                            {step.cadence}
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-3.5 sm:px-4 align-top">
+                          <div className="font-medium text-slate-900 text-xs leading-relaxed">
+                            {step.focus}
+                          </div>
+                          {step.notes && (
+                          <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-slate-50 border border-slate-200/80 p-2 text-[11px] font-mono text-slate-600 leading-relaxed">
+                            <span className="text-emerald-600 font-bold shrink-0 text-xs mt-0.5">💉</span>
+                            <span>{step.notes}</span>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 pt-1">
+              <div>
+                Typical Assay Cycle: <span className="font-semibold text-slate-800">{compoundProto.dosing.typicalProtocolDuration}</span>
+              </div>
+              <div>
+                Receptor Washout Window: <span className="font-semibold text-slate-800">{compoundProto.dosing.washoutPeriod}</span>
+              </div>
             </div>
           </div>
-          <div className="text-right hidden sm:block">
-            <span className="text-[10px] font-bold text-slate-500 uppercase block">In-Vitro Half-Life</span>
-            <span className="text-xs font-bold text-slate-900 font-mono">{compoundProto.dosing.halfLife}</span>
-          </div>
-        </div>
-
-        {/* Titration Steps Ladder */}
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="bg-slate-100/90 text-slate-700 border-b border-slate-200 font-bold uppercase text-[10px] tracking-wider">
-                <th className="py-2.5 px-3 sm:px-4">Assay Stage</th>
-                <th className="py-2.5 px-3 sm:px-4">Timeframe</th>
-                <th className="py-2.5 px-3 sm:px-4">Target Concentration / Mass</th>
-                <th className="py-2.5 px-3 sm:px-4">Cadence</th>
-                <th className="py-2.5 px-3 sm:px-4">Assay Focus &amp; Notes</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {compoundProto.dosing.titrationSteps.map((step, idx) => (
-                <tr
-                  key={idx}
-                  className={`hover:bg-slate-50/80 transition-colors ${
-                    step.doseMcg > 0 && idx === 0 ? "bg-emerald-50/30" : ""
-                  }`}
-                >
-                  <td className="py-3 px-3 sm:px-4 font-semibold text-slate-900 whitespace-nowrap">
-                    {step.stage}
-                  </td>
-                  <td className="py-3 px-3 sm:px-4 font-mono text-slate-600 text-[11px]">
-                    {step.timeframe}
-                  </td>
-                  <td className="py-3 px-3 sm:px-4 font-bold text-emerald-800 font-mono whitespace-nowrap">
-                    {step.doseDisplay}
-                  </td>
-                  <td className="py-3 px-3 sm:px-4 text-slate-600 text-[11px]">
-                    {step.cadence}
-                  </td>
-                  <td className="py-3 px-3 sm:px-4 text-slate-600 text-[11px]">
-                    <div className="font-medium text-slate-800">{step.focus}</div>
-                    {step.notes && (
-                      <div className="text-[10px] text-slate-500 mt-0.5">{step.notes}</div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 pt-1">
-          <div>
-            Typical Assay Cycle: <span className="font-semibold text-slate-800">{compoundProto.dosing.typicalProtocolDuration}</span>
-          </div>
-          <div>
-            Receptor Washout Window: <span className="font-semibold text-slate-800">{compoundProto.dosing.washoutPeriod}</span>
-          </div>
-        </div>
-      </div>
+        )
+      })()}
 
       {/* STAGE 3: Volumetric Microliter (µL) Dispensing Matrix */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 sm:p-6 space-y-4">
@@ -895,6 +1010,119 @@ const ResearchProtocolPanel = ({
             100 IU = 1.0 mL (1 IU = 10 µL)
           </span>
         </div>
+
+        {/* Calibrated Hardware Instrument Specification Card */}
+        {compoundProto.syringeGuide && (
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
+                <span className="flex h-5 w-5 items-center justify-center rounded-md bg-sky-100 text-sky-800 text-[10px]">
+                  ⚙️
+                </span>
+                <span>Calibrated Administration Instrument &amp; Needle Hardware Specification</span>
+              </div>
+              <span className="text-[10px] font-mono font-bold text-sky-800 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-md">
+                Laboratory Standard (RUO)
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs">
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Administration Needle</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  {compoundProto.syringeGuide.needleGauge || "31G Ultra-Fine (0.25 mm)"} &times; {compoundProto.syringeGuide.needleLength || '5/16" (8 mm)'}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-0.5">Short subq needle prevents IM penetration</div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hub Retention &amp; Dead Space</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  {compoundProto.syringeGuide.hubType || "Fixed Ultra-Low Dead Space (<0.005 mL)"}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-0.5">Near-zero dead volume peptide entrapment</div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Recommended Barrel Standard</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  {compoundProto.syringeGuide.recommendedBarrel || "0.3 mL (30-unit) or 0.5 mL (50-unit)"}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-0.5">Wide graduations for precision micro-draws</div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Diluent Transfer Needle</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  {compoundProto.syringeGuide.transferNeedle || '21G–23G × 1.5" Sterile Needle'}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-0.5">Preserves fine 31G tip for administration</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Oral Guide Hardware Card if compound supports oral */}
+        {compoundProto.oralGuide && (
+          <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 shadow-2xs space-y-2">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-900">
+                <span>🧪</span>
+                <span>Oral Research Suspension Dispenser Specification</span>
+              </div>
+              <span className="text-[10px] font-mono font-bold text-amber-800 bg-amber-100/80 border border-amber-300 px-2 py-0.5 rounded-md">
+                Needle-Free Oral Pipette
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200">
+                <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Dispenser Standard</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  {compoundProto.oralGuide.deviceLabel || "1.0 mL Calibrated Oral Dropper (0.1 mL marks)"}
+                </div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200">
+                <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Default Vehicle Volume</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  {compoundProto.oralGuide.defaultSuspensionMl || 10} mL liquid vehicle
+                </div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200">
+                <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Administration Mode</div>
+                <div className="font-mono font-bold text-slate-900 text-xs mt-0.5">
+                  Oral research solution (needle-free)
+                </div>
+              </div>
+            </div>
+            {compoundProto.oralGuide.notes && (
+              <p className="text-[11px] text-amber-800 pt-1">
+                <strong>Oral Vehicle Notes:</strong> {compoundProto.oralGuide.notes}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Interactive Syringe Calibration & Reconstitution Stoichiometry */}
+        {compoundProto.syringeGuide && (
+          <InteractiveSyringeStoichiometry
+            compoundId={compoundProto.id}
+            compoundName={compoundProto.compoundName}
+            vialMg={compoundProto.reconstitution.defaultVialNetMg}
+            diluentMl={compoundProto.reconstitution.defaultDiluentMl}
+            concMgMl={compoundProto.reconstitution.resultingConcentrationMgPerMl}
+            standardDoseMcg={compoundProto.dosing.standardDoseMcg}
+            standardDoseDisplay={compoundProto.dosing.standardDoseDisplay}
+            graduations={compoundProto.syringeGuide.graduations}
+            titrationSteps={compoundProto.dosing.titrationSteps}
+            vialStrengthOptions={compoundProto.vialStrengthOptions}
+            reconstitutionOptions={compoundProto.reconstitutionOptions}
+            needleGauge={compoundProto.syringeGuide.needleGauge}
+            needleLength={compoundProto.syringeGuide.needleLength}
+            hubType={compoundProto.syringeGuide.hubType}
+            recommendedBarrel={compoundProto.syringeGuide.recommendedBarrel}
+            transferNeedle={compoundProto.syringeGuide.transferNeedle}
+          />
+        )}
 
         {/* Syringe Tick Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
@@ -1043,7 +1271,7 @@ const CustomerResearchHubPanel = ({
               Customer Research Hub
             </h3>
             <p className="text-xs text-slate-600 mt-1 max-w-2xl leading-relaxed">
-              Every verified procurement unlocks dedicated laboratory toolsets, batch-certified HPLC analytics, and proactive refill telemetry directly in your client dashboard.
+              Every verified procurement unlocks dedicated laboratory toolsets, analytical documentation monographs, and proactive refill telemetry directly in your client dashboard.
             </p>
           </div>
         </div>
@@ -1057,7 +1285,7 @@ const CustomerResearchHubPanel = ({
 
       {/* 3 Value Proposition Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Card 1: Batch HPLC & MS Analytics */}
+        {/* Card 1: Analytical Monograph Documentation */}
         <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 space-y-3 hover:border-slate-300 transition-colors">
           <div className="flex items-center justify-between">
             <span className="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-emerald-100/80 text-emerald-800">
@@ -1066,15 +1294,15 @@ const CustomerResearchHubPanel = ({
               </svg>
             </span>
             <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 uppercase">
-              &ge;99.0% Certified
+              Reference Standard
             </span>
           </div>
           <div>
             <h4 className="text-xs font-bold text-slate-900">
-              Batch HPLC &amp; Mass Spectrometry
+              Analytical Monograph &amp; Documentation
             </h4>
             <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
-              Download third-party analytical release certificates tied to your order lot number. Verify chromatographic purity profiles and molecular weight identification before protocol initiation.
+              Access analytical release documentation and reference monographs tied to your order lot number. Review molecular specifications and handling guidelines before protocol initiation.
             </p>
           </div>
         </div>
@@ -1183,7 +1411,7 @@ const AsepticSuppliesGuide = ({
                 Laboratory Equipment &amp; Consumables SOP
               </span>
               <span className="text-[11px] text-slate-500 font-medium">
-                USP &lt;797&gt; / &lt;800&gt; Compliant Standard
+                GLP Laboratory Consumables Standard
               </span>
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-slate-900 mt-1">
@@ -1351,8 +1579,6 @@ const AsepticSuppliesGuide = ({
 // ---------------------------------------------------------------------------
 // 4. Interactive Reconstitution Calculator (Compound-Aware Defaults)
 // ---------------------------------------------------------------------------
-const DILUENT_VOLUMES_ML = [1, 2, 3, 4, 5, 6, 8, 10]
-
 const PeptideReconstitutionCalculator = ({
   product,
   compoundProto,
@@ -1488,9 +1714,6 @@ const PeptideReconstitutionCalculator = ({
   }, [compoundProto.id, defaultContent, compoundProto.reconstitution.defaultDiluentMl, compoundProto.dosing.standardDoseMcg, compoundProto.deliveryRoutes, compoundProto.nasalGuide?.defaultDiluentMl])
 
   const concentration = selectedContent.mcg / diluentMl
-  const volumePerDose = doseMcg / concentration
-  const unitsPerDose = volumePerDose * 100
-  const dosesPerVial = selectedContent.mcg / doseMcg
 
   const formatDosePresetLabel = (preset: number) => {
     if (compoundProto.id === "hgh-somatropin") {
@@ -1506,21 +1729,6 @@ const PeptideReconstitutionCalculator = ({
       return `${Number(mg.toFixed(mg % 1 === 0 ? 0 : 2))} mg`
     }
     return `${preset} mcg`
-  }
-
-  const concentrationDisplay = () => {
-    if (compoundProto.id === "hgh-somatropin") {
-      const totalIU = (selectedContent.mcg * 3) / 1000
-      const iuPerMl = totalIU / diluentMl
-      return `${iuPerMl.toFixed(1)} IU/mL (${(concentration / 1000).toFixed(1)} mg/mL)`
-    }
-    if (compoundProto.id === "hmg-75iu") {
-      const iuPerMl = 75 / diluentMl
-      return `${iuPerMl.toFixed(1)} IU/mL`
-    }
-    return concentration >= 1000
-      ? `${(concentration / 1000).toFixed(2)} mg/mL`
-      : `${concentration.toFixed(1)} mcg/mL`
   }
 
   // Nasal atomizer math (derived from protocol data)
@@ -1588,130 +1796,29 @@ const PeptideReconstitutionCalculator = ({
 
       {/* SubQ Syringe Calculator — shown when activeRoute is "subq" */}
       {activeRoute === "subq" && (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        {/* Left: Input Controls */}
-        <div className="space-y-5">
-          {contentValues.length > 1 && (
-            <div className="space-y-2">
-              <span className="text-xs font-semibold text-slate-700">1. Select Vial Net Content</span>
-              <div className="flex flex-wrap gap-2">
-                {contentValues.map((cv) => (
-                  <button
-                    key={cv.label}
-                    type="button"
-                    onClick={() => setSelectedContent(cv)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
-                      selectedContent.label === cv.label
-                        ? "border-emerald-600 bg-emerald-50/90 text-emerald-950 font-bold shadow-2xs ring-1 ring-emerald-500/30"
-                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                    }`}
-                  >
-                    {cv.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Diluent Slider */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-zinc-700">2. Bacteriostatic Water Added</span>
-              <span className="text-xs font-bold text-zinc-900 tabular-nums">
-                {diluentMl} mL
-              </span>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={DILUENT_VOLUMES_ML.length - 1}
-              step={1}
-              value={DILUENT_VOLUMES_ML.indexOf(diluentMl) === -1 ? 1 : DILUENT_VOLUMES_ML.indexOf(diluentMl)}
-              onChange={(e) => setDiluentMl(DILUENT_VOLUMES_ML[parseInt(e.target.value)])}
-              className="w-full h-2 rounded-full bg-zinc-200 accent-zinc-900 cursor-pointer"
-              aria-label="Diluent volume"
-            />
-            <div className="flex justify-between text-[11px] text-zinc-400">
-              {DILUENT_VOLUMES_ML.map((v) => (
-                <span key={v}>{v}mL</span>
-              ))}
-            </div>
-            <p className="text-xs text-zinc-500">
-              Resulting Concentration:{" "}
-              <span className="font-bold text-zinc-800">
-                {concentrationDisplay()}
-              </span>
-            </p>
-          </div>
-
-          {/* Dose Presets */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-zinc-700">3. Target Desired Dose</span>
-              <span className="text-xs font-bold text-zinc-900 tabular-nums">
-                {formatDosePresetLabel(doseMcg)}
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {dosePresets.map((preset) => (
-                <button
-                  key={preset}
-                  type="button"
-                  onClick={() => setDoseMcg(preset)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                    doseMcg === preset
-                      ? "bg-zinc-900 text-white border-zinc-900"
-                      : "bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-50"
-                  }`}
-                >
-                  {formatDosePresetLabel(preset)}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="pt-2">
+          <InteractiveSyringeStoichiometry
+            compoundId={compoundProto.id}
+            compoundName={compoundProto.compoundName}
+            subtitle={compoundProto.subtitle}
+            vialMg={selectedContent.rawAmount}
+            diluentMl={diluentMl}
+            concMgMl={concentration / 1000}
+            standardDoseMcg={doseMcg}
+            standardDoseDisplay={formatDosePresetLabel(doseMcg)}
+            graduations={compoundProto.syringeGuide?.graduations}
+            titrationSteps={compoundProto.dosing?.titrationSteps}
+            vialStrengthOptions={compoundProto.vialStrengthOptions}
+            reconstitutionOptions={compoundProto.reconstitutionOptions}
+            needleGauge={compoundProto.syringeGuide?.needleGauge}
+            needleLength={compoundProto.syringeGuide?.needleLength}
+            hubType={compoundProto.syringeGuide?.hubType}
+            recommendedBarrel={compoundProto.syringeGuide?.recommendedBarrel}
+            transferNeedle={compoundProto.syringeGuide?.transferNeedle}
+            syringeType={compoundProto.syringeGuide?.syringeType}
+            standardIUDisplay={compoundProto.syringeGuide?.standardIUDisplay}
+          />
         </div>
-
-        {/* Right: Results Display */}
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 space-y-4">
-          <div className="text-xs font-bold uppercase tracking-wider text-emerald-900">
-            Calculated Syringe &amp; Dose Outputs
-          </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-2xs">
-              <div className="text-xl font-bold text-zinc-900 tabular-nums">
-                {volumePerDose < 0.01 ? "<0.01" : volumePerDose.toFixed(2)}{" "}
-                <span className="text-xs font-normal text-zinc-500">mL</span>
-              </div>
-              <div className="text-[11px] text-zinc-500 mt-1">Volume / Dose</div>
-            </div>
-            <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-2xs">
-              <div className="text-xl font-bold text-emerald-800 tabular-nums">
-                {unitsPerDose < 0.1 ? "<0.1" : unitsPerDose.toFixed(1)}{" "}
-                <span className="text-xs font-normal text-zinc-500">Units</span>
-              </div>
-              <div className="text-[11px] text-zinc-500 mt-1">
-                Syringe Units
-                <span className="block text-[9px] text-zinc-400">(100 Units = 1 mL)</span>
-              </div>
-            </div>
-            <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-2xs">
-              <div className="text-xl font-bold text-zinc-900 tabular-nums">
-                {dosesPerVial < 1
-                  ? "<1"
-                  : dosesPerVial % 1 === 0
-                  ? dosesPerVial.toFixed(0)
-                  : dosesPerVial.toFixed(1)}
-              </div>
-              <div className="text-[11px] text-zinc-500 mt-1">Doses / Vial</div>
-            </div>
-          </div>
-          <p className="text-[11px] text-zinc-500 leading-relaxed border-t border-emerald-200/80 pt-3">
-            Calculated for {selectedContent.label} vial reconstituted in {diluentMl} mL
-            Bacteriostatic Water at {formatDosePresetLabel(doseMcg)}/dose.
-            For laboratory evaluation only.
-          </p>
-        </div>
-      </div>
       )}
 
       {/* Nasal Atomizer Calculator */}
@@ -2002,7 +2109,7 @@ const ComplianceSafetyAccordion = ({ product }: { product: HttpTypes.StoreProduc
             {disclaimerText}
           </div>
         </Accordion.Item>
-        <Accordion.Item title="Packaging & Cold-Chain Logistics" value="packaging">
+        <Accordion.Item title="Packaging & Logistics" value="packaging">
           <div className="py-3 text-xs leading-relaxed text-slate-600">
             {packagingOptionsText}
           </div>

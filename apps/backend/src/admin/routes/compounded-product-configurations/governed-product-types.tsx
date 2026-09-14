@@ -1,7 +1,14 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-product-configurations/governed-product-types.tsx
+ * @module  GovernedProductTypes
+ * @purpose Mapping Medusa product types to presentation configurations and enforcement rules.
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import { Spinner } from "@medusajs/icons"
 import {
   Button,
-  Container,
   Heading,
   Input,
   Label,
@@ -163,7 +170,7 @@ export const GovernedProductTypes = () => {
     reason.trim().length >= 3
 
   return (
-    <Container className="divide-y p-0">
+    <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs divide-y divide-slate-100 overflow-hidden mb-4">
       <div className="flex flex-col gap-y-1 px-6 py-4">
         <Heading level="h2">Governed product types</Heading>
         <Text size="small" className="text-ui-fg-subtle">
@@ -318,6 +325,6 @@ export const GovernedProductTypes = () => {
           </div>
         ))}
       </div>
-    </Container>
+    </div>
   )
 }

@@ -47,11 +47,27 @@ export function extractBarangay(
 }
 
 /**
+ * Sanitizes address and consignee strings by stripping emojis and illegal control characters
+ * that cause the J&T Express VIP QuickOrder parser to fail.
+ */
+export function sanitizeJntText(text?: string | null): string {
+  if (!text) return ""
+  return text
+    .replace(/[\u{1F600}-\u{1F6FF}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, "")
+    .replace(/[^\x20-\x7E\u00A0-\u00FF]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+/**
  * Cleans and formats Philippine phone numbers to 11-digit domestic (09XXXXXXXXX) format if possible.
  */
 export function formatPhilippinePhone(phone?: string | null): string {
   if (!phone) return ""
   const digits = phone.replace(/\D/g, "")
+  if (digits.startsWith("630") && digits.length === 13) {
+    return digits.slice(2)
+  }
   if (digits.startsWith("63") && digits.length === 12) {
     return `0${digits.slice(2)}`
   }
@@ -85,22 +101,32 @@ export function buildJntQuickOrderFields(
   order: HttpTypes.AdminOrder
 ): JntQuickOrderFields {
   const addr = order.shipping_address
-  const firstName = addr?.first_name?.trim() || ""
-  const lastName = addr?.last_name?.trim() || ""
+  const firstName = sanitizeJntText(addr?.first_name)
+  const lastName = sanitizeJntText(addr?.last_name)
   const recipientName = `${firstName} ${lastName}`.trim() || "Valued Researcher"
   const recipientPhone = formatPhilippinePhone(addr?.phone)
 
-  const province = addr?.province?.trim() || "Metro Manila"
-  const city = addr?.city?.trim() || ""
-  const barangay = extractBarangay(addr?.address_1, addr?.address_2)
-  const streetAddress = addr?.address_1?.trim() || ""
+  const province = sanitizeJntText(addr?.province) || "Metro Manila"
+  const city = sanitizeJntText(addr?.city) || ""
+  const barangay = sanitizeJntText(extractBarangay(addr?.address_1, addr?.address_2))
+  const streetAddress = sanitizeJntText(addr?.address_1) || ""
   const postalCode = addr?.postal_code?.trim() || ""
 
   const totalQuantity =
     order.items?.reduce((sum, item) => sum + (item.quantity || 1), 0) || 1
   const declaredValue = Math.round(Number(order.total || 0))
   const isPaid = order.payment_status === "captured"
-  const codAmount = isPaid ? 0 : declaredValue
+
+  // Safe COD resolution: Cash on delivery is only charged if explicitly configured as COD.
+  // Digital orders (Manual QR / GCash / Maya / Card) must NEVER incur courier COD double-charge.
+  const isExplicitCod =
+    Boolean(order.metadata?.is_cod) ||
+    order.metadata?.payment_method === "cod" ||
+    (order as any).payment_collections?.some((pc: any) =>
+      pc.payments?.some((p: any) => p.provider_id?.toLowerCase().includes("cod")) ||
+      pc.payment_sessions?.some((ps: any) => ps.provider_id?.toLowerCase().includes("cod"))
+    ) === true
+  const codAmount = !isPaid && isExplicitCod ? declaredValue : 0
 
   const displayId = order.display_id || order.id.slice(-8)
   const remarks = `Order #${displayId} · Fragile Glass Vials / Research Supplies`

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/prepare-admin-manual-payment-proof.ts
+ * @module  ManualPaymentModule (Workflows)
+ * @purpose Validate admin-uploaded payment proof metadata and checksums before file upload.
+ * @contracts
+ *   Step: prepareAdminManualPaymentProofStep
+ */
+
 import { createHash } from "node:crypto"
 
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"

@@ -1,4 +1,12 @@
-import { CheckCircle, Clock, ExclamationCircle, ShieldCheck } from "@medusajs/icons"
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/[id]/product-ops-sidebar.tsx
+ * @module  ProductOpsSidebar
+ * @purpose Operations sidebar displaying sellable capacity, stock bottlenecks, and regulatory readiness.
+ * @contracts
+ *   Service: CompoundedProductModuleService · InventoryModuleService
+ */
+
+import { CheckCircle, Clock, ExclamationCircle, ShieldCheck, Sparkles } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Badge, Button, Text } from "@medusajs/ui"
 import { Link } from "react-router-dom"
@@ -15,6 +23,7 @@ type ProductOpsSidebarProps = {
   } | null
   sellableCapacity: string
   basePriceFormatted: string
+  averageMarginPercent?: number | null
   onOpenPublicationDrawer: () => void
   onOpenClassificationDrawer: () => void
   onOpenAuditDrawer: () => void
@@ -26,17 +35,19 @@ export const ProductOpsSidebar = ({
   bottleneckAnalysis,
   sellableCapacity,
   basePriceFormatted,
+  averageMarginPercent,
   onOpenPublicationDrawer,
   onOpenClassificationDrawer,
   onOpenAuditDrawer,
 }: ProductOpsSidebarProps) => {
   return (
-    <div className="flex flex-col gap-y-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
       {/* 1. Product Overview (Consolidated KPIs) */}
       <AdminCard
         title={
           <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-ui-fg-base">
-            <span>📊</span> Product Overview
+            <Sparkles className="size-3.5 text-ui-fg-subtle" />
+            <span>Product Overview</span>
           </div>
         }
         contentClassName="p-3 flex flex-col gap-y-3 text-xs"
@@ -51,9 +62,25 @@ export const ProductOpsSidebar = ({
             </Text>
           </div>
           <div className="flex flex-col gap-y-0.5">
-            <Text size="xsmall" className="text-ui-fg-subtle text-[11px]">
-              Base Price
-            </Text>
+            <div className="flex items-center justify-between">
+              <Text size="xsmall" className="text-ui-fg-subtle text-[11px]">
+                Base Price
+              </Text>
+              {averageMarginPercent !== undefined && averageMarginPercent !== null && (
+                <span
+                  className={`text-[9px] font-bold px-1.5 py-0.2 rounded font-mono ${
+                    averageMarginPercent >= 65
+                      ? "bg-emerald-100 text-emerald-800"
+                      : averageMarginPercent >= 35
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-amber-100 text-amber-800"
+                  }`}
+                  title="Average Gross Margin across sellable variants"
+                >
+                  {averageMarginPercent.toFixed(0)}% Margin
+                </span>
+              )}
+            </div>
             <Text size="base" weight="plus" className="text-ui-fg-base font-semibold leading-tight">
               {basePriceFormatted}
             </Text>

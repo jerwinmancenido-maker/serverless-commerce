@@ -110,7 +110,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   id="mobile-qty-decrement"
                   disabled={quantity <= 1 || optionsDisabled}
                   onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
-                  className="size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-lg leading-none"
+                  className="relative size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-lg leading-none after:absolute after:-inset-2.5 after:content-['']"
                   aria-label="Decrease quantity"
                 >
                   −
@@ -126,7 +126,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   id="mobile-qty-increment"
                   disabled={quantity >= maxQty || optionsDisabled}
                   onClick={() => onQuantityChange(Math.min(maxQty, quantity + 1))}
-                  className="size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-lg leading-none"
+                  className="relative size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-lg leading-none after:absolute after:-inset-2.5 after:content-['']"
                   aria-label="Increase quantity"
                 >
                   +

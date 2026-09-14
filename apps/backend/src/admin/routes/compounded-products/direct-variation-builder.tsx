@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/direct-variation-builder.tsx
+ * @module  DirectVariationBuilder
+ * @purpose Variation axis and option builder drawer with measurement units.
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { Button, Drawer, Input, Label, Select, Text } from "@medusajs/ui"
 import { useState } from "react"

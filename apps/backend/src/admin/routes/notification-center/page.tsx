@@ -1,9 +1,25 @@
+/**
+ * @file    apps/backend/src/admin/routes/notification-center/page.tsx
+ * @module  NotificationCenterRoute (Admin Dashboard Extension)
+ * @purpose Admin route for customer lifecycle notification templates, channels, and delivery ops.
+ * @contracts
+ *   API:     GET/POST/PUT /admin/notification-center/*
+ *   Service: NotificationCenterModuleService
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { BellAlert, CheckCircleSolid, MagnifyingGlass } from "@medusajs/icons"
+import {
+  BellAlert,
+  Bolt,
+  CheckCircleSolid,
+  DocumentText,
+  ExclamationCircle,
+  InformationCircleSolid,
+  MagnifyingGlass,
+} from "@medusajs/icons"
 import {
   Badge,
   Button,
-  Container,
   Drawer,
   Heading,
   Input,
@@ -17,9 +33,13 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
 
-import { EmptyState } from "../../components/empty-state"
-import { FilterPillGroup } from "../../components/filter-pill-group"
-import { KpiCard } from "../../components/kpi-card"
+import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
+import { SovereignPageSkeleton } from "../../components/ui/sovereign-page-skeleton"
+import { AdminSegmentedTabs } from "../../components/ui/admin-segmented-tabs"
+import { AdminMetricCard } from "../../components/ui/admin-metric-card"
+import { AdminTelemetryNotice } from "../../components/ui/admin-telemetry-notice"
+import { AdminListRowCard } from "../../components/ui/admin-list-row-card"
+import { AdminSuiteCard } from "../../components/ui/admin-suite-card"
 import { PageHeader } from "../../components/page-header"
 import { sdk } from "../../lib/sdk"
 
@@ -189,10 +209,15 @@ const NotificationCenterAdminPage = () => {
     })
   }, [allTemplates, activeCategory, searchQuery])
 
+  if (statusQuery.isLoading || templatesQuery.isLoading) {
+    return <SovereignPageSkeleton cards={4} rows={8} />
+  }
+
   return (
-    <div className="flex flex-col gap-4 pb-12">
+    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
       {/* 1. Standard PageHeader */}
       <PageHeader
+        eyebrowText="Notification Center · Lifecycle Events"
         breadcrumbs={[
           { label: "Settings", href: "/settings" },
           { label: "Notification Center" },
@@ -206,246 +231,295 @@ const NotificationCenterAdminPage = () => {
         }
       />
 
-      {/* 2. KPI Metrics Bar */}
+      {/* 2. KPI Metrics Bar (4-Card Sovereign Grid) */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard
-          title="In-App Channel"
+        <AdminMetricCard
+          label="In-App Channel"
           value={status?.channels.in_app === "available" ? "Active" : "Unavailable"}
-          icon="🔔"
+          icon={<BellAlert className="h-4 w-4" />}
+          variant="blue"
           status={status?.channels.in_app === "available" ? "healthy" : "critical"}
           subtext="Storefront client delivery"
         />
-        <KpiCard
-          title="Scheduler Engine"
+        <AdminMetricCard
+          label="Scheduler Engine"
           value={status?.scheduler.status === "available" ? "Running" : (status?.scheduler.status || "Checking…")}
-          icon="⚡"
+          icon={<Bolt className="h-4 w-4" />}
+          variant="blue"
           status={status?.scheduler.status === "available" ? "healthy" : "warning"}
           subtext="Cron dispatch pipeline"
         />
-        <KpiCard
-          title="Failed Deliveries"
+        <AdminMetricCard
+          label="Failed Deliveries"
           value={status?.failed_delivery_count ?? 0}
-          icon="⚠️"
+          icon={<ExclamationCircle className="h-4 w-4" />}
+          variant={status?.failed_delivery_count ? "rose" : "default"}
           status={status?.failed_delivery_count ? "critical" : "healthy"}
           subtext={status?.failed_delivery_count ? "Attention required" : "Zero errors recorded"}
         />
-        <KpiCard
-          title="Active Templates"
+        <AdminMetricCard
+          label="Active Templates"
           value={allTemplates.length}
-          icon="📋"
-          status="info"
+          icon={<DocumentText className="h-4 w-4" />}
+          variant="default"
+          status="neutral"
           subtext="Registered lifecycle events"
         />
       </div>
 
-      {/* Channel Notice Banner */}
-      <div className="px-4 py-2.5 rounded-lg border border-ui-border-base bg-ui-bg-subtle/40 text-xs text-ui-fg-subtle flex items-center gap-2">
-        <span className="text-sm">ℹ️</span>
-        <span>
-          Email, browser push, mobile push, and SMS remain unavailable until their providers and consent flows are configured. The system does not silently send unconsented messages.
-        </span>
-      </div>
+      {/* SADS 2.0 Telemetry Notice Banner */}
+      <AdminTelemetryNotice
+        title="Multi-Channel Communications Dispatch"
+        description="Customer lifecycle notifications and transactional dispatch. Email, browser push, mobile push, and SMS adhere strictly to DPA 2012 privacy consents. Unconsented dispatch is automatically blocked."
+        statusText="COMMUNICATIONS AUDIT ACTIVE"
+        variant="indigo"
+      />
 
-      {/* 3. Customer Event Templates Container */}
-      <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base">
-        <div className="flex flex-col gap-3 p-4 bg-ui-bg-subtle/20 border-b border-ui-border-base">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <Heading level="h2" className="text-sm font-semibold">
-                Customer Event Templates
-              </Heading>
-              <Text size="small" className="text-ui-fg-subtle">
-                Edit registered wording without exposing private customer content. Every save creates an immutable revision.
-              </Text>
-            </div>
-
-            {/* Quick Search */}
-            <div className="relative w-full sm:w-64">
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ui-fg-muted">
-                <MagnifyingGlass className="h-3.5 w-3.5" />
+      {/* 3. Search & Category Filter Bar */}
+      <div className="rounded-xl border border-slate-200/80 bg-white p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+          {[
+            { id: "all", label: "All Events", count: allTemplates.length },
+            { id: "support", label: "Support", count: categoryCounts.support || 0 },
+            { id: "community", label: "Community", count: categoryCounts.community || 0 },
+            { id: "protocols", label: "Protocols", count: categoryCounts.protocols || 0 },
+            { id: "rewards", label: "Rewards", count: categoryCounts.rewards || 0 },
+            { id: "system", label: "System", count: categoryCounts.system || 0 },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveCategory(tab.id)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                activeCategory === tab.id
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <span>{tab.label}</span>
+              <span
+                className={`px-1.5 py-0.2 rounded-md text-[10.5px] font-mono ${
+                  activeCategory === tab.id ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                }`}
+              >
+                {tab.count}
               </span>
-              <Input
-                size="small"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search templates…"
-                className="pl-8 text-xs h-8"
-              />
-            </div>
-          </div>
-
-          {/* Category Filter Pills */}
-          <FilterPillGroup
-            items={[
-              { id: "all", label: "All Events", count: allTemplates.length },
-              { id: "support", label: "Support", count: categoryCounts.support || 0, badgeColor: "blue" },
-              { id: "community", label: "Community", count: categoryCounts.community || 0, badgeColor: "purple" },
-              { id: "protocols", label: "Protocols", count: categoryCounts.protocols || 0, badgeColor: "orange" },
-              { id: "rewards", label: "Rewards", count: categoryCounts.rewards || 0, badgeColor: "green" },
-              { id: "system", label: "System", count: categoryCounts.system || 0, badgeColor: "grey" },
-            ]}
-            selectedId={activeCategory}
-            onSelect={(id) => setActiveCategory(id)}
-          />
+            </button>
+          ))}
         </div>
 
-        {/* Templates List */}
-        <div className="divide-y divide-ui-border-base">
+        <div className="relative w-full sm:w-64">
+          <MagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-400 pointer-events-none" />
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search templates…"
+            className="pl-8 pr-7 text-xs h-8 bg-slate-50 border-slate-200/80 focus:bg-white"
+          />
+        </div>
+      </div>
+
+      {/* 4. Maximized Full-Screen Operational Stream */}
+      <div className="w-full flex flex-col gap-6">
+        {/* Primary Template Stream */}
+        <div className="w-full flex flex-col gap-3">
           {templatesQuery.isLoading ? (
             <div className="p-8 text-center text-xs text-ui-fg-subtle">
               Loading templates…
             </div>
           ) : filteredTemplates.length === 0 ? (
-            <EmptyState
-              icon="🔔"
-              title="No templates match your filters"
-              description="Try adjusting your category selection or clear your search term."
-              actionLabel="Clear Filters"
-              onAction={() => {
-                setActiveCategory("all")
-                setSearchQuery("")
-              }}
+            <SovereignEmptyState
+              icon={<BellAlert className="h-5 w-5" />}
+              heading="No templates match your filters"
+              subtext="Try adjusting your category selection or clear your search term."
+              action={
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={() => {
+                    setActiveCategory("all")
+                    setSearchQuery("")
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              }
             />
           ) : (
             filteredTemplates.map((template) => (
-              <button
+              <AdminListRowCard
                 key={template.event_key}
-                type="button"
-                onClick={() => setSelected(template)}
-                className="grid w-full gap-3 p-4 text-left hover:bg-ui-bg-subtle/50 transition-colors md:grid-cols-[1fr_140px_160px_130px] md:items-center"
-              >
-                <div>
-                  <Text weight="plus" className="text-xs hover:text-ui-fg-interactive">
-                    {template.display_name}
-                  </Text>
-                  <Text size="xsmall" className="font-mono text-[11px] text-ui-fg-subtle">
-                    {template.event_key}
-                  </Text>
-                </div>
-                <div>
-                  <Badge size="small" color={CATEGORY_COLORS[template.category] || "grey"} className="capitalize text-[10px]">
-                    {template.category}
-                  </Badge>
-                </div>
-                <Text size="small" className="text-xs text-ui-fg-subtle">
-                  {template.customer_can_disable ? "Customer optional" : "Required"}
-                </Text>
-                <div className="flex items-center gap-1.5 justify-end">
+                icon={<BellAlert className="size-4 text-blue-600" />}
+                title={template.display_name}
+                subtitle={
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 uppercase">
+                      {template.category}
+                    </span>
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-blue-50 border border-blue-100 text-[10px] font-mono text-blue-700">
+                      v{template.current_version}
+                    </span>
+                    <span className="text-[10.5px] font-mono text-slate-400">
+                      {template.event_key}
+                    </span>
+                    {template.customer_can_disable && (
+                      <span className="inline-flex items-center px-1.5 py-0.2 rounded-md bg-amber-50 text-amber-700 text-[9.5px]">
+                        Customer Optional
+                      </span>
+                    )}
+                  </div>
+                }
+                badge={
                   <Badge size="small" color={template.enabled ? "green" : "grey"} className="text-[10px]">
-                    {template.enabled ? "Enabled" : "Disabled"}
+                    {template.enabled ? "● Active" : "○ Paused"}
                   </Badge>
-                  <Badge size="small" color="grey" className="font-mono text-[10px]">
-                    v{template.current_version}
-                  </Badge>
-                </div>
-              </button>
-            ))
-          )}
-        </div>
-      </Container>
-
-      {/* 4. Send a Private Test */}
-      <Container className="p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base">
-        <div className="px-5 py-4 border-b border-ui-border-base">
-          <Heading level="h2" className="text-sm font-semibold">
-            Send a Private Test
-          </Heading>
-          <Text size="small" className="text-ui-fg-subtle">
-            Dispatch a verified test notification directly to a customer account without sending emails or SMS.
-          </Text>
-        </div>
-        <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center">
-          <Input
-            size="small"
-            value={testCustomerId}
-            onChange={(event) => setTestCustomerId(event.target.value)}
-            placeholder="Enter customer ID (e.g. cus_01J...)"
-            className="flex-1 font-mono text-xs h-8"
-          />
-          <Button
-            size="small"
-            disabled={!testCustomerId.trim() || sendTest.isPending}
-            isLoading={sendTest.isPending}
-            onClick={() => sendTest.mutate()}
-            className="h-8 text-xs shrink-0"
-          >
-            Send test notification
-          </Button>
-        </div>
-      </Container>
-
-      {/* 5. Recent Delivery Activity Log */}
-      <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base">
-        <div className="px-5 py-4 bg-ui-bg-subtle/20 border-b border-ui-border-base flex items-center justify-between">
-          <div>
-            <Heading level="h2" className="text-sm font-semibold">
-              Recent In-App Delivery Telemetry
-            </Heading>
-            <Text size="small" className="text-ui-fg-subtle">
-              Operational delivery records only. Customer privacy is strictly preserved.
-            </Text>
-          </div>
-          <span className="text-xs font-mono text-ui-fg-muted">
-            {operations.length} attempts
-          </span>
-        </div>
-
-        <div className="divide-y divide-ui-border-base">
-          {operationsQuery.isLoading ? (
-            <Text size="small" className="p-6 text-center text-ui-fg-subtle">
-              Loading delivery activity…
-            </Text>
-          ) : operations.length ? (
-            operations.map((operation) => (
-              <div
-                key={operation.id}
-                className="grid gap-2 p-4 text-xs md:grid-cols-[1fr_120px_160px_110px] md:items-center hover:bg-ui-bg-subtle/30 transition-colors"
-              >
-                <div>
-                  <Text size="small" weight="plus" className="font-mono text-xs">
-                    {operation.event_key}
-                  </Text>
-                  <Text size="xsmall" className="text-ui-fg-muted text-[10px]">
-                    {operation.template_revision_id || "System default"}
-                  </Text>
-                </div>
-                <span className="font-mono text-[11px] text-ui-fg-subtle uppercase">
-                  {operation.channel}
-                </span>
-                <span className="text-ui-fg-subtle text-xs">
-                  {new Date(operation.attempted_at).toLocaleDateString("en-PH", {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                  })}
-                </span>
-                <div className="flex justify-end">
-                  <Badge
+                }
+                value={
+                  <span className="text-xs font-semibold text-slate-700 capitalize">
+                    Priority: {template.priority}
+                  </span>
+                }
+                secondaryValue={
+                  <span className="text-[10.5px] text-slate-400">
+                    Retention: {template.retention_days} days
+                  </span>
+                }
+                actions={
+                  <Button
                     size="small"
-                    color={
-                      operation.status === "delivered"
-                        ? "green"
-                        : operation.status === "failed"
-                        ? "red"
-                        : "grey"
-                    }
-                    className="capitalize text-[10px]"
+                    variant="secondary"
+                    onClick={() => setSelected(template)}
+                    className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white"
                   >
-                    {operation.is_test ? `Test · ${operation.status}` : operation.status}
-                  </Badge>
-                </div>
-              </div>
+                    Edit Template
+                  </Button>
+                }
+              />
             ))
-          ) : (
-            <EmptyState
-              icon="📡"
-              title="No delivery activity yet"
-              description="In-app notification events will automatically appear here as customers interact with the platform."
-            />
           )}
         </div>
-      </Container>
+
+        {/* Horizontal Operational Suites & Telemetry Dock */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+          {/* Suite 1: Private Test Notification Dispatcher */}
+          <AdminSuiteCard
+            icon={<Bolt className="size-4 text-blue-600" />}
+            eyebrow="Dispatch Workbench"
+            title="Private Test Dispatch"
+            description="Dispatch a verified in-app test notification directly to an authorized customer account without external notification leakage."
+            variant="blue"
+            statusBadge="Sandboxed"
+            statusVariant="blue"
+          >
+            <div className="flex flex-col gap-2.5">
+              <Input
+                size="small"
+                value={testCustomerId}
+                onChange={(event) => setTestCustomerId(event.target.value)}
+                placeholder="Enter customer ID (e.g. cus_01J...)"
+                className="font-mono text-xs h-8 bg-slate-50 border-slate-200/80 focus:bg-white"
+              />
+              <Button
+                size="small"
+                disabled={!testCustomerId.trim() || sendTest.isPending}
+                isLoading={sendTest.isPending}
+                onClick={() => sendTest.mutate()}
+                className="h-8 text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800"
+              >
+                Send Test Notification
+              </Button>
+            </div>
+          </AdminSuiteCard>
+
+          {/* Suite 2: Multi-Channel Consent & Governance */}
+          <AdminSuiteCard
+            icon={<CheckCircleSolid className="size-4 text-emerald-600" />}
+            eyebrow="Governance &amp; Privacy"
+            title="Channel Sentry"
+            description="Delivery channels adhere strictly to DPA 2012 privacy consents. Unconsented delivery is prevented automatically."
+            variant="emerald"
+            statusBadge="DPA 2012 Active"
+            statusVariant="emerald"
+          >
+            <div className="flex flex-col gap-2 text-xs">
+              <div className="flex items-center justify-between py-1 border-b border-slate-100">
+                <span className="text-slate-600 font-medium">In-App Channel</span>
+                <Badge size="small" color={status?.channels.in_app === "available" ? "green" : "red"}>
+                  {status?.channels.in_app === "available" ? "Active" : "Offline"}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between py-1 border-b border-slate-100">
+                <span className="text-slate-600 font-medium">Cron Scheduler</span>
+                <Badge size="small" color={status?.scheduler.status === "available" ? "green" : "orange"}>
+                  {status?.scheduler.status || "Checking"}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between py-1">
+                <span className="text-slate-600 font-medium">Email / SMS Gate</span>
+                <span className="font-mono text-[10.5px] text-slate-500">Opt-in Required</span>
+              </div>
+            </div>
+          </AdminSuiteCard>
+
+          {/* Elevated Recent Delivery Activity */}
+          <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden">
+            <div className="px-4 py-3 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+              <div>
+                <span className="text-xs font-bold text-slate-900">Recent Delivery Telemetry</span>
+                <p className="text-[10.5px] text-slate-500">Real-time in-app delivery log</p>
+              </div>
+              <span className="text-[10.5px] font-mono text-slate-400">
+                {operations.length} events
+              </span>
+            </div>
+
+            <div className="divide-y divide-slate-100 max-h-[380px] overflow-y-auto">
+              {operationsQuery.isLoading ? (
+                <div className="p-6 text-center text-xs text-slate-400">Loading delivery activity…</div>
+              ) : operations.length ? (
+                operations.map((operation) => (
+                  <div
+                    key={operation.id}
+                    className="p-3 hover:bg-slate-50/60 transition-colors flex items-center justify-between gap-3 text-xs"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="font-mono text-xs font-semibold text-slate-900 truncate">
+                        {operation.event_key}
+                      </div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="font-mono text-[10px] text-slate-400 uppercase">{operation.channel}</span>
+                        <span className="text-[10px] text-slate-400">
+                          {new Date(operation.attempted_at).toLocaleDateString("en-PH", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                    <Badge
+                      size="small"
+                      color={
+                        operation.status === "delivered"
+                          ? "green"
+                          : operation.status === "failed"
+                          ? "red"
+                          : "grey"
+                      }
+                      className="capitalize text-[10px] shrink-0"
+                    >
+                      {operation.is_test ? `Test · ${operation.status}` : operation.status}
+                    </Badge>
+                  </div>
+                ))
+              ) : (
+                <div className="p-6 text-center text-xs text-slate-400">No delivery activity yet</div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Drawer: Template Editor */}
       <Drawer open={Boolean(selected)} onOpenChange={(open) => { if (!open) setSelected(null) }}>

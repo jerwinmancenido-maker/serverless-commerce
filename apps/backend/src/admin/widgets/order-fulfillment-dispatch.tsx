@@ -13,7 +13,6 @@ import type { HttpTypes } from "@medusajs/types"
 import {
   Badge,
   Button,
-  Container,
   Heading,
   Input,
   Text,
@@ -28,6 +27,7 @@ import {
   CheckCircleSolid,
   CurrencyDollar,
   DocumentText,
+  ExclamationCircle,
   SquaresPlus,
 } from "@medusajs/icons"
 import {
@@ -39,6 +39,7 @@ import {
   cleanJntWaybill,
   isValidJntWaybill,
 } from "../../lib/jnt-express-helper"
+import { evaluateOrderPackingGuardrail } from "../../lib/order-packing-guardrail"
 import { sdk } from "../lib/sdk"
 
 function buildJntTrackingUrl(trackingNumber: string): string {
@@ -127,9 +128,21 @@ const OrderFulfillmentDispatchWidget = ({
     "delivered",
   ].includes(order.fulfillment_status)
 
+  const { isTerminal, isPaid, isConfirmed, canPack } = evaluateOrderPackingGuardrail(order)
+
   // Mutation to fulfill & create J&T shipment with waybill number
   const dispatchMutation = useMutation({
     mutationFn: async () => {
+      if (isTerminal) {
+        toast.error("Order is canceled or refunded. Courier dispatch is terminated.")
+        throw new Error("Order is canceled or refunded.")
+      }
+
+      if (!canPack) {
+        toast.error("Order is not paid or confirmed. Physical packing and dispatch are locked.")
+        throw new Error("Order is not paid or confirmed. Physical packing and dispatch are locked.")
+      }
+
       setIsFulfilling(true)
       const tracking = cleanJntWaybill(waybillNumber)
 
@@ -193,7 +206,7 @@ const OrderFulfillmentDispatchWidget = ({
   })
 
   return (
-    <Container className="divide-y p-0">
+    <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100 mb-4">
       <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4">
         <div>
           <div className="flex items-center gap-2">
@@ -213,7 +226,8 @@ const OrderFulfillmentDispatchWidget = ({
             variant="secondary"
             onClick={() => setQuickOrderDrawerOpen(true)}
           >
-            🚚 J&amp;T VIP QuickOrder
+            <ArchiveBox className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            J&amp;T VIP QuickOrder
           </Button>
           <Button
             size="small"
@@ -255,6 +269,8 @@ const OrderFulfillmentDispatchWidget = ({
           )}
         </div>
       </div>
+
+
 
       {/* Items Checklist to Pack */}
       <div className="px-6 py-4">
@@ -308,40 +324,42 @@ const OrderFulfillmentDispatchWidget = ({
                         Total {disaggregated.reduce((acc, curr) => acc + curr.quantity * item.quantity, 0)} physical units
                       </span>
                     </div>
-                    <div className="divide-y divide-indigo-100/70 rounded-md border border-indigo-100/70 bg-white overflow-hidden text-xs">
-                      {disaggregated.map((comp, idx) => (
-                        <div key={idx} className="flex items-center justify-between px-3 py-2 hover:bg-slate-50/60 transition-colors">
-                          <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                            <input
-                              type="checkbox"
-                              className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
-                              defaultChecked={isFulfilledOrShipped}
-                            />
-                            <span className="text-slate-800 font-medium">{comp.title}</span>
-                          </label>
-                          <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
-                            x {comp.quantity * item.quantity}
-                          </span>
+                        <div className="divide-y divide-indigo-100/70 rounded-md border border-indigo-100/70 bg-white overflow-hidden text-xs">
+                          {disaggregated.map((comp, idx) => (
+                            <div key={idx} className="flex items-center justify-between px-3 py-2 hover:bg-slate-50/60 transition-colors">
+                              <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                                <input
+                                  type="checkbox"
+                                  disabled={!canPack}
+                                  className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50"
+                                  defaultChecked={isFulfilledOrShipped}
+                                />
+                                <span className={`font-medium ${!canPack ? "text-slate-400" : "text-slate-800"}`}>{comp.title}</span>
+                              </label>
+                              <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
+                                x {comp.quantity * item.quantity}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50/60 px-3 py-2 text-xs">
+                        <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            disabled={!canPack}
+                            className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+                            defaultChecked={isFulfilledOrShipped}
+                          />
+                          <span className={`font-medium ${!canPack ? "text-slate-400" : "text-slate-700"}`}>Verified single vial / item packed</span>
+                        </label>
+                        <span className="font-mono text-xs font-bold text-slate-700">
+                          x {item.quantity}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50/60 px-3 py-2 text-xs">
-                    <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                        defaultChecked={isFulfilledOrShipped}
-                      />
-                      <span className="text-slate-700 font-medium">Verified single vial / item packed</span>
-                    </label>
-                    <span className="font-mono text-xs font-bold text-slate-700">
-                      x {item.quantity}
-                    </span>
-                  </div>
-                )}
-              </div>
             )
           })}
         </div>
@@ -412,11 +430,26 @@ const OrderFulfillmentDispatchWidget = ({
             </Text>
           </div>
 
+          {!canPack && (
+            <div className={`rounded-lg border p-3 flex items-start gap-2.5 text-xs mb-1 ${isTerminal ? "border-red-200 bg-red-50/70 text-red-900" : "border-amber-200 bg-amber-50/70 text-amber-900"}`}>
+              <ExclamationCircle className={`h-4 w-4 shrink-0 mt-0.5 ${isTerminal ? "text-red-600" : "text-amber-600"}`} />
+              <div>
+                <span className="font-semibold">{isTerminal ? `Fulfillment Terminated (${order.status === "canceled" ? "Canceled" : "Refunded"})` : "Packing Locked (Awaiting Payment Confirmation)"}</span>
+                <p className={`mt-0.5 ${isTerminal ? "text-red-800" : "text-amber-800"}`}>
+                  {isTerminal
+                    ? "Parcels cannot be packed or dispatched for canceled or refunded orders."
+                    : "Under store policy, parcels cannot be packed, sealed, or dispatched until payment is captured or the order is confirmed."}
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="flex flex-wrap items-start gap-3">
             <div className="flex flex-col gap-1 w-full sm:w-72">
               <Input
                 placeholder="J&T Waybill (e.g. 781234567890)"
                 size="small"
+                disabled={!canPack}
                 value={waybillNumber}
                 onChange={(e) => setWaybillNumber(e.target.value)}
               />
@@ -436,12 +469,13 @@ const OrderFulfillmentDispatchWidget = ({
             </div>
             <Button
               size="small"
-              variant="primary"
+              variant={isTerminal ? "danger" : "primary"}
+              disabled={!canPack || isFulfilling}
               isLoading={isFulfilling}
               onClick={() => dispatchMutation.mutate()}
             >
               <ArchiveBox className="mr-1.5 h-3.5 w-3.5" />
-              Fulfill &amp; Dispatch Parcel
+              {isTerminal ? "Fulfillment Terminated" : canPack ? "Fulfill & Dispatch Parcel" : "Locked: Awaiting Payment"}
             </Button>
           </div>
         </div>
@@ -460,7 +494,7 @@ const OrderFulfillmentDispatchWidget = ({
         open={quickOrderDrawerOpen}
         onOpenChange={setQuickOrderDrawerOpen}
       />
-    </Container>
+    </div>
   )
 }
 

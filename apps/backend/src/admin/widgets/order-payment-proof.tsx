@@ -1,8 +1,17 @@
+/**
+ * @file    apps/backend/src/admin/widgets/order-payment-proof.tsx
+ * @module  OrderPaymentProofWidget
+ * @purpose Order detail widget displaying submitted QR / bank transfer payment proofs.
+ * @contracts
+ *   Widget: order.details.after
+ *   Service: ManualPaymentModuleService
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { ArrowUpTray, DocumentText, Plus } from "@medusajs/icons"
 import type { DetailWidgetProps } from "@medusajs/framework/types"
 import type { HttpTypes } from "@medusajs/types"
-import { Badge, Button, Container, Heading, Text, toast } from "@medusajs/ui"
+import { Badge, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRef, useState } from "react"
 
@@ -104,11 +113,11 @@ const OrderPaymentProofWidget = ({
 
   if (proofQuery.isLoading) {
     return (
-      <Container className="p-4">
+      <div className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-2xs">
         <Text size="small" className="text-ui-fg-subtle">
           Loading manual payment verification…
         </Text>
-      </Container>
+      </div>
     )
   }
 
@@ -118,7 +127,7 @@ const OrderPaymentProofWidget = ({
   }
 
   return (
-    <Container className="divide-y p-0">
+    <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100 mb-4">
       {/* Hidden file input */}
       <input
         ref={fileInputRef}
@@ -218,7 +227,7 @@ const OrderPaymentProofWidget = ({
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
       />
-    </Container>
+    </div>
   )
 }
 

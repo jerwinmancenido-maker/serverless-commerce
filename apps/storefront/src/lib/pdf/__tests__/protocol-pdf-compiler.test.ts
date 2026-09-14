@@ -36,7 +36,7 @@ test("PDF Engine: SimplePdfDocument low-level vector generation and PDF-1.4 synt
     strokeColor: { r: 0.8, g: 0.84, b: 0.88 },
   })
   doc.drawLine(36, 740, 559.28, 740, { lineWidth: 1 })
-  doc.drawText("ISO 9001:2015 TEST DOCUMENT", 44, 760, { font: "/F2", size: 10 })
+  doc.drawText("GLP ANALYTICAL TEST DOCUMENT", 44, 760, { font: "/F2", size: 10 })
 
   const binary = doc.compileBinary()
   assert.ok(binary instanceof Uint8Array, "Must compile to a Uint8Array")
@@ -87,7 +87,7 @@ test("PDF Engine: generateProtocolPdfBlob generates authentic GLP Protocol Dossi
           "Sanitize rubber septums with 70% sterile isopropyl wipe.",
           "Inject 2.0 mL bacteriostatic water slowly down the vial wall.",
           "Roll gently between palms until dissolved; avoid vigorous vortexing.",
-          "Immediately store in cold-chain refrigerator at 2C to 8C.",
+          "Immediately store in laboratory refrigerator at 2C to 8C.",
         ],
       },
       dosage_matrix: {

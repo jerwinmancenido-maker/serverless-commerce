@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/inventory-recipe-builder.tsx
+ * @module  InventoryRecipeBuilder
+ * @purpose Component recipe rules builder modal with inventory component selection.
+ * @contracts
+ *   Service: InventoryModuleService
+ */
+
 import { Trash } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import {
@@ -510,12 +518,12 @@ export const InventoryRecipeBuilder = ({
           <div className="flex h-full flex-col overflow-hidden">
             <FocusModal.Header>
               <div className="flex flex-col gap-y-1">
-                <Text size="small" weight="plus">Choose inventory component</Text>
-                <Text size="xsmall" className="text-ui-fg-subtle">
+                <h2 className="text-base font-bold text-slate-900">Choose inventory component</h2>
+                <p className="text-xs text-slate-500">
                   {targetClassification
                     ? classificationLabel[targetClassification]
                     : "Configured component"}
-                </Text>
+                </p>
               </div>
             </FocusModal.Header>
             <FocusModal.Body className="flex-1 overflow-auto">

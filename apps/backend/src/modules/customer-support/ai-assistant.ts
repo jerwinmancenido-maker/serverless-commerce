@@ -175,7 +175,7 @@ Generate exactly 3 diverse, professional, concise response options in JSON forma
       {
         id: "shipping-update",
         label: "Tracking & Dispatch Status",
-        text: `Hi${name}, thank you for checking in. Your order is being handled under temperature-controlled packaging and is on track for delivery. You will receive an SMS and email notification with live tracking as soon as our courier scans it.`,
+        text: `Hi${name}, thank you for checking in. Your order is being handled under secure protective packaging and is on track for delivery. You will receive an SMS and email notification with live tracking as soon as our courier scans it.`,
       },
       {
         id: "shipping-speed",

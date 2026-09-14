@@ -58,6 +58,18 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
       {isManual(paymentProviderId) && isDevelopment && (
         <PaymentTest className="small:hidden text-[10px]" />
       )}
+      {isManual(paymentProviderId) && selectedPaymentOptionId === paymentProviderId && (
+        <div className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50/80 p-3 text-xs text-zinc-700">
+          <div className="font-semibold text-zinc-900 mb-1 flex items-center gap-1.5">
+            <span>🏛️</span> Direct Remittance &amp; Laboratory Settlement
+          </div>
+          <div className="space-y-1 text-[11px] text-zinc-600 leading-relaxed">
+            <p><strong>GCash / Maya / QR PH:</strong> Instant transfer. Save reference number for verification.</p>
+            <p><strong>Bank Transfer (BDO / BPI):</strong> Electronic bank transfer. Include order ID in notes.</p>
+            <p><strong>Crypto (USDT TRC-20):</strong> Instant settlement address displayed upon order creation.</p>
+          </div>
+        </div>
+      )}
       {children}
     </RadioGroupOption>
   )

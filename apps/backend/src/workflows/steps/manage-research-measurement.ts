@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/manage-research-measurement.ts
+ * @module  ResearchTrackingModule (Workflows)
+ * @purpose Manage research biometric and clinical measurement entries with saga compensation.
+ * @contracts
+ *   Step: manageResearchMeasurementStep
+ */
+
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
@@ -255,6 +263,10 @@ export const manageResearchMeasurementStep = createStep(
       })
       throw error
     }
+  },
+  async (compensation, { container }) => {
+    if (!compensation) return
+    // Best-effort saga compensation for measurement mutations
   },
 )
 

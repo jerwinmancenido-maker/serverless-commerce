@@ -28,12 +28,12 @@ export default async function Nav({
     <div className="sticky top-0 inset-x-0 z-50 group print:hidden">
       {/* Top Scientific Trust & Dispatch Ticker */}
       <div className="bg-[#070A11] border-b border-slate-800/60 py-1.5 text-slate-400 text-[11px]">
-        <div className="content-container flex items-center justify-between">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-semibold text-slate-300">Laboratory Reference Grade Compounds</span>
             <span className="text-slate-600 hidden md:inline">&bull;</span>
-            <span className="hidden md:inline text-slate-400">Cold-Chain Dispatched Nationwide</span>
+            <span className="hidden md:inline text-slate-400">Insulation Foam Protected &bull; Dispatched Nationwide</span>
           </div>
           <div className="flex items-center gap-3 text-slate-400">
             <span className="hidden sm:inline">Dispatched from Metro Manila &middot; J&amp;T Express</span>
@@ -44,8 +44,8 @@ export default async function Nav({
       </div>
 
       {/* Main Header Bar */}
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white/95 backdrop-blur-md border-ui-border-base">
-        <nav className="content-container flex items-center justify-between w-full h-full text-small-regular">
+      <header className="relative h-16 w-full border-b duration-200 bg-white/95 backdrop-blur-md border-ui-border-base">
+        <nav className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 flex items-center justify-between h-full text-small-regular">
           {/* Left: Mobile Menu Trigger + Brand Logo */}
           <div className="flex items-center gap-2 sm:gap-4">
             <div className="small:hidden">

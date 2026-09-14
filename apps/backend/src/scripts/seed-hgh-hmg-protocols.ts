@@ -78,9 +78,18 @@ interface RawProtocol {
   }
   molecularDetails?: {
     casNumber?: string
+    casNumberAlternate?: string
+    casNotes?: string
+    formula?: string
+    molarMass?: string
     pubchemCid?: number
+    sequence?: string
     sequenceOrFormula?: string
     molecularWeightGPerMol?: number
+    purity?: string
+    analyticalVerification?: string
+    stoichiometryNote?: string
+    endotoxin?: string
   }
   citations?: ProtocolCitation[]
   disclaimer?: string

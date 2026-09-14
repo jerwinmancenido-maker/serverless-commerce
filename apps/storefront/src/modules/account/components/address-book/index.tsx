@@ -33,7 +33,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
           </div>
           <h2 className="text-base font-semibold text-slate-900">No Saved Addresses Found</h2>
           <p className="text-sm text-slate-500 max-w-md">
-            Save your clinical facility or delivery destination address for 1-click checkout and automated temperature-controlled shipping.
+            Save your clinical facility or delivery destination address for 1-click checkout and automated shipping.
           </p>
           <div className="mt-2">
             <AddAddress

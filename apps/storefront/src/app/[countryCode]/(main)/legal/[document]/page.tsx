@@ -37,8 +37,19 @@ const LEGAL_DOCUMENTS: Record<LegalDocumentKey, LegalDocumentDefinition> = {
   },
 }
 
-function isLegalDocumentKey(value: string): value is LegalDocumentKey {
-  return Object.prototype.hasOwnProperty.call(LEGAL_DOCUMENTS, value)
+const DOCUMENT_ALIASES: Record<string, LegalDocumentKey> = {
+  terms: "terms",
+  "terms-of-service": "terms",
+  "terms-and-conditions": "terms",
+  privacy: "privacy",
+  "privacy-policy": "privacy",
+  "research-hub": "research-hub",
+  "research-use-agreement": "research-hub",
+  disclaimer: "research-hub",
+}
+
+function resolveDocumentKey(value: string): LegalDocumentKey | null {
+  return DOCUMENT_ALIASES[value.toLowerCase()] ?? null
 }
 
 async function loadDocument(definition: LegalDocumentDefinition) {
@@ -111,10 +122,11 @@ function parseDocument(source: string): ContentBlock[] {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { document } = await params
-  if (!isLegalDocumentKey(document)) {
+  const key = resolveDocumentKey(document)
+  if (!key) {
     return { title: "Legal document" }
   }
-  const definition = LEGAL_DOCUMENTS[document]
+  const definition = LEGAL_DOCUMENTS[key]
   return {
     title: `${definition.title} | Research Compounds`,
     description: definition.description,
@@ -123,11 +135,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function LegalDocumentPage({ params }: PageProps) {
   const { document } = await params
-  if (!isLegalDocumentKey(document)) {
+  const key = resolveDocumentKey(document)
+  if (!key) {
     notFound()
   }
 
-  const definition = LEGAL_DOCUMENTS[document]
+  const definition = LEGAL_DOCUMENTS[key]
   const source = await loadDocument(definition)
   const blocks = parseDocument(source)
 

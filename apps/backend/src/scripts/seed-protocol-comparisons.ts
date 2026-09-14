@@ -137,98 +137,141 @@ export default async function seedProtocolComparisons({
   let createdCount = 0
   let updatedCount = 0
 
-  for (const pair of CANONICAL_MATCHUP_PAIRS) {
-    const protoA = protocolMap.get(pair.a)
-    const protoB = protocolMap.get(pair.b)
+  const comparisonsPath = path.resolve(__dirname, "../../data/peptide-comparisons.json")
+  let comparisonRecords: any[] = []
+  if (fs.existsSync(comparisonsPath)) {
+    comparisonRecords = JSON.parse(fs.readFileSync(comparisonsPath, "utf-8"))
+    logger.info(`Loaded ${comparisonRecords.length} curated comparisons from ${comparisonsPath}`)
+  }
 
-    if (!protoA || !protoB) {
-      logger.warn(`Could not find protocols for pair: ${pair.a} vs ${pair.b}. Skipping.`)
-      continue
+  if (comparisonRecords.length > 0) {
+    for (const record of comparisonRecords) {
+      const slug = record.slug
+      const payload = {
+        slug: record.slug,
+        title: record.title,
+        subtitle: record.subtitle,
+        category: record.category || "General Research",
+        compound_a: record.compound_a || record.compoundA,
+        compound_b: record.compound_b || record.compoundB,
+        summary: record.summary,
+        synergy_verdict: record.synergy_verdict || record.synergyVerdict || "Comparative analytical evaluation across target receptor families.",
+        vectors: record.vectors || [],
+        citations: record.citations || [],
+        status: "published" as const,
+        published_at: record.published_at ? new Date(record.published_at) : new Date(),
+      }
+
+      const existing = await service.listPeptideComparisons({ slug }, { take: 1 })
+
+      if (existing.length > 0) {
+        await (service as any).updatePeptideComparisons({
+          id: existing[0].id,
+          ...payload,
+        })
+        updatedCount++
+        logger.info(`Updated comparison: ${slug}`)
+      } else {
+        await (service as any).createPeptideComparisons(payload)
+        createdCount++
+        logger.info(`Created comparison: ${slug}`)
+      }
     }
+  } else {
+    for (const pair of CANONICAL_MATCHUP_PAIRS) {
+      const protoA = protocolMap.get(pair.a)
+      const protoB = protocolMap.get(pair.b)
 
-    const compA = toCompoundProfile(protoA)
-    const compB = toCompoundProfile(protoB)
-    const slug = `${compA.id}-vs-${compB.id}`
-    const title = `${compA.name} vs. ${compB.name}: Comparative Pharmacodynamics & Molecular Targets`
-    const subtitle = `A side-by-side analytical assessment evaluating ${compA.primary_target} against ${compB.primary_target}.`
-    const summary = `Evaluating ${compA.name} (${compA.tag}) alongside ${compB.name} (${compB.tag}). While ${compA.name} targets ${compA.primary_focus}, ${compB.name} focuses on ${compB.primary_focus}. Both compounds represent distinct molecular targets within modern peptide research.`
+      if (!protoA || !protoB) {
+        logger.warn(`Could not find protocols for pair: ${pair.a} vs ${pair.b}. Skipping.`)
+        continue
+      }
 
-    const vectors = [
-      {
-        feature: "Primary Receptor Target",
-        compoundA_val: compA.primary_target,
-        compoundB_val: compB.primary_target,
-        verdict: compA.primary_target === compB.primary_target ? "Identical Receptor" : "Distinct Target Receptors",
-      },
-      {
-        feature: "Molecular Mass & Classification",
-        compoundA_val: `${compA.molecular_mass} (${compA.sequence_or_class})`,
-        compoundB_val: `${compB.molecular_mass} (${compB.sequence_or_class})`,
-        verdict: `${compA.tag} vs ${compB.tag}`,
-      },
-      {
-        feature: "In-Vitro Half-Life",
-        compoundA_val: compA.half_life,
-        compoundB_val: compB.half_life,
-        verdict: "Pharmacokinetic Persistence",
-      },
-      {
-        feature: "Reconstitution Standard",
-        compoundA_val: `${compA.reconstitution_diluent}${compA.standard_dilution ? ` · ${compA.standard_dilution}` : ""}`,
-        compoundB_val: `${compB.reconstitution_diluent}${compB.standard_dilution ? ` · ${compB.standard_dilution}` : ""}`,
-        verdict: "Solvent & Dilution Requirement",
-      },
-      {
-        feature: "Primary Research Focus",
-        compoundA_val: compA.primary_focus,
-        compoundB_val: compB.primary_focus,
-        verdict: "Differential Tissue Affinity",
-      },
-      {
-        feature: "Standard Analytical Cadence",
-        compoundA_val: compA.typical_cadence || "Varies by experimental model",
-        compoundB_val: compB.typical_cadence || "Varies by experimental model",
-        verdict: "Protocol Cadence Comparison",
-      },
-    ]
+      const compA = toCompoundProfile(protoA)
+      const compB = toCompoundProfile(protoB)
+      const slug = `${compA.id}-vs-${compB.id}`
+      const title = `${compA.name} vs. ${compB.name}: Comparative Pharmacodynamics & Molecular Targets`
+      const subtitle = `A side-by-side analytical assessment evaluating ${compA.primary_target} against ${compB.primary_target}.`
+      const summary = `Evaluating ${compA.name} (${compA.tag}) alongside ${compB.name} (${compB.tag}). While ${compA.name} targets ${compA.primary_focus}, ${compB.name} focuses on ${compB.primary_focus}. Both compounds represent distinct molecular targets within modern peptide research.`
 
-    const mergedCitations = [
-      ...(compA.citations || []),
-      ...(compB.citations || []).filter(
-        (citB: any) => !(compA.citations || []).some((citA: any) => citA.text === citB.text)
-      ),
-    ].map((c: any, idx: number) => ({ ...c, number: idx + 1 }))
+      const vectors = [
+        {
+          feature: "Primary Receptor Target",
+          compoundA_val: compA.primary_target,
+          compoundB_val: compB.primary_target,
+          verdict: compA.primary_target === compB.primary_target ? "Identical Receptor" : "Distinct Target Receptors",
+        },
+        {
+          feature: "Molecular Mass & Classification",
+          compoundA_val: `${compA.molecular_mass} (${compA.sequence_or_class})`,
+          compoundB_val: `${compB.molecular_mass} (${compB.sequence_or_class})`,
+          verdict: `${compA.tag} vs ${compB.tag}`,
+        },
+        {
+          feature: "In-Vitro Half-Life",
+          compoundA_val: compA.half_life,
+          compoundB_val: compB.half_life,
+          verdict: "Pharmacokinetic Persistence",
+        },
+        {
+          feature: "Reconstitution Standard",
+          compoundA_val: `${compA.reconstitution_diluent}${compA.standard_dilution ? ` · ${compA.standard_dilution}` : ""}`,
+          compoundB_val: `${compB.reconstitution_diluent}${compB.standard_dilution ? ` · ${compB.standard_dilution}` : ""}`,
+          verdict: "Solvent & Dilution Requirement",
+        },
+        {
+          feature: "Primary Research Focus",
+          compoundA_val: compA.primary_focus,
+          compoundB_val: compB.primary_focus,
+          verdict: "Differential Tissue Affinity",
+        },
+        {
+          feature: "Standard Analytical Cadence",
+          compoundA_val: compA.typical_cadence || "Varies by experimental model",
+          compoundB_val: compB.typical_cadence || "Varies by experimental model",
+          verdict: "Protocol Cadence Comparison",
+        },
+      ]
 
-    const payload = {
-      slug,
-      title,
-      subtitle,
-      category: compA.category,
-      compound_a: compA,
-      compound_b: compB,
-      summary,
-      synergy_verdict: pair.customVerdict,
-      vectors,
-      citations: mergedCitations,
-      status: "published" as const,
-      published_at: new Date(),
-    }
+      const mergedCitations = [
+        ...(compA.citations || []),
+        ...(compB.citations || []).filter(
+          (citB: any) => !(compA.citations || []).some((citA: any) => citA.text === citB.text)
+        ),
+      ].map((c: any, idx: number) => ({ ...c, number: idx + 1 }))
 
-    const existing = await service.listPeptideComparisons({ slug }, { take: 1 })
+      const payload = {
+        slug,
+        title,
+        subtitle,
+        category: compA.category,
+        compound_a: compA,
+        compound_b: compB,
+        summary,
+        synergy_verdict: pair.customVerdict,
+        vectors,
+        citations: mergedCitations,
+        status: "published" as const,
+        published_at: new Date(),
+      }
 
-    if (existing.length > 0) {
-      await (service as any).updatePeptideComparisons({
-        id: existing[0].id,
-        ...payload,
-      })
-      updatedCount++
-      logger.info(`Updated comparison: ${slug}`)
-    } else {
-      await (service as any).createPeptideComparisons(payload)
-      createdCount++
-      logger.info(`Created comparison: ${slug}`)
+      const existing = await service.listPeptideComparisons({ slug }, { take: 1 })
+
+      if (existing.length > 0) {
+        await (service as any).updatePeptideComparisons({
+          id: existing[0].id,
+          ...payload,
+        })
+        updatedCount++
+        logger.info(`Updated comparison: ${slug}`)
+      } else {
+        await (service as any).createPeptideComparisons(payload)
+        createdCount++
+        logger.info(`Created comparison: ${slug}`)
+      }
     }
   }
+
 
   logger.info("=======================================================")
   logger.info("PROTOCOL COMPARISONS SEED COMPLETE")

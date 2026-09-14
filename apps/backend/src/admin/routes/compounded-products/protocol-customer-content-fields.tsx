@@ -1,4 +1,16 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/protocol-customer-content-fields.tsx
+ * @module  ProtocolCustomerContentFields
+ * @purpose Customer-facing protocol documentation, notes, and guidance fields.
+ * @contracts
+ *   Service: ResearchTrackingModuleService
+ */
+
 import { Button, Input, Label, Select, Text, Textarea } from "@medusajs/ui"
+import { SovereignMarkdownCanvas } from "../../components/editor/sovereign-markdown-canvas"
+import { TagChipInput } from "../../components/ui/tag-chip-input"
+import { ReconstitutionStoichiometryCard } from "../../components/editor/reconstitution-stoichiometry-card"
+import { DosageScheduleMatrix } from "../../components/editor/dosage-schedule-matrix"
 
 import type {
   ResearchProtocolMutationBody,
@@ -56,40 +68,45 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
       <div className="flex flex-col gap-y-2"><Label>Customer introduction</Label><Textarea value={content.short_introduction || ""} disabled={disabled} onChange={(event) => update({ short_introduction: event.target.value || null })} /></div>
 
       <div className="flex flex-col gap-y-2">
-        <Label>Full Monograph & Mechanism of Action</Label>
-        <Textarea
-          rows={5}
+        <SovereignMarkdownCanvas
+          id="protocol-full-description"
+          label="Pharmacological Monograph & Mechanism of Action"
+          sublabel="Comprehensive profile detailing receptor binding, biological pathway, and in vitro kinetics."
           value={content.full_description || ""}
-          disabled={disabled}
-          placeholder="Comprehensive pharmacological profile, biological mechanism of action, receptor binding, and cellular pathway..."
-          onChange={(event) => update({ full_description: event.target.value || null })}
+          onChange={(val) => update({ full_description: val || null })}
+          initialViewMode="write"
+          minHeight="220px"
         />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="flex flex-col gap-y-2">
-          <Label>Researched Benefits (One item per line)</Label>
-          <Textarea
-            rows={4}
-            value={(content.investigated_benefits || []).join("\n")}
+          <Label>Researched Benefits & Validated Actions</Label>
+          <TagChipInput
+            id="protocol-investigated-benefits"
+            variant="emerald"
+            placeholder="Type a researched benefit and press Enter or comma..."
+            tags={content.investigated_benefits || []}
+            onChange={(newTags) => update({ investigated_benefits: newTags })}
             disabled={disabled}
-            placeholder="Enter validated analytical and preclinical benefits, one per line..."
-            onChange={(event) => update({
-              investigated_benefits: event.target.value.split("\n").map((s) => s.trim()).filter(Boolean)
-            })}
           />
+          <Text size="xsmall" className="text-ui-fg-subtle">
+            Press Enter or comma to create a validated analytical action pill.
+          </Text>
         </div>
         <div className="flex flex-col gap-y-2">
-          <Label>Adverse Observations & Precautions (One item per line)</Label>
-          <Textarea
-            rows={4}
-            value={(content.adverse_observations || []).join("\n")}
+          <Label>Adverse Observations & Handling Precautions</Label>
+          <TagChipInput
+            id="protocol-adverse-observations"
+            variant="amber"
+            placeholder="Type a laboratory precaution and press Enter or comma..."
+            tags={content.adverse_observations || []}
+            onChange={(newTags) => update({ adverse_observations: newTags })}
             disabled={disabled}
-            placeholder="Enter analytical handling cautions and laboratory observations, one per line..."
-            onChange={(event) => update({
-              adverse_observations: event.target.value.split("\n").map((s) => s.trim()).filter(Boolean)
-            })}
           />
+          <Text size="xsmall" className="text-ui-fg-subtle">
+            Press Enter or comma to create a handling caution pill.
+          </Text>
         </div>
       </div>
 
@@ -169,126 +186,11 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
         </div>
       </div>
 
-      <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
-        <div>
-          <Text size="small" weight="plus">Reconstitution & Laboratory Stoichiometry</Text>
-          <Text size="small" className="text-ui-fg-subtle">Vial net mass, reconstitution diluent volume, resulting concentration, solvent, and dissolution technique.</Text>
-        </div>
-        <div className="grid gap-3 md:grid-cols-3">
-          <div className="flex flex-col gap-y-2">
-            <Label>Default Vial Net Mass (mg)</Label>
-            <Input
-              type="number"
-              value={content.reconstitution_details?.default_vial_net_mg ?? ""}
-              disabled={disabled}
-              onChange={(e) => update({
-                reconstitution_details: {
-                  default_vial_net_mg: e.target.value === "" ? null : Number(e.target.value),
-                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
-                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
-                  solvent: content.reconstitution_details?.solvent ?? null,
-                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
-                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
-                }
-              })}
-            />
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <Label>Default Diluent Volume (mL)</Label>
-            <Input
-              type="number"
-              step="0.1"
-              value={content.reconstitution_details?.default_diluent_ml ?? ""}
-              disabled={disabled}
-              onChange={(e) => update({
-                reconstitution_details: {
-                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
-                  default_diluent_ml: e.target.value === "" ? null : Number(e.target.value),
-                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
-                  solvent: content.reconstitution_details?.solvent ?? null,
-                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
-                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
-                }
-              })}
-            />
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <Label>Resulting Concentration (mg/mL)</Label>
-            <Input
-              type="number"
-              step="0.01"
-              value={content.reconstitution_details?.resulting_concentration_mg_per_ml ?? ""}
-              disabled={disabled}
-              onChange={(e) => update({
-                reconstitution_details: {
-                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
-                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
-                  resulting_concentration_mg_per_ml: e.target.value === "" ? null : Number(e.target.value),
-                  solvent: content.reconstitution_details?.solvent ?? null,
-                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
-                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
-                }
-              })}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <Label>Reconstitution Solvent</Label>
-          <Input
-            value={content.reconstitution_details?.solvent || ""}
-            disabled={disabled}
-            placeholder="e.g. Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
-            onChange={(e) => update({
-              reconstitution_details: {
-                default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
-                default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
-                resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
-                solvent: e.target.value || null,
-                dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
-                handling_rule: content.reconstitution_details?.handling_rule ?? null,
-              }
-            })}
-          />
-        </div>
-        <div className="grid gap-3 md:grid-cols-2">
-          <div className="flex flex-col gap-y-2">
-            <Label>Dissolution Technique</Label>
-            <Textarea
-              value={content.reconstitution_details?.dissolution_method || ""}
-              disabled={disabled}
-              placeholder="e.g. Swirl gently horizontally in circular motion. Do not agitate or vortex."
-              onChange={(e) => update({
-                reconstitution_details: {
-                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
-                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
-                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
-                  solvent: content.reconstitution_details?.solvent ?? null,
-                  dissolution_method: e.target.value || null,
-                  handling_rule: content.reconstitution_details?.handling_rule ?? null,
-                }
-              })}
-            />
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <Label>Handling Rule & Solution Clarity</Label>
-            <Textarea
-              value={content.reconstitution_details?.handling_rule || ""}
-              disabled={disabled}
-              placeholder="e.g. Clear, colorless solution. Inspect visually for particulates prior to assay."
-              onChange={(e) => update({
-                reconstitution_details: {
-                  default_vial_net_mg: content.reconstitution_details?.default_vial_net_mg ?? null,
-                  default_diluent_ml: content.reconstitution_details?.default_diluent_ml ?? null,
-                  resulting_concentration_mg_per_ml: content.reconstitution_details?.resulting_concentration_mg_per_ml ?? null,
-                  solvent: content.reconstitution_details?.solvent ?? null,
-                  dissolution_method: content.reconstitution_details?.dissolution_method ?? null,
-                  handling_rule: e.target.value || null,
-                }
-              })}
-            />
-          </div>
-        </div>
-      </div>
+      <ReconstitutionStoichiometryCard
+        value={content.reconstitution_details}
+        onChange={(reconstitution_details) => update({ reconstitution_details })}
+        disabled={disabled}
+      />
 
       <div className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
         <div>
@@ -395,49 +297,104 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
         </> : null}
       </div>
 
-      <div id="dosage-schedule" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
-        <div className="flex items-start justify-between gap-x-4"><div><Text size="small" weight="plus">Dosage schedule</Text><Text size="small" className="text-ui-fg-subtle">Structured levels and phases shown to customers and available for Personal Routines.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ protocol_levels: [...content.protocol_levels, { key: `level-${content.protocol_levels.length + 1}`, title: "", summary: null, duration: null, interval: null, applicability: null, evidence_label: null, reference_keys: [], routine_enabled: false, rows: [] }] })}>Add level</Button></div>
-        {content.protocol_levels.map((level, levelIndex) => {
-          const changeLevel = (patch: Partial<typeof level>) => { const next = [...content.protocol_levels]; next[levelIndex] = { ...level, ...patch }; update({ protocol_levels: next }) }
-          return <div key={`${level.key}-${levelIndex}`} className="flex flex-col gap-y-3 rounded-lg bg-ui-bg-subtle p-3">
-            <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto_auto]">
-              <div className="flex flex-col gap-y-2"><Label>Level title</Label><Input value={level.title} disabled={disabled} onChange={(event) => changeLevel({ title: event.target.value, key: keyFrom(event.target.value, level.key) })} /></div>
-              <div className="flex flex-col gap-y-2"><Label>Duration</Label><Input value={level.duration || ""} disabled={disabled} onChange={(event) => changeLevel({ duration: event.target.value || null })} /></div>
-              <div className="flex flex-col gap-y-2"><Label>Interval or washout</Label><Input value={level.interval || ""} disabled={disabled} onChange={(event) => changeLevel({ interval: event.target.value || null })} /></div>
-              <Button size="small" variant={level.routine_enabled ? "primary" : "secondary"} className="self-end" disabled={disabled} onClick={() => changeLevel({ routine_enabled: !level.routine_enabled })}>{level.routine_enabled ? "Routine enabled" : "Enable routine"}</Button>
-              <Button size="small" variant="secondary" className="self-end" disabled={disabled} onClick={() => update({ protocol_levels: content.protocol_levels.filter((_, index) => index !== levelIndex) })}>Remove</Button>
-            </div>
-            <div className="grid gap-3 md:grid-cols-2"><div className="flex flex-col gap-y-2"><Label>Summary</Label><Textarea value={level.summary || ""} disabled={disabled} onChange={(event) => changeLevel({ summary: event.target.value || null })} /></div><div className="flex flex-col gap-y-2"><Label>Applicability</Label><Textarea value={level.applicability || ""} disabled={disabled} onChange={(event) => changeLevel({ applicability: event.target.value || null })} /></div></div>
-            <div className="flex items-center justify-between"><div><Text size="small" weight="plus">Schedule rows</Text><Text size="xsmall" className="text-ui-fg-subtle">Offsets start at day 0. Times use the customer&apos;s local timezone.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => changeLevel({ rows: [...level.rows, { row_key: `phase-${level.rows.length + 1}`, period: "", start_offset_days: null, end_offset_days: null, amount: "", unit: "mcg", recurrence_type: "custom", times_per_day: null, weekdays: [], suggested_local_times: [], frequency: "", notes: null, reference_keys: [] }] })}>Add row</Button></div>
-            {level.rows.map((row, rowIndex) => {
-              const changeRow = (patch: Partial<typeof row>) => { const rows = [...level.rows]; rows[rowIndex] = { ...row, ...patch }; changeLevel({ rows }) }
-              return <div key={`row-${rowIndex}`} className="flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-3">
-                <div className="grid gap-3 md:grid-cols-[1.3fr_90px_90px_1fr_100px_auto]">
-                  <div className="flex flex-col gap-y-2"><Label>Display period</Label><Input value={row.period} disabled={disabled} placeholder="Weeks 1-2" onChange={(event) => changeRow({ period: event.target.value, row_key: keyFrom(event.target.value, row.row_key || `phase-${rowIndex + 1}`) })} /></div>
-                  <div className="flex flex-col gap-y-2"><Label>Start day</Label><Input type="number" min={0} value={row.start_offset_days ?? ""} disabled={disabled} onChange={(event) => changeRow({ start_offset_days: event.target.value === "" ? null : Number(event.target.value) })} /></div>
-                  <div className="flex flex-col gap-y-2"><Label>End day</Label><Input type="number" min={0} value={row.end_offset_days ?? ""} disabled={disabled} onChange={(event) => changeRow({ end_offset_days: event.target.value === "" ? null : Number(event.target.value) })} /></div>
-                  <div className="flex flex-col gap-y-2"><Label>Amount</Label><Input value={row.amount} disabled={disabled} onChange={(event) => changeRow({ amount: event.target.value })} /></div>
-                  <div className="flex flex-col gap-y-2"><Label>Unit</Label><Select value={row.unit} disabled={disabled} onValueChange={(unit) => changeRow({ unit: unit as ResearchProtocolUnit })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content>{units.map((unit) => <Select.Item key={unit} value={unit}>{unit}</Select.Item>)}</Select.Content></Select></div>
-                  <Button size="small" variant="secondary" className="self-end" disabled={disabled} onClick={() => changeLevel({ rows: level.rows.filter((_, index) => index !== rowIndex) })}>Remove</Button>
-                </div>
-                <div className="grid gap-3 md:grid-cols-4">
-                  <div className="flex flex-col gap-y-2"><Label>Recurrence</Label><Select value={row.recurrence_type || "custom"} disabled={disabled} onValueChange={(recurrenceType) => changeRow({ recurrence_type: recurrenceType as typeof row.recurrence_type })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content>{["once", "daily", "weekly", "custom"].map((item) => <Select.Item key={item} value={item}>{item[0].toUpperCase() + item.slice(1)}</Select.Item>)}</Select.Content></Select></div>
-                  <div className="flex flex-col gap-y-2"><Label>Times per day</Label><Input type="number" min={1} max={24} value={row.times_per_day ?? ""} disabled={disabled} onChange={(event) => changeRow({ times_per_day: event.target.value === "" ? null : Number(event.target.value) })} /></div>
-                  <div className="flex flex-col gap-y-2"><Label>Suggested times</Label><Input value={(row.suggested_local_times || []).join(", ")} disabled={disabled} placeholder="08:00, 20:00" onChange={(event) => changeRow({ suggested_local_times: event.target.value.split(",").map((item) => item.trim()).filter(Boolean) })} /></div>
-                  <div className="flex flex-col gap-y-2"><Label>Customer frequency</Label><Input value={row.frequency} disabled={disabled} placeholder="Once daily" onChange={(event) => changeRow({ frequency: event.target.value })} /></div>
-                </div>
-                <div className="flex flex-col gap-y-2"><Label>Notes</Label><Textarea value={row.notes || ""} disabled={disabled} onChange={(event) => changeRow({ notes: event.target.value || null })} /></div>
-              </div>
-            })}
-          </div>
-        })}
+      <div id="dosage-schedule" className="scroll-mt-24">
+        {/* Dosage schedule matrix: Routine enabled, start_offset_days, suggested_local_times */}
+        <DosageScheduleMatrix
+          value={content.protocol_levels}
+          onChange={(protocol_levels) => update({ protocol_levels })}
+          disabled={disabled}
+        />
       </div>
 
       <div id="detailed-sections" className="scroll-mt-24 flex flex-col gap-y-3 rounded-lg border border-ui-border-base p-4">
-        <div className="flex items-start justify-between gap-x-4"><div><Text size="small" weight="plus">Detailed sections</Text><Text size="small" className="text-ui-fg-subtle">About, benefits, uses, administration, preparation, stacking, side effects, contraindications, storage, or custom content.</Text></div><Button size="small" variant="secondary" disabled={disabled} onClick={() => update({ sections: [...content.sections, { key: `section-${content.sections.length + 1}`, title: "", body: "", visible: true, position: content.sections.length, reference_keys: [] }] })}>Add section</Button></div>
+        <div className="flex items-start justify-between gap-x-4">
+          <div>
+            <Text size="small" weight="plus">Detailed sections</Text>
+            <Text size="small" className="text-ui-fg-subtle">
+              About, benefits, uses, administration, preparation, stacking, side effects, contraindications, storage, or custom content with full markdown formatting.
+            </Text>
+          </div>
+          <Button
+            size="small"
+            variant="secondary"
+            disabled={disabled}
+            onClick={() => update({
+              sections: [
+                ...content.sections,
+                {
+                  key: `section-${content.sections.length + 1}`,
+                  title: "",
+                  body: "",
+                  visible: true,
+                  position: content.sections.length,
+                  reference_keys: [],
+                },
+              ],
+            })}
+          >
+            Add section
+          </Button>
+        </div>
         {content.sections.map((section, index) => {
-          const change = (patch: Partial<typeof section>) => { const next = [...content.sections]; next[index] = { ...section, ...patch }; update({ sections: next }) }
-          return <div key={`${section.key}-${index}`} className="flex flex-col gap-y-3 rounded-lg bg-ui-bg-subtle p-3"><div className="grid gap-3 md:grid-cols-[1fr_120px_120px_auto]"><div className="flex flex-col gap-y-2"><Label>Section title</Label><Input value={section.title} disabled={disabled} onChange={(event) => change({ title: event.target.value, key: keyFrom(event.target.value, section.key) })} /></div><div className="flex flex-col gap-y-2"><Label>Position</Label><Input type="number" min={0} value={section.position} disabled={disabled} onChange={(event) => change({ position: Number(event.target.value) || 0 })} /></div><Button size="small" variant={section.visible ? "primary" : "secondary"} className="self-end" disabled={disabled} onClick={() => change({ visible: !section.visible })}>{section.visible ? "Visible" : "Hidden"}</Button><Button size="small" variant="secondary" className="self-end" disabled={disabled} onClick={() => update({ sections: content.sections.filter((_, itemIndex) => itemIndex !== index) })}>Remove</Button></div><div className="flex flex-col gap-y-2"><Label>Content</Label><Textarea value={section.body} disabled={disabled} onChange={(event) => change({ body: event.target.value })} /></div></div>
+          const change = (patch: Partial<typeof section>) => {
+            const next = [...content.sections]
+            next[index] = { ...section, ...patch }
+            update({ sections: next })
+          }
+          return (
+            <div key={`${section.key}-${index}`} className="flex flex-col gap-y-3 rounded-lg bg-ui-bg-subtle p-3.5 border border-ui-border-base">
+              <div className="grid gap-3 md:grid-cols-[1fr_120px_120px_auto]">
+                <div className="flex flex-col gap-y-2">
+                  <Label>Section title</Label>
+                  <Input
+                    value={section.title}
+                    disabled={disabled}
+                    onChange={(event) => change({ title: event.target.value, key: keyFrom(event.target.value, section.key) })}
+                  />
+                </div>
+                <div className="flex flex-col gap-y-2">
+                  <Label>Position</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={section.position}
+                    disabled={disabled}
+                    onChange={(event) => change({ position: Number(event.target.value) || 0 })}
+                  />
+                </div>
+                <Button
+                  size="small"
+                  variant={section.visible ? "primary" : "secondary"}
+                  className="self-end"
+                  disabled={disabled}
+                  onClick={() => change({ visible: !section.visible })}
+                >
+                  {section.visible ? "Visible" : "Hidden"}
+                </Button>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  className="self-end"
+                  disabled={disabled}
+                  onClick={() => update({ sections: content.sections.filter((_, itemIndex) => itemIndex !== index) })}
+                >
+                  Remove
+                </Button>
+              </div>
+              <div className="flex flex-col gap-y-1.5">
+                <Label>Section Body (Markdown &amp; Tables Supported)</Label>
+                <SovereignMarkdownCanvas
+                  id={`section-canvas-${section.key || index}`}
+                  value={section.body}
+                  onChange={(val) => change({ body: val })}
+                  disabled={disabled}
+                  initialViewMode="write"
+                  minHeight="140px"
+                  placeholder="Draft section clinical narrative, molecular interactions, and laboratory guidelines..."
+                />
+              </div>
+            </div>
+          )
         })}
       </div>
 

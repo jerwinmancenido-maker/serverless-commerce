@@ -141,58 +141,46 @@ export default function NotificationCenter({
 
   return (
     <div className="space-y-6" data-testid="notification-center-page">
-      {/* Page Header */}
-      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full inline-block mb-2">
-            System &amp; Laboratory Telemetry
-          </span>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-            Notifications &amp; Activity Log
-          </h1>
-          <p className="mt-1 text-xs sm:text-sm text-slate-500">
-            Support conversations, protocol access grants, Research Hub updates, and order activity.
-          </p>
+      {/* Action & Filter Toolbar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div
+          className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 border border-slate-200/80 rounded-2xl overflow-x-auto no-scrollbar"
+          role="tablist"
+          aria-label="Notification category filters"
+        >
+          {CATEGORIES.map((option) => {
+            const isActive = filter === option.value
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => {
+                  setOffset(0)
+                  setFilter(option.value)
+                }}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 cursor-pointer ${
+                  isActive
+                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/60 font-bold"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                }`}
+              >
+                {option.label}
+              </button>
+            )
+          })}
         </div>
+
         <button
           type="button"
           onClick={markAllReadOptimistic}
           disabled={pending}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-2xs transition-colors disabled:opacity-40 cursor-pointer shrink-0"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-2xs transition-colors disabled:opacity-40 cursor-pointer shrink-0 self-end sm:self-center"
         >
           <CheckCircleSolid className="h-4 w-4 text-emerald-600" />
           <span>Mark all as read</span>
         </button>
-      </header>
-
-      {/* Segmented Filter Pills */}
-      <div
-        className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 border border-slate-200/80 rounded-2xl overflow-x-auto no-scrollbar w-full"
-        role="tablist"
-        aria-label="Notification category filters"
-      >
-        {CATEGORIES.map((option) => {
-          const isActive = filter === option.value
-          return (
-            <button
-              key={option.value}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              onClick={() => {
-                setOffset(0)
-                setFilter(option.value)
-              }}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 cursor-pointer ${
-                isActive
-                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/60 font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
-              }`}
-            >
-              {option.label}
-            </button>
-          )
-        })}
       </div>
 
       {error ? (

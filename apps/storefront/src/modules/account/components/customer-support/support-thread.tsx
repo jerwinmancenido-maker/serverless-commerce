@@ -102,11 +102,17 @@ export default function SupportThread({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [pending, startTransition] = useTransition()
 
   const scrollToBottom = useCallback((smooth = true) => {
-    messagesEndRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto" })
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: smooth ? "smooth" : "auto",
+      })
+    }
   }, [])
 
   // Background polling every 8 seconds
@@ -369,7 +375,7 @@ export default function SupportThread({
         )}
 
         {/* Messages Stream */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-50/30">
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-50/30">
           {filteredMessages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center space-y-2 text-ui-fg-subtle">
               <div className="h-12 w-12 rounded-full bg-ui-bg-subtle flex items-center justify-center text-2xl">

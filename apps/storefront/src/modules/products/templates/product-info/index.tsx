@@ -58,7 +58,7 @@ const ProductInfo = ({ product, mode = "all" }: ProductInfoProps) => {
                 <strong className="font-semibold text-zinc-900">State:</strong> Lyophilized Solid Powder
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-[11px] font-medium">
-                <strong className="font-semibold text-emerald-950">Purity:</strong> ≥99.0% HPLC Standard
+                <strong className="font-semibold text-emerald-950">Standard:</strong> Reference Grade RUO
               </span>
               <a
                 href="#scientific-workspace"

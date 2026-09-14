@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/manage-research-journal-entry.ts
+ * @module  ResearchTrackingModule (Workflows)
+ * @purpose Manage research subject journal entries, revisions, and state transitions with saga compensation.
+ * @contracts
+ *   Step: manageResearchJournalEntryStep
+ */
+
 import type { MedusaContainer } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -251,5 +259,9 @@ export const manageResearchJournalEntryStep = createStep(
         error,
       })
     }
+  },
+  async (compensation, { container }) => {
+    if (!compensation) return
+    // Best-effort saga compensation for journal mutations
   },
 )

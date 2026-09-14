@@ -12,7 +12,9 @@ import {
   CheckCircleSolid,
   ChevronDownMini,
   DocumentText,
+  Gift,
   ShoppingCart,
+  Sparkles,
   SquaresPlus,
   User,
   XMark,
@@ -24,6 +26,7 @@ import { Fragment, useState } from "react"
 import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { Locale } from "@lib/data/locales"
+import { getNavCategories, getNavMetrics } from "@lib/data/navigation-data"
 
 const SideMenuItems = {
   Home: "/",
@@ -33,14 +36,6 @@ const SideMenuItems = {
   Cart: "/cart",
 }
 
-const PEPTIDE_CATEGORIES = [
-  { name: "Metabolic & GLP-1", href: "/categories/metabolic-weight-management-peptides" },
-  { name: "Healing & Tissue Repair", href: "/categories/healing-tissue-repair-peptides" },
-  { name: "Growth Hormone Axis", href: "/categories/growth-hormone-recovery-peptides" },
-  { name: "Longevity & Cellular", href: "/categories/longevity-cellular-health-peptides" },
-  { name: "Research Supplies", href: "/categories/research-supplies-accessories" },
-]
-
 type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
   locales: Locale[] | null
@@ -48,9 +43,13 @@ type SideMenuProps = {
 }
 
 const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
+  const metrics = getNavMetrics()
+  const categories = getNavCategories()
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
   const [categoriesOpen, setCategoriesOpen] = useState(true)
+  const [toolsOpen, setToolsOpen] = useState(true)
+  const [accountOpen, setAccountOpen] = useState(true)
 
   return (
     <div className="h-full">
@@ -91,13 +90,13 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                   data-testid="nav-menu-popup"
                   className="fixed top-[96px] inset-x-0 z-[51] max-h-[85vh] overflow-y-auto bg-white border-b border-slate-200 text-slate-900 shadow-2xl p-5 sm:p-6 small:hidden"
                 >
-                  <div className="content-container max-w-4xl mx-auto flex flex-col gap-6">
+                  <div className="content-container max-w-5xl mx-auto flex flex-col gap-6">
                     {/* Top Bar inside Menu */}
                     <div className="flex items-center justify-between pb-4 border-b border-slate-200">
                       <div className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
                         <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
-                          LAB RESEARCH CATALOG
+                          LAB RESEARCH CATALOG &amp; SUITE
                         </span>
                       </div>
                       <button
@@ -110,9 +109,9 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                       </button>
                     </div>
 
-                    {/* Navigation Sections */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* Section 1: Peptides & Categories */}
+                    {/* Navigation Sections (4 Semantic Pillars) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {/* Pillar 1: Compounds & Categories */}
                       <div className="space-y-3">
                         <div
                           className="flex items-center justify-between cursor-pointer md:cursor-default"
@@ -120,8 +119,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         >
                           <div className="flex items-center gap-2">
                             <SquaresPlus className="h-4 w-4 text-emerald-600" />
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                              Peptides &amp; Categories
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                              Compounds &amp; Catalog
                             </h4>
                           </div>
                           <ChevronDownMini
@@ -142,7 +141,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                             >
                               <div className="flex items-center gap-2">
                                 <BuildingStorefront className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                                <span>All Compounds (Store)</span>
+                                <span>All Compounds</span>
                               </div>
                               <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
                             </LocalizedClientLink>
@@ -161,169 +160,298 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                             </LocalizedClientLink>
 
                             <div className="pt-2 pl-3 border-l border-slate-200 space-y-1">
-                              {PEPTIDE_CATEGORIES.map((cat) => (
+                              {categories.map((cat) => (
                                 <LocalizedClientLink
                                   key={cat.href}
                                   href={cat.href}
-                                  className="block py-1 text-xs text-slate-600 hover:text-emerald-700 transition-colors"
+                                  className="flex items-center justify-between py-1 text-xs text-slate-600 hover:text-emerald-700 transition-colors"
                                   onClick={close}
                                 >
-                                  {cat.name}
+                                  <span>{cat.shortName}</span>
+                                  <span className="text-[10px] font-mono text-slate-400 bg-slate-100 rounded px-1.5 py-0.2">
+                                    {cat.count}
+                                  </span>
                                 </LocalizedClientLink>
                               ))}
+                            </div>
+
+                            <div className="pt-2">
+                              <LocalizedClientLink
+                                href="/account/support"
+                                className="group flex items-center justify-between rounded-lg bg-emerald-50/60 border border-emerald-200/80 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-100/70 transition-colors"
+                                onClick={close}
+                              >
+                                <div className="flex items-center gap-1.5">
+                                  <ChatBubble className="h-3.5 w-3.5 text-emerald-600" />
+                                  <span>Special Orders &amp; Custom Blends</span>
+                                </div>
+                                <span className="text-[9px] uppercase px-1 rounded bg-emerald-200 text-emerald-900">Chat</span>
+                              </LocalizedClientLink>
                             </div>
                           </div>
                         )}
                       </div>
 
-                      {/* Section 2: Open Research Library & Tools */}
+                      {/* Pillar 2: Research Library Direct Access */}
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Beaker className="h-4 w-4 text-emerald-600" />
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                              Research Library
-                            </h4>
+                        <div className="flex items-center gap-2">
+                          <DocumentText className="h-4 w-4 text-emerald-600" />
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                            Scientific Reference Hub
+                          </h4>
+                        </div>
+
+                        <LocalizedClientLink
+                          href="/research-library"
+                          className="group block rounded-2xl bg-gradient-to-br from-emerald-50/80 via-teal-50/30 to-white border border-emerald-200 p-4 hover:border-emerald-300 transition-all shadow-2xs"
+                          onClick={close}
+                        >
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                              Open Research Library
+                            </span>
+                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
                           </div>
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded">
-                            Open Access
-                          </span>
-                        </div>
-
-                        <div className="space-y-1">
-                          <LocalizedClientLink
-                            href="/research-library#calculator"
-                            className="group flex flex-col rounded-xl bg-gradient-to-br from-emerald-50/80 via-teal-50/30 to-white border border-emerald-200 p-3 hover:border-emerald-300 transition-all shadow-2xs"
-                            onClick={close}
-                          >
-                            <span className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                              Reconstitution Calculator
+                          <p className="text-xs text-slate-600 leading-relaxed mb-3">
+                            Monograph library with integrated 7-tab scientific explorer, receptor binding affinities &amp; analytical documentation.
+                          </p>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100/80 border border-emerald-300 px-2 py-0.5 rounded-full">
+                              {metrics.totalArticles} Monographs
                             </span>
-                            <span className="text-xs text-slate-600 mt-0.5">
-                              Calculate BAC water dilution &amp; insulin syringe tick units
+                            <span className="text-[10px] font-semibold text-indigo-800 bg-indigo-100/80 border border-indigo-300 px-2 py-0.5 rounded-full">
+                              {metrics.totalComparisons} Comparisons
                             </span>
-                          </LocalizedClientLink>
-
-                          <LocalizedClientLink
-                            href="/research-library#coa"
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                          >
-                            <div className="flex items-center gap-2">
-                              <CheckCircleSolid className="h-4 w-4 text-emerald-600" />
-                              <span>Certificates of Analysis (CoA)</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-[10px] font-bold uppercase text-emerald-800 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
-                                Verified
-                              </span>
-                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                            </div>
-                          </LocalizedClientLink>
-
-                          <LocalizedClientLink
-                            href="/research-library#comparisons"
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                          >
-                            <div className="flex items-center gap-2">
-                              <SquaresPlus className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>Peptide Comparisons</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
-
-                          <LocalizedClientLink
-                            href="/research-library#articles"
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                          >
-                            <div className="flex items-center gap-2">
-                              <DocumentText className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>Scientific Articles &amp; Studies</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
-
-                          <LocalizedClientLink
-                            href="/research-library#protocols"
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Beaker className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>Product Protocols Directory</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
-                        </div>
+                            <span className="text-[10px] font-semibold text-blue-800 bg-blue-100/80 border border-blue-300 px-2 py-0.5 rounded-full">
+                              {metrics.totalCompounds} Protocols
+                            </span>
+                          </div>
+                        </LocalizedClientLink>
                       </div>
 
-                      {/* Section 3: Customer Research Suite & Account */}
+                      {/* Pillar 3: Calculators & Laboratory Standards */}
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between">
+                        <div
+                          className="flex items-center justify-between cursor-pointer md:cursor-default"
+                          onClick={() => setToolsOpen(!toolsOpen)}
+                        >
                           <div className="flex items-center gap-2">
-                            <User className="h-4 w-4 text-emerald-600" />
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                              Customer Suite
+                            <Beaker className="h-4 w-4 text-emerald-600" />
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                              Calculators &amp; Standards
                             </h4>
                           </div>
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
-                            Client Portal
-                          </span>
+                          <ChevronDownMini
+                            className={clx(
+                              "h-4 w-4 text-slate-400 transition-transform md:hidden",
+                              toolsOpen && "rotate-180"
+                            )}
+                          />
                         </div>
 
-                        <div className="space-y-1">
-                          <LocalizedClientLink
-                            href={SideMenuItems.Account}
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                            data-testid="account-link"
-                          >
-                            <div className="flex items-center gap-2">
-                              <User className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>My Account &amp; Orders</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
+                        {toolsOpen && (
+                          <div className="space-y-1">
+                            <LocalizedClientLink
+                              href="/calculator"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-sm">📐</span>
+                                <span>Reconstitution Calculator</span>
+                              </div>
+                              <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                                Tool
+                              </span>
+                            </LocalizedClientLink>
 
-                          <LocalizedClientLink
-                            href="/account/research-hub"
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Beaker className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>My Research Hub</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
+                            <LocalizedClientLink
+                              href="/dosage-chart"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-sm">📊</span>
+                                <span>Master Peptide Dosage Matrix ({metrics.totalCompounds})</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
 
-                          <LocalizedClientLink
-                            href={SideMenuItems.Cart}
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                            data-testid="cart-link"
-                          >
-                            <div className="flex items-center gap-2">
-                              <ShoppingCart className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>View Cart</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
+                            <LocalizedClientLink
+                              href="/research-stacks"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <Sparkles className="h-4 w-4 text-purple-600" />
+                                <span>Peptide Stacks Studio</span>
+                              </div>
+                              <span className="text-[10px] font-semibold text-purple-800 bg-purple-50 border border-purple-200 px-1.5 py-0.5 rounded">
+                                Synergy
+                              </span>
+                            </LocalizedClientLink>
 
-                          <LocalizedClientLink
-                            href="/account/support"
-                            className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
-                            onClick={close}
-                          >
-                            <div className="flex items-center gap-2">
-                              <ChatBubble className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
-                              <span>Customer Support &amp; Inquiries</span>
-                            </div>
-                            <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
-                          </LocalizedClientLink>
+                            <LocalizedClientLink
+                              href="/learn/syringe-guide"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-sm">💉</span>
+                                <span>U-100 Syringe Visualizer &amp; Guide</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/learn/storage-guide"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-sm">❄️</span>
+                                <span>Storage &amp; Degradation Matrix</span>
+                              </div>
+                              <span className="text-[10px] font-semibold text-teal-800 bg-teal-50 border border-teal-200 px-1.5 py-0.5 rounded">
+                                Stability
+                              </span>
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/learn"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-sm">🔬</span>
+                                <span>Laboratory Clean-Bench SOPs</span>
+                              </div>
+                              <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
+                                5 SOPs
+                              </span>
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/faq"
+                              className="group flex items-center justify-between rounded-lg px-3 py-1.5 text-xs text-slate-600 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <span>Laboratory FAQ &amp; Standards</span>
+                              <ArrowRightMini className="h-3.5 w-3.5 text-slate-400" />
+                            </LocalizedClientLink>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Pillar 4: Researcher Portal & Account */}
+                      <div className="space-y-3">
+                        <div
+                          className="flex items-center justify-between cursor-pointer md:cursor-default"
+                          onClick={() => setAccountOpen(!accountOpen)}
+                        >
+                          <div className="flex items-center gap-2">
+                            <User className="h-4 w-4 text-emerald-600" />
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                              Researcher Portal
+                            </h4>
+                          </div>
+                          <ChevronDownMini
+                            className={clx(
+                              "h-4 w-4 text-slate-400 transition-transform md:hidden",
+                              accountOpen && "rotate-180"
+                            )}
+                          />
                         </div>
+
+                        {accountOpen && (
+                          <div className="space-y-1">
+                            <LocalizedClientLink
+                              href="/account/research-hub"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Beaker className="h-4 w-4 text-emerald-600" />
+                                <span>My Research Hub</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/account/community"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2">
+                                <ChatBubble className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
+                                <span>Researcher Community</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/account/rewards"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Gift className="h-4 w-4 text-amber-500 group-hover:scale-110 transition-transform" />
+                                <span>Rewards &amp; Tier Points</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href={SideMenuItems.Account}
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                              data-testid="account-link"
+                            >
+                              <div className="flex items-center gap-2">
+                                <User className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
+                                <span>Account Overview</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/account/orders"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2">
+                                <CheckCircleSolid className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
+                                <span>Orders &amp; Tracking</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href={SideMenuItems.Cart}
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                              data-testid="cart-link"
+                            >
+                              <div className="flex items-center gap-2">
+                                <ShoppingCart className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
+                                <span>View Cart</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+
+                            <LocalizedClientLink
+                              href="/account/support"
+                              className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                              onClick={close}
+                            >
+                              <div className="flex items-center gap-2">
+                                <ChatBubble className="h-4 w-4 text-slate-400 group-hover:text-emerald-600" />
+                                <span>Support &amp; Inquiries</span>
+                              </div>
+                              <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-slate-800 transition-colors" />
+                            </LocalizedClientLink>
+                          </div>
+                        )}
                       </div>
                     </div>
 

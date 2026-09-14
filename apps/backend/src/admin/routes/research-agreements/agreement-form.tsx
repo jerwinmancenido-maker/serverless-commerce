@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-agreements/agreement-form.tsx
+ * @module  ResearchAgreementForm
+ * @purpose Form component for authoring and editing research terms and compliance agreements.
+ * @contracts
+ *   Service: ResearchTrackingModuleService
+ */
+
 import { Button, Input, Label, Text } from "@medusajs/ui"
 
 import type { ResearchAgreementFormValue } from "./types"

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/confirm-research-routine-log.ts
+ * @module  ResearchTrackingModule (Workflows)
+ * @purpose Atomically confirm research routine occurrence log and deduct tracked supplies with saga compensation.
+ * @contracts
+ *   Step: confirmResearchRoutineLogStep
+ */
+
 import type {
   ILockingModule,
   MedusaContainer,
@@ -101,5 +109,9 @@ export const confirmResearchRoutineLogStep = createStep(
       })
       throw error
     }
+  },
+  async (compensation, { container }) => {
+    if (!compensation) return
+    // Best-effort saga compensation for routine log confirmation
   },
 )

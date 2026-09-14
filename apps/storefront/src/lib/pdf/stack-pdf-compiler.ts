@@ -1,8 +1,8 @@
 /**
  * @file    apps/storefront/src/lib/pdf/stack-pdf-compiler.ts
  * @module  StackPdfCompiler
- * @purpose Pure-TypeScript Vector PDF Compiler generating ISO 9001:2015 and GLP
- *          compliant multi-compound research stack dossiers directly in browser runtime.
+ * @purpose Pure-TypeScript Vector PDF Compiler generating GLP and analytical
+ *          laboratory multi-compound research stack dossiers directly in browser runtime.
  *          Outputs authentic %PDF-1.4 binary streams with zero external npm dependencies.
  * @contracts
  *   Function: generateStackPdfBlob({ stackEvaluation, selectedProfiles, bundleVials })
@@ -88,7 +88,7 @@ export function generateStackPdfBlob(options: StackPdfOptions): Blob {
   )
 
   doc.drawText(
-    `DOC ID: ${protocolId}  |  ISO 9001:2015 & GLP CONTROLS`,
+    `DOC ID: ${protocolId}  |  IN-VITRO RUO ANALYTICAL CONTROLS`,
     margin + 12,
     cursorY - 42,
     { font: "/F3", size: 7.5, color: COLORS.slate700 }
@@ -436,7 +436,7 @@ export function generateStackPdfBlob(options: StackPdfOptions): Blob {
   })
 
   doc.drawText(
-    "MANDATORY CLEANROOM ASEPTIC CROSS-CONTAMINATION PROTOCOL",
+    "MANDATORY LABORATORY BENCH CROSS-CONTAMINATION PROTOCOL",
     margin + 8,
     cursorY - 12,
     { font: "/F2", size: 7.5, color: COLORS.amber800 }
@@ -446,7 +446,7 @@ export function generateStackPdfBlob(options: StackPdfOptions): Blob {
     "1. Strict Syringe Separation: NEVER draw multiple peptide solutions into a single syringe.",
     "2. Precipitation Prevention: Divergent pH buffers will aggregate and precipitate if mixed in liquid phase.",
     "3. Injection Site Rotation: Alternate contralateral subcutaneous sites minimum 2 inches from navel.",
-    "4. Cold-Chain Standard: Store all reconstituted vials at 2°C-8°C protected from light (USP <797>).",
+    "4. Storage Standard: Store all reconstituted vials at 2°C-8°C protected from light (GLP Storage Standard).",
   ]
 
   safetyPoints.forEach((sp, i) => {
@@ -470,8 +470,8 @@ export function generateStackPdfBlob(options: StackPdfOptions): Blob {
 
   const qaCol = pWidth / 3
 
-  // Col 1: Authorizing Investigator
-  doc.drawText("AUTHORIZING INVESTIGATOR:", margin + 8, cursorY - 10, {
+  // Col 1: Protocol Classification
+  doc.drawText("SPECIFICATION STANDARD:", margin + 8, cursorY - 10, {
     font: "/F2",
     size: 6.5,
     color: COLORS.slate500,
@@ -480,14 +480,14 @@ export function generateStackPdfBlob(options: StackPdfOptions): Blob {
     color: COLORS.slate300,
     lineWidth: 0.5,
   })
-  doc.drawText("Dr. Jerwin / Senior Investigator", margin + 8, cursorY - 40, {
+  doc.drawText("In-Vitro Analytical Protocol Standard", margin + 8, cursorY - 40, {
     font: "/F1",
     size: 6,
     color: COLORS.slate500,
   })
 
-  // Col 2: QA Auditor
-  doc.drawText("QA COMPLIANCE AUDITOR:", margin + qaCol + 8, cursorY - 10, {
+  // Col 2: Regulatory Status
+  doc.drawText("REGULATORY CLASSIFICATION:", margin + qaCol + 8, cursorY - 10, {
     font: "/F2",
     size: 6.5,
     color: COLORS.slate500,
@@ -496,10 +496,10 @@ export function generateStackPdfBlob(options: StackPdfOptions): Blob {
     color: COLORS.slate300,
     lineWidth: 0.5,
   })
-  doc.drawText("GLP Quality Officer Sign-Off", margin + qaCol + 8, cursorY - 40, {
-    font: "/F1",
+  doc.drawText("Research Use Only (RUO) · Not FDA Evaluated", margin + qaCol + 8, cursorY - 40, {
+    font: "/F2",
     size: 6,
-    color: COLORS.slate500,
+    color: COLORS.amber800,
   })
 
   // Col 3: Document Control ID & Date

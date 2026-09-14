@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/set-component-profile.ts
+ * @module  PepstackBomModule (Workflows)
+ * @purpose Persist and revert component profile definitions with full saga compensation.
+ * @contracts
+ *   Step: setComponentProfileStep · validateComponentProfileInputStep
+ */
+
 import type { IInventoryService } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"

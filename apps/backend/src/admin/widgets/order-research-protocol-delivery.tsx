@@ -1,7 +1,16 @@
+/**
+ * @file    apps/backend/src/admin/widgets/order-research-protocol-delivery.tsx
+ * @module  OrderResearchProtocolDeliveryWidget
+ * @purpose Order detail widget displaying research protocol access, revisions, and QR access.
+ * @contracts
+ *   Widget: order.details.after
+ *   Service: ResearchTrackingModuleService
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import type { DetailWidgetProps } from "@medusajs/framework/types"
 import type { HttpTypes } from "@medusajs/types"
-import { Badge, Button, Container, Heading, Text, toast } from "@medusajs/ui"
+import { Badge, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { sdk } from "../lib/sdk"
@@ -33,7 +42,7 @@ const OrderResearchProtocolDelivery = ({ data: order }: DetailWidgetProps<HttpTy
     onError: (error) => toast.error(error.message || "Protocol delivery could not be repaired"),
   })
   return (
-    <Container className="divide-y p-0">
+    <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100 mb-4">
       <div className="flex items-start justify-between gap-4 px-6 py-4">
         <div><Heading level="h2">Research protocol delivery</Heading><Text size="small" className="mt-1 text-ui-fg-subtle">Exact published revisions and customer account access for this order.</Text></div>
         <Button size="small" variant="secondary" isLoading={repair.isPending} onClick={() => repair.mutate()}>Repair access</Button>
@@ -41,7 +50,7 @@ const OrderResearchProtocolDelivery = ({ data: order }: DetailWidgetProps<HttpTy
       <div className="px-6 py-4">
         {query.isLoading ? <Text size="small">Loading protocol delivery…</Text> : query.isError ? <Text size="small" className="text-ui-fg-error">Protocol delivery could not be loaded.</Text> : query.data?.protocol_delivery.accesses.length ? <div className="space-y-3">{query.data.protocol_delivery.accesses.map((access) => <div key={access.id} className="rounded-lg border border-ui-border-base p-3"><div className="flex items-start justify-between gap-3"><div><Text weight="plus">{access.protocol_title} · revision {access.revision}</Text><Text size="xsmall" className="mt-1 text-ui-fg-subtle">{access.line_item_label} · granted {new Date(access.issued_at).toLocaleString()}</Text></div><div className="flex gap-2"><Badge color={access.qr_status === "active" ? "green" : "grey"}>QR {access.qr_status}</Badge><Badge color={access.entitlement_status === "granted" ? "green" : "orange"}>{access.entitlement_status.replaceAll("_", " ")}</Badge></div></div></div>)}</div> : <Text size="small" className="text-ui-fg-subtle">No eligible protocol was bound to this order.</Text>}
       </div>
-    </Container>
+    </div>
   )
 }
 

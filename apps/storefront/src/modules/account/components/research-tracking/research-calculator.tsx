@@ -10,6 +10,7 @@ import {
   type ResearchTrackingActionState,
 } from "@lib/data/research-tracking"
 import { calculateProtocol } from "@modules/research-protocols/calculate-protocol"
+import { getClinicalTrialSchedulesForProtocol } from "@lib/data/clinical-trials-registry"
 import SyringeVisualizer from "./syringe-visualizer"
 import { useResearchSubmissionKey } from "./use-research-submission-key"
 import {
@@ -233,6 +234,23 @@ export default function ResearchCalculator({
     availableProtocols.find((item) => item.profile_access_id === accessId) || null
   const config = protocol?.calculator
 
+  const clinicalMatrix = useMemo(() => {
+    const query = protocol?.protocol_title || initialName || ""
+    if (!query) return null
+    return getClinicalTrialSchedulesForProtocol(query)
+  }, [initialName, protocol?.protocol_title])
+
+  const quickPresets = useMemo(() => {
+    if (!clinicalMatrix) return []
+    if (clinicalMatrix.phase3 && clinicalMatrix.phase3.length > 0) {
+      return clinicalMatrix.phase3
+    }
+    if (clinicalMatrix.phase2 && clinicalMatrix.phase2.length > 0) {
+      return clinicalMatrix.phase2
+    }
+    return clinicalMatrix.standard || []
+  }, [clinicalMatrix])
+
   // primary inputs
   const [mass, setMass] = useState(initialMass || "")
   const [massUnit, setMassUnit] = useState<"mcg" | "mg" | "g" | "IU">(
@@ -305,7 +323,7 @@ export default function ResearchCalculator({
       `Target Unit Dose: ${target} ${targetUnit}`,
       `Syringe Draw Volume: ${fmt(result.volumeMl, precision)} mL (${fmt(result.deviceMeasurements, precision)} Units on ${deviceLabel})`,
       `Estimated Viable Yield: ${fmt(result.usesPerContainer, precision)} doses`,
-      `Cold-Chain Viability: Store refrigerated at 2°C – 8°C (36°F – 46°F). Maximum analytical viability: 28 days post-reconstitution.`,
+      `Refrigerated Viability: Store refrigerated at 2°C – 8°C (36°F – 46°F). Maximum analytical viability: 28 days post-reconstitution.`,
     ].join("\n")
 
     if (navigator.clipboard) {
@@ -492,6 +510,32 @@ export default function ResearchCalculator({
                     <option>mg</option>
                     <option>IU</option>
                   </select>
+                </div>
+              )}
+              {quickPresets.length > 0 && (
+                <div className="pt-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                    Clinical Titration Presets
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {quickPresets.map((step, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          if (targetUnit === "mcg") {
+                            setTarget(Math.round(step.doseMg * 1000).toString())
+                          } else {
+                            setTarget(step.doseMg.toString())
+                          }
+                        }}
+                        className="text-[11px] font-mono px-2 py-1 rounded-md bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 border border-slate-200 transition-colors"
+                        title={`${step.phase}: ${step.notes || ""}`}
+                      >
+                        {step.doseDisplay}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -700,14 +744,14 @@ export default function ResearchCalculator({
                 </div>
               )}
 
-              {/* 28-Day Stability & Cold-Chain Advisory Banner */}
+              {/* 28-Day Stability & Refrigeration Advisory Banner */}
               <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-teal-200/80 bg-gradient-to-r from-teal-50/80 to-emerald-50/50 p-3.5 text-xs text-teal-950">
                 <svg className="h-4 w-4 shrink-0 text-teal-600 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
                 <div>
-                  <p className="font-semibold text-teal-900">28-Day Cold-Chain Stability Advisory</p>
+                  <p className="font-semibold text-teal-900">28-Day Refrigerated Stability Advisory</p>
                   <p className="mt-0.5 text-[11px] leading-relaxed text-teal-800">
                     Reconstituted solutions utilizing Bacteriostatic 0.9% Benzyl Alcohol Water must be stored refrigerated between 2°C – 8°C (36°F – 46°F). To prevent peptide degradation, conclude analytical research within 28 days of reconstitution. Protect from direct light.
                   </p>

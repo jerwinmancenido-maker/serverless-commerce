@@ -416,7 +416,7 @@ export default function MyProtocols({
               Reconstitution Standard
             </span>
             <span className="text-[10px] font-medium text-slate-500 font-mono">
-              USP 797
+              GLP Standard
             </span>
           </div>
           <div className="mt-1.5 flex items-baseline gap-2">
@@ -424,7 +424,7 @@ export default function MyProtocols({
               28-Day Stability
             </span>
             <span className="text-xs text-slate-500 font-medium font-mono">
-              2°C–8°C Cold-Chain
+              2°C–8°C Refrigerated
             </span>
           </div>
         </div>

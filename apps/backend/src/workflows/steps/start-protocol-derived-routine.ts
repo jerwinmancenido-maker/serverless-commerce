@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/start-protocol-derived-routine.ts
+ * @module  ResearchTrackingModule (Workflows)
+ * @purpose Start protocol-derived research routines with schedule segments and saga compensation.
+ * @contracts
+ *   Step: startProtocolDerivedRoutineStep
+ */
+
 import type { MedusaContainer } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -275,13 +283,29 @@ export const startProtocolDerivedRoutineStep = createStep(
         },
       })
 
-      return new StepResponse(created.responsePayload)
+      return new StepResponse(created.responsePayload, {
+        routineId: created.routine?.id,
+        profileAccessId: access.id,
+      })
     } catch (error) {
       await recordRoutineMutationFailure({
         trackingService: tracking,
         mutationId: mutationState.mutationId,
         error,
       })
+    }
+  },
+  async (compensation, { container }) => {
+    if (!compensation) return
+    const { tracking } = services(container)
+    if (compensation.routineId) {
+      try {
+        await tracking.archiveRoutine({
+          routineId: compensation.routineId,
+        } as never)
+      } catch {
+        // Best-effort saga rollback
+      }
     }
   },
 )

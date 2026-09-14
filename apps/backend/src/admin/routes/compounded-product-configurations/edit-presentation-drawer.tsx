@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-product-configurations/edit-presentation-drawer.tsx
+ * @module  EditPresentationDrawer
+ * @purpose Presentation configuration editor and state lifecycle drawer.
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   Button,

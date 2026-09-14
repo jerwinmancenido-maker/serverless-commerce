@@ -1,4 +1,26 @@
-import { Check, ChevronDownMini, ChevronUpMini, PencilSquare, Plus, Trash, XMark } from "@medusajs/icons"
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/[id]/variant-bom-matrix.tsx
+ * @module  VariantBomMatrix (Admin Compounded Products)
+ * @purpose Modern matrix and batch editor for compounded product variants, recipes, and stock.
+ * @contracts
+ *   Route: /compounded-products/:id
+ *   API: /admin/compounded-product/products/:id/variants/:variant_id/recipe
+ */
+
+import {
+  ArchiveBox,
+  Beaker,
+  Check,
+  ChevronDownMini,
+  ChevronUpMini,
+  CircleStack,
+  PencilSquare,
+  Photo,
+  Plus,
+  Sparkles,
+  Trash,
+  XMark,
+} from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -9,11 +31,13 @@ import {
   Label,
   Select,
   Text,
+  clx,
   toast,
 } from "@medusajs/ui"
 import { useQueryClient } from "@tanstack/react-query"
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query"
-import React, { useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
+import { useLocation } from "react-router-dom"
 import { AdminCard } from "../../../components/admin-card"
 import { TruncatedChip } from "../../../components/truncated-chip"
 import { sdk } from "../../../lib/sdk"
@@ -25,8 +49,15 @@ import type {
 import {
   KIT_TEMPLATES,
   detectKitTypeFromTitle,
+  estimateComponentUnitCost,
   resolveKitRecipeRows,
+  sortCompoundedProductVariants,
 } from "./kit-template-matcher"
+import {
+  BomRecipeBreakdownCard,
+  detectComponentRole,
+  type BomComponentItemInfo,
+} from "../../../components/editor/bom-recipe-breakdown-card"
 import { VariantPhotoDrawer } from "./variant-photo-drawer"
 import { QuickStockAdjustDrawer } from "./quick-stock-adjust-drawer"
 
@@ -105,6 +136,31 @@ export const VariantBomMatrix = ({
   formatVariantPrices,
 }: VariantBomMatrixProps) => {
   const queryClient = useQueryClient()
+  const location = useLocation()
+  const targetVariantId = new URLSearchParams(location.search).get("variant")
+  const [activeHighlightId, setActiveHighlightId] = useState<string | null>(targetVariantId)
+
+  useEffect(() => {
+    if (targetVariantId) {
+      setActiveHighlightId(targetVariantId)
+      const el = document.getElementById(`variant-${targetVariantId}`)
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+      const timer = setTimeout(() => {
+        setActiveHighlightId(null)
+      }, 3500)
+      return () => clearTimeout(timer)
+    } else {
+      setActiveHighlightId(null)
+    }
+  }, [targetVariantId])
+
+  const sortedVariants = useMemo(
+    () => sortCompoundedProductVariants(product.variants || []),
+    [product.variants],
+  )
+
   const [isAddingVariant, setIsAddingVariant] = useState(false)
   const [newVariantTitle, setNewVariantTitle] = useState("")
   const [newVariantSku, setNewVariantSku] = useState("")
@@ -189,7 +245,7 @@ export const VariantBomMatrix = ({
       })
 
       toast.success(
-        `⚡ Auto-matched and saved BOM recipes for ${updatedCount} variants!`,
+        `Auto-matched and saved BOM recipes for ${updatedCount} variants!`,
       )
     } catch (_err) {
       toast.error("Failed to auto-match some variant recipes")
@@ -309,11 +365,7 @@ export const VariantBomMatrix = ({
   return (
     <AdminCard
       headerClassName="px-4 py-3 bg-ui-bg-subtle/40 flex flex-wrap items-center justify-between gap-3"
-      title={
-        <Heading level="h2" className="text-sm font-semibold text-ui-fg-base">
-          Variants & Component Inventory
-        </Heading>
-      }
+      title="Variants & Component Inventory"
       subtitle="Calculated stock reflects available assembly components at the selected warehouse."
       headerAction={
         <div className="flex items-center gap-3">
@@ -348,7 +400,8 @@ export const VariantBomMatrix = ({
             className="h-7 text-xs font-medium inline-flex items-center gap-1.5 text-ui-fg-interactive border-ui-border-base shadow-2xs"
             title="Auto-match and configure BOM recipes for all variants based on their names (Vial, Pharma BAC, SubQ Set)"
           >
-            <span>⚡ Auto-Match Kits</span>
+            <Sparkles className="size-3.5 text-purple-600" />
+            <span>Auto-Match Kits</span>
           </Button>
           <Button
             size="small"
@@ -357,7 +410,8 @@ export const VariantBomMatrix = ({
             className="h-7 text-xs font-medium inline-flex items-center gap-1.5 border-ui-border-base shadow-2xs"
             title="Adjust physical component stock levels at this warehouse"
           >
-            <span>📦 Adjust Stock</span>
+            <ArchiveBox className="size-3.5 text-ui-fg-subtle" />
+            <span>Adjust Stock</span>
           </Button>
           <Button
             size="small"
@@ -467,7 +521,7 @@ export const VariantBomMatrix = ({
       )}
 
       {/* Standard Medusa Table Header */}
-      <div className="hidden grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)_120px_minmax(0,1.4fr)_110px] gap-3 border-b border-ui-border-base bg-ui-bg-subtle/80 px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-ui-fg-subtle md:grid">
+      <div className="hidden grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)_120px_minmax(0,1.4fr)_110px] gap-3 border-b border-slate-200/80 bg-slate-50/80 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-600 md:grid">
         <div>Variant & SKU</div>
         <div>Price (Click to edit)</div>
         <div>Assembly Stock</div>
@@ -477,7 +531,7 @@ export const VariantBomMatrix = ({
 
       {/* Variant Rows */}
       <div className="divide-y divide-ui-border-base">
-        {(product.variants || []).map((variant) => {
+        {sortedVariants.map((variant) => {
           const availability = availabilityByVariantId.get(variant.id)
           const readinessVariant = readiness.variants.find((v) => v.id === variant.id)
           const componentCount = readinessVariant?.recipe_components.length ?? 0
@@ -486,8 +540,64 @@ export const VariantBomMatrix = ({
           const isExpanded = expandedRecipeIds.has(variant.id) || isEditingRecipe
           const isEditingThisVariant = editingVariantId === variant.id
 
+          const isTargeted = activeHighlightId === variant.id
+
+          // Build component list for BomRecipeBreakdownCard & margin economics
+          const rawComponents = (readinessVariant?.recipe_components || []).map((component) => {
+            const item = inventoryById.get(component.inventory_item_id)
+            const profile = profileByInventoryId.get(component.inventory_item_id)
+            const ratio = profile?.base_units_per_display_unit || 1
+            const requiredAmount = component.required_quantity / ratio
+            const stockedQty = (item as any)?.location_levels?.[0]?.stocked_quantity ?? (item as any)?.stocked_quantity ?? 0
+            const reservedQty = (item as any)?.location_levels?.[0]?.reserved_quantity ?? (item as any)?.reserved_quantity ?? 0
+            const availableQty = Math.max(0, stockedQty - reservedQty)
+            const capacity = requiredAmount > 0 ? Math.floor(availableQty / requiredAmount) : 0
+            const role = detectComponentRole(item?.title || "", profile?.classification)
+            const unitCost = estimateComponentUnitCost(item?.title || "", profile?.classification)
+
+            return {
+              inventoryItemId: component.inventory_item_id,
+              title: item?.title || component.inventory_item_id,
+              sku: item?.sku || null,
+              role,
+              requiredAmount,
+              displayUnit: profile?.display_unit || profile?.base_unit || "units",
+              stockedQty,
+              reservedQty,
+              availableQty,
+              capacity,
+              unitCost,
+            }
+          })
+
+          const minCapacity = rawComponents.length
+            ? Math.min(...rawComponents.map((c) => c.capacity))
+            : 0
+
+          const breakdownComponents: BomComponentItemInfo[] = rawComponents.map((c) => ({
+            ...c,
+            isLimiting: rawComponents.length > 1 && c.capacity === minCapacity,
+          }))
+
+          const variantPriceAmount = variant.prices?.[0]?.amount
+          const totalCogs = breakdownComponents.length
+            ? breakdownComponents.reduce((sum, c) => sum + (c.unitCost || 0) * c.requiredAmount, 0)
+            : estimateComponentUnitCost(variant.title || "")
+
+          const marginPercent =
+            typeof variantPriceAmount === "number" && variantPriceAmount > 0
+              ? Math.round(((variantPriceAmount - totalCogs) / variantPriceAmount) * 100)
+              : null
+
           return (
-            <div key={variant.id} className="flex flex-col transition-colors">
+            <div
+              key={variant.id}
+              id={`variant-${variant.id}`}
+              className={clx(
+                "flex flex-col transition-all duration-700",
+                isTargeted && "rounded-lg ring-2 ring-ui-border-interactive bg-ui-bg-subtle",
+              )}
+            >
               {/* Main Compact Row */}
               <div className="grid grid-cols-1 gap-2 px-4 py-2.5 hover:bg-ui-bg-subtle/40 md:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)_120px_minmax(0,1.4fr)_110px] md:items-center">
                 {/* Variant Title & Truncated SKU Chip OR Inline Edit Form */}
@@ -505,9 +615,7 @@ export const VariantBomMatrix = ({
                         className="size-full object-cover"
                       />
                     ) : (
-                      <span className="text-xs text-ui-fg-muted group-hover:text-ui-fg-base transition-colors">
-                        📷
-                      </span>
+                      <Photo className="size-4 text-ui-fg-muted group-hover:text-ui-fg-base transition-colors" />
                     )}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-[10px] font-bold">
                       ✎
@@ -547,55 +655,67 @@ export const VariantBomMatrix = ({
                 </div>
 
                 {/* Inline Price Editing */}
-                <div className="flex items-center">
-                  {editingPriceVariantId === variant.id ? (
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-ui-fg-subtle">₱</span>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        className="h-6 w-20 text-xs font-semibold px-1"
-                        value={editingPriceAmount}
-                        onChange={(e) => setEditingPriceAmount(e.target.value)}
-                        autoFocus
-                      />
-                      <Button
-                        size="small"
-                        variant="secondary"
-                        disabled={isSavingPrice}
-                        onClick={() => handleSavePrice(variant.id)}
-                        className="size-6 p-0 text-emerald-600 font-bold"
+                <div className="flex flex-col gap-1 items-start">
+                  <div className="flex items-center">
+                    {editingPriceVariantId === variant.id ? (
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-ui-fg-subtle">₱</span>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          className="h-6 w-20 text-xs font-semibold px-1"
+                          value={editingPriceAmount}
+                          onChange={(e) => setEditingPriceAmount(e.target.value)}
+                          autoFocus
+                        />
+                        <Button
+                          size="small"
+                          variant="secondary"
+                          disabled={isSavingPrice}
+                          onClick={() => handleSavePrice(variant.id)}
+                          className="size-6 p-0 text-emerald-600 font-bold"
+                        >
+                          ✓
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="transparent"
+                          disabled={isSavingPrice}
+                          onClick={() => setEditingPriceVariantId(null)}
+                          className="size-6 p-0 text-ui-fg-muted"
+                        >
+                          ✕
+                        </Button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentPrice = variant.prices?.[0]?.amount ?? 0
+                          setEditingPriceAmount(String(currentPrice))
+                          setEditingPriceVariantId(variant.id)
+                        }}
+                        className="group inline-flex items-center gap-1.5 rounded px-1 py-0.5 hover:bg-ui-bg-subtle text-left transition-colors"
+                        title="Click to edit price"
                       >
-                        ✓
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="transparent"
-                        disabled={isSavingPrice}
-                        onClick={() => setEditingPriceVariantId(null)}
-                        className="size-6 p-0 text-ui-fg-muted"
-                      >
-                        ✕
-                      </Button>
-                    </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const currentPrice = variant.prices?.[0]?.amount ?? 0
-                        setEditingPriceAmount(String(currentPrice))
-                        setEditingPriceVariantId(variant.id)
-                      }}
-                      className="group inline-flex items-center gap-1.5 rounded px-1 py-0.5 hover:bg-ui-bg-subtle text-left transition-colors"
-                      title="Click to edit price"
+                        <Text size="small" weight="plus" className="text-ui-fg-base font-mono">
+                          {formatVariantPrices(variant.prices)}
+                        </Text>
+                        <span className="text-[11px] text-ui-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                          ✎
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                  {marginPercent !== null && (
+                    <Badge
+                      color={marginPercent >= 35 ? "green" : "orange"}
+                      size="2xsmall"
+                      className="text-[10px] font-semibold px-1 py-0 shrink-0 tracking-tight"
+                      title={marginPercent >= 35 ? "Complies with >=35% Gross Margin Floor" : "Margin warning: below 35% floor"}
                     >
-                      <Text size="small" weight="plus" className="text-ui-fg-base font-mono">
-                        {formatVariantPrices(variant.prices)}
-                      </Text>
-                      <span className="text-[11px] text-ui-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
-                        ✎
-                      </span>
-                    </button>
+                      {marginPercent}% GM
+                    </Badge>
                   )}
                 </div>
 
@@ -607,7 +727,7 @@ export const VariantBomMatrix = ({
                     </Text>
                   ) : availabilityQuery.isError ? (
                     <Badge color="red" size="small">Error</Badge>
-                  ) : availabilityQuery.isLoading ? (
+                  ) : availabilityQuery.isFetching && !availability ? (
                     <Text size="xsmall" className="text-ui-fg-subtle animate-pulse">
                       Calculating…
                     </Text>
@@ -771,36 +891,16 @@ export const VariantBomMatrix = ({
                   </div>
 
                   {!isEditingRecipe ? (
-                    /* Read-only Recipe Breakdown Cards */
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                      {readinessVariant?.recipe_components.length ? (
-                        readinessVariant.recipe_components.map((component) => {
-                          const profile = profileByInventoryId.get(component.inventory_item_id)
-                          const item = inventoryById.get(component.inventory_item_id)
-                          const displayAmount = profile
-                            ? component.required_quantity / profile.base_units_per_display_unit
-                            : component.required_quantity
-
-                          return (
-                            <div
-                              key={component.inventory_item_id}
-                              className="flex items-center justify-between p-2 rounded border border-ui-border-base bg-ui-bg-base text-xs shadow-2xs"
-                            >
-                              <span className="font-medium truncate text-ui-fg-base" title={item?.title ?? undefined}>
-                                {item?.title || component.inventory_item_id}
-                              </span>
-                              <Badge color="grey" size="small" className="shrink-0 ml-2 font-mono">
-                                {displayAmount} {profile?.display_unit || profile?.base_unit || "units"}
-                              </Badge>
-                            </div>
-                          )
-                        })
-                      ) : (
-                        <div className="text-xs text-ui-fg-muted italic py-1">
-                          No active BOM components linked. Click "+ Add Recipe" to configure assembly items.
-                        </div>
-                      )}
-                    </div>
+                    /* Read-only Sovereign BOM Recipe Breakdown Card */
+                    <BomRecipeBreakdownCard
+                      variantTitle={variant.title || "Variant"}
+                      variantPrice={variant.prices?.[0]?.amount ?? undefined}
+                      currencyCode={variant.prices?.[0]?.currency_code?.toUpperCase() ?? "PHP"}
+                      components={breakdownComponents}
+                      onQuickRestock={() => {
+                        setStockAdjustVariant(variant)
+                      }}
+                    />
                   ) : (
                     /* Interactive Recipe Editing Mode */
                     <div className="flex flex-col gap-y-3 p-3 bg-ui-bg-base rounded-lg border border-ui-border-base">
@@ -830,9 +930,10 @@ export const VariantBomMatrix = ({
                                 [variant.id]: newRows,
                               }))
                             }}
-                            className="h-6 text-[11px] px-2 py-0.5 bg-white shadow-2xs"
+                            className="h-6 text-[11px] px-2 py-0.5 bg-white shadow-2xs inline-flex items-center gap-1"
                           >
-                            ⚡ SubQ Kit
+                            <Sparkles className="size-3 text-purple-600" />
+                            <span>SubQ Kit</span>
                           </Button>
                           <Button
                             type="button"
@@ -850,9 +951,10 @@ export const VariantBomMatrix = ({
                                 [variant.id]: newRows,
                               }))
                             }}
-                            className="h-6 text-[11px] px-2 py-0.5 bg-white shadow-2xs"
+                            className="h-6 text-[11px] px-2 py-0.5 bg-white shadow-2xs inline-flex items-center gap-1"
                           >
-                            💧 BAC Water Only
+                            <Beaker className="size-3 text-blue-600" />
+                            <span>BAC Water Only</span>
                           </Button>
                           <Button
                             type="button"
@@ -870,9 +972,10 @@ export const VariantBomMatrix = ({
                                 [variant.id]: newRows,
                               }))
                             }}
-                            className="h-6 text-[11px] px-2 py-0.5 bg-white shadow-2xs"
+                            className="h-6 text-[11px] px-2 py-0.5 bg-white shadow-2xs inline-flex items-center gap-1"
                           >
-                            🧪 Vial Only
+                            <CircleStack className="size-3 text-slate-600" />
+                            <span>Vial Only</span>
                           </Button>
                         </div>
 

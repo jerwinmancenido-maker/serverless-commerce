@@ -152,6 +152,14 @@ export const PRODUCT_HANDLE_ALIASES: Record<string, string> = {
   "bacteriostatic-water": "bacteriostatic-water",
   "bac-water-10ml": "bacteriostatic-water",
   "bacteriostatic-water-10ml": "bacteriostatic-water",
+
+  // Cartalax friendly aliases
+  "cartalax": "cartalax-20mg",
+  "cartalax-20mg": "cartalax-20mg",
+
+  // Additional Blend Aliases
+  "cjc-ipam-blend": "cjc-1295-ipamorelin",
+  "semax-selank-blend": "selank-semax-combo",
 }
 
 /**
@@ -210,6 +218,13 @@ export const CANONICAL_SLUG_BY_HANDLE: Record<string, string> = {
   "bacteriostatic-water-10ml": "bacteriostatic-water",
   "bacteriostatic-water": "bacteriostatic-water",
   "bac-water": "bacteriostatic-water",
+
+  // Additional Canonical Slugs
+  "cartalax-20mg": "cartalax",
+  "cjc-1295-ipamorelin": "cjc-1295-ipamorelin",
+  "glow70": "glow70",
+  "klow80": "klow80",
+  "selank-semax-combo": "selank-semax-combo",
 }
 
 /**

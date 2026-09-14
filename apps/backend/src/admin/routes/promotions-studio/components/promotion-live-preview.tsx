@@ -26,15 +26,18 @@ export const PromotionLivePreview: React.FC<PromotionLivePreviewProps> = ({
   isEditMode,
 }) => {
   return (
-    <div className="sticky top-6 space-y-4">
-      {/* Live Storefront Voucher Badge */}
-      <StorefrontVoucherCard state={state} />
+    <div className="w-full flex flex-col gap-4">
+      {/* 3-Column Inspection Dock */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        {/* Live Storefront Voucher Badge */}
+        <StorefrontVoucherCard state={state} />
 
-      {/* Real-time Cart Simulator with Margin Floor Lock */}
-      <CartSimulator state={state} />
+        {/* Real-time Cart Simulator with Margin Floor Lock */}
+        <CartSimulator state={state} />
 
-      {/* Dynamic Plain-English Rule Synthesizer */}
-      <RuleSynthesizer state={state} />
+        {/* Dynamic Plain-English Rule Synthesizer */}
+        <RuleSynthesizer state={state} />
+      </div>
 
       {/* Draft persistence telemetry banner */}
       {!isEditMode && lastSaved && (

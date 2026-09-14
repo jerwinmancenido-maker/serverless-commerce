@@ -1,22 +1,26 @@
+/**
+ * @file    apps/storefront/src/app/[countryCode]/(main)/research-library/[slug]/page.tsx
+ * @module  ResearchArticleDetailPage (Storefront)
+ * @purpose Detailed scientific monograph page for peer-reviewed research articles with full monograph sections, specimen bridges, and citations.
+ * @contracts
+ *   Fetches: retrieveResearchArticle()
+ *   API:     GET /store/research-articles/:slug
+ */
+
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { retrieveResearchArticle, listResearchArticles } from "@lib/data/research-articles"
+import { retrieveResearchArticle, type ResearchCitation } from "@lib/data/research-articles"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
-import { Beaker, DocumentText, CheckCircleSolid } from "@medusajs/icons"
+import { Beaker } from "@medusajs/icons"
+
+export const dynamic = "force-dynamic"
 
 type Props = {
   params: Promise<{
     countryCode: string
     slug: string
   }>
-}
-
-export async function generateStaticParams() {
-  const articles = await listResearchArticles()
-  return articles.map((article) => ({
-    slug: article.slug,
-  }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -58,7 +62,10 @@ export default async function ResearchArticlePage({ params }: Props) {
             Home
           </LocalizedClientLink>
           <span>/</span>
-          <LocalizedClientLink href="/research-library" className="hover:text-slate-800 transition-colors">
+          <LocalizedClientLink
+            href="/research-library"
+            className="hover:text-slate-800 transition-colors"
+          >
             Research Library
           </LocalizedClientLink>
           <span>/</span>
@@ -68,8 +75,8 @@ export default async function ResearchArticlePage({ params }: Props) {
         </div>
       </div>
 
-      {/* ── Article Article Header ── */}
-      <div className="border-b border-slate-200/80 bg-gradient-to-b from-slate-50/50 to-white py-12 sm:py-16">
+      {/* ── Article Header ── */}
+      <div className="border-b border-slate-200/80 bg-gradient-to-b from-slate-50/60 via-emerald-50/20 to-white py-12 sm:py-16">
         <div className="content-container max-w-4xl mx-auto space-y-4">
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 uppercase tracking-wide">
@@ -79,11 +86,11 @@ export default async function ResearchArticlePage({ params }: Props) {
               • {article.reading_time}
             </span>
             <span className="text-xs text-slate-400">
-              • Published {new Date(article.published_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+              • Updated {article.updated_at}
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight font-serif">
             {article.title}
           </h1>
 
@@ -91,22 +98,18 @@ export default async function ResearchArticlePage({ params }: Props) {
             {article.subtitle}
           </p>
 
-          {/* Peer-Review & Scientific Oversight Banner */}
-          <div className="pt-2 flex items-center gap-2 text-xs text-slate-500 border-t border-slate-200/60 mt-4">
-            <CheckCircleSolid className="h-4 w-4 text-emerald-600 shrink-0" />
-            <span>
-              <strong className="text-slate-700">Scientific Oversight:</strong> {article.reviewed_by}
-            </span>
+          <div className="pt-2 text-xs text-slate-500 flex items-center gap-2">
+            <span className="font-semibold text-slate-700">Peer Review:</span>
+            <span>{article.reviewed_by}</span>
           </div>
         </div>
       </div>
 
       {/* ── Main Reading Body ── */}
-      <article className="content-container max-w-4xl mx-auto py-10 space-y-10">
+      <article className="content-container max-w-4xl mx-auto py-10 space-y-12">
         {/* Abstract Box */}
-        <div className="rounded-2xl border border-emerald-200/90 bg-emerald-50/60 p-6 sm:p-8 shadow-xs space-y-3">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-950">
-            <DocumentText className="h-4 w-4 text-emerald-700" />
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 sm:p-8 space-y-3">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
             <span>Structured Scientific Abstract</span>
           </div>
           <p className="text-sm sm:text-base leading-relaxed text-slate-800 font-serif italic">
@@ -116,22 +119,40 @@ export default async function ResearchArticlePage({ params }: Props) {
 
         {/* Article Content Sections */}
         <div className="space-y-10">
-          {article.sections.map((section, idx) => (
+          {(Array.isArray(article.sections) && article.sections.length > 0
+            ? article.sections
+            : typeof article.metadata?.content_markdown === "string"
+            ? [
+                {
+                  title: "Monograph Content",
+                  paragraphs: [article.metadata.content_markdown],
+                },
+              ]
+            : []
+          ).map((section, idx) => (
             <section key={section.title || idx} className="space-y-4">
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight border-b border-slate-100 pb-2">
                 {section.title}
               </h2>
               <div className="space-y-4 text-sm sm:text-base leading-relaxed text-slate-700">
-                {section.paragraphs.map((p, pIdx) => (
-                  <p key={pIdx}>{p}</p>
-                ))}
+                {Array.isArray(section.paragraphs) ? (
+                  section.paragraphs.map((p, pIdx) => (
+                    <p key={pIdx}>{p}</p>
+                  ))
+                ) : (
+                  <p>{String(section.paragraphs || "")}</p>
+                )}
               </div>
             </section>
           ))}
         </div>
 
         {/* ── Conversion Bridge: Referenced Compound Specimen Card ── */}
-        {article.referenced_compound && (
+        {Boolean(
+          article.referenced_compound &&
+          article.referenced_compound.name &&
+          article.referenced_compound.handle
+        ) && (
           <div className="rounded-2xl border border-slate-300 bg-slate-900 text-white p-6 sm:p-8 shadow-xl space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
               <div className="flex items-start gap-3.5">
@@ -143,24 +164,28 @@ export default async function ResearchArticlePage({ params }: Props) {
                     <span className="rounded-full bg-emerald-900/60 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300 uppercase tracking-wide">
                       Referenced Compound Specimen
                     </span>
-                    <span className="text-xs text-slate-400 font-mono">
-                      {article.referenced_compound.purity}
-                    </span>
+                    {article.referenced_compound?.purity && (
+                      <span className="text-xs text-slate-400 font-mono">
+                        {article.referenced_compound.purity}
+                      </span>
+                    )}
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
-                    {article.referenced_compound.name}
+                    {article.referenced_compound?.name}
                   </h3>
                 </div>
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              {article.referenced_compound.specification}. Produced under strict analytical quality control with lot-matched certificates of analysis (COA) included in the client dashboard.
-            </p>
+            {article.referenced_compound?.specification && (
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {article.referenced_compound.specification}. Produced under strict analytical quality control with lot-matched certificates of analysis (COA) included in the client dashboard.
+              </p>
+            )}
 
             <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
               <LocalizedClientLink
-                href={`/products/${getCanonicalProductSlug(article.referenced_compound.handle)}`}
+                href={`/products/${getCanonicalProductSlug(article.referenced_compound?.handle || "")}`}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-md text-center"
               >
                 <span>View Compound in Store &rarr;</span>
@@ -173,7 +198,7 @@ export default async function ResearchArticlePage({ params }: Props) {
                 <span>Launch Reconstitution Tool 📐</span>
               </LocalizedClientLink>
 
-              {article.referenced_compound.protocol_handle && (
+              {article.referenced_compound?.protocol_handle && (
                 <LocalizedClientLink
                   href={`/research-protocols/${article.referenced_compound.protocol_handle}`}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-transparent hover:bg-slate-800/80 text-slate-300 border border-slate-700/80 text-xs font-semibold transition-colors text-center"
@@ -186,43 +211,57 @@ export default async function ResearchArticlePage({ params }: Props) {
         )}
 
         {/* ── Scientific Citations & Bibliography ── */}
-        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 sm:p-8 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-              Peer-Reviewed Literature &amp; Citations ({article.citations.length})
-            </h3>
-            <span className="text-[11px] text-slate-500 font-mono">Verified DOI / PubMed</span>
-          </div>
+        {Array.isArray(article.citations) && article.citations.length > 0 && (
+          <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 sm:p-8 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Peer-Reviewed Literature &amp; Citations ({article.citations.length})
+              </h3>
+              <span className="text-[11px] text-slate-500 font-mono">Verified DOI / PubMed</span>
+            </div>
 
-          <ol className="space-y-3.5 text-xs text-slate-600 list-decimal list-inside leading-relaxed">
-            {article.citations.map((c) => (
-              <li key={c.number} className="pl-1">
-                <span className="font-semibold text-slate-800">{c.authors}</span> &ldquo;{c.title}&rdquo;{" "}
-                <em className="text-slate-700">{c.journal}</em> ({c.year}).{" "}
-                {c.pmid && (
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-0.5 text-emerald-700 hover:underline font-mono ml-1 font-medium"
-                  >
-                    [PMID: {c.pmid} &nearr;]
-                  </a>
-                )}
-                {c.doi && !c.pmid && (
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-0.5 text-emerald-700 hover:underline font-mono ml-1 font-medium"
-                  >
-                    [DOI: {c.doi} &nearr;]
-                  </a>
-                )}
-              </li>
-            ))}
-          </ol>
-        </div>
+            <ol className="space-y-3.5 text-xs text-slate-600 list-decimal list-inside leading-relaxed">
+              {article.citations.map((c, cIdx) => {
+                if (typeof c === "string") {
+                  return (
+                    <li key={cIdx} className="pl-1">
+                      <span className="text-slate-700">{c}</span>
+                    </li>
+                  )
+                }
+                const citation = c as ResearchCitation
+                return (
+                  <li key={citation.number || cIdx} className="pl-1">
+                    {citation.authors && <span className="font-semibold text-slate-800">{citation.authors} </span>}
+                    {citation.title && <span>&ldquo;{citation.title}&rdquo; </span>}
+                    {citation.journal && <em className="text-slate-700">{citation.journal} </em>}
+                    {citation.year && <span>({citation.year}). </span>}
+                    {citation.pmid && (
+                      <a
+                        href={citation.url || `https://pubmed.ncbi.nlm.nih.gov/${citation.pmid}/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-0.5 text-emerald-700 hover:underline font-mono ml-1 font-medium"
+                      >
+                        [PMID: {citation.pmid} &nearr;]
+                      </a>
+                    )}
+                    {citation.doi && !citation.pmid && (
+                      <a
+                        href={citation.url || `https://doi.org/${citation.doi}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-0.5 text-emerald-700 hover:underline font-mono ml-1 font-medium"
+                      >
+                        [DOI: {citation.doi} &nearr;]
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
+        )}
 
         {/* ── Mandatory Regulatory Disclaimer ── */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 text-xs text-slate-500 leading-relaxed text-center sm:text-left">

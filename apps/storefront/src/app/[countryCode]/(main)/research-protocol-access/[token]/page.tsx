@@ -13,9 +13,11 @@ import { ArrowLeft, ExclamationCircle, InformationCircleSolid } from "@medusajs/
 
 import { sdk } from "@lib/config"
 import { formatPeptideDosage } from "@lib/research-quantity"
+
+export const dynamic = "force-dynamic"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Button } from "@modules/common/components/ui"
-import { ProtocolCalculator } from "@modules/research-protocols/calculator"
+import InteractiveSyringeStoichiometry from "@modules/research-protocols/components/interactive-syringe-stoichiometry"
 import ProtocolPrintButton from "@modules/research-protocols/components/protocol-print-button"
 import type { ResearchProtocolContent } from "@modules/research-protocols/types"
 
@@ -156,11 +158,11 @@ export default async function OrderProtocolAccessPage({ params }: Props) {
           <ProtocolPrintButton />
         </div>
 
-        {/* Philippine FDA / DOH RUO Compliance Notice */}
+        {/* Research Use Only (RUO) Notice */}
         <div className="mt-6 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900 leading-relaxed">
           <InformationCircleSolid className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div>
-            <span className="font-semibold">Philippine FDA / DOH Laboratory Compliance Notice:</span>{" "}
+            <span className="font-semibold">Research Use Only (RUO) Notice:</span>{" "}
             This reference formulation is documented strictly for in-vitro research, laboratory assay calibration, and chemical characterization.
             Not intended for human or veterinary administration, diagnostic screening, or medical therapy.
           </div>
@@ -210,13 +212,22 @@ export default async function OrderProtocolAccessPage({ params }: Props) {
       {/* Interactive Reconstitution & Dilution Calculator */}
       {content.calculator && content.calculator.enabled && (
         <section className="mt-12 max-w-4xl">
-          <div className="rounded-xl border border-ui-border-base bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-ui-fg-base mb-2">Protocol Reconstitution Calculator</h2>
-            <p className="text-sm text-ui-fg-subtle mb-6">
-              Calculate diluent solvent volume and resulting reconstitution concentrations according to preserved protocol specifications.
-            </p>
-            <ProtocolCalculator configuration={content.calculator} />
-          </div>
+          <InteractiveSyringeStoichiometry
+            compoundId={protocol.handle || "peptide"}
+            compoundName={content.compound_name || "Research Compound"}
+            vialMg={content.reconstitution_details?.default_vial_net_mg || 10}
+            diluentMl={content.reconstitution_details?.default_diluent_ml || 2.0}
+            concMgMl={content.reconstitution_details?.resulting_concentration_mg_per_ml || undefined}
+            graduations={content.syringe_guide?.graduations}
+            vialStrengthOptions={content.vial_strength_options}
+            reconstitutionOptions={content.reconstitution_options || undefined}
+            needleGauge={content.syringe_guide?.needleGauge}
+            needleLength={content.syringe_guide?.needleLength}
+            hubType={content.syringe_guide?.hubType}
+            recommendedBarrel={content.syringe_guide?.recommendedBarrel}
+            transferNeedle={content.syringe_guide?.transferNeedle}
+            calculatorConfig={content.calculator}
+          />
         </section>
       )}
 
@@ -237,7 +248,11 @@ export default async function OrderProtocolAccessPage({ params }: Props) {
                     className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3.5 text-sm"
                   >
                     <span className="font-medium text-ui-fg-base">{row.period}</span>
-                    <span className="text-ui-fg-subtle">{formatPeptideDosage(row.amount, row.unit).formatted}</span>
+                    <span className="text-ui-fg-subtle">
+                      {row.amount === "0" || Number(row.amount) === 0 || row.frequency?.toLowerCase().includes("zero")
+                        ? "— (Washout Period)"
+                        : formatPeptideDosage(row.amount, row.unit).formatted}
+                    </span>
                     <span className="text-ui-fg-subtle font-mono text-xs">{row.frequency}</span>
                   </div>
                 ))}

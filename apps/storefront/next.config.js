@@ -49,6 +49,50 @@ const nextConfig = {
         : []),
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/categories/peptide-blends",
+        destination: "/categories/healing-tissue-repair-peptides",
+        permanent: false,
+      },
+      {
+        source: "/:countryCode/categories/peptide-blends",
+        destination: "/:countryCode/categories/healing-tissue-repair-peptides",
+        permanent: false,
+      },
+      {
+        source: "/research-library/comparisons",
+        destination: "/comparisons",
+        permanent: false,
+      },
+      {
+        source: "/:countryCode/research-library/comparisons",
+        destination: "/:countryCode/comparisons",
+        permanent: false,
+      },
+      {
+        source: "/coas",
+        destination: "/research-library?tab=coas",
+        permanent: false,
+      },
+      {
+        source: "/:countryCode/coas",
+        destination: "/:countryCode/research-library?tab=coas",
+        permanent: false,
+      },
+      {
+        source: "/research-hub",
+        destination: "/account/research-hub",
+        permanent: false,
+      },
+      {
+        source: "/:countryCode/research-hub",
+        destination: "/:countryCode/account/research-hub",
+        permanent: false,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

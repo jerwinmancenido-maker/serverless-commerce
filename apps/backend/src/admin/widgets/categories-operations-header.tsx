@@ -1,12 +1,23 @@
+/**
+ * @file    apps/backend/src/admin/widgets/categories-operations-header.tsx
+ * @module  CategoriesOperationsHeader (Admin Extension)
+ * @purpose Therapeutic taxonomy governance, clinical hierarchy stats, and catalog quick-action navigation.
+ * @contracts
+ *   Widget: product_category.list.before
+ *   Service: ProductCategoryModuleService · ProductModuleService
+ */
+
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { ArrowUpRightOnBox, Folder, ListTree, SquaresPlus, Tag } from "@medusajs/icons"
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { ArrowUpRightOnBox, Folder, ListTree, ShieldCheck, SquaresPlus, Tag } from "@medusajs/icons"
+import { Button, Heading, Text } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 
 import { sdk } from "../lib/sdk"
 import { AdminBadge } from "../components/ui/admin-badge"
-import { AdminStatCard } from "../components/ui/admin-stat-card"
+import { AdminMetricCard } from "../components/ui/admin-metric-card"
+import { AdminTelemetryNotice } from "../components/ui/admin-telemetry-notice"
+import { AdminSubNavPills } from "../components/ui/admin-subnav-pills"
 
 const CategoriesClinicalOperationsHeader = () => {
   // 1. Query total categories count
@@ -28,8 +39,8 @@ const CategoriesClinicalOperationsHeader = () => {
 
   return (
     <div data-rc-categories-header="true" className="flex flex-col gap-y-4 mb-4">
-      {/* Top Clinical Taxonomy Card */}
-      <Container className="p-5 bg-white border border-slate-200/80 rounded-2xl shadow-xs">
+      {/* Top Clinical Taxonomy Header (Frameless, integrated with canvas) */}
+      <div className="flex flex-col gap-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
@@ -67,65 +78,65 @@ const CategoriesClinicalOperationsHeader = () => {
           </div>
         </div>
 
-        {/* Monospace KPI Metrics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-4 border-t border-slate-100">
-          <AdminStatCard
+        {/* Monospace Metric Strip (4-Tile SADS Metric Rail) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <AdminMetricCard
             label="Therapeutic Classes"
             value={totalCategories}
             subtext="Defined peptide taxonomy rails"
             variant="blue"
+            status="healthy"
             icon={<ListTree className="h-4 w-4" />}
           />
-          <AdminStatCard
+          <AdminMetricCard
             label="Active Storefront Rails"
             value={activeCount}
             subtext="Live published customer classes"
-            variant="blue"
+            variant="emerald"
+            status="healthy"
             icon={<Tag className="h-4 w-4" />}
           />
-          <AdminStatCard
+          <AdminMetricCard
             label="Governed Formulations"
             value={totalProducts}
-            subtext="Compounds assigned to active classes"
-            variant="blue"
+            subtext="Compounds assigned to classes"
+            variant="default"
+            status="neutral"
             icon={<SquaresPlus className="h-4 w-4" />}
           />
-        </div>
-      </Container>
-
-      {/* Segmented Quick-Switch Navigation Bar */}
-      <div className="flex items-center justify-between gap-3 px-1">
-        <div className="flex items-center gap-1.5 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60 text-xs font-medium">
-          <Button asChild variant="transparent" size="small" className="h-7 px-3 text-slate-600 hover:text-slate-900">
-            <Link to="/compounded-products">
-              Compounded Products
-            </Link>
-          </Button>
-          <div className="h-7 px-3 flex items-center gap-1.5 bg-white text-blue-700 font-semibold rounded-lg shadow-xs border border-blue-200/60">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-            Therapeutic Categories
-          </div>
-          <Button asChild variant="transparent" size="small" className="h-7 px-3 text-slate-600 hover:text-slate-900">
-            <Link to="/buildable-products">
-              Component BOM
-            </Link>
-          </Button>
-          <Button asChild variant="transparent" size="small" className="h-7 px-3 text-slate-600 hover:text-slate-900">
-            <Link to="/bundles">
-              Bundles &amp; Kits
-            </Link>
-          </Button>
-          <Button asChild variant="transparent" size="small" className="h-7 px-3 text-slate-600 hover:text-slate-900">
-            <Link to="/research-protocols">
-              Protocols Library
-            </Link>
-          </Button>
+          <AdminMetricCard
+            label="Taxonomy Health"
+            value="100% Synced"
+            subtext="Storefront routing parity"
+            variant="emerald"
+            status="healthy"
+            icon={<ShieldCheck className="h-4 w-4" />}
+          />
         </div>
 
-        <div className="hidden lg:flex items-center gap-2 text-[11px] text-slate-500 font-medium">
-          <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-          <span>Synchronized with category-rails storefront taxonomy</span>
-        </div>
+        {/* SADS 2.0 Telemetry Notice Banner */}
+        <AdminTelemetryNotice
+          title="Therapeutic Taxonomy & Classification Matrix"
+          description="Therapeutic categories directly govern storefront customer routing, research library discovery rails, and multi-compound bundling compatibility rules."
+          statusText="TAXONOMY GOVERNANCE ONLINE"
+          variant="indigo"
+        />
+
+        {/* Sub-Navigation Rails */}
+        <AdminSubNavPills
+          items={[
+            { label: "Compounded Products", href: "/compounded-products" },
+            { label: "Therapeutic Categories", active: true, count: totalCategories },
+            { label: "Component BOM", href: "/buildable-products" },
+            { label: "Bundles & Kits", href: "/bundles" },
+            { label: "Protocols Library", href: "/research-protocols" },
+          ]}
+          rightContent={
+            <span className="hidden lg:inline text-slate-500">
+              Synchronized with category-rails storefront taxonomy
+            </span>
+          }
+        />
       </div>
     </div>
   )

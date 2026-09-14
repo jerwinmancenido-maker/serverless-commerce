@@ -2,6 +2,7 @@ import { Metadata } from "next"
 
 import CatalogCTA from "@modules/home/components/catalog-cta"
 import FeaturedProducts from "@modules/home/components/featured-products"
+import FlagshipShowcase from "@modules/home/components/flagship-showcase"
 import Hero from "@modules/home/components/hero"
 import ResearchSuiteFeatures from "@modules/home/components/research-suite-features"
 import { listCategories } from "@lib/data/categories"
@@ -32,6 +33,7 @@ export default async function Home(props: {
   return (
     <>
       <Hero />
+      <FlagshipShowcase />
       <ResearchSuiteFeatures />
       <FeaturedProducts categories={categories} region={region} />
       <CatalogCTA />

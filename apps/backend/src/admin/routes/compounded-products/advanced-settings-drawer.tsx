@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/advanced-settings-drawer.tsx
+ * @module  AdvancedSettingsDrawer
+ * @purpose Advanced catalog settings drawer (handles, tags, collections, currencies).
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import {
   Button,
   Checkbox,

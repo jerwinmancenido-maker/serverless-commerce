@@ -119,6 +119,31 @@ type ConfigureRuleInput = {
   skip_policy?: "ignore" | "break"
 }
 
+type CreateRuleInput = {
+  operation: "create_rule"
+  name: string
+  event_type: string
+  award_type: "fixed" | "purchase_rate"
+  point_value?: number | null
+  purchase_amount_per_point?: number | null
+  daily_cap?: number | null
+  weekly_cap?: number | null
+  lifetime_cap?: number | null
+  starts_at?: string | null
+  ends_at?: string | null
+  status?: "active" | "inactive"
+  show_as_badge?: boolean
+  badge_name?: string | null
+  badge_icon?: string | null
+  streak_target?: number | null
+  skip_policy?: "ignore" | "break"
+}
+
+type DeleteRuleInput = {
+  operation: "delete_rule"
+  rule_id: string
+}
+
 type RewardMutationInput =
   | ConfigureProgramInput
   | AwardInput
@@ -127,6 +152,8 @@ type RewardMutationInput =
   | ReversePurchaseInput
   | AdjustInput
   | ConfigureRuleInput
+  | CreateRuleInput
+  | DeleteRuleInput
   | ReleaseDueInput
   | ReverseEventInput
 
@@ -418,6 +445,37 @@ const manageRewardsStep = createStep<
         skip_policy: input.skip_policy ?? rule.skip_policy,
       })
       return new StepResponse({ rule: updated })
+    }
+
+    if (input.operation === "create_rule") {
+      const program = await activeProgram(service)
+      const startsAt = input.starts_at ? new Date(input.starts_at) : null
+      const endsAt = input.ends_at ? new Date(input.ends_at) : null
+      const created = await service.createRewardRules({
+        program_id: program.id,
+        name: input.name.trim(),
+        event_type: input.event_type.trim(),
+        award_type: input.award_type,
+        point_value: input.award_type === "fixed" ? Number(input.point_value) : null,
+        purchase_amount_per_point: input.award_type === "purchase_rate" ? Number(input.purchase_amount_per_point) : null,
+        daily_cap: input.daily_cap ?? null,
+        weekly_cap: input.weekly_cap ?? null,
+        lifetime_cap: input.lifetime_cap ?? null,
+        starts_at: startsAt,
+        ends_at: endsAt,
+        status: input.status || "active",
+        show_as_badge: input.show_as_badge ?? false,
+        badge_name: input.badge_name ?? null,
+        badge_icon: input.badge_icon ?? null,
+        streak_target: input.streak_target ?? null,
+        skip_policy: input.skip_policy || "ignore",
+      })
+      return new StepResponse({ rule: created })
+    }
+
+    if (input.operation === "delete_rule") {
+      await service.deleteRewardRules([input.rule_id])
+      return new StepResponse({ success: true, id: input.rule_id })
     }
 
     const program = await activeProgram(service)

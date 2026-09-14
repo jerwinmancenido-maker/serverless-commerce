@@ -113,8 +113,8 @@ export const DEFAULT_FALLBACK_PROTOCOL: CompoundAnalyticalProtocol = {
   },
   citations: [
     {
-      sourceReference: "USP General Chapter <797> / <800>",
-      notes: "Standard sterile reconstitution and compounding standards for parenteral lyophilized peptides.",
+      sourceReference: "GLP Laboratory Reconstitution & Handling Standards",
+      notes: "Standard aseptic reconstitution and handling standards for in-vitro lyophilized peptides.",
     },
   ],
   disclaimer:
@@ -360,6 +360,12 @@ export function getCompoundProtocol(handleOrTitle?: string | null): CompoundAnal
     p.handles.some((h) => h.toLowerCase() === query)
   )
   if (exactHandleMatch) return exactHandleMatch
+
+  // 2b. Direct Store Product Handle match
+  const exactStoreHandleMatch = ALL_COMPOUND_PROTOCOLS.find(
+    (p) => p.storeProductHandle?.toLowerCase() === query
+  )
+  if (exactStoreHandleMatch) return exactStoreHandleMatch
 
   // 3. Exact Alias map lookup
   if (COMPOUND_ALIAS_MAP[query]) {

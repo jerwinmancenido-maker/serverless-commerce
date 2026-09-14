@@ -21,6 +21,8 @@ interface DossierViewClientProps {
   countryCode: string
   initialPreset?: PrintPreset
   autoprint?: boolean
+  qrCodeDataUrl?: string | null
+  canonicalUrl?: string | null
 }
 
 export default function DossierViewClient({
@@ -28,6 +30,8 @@ export default function DossierViewClient({
   countryCode,
   initialPreset = "full",
   autoprint = false,
+  qrCodeDataUrl,
+  canonicalUrl,
 }: DossierViewClientProps) {
   const [preset, setPreset] = useState<PrintPreset>(initialPreset)
   const [isDownloading, setIsDownloading] = useState(false)
@@ -55,38 +59,38 @@ export default function DossierViewClient({
   }
 
   return (
-    <div className="min-h-screen bg-slate-100/70 text-slate-900 pb-16 print:bg-white print:p-0 print:pb-0">
-      {/* ── Top Non-Printing Action Navigation Bar ── */}
-      <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white px-4 py-3 shadow-md print:hidden">
+    <div className="min-h-screen bg-slate-50/60 text-slate-900 pb-20 print:bg-white print:p-0 print:pb-0">
+      {/* ── Top Modern Luminous Action Bar ── */}
+      <header className="sticky top-[88px] sm:top-[92px] z-20 bg-white/85 backdrop-blur-md border-b border-slate-200/80 text-slate-900 px-4 py-2.5 shadow-2xs print:hidden transition-all">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           {/* Back link & Title */}
           <div className="flex items-center gap-3 self-start sm:self-auto">
             <Link
               href={`/${countryCode}/research-protocols/${protocol.handle}`}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-xl bg-slate-100/90 hover:bg-slate-200/70 border border-slate-200/70 transition-all active:scale-95"
             >
               <span>←</span>
               <span>Back to Protocol</span>
             </Link>
-            <div className="border-l border-slate-700 pl-3">
-              <span className="text-xs font-bold text-white block">
+            <div className="border-l border-slate-200 pl-3">
+              <span className="text-xs font-bold text-slate-900 block">
                 {cleanTitle}
               </span>
-              <span className="text-[10px] text-slate-400 font-mono block">
-                PSL-SOP-{protocol.handle.toUpperCase()} · ISO 9001 GLP Dossier
+              <span className="text-[10px] text-slate-500 font-mono block">
+                PSL-SOP-{protocol.handle.toUpperCase()} · GLP Analytical Dossier
               </span>
             </div>
           </div>
 
           {/* Center: Preset Selector Pills */}
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
+          <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/70 text-xs">
             <button
               type="button"
               onClick={() => setPreset("full")}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 preset === "full"
-                  ? "bg-sky-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-white text-slate-900 shadow-2xs border border-slate-200/80"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               Full Monograph
@@ -94,10 +98,10 @@ export default function DossierViewClient({
             <button
               type="button"
               onClick={() => setPreset("bench_sop")}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 preset === "bench_sop"
-                  ? "bg-sky-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-white text-slate-900 shadow-2xs border border-slate-200/80"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               Benchtop SOP
@@ -105,10 +109,10 @@ export default function DossierViewClient({
             <button
               type="button"
               onClick={() => setPreset("schedule_bom")}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 preset === "schedule_bom"
-                  ? "bg-sky-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-white text-slate-900 shadow-2xs border border-slate-200/80"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               Titration BOM
@@ -121,7 +125,7 @@ export default function DossierViewClient({
               type="button"
               onClick={handleDownloadPdf}
               disabled={isDownloading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs shadow-sm transition-all cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-semibold text-xs shadow-2xs transition-all cursor-pointer disabled:opacity-50"
               title="Download pure vector PDF file directly"
             >
               <span>📥</span>
@@ -131,7 +135,7 @@ export default function DossierViewClient({
             <button
               type="button"
               onClick={() => window.print()}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold text-xs border border-white/20 shadow-sm transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 text-slate-700 hover:text-slate-900 font-semibold text-xs border border-slate-200 shadow-2xs transition-all cursor-pointer"
               title="Open System Print Dialog"
             >
               <span>🖨️</span>
@@ -142,11 +146,13 @@ export default function DossierViewClient({
       </header>
 
       {/* ── Document Paper Container ── */}
-      <main className="max-w-4xl mx-auto mt-6 bg-white shadow-xl rounded-2xl p-6 sm:p-10 border border-slate-200/80 print:shadow-none print:border-none print:m-0 print:p-0 print:rounded-none">
+      <main className="max-w-4xl mx-auto mt-6 bg-white shadow-lg rounded-2xl p-6 sm:p-10 border border-slate-200/70 print:shadow-none print:border-none print:m-0 print:p-0 print:rounded-none">
         <ClinicalProtocolPrintDossier
           protocol={protocol}
           preset={preset}
           countryCode={countryCode}
+          qrCodeDataUrl={qrCodeDataUrl}
+          canonicalUrl={canonicalUrl || undefined}
         />
       </main>
     </div>

@@ -1,24 +1,44 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/page.tsx
+ * @module  ResearchProtocolsAdminRoute (Research Tracking Module)
+ * @purpose Modern Storefront SADS 2.0 Product Protocols Studio with 7/5 operational split grid and full monograph inspection.
+ * @contracts
+ *   Route:   /app/research-protocols
+ *   API:     GET /admin/research-protocols
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { BookOpen, MagnifyingGlass, Plus, XMark } from "@medusajs/icons"
 import {
+  ArchiveBox,
+  ArrowUpRightOnBox,
+  Beaker,
+  BookOpen,
+  CheckCircleSolid,
+  ChevronLeft,
+  ChevronRight,
+  DocumentText,
+  MagnifyingGlass,
+  PencilSquare,
+  Plus,
+  Sparkles,
+  XMark,
+} from "@medusajs/icons"
+import {
+  Badge,
   Button,
-  Container,
-  createDataTableColumnHelper,
-  DataTable,
-  type DataTablePaginationState,
   Input,
-  Text,
-  useDataTable,
 } from "@medusajs/ui"
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { useEffect, useMemo, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import React, { useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
-import { EmptyState } from "../../components/empty-state"
-import { KpiCard } from "../../components/kpi-card"
 import { PageHeader } from "../../components/page-header"
-import { AdminBadge } from "../../components/ui/admin-badge"
-import { AdminSegmentedTabs } from "../../components/ui/admin-segmented-tabs"
+import { AdminMetricCard } from "../../components/ui/admin-metric-card"
+import { AdminTelemetryNotice } from "../../components/ui/admin-telemetry-notice"
+import { AdminSuiteCard } from "../../components/ui/admin-suite-card"
+import { AdminListRowCard } from "../../components/ui/admin-list-row-card"
+import { SovereignPageSkeleton } from "../../components/ui/sovereign-page-skeleton"
+import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { AdminReconstitutionCalculator } from "../../components/clinical/admin-reconstitution-calculator"
 import { CustomerMonographPreviewModal } from "../../components/protocols/customer-monograph-preview-modal"
 import { sdk } from "../../lib/sdk"
@@ -28,8 +48,9 @@ import type {
 } from "../compounded-products/research-protocol-types"
 import { evaluatePublicationReadiness } from "./readiness-evaluator"
 
-const PAGE_SIZE = 20
-const columnHelper = createDataTableColumnHelper<ResearchProtocolSeries>()
+const PAGE_SIZE = 15
+
+type FilterCategory = "all" | "singles" | "blends" | "supplies" | "published" | "draft"
 
 const isSupplyProtocol = (p: ResearchProtocolSeries) => {
   const content = p.revisions[0]?.content
@@ -46,44 +67,33 @@ const isSupplyProtocol = (p: ResearchProtocolSeries) => {
 }
 
 const statusDetails = (protocol: ResearchProtocolSeries) => {
-  const published = protocol.revisions.find(
-    (revision) => revision.status === "published",
-  )
-
+  const published = protocol.revisions.find((r) => r.status === "published")
   if (published) {
     return { label: "Published", color: "green" as const }
   }
-
   const latest = protocol.revisions[0]
   if (latest?.status === "withdrawn") {
     return { label: "Withdrawn", color: "grey" as const }
   }
-
   return { label: "Draft", color: "orange" as const }
 }
 
 const readinessDetails = (protocol: ResearchProtocolSeries) => {
-  const published = protocol.revisions.find(
-    (revision) => revision.status === "published",
-  )
+  const published = protocol.revisions.find((r) => r.status === "published")
   if (published) {
     return { label: "Published & Ready", color: "green" as const }
   }
-
   const latest = protocol.revisions[0]
   if (!latest) {
     return { label: "Unchecked", color: "grey" as const }
   }
-
   if (latest.status === "withdrawn") {
     return { label: "Withdrawn", color: "grey" as const }
   }
-
   const evaluation = evaluatePublicationReadiness(latest.content)
   if (evaluation.isReady) {
     return { label: "Ready to Publish", color: "green" as const }
   }
-
   const missingCount = evaluation.totalCount - evaluation.passedCount
   return {
     label: `Draft (${missingCount} missing)`,
@@ -91,284 +101,138 @@ const readinessDetails = (protocol: ResearchProtocolSeries) => {
   }
 }
 
-const ProtocolStatusBadge = ({
-  children,
-  color,
-  className = "",
-}: {
-  children: React.ReactNode
-  color: "green" | "purple" | "blue" | "orange" | "grey"
-  className?: string
-}) => {
-  const variant = color === "green" ? "blue" : color === "orange" ? "amber" : color === "grey" ? "slate" : color
-  return (
-    <AdminBadge variant={variant} className={className}>
-      {children}
-    </AdminBadge>
-  )
-}
-
-const ResearchProtocolsPage = () => {
-  const [pagination, setPagination] = useState<DataTablePaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-  const [activeFilter, setActiveFilter] = useState("all")
+export const ResearchProtocolsPage = () => {
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [pageIndex, setPageIndex] = useState(0)
+  const [showCalculatorWorkbench, setShowCalculatorWorkbench] = useState(false)
   const [previewProtocol, setPreviewProtocol] = useState<ResearchProtocolSeries | null>(null)
-  const [showCalculatorWorkbench, setShowCalculatorWorkbench] = useState<boolean>(false)
 
+  // 1. Fetch protocols from API
   const protocolsQuery = useQuery({
-    queryKey: ["research-protocols", "catalog-all"],
-    queryFn: () =>
-      sdk.client.fetch<ResearchProtocolListResponse>(
-        "/admin/research-protocols",
-        {
-          query: {
-            limit: 100,
-            offset: 0,
-          },
-        },
-      ),
-    placeholderData: keepPreviousData,
-  })
-
-  const allProtocols = protocolsQuery.data?.protocols || []
-
-  // Compute accurate global KPIs across the entire catalog
-  const kpis = useMemo(() => {
-    const total = protocolsQuery.data?.count ?? allProtocols.length
-    const supplies = allProtocols.filter((p) => isSupplyProtocol(p)).length
-    const blends = allProtocols.filter(
-      (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type === "blend",
-    ).length
-    const singlePeptides = allProtocols.filter(
-      (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type !== "blend",
-    ).length
-    const published = allProtocols.filter(
-      (p) => p.revisions.some((r) => r.status === "published"),
-    ).length
-    const draft = allProtocols.filter(
-      (p) => !p.revisions.some((r) => r.status === "published"),
-    ).length
-    const totalLinked = allProtocols.reduce(
-      (acc, p) => acc + (p.product_links?.length || 0),
-      0,
-    )
-
-    return { total, singlePeptides, blends, supplies, published, draft, totalLinked }
-  }, [allProtocols, protocolsQuery.data?.count])
-
-  // Filter and search over all protocols
-  const filteredProtocols = useMemo(() => {
-    let result = allProtocols
-
-    if (activeFilter === "singles") {
-      result = result.filter(
-        (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type !== "blend",
-      )
-    } else if (activeFilter === "blends") {
-      result = result.filter(
-        (p) => !isSupplyProtocol(p) && p.revisions[0]?.content?.protocol_category_type === "blend",
-      )
-    } else if (activeFilter === "supplies") {
-      result = result.filter((p) => isSupplyProtocol(p))
-    } else if (activeFilter === "published") {
-      result = result.filter((p) =>
-        p.revisions.some((r) => r.status === "published"),
-      )
-    } else if (activeFilter === "draft") {
-      result = result.filter(
-        (p) => !p.revisions.some((r) => r.status === "published"),
-      )
-    } else if (activeFilter === "linked") {
-      result = result.filter(
-        (p) => (p.product_links?.length || 0) > 0,
-      )
-    } else if (activeFilter === "unlinked") {
-      result = result.filter(
-        (p) => (p.product_links?.length || 0) === 0,
-      )
-    }
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim()
-      result = result.filter((p) => {
-        const latest = p.revisions[0]
-        const keyMatch = p.protocol_key.toLowerCase().includes(q)
-        const titleMatch = latest?.title?.toLowerCase().includes(q)
-        const compoundMatch = latest?.content?.compound_name?.toLowerCase().includes(q)
-        return keyMatch || titleMatch || compoundMatch
+    queryKey: ["admin-research-protocols-list"],
+    queryFn: async () => {
+      return sdk.client.fetch<ResearchProtocolListResponse>("/admin/research-protocols", {
+        query: { limit: 250 },
       })
-    }
-
-    return result
-  }, [allProtocols, activeFilter, searchQuery])
-
-  // Reset pagination to page 0 whenever filter or search changes
-  useEffect(() => {
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
-  }, [activeFilter, searchQuery])
-
-  // Paged slice for data table
-  const pagedProtocols = useMemo(() => {
-    const start = pagination.pageIndex * pagination.pageSize
-    return filteredProtocols.slice(start, start + pagination.pageSize)
-  }, [filteredProtocols, pagination])
-
-  const columns = useMemo(
-    () => [
-      columnHelper.display({
-        id: "protocol",
-        header: "Protocol Title & Handle",
-        cell: ({ row }) => {
-          const latest = row.original.revisions[0]
-          return (
-            <div className="flex min-w-0 flex-col gap-0.5 py-1">
-              <Link
-                className="w-fit font-semibold hover:text-ui-fg-interactive text-xs inline-flex items-center gap-1.5"
-                to={`/research-protocols/${row.original.id}`}
-              >
-                <span>{latest?.title || row.original.protocol_key}</span>
-              </Link>
-              <span className="font-mono text-[10px] text-ui-fg-subtle">
-                {row.original.protocol_key}
-              </span>
-            </div>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "classification",
-        header: "Classification",
-        cell: ({ row }) => {
-          const isSupply = isSupplyProtocol(row.original)
-          if (isSupply) {
-            return (
-              <AdminBadge variant="slate" dot className="font-mono text-[10px]">
-                Laboratory Supply
-              </AdminBadge>
-            )
-          }
-          const latest = row.original.revisions[0]
-          const isBlend = latest?.content?.protocol_category_type === "blend"
-          return isBlend ? (
-            <AdminBadge variant="purple" dot className="font-mono text-[10px]">
-              Multi-Peptide Blend
-            </AdminBadge>
-          ) : (
-            <AdminBadge variant="blue" dot className="font-mono text-[10px]">
-              Single Peptide
-            </AdminBadge>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "compatible_products",
-        header: "Compatible products",
-        cell: ({ row }) => {
-          const count = row.original.product_links?.length || 0
-          return count > 0 ? (
-            <AdminBadge variant="blue" dot className="font-mono text-[10px]">
-              {count} {count === 1 ? "product" : "products"}
-            </AdminBadge>
-          ) : (
-            <span className="text-ui-fg-muted text-xs italic">None</span>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "status",
-        header: "Status",
-        cell: ({ row }) => {
-          const status = statusDetails(row.original)
-          const variant = status.color === "green" ? "blue" : status.color === "orange" ? "amber" : "slate"
-          return (
-            <AdminBadge variant={variant} dot>
-              {status.label}
-            </AdminBadge>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "latest_revision",
-        header: "Latest revision",
-        cell: ({ row }) => (
-          <span className="font-mono text-xs text-ui-fg-subtle">
-            r{row.original.revisions[0]?.revision || 1}
-          </span>
-        ),
-      }),
-      columnHelper.display({
-        id: "readiness",
-        header: "Readiness Check",
-        cell: ({ row }) => {
-          const readiness = readinessDetails(row.original)
-          const variant = readiness.color === "green" ? "blue" : readiness.color === "orange" ? "amber" : "slate"
-          return (
-            <AdminBadge variant={variant} className="capitalize text-[10px]">
-              {readiness.label}
-            </AdminBadge>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "updated_at",
-        header: "Updated",
-        cell: ({ row }) => {
-          const latest = row.original.revisions[0]
-          return (
-            <span className="text-xs text-ui-fg-subtle">
-              {new Date(latest?.updated_at || row.original.updated_at).toLocaleDateString("en-PH")}
-            </span>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "actions",
-        header: "",
-        cell: ({ row }) => (
-          <div className="flex items-center justify-end gap-1.5">
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => setPreviewProtocol(row.original)}
-              className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white"
-            >
-              Customer Preview
-            </Button>
-            <Button asChild size="small" variant="secondary" className="h-7 text-xs">
-              <Link to={`/research-protocols/${row.original.id}/preview`}>
-                Preview
-              </Link>
-            </Button>
-          </div>
-        ),
-      }),
-    ],
-    [],
-  )
-
-  const table = useDataTable({
-    data: pagedProtocols,
-    columns,
-    getRowId: (protocol) => protocol.id,
-    rowCount: filteredProtocols.length,
-    isLoading: protocolsQuery.isLoading,
-    pagination: {
-      state: pagination,
-      onPaginationChange: setPagination,
     },
   })
 
+  const allProtocols = useMemo(() => {
+    return protocolsQuery.data?.protocols || []
+  }, [protocolsQuery.data])
+
+  // 2. Compute KPI Metrics
+  const kpis = useMemo(() => {
+    let total = allProtocols.length
+    let singlePeptides = 0
+    let blends = 0
+    let supplies = 0
+    let published = 0
+    let draft = 0
+
+    for (const protocol of allProtocols) {
+      if (isSupplyProtocol(protocol)) {
+        supplies++
+      } else {
+        const catType = protocol.revisions[0]?.content?.protocol_category_type
+        if (catType === "blend") {
+          blends++
+        } else {
+          singlePeptides++
+        }
+      }
+
+      const status = statusDetails(protocol)
+      if (status.label === "Published") {
+        published++
+      } else {
+        draft++
+      }
+    }
+
+    return { total, singlePeptides, blends, supplies, published, draft }
+  }, [allProtocols])
+
+  // 3. Filter Protocols
+  const filteredProtocols = useMemo(() => {
+    let list = allProtocols
+
+    // Tab Filter
+    if (activeFilter === "singles") {
+      list = list.filter((p) => {
+        if (isSupplyProtocol(p)) return false
+        return p.revisions[0]?.content?.protocol_category_type !== "blend"
+      })
+    } else if (activeFilter === "blends") {
+      list = list.filter((p) => {
+        if (isSupplyProtocol(p)) return false
+        return p.revisions[0]?.content?.protocol_category_type === "blend"
+      })
+    } else if (activeFilter === "supplies") {
+      list = list.filter((p) => isSupplyProtocol(p))
+    } else if (activeFilter === "published") {
+      list = list.filter((p) => statusDetails(p).label === "Published")
+    } else if (activeFilter === "draft") {
+      list = list.filter((p) => statusDetails(p).label === "Draft")
+    }
+
+    // Search Query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim()
+      list = list.filter((p) => {
+        const title = p.revisions[0]?.title?.toLowerCase() || ""
+        const key = p.protocol_key?.toLowerCase() || ""
+        const cat = p.revisions[0]?.content?.category?.toLowerCase() || ""
+        const compound = p.revisions[0]?.content?.compound_name?.toLowerCase() || ""
+        return title.includes(q) || key.includes(q) || cat.includes(q) || compound.includes(q)
+      })
+    }
+
+    return list
+  }, [allProtocols, activeFilter, searchQuery])
+
+  // 4. Paginated Slice
+  const totalPages = Math.max(1, Math.ceil(filteredProtocols.length / PAGE_SIZE))
+  const pagedProtocols = useMemo(() => {
+    const start = pageIndex * PAGE_SIZE
+    return filteredProtocols.slice(start, start + PAGE_SIZE)
+  }, [filteredProtocols, pageIndex])
+
+  const handleFilterChange = (filter: FilterCategory) => {
+    setActiveFilter(filter)
+    setPageIndex(0)
+  }
+
+  if (protocolsQuery.isLoading) {
+    return <SovereignPageSkeleton cards={4} rows={8} />
+  }
+
+  if (protocolsQuery.isError) {
+    return (
+      <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
+        <PageHeader
+          eyebrowText="Product Protocols · Research Operations"
+          title="Product Protocols"
+          subtitle="Manage independent, versioned product analytical protocols, stoichiometry, and dosage routines across single peptides, multi-peptide blends, and laboratory supplies."
+        />
+        <div className="p-8 border border-red-200 bg-red-50/50 rounded-xl text-center flex flex-col items-center gap-3">
+          <p className="text-sm font-semibold text-red-800">
+            Failed to load research protocols: {String((protocolsQuery.error as Error)?.message || "Network Error")}
+          </p>
+          <Button size="small" variant="secondary" onClick={() => protocolsQuery.refetch()}>
+            Retry Query
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col gap-4 pb-8">
-      {/* 1. Standard PageHeader */}
+    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
+      {/* 1. Header with Eyebrow, Badges, and Action Suite */}
       <PageHeader
-        breadcrumbs={[
-          { label: "Products", href: "/products" },
-          { label: "Product Protocols" },
-        ]}
+        eyebrowText="Product Protocols · Research Operations"
         title="Product Protocols"
         subtitle="Manage independent, versioned product analytical protocols, stoichiometry, and dosage routines across single peptides, multi-peptide blends, and laboratory supplies."
         actions={
@@ -379,131 +243,370 @@ const ResearchProtocolsPage = () => {
               onClick={() => setShowCalculatorWorkbench((prev) => !prev)}
               className="h-8 text-xs font-semibold"
             >
+              <Beaker className="size-3.5 mr-1" />
               {showCalculatorWorkbench ? "Hide Syringe Workbench" : "Syringe Workbench"}
             </Button>
-            <Button asChild size="small" className="h-8 text-xs inline-flex items-center gap-1">
+            <Button asChild size="small" className="h-8 text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 inline-flex items-center gap-1.5">
               <Link to="/research-protocols/new">
-                <Plus /> Add protocol
+                <Plus className="size-3.5" /> Add protocol
               </Link>
             </Button>
           </div>
         }
       />
 
-      {/* 2. KPI Metrics Bar */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard
-          title="Total Protocols"
+      {/* 2. Top Telemetry Notice */}
+      <AdminTelemetryNotice
+        icon={<Sparkles className="size-4" />}
+        title="Sterile Compounding Protocols & Dilution Monographs"
+        description="Published monographs synchronize to customer account portals and research hubs. Each protocol mandates sterile reconstitution stoichiometry, storage temperatures, and CAS molecular purity."
+        statusText="CLINICAL PROTOCOLS ARMED"
+        variant="indigo"
+      />
+
+      {/* 3. 4-Tile Compact Executive Metric Strip (~82px height) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <AdminMetricCard
+          icon={<DocumentText className="size-4" />}
+          label="Total Protocols"
           value={kpis.total}
-          status="neutral"
+          status="healthy"
+          variant="blue"
           subtext="Authoritative product protocols"
         />
-        <KpiCard
-          title="Single Peptides"
+        <AdminMetricCard
+          icon={<Sparkles className="size-4" />}
+          label="Single Peptides"
           value={kpis.singlePeptides}
           status="healthy"
+          variant="emerald"
           subtext="Single compound monographs"
         />
-        <KpiCard
-          title="Multi-Peptide Blends"
+        <AdminMetricCard
+          icon={<Beaker className="size-4" />}
+          label="Multi-Peptide Blends"
           value={kpis.blends}
-          status="info"
+          status="healthy"
+          variant="purple"
           subtext="Multi-compound formulations"
         />
-        <KpiCard
-          title="Laboratory Supplies"
+        <AdminMetricCard
+          icon={<ArchiveBox className="size-4" />}
+          label="Laboratory Supplies"
           value={kpis.supplies}
-          status="info"
+          status="healthy"
+          variant="amber"
           subtext="Cryo labware & reconstitution"
         />
       </div>
 
-      {/* 3. Clinical Calculator Workbench (Optional Drawer) */}
+      {/* Syringe Stoichiometry Workbench (Collapsible Tool) */}
       {showCalculatorWorkbench && (
-        <AdminReconstitutionCalculator
-          compoundName="Clinical Stoichiometry Workbench"
-          initialMass={10}
-          initialDiluentMl={2.0}
-          initialTargetDose={250}
-        />
+        <div className="rounded-xl border border-blue-200/80 bg-blue-50/30 p-4 shadow-2xs">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Beaker className="size-4 text-blue-600" />
+              <span className="text-xs font-bold text-slate-900">Clinical Stoichiometry &amp; Dilution Calculator</span>
+            </div>
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => setShowCalculatorWorkbench(false)}
+              className="h-7 text-xs font-semibold"
+            >
+              Close Tool
+            </Button>
+          </div>
+          <AdminReconstitutionCalculator
+            compoundName="Clinical Stoichiometry Workbench"
+            initialMass={10}
+            initialDiluentMl={2.0}
+            initialTargetDose={250}
+          />
+        </div>
       )}
 
-      {/* 4. Main Data Container with Storefront-Harmonized Tabs */}
-      <Container className="divide-y p-0 shadow-elevation-card-rest border-ui-border-base bg-ui-bg-base overflow-hidden rounded-2xl">
-        {/* Harmonized Segmented Tabs */}
-        <AdminSegmentedTabs
-          tabs={[
+      {/* 4. Single-Row Tab Bar Strip with Inline Search */}
+      <div className="rounded-xl border border-slate-200/80 bg-white p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+          {[
             { id: "all", label: "All Protocols", count: kpis.total },
             { id: "singles", label: "Single Peptides", count: kpis.singlePeptides },
             { id: "blends", label: "Multi-Peptide Blends", count: kpis.blends },
             { id: "supplies", label: "Laboratory Supplies", count: kpis.supplies },
             { id: "published", label: "Published", count: kpis.published },
             { id: "draft", label: "Draft", count: kpis.draft },
-            { id: "linked", label: "Linked Products", count: kpis.totalLinked },
-          ]}
-          activeTab={activeFilter}
-          onChange={(id) => setActiveFilter(id)}
-        />
-
-        {/* Live Search Input Toolbar */}
-        <div className="flex items-center justify-between gap-3 p-3 bg-slate-50/50 border-b border-slate-100">
-          <span className="text-xs text-slate-500">
-            Showing {filteredProtocols.length} {filteredProtocols.length === 1 ? "protocol" : "protocols"}
-          </span>
-
-          <div className="relative flex items-center">
-            <MagnifyingGlass className="absolute left-2.5 size-3.5 text-ui-fg-muted pointer-events-none" />
-            <Input
-              size="small"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search protocol or compound..."
-              className="h-8 pl-8 pr-7 text-xs w-64 bg-white"
-            />
-            {searchQuery ? (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="absolute right-2 text-ui-fg-muted hover:text-ui-fg-base"
-                title="Clear search"
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => handleFilterChange(tab.id as FilterCategory)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                activeFilter === tab.id
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <span>{tab.label}</span>
+              <span
+                className={`px-1.5 py-0.2 rounded-md text-[10.5px] font-mono ${
+                  activeFilter === tab.id ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                }`}
               >
-                <XMark className="size-3.5" />
-              </button>
-            ) : null}
-          </div>
+                {tab.count}
+              </span>
+            </button>
+          ))}
         </div>
 
-        {protocolsQuery.isError ? (
-          <div className="p-6 text-center">
-            <Text size="small" className="text-ui-fg-error">
-              Research protocols could not be loaded.
-            </Text>
-          </div>
-        ) : null}
+        <div className="relative w-full sm:w-64">
+          <MagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-400 pointer-events-none" />
+          <Input
+            placeholder="Search protocol or compound..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value)
+              setPageIndex(0)
+            }}
+            className="h-8 pl-8 pr-7 text-xs bg-slate-50 border-slate-200/80 focus:bg-white"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            >
+              <XMark className="size-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
 
-        {!protocolsQuery.isLoading && filteredProtocols.length === 0 ? (
-          <EmptyState
-            title={allProtocols.length === 0 ? "No research protocols yet" : "No research protocols found"}
+      {/* 5. Full-Width Protocol Micro-Card Stream */}
+      <div className="w-full flex flex-col gap-3">
+        {filteredProtocols.length === 0 ? (
+          <SovereignEmptyState
+            icon={<BookOpen className="size-6 text-slate-400" />}
+            heading="No research protocols yet"
             description={
               searchQuery
-                ? `No protocols matching "${searchQuery}". Clear your search or change filters.`
-                : "No protocols match the selected filter. Create a new protocol or switch filters."
+                ? `No protocols matching "${searchQuery}". Clear query or switch filter.`
+                : "No protocols match the selected criteria."
             }
-            actionLabel={searchQuery ? "Clear Search" : "Show All Protocols"}
-            onAction={() => {
-              setSearchQuery("")
-              setActiveFilter("all")
-            }}
+            action={
+              searchQuery ? (
+                <Button size="small" onClick={() => setSearchQuery("")}>
+                  Clear Search
+                </Button>
+              ) : (
+                <Button asChild size="small">
+                  <Link to="/research-protocols/new">Add protocol</Link>
+                </Button>
+              )
+            }
           />
         ) : (
-          <DataTable instance={table}>
-            <DataTable.Table />
-            <DataTable.Pagination />
-          </DataTable>
-        )}
-      </Container>
+          <>
+            {pagedProtocols.map((protocol) => {
+              const isSupply = isSupplyProtocol(protocol)
+              const catType = protocol.revisions[0]?.content?.protocol_category_type
+              const status = statusDetails(protocol)
+              const readiness = readinessDetails(protocol)
+              const latestRevision = protocol.revisions[0]?.revision || 1
+              const linkedCount = protocol.product_links?.length || 0
+              const protocolTitle = protocol.revisions[0]?.title || protocol.protocol_key
 
-      {/* 5. Customer Monograph Live Preview Modal */}
+              let classification = "Single Peptide"
+              let icon = <DocumentText className="size-4 text-blue-600" />
+              if (isSupply) {
+                classification = "Laboratory Supply"
+                icon = <ArchiveBox className="size-4 text-emerald-600" />
+              } else if (catType === "blend") {
+                classification = "Multi-Peptide Blend"
+                icon = <Beaker className="size-4 text-purple-600" />
+              }
+
+              return (
+                <AdminListRowCard
+                  key={protocol.id}
+                  href={`/research-protocols/${protocol.id}`}
+                  icon={icon}
+                  title={protocolTitle}
+                  subtitle={
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700">
+                        {classification}
+                      </span>
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-blue-50 border border-blue-100 text-[10px] font-mono text-blue-700">
+                        Latest revision r{latestRevision}
+                      </span>
+                      {linkedCount > 0 && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-100 text-[10px] font-mono text-emerald-700">
+                          {linkedCount} Compatible products
+                        </span>
+                      )}
+                      <span className="text-[10.5px] text-slate-400">
+                        {protocol.protocol_key}
+                      </span>
+                    </div>
+                  }
+                  badge={
+                    <Badge
+                      size="small"
+                      color={status.color === "green" ? "green" : "orange"}
+                      className="text-[10px]"
+                    >
+                      {status.label}
+                    </Badge>
+                  }
+                  value={
+                    <span className={readiness.color === "green" ? "text-emerald-700 font-semibold text-xs" : "text-amber-700 font-semibold text-xs"}>
+                      {readiness.label}
+                    </span>
+                  }
+                  secondaryValue={
+                    <span className="text-[10.5px] text-slate-400">
+                      Updated {new Date(protocol.revisions[0]?.updated_at || protocol.updated_at).toLocaleDateString("en-PH")}
+                    </span>
+                  }
+                  actions={
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        asChild
+                        size="small"
+                        variant="secondary"
+                        className="h-7 text-xs font-semibold px-2.5 text-blue-700 hover:text-blue-950 bg-blue-50/80 border-blue-200/90 hover:bg-blue-100/80 shadow-2xs"
+                      >
+                        <Link to={`/research-protocols/${protocol.id}`}>
+                          <PencilSquare className="size-3 mr-1" /> Edit
+                        </Link>
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => setPreviewProtocol(protocol)}
+                        className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white"
+                      >
+                        Customer Preview
+                      </Button>
+                      <Button asChild size="small" variant="secondary" className="h-7 text-xs font-semibold px-2 text-slate-600 hover:text-slate-900">
+                        <Link to={`/research-protocols/${protocol.id}/preview`}>
+                          Preview <ArrowUpRightOnBox className="size-3 ml-1" />
+                        </Link>
+                      </Button>
+                    </div>
+                  }
+                />
+              )
+            })}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between p-3 rounded-xl border border-slate-200/80 bg-white shadow-2xs mt-1">
+                <span className="text-xs text-slate-500 font-mono">
+                  Showing {pageIndex * PAGE_SIZE + 1}–{Math.min((pageIndex + 1) * PAGE_SIZE, filteredProtocols.length)} of {filteredProtocols.length} protocols
+                </span>
+                <div className="flex items-center gap-1">
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    disabled={pageIndex === 0}
+                    onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
+                    className="h-7 text-xs"
+                  >
+                    <ChevronLeft className="size-3.5 mr-0.5" /> Previous
+                  </Button>
+                  <span className="text-xs font-semibold px-2 text-slate-700">
+                    {pageIndex + 1} / {totalPages}
+                  </span>
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    disabled={pageIndex >= totalPages - 1}
+                    onClick={() => setPageIndex((prev) => Math.min(totalPages - 1, prev + 1))}
+                    className="h-7 text-xs"
+                  >
+                    Next <ChevronRight className="size-3.5 ml-0.5" />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* 6. Horizontal Operational Action Suites Dock */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        {/* Suite 1: Clinical Stoichiometry Workbench */}
+        <AdminSuiteCard
+          icon={<Beaker className="size-4 text-blue-600" />}
+          eyebrow="Clinical Formulation"
+          title="Stoichiometry &amp; Diluent Tool"
+          description="Interactive syringe reconstitution calculator. Computes exact graduation marks (IU or 0.01 mL clicks) based on vial mass and diluent volume."
+          actionLabel={showCalculatorWorkbench ? "Hide Workbench" : "Launch Workbench"}
+          onActionClick={() => setShowCalculatorWorkbench((prev) => !prev)}
+          statusBadge="Active Engine"
+          statusVariant="emerald"
+          variant="blue"
+        >
+          <div className="p-3 rounded-lg bg-blue-50/40 border border-blue-100 flex flex-col gap-1.5 text-xs text-slate-700">
+            <div className="flex items-center justify-between">
+              <span className="font-semibold text-slate-900">Standard Lyophilized Vials:</span>
+              <span className="font-mono text-blue-700">2.0 mL BAC Water</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="font-semibold text-slate-900">Micro-Volumetric Increments:</span>
+              <span className="font-mono text-blue-700">0.01 mL Click Resolution</span>
+            </div>
+          </div>
+        </AdminSuiteCard>
+
+        {/* Suite 2: Quality & Monograph Governance */}
+        <AdminSuiteCard
+          icon={<Sparkles className="size-4 text-purple-600" />}
+          eyebrow="Analytical Compliance"
+          title="Monograph Quality Standards"
+          description="Every published analytical protocol enforces sterile reconstitution procedures, vehicle compatibility, and strict RUO research disclaimers."
+          statusBadge="USP &amp; CAS Aligned"
+          statusVariant="emerald"
+          variant="purple"
+        >
+          <div className="flex flex-col gap-2 text-xs">
+            <div className="flex items-center gap-2 text-slate-700">
+              <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />
+              <span>HPLC Purity Verification &gt;= 99.0% mandatory</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-700">
+              <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />
+              <span>Cryogenic cold-chain handling (-20°C storage)</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-700">
+              <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />
+              <span>Synchronized with customer monograph portal</span>
+            </div>
+          </div>
+        </AdminSuiteCard>
+
+        {/* Suite 3: Publication Telemetry */}
+        <AdminSuiteCard
+          icon={<DocumentText className="size-4 text-emerald-600" />}
+          eyebrow="Publication Readiness"
+          title="Protocol Release Telemetry"
+          description="Drafts require dosage protocols, solvent guidelines, and peptide CAS registry keys before publication to live customer accounts."
+          statusBadge={`${kpis.published} Live / ${kpis.draft} Draft`}
+          statusVariant={kpis.draft > 0 ? "amber" : "emerald"}
+          variant="emerald"
+        >
+          <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 text-xs">
+            <span className="text-slate-600">Storefront Publication Rate:</span>
+            <span className="font-bold font-mono text-slate-900">
+              {kpis.total > 0 ? Math.round((kpis.published / kpis.total) * 100) : 100}%
+            </span>
+          </div>
+        </AdminSuiteCard>
+      </div>
+
+      {/* 6. Customer Monograph Live Preview Modal */}
       <CustomerMonographPreviewModal
         open={Boolean(previewProtocol)}
         onClose={() => setPreviewProtocol(null)}
@@ -520,4 +623,3 @@ export const config = defineRouteConfig({
 })
 
 export default ResearchProtocolsPage
-

@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/order/components/manual-payment-proof/index.tsx
+ * @module  ManualPaymentProofComponent (Order Module)
+ * @purpose Customer Manual QR (GCash/Maya) payment proof upload component with camera & mobile receipt support.
+ * @contracts
+ *   API: POST /store/customers/me/orders/:id/manual-payment-proof
+ */
+
 import {
   submitManualPaymentProof,
   type ManualPaymentProofActionState,
@@ -386,7 +394,7 @@ const ManualPaymentProof = ({
                       id="manual-payment-proof-file"
                       name="proof"
                       type="file"
-                      accept="image/png,image/jpeg,application/pdf"
+                      accept="image/*,application/pdf"
                       required
                       onChange={handleFileChange}
                       className="sr-only"
@@ -420,7 +428,7 @@ const ManualPaymentProof = ({
                             or drag and drop receipt
                           </p>
                           <p className="text-xs text-ui-fg-muted">
-                            PNG, JPEG, or PDF (up to 10 MB)
+                            PNG, JPG, WEBP, or PDF (up to 10 MB · Camera upload supported)
                           </p>
                         </div>
                       </>

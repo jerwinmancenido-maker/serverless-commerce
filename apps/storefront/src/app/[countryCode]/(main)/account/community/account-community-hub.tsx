@@ -199,7 +199,7 @@ export default function AccountCommunityHub({
           >
             <h2 className="text-sm font-bold text-ui-fg-base">Researcher Alias & Identity</h2>
             <p className="text-xs leading-relaxed text-ui-fg-subtle">
-              Philippine DPA 2012 Protected. Your real name, order IDs, and shipping addresses are never displayed publicly.
+              Privacy Protected. Your real name, order IDs, and shipping addresses are never displayed publicly.
             </p>
             <input type="hidden" name="country_code" value={countryCode} />
             <label className="block text-xs font-semibold text-ui-fg-base">
@@ -246,7 +246,7 @@ export default function AccountCommunityHub({
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-emerald-700 font-bold">•</span>
-                <span>Encrypted pseudonymity guarantees complete researcher privacy under RA 10173.</span>
+                <span>Encrypted pseudonymity guarantees complete researcher confidentiality and account privacy.</span>
               </li>
             </ul>
           </section>

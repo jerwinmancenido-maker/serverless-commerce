@@ -7,6 +7,7 @@
  */
 
 import { sdk } from "@lib/config"
+import rawComparisonsData from "../../../../backend/data/peptide-comparisons.json" with { type: "json" }
 import {
   type StoreResearchProtocol,
   retrieveResearchProtocol,
@@ -95,7 +96,6 @@ export function protocolToCompoundProfile(protocol: StoreResearchProtocol): Comp
   const mol = content?.molecular_details
   const recon = content?.reconstitution_details
   const quickRef = (content?.quick_reference || []) as Array<{ key: string; label: string; value: string }>
-
   // Primary target receptor or molecular pathway
   const targetRef = quickRef.find((r) =>
     r.key?.toLowerCase().includes("target") ||
@@ -105,9 +105,7 @@ export function protocolToCompoundProfile(protocol: StoreResearchProtocol): Comp
   )
   const primaryTarget =
     targetRef?.value ||
-    content?.short_introduction ||
-    protocol.summary ||
-    "Selective biological receptor / pathway signaling"
+    (content?.category ? `${content.category} Receptor Signaling` : "Selective biological receptor / pathway signaling")
 
   // Cadence / Dosing
   const cadenceRef = quickRef.find((r) =>
@@ -127,9 +125,7 @@ export function protocolToCompoundProfile(protocol: StoreResearchProtocol): Comp
   )
   const primaryFocus =
     focusRef?.value ||
-    protocol.summary ||
-    content?.short_introduction ||
-    "Preclinical molecular research"
+    (content?.category ? `${content.category} Preclinical Evaluation` : "Preclinical molecular research")
 
   // Standard dilution
   const standardDilution =
@@ -195,7 +191,7 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
   "bpc-157": {
     id: "bpc-157",
     name: "BPC-157",
-    handle: "bpc-157",
+    handle: "bpc-157-vial",
     tag: "Pentadecapeptide",
     category: "Tissue Repair & Healing",
     sequence_or_class: "15 Amino Acids (Gly-Glu-Pro-Pro-Pro...)",
@@ -222,7 +218,7 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
   "tb-500": {
     id: "tb-500",
     name: "TB-500 (Thymosin β4)",
-    handle: "bpc-157", // Active catalog compound in tissue repair
+    handle: "tb-500",
     tag: "Synthetic Ac-LKKTETQ",
     category: "Tissue Repair & Healing",
     sequence_or_class: "43 Amino Acid Native Sequence (Fragment 17-23)",
@@ -271,7 +267,7 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
   "semaglutide": {
     id: "semaglutide",
     name: "Semaglutide",
-    handle: "tirzepatide", // Active catalog dual incretin
+    handle: "semaglutide",
     tag: "Mono GLP-1 Receptor Agonist",
     category: "Metabolic & GLP-1",
     sequence_or_class: "31 Amino Acid Synthetic Peptide with C18 Diacid Chain",
@@ -315,7 +311,7 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
   "tesamorelin": {
     id: "tesamorelin",
     name: "Tesamorelin",
-    handle: "ghk-cu", // Linked to active peptide catalog
+    handle: "tesamorelin",
     tag: "GHRH Analog",
     category: "Growth Hormone Axis",
     sequence_or_class: "44 Amino Acid N-terminal Trans-3-Hexenoyl Derivative",
@@ -337,7 +333,7 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
   "epithalon": {
     id: "epithalon",
     name: "Epithalon (Epitalon)",
-    handle: "ghk-cu", // Longevity category
+    handle: "epithalon",
     tag: "Synthetic Pineal Tetrapeptide",
     category: "Cellular Longevity",
     sequence_or_class: "Ala-Glu-Asp-Gly (AEDG Synthetic Peptide)",
@@ -358,114 +354,57 @@ export const COMPARABLE_COMPOUNDS: Record<string, CompoundProfile> = {
   },
 }
 
-export const PEPTIDE_COMPARISONS: PeptideComparison[] = [
-  {
-    slug: "bpc-157-vs-tb-500",
-    title: "BPC-157 vs. TB-500: Angiogenic Signaling vs. Actin Polymerization",
-    subtitle: "A head-to-head laboratory analysis comparing gastric pentadecapeptide tissue remodeling against synthetic Thymosin Beta-4 cellular migration.",
-    category: "Tissue Repair & Healing",
-    compoundA: COMPARABLE_COMPOUNDS["bpc-157"],
-    compoundB: COMPARABLE_COMPOUNDS["tb-500"],
-    summary:
-      "While both compounds are widely researched in regenerative biology, their molecular pathways are fundamentally distinct. BPC-157 acts locally as an angiogenic catalyst, stimulating microvascular sprouting and fibroblast collagen deposition. TB-500 acts systemically as an actin-binding protein, promoting cellular motility and down-regulating inflammatory myofibroblast differentiation.",
-    synergy_verdict:
-      "Complementary (The Wolverine Synergy). In laboratory explant models, researchers frequently co-administer BPC-157 and TB-500. BPC-157 establishes the neovascular capillary network to supply nutrient perfusion, while TB-500 accelerates tenocyte and myoblast migration into the damaged matrix zone.",
-    vectors: [
-      {
-        feature: "Primary Mechanism",
-        compoundA_val: "VEGF upregulation, nitric oxide modulation, FAK-paxillin focal adhesion",
-        compoundB_val: "Actin filament regulation, G-actin binding, directional cell motility",
-        verdict: "Complementary Pathways",
-      },
-      {
-        feature: "Target Tissue Specificity",
-        compoundA_val: "High affinity for tendon-to-bone junctions, ligaments, and GI mucosa",
-        compoundB_val: "High affinity for skeletal muscle fibers, cardiac tissue, and fascia",
-        verdict: "BPC: Tendon/Gut | TB: Muscle/Systemic",
-      },
-      {
-        feature: "Systemic vs. Local Action",
-        compoundA_val: "Predominantly localized tissue concentration near application area",
-        compoundB_val: "High systemic circulation and multi-organ tissue dispersion",
-        verdict: "TB-500 has broader systemic reach",
-      },
-      {
-        feature: "Stability After Reconstitution",
-        compoundA_val: "28 days at 2°C–8°C in bacteriostatic water",
-        compoundB_val: "14–21 days at 2°C–8°C (higher sensitivity to thermal cycling)",
-        verdict: "BPC-157 has higher solution resilience",
-      },
-      {
-        feature: "Common Research Protocol Range",
-        compoundA_val: "250 mcg – 500 mcg daily in analytical trials",
-        compoundB_val: "2.0 mg – 2.5 mg twice weekly in analytical trials",
-        verdict: "Different cadence (Daily vs Intermittent)",
-      },
-    ],
-    citations: [
-      {
-        number: 1,
-        text: "Chang CH, et al. Pentadecapeptide BPC 157 enhances tendon healing. J Appl Physiol. 2011;110(3):774-780.",
-        url: "https://pubmed.ncbi.nlm.nih.gov/21030672/",
-      },
-      {
-        number: 2,
-        text: "Philp D, et al. Thymosin beta4 promotes wound healing through enhanced cell migration. J Cell Sci. 2003;116(Pt 20):4229-4238.",
-        url: "https://pubmed.ncbi.nlm.nih.gov/12972508/",
-      },
-    ],
-  },
-  {
-    slug: "tirzepatide-vs-semaglutide",
-    title: "Tirzepatide vs. Semaglutide: Dual Incretin Co-Agonism vs. Selective GLP-1",
-    subtitle: "Comparative in-vitro pharmacodynamics, receptor binding kinetics, and metabolic signaling pathway analysis.",
-    category: "Metabolic & GLP-1",
-    compoundA: COMPARABLE_COMPOUNDS["tirzepatide"],
-    compoundB: COMPARABLE_COMPOUNDS["semaglutide"],
-    summary:
-      "The pivotal distinction between Semaglutide and Tirzepatide lies in receptor engagement. Semaglutide functions solely at the GLP-1 receptor, primarily suppressing appetite through hindbrain receptors and slowing gastric transit. Tirzepatide introduces glucose-dependent insulinotropic polypeptide (GIP) receptor agonism, directly influencing white and brown adipose lipid metabolism and mitigating the nausea response associated with isolated GLP-1 stimulation.",
-    synergy_verdict:
-      "Mutually Exclusive (Competing Target Receptors). In laboratory research, these compounds are evaluated independently rather than co-administered, as both compete for GLP-1 receptor binding sites.",
-    vectors: [
-      {
-        feature: "Target Receptors",
-        compoundA_val: "Dual GIPR + GLP-1R Co-Agonist",
-        compoundB_val: "Selective Monotherapy GLP-1R Agonist",
-        verdict: "Tirzepatide has dual receptor activation",
-      },
-      {
-        feature: "Adipose Tissue Action",
-        compoundA_val: "Direct GIP-mediated lipid buffering and uncoupling protein-1 (UCP-1) stimulation",
-        compoundB_val: "Indirect adipose loss secondary to caloric restriction and gastric slowing",
-        verdict: "Tirzepatide has direct fat tissue signaling",
-      },
-      {
-        feature: "In-Vitro Half-Life",
-        compoundA_val: "~120 Hours (5 days, steady state achieved by week 4)",
-        compoundB_val: "~168 Hours (7 days, perfectly aligned with weekly cadence)",
-        verdict: "Semaglutide has longer terminal half-life",
-      },
-      {
-        feature: "Gastrointestinal Tolerance In Vitro",
-        compoundA_val: "GIP co-agonism dampens emetic and hyper-motility distress pathways",
-        compoundB_val: "GLP-1 monotherapy shows higher initial gastrointestinal motility slowing",
-        verdict: "Tirzepatide exhibits milder nausea markers",
-      },
-    ],
-    citations: [
-      {
-        number: 1,
-        text: "Coskun T, et al. LY3298176, a novel dual GIP and GLP-1 receptor agonist for the treatment of type 2 diabetes. Mol Metab. 2018;18:3-14.",
-        url: "https://pubmed.ncbi.nlm.nih.gov/30473097/",
-      },
-      {
-        number: 2,
-        text: "Nauck MA, et al. The evolving story of incretins: dual GIP/GLP-1 receptor agonists in metabolic disease. Lancet Diabetes Endocrinol. 2021;9(9):586-608.",
-        url: "https://pubmed.ncbi.nlm.nih.gov/34293339/",
-      },
-    ],
-  },
-]
+export type RawComparisonRecord = {
+  slug?: string
+  title?: string
+  subtitle?: string
+  category?: string
+  compoundA?: CompoundProfile
+  compoundB?: CompoundProfile
+  compound_a?: CompoundProfile
+  compound_b?: CompoundProfile
+  summary?: string
+  synergy_verdict?: string
+  synergyVerdict?: string
+  vectors?: ComparisonVector[]
+  citations?: Array<{ number: number; text: string; url: string }>
+}
+
+/**
+ * Normalizes backend Medusa DML records (compound_a, compound_b) to Storefront types (compoundA, compoundB)
+ */
+export function normalizePeptideComparison(raw: RawComparisonRecord | null | undefined): PeptideComparison {
+  if (!raw) {
+    return {
+      slug: "",
+      title: "",
+      subtitle: "",
+      category: "",
+      compoundA: COMPARABLE_COMPOUNDS["bpc-157"],
+      compoundB: COMPARABLE_COMPOUNDS["tb-500"],
+      summary: "",
+      synergy_verdict: "",
+      vectors: [],
+      citations: [],
+    }
+  }
+  return {
+    slug: raw.slug || "",
+    title: raw.title || "",
+    subtitle: raw.subtitle || "",
+    category: raw.category || "General Research",
+    compoundA: raw.compoundA || raw.compound_a || COMPARABLE_COMPOUNDS["bpc-157"],
+    compoundB: raw.compoundB || raw.compound_b || COMPARABLE_COMPOUNDS["tb-500"],
+    summary: raw.summary || "",
+    synergy_verdict: raw.synergy_verdict || raw.synergyVerdict || "",
+    vectors: raw.vectors || [],
+    citations: raw.citations || [],
+  }
+}
+
+export const PEPTIDE_COMPARISONS: PeptideComparison[] = (
+  rawComparisonsData as unknown as RawComparisonRecord[]
+).map(normalizePeptideComparison)
 
 /**
  * Evaluates physiological and molecular synergy across peptide classes
@@ -657,58 +596,23 @@ export function getDynamicComparison(
         compoundB_val: compB.typical_cadence || "Varies by experimental model",
         verdict: "Protocol Cadence Comparison",
       },
+      {
+        feature: "Researched Biological Endpoints",
+        compoundA_val: `Selective modulation of ${compA.primary_target} pathways; targeted tissue response`,
+        compoundB_val: `Selective modulation of ${compB.primary_target} pathways; targeted tissue response`,
+        verdict: "Clinical & Experimental Efficacy",
+      },
+      {
+        feature: "Tolerability & Handling Profile",
+        compoundA_val: "Requires sterile reconstitution in Bacteriostatic Water USP; standard SubQ tolerability",
+        compoundB_val: "Requires sterile reconstitution in Bacteriostatic Water USP; standard SubQ tolerability",
+        verdict: "Safety & Administration SOP",
+      },
     ],
     citations,
   }
 }
 
-export type RawComparisonRecord = {
-  slug?: string
-  title?: string
-  subtitle?: string
-  category?: string
-  compoundA?: CompoundProfile
-  compoundB?: CompoundProfile
-  compound_a?: CompoundProfile
-  compound_b?: CompoundProfile
-  summary?: string
-  synergy_verdict?: string
-  synergyVerdict?: string
-  vectors?: ComparisonVector[]
-  citations?: Array<{ number: number; text: string; url: string }>
-}
-
-/**
- * Normalizes backend Medusa DML records (compound_a, compound_b) to Storefront types (compoundA, compoundB)
- */
-export function normalizePeptideComparison(raw: RawComparisonRecord | null | undefined): PeptideComparison {
-  if (!raw) {
-    return {
-      slug: "",
-      title: "",
-      subtitle: "",
-      category: "",
-      compoundA: COMPARABLE_COMPOUNDS["bpc-157"],
-      compoundB: COMPARABLE_COMPOUNDS["tb-500"],
-      summary: "",
-      synergy_verdict: "",
-      vectors: [],
-      citations: [],
-    }
-  }
-  return {
-    slug: raw.slug || "",
-    title: raw.title || "",
-    subtitle: raw.subtitle || "",
-    category: raw.category || "General Research",
-    compoundA: raw.compoundA || raw.compound_a || COMPARABLE_COMPOUNDS["bpc-157"],
-    compoundB: raw.compoundB || raw.compound_b || COMPARABLE_COMPOUNDS["tb-500"],
-    summary: raw.summary || "",
-    synergy_verdict: raw.synergy_verdict || raw.synergyVerdict || "",
-    vectors: raw.vectors || [],
-    citations: raw.citations || [],
-  }
-}
 
 export const listPeptideComparisons = async (): Promise<PeptideComparison[]> => {
   try {

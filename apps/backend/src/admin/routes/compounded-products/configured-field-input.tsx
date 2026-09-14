@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/configured-field-input.tsx
+ * @module  ConfiguredFieldInput
+ * @purpose Structured form input handler for compounded product configured fields.
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import {
   Checkbox,
   Input,

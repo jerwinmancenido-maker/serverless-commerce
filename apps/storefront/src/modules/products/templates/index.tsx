@@ -13,12 +13,16 @@ import ProductActionsWrapper from "./product-actions-wrapper"
 
 import { listResearchProtocols } from "@lib/data/research-protocols"
 import { listResearchArticles } from "@lib/data/research-articles"
+import { listProducts } from "@lib/data/products"
+import ProductStackingPartners from "@modules/products/components/product-stacking-partners"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   countryCode: string
   images: HttpTypes.StoreProductImage[]
+  initialImageIndex?: number
+  selectedVariantId?: string
 }
 
 const ProductTemplate = async ({
@@ -26,14 +30,19 @@ const ProductTemplate = async ({
   region,
   countryCode,
   images,
+  initialImageIndex = 0,
+  selectedVariantId,
 }: ProductTemplateProps) => {
   if (!product || !product.id) {
     return notFound()
   }
 
-  const [{ protocols }, articles] = await Promise.all([
+  const [{ protocols }, articles, productsData] = await Promise.all([
     listResearchProtocols().catch(() => ({ protocols: [] })),
     listResearchArticles().catch(() => []),
+    listProducts({ countryCode, queryParams: { limit: 100 } }).catch(() => ({
+      response: { products: [], count: 0 },
+    })),
   ])
 
   const protocolHandle =
@@ -90,16 +99,22 @@ const ProductTemplate = async ({
 
       {/* 1. Hero 2-Column Section */}
       <div
-        className="content-container flex flex-col small:flex-row small:items-start gap-x-10 lg:gap-x-14 py-10 relative"
+        className="content-container flex flex-col small:flex-row small:items-start gap-x-8 lg:gap-x-12 xl:gap-x-16 py-8 sm:py-10 relative"
         data-testid="product-container"
       >
         {/* Left Column: Product Media Gallery */}
-        <div className="w-full small:w-5/12 relative">
-          <ImageGallery images={images} productTitle={product.title} />
+        <div className="w-full small:w-1/2 medium:w-[48%] large:w-[46%] relative">
+          <ImageGallery
+            images={images}
+            productTitle={product.title}
+            variants={product.variants ?? []}
+            initialImageIndex={initialImageIndex}
+            selectedVariantId={selectedVariantId}
+          />
         </div>
 
         {/* Right Column: Sticky Buy Box */}
-        <div className="flex flex-col small:sticky small:top-24 w-full small:w-7/12 py-4 gap-y-4">
+        <div className="flex flex-col small:sticky small:top-24 w-full small:w-1/2 medium:w-[52%] large:w-[54%] py-2 gap-y-4">
           <ProductInfo product={product} mode="header" />
           <ProductOnboardingCta />
           <Suspense
@@ -118,12 +133,20 @@ const ProductTemplate = async ({
     </div>
 
       {/* 2. Scientific & Compliance Workspace (Below the Fold, Full Width) */}
+      <div id="protocol" className="scroll-mt-24" />
       <div id="scientific-workspace" className="content-container py-12 border-t border-zinc-200 mt-6">
         <ProductTabs
           product={product}
           linkedProtocol={linkedProtocol}
           linkedArticle={linkedArticle}
           countryCode={countryCode}
+        />
+
+        {/* Verified Stacking Partners Module */}
+        <ProductStackingPartners
+          product={product}
+          countryCode={countryCode}
+          allProducts={productsData.response.products}
         />
       </div>
 

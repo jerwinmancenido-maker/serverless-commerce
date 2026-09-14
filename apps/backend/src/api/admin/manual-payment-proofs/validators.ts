@@ -20,7 +20,7 @@ export type AdminListManualPaymentProofsType = z.infer<
 >
 
 export const AdminReviewManualPaymentProof = z.strictObject({
-  decision: z.literal("rejected"),
+  decision: z.enum(["approved", "rejected"]),
   reason: z.string().trim().max(500).optional().nullable(),
 })
 

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/jobs/expire-unpaid-orders.ts
+ * @module  ExpireUnpaidOrdersJob (Order Lifecycle Engine)
+ * @purpose Periodically cancels expired unpaid orders, safeguarding active/approved payment proofs and releasing BOM components.
+ * @contracts
+ *   Job: processExpiredUnpaidOrders · every-15-min · ManualPaymentModuleService · ExpireUnpaidOrderWorkflow
+ */
+
 import type { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
@@ -16,16 +24,21 @@ export default async function processExpiredUnpaidOrders(container: MedusaContai
   const now = new Date()
 
   try {
-    // Query active orders awaiting payment
-    const { data: orders } = await query.graph({
+    // Query active non-canceled orders (payment_status is a resolved virtual field in Medusa v2, so filter in-memory)
+    const { data: rawOrders } = await query.graph({
       entity: "order",
       fields: ["id", "created_at", "customer_id", "status", "payment_status", "metadata"],
       filters: {
-        payment_status: "awaiting",
         status: { $ne: "canceled" },
       } as never,
       pagination: { take: 50 },
     })
+
+    const orders = (rawOrders || []).filter(
+      (order: any) =>
+        order.payment_status === "awaiting" ||
+        order.payment_status === "not_paid"
+    )
 
     if (!orders || orders.length === 0) {
       return
@@ -51,8 +64,12 @@ export default async function processExpiredUnpaidOrders(container: MedusaContai
         )
 
         const activeProof = proofs[0]
-        if (activeProof && activeProof.status === "pending") {
-          // Proof is submitted and under review — DO NOT auto-cancel!
+        if (
+          activeProof &&
+          (activeProof.status === "pending" ||
+           activeProof.status === "approved")
+        ) {
+          // Proof is submitted or approved by staff — DO NOT auto-cancel!
           continue
         }
 

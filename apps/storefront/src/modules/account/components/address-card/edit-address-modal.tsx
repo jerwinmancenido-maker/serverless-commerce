@@ -65,58 +65,88 @@ const EditAddress: React.FC<EditAddressProps> = ({
     <>
       <div
         className={clx(
-          "border rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between transition-colors",
+          "rounded-2xl border border-slate-200/90 bg-white p-6 min-h-[220px] h-full w-full flex flex-col justify-between shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all duration-200",
           {
-            "border-gray-900": isActive,
+            "ring-2 ring-emerald-500/40 border-emerald-500/60": isActive,
           }
         )}
         data-testid="address-container"
       >
-        <div className="flex flex-col">
-          <Heading
-            className="text-left text-base-semi"
-            data-testid="address-name"
-          >
-            {address.first_name} {address.last_name}
-          </Heading>
-          {address.company && (
-            <Text
-              className="txt-compact-small text-ui-fg-base"
-              data-testid="address-company"
-            >
-              {address.company}
-            </Text>
-          )}
-          <Text className="flex flex-col text-left text-base-regular mt-2">
-            <span data-testid="address-address">
+        <div>
+          {/* Top Destination Header */}
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="size-9 rounded-xl bg-slate-100/90 border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
+                <svg className="size-4.5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <Heading
+                  className="text-left text-base font-bold text-slate-900 tracking-tight"
+                  data-testid="address-name"
+                >
+                  {address.first_name} {address.last_name}
+                </Heading>
+                {address.company && (
+                  <Text
+                    className="text-xs font-medium text-slate-500"
+                    data-testid="address-company"
+                  >
+                    {address.company}
+                  </Text>
+                )}
+              </div>
+            </div>
+
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200/80 shrink-0">
+              <span className="size-1.5 rounded-full bg-emerald-500" />
+              Verified Destination
+            </span>
+          </div>
+
+          {/* Formatted Address Details */}
+          <div className="text-left mt-3 space-y-1 pl-0.5">
+            <p className="text-sm font-medium text-slate-800 leading-snug" data-testid="address-address">
               {address.address_1}
               {address.address_2 && <span>, {address.address_2}</span>}
-            </span>
-            <span data-testid="address-postal-city">
+            </p>
+            <p className="text-xs text-slate-500" data-testid="address-postal-city">
               {address.postal_code}, {address.city}
-            </span>
-            <span data-testid="address-province-country">
+            </p>
+            <p className="text-xs text-slate-400 font-medium" data-testid="address-province-country">
               {address.province && `${address.province}, `}
               {address.country_code?.toUpperCase()}
-            </span>
-          </Text>
+            </p>
+            {address.phone && (
+              <p className="text-[11px] text-slate-400 font-mono mt-1 pt-1">
+                Tel: {address.phone}
+              </p>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-x-4">
+
+        {/* Bottom Actions */}
+        <div className="border-t border-slate-100 pt-4 mt-4 flex items-center justify-between gap-3">
           <button
-            className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer"
             onClick={open}
             data-testid="address-edit-button"
           >
-            <Edit />
-            Edit
+            <Edit className="size-3.5 text-slate-400" />
+            <span>Edit</span>
           </button>
           <button
-            className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200/80 bg-white px-3.5 py-1.5 text-xs font-bold text-rose-700 hover:bg-rose-50 hover:border-rose-300 transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
             onClick={removeAddress}
+            disabled={removing}
             data-testid="address-delete-button"
           >
-            {removing ? <Spinner /> : <Trash />}
-            Remove
+            {removing ? <Spinner /> : <Trash className="size-3.5 text-rose-500" />}
+            <span>{removing ? "Removing…" : "Remove"}</span>
           </button>
         </div>
       </div>

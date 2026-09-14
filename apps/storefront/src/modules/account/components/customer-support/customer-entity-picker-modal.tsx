@@ -94,7 +94,7 @@ export default function CustomerEntityPickerModal({
   )
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-fade-in">
       <div className="flex max-h-[85vh] w-full max-w-md flex-col rounded-2xl bg-white shadow-2xl border border-zinc-200 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 bg-zinc-50">

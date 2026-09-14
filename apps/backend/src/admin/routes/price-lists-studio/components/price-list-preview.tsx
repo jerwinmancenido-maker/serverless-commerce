@@ -49,7 +49,7 @@ export const PriceListPreview: React.FC<PriceListPreviewProps> = ({ state, avail
     previewItem.defaultPrice > 0 ? ((discountAmount / previewItem.defaultPrice) * 100).toFixed(0) : "0"
 
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
       {/* ── CARD 1: Storefront Live Simulation ── */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-4 border-b border-slate-100 bg-slate-50/75 flex items-center justify-between">

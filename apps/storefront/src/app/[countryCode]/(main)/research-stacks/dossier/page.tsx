@@ -1,7 +1,7 @@
 /**
  * @file    apps/storefront/src/app/[countryCode]/(main)/research-stacks/dossier/page.tsx
  * @module  ResearchStacksDossierPage
- * @purpose Dedicated standalone cleanroom document route for multi-compound stack regimens.
+ * @purpose Dedicated standalone laboratory protocol document route for multi-compound stack regimens.
  *          Provides pure A4 vector paged media presentation and PDF export.
  * @contracts
  *   Route: /[countryCode]/research-stacks/dossier?compounds=bpc-157,tb-500&autoprint=true
@@ -30,7 +30,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const names = compounds ? compounds.split(",").join(" + ") : "Multi-Peptide Stack"
 
   return {
-    title: `${names} · GLP Multi-Compound Protocol Dossier (ISO 9001) | PepStack Labs`,
+    title: `${names} · GLP Multi-Compound Protocol Dossier (RUO Reference Standard) | PepStack Labs`,
     description: `Official laboratory Standard Operating Procedure (SOP), multi-vial reconstitution stoichiometry, syringe calibration, and co-administration timetable for ${names}.`,
     robots: {
       index: false,

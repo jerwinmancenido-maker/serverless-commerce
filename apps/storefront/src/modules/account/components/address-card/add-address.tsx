@@ -63,12 +63,32 @@ const AddAddress = ({
         customTrigger(open)
       ) : (
         <button
-          className="border border-ui-border-base rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between"
+          type="button"
+          className="rounded-2xl border-2 border-dashed border-slate-200 hover:border-emerald-500/70 bg-slate-50/40 hover:bg-emerald-50/20 p-6 min-h-[220px] h-full w-full flex flex-col justify-between items-start text-left group transition-all duration-200 cursor-pointer shadow-2xs hover:shadow-xs"
           onClick={open}
           data-testid="add-address-button"
         >
-          <span className="text-base-semi">New address</span>
-          <Plus />
+          <div className="w-full">
+            <div className="flex items-center justify-between mb-3 w-full">
+              <div className="size-10 rounded-xl bg-white border border-slate-200 group-hover:border-emerald-300 group-hover:bg-emerald-600 text-slate-600 group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs">
+                <Plus className="size-5 transition-transform group-hover:scale-110" />
+              </div>
+              <span className="inline-flex items-center rounded-full bg-slate-100 group-hover:bg-emerald-50 px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase text-slate-500 group-hover:text-emerald-800 border border-slate-200/80 group-hover:border-emerald-200/80 transition-colors">
+                New Destination
+              </span>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-950 transition-colors">
+              Register New Delivery Address
+            </h3>
+            <p className="mt-1 text-xs text-slate-500 leading-relaxed">
+              Add a clinical facility, clean-bench lab, or personal address for 1-click checkout.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 group-hover:text-emerald-700 transition-colors pt-3">
+            <span>+ Add Address</span>
+            <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+          </div>
         </button>
       )}
 

@@ -11,6 +11,7 @@ import LineItemPrice from "@modules/common/components/line-item-price"
 import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
+import { getLineItemThumbnail } from "@lib/util/get-line-item-thumbnail"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
@@ -56,7 +57,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           })}
         >
           <Thumbnail
-            thumbnail={item.thumbnail}
+            thumbnail={getLineItemThumbnail(item)}
             images={item.variant?.product?.images}
             size="square"
           />

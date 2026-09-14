@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/[id]/page.tsx
+ * @module  CompoundedProductDetailRoute (Admin Dashboard Extension)
+ * @purpose Admin dashboard route for compounded product lifecycle, variant BOM, and readiness review.
+ * @contracts
+ *   API:     GET/POST/PUT /admin/compounded-products/*
+ *   Service: CompoundedProductsModuleService
+ */
+
 import {
   ArrowPath,
   ArrowUpRightOnBox,
@@ -6,6 +15,7 @@ import {
   ChevronUpMini,
   EllipsisHorizontal,
   PencilSquare,
+  Sparkles,
   Spinner,
   Trash,
 } from "@medusajs/icons"
@@ -35,9 +45,13 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { sdk } from "../../../lib/sdk"
 import { AdminCard } from "../../../components/admin-card"
 import { PageHeader } from "../../../components/page-header"
+import { SovereignPageSkeleton } from "../../../components/ui/sovereign-page-skeleton"
+import { SovereignEmptyState } from "../../../components/ui/sovereign-empty-state"
+import { AdminSegmentedTabs } from "../../../components/ui/admin-segmented-tabs"
 import { AdminProductSlideDeckViewer } from "../../../components/catalog/admin-product-slide-deck-viewer"
 import { ProductOpsSidebar } from "./product-ops-sidebar"
 import { VariantBomMatrix } from "./variant-bom-matrix"
+import { estimateComponentUnitCost } from "./kit-template-matcher"
 import ProductDescriptionEditor from "../product-description-editor"
 import { loadAllAdminPages } from "../../../lib/load-all-pages"
 import type {
@@ -314,6 +328,59 @@ const CompoundedProductReadinessPage = () => {
     return null
   }, [availabilityQuery.data?.variants])
 
+  const averageMarginPercent = useMemo(() => {
+    const variants = productQuery.data?.product?.variants
+    if (!variants?.length) {
+      return undefined
+    }
+
+    const readinessVariants = readinessQuery.data?.variants || []
+    const marginValues: number[] = []
+
+    for (const variant of variants) {
+      const priceAmount = variant.prices?.[0]?.amount
+      if (typeof priceAmount !== "number" || priceAmount <= 0) {
+        continue
+      }
+
+      const readinessVariant = readinessVariants.find(
+        (rv) => rv.id === variant.id,
+      )
+
+      let totalCogs = 0
+      if (readinessVariant?.recipe_components?.length) {
+        for (const comp of readinessVariant.recipe_components) {
+          const invItem = inventoryById.get(comp.inventory_item_id)
+          const profile = profileByInventoryId.get(comp.inventory_item_id)
+          const unitCost = estimateComponentUnitCost(
+            invItem?.title || "",
+            profile?.classification,
+          )
+          const ratio = profile?.base_units_per_display_unit || 1
+          const displayQty = comp.required_quantity / ratio
+          totalCogs += unitCost * displayQty
+        }
+      } else {
+        totalCogs = estimateComponentUnitCost(variant.title || "")
+      }
+
+      const margin = ((priceAmount - totalCogs) / priceAmount) * 100
+      marginValues.push(margin)
+    }
+
+    if (!marginValues.length) {
+      return undefined
+    }
+
+    const sum = marginValues.reduce((acc, m) => acc + m, 0)
+    return Math.round(sum / marginValues.length)
+  }, [
+    productQuery.data?.product?.variants,
+    readinessQuery.data?.variants,
+    inventoryById,
+    profileByInventoryId,
+  ])
+
   useEffect(() => {
     const locations = stockLocationsQuery.data?.stock_locations || []
 
@@ -323,6 +390,12 @@ const CompoundedProductReadinessPage = () => {
       setSelectedStockLocationId(locations[0]?.id || "")
     }
   }, [selectedStockLocationId, stockLocationsQuery.data?.stock_locations])
+
+  useEffect(() => {
+    if (readinessQuery.data?.product_id && id !== readinessQuery.data.product_id) {
+      navigate(`/compounded-products/${readinessQuery.data.product_id}`, { replace: true })
+    }
+  }, [id, readinessQuery.data?.product_id, navigate])
 
   const [editingPriceVariantId, setEditingPriceVariantId] = useState<string | null>(null)
   const [editingPriceAmount, setEditingPriceAmount] = useState("")
@@ -741,7 +814,10 @@ const CompoundedProductReadinessPage = () => {
       setClassificationReason("")
       setClassificationDrawerOpen(false)
       if (response.action === "remove_governance") {
-        navigate(`/products/${id}`)
+        toast.info("Compounding governance removed", {
+          description: "Product reverted to standard catalog supply.",
+        })
+        navigate("/buildable-products")
         return
       }
       await Promise.all([
@@ -774,11 +850,7 @@ const CompoundedProductReadinessPage = () => {
     compoundFormatsQuery.isLoading ||
     stockLocationsQuery.isLoading
   ) {
-    return (
-      <Container className="flex min-h-96 items-center justify-center">
-        <Spinner />
-      </Container>
-    )
+    return <SovereignPageSkeleton cards={4} rows={10} />
   }
 
   if (
@@ -791,13 +863,12 @@ const CompoundedProductReadinessPage = () => {
     !readinessQuery.data
   ) {
     return (
-      <Container className="flex flex-col gap-y-2 px-6 py-4">
-        <Heading>Compounded product review unavailable</Heading>
-        <Text className="text-ui-fg-error" size="small">
-          The native product, component profiles, or readiness report could not
-          be loaded.
-        </Text>
-      </Container>
+      <div className="p-8">
+        <SovereignEmptyState
+          heading="Compounded product review unavailable"
+          subtext="The native product, component profiles, or readiness report could not be resolved from Medusa backend services."
+        />
+      </div>
     )
   }
 
@@ -860,18 +931,19 @@ const CompoundedProductReadinessPage = () => {
   const basePriceFormatted = formatVariantPrices(product.variants?.[0]?.prices || null)
 
   return (
-    <div className="flex flex-col gap-y-3 pb-8">
+    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
       {/* 1. Standard Page Header with Breadcrumbs and Quick Actions */}
       <PageHeader
+        eyebrowText="Compounded Product · Variant & BOM Studio"
         title={
           <div className="flex items-center gap-2">
-            <span className="text-base">🧪</span>
+            <Sparkles className="size-4 text-purple-600 shrink-0" />
             <span className="truncate">{product.title}</span>
             <Copy content={product.id} className="text-ui-fg-muted hover:text-ui-fg-subtle" />
           </div>
         }
         breadcrumbs={[
-          { label: "Products", href: "/products" },
+          { label: "Products", href: "/buildable-products" },
           { label: "Compounded Products", href: "/compounded-products" },
           { label: product.title },
         ]}
@@ -960,34 +1032,26 @@ const CompoundedProductReadinessPage = () => {
         }
       />
 
-      {/* 2. Main 2-Column Responsive Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px] gap-4 items-start mt-1">
-        {/* Left Column: Interactive Workspace Tabs */}
-        <div className="flex flex-col gap-y-3 min-w-0">
+      {/* 2. Maximized Full-Screen Responsive Workspace */}
+      <div className="w-full flex flex-col gap-y-4 mt-1">
+        {/* Primary Interactive Workspace Tabs */}
+        <div className="w-full flex flex-col gap-y-3 min-w-0">
+          <AdminSegmentedTabs
+            tabs={[
+              { id: "variants", label: "Variants & Inventory" },
+              { id: "catalog", label: "Details & Media" },
+              {
+                id: "protocols",
+                label: "Research Protocols",
+                count: researchProtocolsQuery.data?.count || 0,
+              },
+            ]}
+            activeTab={activeTab}
+            onChange={(id) => setActiveTab(id)}
+            className="mb-2"
+          />
+
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <Tabs.List className="w-full justify-start border-b border-ui-border-base mb-3 gap-2">
-              <Tabs.Trigger value="variants" className="gap-2 text-xs py-1.5">
-                <span>📦</span> Variants & Inventory
-              </Tabs.Trigger>
-              <Tabs.Trigger value="catalog" className="gap-2 text-xs py-1.5">
-                <span>📝</span> Details & Media
-              </Tabs.Trigger>
-              <Tabs.Trigger value="protocols" className="gap-2 text-xs py-1.5">
-                <span>🔬</span> Research Protocols
-                <Badge
-                  size="small"
-                  color={
-                    (researchProtocolsQuery.data?.protocols || []).some((p) =>
-                      p.revisions.some((r) => r.status === "published"),
-                    )
-                      ? "green"
-                      : "grey"
-                  }
-                >
-                  {researchProtocolsQuery.data?.count || 0}
-                </Badge>
-              </Tabs.Trigger>
-            </Tabs.List>
 
             {/* Tab 1: Variants & BOM */}
             <Tabs.Content value="variants">
@@ -1293,8 +1357,11 @@ const CompoundedProductReadinessPage = () => {
 
               {product.handle && (
                 <AdminProductSlideDeckViewer
+                  productId={product.id}
                   handle={product.handle}
                   title={product.title}
+                  initialSlides={Array.isArray(product.metadata?.slide_deck) ? (product.metadata.slide_deck as any) : undefined}
+                  onSlidesUpdated={() => productQuery.refetch()}
                 />
               )}
 
@@ -1612,14 +1679,15 @@ const CompoundedProductReadinessPage = () => {
           </Tabs>
         </div>
 
-        {/* Right Column: Sticky Advanced Operations Sidebar */}
-        <div className="sticky top-4 flex flex-col gap-y-3" aria-label="Advanced operations">
+        {/* Horizontal Operations Dock */}
+        <div className="w-full mt-6" aria-label="Advanced operations">
           <ProductOpsSidebar
             product={product}
             readiness={readiness}
             bottleneckAnalysis={bottleneckAnalysis}
             sellableCapacity={sellableCapacity}
             basePriceFormatted={basePriceFormatted}
+            averageMarginPercent={averageMarginPercent}
             onOpenPublicationDrawer={() => setPublicationDrawerOpen(true)}
             onOpenClassificationDrawer={() => setClassificationDrawerOpen(true)}
             onOpenAuditDrawer={() => setAuditDrawerOpen(true)}

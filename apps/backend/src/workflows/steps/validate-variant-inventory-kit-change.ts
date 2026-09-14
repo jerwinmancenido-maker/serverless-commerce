@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/validate-variant-inventory-kit-change.ts
+ * @module  PepstackBomModule (Workflows)
+ * @purpose Validate inventory kit component composition and compute remote link mutations.
+ * @contracts
+ *   Step: validateVariantInventoryKitInputStep · validateVariantInventoryKitChangeStep
+ */
+
 import type {
   IInventoryService,
   LinkDefinition,

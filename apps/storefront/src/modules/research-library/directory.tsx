@@ -14,18 +14,24 @@ import type { StoreResearchProtocol } from "@lib/data/research-protocols"
 import type { ResearchArticle } from "@lib/data/research-articles"
 import type { PeptideComparison } from "@lib/data/peptide-comparisons"
 import StandaloneReconstitutionCalculator from "@modules/research-protocols/standalone-calculator"
+import StackCompatibilityChecker from "@modules/research-protocols/components/stack-compatibility-checker"
 import PeptideComparisonsDirectory from "./comparisons"
 import CoaDirectoryPanel from "./coa-directory-panel"
+import { MasterPeptideDosageChart } from "@modules/research-protocols/components/master-peptide-dosage-chart"
 import { DocumentText, Beaker, ArrowRightMini } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 
 type Props = {
   protocols: StoreResearchProtocol[]
   articles: ResearchArticle[]
   comparisons: PeptideComparison[]
+  products?: HttpTypes.StoreProduct[]
+  countryCode?: string
   initialTab?: TabType
+  initialCompoundsQuery?: string
 }
 
-type TabType = "articles" | "comparisons" | "protocols" | "calculator" | "coa"
+type TabType = "articles" | "comparisons" | "protocols" | "stacks" | "chart" | "calculator" | "coa"
 
 const normalize = (value: string | null | undefined) =>
   (value || "").trim().toLocaleLowerCase()
@@ -60,23 +66,37 @@ export default function ResearchLibraryDirectory({
   protocols,
   articles,
   comparisons,
+  products,
+  countryCode = "ph",
   initialTab,
+  initialCompoundsQuery,
 }: Props) {
   const [activeTab, setActiveTab] = useState<TabType>(initialTab || "articles")
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState("all")
+  const [stackObjective, setStackObjective] = useState<string>("all")
   const [protocolSegment, setProtocolSegment] = useState<
     "all" | "single_peptide" | "blend" | "bundle" | "supply"
   >("all")
+
+  const activeCompoundIds = useMemo(() => {
+    if (!initialCompoundsQuery) return []
+    return initialCompoundsQuery
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean)
+  }, [initialCompoundsQuery])
 
   // Hash deep-linking listener
   useEffect(() => {
     const handleHash = (shouldScroll = false) => {
       const hash = window.location.hash.toLowerCase().replace("#", "")
       if (
+        hash === "chart" ||
         hash === "calculator" ||
         hash === "comparisons" ||
         hash === "protocols" ||
+        hash === "stacks" ||
         hash === "articles" ||
         hash === "coa"
       ) {
@@ -188,14 +208,97 @@ export default function ResearchLibraryDirectory({
       const matchesCategory =
         category === "all" || protocol.content?.category === category
 
-      return matchesSegment && matchesQuery && matchesCategory
+      const matchesCompoundFilter =
+        activeCompoundIds.length === 0 ||
+        activeCompoundIds.some((id) => {
+          const normHandle = protocol.handle.toLowerCase()
+          const normTitle = (protocol.content?.compound_name || protocol.title).toLowerCase()
+          return normHandle.includes(id) || normTitle.includes(id) || id.includes(normHandle)
+        })
+
+      return matchesSegment && matchesQuery && matchesCategory && matchesCompoundFilter
     })
-  }, [category, sanitizedProtocols, query, protocolSegment])
+  }, [category, sanitizedProtocols, query, protocolSegment, activeCompoundIds])
+
+  const bundleProtocols = useMemo(() => {
+    return sanitizedProtocols.filter((p) => isBundleProtocol(p))
+  }, [sanitizedProtocols])
+
+  const visibleStacks = useMemo(() => {
+    const q = normalize(query)
+    return bundleProtocols.filter((protocol) => {
+      const content = protocol.content
+      const textToSearch = [
+        protocol.title,
+        content?.compound_name,
+        content?.short_introduction,
+        content?.category,
+        ...(content?.investigated_benefits || []),
+        ...(content?.bundle_vials?.map((v) => `${v.compoundName} ${v.vialNetMass}`) || []),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+
+      const matchesQuery = !q || textToSearch.includes(q)
+
+      let matchesObjective = true
+      if (stackObjective !== "all") {
+        const obj = stackObjective.toLowerCase()
+        if (obj === "tissue") {
+          matchesObjective =
+            textToSearch.includes("bpc") ||
+            textToSearch.includes("tb-500") ||
+            textToSearch.includes("repair") ||
+            textToSearch.includes("tissue") ||
+            textToSearch.includes("musculoskeletal")
+        } else if (obj === "gh") {
+          matchesObjective =
+            textToSearch.includes("cjc") ||
+            textToSearch.includes("ipam") ||
+            textToSearch.includes("growth hormone") ||
+            textToSearch.includes("somatotropic") ||
+            textToSearch.includes("pulse")
+        } else if (obj === "metabolic") {
+          matchesObjective =
+            textToSearch.includes("tirzepatide") ||
+            textToSearch.includes("aod") ||
+            textToSearch.includes("lipolysis") ||
+            textToSearch.includes("metabolic") ||
+            textToSearch.includes("adipose")
+        } else if (obj === "cognitive") {
+          matchesObjective =
+            textToSearch.includes("semax") ||
+            textToSearch.includes("selank") ||
+            textToSearch.includes("bdnf") ||
+            textToSearch.includes("neuro") ||
+            textToSearch.includes("cognitive")
+        } else if (obj === "photoprotection") {
+          matchesObjective =
+            textToSearch.includes("melanotan") ||
+            textToSearch.includes("pt-141") ||
+            textToSearch.includes("libido") ||
+            textToSearch.includes("photoprotection") ||
+            textToSearch.includes("melanocortin")
+        } else if (obj === "longevity") {
+          matchesObjective =
+            textToSearch.includes("epithalon") ||
+            textToSearch.includes("nad") ||
+            textToSearch.includes("glutathione") ||
+            textToSearch.includes("ghk-cu") ||
+            textToSearch.includes("longevity") ||
+            textToSearch.includes("cellular")
+        }
+      }
+
+      return matchesQuery && matchesObjective
+    })
+  }, [bundleProtocols, query, stackObjective])
 
   return (
     <div className="bg-white min-h-screen">
       {/* ── Clinical Header Banner with Integrated Flush Sub-Nav ── */}
-      <div className="border-b border-slate-200 bg-slate-50/80 text-slate-900 pt-8 small:pt-12">
+      <div className="border-b border-slate-200 bg-slate-50/80 text-slate-900 pt-8 small:pt-12 print:hidden">
         <div className="content-container">
           <div className="max-w-3xl mb-8 small:mb-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-800">
@@ -305,6 +408,52 @@ export default function ResearchLibraryDirectory({
               </span>
             </button>
 
+            {/* Tab: Research Stacks */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("stacks")}
+              className={`group pb-3.5 pt-1 text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 border-b-2 shrink-0 ${
+                activeTab === "stacks"
+                  ? "border-purple-600 text-slate-950 font-bold"
+                  : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
+              }`}
+            >
+              <span className="text-sm">⚡</span>
+              <span>Research Stacks</span>
+              <span
+                className={`text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors ${
+                  activeTab === "stacks"
+                    ? "bg-purple-100 text-purple-800"
+                    : "bg-slate-200/80 text-slate-600 group-hover:bg-slate-300/70"
+                }`}
+              >
+                {bundleCount}
+              </span>
+            </button>
+
+            {/* Tab: Master Dosage Chart */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("chart")}
+              className={`group pb-3.5 pt-1 text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 border-b-2 shrink-0 ${
+                activeTab === "chart"
+                  ? "border-emerald-600 text-slate-950 font-bold"
+                  : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
+              }`}
+            >
+              <span className="text-sm">📊</span>
+              <span>Dosage Chart</span>
+              <span
+                className={`text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors ${
+                  activeTab === "chart"
+                    ? "bg-emerald-100 text-emerald-800"
+                    : "bg-slate-200/80 text-slate-600 group-hover:bg-slate-300/70"
+                }`}
+              >
+                88
+              </span>
+            </button>
+
             {/* Tab 4: Reconstitution Calculator */}
             <button
               type="button"
@@ -377,7 +526,7 @@ export default function ResearchLibraryDirectory({
                 100% Free Open Research Library &amp; Comparison Engine
               </p>
               <p className="text-[11px] text-slate-600">
-                All articles, comparisons, and tools are freely accessible. Ordering compounds unlocks batch HPLC COAs in the{" "}
+                All articles, comparisons, and tools are freely accessible. Ordering compounds unlocks batch analytical monographs in the{" "}
                 <span className="font-semibold text-emerald-800">Customer Research Hub</span>.
               </p>
             </div>
@@ -405,7 +554,7 @@ export default function ResearchLibraryDirectory({
 
       {/* ── TAB 1: SCIENTIFIC ARTICLES ── */}
       {activeTab === "articles" && (
-        <div className="space-y-6 animate-fadeIn">
+        <div id="articles" className="space-y-6 animate-fadeIn">
           {/* Search & Filter Bar */}
           <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xs">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -502,14 +651,55 @@ export default function ResearchLibraryDirectory({
 
       {/* ── TAB 2: PEPTIDE COMPARISONS ── */}
       {activeTab === "comparisons" && (
-        <div className="animate-fadeIn">
+        <div id="comparisons" className="animate-fadeIn">
           <PeptideComparisonsDirectory comparisons={comparisons} protocols={protocols} />
         </div>
       )}
 
       {/* ── TAB 3: PRODUCT PROTOCOLS ── */}
       {activeTab === "protocols" && (
-        <div className="space-y-6 animate-fadeIn">
+        <div id="protocols" className="space-y-6 animate-fadeIn">
+          {/* Multi-Compound Filter Bridge Card */}
+          {activeCompoundIds.length > 0 && (
+            <div className="rounded-2xl border border-emerald-300 bg-emerald-50/80 p-4 sm:p-5 text-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+              <div className="flex items-center gap-3.5">
+                <div className="h-10 w-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white text-lg font-bold shadow-xs">
+                  ⚡
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-emerald-950 uppercase tracking-wider">Multi-Compound Synergy Filter</span>
+                    <span className="rounded-full bg-emerald-200 text-emerald-900 px-2 py-0.5 text-[10px] font-bold">
+                      {activeCompoundIds.length} Compounds
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600 mt-0.5">
+                    Viewing protocols for: <span className="font-semibold text-slate-900">{activeCompoundIds.join(" + ").toUpperCase()}</span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("stacks")
+                    window.location.hash = "stacks"
+                  }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-800 transition-all cursor-pointer"
+                >
+                  <span>Open in Stacking Studio & Calibrate Kit</span>
+                  <span>➔</span>
+                </button>
+                <LocalizedClientLink
+                  href="/research-library#protocols"
+                  className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shrink-0"
+                >
+                  Clear
+                </LocalizedClientLink>
+              </div>
+            </div>
+          )}
+
           {/* Segmented Classification Filter Pills */}
           <div className="flex flex-wrap items-center gap-2">
             <button
@@ -708,6 +898,271 @@ export default function ResearchLibraryDirectory({
               })}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ── TAB: PEPTIDE STACKS & MULTI-VIAL REGIMENS ── */}
+      {activeTab === "stacks" && (
+        <div className="space-y-8 animate-fadeIn" id="stacks">
+          {/* Stacks Header Banner */}
+          <div className="rounded-3xl border border-purple-200 bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 p-6 sm:p-10 text-white shadow-xl relative overflow-hidden print:hidden">
+            <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl pointer-events-none" />
+            <div className="relative z-10 max-w-3xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-500/20 px-3.5 py-1 text-xs font-bold text-purple-200 uppercase tracking-wider backdrop-blur-sm">
+                <span>⚡ Multi-Compound Synergy Engine</span>
+                <span>·</span>
+                <span>15% Kit Savings</span>
+              </div>
+              <h2 className="mt-4 text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                Peptide Stacks &amp; Multi-Vial Regimens
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-purple-100/80 leading-relaxed">
+                Precision multi-peptide research cycles engineered with separate physical lyophilized vials. Features interactive diluent stoichiometry, live U-100 syringe graduation visualizers, synchronized 7-day administration timetables, and 1-click complete kit fulfillment.
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-purple-200">
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>💧</span> Interactive Stoichiometry Station
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>💉</span> Dynamic Meniscus Syringe Studio
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>📅</span> 7-Day AM/PM Schedule Sync
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>📦</span> 1-Click Medusa Kit Builder
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Interactive Stacking & Compatibility Matrix Studio ── */}
+          <StackCompatibilityChecker
+            matchedProducts={products}
+            countryCode={countryCode}
+          />
+
+          {/* Objective Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2 print:hidden">
+            {[
+              { id: "all", label: "All Research Stacks", icon: "⚡" },
+              { id: "tissue", label: "Tissue Healing & Regeneration", icon: "🩹" },
+              { id: "gh", label: "Somatotropic GH Pulse", icon: "⚡" },
+              { id: "metabolic", label: "Metabolic & Adipose Lipolysis", icon: "🔥" },
+              { id: "cognitive", label: "Cognitive Neurogenesis & BDNF", icon: "🧠" },
+              { id: "photoprotection", label: "Photoprotection & Libido", icon: "☀️" },
+              { id: "longevity", label: "Cellular Longevity & Mitochondria", icon: "🧬" },
+            ].map((obj) => (
+              <button
+                key={obj.id}
+                type="button"
+                onClick={() => setStackObjective(obj.id)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 border ${
+                  stackObjective === obj.id
+                    ? "bg-purple-600 text-white border-purple-600 shadow-xs"
+                    : "bg-white text-slate-600 border-slate-200 hover:bg-purple-50/50 hover:border-purple-200"
+                }`}
+              >
+                <span>{obj.icon}</span>
+                <span>{obj.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Stacks Cards Grid */}
+          {visibleStacks.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 p-12 text-center text-xs text-slate-500 print:hidden">
+              No research stacks match your selected criteria.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 print:hidden">
+              {visibleStacks.map((stack) => {
+                const content = stack.content
+                const rawTitle = content?.compound_name || stack.title || "Research Stack"
+                const cleanTitle =
+                  rawTitle
+                    .replace(
+                      /\s*(?:Laboratory\s+(?:Reconstitution\s+&\s+)?Handling\s+Standard|Product\s+Protocol|Protocol)\s*$/i,
+                      ""
+                    )
+                    .replace(/\s*\([^)]*\)\s*$/g, "")
+                    .trim() || rawTitle
+                const bundleVials = content?.bundle_vials || []
+
+                return (
+                  <div
+                    key={stack.handle}
+                    className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-xs hover:border-purple-300 hover:shadow-md transition-all group"
+                  >
+                    <div>
+                      {/* Top Header Tags */}
+                      <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 mb-4">
+                        <span className="rounded-full bg-purple-50 text-purple-800 border border-purple-200 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                          {content?.category || "Synergistic Stack"}
+                        </span>
+                        <span className="rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 text-[10px] font-bold">
+                          15% Bundle Savings
+                        </span>
+                      </div>
+
+                      {/* Title & Description */}
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition-colors">
+                        {cleanTitle}
+                      </h3>
+                      {content?.short_introduction ? (
+                        <p className="mt-2 text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                          {content.short_introduction}
+                        </p>
+                      ) : null}
+
+                      {/* Constituent Physical Vials */}
+                      <div className="mt-4">
+                        <div className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1">
+                          <span>📦</span> Constituent Vials ({bundleVials.length} Separate Physical Vials):
+                        </div>
+                        <div className="space-y-1.5">
+                          {bundleVials.map((v, idx) => (
+                            <div
+                              key={idx}
+                              className="flex items-center justify-between rounded-lg bg-slate-50 border border-slate-200/80 px-3 py-2 text-xs"
+                            >
+                              <div className="font-semibold text-slate-800 flex items-center gap-1.5">
+                                <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                                {v.compoundName}
+                              </div>
+                              <div className="font-mono text-[11px] font-bold text-slate-600">
+                                {v.vialNetMass} · {v.diluentMl} mL BAC
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Key Synergy Endpoints */}
+                      {content?.investigated_benefits && content.investigated_benefits.length > 0 ? (
+                        <div className="mt-4 pt-3 border-t border-slate-100">
+                          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                            Investigated Synergy:
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {content.investigated_benefits.slice(0, 3).map((b, i) => (
+                              <span
+                                key={i}
+                                className="inline-flex items-center text-[10.5px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md"
+                              >
+                                ✓ {b.replace(/^[•\s-]+/, "")}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    {/* Action CTA */}
+                    <div className="mt-6 pt-4 border-t border-slate-100">
+                      <LocalizedClientLink
+                        href={`/research-protocols/${stack.handle}`}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-700 active:scale-[0.98] text-white py-2.5 px-4 text-xs font-bold shadow-xs transition-all cursor-pointer"
+                      >
+                        <span>Open Interactive Studio &amp; Syringe Calibrator</span>
+                        <ArrowRightMini className="h-4 w-4" />
+                      </LocalizedClientLink>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Architectural Comparison: Why PepStack Labs Outclasses PeptideDosages.com */}
+          <div className="mt-12 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-700 mb-1">
+              <span>🔬</span> Engineering Standard
+            </div>
+            <h3 className="text-xl font-bold text-slate-900">
+              Why PepStack Labs Outclasses PeptideDosages.com
+            </h3>
+            <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-3xl">
+              Unlike static blog directories that rely on inflexible text tables and detached affiliate links, PepStack Labs provides a live, stoichiometric research laboratory studio.
+            </p>
+
+            <div className="mt-5 overflow-x-auto">
+              <table className="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden">
+                <thead className="bg-slate-50 text-slate-700 border-b border-slate-200 font-bold uppercase text-[10.5px]">
+                  <tr>
+                    <th className="py-3 px-4">Feature Dimension</th>
+                    <th className="py-3 px-4 text-slate-500">PeptideDosages.com (Legacy WordPress)</th>
+                    <th className="py-3 px-4 text-purple-900 bg-purple-50/70">PepStack Labs (Our Sovereign Platform)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-600">
+                  <tr>
+                    <td className="py-2.5 px-4 font-semibold text-slate-800">Stoichiometric Reconstitution</td>
+                    <td className="py-2.5 px-4 text-slate-500">Fixed hardcoded 2.0 mL bullet points</td>
+                    <td className="py-2.5 px-4 font-bold text-purple-800 bg-purple-50/40">Interactive per-vial diluent sliders with live concentration &amp; IU sync</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 px-4 font-semibold text-slate-800">Syringe Visualizer</td>
+                    <td className="py-2.5 px-4 text-slate-500">Plain text estimates with no visuals</td>
+                    <td className="py-2.5 px-4 font-bold text-purple-800 bg-purple-50/40">Dynamic SVG U-100 barrel with live fluid meniscus and graduation ticks</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 px-4 font-semibold text-slate-800">Administration Cadence</td>
+                    <td className="py-2.5 px-4 text-slate-500">Static 2-row HTML table</td>
+                    <td className="py-2.5 px-4 font-bold text-purple-800 bg-purple-50/40">Synchronized 7-day Monday–Sunday timeline with loading vs maintenance switch</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 px-4 font-semibold text-slate-800">Commerce &amp; Supply Chain</td>
+                    <td className="py-2.5 px-4 text-slate-500">Detached external affiliate redirects</td>
+                    <td className="py-2.5 px-4 font-bold text-purple-800 bg-purple-50/40">1-Click Medusa BOM kit builder (8/12/16 wks + BAC water + syringes + 15% discount)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── TAB: MASTER DOSAGE CHART ── */}
+      {activeTab === "chart" && (
+        <div className="space-y-8 animate-fadeIn" id="chart">
+          {/* Dosage Chart Header Banner */}
+          <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-6 sm:p-10 text-white shadow-xl relative overflow-hidden print:hidden">
+            <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
+            <div className="relative z-10 max-w-3xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-200 uppercase tracking-wider backdrop-blur-sm">
+                <span>📊 88 Verified Research Compounds</span>
+                <span>·</span>
+                <span>Laboratory Dosage &amp; Reconstitution Matrix</span>
+              </div>
+              <h2 className="mt-4 text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                Master Peptide Dosage &amp; Reconstitution Chart
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-emerald-100/80 leading-relaxed">
+                Comprehensive pharmacodynamic dosage references, diluent reconstitution volumes, concentration ratios, and live U-100 syringe units for 88 verified analytical research peptides. Includes dynamic phase calibration and 1-click protocol kit fulfillment.
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-emerald-200">
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>💧</span> Stoichiometric Diluent Ratios (0.9% Benzyl Alcohol USP)
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>💉</span> Dynamic U-100 Plunger Calibration
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>⏱️</span> Phase 1 Titration vs Target Maintenance
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                  <span>📦</span> 1-Click Multi-Week Protocol Kit Builder
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 sm:p-6 shadow-2xl">
+            <MasterPeptideDosageChart countryCode={countryCode} />
+          </div>
         </div>
       )}
 

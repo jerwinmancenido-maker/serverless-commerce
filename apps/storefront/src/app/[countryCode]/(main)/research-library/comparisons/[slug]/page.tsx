@@ -10,7 +10,6 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import {
   retrievePeptideComparison,
-  listPeptideComparisons,
 } from "@lib/data/peptide-comparisons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
@@ -23,12 +22,7 @@ type Props = {
   }>
 }
 
-export async function generateStaticParams() {
-  const comparisons = await listPeptideComparisons()
-  return comparisons.map((comp) => ({
-    slug: comp.slug,
-  }))
-}
+export const dynamic = "force-dynamic"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -173,13 +167,15 @@ export default async function PeptideComparisonPage({ params }: Props) {
                 </div>
               </div>
 
-              <LocalizedClientLink
-                href={`/products/${getCanonicalProductSlug(compoundA.handle)}`}
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-xs text-center"
-              >
-                <span>View {compoundA.name} Reference Standard</span>
-                <ArrowRightMini className="h-3.5 w-3.5" />
-              </LocalizedClientLink>
+              {compoundA?.handle && (
+                <LocalizedClientLink
+                  href={`/products/${getCanonicalProductSlug(compoundA.handle)}`}
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-xs text-center"
+                >
+                  <span>View {compoundA.name} Reference Standard</span>
+                  <ArrowRightMini className="h-3.5 w-3.5" />
+                </LocalizedClientLink>
+              )}
             </div>
 
             {/* Compound B */}
@@ -219,13 +215,15 @@ export default async function PeptideComparisonPage({ params }: Props) {
                 </div>
               </div>
 
-              <LocalizedClientLink
-                href={`/products/${getCanonicalProductSlug(compoundB.handle)}`}
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold transition-all shadow-xs text-center"
-              >
-                <span>View {compoundB.name} Reference Standard</span>
-                <ArrowRightMini className="h-3.5 w-3.5" />
-              </LocalizedClientLink>
+              {compoundB?.handle && (
+                <LocalizedClientLink
+                  href={`/products/${getCanonicalProductSlug(compoundB.handle)}`}
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold transition-all shadow-xs text-center"
+                >
+                  <span>View {compoundB.name} Reference Standard</span>
+                  <ArrowRightMini className="h-3.5 w-3.5" />
+                </LocalizedClientLink>
+              )}
             </div>
           </div>
         </section>

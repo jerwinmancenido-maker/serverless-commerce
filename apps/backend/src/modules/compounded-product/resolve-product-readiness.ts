@@ -58,9 +58,19 @@ export async function resolveCompoundedProductReadiness(
     PEPSTACK_BOM_MODULE,
   )
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
-  const [registration] = await service.listGovernedProductRegistrations({
+  let [registration] = await service.listGovernedProductRegistrations({
     product_id: productId,
   })
+
+  if (!registration) {
+    const [byRegistrationId] = await service.listGovernedProductRegistrations({
+      id: productId,
+    })
+    if (byRegistrationId) {
+      registration = byRegistrationId
+      productId = byRegistrationId.product_id
+    }
+  }
 
   if (!registration) {
     throw new MedusaError(

@@ -589,7 +589,7 @@ export default function PeptideComparisonsDirectory({
             </p>
           </div>
           <span className="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-1 rounded-md hidden sm:inline-block">
-            6 Evaluation Vectors
+            {activeComparison.vectors.length} Evaluation Vectors
           </span>
         </div>
 
@@ -625,6 +625,51 @@ export default function PeptideComparisonsDirectory({
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* ── Head-to-Head Titration & Syringe Calibration Quick Card ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/40 p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-900">
+              {activeComparison.compoundA.name} Protocol Summary
+            </span>
+            <span className="text-[10px] font-mono text-emerald-700 font-semibold bg-emerald-100/70 px-2 py-0.5 rounded-full">
+              {activeComparison.compoundA.tag}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="rounded-xl bg-white p-2.5 border border-emerald-100">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Standard Diluent</span>
+              <span className="font-bold text-slate-900 mt-0.5 block">{activeComparison.compoundA.reconstitution_diluent}</span>
+            </div>
+            <div className="rounded-xl bg-white p-2.5 border border-emerald-100">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Typical Cadence</span>
+              <span className="font-bold text-slate-900 mt-0.5 block">{activeComparison.compoundA.typical_cadence || "Daily SubQ"}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-indigo-200/80 bg-indigo-50/40 p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-900">
+              {activeComparison.compoundB.name} Protocol Summary
+            </span>
+            <span className="text-[10px] font-mono text-indigo-700 font-semibold bg-indigo-100/70 px-2 py-0.5 rounded-full">
+              {activeComparison.compoundB.tag}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="rounded-xl bg-white p-2.5 border border-indigo-100">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Standard Diluent</span>
+              <span className="font-bold text-slate-900 mt-0.5 block">{activeComparison.compoundB.reconstitution_diluent}</span>
+            </div>
+            <div className="rounded-xl bg-white p-2.5 border border-indigo-100">
+              <span className="text-[10px] text-slate-500 uppercase block font-semibold">Typical Cadence</span>
+              <span className="font-bold text-slate-900 mt-0.5 block">{activeComparison.compoundB.typical_cadence || "Twice Weekly"}</span>
+            </div>
+          </div>
         </div>
       </div>
 

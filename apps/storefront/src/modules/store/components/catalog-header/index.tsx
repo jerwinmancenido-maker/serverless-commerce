@@ -61,7 +61,7 @@ export default function CatalogHeader({
 
         <div className="flex items-center gap-2 text-xs font-medium text-slate-500 shrink-0 bg-slate-50 border border-slate-200/80 px-3 py-2 rounded-xl">
           <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-          <span>Cold-chain dispatched nationwide &middot; Metro Manila</span>
+          <span>Insulation foam packaging &middot; Metro Manila dispatch</span>
         </div>
       </div>
     </div>

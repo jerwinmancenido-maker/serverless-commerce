@@ -276,7 +276,7 @@ export const CATEGORY_7_BLENDS_PROTOCOLS: CompoundAnalyticalProtocol[] = [
     "adverseObservations": [
       "**Injection Site Stinging**: High copper content from GHK-Cu can cause localized stinging or a dull ache lasting 20–30 minutes.",
       "**High Reconstitution Dilution Advised**: Use at least 3.0 to 4.0 mL of Bacteriostatic Water to minimize localized injection irritation.",
-      "**Cold Chain Storage**: Keep reconstituted solution refrigerated at 2°C–8°C away from heat and light."
+      "**Refrigerated Storage**: Keep reconstituted solution refrigerated at 2°C–8°C away from heat and light."
     ]
   },
   {

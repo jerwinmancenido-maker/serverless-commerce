@@ -99,7 +99,7 @@ const PRESETS = [
   {
     label: "Borosilicate 3ml Sterile Vials",
     state: {
-      title: "Type 1 Borosilicate Cleanroom Vials (3ml)",
+      title: "Type 1 Borosilicate Vials (3ml)",
       sku: "PKG-VIAL-3ML",
       description: "Depyrogenated sterile glass vials for lyophilized compound containment.",
       requiresShipping: true,
@@ -137,12 +137,7 @@ export const InventoryStudioPage: React.FC = () => {
         }
       })
       .catch(() => {
-        const fallback = [
-          { id: "sloc_cleanroom", name: "Cleanroom Vault (Makati HQ)" },
-          { id: "sloc_storage", name: "Cold-Chain Depository (BGC)" },
-        ]
-        setLocations(fallback)
-        setFormState((prev) => (prev.locationId ? prev : { ...prev, locationId: fallback[0].id }))
+        setLocations([])
       })
   }, [])
 
@@ -237,7 +232,7 @@ export const InventoryStudioPage: React.FC = () => {
     <div className="min-h-screen bg-slate-100 text-slate-900 pb-24">
       {/* ── STICKY TOP STUDIO BAR ── */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-6 py-3.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="w-full flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               type="button"
@@ -250,7 +245,7 @@ export const InventoryStudioPage: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Cleanroom Laboratory Operations
+                  Warehouse Inventory Operations
                 </span>
                 <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
                   Inventory Studio
@@ -303,7 +298,7 @@ export const InventoryStudioPage: React.FC = () => {
       {/* Restored Draft Alert Banner */}
       {draftRestored && (
         <div className="bg-blue-50 border-b border-blue-200 px-6 py-2 text-xs text-blue-900 flex items-center justify-between">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <div className="w-full flex items-center justify-between">
             <span className="flex items-center gap-2 font-medium">
               <CheckCircle className="w-4 h-4 text-blue-600" />
               <span>Restored unpublished draft from your local session.</span>
@@ -324,15 +319,15 @@ export const InventoryStudioPage: React.FC = () => {
         </div>
       )}
 
-      {/* ── MAIN SPLIT-CANVAS WORKSPACE ── */}
-      <main className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* ── LEFT CANVAS: Configuration Form (8 Cols) ── */}
-        <section className="lg:col-span-7 xl:col-span-8 space-y-6">
+      {/* ── MAIN MAXIMIZED WORKSPACE ── */}
+      <main className="w-full px-6 py-6 flex flex-col gap-6">
+        {/* ── PRIMARY CANVAS: Configuration Form ── */}
+        <section className="w-full space-y-6">
           {/* Presets Bar */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              <span>Cleanroom Laboratory Presets</span>
+              <span>Laboratory Inventory Presets</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {PRESETS.map((p, idx) => (
@@ -543,7 +538,7 @@ export const InventoryStudioPage: React.FC = () => {
           {/* Card 4: Location Allocation & Initial Batch */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-              4. Cleanroom Location & Stock Level
+              4. Storage Location & Stock Level
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -578,11 +573,9 @@ export const InventoryStudioPage: React.FC = () => {
           </div>
         </section>
 
-        {/* ── RIGHT CANVAS: Live BOM Readiness & Storage Simulation (4-5 Cols) ── */}
-        <aside className="lg:col-span-5 xl:col-span-4 space-y-4">
-          <div className="sticky top-20">
-            <InventoryBomPreview state={formState} locations={locations} />
-          </div>
+        {/* ── HORIZONTAL DOCK: Live BOM Readiness & Storage Simulation ── */}
+        <aside className="w-full mt-6">
+          <InventoryBomPreview state={formState} locations={locations} />
         </aside>
       </main>
     </div>

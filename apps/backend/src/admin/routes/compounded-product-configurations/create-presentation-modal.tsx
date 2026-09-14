@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-product-configurations/create-presentation-modal.tsx
+ * @module  CreatePresentationModal
+ * @purpose Presentation configuration creator modal for compounded physical delivery formats.
+ * @contracts
+ *   Service: CompoundedProductModuleService
+ */
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   Button,

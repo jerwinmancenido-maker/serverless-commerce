@@ -1,7 +1,7 @@
 /**
  * @file    apps/backend/src/admin/components/inventory/inventory-create-drawer.tsx
  * @module  InventoryCreateDrawer (Inventory Module)
- * @purpose Modern Slide-Over Sheet Drawer for raw materials and cleanroom inventory creation.
+ * @purpose Modern Slide-Over Sheet Drawer for raw materials and warehouse compound inventory creation.
  * @contracts
  *   Drawer:  InventoryCreateDrawer
  *   API:     POST /admin/inventory-items · POST /admin/stock-locations
@@ -78,7 +78,7 @@ const PRESETS = [
     state: {
       title: "BPC-157 Pure Lyophilized Acetate",
       sku: "RAW-BPC157-01",
-      description: "Ultra-pure synthetic pentadecapeptide active raw powder for cleanroom compounding.",
+      description: "Ultra-pure synthetic pentadecapeptide active raw powder for laboratory formulation.",
       requiresShipping: true,
       weight: 25,
       hsCode: "2937.19.00",
@@ -169,7 +169,7 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
       })
       .catch(() => {
         const fallback = [
-          { id: "sloc_cleanroom", name: "Cleanroom Vault (Makati HQ)" },
+          { id: "sloc_storage_vault", name: "Central Storage Vault (Makati HQ)" },
           { id: "sloc_storage", name: "Cold-Chain Depository (BGC)" },
         ]
         setLocations(fallback)
@@ -283,11 +283,11 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
                     New Raw Material Item
                   </Drawer.Title>
                   <Badge color="green" size="small" className="font-semibold text-[10px]">
-                    Cleanroom Ready
+                    Catalog Ready
                   </Badge>
                 </div>
                 <Drawer.Description className="text-xs text-slate-500 mt-0.5">
-                  Register cleanroom active powders, diluents, and sterile lab supplies.
+                  Register active powders, diluents, and laboratory supplies.
                 </Drawer.Description>
               </div>
             </div>
@@ -418,7 +418,7 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
                 <div className="flex items-center justify-between pt-1">
                   <div>
                     <span className="text-xs font-semibold text-slate-800 block">Requires Physical Fulfillment</span>
-                    <span className="text-[11px] text-slate-400">Track in cleanroom vault and dispatch via courier</span>
+                    <span className="text-[11px] text-slate-400">Track in central storage vault and dispatch via courier</span>
                   </div>
                   <Switch
                     checked={formState.requiresShipping}

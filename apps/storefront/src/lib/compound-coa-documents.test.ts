@@ -3,6 +3,7 @@ import test from "node:test"
 import {
   listCoaDocuments,
   retrieveCoaDocument,
+  getFallbackCoaSpecification,
 } from "./data/compound-coa-documents.ts"
 
 test("returns all registered CoA documents", () => {
@@ -39,3 +40,12 @@ test("returns null when document is not found", () => {
   assert.equal(retrieveCoaDocument("non-existent-peptide"), null)
   assert.equal(retrieveCoaDocument(""), null)
 })
+
+test("generates valid fallback analytical specification for non-registered compounds", () => {
+  const spec = getFallbackCoaSpecification("epithalon-10mg")
+  assert.ok(spec)
+  assert.equal(spec.purityDisplay, "≥99.0% HPLC")
+  assert.equal(spec.accreditation.includes("ISO/IEC 17025"), true)
+  assert.equal(spec.specifications.bacterialEndotoxin, "<0.05 EU/mg (Specification: <0.10 EU/mg, Pass)")
+})
+

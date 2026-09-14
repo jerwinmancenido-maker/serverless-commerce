@@ -14,6 +14,7 @@ import assert from "node:assert/strict"
 
 // Direct data imports (pure JSON / pure TS, zero runtime side effects)
 import rawProtocols from "../compound-protocols/all-protocols.json" with { type: "json" }
+import rawCatalogProducts from "../../../../../backend/data/unified-catalog.json" with { type: "json" }
 import type { CompoundAnalyticalProtocol } from "../compound-protocols/types.ts"
 import rawComparisons from "../../../../../backend/data/peptide-comparisons.json" with { type: "json" }
 import rawEducational from "../../../../../backend/data/peptide-educational-content.json" with { type: "json" }
@@ -334,7 +335,7 @@ test("Triangulation Leg 4: Clinical Supply & Consumables BOM Invariants", () => 
   assert.equal(mcgPerSpray, 200)
 })
 
-test("Triangulation Leg 5: Depth Parity & Editorial Quality Invariants (154 Protocols)", () => {
+test("Triangulation Leg 5: Depth Parity & Editorial Quality Invariants (176 Protocols)", () => {
   let singlePeptideCount = 0
 
   for (const protocol of rawProtocols as unknown as CompoundAnalyticalProtocol[]) {
@@ -422,6 +423,32 @@ test("Triangulation Leg 5: Depth Parity & Editorial Quality Invariants (154 Prot
     singlePeptideCount >= 100,
     `Expected at least 100 single peptide protocols, found ${singlePeptideCount}`
   )
+})
+
+test("Triangulation Leg 6: Exact 1:1 Catalog-to-Protocol Parity (176:176)", () => {
+  const catalogHandles = new Set(rawCatalogProducts.map((p: { handle: string }) => p.handle))
+
+  assert.equal(
+    rawCatalogProducts.length,
+    176,
+    `Expected exactly 176 catalog products, found ${rawCatalogProducts.length}`
+  )
+  assert.equal(
+    rawProtocols.length,
+    176,
+    `Expected exactly 176 analytical protocols, found ${rawProtocols.length}`
+  )
+
+  for (const protocol of rawProtocols) {
+    const targetHandle =
+      protocol.storeProductHandle ||
+      ("handle" in protocol ? String((protocol as { handle?: string }).handle) : undefined) ||
+      protocol.id
+    assert.ok(
+      catalogHandles.has(targetHandle),
+      `Protocol "${protocol.id}" targets storeProductHandle "${targetHandle}", but no matching product exists in unified-catalog.json`
+    )
+  }
 })
 
 

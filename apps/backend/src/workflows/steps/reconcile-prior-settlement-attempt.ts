@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/reconcile-prior-settlement-attempt.ts
+ * @module  ManualPaymentModule (Workflows)
+ * @purpose Reconcile existing settlement attempts and verify prior captures idempotently.
+ * @contracts
+ *   Step: reconcilePriorSettlementAttemptStep
+ */
+
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { MANUAL_PAYMENT_MODULE } from "../../modules/manual-payment"

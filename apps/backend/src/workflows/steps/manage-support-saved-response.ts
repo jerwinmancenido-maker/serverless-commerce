@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/manage-support-saved-response.ts
+ * @module  CustomerSupportModule (Workflows)
+ * @purpose Manage customer support saved response templates with saga compensation.
+ * @contracts
+ *   Step: manageSupportSavedResponseStep
+ */
+
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
@@ -76,18 +84,18 @@ export const manageSupportSavedResponseStep = createStep(
     })
     return new StepResponse(response, { operation: "update", prior })
   },
-  async (data, { container }) => {
-    if (!data) return
+  async (compensation, { container }) => {
+    if (!compensation) return
     const service = container.resolve<CustomerSupportModuleService>(
       CUSTOMER_SUPPORT_MODULE,
     )
-    if (data.operation === "create") {
-      await service.deleteSupportSavedResponses(data.id)
-    } else if (data.operation === "delete") {
-      await service.restoreSupportSavedResponses(data.prior.id)
-      await service.updateSupportSavedResponses(data.prior)
+    if (compensation.operation === "create") {
+      await service.deleteSupportSavedResponses(compensation.id)
+    } else if (compensation.operation === "delete") {
+      await service.restoreSupportSavedResponses(compensation.prior.id)
+      await service.updateSupportSavedResponses(compensation.prior)
     } else {
-      await service.updateSupportSavedResponses(data.prior)
+      await service.updateSupportSavedResponses(compensation.prior)
     }
   },
 )

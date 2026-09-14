@@ -1,6 +1,15 @@
-import { Badge, Button, Container, Heading, Input, Text, toast } from "@medusajs/ui"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useMemo, useState } from "react"
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/community-moderation.tsx
+ * @module  CommunityModerationComponent
+ * @purpose Admin component for moderating protocol community threads and comments.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols/:id/community
+ *   Service: ResearchProtocolModuleService
+ */
+
+import { Badge, Button, Heading, Input, Text, toast } from "@medusajs/ui"
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { sdk } from "../../lib/sdk"
@@ -55,23 +64,31 @@ export const CommunityModeration = ({
   const queryClient = useQueryClient()
   const [status, setStatus] = useState("all")
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300)
+    return () => clearTimeout(timer)
+  }, [search])
+
   const [reason, setReason] = useState("")
   const [selectedThreads, setSelectedThreads] = useState<string[]>([])
   const [selectedComments, setSelectedComments] = useState<string[]>([])
   const query = useQuery({
-    queryKey: ["research-protocol-community-admin", protocolId, status, search],
+    queryKey: ["research-protocol-community-admin", protocolId, status, debouncedSearch],
     queryFn: () =>
       sdk.client.fetch<CommunityResponse>(
         `/admin/research-protocols/${protocolId}/community`,
         {
           query: {
             ...(status !== "all" ? { status } : {}),
-            ...(search.trim() ? { q: search.trim() } : {}),
+            ...(debouncedSearch.trim() ? { q: debouncedSearch.trim() } : {}),
             limit: 100,
             offset: 0,
           },
         },
       ),
+    placeholderData: keepPreviousData,
   })
   const refresh = () =>
     queryClient.invalidateQueries({
@@ -173,7 +190,7 @@ export const CommunityModeration = ({
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Container className="flex flex-wrap items-start justify-between gap-4 px-6 py-4">
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs flex flex-wrap items-start justify-between gap-4">
         <div>
           <Heading>Protocol community moderation</Heading>
           <Text size="small" className="text-ui-fg-subtle">
@@ -183,8 +200,8 @@ export const CommunityModeration = ({
         <Button asChild size="small" variant="secondary">
           <Link to={`/research-protocols/${protocolId}`}>Back to protocol</Link>
         </Button>
-      </Container>
-      <Container className="grid gap-4 px-6 py-4">
+      </div>
+      <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs grid gap-4">
         <div className="grid gap-3 md:grid-cols-[180px_minmax(0,1fr)]">
           <select value={status} onChange={(event) => setStatus(event.target.value)} className="h-9 rounded-md border border-ui-border-base bg-ui-bg-field px-3 text-sm">
             <option value="all">All statuses</option>
@@ -204,10 +221,20 @@ export const CommunityModeration = ({
             ))}
           </div>
         ) : null}
-      </Container>
+      </div>
       <div className="grid gap-4">
-        {(query.data?.threads || []).map((thread) => (
-          <Container key={thread.id} className="grid gap-4 px-6 py-4">
+        {(!query.data?.threads || query.data.threads.length === 0) ? (
+          <div className="rounded-xl border border-dashed border-slate-200 bg-white p-12 text-center flex flex-col items-center justify-center gap-2 shadow-2xs">
+            <Heading level="h2" className="text-sm font-semibold text-slate-900">
+              No Community Discussions Yet
+            </Heading>
+            <Text size="small" className="text-slate-500 max-w-md">
+              Researchers and verified customers have not opened any questions or clinical experience threads for this protocol series yet. Discussions will appear here automatically for staff moderation.
+            </Text>
+          </div>
+        ) : (
+          (query.data?.threads || []).map((thread) => (
+          <div key={thread.id} className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs grid gap-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="flex items-start gap-3">
                 <input type="checkbox" checked={selectedThreads.includes(thread.id)} onChange={(event) => setSelectedThreads((current) => event.target.checked ? [...current, thread.id] : current.filter((id) => id !== thread.id))} />
@@ -241,11 +268,11 @@ export const CommunityModeration = ({
                 </div>
               ))}
             </div>
-          </Container>
-        ))}
+          </div>
+        )))}
       </div>
       {(query.data?.reports || []).filter((report) => report.status === "open").length ? (
-        <Container className="grid gap-3 px-6 py-4">
+        <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs grid gap-3">
           <Heading level="h2">Open reports</Heading>
           {query.data!.reports.filter((report) => report.status === "open").map((report) => (
             <div key={report.id} className="flex items-start justify-between gap-3 rounded-lg border border-ui-border-base p-3">
@@ -253,7 +280,7 @@ export const CommunityModeration = ({
               <div className="flex gap-2"><Button size="small" onClick={() => reportMutation.mutate({ reportId: report.id, action: "resolve" })}>Resolve</Button><Button size="small" variant="secondary" onClick={() => reportMutation.mutate({ reportId: report.id, action: "dismiss" })}>Dismiss</Button></div>
             </div>
           ))}
-        </Container>
+        </div>
       ) : null}
     </div>
   )

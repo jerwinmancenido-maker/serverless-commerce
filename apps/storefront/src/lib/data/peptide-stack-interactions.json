@@ -1,0 +1,815 @@
+{
+  "version": "2026.09.11",
+  "description": "Authoritative database of peptide compounds, multi-product stacking compatibility rules, pharmacological interactions, and co-administration protocols.",
+  "compounds": [
+    {
+      "id": "bpc-157",
+      "name": "BPC-157 (Pentadecapeptide)",
+      "shortName": "BPC-157",
+      "category": "Tissue Repair & Healing",
+      "targetReceptor": "VEGFR2, FAK-Paxillin, Growth Hormone Receptor Upregulation",
+      "primaryPathway": "Angiogenesis, granulation tissue formation, nitric oxide synthesis",
+      "adminRoute": "SubQ / Oral (Stable Arg)",
+      "optimalTiming": "Morning or post-training, fasted or with light meal",
+      "halfLife": "4-6 hours (systemic response lasts ~24 hours)",
+      "protocolHandle": "bpc-157"
+    },
+    {
+      "id": "tb-500",
+      "name": "TB-500 (Thymosin Beta-4 Frag)",
+      "shortName": "TB-500",
+      "category": "Tissue Repair & Healing",
+      "targetReceptor": "Actin-Sequestering Peptide (G-Actin / F-Actin balance)",
+      "primaryPathway": "Systemic cell migration, microvascular remodeling, scar tissue prevention",
+      "adminRoute": "SubQ (Systemic)",
+      "optimalTiming": "2x weekly, independent of meal timing",
+      "halfLife": "24-48 hours",
+      "protocolHandle": "tb-500"
+    },
+    {
+      "id": "cjc-1295",
+      "name": "CJC-1295 No DAC (Mod GRF 1-29)",
+      "shortName": "CJC-1295 No DAC",
+      "category": "Somatotropic GH Axis",
+      "targetReceptor": "GHRH Receptor (Growth Hormone Releasing Hormone)",
+      "primaryPathway": "Stimulates anterior pituitary GH transcription & physiological pulsatile release",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Pre-bed (strictly fasted ≥2h) or post-workout",
+      "halfLife": "30 minutes",
+      "protocolHandle": "cjc-1295-no-dac"
+    },
+    {
+      "id": "ipamorelin",
+      "name": "Ipamorelin (GHRP Selective)",
+      "shortName": "Ipamorelin",
+      "category": "Somatotropic GH Axis",
+      "targetReceptor": "GHS-R1a (Ghrelin Receptor / Growth Hormone Secretagogue)",
+      "primaryPathway": "Triggers amplified somatotrope vesicular release without raising prolactin or cortisol",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Pre-bed (strictly fasted ≥2h) alongside GHRH",
+      "halfLife": "2 hours",
+      "protocolHandle": "ipamorelin"
+    },
+    {
+      "id": "tirzepatide",
+      "name": "Tirzepatide",
+      "shortName": "Tirzepatide",
+      "category": "Metabolic & Incretin",
+      "targetReceptor": "Dual GLP-1 & GIP Receptor Co-Agonist",
+      "primaryPathway": "Glucose-dependent insulinotropic polypeptide + glucagon-like peptide-1 appetite & insulin modulation",
+      "adminRoute": "SubQ (Weekly)",
+      "optimalTiming": "Once every 7 days, consistent morning or evening time",
+      "halfLife": "5 days",
+      "protocolHandle": "tirzepatide"
+    },
+    {
+      "id": "semaglutide",
+      "name": "Semaglutide",
+      "shortName": "Semaglutide",
+      "category": "Metabolic & Incretin",
+      "targetReceptor": "Selective GLP-1 Receptor Agonist",
+      "primaryPathway": "Central satiety signaling, delayed gastric emptying, insulin sensitization",
+      "adminRoute": "SubQ (Weekly)",
+      "optimalTiming": "Once every 7 days",
+      "halfLife": "7 days",
+      "protocolHandle": "semaglutide"
+    },
+    {
+      "id": "retatrutide",
+      "name": "Retatrutide",
+      "shortName": "Retatrutide",
+      "category": "Metabolic & Incretin",
+      "targetReceptor": "Triple GLP-1 / GIP / Glucagon Receptor Agonist",
+      "primaryPathway": "Triple incretin co-agonism with enhanced hepatic lipid oxidation and energy expenditure",
+      "adminRoute": "SubQ (Weekly)",
+      "optimalTiming": "Once every 7 days",
+      "halfLife": "6 days",
+      "protocolHandle": "retatrutide"
+    },
+    {
+      "id": "aod-9604",
+      "name": "AOD-9604 (Lipolytic Fragment)",
+      "shortName": "AOD-9604",
+      "category": "Metabolic & Lipolysis",
+      "targetReceptor": "Beta-3 Adrenergic Receptor Activation (GH C-Terminal 177-191)",
+      "primaryPathway": "Stimulates lipolysis in white adipose tissue and inhibits lipogenesis without altering IGF-1 or glycemic levels",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Fasted morning, 30–45 min before physical activity",
+      "halfLife": "30 minutes",
+      "protocolHandle": "aod-9604"
+    },
+    {
+      "id": "ghk-cu",
+      "name": "GHK-Cu (Copper Tripeptide-1)",
+      "shortName": "GHK-Cu",
+      "category": "Cellular Remodeling & Cosmetic",
+      "targetReceptor": "Extracellular Matrix Fibroblast Signaling & Gene Expression Reset",
+      "primaryPathway": "Collagen I/III synthesis, elastin production, decorin modulation, SOD antioxidant stimulation",
+      "adminRoute": "SubQ / Topical",
+      "optimalTiming": "Morning or evening SubQ (rotate injection sites)",
+      "halfLife": "1-2 hours (cellular remodeling persists for days)",
+      "protocolHandle": "ghk-cu"
+    },
+    {
+      "id": "epithalon",
+      "name": "Epithalon (Epitalon)",
+      "shortName": "Epithalon",
+      "category": "Cellular Longevity & Telomeres",
+      "targetReceptor": "Pineal Gland Epithalamic Peptide / Telomerase Activator",
+      "primaryPathway": "Upregulates telomerase reverse transcriptase (TERT), normalizes pineal melatonin secretion and circadian chromatin",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Evening / Pre-bed, short 10–20 day cyclical protocol",
+      "halfLife": "Short peptide half-life (~30 min); epigenetic alterations endure",
+      "protocolHandle": "epithalon"
+    },
+    {
+      "id": "nad-plus",
+      "name": "NAD+ (Nicotinamide Adenine Dinucleotide)",
+      "shortName": "NAD+",
+      "category": "Cellular Bioenergetics",
+      "targetReceptor": "Mitochondrial Complex I / Sirtuin Sirt1-7 / PARP Cofactor",
+      "primaryPathway": "Cellular ATP production, oxidative phosphorylation, PARP DNA repair enzyme activation",
+      "adminRoute": "SubQ / IM (Slow push)",
+      "optimalTiming": "Morning (avoid evening due to cellular energetic excitation)",
+      "halfLife": "Directly consumed in cellular coenzyme pools",
+      "protocolHandle": "nad-plus"
+    },
+    {
+      "id": "glutathione",
+      "name": "Glutathione (Reduced GSH)",
+      "shortName": "Glutathione",
+      "category": "Antioxidant & Detoxification",
+      "targetReceptor": "Intracellular Redox Buffer / Phase II Hepatic Conjugation",
+      "primaryPathway": "Direct free radical quenching, reactive oxygen species neutralization, mitochondrial protection",
+      "adminRoute": "SubQ / IM",
+      "optimalTiming": "Morning or midday",
+      "halfLife": "10-15 minutes in circulation; intracellular pools persist",
+      "protocolHandle": "glutathione"
+    },
+    {
+      "id": "semax",
+      "name": "Semax (Heptapeptide)",
+      "shortName": "Semax",
+      "category": "Cognitive & Neurogenesis",
+      "targetReceptor": "TrkB / BDNF / Melanocortin Receptors (Non-hormonotropic)",
+      "primaryPathway": "Brain-Derived Neurotrophic Factor upregulation, dopamine/serotonin neurotransmission modulation",
+      "adminRoute": "Intranasal / SubQ",
+      "optimalTiming": "Morning or early afternoon (focus & cognitive tasks)",
+      "halfLife": "2-4 hours",
+      "protocolHandle": "semax"
+    },
+    {
+      "id": "selank",
+      "name": "Selank (Regulatory Heptapeptide)",
+      "shortName": "Selank",
+      "category": "Cognitive & Anxiolytic",
+      "targetReceptor": "GABA-A / Enkephalinase Inhibition / IL-6 Modulation",
+      "primaryPathway": "Allosteric GABA modulation, endogenous opioid preservation, stress response stabilization",
+      "adminRoute": "Intranasal / SubQ",
+      "optimalTiming": "Morning or during acute cognitive stress/anxiety window",
+      "halfLife": "2-4 hours",
+      "protocolHandle": "selank"
+    },
+    {
+      "id": "melanotan-2",
+      "name": "Melanotan II",
+      "shortName": "Melanotan II",
+      "category": "Photoprotection & Melanogenesis",
+      "targetReceptor": "MC1R, MC3R, MC4R, MC5R Agonist",
+      "primaryPathway": "Stimulates eumelanin synthesis in skin melanocytes and central satiety/sexual arousal signaling",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Pre-bed (to sleep through initial mild nausea) or 30 min before UV exposure",
+      "halfLife": "1-2 hours",
+      "protocolHandle": "melanotan-2"
+    },
+    {
+      "id": "pt-141",
+      "name": "PT-141 (Bremelanotide)",
+      "shortName": "PT-141",
+      "category": "Sexual Function & Melanocortin",
+      "targetReceptor": "Selective Central MC4R & MC3R Agonist",
+      "primaryPathway": "Central nervous system activation of medial preoptic dopamine pathways regulating sexual desire",
+      "adminRoute": "SubQ",
+      "optimalTiming": "30–60 minutes prior to intended response window",
+      "halfLife": "2.7 hours",
+      "protocolHandle": "pt-141"
+    },
+    {
+      "id": "ghrp-2",
+      "name": "GHRP-2 (Pralmorelin)",
+      "shortName": "GHRP-2",
+      "category": "GH Secretagogue",
+      "targetReceptor": "GHS-R1a Non-Selective",
+      "primaryPathway": "Potent GH release with moderate elevation in cortisol and prolactin",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Fasted morning or pre-bed",
+      "halfLife": "30 minutes",
+      "protocolHandle": "ghrp-2"
+    },
+    {
+      "id": "ghrp-6",
+      "name": "GHRP-6",
+      "shortName": "GHRP-6",
+      "category": "GH Secretagogue",
+      "targetReceptor": "GHS-R1a Non-Selective",
+      "primaryPathway": "GH release with significant appetite stimulation via NPY hypothalamic signaling",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Fasted or before bulking meals",
+      "halfLife": "30 minutes",
+      "protocolHandle": "ghrp-6"
+    },
+    {
+      "id": "cagrilintide",
+      "name": "Cagrilintide (Amylin Analogue)",
+      "shortName": "Cagrilintide",
+      "category": "Metabolic & Incretin",
+      "targetReceptor": "Amylin (AMY1-3) & Calcitonin Receptors",
+      "primaryPathway": "Central area postrema satiety, gastric slowing, glycemic setpoint normalization",
+      "adminRoute": "SubQ (Weekly)",
+      "optimalTiming": "Once every 7 days, coordinated with incretin protocol",
+      "halfLife": "7 days (~168 hours)",
+      "protocolHandle": "cagrisema-blend"
+    },
+    {
+      "id": "orforglipron",
+      "name": "Orforglipron (LY3502970)",
+      "shortName": "Orforglipron",
+      "category": "Metabolic & Incretin",
+      "targetReceptor": "Non-Peptide GLP-1 Receptor Small Molecule",
+      "primaryPathway": "Glucose-dependent insulin release, hypothalamic satiety signaling, delayed gastric transit",
+      "adminRoute": "Oral / SubQ",
+      "optimalTiming": "Once daily (Q24H) in fasted morning state",
+      "halfLife": "29-49 hours",
+      "protocolHandle": "orforglipron"
+    },
+    {
+      "id": "pemvidutide",
+      "name": "Pemvidutide (GLP-1/Glucagon)",
+      "shortName": "Pemvidutide",
+      "category": "Metabolic & Incretin",
+      "targetReceptor": "Balanced 1:1 GLP-1 and Glucagon Receptor Dual Agonist",
+      "primaryPathway": "Hepatic fat beta-oxidation, mitochondrial lipid clearance, appetite reduction",
+      "adminRoute": "SubQ (Weekly)",
+      "optimalTiming": "Once every 7 days",
+      "halfLife": "4-5 days",
+      "protocolHandle": "pemvidutide"
+    },
+    {
+      "id": "peg-mgf",
+      "name": "PEG-MGF (Pegylated Mechano Growth Factor)",
+      "shortName": "PEG-MGF",
+      "category": "Anabolic & Satellite Cell Activation",
+      "targetReceptor": "IGF-1Ec C-Terminal Autocrine Pathway",
+      "primaryPathway": "Muscle stem cell proliferation, satellite cell pool expansion, myofiber repair",
+      "adminRoute": "SubQ (Systemic)",
+      "optimalTiming": "Post-workout or rest day, 2-3x weekly",
+      "halfLife": "48-72 hours",
+      "protocolHandle": "peg-mgf"
+    },
+    {
+      "id": "igf-1-lr3",
+      "name": "IGF-1 LR3 (Long R3 Insulin-Like Growth Factor-1)",
+      "shortName": "IGF-1 LR3",
+      "category": "Anabolic & Cellular Hyperplasia",
+      "targetReceptor": "IGF-1 Receptor (IGF-1R) with Reduced Binding Protein Affinity",
+      "primaryPathway": "Myoblast differentiation, protein translation, glycogen synthesis, systemic cellular hyperplasia",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Post-training, accompanied by fast-acting carbohydrates",
+      "halfLife": "20-30 hours",
+      "protocolHandle": "igf-1-lr3"
+    },
+    {
+      "id": "follistatin-344",
+      "name": "Follistatin-344",
+      "shortName": "Follistatin-344",
+      "category": "Myostatin & Muscle Hypertrophy",
+      "targetReceptor": "Myostatin (GDF-8) & Activin-A Neutralization",
+      "primaryPathway": "Lifting the genetic brake on muscle growth, tenocyte proliferation, connective repair",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Daily micro-dose in 10-30 day cycles",
+      "halfLife": "2-4 hours (biological effects persist for weeks)",
+      "protocolHandle": "follistatin-344"
+    },
+    {
+      "id": "bpc-157-arginate",
+      "name": "BPC-157 Arginate (Stable Oral/SubQ)",
+      "shortName": "BPC-157 Arg",
+      "category": "Tissue Repair & Healing",
+      "targetReceptor": "VEGFR2, FAK-Paxillin, Nitric Oxide Synthesis",
+      "primaryPathway": "Acid-stable angiogenesis, gut mucosa barrier restoration, accelerated tendon and muscle repair",
+      "adminRoute": "Oral / SubQ",
+      "optimalTiming": "Morning fasted or with light meal",
+      "halfLife": "6 hours (gastric stability >5 hours in pH 2.0)",
+      "protocolHandle": "bpc-157-arginate"
+    },
+    {
+      "id": "vesugen",
+      "name": "Vesugen (Lys-Glu-Asp Vascular Bioregulator)",
+      "shortName": "Vesugen",
+      "category": "Vascular & Microcirculation",
+      "targetReceptor": "Endothelial Epigenetic Histone Complex",
+      "primaryPathway": "Endothelial nitric oxide synthesis, vascular wall elasticity, microcirculation recovery",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Morning in 10-20 day cycles",
+      "halfLife": "2-4 hours (epigenetic effects persist 3-6 months)",
+      "protocolHandle": "vesugen"
+    },
+    {
+      "id": "cardiogen",
+      "name": "Cardiogen (Ala-Glu-Asp-Arg Cardiac Bioregulator)",
+      "shortName": "Cardiogen",
+      "category": "Cardiovascular Repair",
+      "targetReceptor": "Myocardial Epigenetic Transcription",
+      "primaryPathway": "Inhibition of cardiac scar fibrosis, cardiomyocyte ATP generation, myocardial repair",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Morning alongside Vesugen in 10-20 day cycles",
+      "halfLife": "2-4 hours (epigenetic effects persist 3-6 months)",
+      "protocolHandle": "cardiogen"
+    },
+    {
+      "id": "tesamorelin",
+      "name": "Tesamorelin (GHRH Analogue)",
+      "shortName": "Tesamorelin",
+      "category": "Somatotropic GH Axis",
+      "targetReceptor": "Pituitary GHRH Receptor",
+      "primaryPathway": "Physiological pulsatile GH transcription with selective visceral adipose tissue lipolysis",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Pre-bed (strictly fasted >=2h)",
+      "halfLife": "30 minutes",
+      "protocolHandle": "tesamorelin"
+    },
+    {
+      "id": "thymulin",
+      "name": "Thymulin (Zinc-Dependent Thymic Nonapeptide)",
+      "shortName": "Thymulin",
+      "category": "Immune & Neuro-Inflammation",
+      "targetReceptor": "Thymocyte Surface Receptors & Neuro-Immune Axis",
+      "primaryPathway": "T-cell maturation, cytokine balance, suppression of neuroinflammatory hyperalgesia",
+      "adminRoute": "SubQ",
+      "optimalTiming": "2-3x weekly",
+      "halfLife": "2 hours",
+      "protocolHandle": "thymulin"
+    },
+    {
+      "id": "slu-pp-332",
+      "name": "SLU-PP-332 (ERRα Exercise Mimetic)",
+      "shortName": "SLU-PP-332",
+      "category": "Metabolic & Mitochondrial",
+      "targetReceptor": "Estrogen-Related Receptor Alpha (ERRα)",
+      "primaryPathway": "Mitochondrial biogenesis, fatty acid beta-oxidation, physical endurance gene induction",
+      "adminRoute": "SubQ",
+      "optimalTiming": "Morning prior to physical activity",
+      "halfLife": "6-8 hours",
+      "protocolHandle": "slu-pp-332"
+    }
+  ],
+  "pairwise_interactions": [
+    {
+      "compound_a": "bpc-157",
+      "compound_b": "tb-500",
+      "status": "synergistic",
+      "score": 98,
+      "title": "The Wolverine Stack: Dual Microvascular & Actin Remodeling Synergy",
+      "mechanismSummary": "BPC-157 acts locally by accelerating microvascular angiogenesis via VEGFR2 and stabilizing granulation tissue, while TB-500 sequesters G-actin to drive rapid systemic cell migration and prevent fibrous adhesion/scar formation.",
+      "timingProtocol": "Administer both during the same cycle. BPC-157: 250–500 mcg daily SubQ. TB-500: 2.0–2.5 mg twice weekly SubQ. Inject with separate sterile U-100 syringes.",
+      "safetyRule": "Strictly maintain separate sterile syringes. Do NOT combine dry lyophilized cakes or mix solutions into a single vial.",
+      "citation": "PubMed: 21030672 (Sikiric P, et al.) & 20119825 (Philp D, et al.)",
+      "stackedProtocol": {
+        "cycleLength": "6 to 8 weeks",
+        "washout": "4 weeks off-cycle before repeating",
+        "morningDose": "BPC-157: 250–500 mcg SubQ (Fasted or post-workout)",
+        "eveningDose": "Optional second BPC-157 dose if acute tissue injury",
+        "weeklySchedule": "TB-500: 2.5 mg on Monday and Thursday (or 5.0 mg once weekly). BPC-157: Daily (Mon-Sun).",
+        "syringeHandling": "Two separate sterile U-100 syringes. Never mix in one barrel."
+      }
+    },
+    {
+      "compound_a": "cjc-1295",
+      "compound_b": "ipamorelin",
+      "status": "synergistic",
+      "score": 99,
+      "title": "The Somatotropic Pulse Stack: Complementary GHRH + GHRP Synergy",
+      "mechanismSummary": "CJC-1295 (GHRH agonist) stimulates the synthesis and transcription of Growth Hormone in pituitary somatotropes, while Ipamorelin (selective GHSR agonist) suppresses somatostatin and triggers the vesicular release pulse. Together they produce an amplified physiological GH pulse up to 5x higher than either alone.",
+      "timingProtocol": "Co-administer together 30 minutes before sleep on a strictly fasted stomach (≥2 hours after last meal) to avoid somatostatin release from carbohydrate/insulin spikes.",
+      "safetyRule": "Prepare each compound in its own vial. Injections may be taken in the same time window into separate SubQ sites.",
+      "citation": "Eur J Endocrinol (2006) / J Endocrinol Invest (2000)",
+      "stackedProtocol": {
+        "cycleLength": "12 to 16 weeks",
+        "washout": "4 weeks washout period",
+        "morningDose": "Optional fasted morning dose: CJC-1295 100 mcg + Ipamorelin 200 mcg",
+        "eveningDose": "Primary dose 30 min before bed: CJC-1295 100 mcg + Ipamorelin 200 mcg (≥2h fasted)",
+        "weeklySchedule": "5 days on, 2 days off (e.g., Monday through Friday on, weekends off) to preserve pituitary receptor sensitivity.",
+        "syringeHandling": "Separate sterile syringes for each vial. Inject in contralateral abdomen."
+      }
+    },
+    {
+      "compound_a": "aod-9604",
+      "compound_b": "tirzepatide",
+      "status": "synergistic",
+      "score": 94,
+      "title": "Metabolic Dual-Action Stack: Incretin Satiety + Beta-3 Adipocyte Lipolysis",
+      "mechanismSummary": "Tirzepatide centrally suppresses appetite, improves glycemic control, and downregulates hepatic de novo lipogenesis via GLP-1/GIP. AOD-9604 acts peripherally on adipocyte beta-3 adrenergic receptors to trigger active lipolysis and fat breakdown without interfering with blood glucose or insulin sensitivity.",
+      "timingProtocol": "Tirzepatide: 1x weekly SubQ. AOD-9604: 300–500 mcg daily SubQ in the morning in a fasted state prior to light cardio.",
+      "safetyRule": "Completely non-overlapping mechanisms. Monitor hydration and electrolyte balance.",
+      "citation": "Int J Obes (2001) & N Engl J Med (SURMOUNT-1)",
+      "stackedProtocol": {
+        "cycleLength": "12 weeks",
+        "washout": "4 to 8 weeks",
+        "morningDose": "AOD-9604: 300–500 mcg SubQ every morning upon waking (fasted)",
+        "eveningDose": "None required for AOD-9604",
+        "weeklySchedule": "Tirzepatide: 2.5–5.0 mg once weekly on Sunday evening. AOD-9604: Daily morning.",
+        "syringeHandling": "Tirzepatide weekly syringe + AOD-9604 daily U-100 syringe."
+      }
+    },
+    {
+      "compound_a": "selank",
+      "compound_b": "semax",
+      "status": "synergistic",
+      "score": 96,
+      "title": "Neuro-Regenerative BDNF & Anxiolytic Balance Stack",
+      "mechanismSummary": "Semax drives robust neurogenesis, memory consolidation, and executive focus by upregulating BDNF and TrkB receptors. Selank prevents overstimulation by modulating GABA-A receptors and preserving endogenous enkephalins, creating calm, laser-sharp focus without anxiety or jitters.",
+      "timingProtocol": "Semax: Morning administration (intranasal or SubQ). Selank: Midday or during acute stress/anxiety episodes.",
+      "safetyRule": "Avoid taking late in the evening as Semax neurotrophic activation may disrupt circadian sleep architecture.",
+      "citation": "Dokl Biol Sci / Ross Fiziol Zh Im I M Sechenova",
+      "stackedProtocol": {
+        "cycleLength": "4 to 6 weeks",
+        "washout": "2 to 3 weeks off-cycle",
+        "morningDose": "Semax: 200–400 mcg SubQ or intranasal (Morning focus window)",
+        "eveningDose": "Selank: 250 mcg SubQ or intranasal (Late afternoon to balance cortisol)",
+        "weeklySchedule": "5 days on (work days), 2 days off (weekends).",
+        "syringeHandling": "Keep individual vials/sprayers separate. Never mix solutions."
+      }
+    },
+    {
+      "compound_a": "melanotan-2",
+      "compound_b": "pt-141",
+      "status": "synergistic",
+      "score": 92,
+      "title": "Melanocortin Photo-Protection & Central Libido Stack",
+      "mechanismSummary": "Melanotan II provides systemic melanin upregulation via MC1R/MC4R, while PT-141 (Bremelanotide) selectively acts centrally on hypothalamic MC4R to trigger rapid erectile and sexual arousal pathways without cardiovascular vasoconstriction.",
+      "timingProtocol": "Melanotan II: low-dose daily or 3x weekly pre-bed. PT-141: acute administration 45–60 min prior to target activity.",
+      "safetyRule": "Monitor blood pressure in hypertensive subjects; rotate injection sites.",
+      "citation": "J Sex Med / Int J Impot Res",
+      "stackedProtocol": {
+        "cycleLength": "4 to 8 weeks",
+        "washout": "4 weeks off-cycle",
+        "morningDose": "None",
+        "eveningDose": "Melanotan II: 250 mcg pre-bed. PT-141: 1.0–1.75 mg as needed (max 2x weekly).",
+        "weeklySchedule": "Melanotan II: Mon/Wed/Fri. PT-141: PRN.",
+        "syringeHandling": "Separate sterile syringes."
+      }
+    },
+    {
+      "compound_a": "epithalon",
+      "compound_b": "nad-plus",
+      "status": "synergistic",
+      "score": 95,
+      "title": "Mitochondrial Bioenergetics & Telomeric Longevity Stack",
+      "mechanismSummary": "Epithalon stimulates telomerase reverse transcriptase (TERT) to preserve chromosomal telomere length and circadian rhythm, while NAD+ directly fuels mitochondrial ATP synthesis and activates Sirtuin enzymes (SIRT1/SIRT3) for cellular DNA repair.",
+      "timingProtocol": "NAD+: Morning SubQ or slow IM. Epithalon: Evening pre-bed SubQ for a 10–20 day cycle twice per year.",
+      "safetyRule": "Inject NAD+ slowly over 60 seconds to prevent transient chest tightness or flushing.",
+      "citation": "Biogerontology (Anisimov VN, et al.) & Cell Metab",
+      "stackedProtocol": {
+        "cycleLength": "10 to 20 days intense pulse",
+        "washout": "Repeat 6 months later",
+        "morningDose": "NAD+: 50–100 mg SubQ / IM (slow push upon waking)",
+        "eveningDose": "Epithalon: 5–10 mg SubQ pre-bed (10 consecutive days)",
+        "weeklySchedule": "Epithalon: Daily for 10-20 days. NAD+: 2-3x weekly ongoing.",
+        "syringeHandling": "NAD+ requires slow injection; Epithalon in separate fine 31G needle."
+      }
+    },
+    {
+      "compound_a": "bpc-157",
+      "compound_b": "ghk-cu",
+      "status": "synergistic",
+      "score": 93,
+      "title": "Microvascular & Extracellular Matrix Remodeling Synergy",
+      "mechanismSummary": "BPC-157 rapidly generates fresh capillary networks (angiogenesis) to deliver oxygen and amino acids to damaged tissue, while GHK-Cu signals fibroblasts to synthesize new type I/III collagen and elastin while inhibiting TGF-beta scar formation.",
+      "timingProtocol": "Administer in separate SubQ injections daily. BPC-157 morning, GHK-Cu evening, or staggered by at least 2 hours.",
+      "safetyRule": "Do NOT combine concentrated copper peptide with acidic peptide solutions in the same syringe.",
+      "citation": "Oxid Med Cell Longev / J Biomater Sci",
+      "stackedProtocol": {
+        "cycleLength": "6 to 8 weeks",
+        "washout": "4 weeks off",
+        "morningDose": "BPC-157: 250–500 mcg SubQ",
+        "eveningDose": "GHK-Cu: 1.5–2.5 mg SubQ (deep subcutaneous or rotate into glute)",
+        "weeklySchedule": "Daily (7 days/week) for 6 weeks.",
+        "syringeHandling": "Strictly separate syringes. Copper chelate has deep blue color; do not mix."
+      }
+    },
+    {
+      "compound_a": "bpc-157",
+      "compound_b": "tirzepatide",
+      "status": "synergistic",
+      "score": 91,
+      "title": "Incretin GI Tolerance & Mucosal Cytoprotection Stack",
+      "mechanismSummary": "GLP-1 receptor agonists can cause transient delayed gastric emptying, nausea, and mucosal irritation. BPC-157 provides direct cytoprotective benefits across gastric epithelium, reducing gut discomfort while incretins drive metabolic weight loss.",
+      "timingProtocol": "Tirzepatide: Weekly SubQ. BPC-157: 250–500 mcg daily SubQ or stable oral arginate.",
+      "safetyRule": "Administer BPC-157 on empty stomach for maximum gastric cytoprotection.",
+      "citation": "Curr Pharm Des / Gut",
+      "stackedProtocol": {
+        "cycleLength": "12 weeks",
+        "washout": "4 weeks off BPC-157; maintain Tirzepatide",
+        "morningDose": "BPC-157: 250 mcg morning fasted",
+        "eveningDose": "BPC-157: 250 mcg evening fasted (especially on days 1-3 after Tirzepatide injection)",
+        "weeklySchedule": "Tirzepatide: 1x weekly. BPC-157: Daily.",
+        "syringeHandling": "Separate syringes; inject into alternate abdominal quadrants."
+      }
+    },
+    {
+      "compound_a": "bpc-157",
+      "compound_b": "semaglutide",
+      "status": "synergistic",
+      "score": 90,
+      "title": "GLP-1 Gut Barrier & Epithelial Recovery Stack",
+      "mechanismSummary": "Semaglutide delays gastric motility to enhance satiety. BPC-157 upregulates tight junction proteins (Claudin, Zonula Occludens) and nitric oxide synthesis, minimizing digestive cramping and acid reflux in GLP-1 naive subjects.",
+      "timingProtocol": "Semaglutide: Weekly SubQ. BPC-157: 250–500 mcg daily.",
+      "safetyRule": "Rotate injection sites; maintain hydration.",
+      "citation": "World J Gastroenterol",
+      "stackedProtocol": {
+        "cycleLength": "8 to 12 weeks",
+        "washout": "4 weeks",
+        "morningDose": "BPC-157: 250 mcg daily",
+        "eveningDose": "None",
+        "weeklySchedule": "Semaglutide: Weekly. BPC-157: Daily.",
+        "syringeHandling": "Separate syringes."
+      }
+    },
+    {
+      "compound_a": "glutathione",
+      "compound_b": "nad-plus",
+      "status": "synergistic",
+      "score": 97,
+      "title": "Cellular Redox & Mitochondrial Energy Shield",
+      "mechanismSummary": "NAD+ replenishes the mitochondrial electron transport chain, generating minor reactive oxygen species (ROS) during oxidative phosphorylation. Glutathione acts as the master intracellular ROS scavenger, converting hydrogen peroxide to water and preserving mitochondrial membrane potential.",
+      "timingProtocol": "Administer NAD+ morning and Glutathione either morning or midday.",
+      "safetyRule": "Inject both in separate sites; Glutathione is viscous and benefits from 27G-30G needle.",
+      "citation": "Antioxid Redox Signal",
+      "stackedProtocol": {
+        "cycleLength": "8 weeks",
+        "washout": "4 weeks",
+        "morningDose": "NAD+: 50–100 mg SubQ + Glutathione: 100–200 mg SubQ",
+        "eveningDose": "None",
+        "weeklySchedule": "2 to 3 times per week (e.g., Monday, Wednesday, Friday).",
+        "syringeHandling": "Two separate syringes. Never combine in one vial."
+      }
+    },
+    {
+      "compound_a": "retatrutide",
+      "compound_b": "semaglutide",
+      "status": "contraindicated",
+      "score": 15,
+      "title": "Contraindicated: Redundant Incretin Receptor Overload",
+      "mechanismSummary": "Both compounds are long-acting incretin receptor agonists competing for the exact same GLP-1 receptor sites. Stacking them together produces severe redundant receptor saturation without additive therapeutic weight loss.",
+      "timingProtocol": "DO NOT STACK CONCURRENTLY. Complete a mandatory 3-to-4 week washout period when transitioning between incretins.",
+      "safetyRule": "Severe risk of compounded gastrointestinal adverse reactions (gastroparesis, intense nausea, dehydration, pancreatitis risk).",
+      "citation": "Lancet Diabetes Endocrinol / SURPASS & STEP Clinical Trials"
+    },
+    {
+      "compound_a": "semaglutide",
+      "compound_b": "tirzepatide",
+      "status": "contraindicated",
+      "score": 15,
+      "title": "Contraindicated: Dual GLP-1 Receptor Competitive Saturation",
+      "mechanismSummary": "Semaglutide and Tirzepatide both potently activate the GLP-1 receptor. Running both simultaneously floods the receptor bed, causing receptor downregulation and acute gastrointestinal distress with no incremental fat loss.",
+      "timingProtocol": "DO NOT STACK CONCURRENTLY. Maintain a 3-week washout before switching agents.",
+      "safetyRule": "Excessive delay in gastric emptying, profound hypoglycemia risk if combined with secretagogues, and severe nausea.",
+      "citation": "N Engl J Med / SURPASS Trials"
+    },
+    {
+      "compound_a": "retatrutide",
+      "compound_b": "tirzepatide",
+      "status": "contraindicated",
+      "score": 18,
+      "title": "Contraindicated: Redundant Multi-Incretin Agonism",
+      "mechanismSummary": "Retatrutide already contains full GLP-1 and GIP agonism (plus Glucagon). Stacking Tirzepatide adds duplicate GLP-1 and GIP molecules, creating extreme receptor competition.",
+      "timingProtocol": "Select ONE multi-incretin compound. Do not co-administer.",
+      "safetyRule": "High risk of rapid dehydration, gastrointestinal paralysis, and severe vomiting.",
+      "citation": "Lancet / TRIUMPH Phase 2 Trial"
+    },
+    {
+      "compound_a": "ghrp-2",
+      "compound_b": "ghrp-6",
+      "status": "contraindicated",
+      "score": 25,
+      "title": "Redundant & Unfavorable: Dual Non-Selective GH Secretagogues",
+      "mechanismSummary": "Both peptides act directly on the pituitary GHS-R1a receptor. Stacking two non-selective secretagogues causes competitive receptor saturation while drastically compounding adverse elevations in systemic cortisol and prolactin.",
+      "timingProtocol": "Choose ONE selective secretagogue (such as Ipamorelin) instead of stacking multiple first-generation GHRPs.",
+      "safetyRule": "High risk of water retention, prolactin-induced gynecomastia, and cortisol-driven gluconeogenesis.",
+      "citation": "J Clin Endocrinol Metab (1998)"
+    },
+    {
+      "compound_a": "cagrilintide",
+      "compound_b": "semaglutide",
+      "status": "synergistic",
+      "score": 99,
+      "title": "The CagriSema Protocol: Coordinated Amylin + GLP-1 Incretin Synergy",
+      "mechanismSummary": "Cagrilintide engages area postrema and ventral tegmental amylin receptors while Semaglutide stimulates hypothalamic GLP-1 receptors, producing multiplicative appetite suppression and glycemic control superior to either monotherapy.",
+      "timingProtocol": "Co-administered once weekly on the same day. Titrate gradually every 4 weeks.",
+      "safetyRule": "Strict stepwise escalation required to prevent gastrointestinal adverse events.",
+      "citation": "PubMed PMID: 37385280 (Lancet 2023)",
+      "stackedProtocol": {
+        "cycleLength": "16 to 32 weeks",
+        "washout": "6 weeks between research blocks",
+        "morningDose": "Weekly SubQ administration (0.5 mg to 2.4 mg combined)",
+        "eveningDose": "None",
+        "weeklySchedule": "Once every 7 days (e.g. Sunday evening)",
+        "syringeHandling": "Separate sterile syringes unless utilizing validated co-formulated CagriSema standard."
+      }
+    },
+    {
+      "compound_a": "peg-mgf",
+      "compound_b": "igf-1-lr3",
+      "status": "synergistic",
+      "score": 97,
+      "title": "The Anabolic Saturation Stack: Satellite Cell Proliferation + Myofiber Differentiation",
+      "mechanismSummary": "PEG-MGF drives rapid proliferation of dormant muscle satellite cells into an expanded stem cell pool, while IGF-1 LR3 triggers differentiation of those newly created cells into mature, functional myofibrils.",
+      "timingProtocol": "PEG-MGF: 200–400 mcg 2–3x weekly post-workout. IGF-1 LR3: 20–50 mcg daily on training days.",
+      "safetyRule": "Consume 30–50g fast-acting carbohydrates with IGF-1 LR3 to prevent transient hypoglycemia.",
+      "citation": "Biochem Biophys Res Commun / J Appl Physiol",
+      "stackedProtocol": {
+        "cycleLength": "4 to 6 weeks",
+        "washout": "4 weeks washout off-cycle",
+        "morningDose": "IGF-1 LR3: 25 mcg SubQ post-training with nutrition",
+        "eveningDose": "PEG-MGF: 200 mcg SubQ on post-training days",
+        "weeklySchedule": "IGF-1 LR3 on training days (Mon/Wed/Fri); PEG-MGF post-workout.",
+        "syringeHandling": "Separate sterile U-100 syringes. Never combine in one vial."
+      }
+    },
+    {
+      "compound_a": "bpc-157-arginate",
+      "compound_b": "tb-500",
+      "status": "synergistic",
+      "score": 99,
+      "title": "Enhanced Wolverine Stack: Acid-Stable Angiogenesis + Systemic Actin Remodeling",
+      "mechanismSummary": "Stable L-arginate salt of BPC-157 ensures robust microvascular VEGFR2 capillary ingrowth and gut barrier recovery, perfectly paired with TB-500 systemic G-actin sequestration for organized scar-free tissue repair.",
+      "timingProtocol": "BPC-157 Arginate: 250–500 mcg daily (SubQ or oral). TB-500: 2.5 mg twice weekly SubQ.",
+      "safetyRule": "Sterile technique for TB-500; BPC-157 Arginate may be administered orally or SubQ.",
+      "citation": "PubMed: 21030672 & 20119825",
+      "stackedProtocol": {
+        "cycleLength": "6 to 8 weeks",
+        "washout": "4 weeks off-cycle before repeating",
+        "morningDose": "BPC-157 Arginate: 250–500 mcg (fasted morning)",
+        "eveningDose": "None",
+        "weeklySchedule": "BPC-157 Arg: Daily (Mon-Sun). TB-500: 2.5 mg on Monday and Thursday.",
+        "syringeHandling": "Separate administration."
+      }
+    },
+    {
+      "compound_a": "tesamorelin",
+      "compound_b": "ipamorelin",
+      "status": "synergistic",
+      "score": 98,
+      "title": "Visceral Lipolysis & Clean Pulse Stack: GHRH Selective Transcription + GHRP Release",
+      "mechanismSummary": "Tesamorelin selectively targets visceral abdominal fat while stimulating pituitary GH transcription; Ipamorelin triggers vesicular release without elevating prolactin or cortisol.",
+      "timingProtocol": "Co-administer together 30 minutes before sleep on a strictly fasted stomach (>=2 hours after last meal).",
+      "safetyRule": "Pre-bed administration strictly fasted to avoid somatostatin release from carbohydrate/insulin spikes.",
+      "citation": "N Engl J Med / J Clin Endocrinol Metab",
+      "stackedProtocol": {
+        "cycleLength": "12 to 16 weeks",
+        "washout": "4 weeks off-cycle",
+        "morningDose": "None",
+        "eveningDose": "Tesamorelin 1.0 mg + Ipamorelin 200 mcg SubQ (>=2h fasted)",
+        "weeklySchedule": "5 days on, 2 days off (Monday through Friday on, weekends off).",
+        "syringeHandling": "Separate sterile syringes for each vial."
+      }
+    },
+    {
+      "compound_a": "vesugen",
+      "compound_b": "cardiogen",
+      "status": "synergistic",
+      "score": 96,
+      "title": "Cardiovascular Bioregulation Stack: Endothelial Nitric Oxide + Myocardial Protection",
+      "mechanismSummary": "Vesugen restores microvascular endothelial capillary elasticity and blood flow, while Cardiogen protects cardiomyocytes from ischemic strain and suppresses pathological collagen scar fibrosis.",
+      "timingProtocol": "Administer both compounds during morning hours in 10-20 day research cohorts.",
+      "safetyRule": "Endogenous bioregulator tri/tetrapeptides with exceptional safety profiles.",
+      "citation": "Bull Exp Biol Med / Adv Gerontol",
+      "stackedProtocol": {
+        "cycleLength": "10 to 20 days",
+        "washout": "2 to 3 months off-cycle",
+        "morningDose": "Vesugen 10 mg + Cardiogen 10 mg SubQ",
+        "eveningDose": "None",
+        "weeklySchedule": "Daily for 10–20 days consecutively.",
+        "syringeHandling": "Separate sterile syringes."
+      }
+    },
+    {
+      "compound_a": "follistatin-344",
+      "compound_b": "ace-031",
+      "status": "favorable",
+      "score": 88,
+      "title": "Comprehensive Myostatin & Activin Neutralization Protocol",
+      "mechanismSummary": "Follistatin-344 directly binds circulating myostatin while ACE-031 acts as a soluble ActRIIB decoy receptor, suppressing both myostatin and activin signaling to maximize lean tissue retention.",
+      "timingProtocol": "Conservative micro-dosing in short 10-20 day experimental blocks.",
+      "safetyRule": "Monitor connective tissue adaptation as muscle force generation rises rapidly.",
+      "citation": "Mol Ther / Muscle Nerve",
+      "stackedProtocol": {
+        "cycleLength": "2 to 4 weeks",
+        "washout": "8 weeks washout period",
+        "morningDose": "Follistatin-344: 100 mcg daily SubQ",
+        "eveningDose": "ACE-031: 1 mg once weekly",
+        "weeklySchedule": "Follistatin daily for 10-20 days; ACE-031 weekly.",
+        "syringeHandling": "Separate sterile syringes."
+      }
+    }
+  ],
+  "presets": [
+    {
+      "id": "wolverine-recovery",
+      "name": "Wolverine Tissue Repair Regimen",
+      "tag": "Gold Standard Healing",
+      "compound_ids": [
+        "bpc-157",
+        "tb-500"
+      ],
+      "summary": "Dual-action angiogenic microvascular repair and actin-sequestering systemic tissue regeneration for ligaments, tendons, and joints.",
+      "idealCycleWeeks": 8,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "somatotropic-pulse",
+      "name": "Somatotropic GH Pulse Regimen",
+      "tag": "Deep Sleep & Pulse",
+      "compound_ids": [
+        "cjc-1295",
+        "ipamorelin"
+      ],
+      "summary": "Amplified physiological Growth Hormone pulses up to 5x higher through synergistic GHRH transcription and GHRP vesicular release.",
+      "idealCycleWeeks": 12,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "metabolic-fat-loss",
+      "name": "Metabolic Dual-Action Regimen",
+      "tag": "Dual Incretin + Lipolysis",
+      "compound_ids": [
+        "tirzepatide",
+        "aod-9604"
+      ],
+      "summary": "Central appetite regulation and glycemic control via dual incretin combined with targeted adipocyte beta-3 lipolysis.",
+      "idealCycleWeeks": 12,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "neurogenesis-focus",
+      "name": "Neuro-Regenerative BDNF Regimen",
+      "tag": "BDNF + Calm Focus",
+      "compound_ids": [
+        "semax",
+        "selank"
+      ],
+      "summary": "Laser focus and neuroplasticity through BDNF upregulation balanced with GABAergic anxiolytic calm.",
+      "idealCycleWeeks": 6,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "cellular-longevity",
+      "name": "Mitochondrial & Telomeric Longevity",
+      "tag": "Telomeres + Sirtuins",
+      "compound_ids": [
+        "epithalon",
+        "nad-plus"
+      ],
+      "summary": "Direct cellular bioenergetics with NAD+ combined with cyclical telomerase activation and circadian pineal reset.",
+      "idealCycleWeeks": 4,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "antioxidant-shield",
+      "name": "Cellular Redox Shield",
+      "tag": "Mitochondria + Detox",
+      "compound_ids": [
+        "glutathione",
+        "nad-plus"
+      ],
+      "summary": "Master antioxidant intracellular free-radical quenching coupled with mitochondrial ATP oxidative replenishment.",
+      "idealCycleWeeks": 8,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "anabolic-hypertrophy",
+      "name": "Anabolic Satellite Cell & Hyperplasia Regimen",
+      "tag": "Muscle Stem Cell Activation",
+      "compound_ids": [
+        "peg-mgf",
+        "igf-1-lr3"
+      ],
+      "summary": "Coordinated satellite stem cell expansion with PEG-MGF followed by accelerated myofibrillar protein synthesis and differentiation via IGF-1 LR3.",
+      "idealCycleWeeks": 6,
+      "bundleDiscountPercent": 15
+    },
+    {
+      "id": "triple-metabolic-stack",
+      "name": "Triple Incretin & Metabolic Synergy Regimen",
+      "tag": "Triple Incretin + Lipolysis",
+      "compound_ids": [
+        "retatrutide",
+        "cagrilintide",
+        "aod-9604"
+      ],
+      "summary": "Triple GLP-1/GIP/Glucagon receptor stimulation paired with amylin neuro-satiety and targeted adipocyte beta-3 lipolysis.",
+      "idealCycleWeeks": 12,
+      "bundleDiscountPercent": 15
+    }
+  ]
+}

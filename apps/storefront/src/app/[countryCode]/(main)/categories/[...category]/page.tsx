@@ -1,7 +1,11 @@
 import { Metadata } from "next"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 
-import { getCategoryByHandle, listCategories } from "@lib/data/categories"
+import {
+  getCategoryByHandle,
+  listCategories,
+  CATEGORY_HANDLE_ALIASES,
+} from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
 import { HttpTypes, StoreRegion } from "@medusajs/types"
 import CategoryTemplate from "@modules/categories/templates"
@@ -33,10 +37,13 @@ export async function generateStaticParams() {
   const categoryHandles = product_categories.map(
     (category: HttpTypes.StoreProductCategory) => category.handle
   )
+  const allHandles = Array.from(
+    new Set([...categoryHandles, ...Object.keys(CATEGORY_HANDLE_ALIASES)])
+  )
 
   const staticParams = countryCodes
     ?.map((countryCode: string | undefined) =>
-      categoryHandles.map((handle: string) => ({
+      allHandles.map((handle: string) => ({
         countryCode,
         category: [handle],
       }))
@@ -48,8 +55,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
+  const rawHandle = `${params.category.join("/")}`
+  const canonicalHandle = CATEGORY_HANDLE_ALIASES[rawHandle] || rawHandle
+
   try {
-    const productCategory = await getCategoryByHandle(params.category)
+    const productCategory = await getCategoryByHandle([canonicalHandle])
 
     const title = productCategory.name
 
@@ -59,7 +69,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        canonical: canonicalHandle,
       },
     }
   } catch {
@@ -70,6 +80,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CategoryPage(props: Props) {
   const searchParams = await props.searchParams
   const params = await props.params
+  const rawHandle = `${params.category.join("/")}`
+
+  if (CATEGORY_HANDLE_ALIASES[rawHandle]) {
+    const canonical = CATEGORY_HANDLE_ALIASES[rawHandle]
+    redirect(`/${params.countryCode}/categories/${canonical}`)
+  }
+
   const { sortBy, page } = searchParams
   const optionValueIds = parseOptionValueIds(searchParams)
 

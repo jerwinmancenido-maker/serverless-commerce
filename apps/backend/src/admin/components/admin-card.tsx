@@ -1,4 +1,12 @@
-import { Container, Heading, Text } from "@medusajs/ui"
+/**
+ * @file    apps/backend/src/admin/components/admin-card.tsx
+ * @module  AdminCard (Admin Extension)
+ * @purpose Modern flat section card for studios, dashboards, and detail views.
+ * @contracts
+ *   Component: AdminCard
+ */
+
+import { Heading, Text } from "@medusajs/ui"
 import type { ReactNode } from "react"
 
 export type AdminCardProps = {
@@ -27,7 +35,7 @@ export const AdminCard = ({
   const hasHeader = title || subtitle || badge || headerAction
 
   return (
-    <Container className={`p-0 rounded-2xl border border-slate-200/80 bg-white shadow-xs overflow-hidden ${className}`}>
+    <div className={`rounded-xl border border-slate-200/80 bg-white overflow-hidden ${className}`}>
       {hasHeader && (
         <div className={`flex flex-wrap items-center justify-between gap-3 ${headerClassName}`}>
           <div className="flex flex-col gap-y-0.5">
@@ -56,7 +64,7 @@ export const AdminCard = ({
       <div className={contentClassName}>{children}</div>
 
       {footer && <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50">{footer}</div>}
-    </Container>
+    </div>
   )
 }
 

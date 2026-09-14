@@ -137,8 +137,8 @@ export default function CommunityDirectory({
             </h1>
             <p className="mt-2 max-w-2xl text-xs leading-relaxed text-ui-fg-subtle">
               {protocolTitle
-                ? `Protected peer forum for researchers investigating ${protocolTitle}. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity under Philippine DPA 2012 compliance.`
-                : "Protected peer forum for verified researchers and clients. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity under Philippine DPA 2012 compliance."}
+                ? `Protected peer forum for researchers investigating ${protocolTitle}. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity.`
+                : "Protected peer forum for verified researchers and clients. Share reconstitution observations, solubility notes, and routine schedules with encrypted pseudonymity."}
             </p>
           </div>
 
@@ -272,7 +272,7 @@ export default function CommunityDirectory({
           <form action={identityAction} className="space-y-3 rounded-xl border border-ui-border-base bg-white p-5 shadow-xs">
             <h2 className="text-sm font-bold text-ui-fg-base">Researcher Alias & Identity</h2>
             <p className="text-xs leading-relaxed text-ui-fg-subtle">
-              Philippine DPA 2012 Protected. Your real name, order IDs, and shipping addresses are never displayed publicly.
+              Privacy Protected. Your real name, order IDs, and shipping addresses are never displayed publicly.
             </p>
             <input type="hidden" name="country_code" value={countryCode} />
             <label className="block text-xs font-semibold text-ui-fg-base">

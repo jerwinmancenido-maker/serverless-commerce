@@ -44,11 +44,11 @@ You must confirm that the selected format, strength, unit, concentration, and re
 
 You must provide accurate information, protect your credentials, and promptly report suspected unauthorized access. We may request proportionate identity, affiliation, intended-use, fraud-prevention, payment, or delivery verification. You are responsible for activity performed through your account except to the extent caused by our failure to apply reasonable security.
 
-## 7. Orders, prices, payment, and taxes
+## 7. Orders, prices, and payment
 
-An order is an offer to purchase. An automated confirmation acknowledges receipt but does not guarantee acceptance or fulfillment. We may correct an obvious price, stock, tax, shipping, or description error before fulfillment and will provide cancellation or refund options where appropriate.
+An order is an offer to purchase. An automated confirmation acknowledges receipt but does not guarantee acceptance or fulfillment. We may correct an obvious price, stock, shipping, or description error before fulfillment and will provide cancellation or refund options where appropriate.
 
-Prices are displayed in Philippine pesos unless stated otherwise. Taxes, shipping charges, and other fees will be shown before confirmation where reasonably determinable. Manual QR or other reviewed payment methods are not final until payment is authorized and recorded.
+Prices are displayed in Philippine pesos unless stated otherwise. Shipping charges and delivery handling fees will be shown before confirmation where reasonably determinable. Manual QR or other reviewed payment methods are not final until payment is authorized and recorded.
 
 ## 8. Shipping and product integrity
 

@@ -100,6 +100,8 @@ export type ResearchProtocolMolecularDetails = {
   pubchem_cid: number | null
   sequence_or_formula: string | null
   molecular_weight_g_per_mol: number | null
+  purity?: string | null
+  analytical_verification?: string | null
 }
 
 export type ResearchProtocolReconstitutionDetails = {

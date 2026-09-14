@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/protocol-editor-fields.tsx
+ * @module  ProtocolEditorFields
+ * @purpose Protocol editor form fields for dosage, reconstitution, and storage.
+ * @contracts
+ *   Service: ResearchTrackingModuleService
+ */
+
 import {
   Button,
   Input,

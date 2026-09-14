@@ -132,7 +132,7 @@ export const CATEGORY_1_TISSUE_REPAIR_PROTOCOLS: CompoundAnalyticalProtocol[] = 
       "**Occasional Mild Gastrointestinal Upset**: Rare, mild stomach cramping or loose stools when initiating research, often resolving as receptors adapt.",
       "**Blood Pressure & Dizziness Adjustments**: Temporary mild dizziness or blood pressure dips immediately following administration due to nitric oxide (eNOS) vasodilation.",
       "**Dosing Consistency & Tolerance**: Most research models utilize daily or twice-daily subcutaneous administration near the injury site for 4 to 6 weeks, followed by a 2-week washout.",
-      "**Reconstitution & Cold Chain Stability**: Aseptic mixing with Bacteriostatic Water is required; gently swirl rather than shake to protect peptide bonds, and refrigerate between 2°C–8°C."
+      "**Reconstitution & Refrigerated Stability**: Aseptic mixing with Bacteriostatic Water is required; gently swirl rather than shake to protect peptide bonds, and refrigerate between 2°C–8°C."
     ]
   },
   {

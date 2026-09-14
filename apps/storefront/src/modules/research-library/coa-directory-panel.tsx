@@ -47,7 +47,7 @@ export default function CoaDirectoryPanel() {
             Third-Party Certificates of Analysis (CoA)
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
-            Independent third-party analytical release certificates, reverse-phase HPLC chromatographic purity assays, and electrospray mass spectrometry records.
+            Analytical reference documents, compound characterization monographs, and laboratory verification records.
           </p>
         </div>
 
@@ -195,7 +195,7 @@ export default function CoaDirectoryPanel() {
               Batch Testing &amp; Analytical Release Policy
             </h4>
             <p className="text-xs text-slate-600 max-w-3xl leading-relaxed">
-              Independent third-party HPLC assays are conducted per production batch rotation. Compounds in current initial synthesis or research pilot production maintain raw synthesis Certificates of Conformance (CoC) on file. If your trial protocol requires specific lot verification documentation, our analytical desk will provide records directly.
+              Analytical documentation and reference specifications are maintained per production batch rotation. Compounds in current initial synthesis or research pilot production maintain synthesis Certificates of Conformance (CoC) on file. If your trial protocol requires specific lot documentation, our analytical desk will provide records directly.
             </p>
           </div>
           <a
@@ -219,7 +219,7 @@ export default function CoaDirectoryPanel() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs transition-opacity" />
+            <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm transition-opacity" />
           </TransitionChild>
 
           <div className="fixed inset-0 z-10 overflow-y-auto p-3 sm:p-6 md:p-8 flex items-center justify-center">

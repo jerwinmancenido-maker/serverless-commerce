@@ -1,8 +1,18 @@
+/**
+ * @file    apps/backend/src/admin/routes/research-protocols/compatible-products.tsx
+ * @module  CompatibleProducts
+ * @purpose Drawer and list linking research protocols to specific catalog products and variants.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols/:id/products
+ *   Service: ResearchTrackingModuleService · ProductModuleService
+ */
+
 import type { HttpTypes } from "@medusajs/framework/types"
 import { Button, Checkbox, Drawer, Input, Select, Text, toast } from "@medusajs/ui"
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
 
+import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { sdk } from "../../lib/sdk"
 import type {
   ResearchProtocolApplicability,
@@ -113,10 +123,10 @@ export const CompatibleProducts = ({ protocolId }: Props) => {
           </div>
         </div>
       )) : (
-        <div className="rounded-lg border border-dashed border-ui-border-base p-4">
-          <Text size="small" leading="compact" weight="plus">No products are linked yet.</Text>
-          <Text size="small" leading="compact" className="text-ui-fg-subtle">This guide can be completed and published independently.</Text>
-        </div>
+        <SovereignEmptyState
+          heading="No products are linked yet"
+          description="This guide can be completed and published independently."
+        />
       )}
 
       <Drawer open={open} onOpenChange={setOpen}>

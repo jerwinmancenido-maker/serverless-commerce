@@ -74,25 +74,49 @@ export const CustomersStudioPage: React.FC = () => {
             }))
           )
         } else {
-          setCustomerGroups([
-            { id: "cg_clinics", name: "Partner Clinics & MDs" },
-            { id: "cg_institutions", name: "Research Institutions" },
-            { id: "cg_vip", name: "VIP Compounding Tier" },
-          ])
+          setCustomerGroups([])
         }
       })
       .catch(() => {
-        setCustomerGroups([
-          { id: "cg_clinics", name: "Partner Clinics & MDs" },
-          { id: "cg_institutions", name: "Research Institutions" },
-          { id: "cg_vip", name: "VIP Compounding Tier" },
-        ])
+        setCustomerGroups([])
       })
   }, [])
 
-  // 2. Draft Storage
+  // 2. Draft Storage & Live Customer Retrieval
   useEffect(() => {
-    if (!isEditMode) {
+    if (isEditMode && customerId) {
+      sdk.admin.customer
+        .retrieve(customerId, { fields: "*groups,*addresses" })
+        .then((res: any) => {
+          const c = res.customer
+          if (c) {
+            const defaultAddr = c.addresses?.[0] || {}
+            setFormState({
+              archetype: (c.metadata?.archetype as any) || "clinical_physician",
+              firstName: c.first_name || "",
+              lastName: c.last_name || "",
+              email: c.email || "",
+              phone: c.phone || "",
+              companyName: c.company_name || "",
+              prcLicenseNumber: (c.metadata?.prc_license_number as string) || "",
+              facilityRegistrationId: (c.metadata?.facility_registration_id as string) || "",
+              customerGroupIds: (c.groups || []).map((g: any) => g.id),
+              shippingAddress: {
+                address1: defaultAddr.address_1 || "",
+                address2: defaultAddr.address_2 || "",
+                city: defaultAddr.city || "Taguig",
+                province: defaultAddr.province || "Metro Manila",
+                postalCode: defaultAddr.postal_code || "1634",
+                countryCode: defaultAddr.country_code || "ph",
+              },
+            })
+          }
+        })
+        .catch((err: any) => {
+          console.error("Failed to load customer:", err)
+          toast.error("Failed to load customer details.")
+        })
+    } else {
       try {
         const raw = localStorage.getItem(DRAFT_STORAGE_KEY)
         if (raw) {
@@ -106,7 +130,7 @@ export const CustomersStudioPage: React.FC = () => {
         console.error("Draft load error:", e)
       }
     }
-  }, [isEditMode])
+  }, [isEditMode, customerId])
 
   useEffect(() => {
     if (!isEditMode && formState) {
@@ -226,15 +250,24 @@ export const CustomersStudioPage: React.FC = () => {
         },
       }
 
-      const res = await sdk.admin.customer.create(payload)
-      const createdCustomer = res.customer
+      let targetCustomerId = customerId
+
+      if (isEditMode && customerId) {
+        await sdk.admin.customer.update(customerId, payload)
+        toast.success("Customer profile updated successfully!")
+      } else {
+        const res = await sdk.admin.customer.create(payload)
+        targetCustomerId = res.customer?.id
+        localStorage.removeItem(DRAFT_STORAGE_KEY)
+        toast.success("Customer successfully onboarded and verified!")
+      }
 
       // 2. Add to customer groups if selected
-      if (createdCustomer && formState.customerGroupIds.length > 0) {
+      if (targetCustomerId && formState.customerGroupIds.length > 0) {
         for (const groupId of formState.customerGroupIds) {
           try {
             await sdk.admin.customerGroup.batchCustomers(groupId, {
-              add: [createdCustomer.id],
+              add: [targetCustomerId],
             })
           } catch (err) {
             console.warn(`Could not add customer to group ${groupId}:`, err)
@@ -242,12 +275,10 @@ export const CustomersStudioPage: React.FC = () => {
         }
       }
 
-      localStorage.removeItem(DRAFT_STORAGE_KEY)
-      toast.success("Customer successfully onboarded and verified!")
       navigate("/customers")
     } catch (err: any) {
-      console.error("Failed to create customer:", err)
-      toast.error(err.message || "Failed to create customer")
+      console.error("Failed to save customer:", err)
+      toast.error(err.message || "Failed to save customer")
     } finally {
       setIsSubmitting(false)
     }
@@ -315,10 +346,10 @@ export const CustomersStudioPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Split Canvas Layout */}
-      <div className="max-w-[1700px] mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Form Builder (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-6">
+      {/* Main Maximized Canvas Layout */}
+      <div className="px-6 py-6 flex flex-col gap-8 w-full">
+        {/* Primary Form Builder */}
+        <div className="w-full flex flex-col gap-6">
           {/* Quick Presets Bar */}
           <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -734,8 +765,8 @@ export const CustomersStudioPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Live Buyer Passport Simulator (5 cols) */}
-        <div className="lg:col-span-5">
+        {/* Live Buyer Passport Simulator (Full Width Bottom Dock) */}
+        <div className="w-full mt-6">
           <CustomerPassportPreview state={formState} availableGroups={customerGroups} />
         </div>
       </div>

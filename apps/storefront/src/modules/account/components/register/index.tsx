@@ -37,19 +37,24 @@ const Register = ({ setCurrentView, agreement }: Props) => {
           </p>
         </div>
       )}
-      <h1 className="text-large-semi uppercase mb-6">
-        Create your account
-      </h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-4">
-        Keep your orders, protocols, routines, progress, Journal and rewards in
-        one private account.
-      </p>
+      <div className="w-full text-center mb-6">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 border border-slate-200">
+          <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          RUO Research Registration
+        </div>
+        <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+          Create Laboratory Account
+        </h1>
+        <p className="mt-1.5 text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+          Establish an encrypted research workspace for verified orders, protocol tracking, and compound data.
+        </p>
+      </div>
       {message?.state === "verification_required" && (
         <div
-          className="w-full mb-4 text-center text-base-regular text-ui-fg-base bg-ui-bg-subtle border border-ui-border-base rounded-rounded p-4"
+          className="w-full mb-6 text-center text-xs text-slate-700 bg-emerald-50/90 border border-emerald-200/90 rounded-xl p-4 shadow-2xs"
           data-testid="register-verification-message"
         >
-          We sent a verification link to <strong>{message.email}</strong>.
+          We sent a verification link to <strong className="font-bold text-emerald-950">{message.email}</strong>.
           Please check your inbox to verify your email, then sign in.
         </div>
       )}

@@ -1,5 +1,11 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/layout/components/cart-dropdown/index.tsx
+ * @module  CartDropdownComponent (Storefront Layout)
+ * @purpose Cart quick-view popover dropdown in the storefront navigation header.
+ */
+
 import {
   Popover,
   PopoverButton,
@@ -13,6 +19,7 @@ import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCanonicalProductSlug } from "@lib/util/product-handles"
+import { getLineItemThumbnail } from "@lib/util/get-line-item-thumbnail"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState, useCallback } from "react"
@@ -78,22 +85,6 @@ const CartDropdown = ({
     setActiveTimer(timer)
   }
 
-  const openAndCancel = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
-      setActiveTimer(undefined)
-    }
-
-    open()
-  }
-
-  const handleMouseLeave = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
-    }
-    const timer = setTimeout(close, 120)
-    setActiveTimer(timer)
-  }
 
   // Clean up the timer when the component unmounts
   useEffect(() => {
@@ -115,11 +106,7 @@ const CartDropdown = ({
   }, [totalItems, itemRef.current])
 
   return (
-    <div
-      className="h-full z-50 relative"
-      onMouseEnter={openAndCancel}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="h-full z-50 relative">
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
           <LocalizedClientLink
@@ -179,7 +166,7 @@ const CartDropdown = ({
                           onClick={close}
                         >
                           <Thumbnail
-                            thumbnail={item.thumbnail}
+                            thumbnail={getLineItemThumbnail(item)}
                             images={item.variant?.product?.images}
                             size="square"
                           />
@@ -250,7 +237,7 @@ const CartDropdown = ({
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                    <span>Cold-chain dispatched from Metro Manila &middot; J&amp;T Express</span>
+                    <span>Insulation foam protected &middot; Dispatched from Metro Manila</span>
                   </div>
                   <LocalizedClientLink href="/cart" onClick={close} className="w-full">
                     <button

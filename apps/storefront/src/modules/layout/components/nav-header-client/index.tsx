@@ -1,6 +1,12 @@
 "use client"
 
-import { useParams, usePathname } from "next/navigation"
+/**
+ * @file    apps/storefront/src/modules/layout/components/nav-header-client/index.tsx
+ * @module  NavHeaderClientComponent (Storefront Layout)
+ * @purpose Interactive navigation header bar with mega menus, user profile dropdown, and search.
+ */
+
+import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useState, useRef, useEffect, useCallback } from "react"
 import {
   ChevronDownMini,
@@ -16,9 +22,11 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { clx } from "@modules/common/components/ui"
 import { signout } from "@lib/data/customer"
 import CategoryMegaMenu from "../category-mega-menu"
-import ResearchMegaMenu from "../research-mega-menu"
+import ToolsMenu from "../tools-menu"
 import ResearchHubMegaMenu from "../research-hub-mega-menu"
 import SearchModal from "../search-modal"
+
+type ActiveMegaMenu = "compounds" | "tools" | "hub" | null
 
 type NavHeaderClientProps = {
   customer: HttpTypes.StoreCustomer | null
@@ -29,23 +37,47 @@ export default function NavHeaderClient({
   customer,
   signedIn,
 }: NavHeaderClientProps) {
-  const [megaMenuOpen, setMegaMenuOpen] = useState(false)
-  const [researchMenuOpen, setResearchMenuOpen] = useState(false)
-  const [hubMenuOpen, setHubMenuOpen] = useState(false)
+  const [activeMenu, setActiveMenu] = useState<ActiveMegaMenu>(null)
+  const [isPinned, setIsPinned] = useState(false)
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
-  const [accountTimer, setAccountTimer] = useState<
-    ReturnType<typeof setTimeout> | undefined
-  >(undefined)
 
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const { countryCode } = useParams() as { countryCode: string }
   const accountMenuRef = useRef<HTMLDivElement>(null)
 
+  const megaMenuOpen = activeMenu === "compounds"
+  const toolsMenuOpen = activeMenu === "tools"
+  const hubMenuOpen = activeMenu === "hub"
+
+  const closeAllMegaMenus = useCallback(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+    setActiveMenu(null)
+    setIsPinned(false)
+  }, [])
+
+  const handleTriggerClick = (menu: NonNullable<ActiveMegaMenu>) => {
+    closeAccountMenu()
+
+    if (activeMenu === menu) {
+      closeAllMegaMenus()
+    } else {
+      setActiveMenu(menu)
+      setIsPinned(true)
+    }
+  }
+
+  const togglePin = () => {
+    setIsPinned((prev) => !prev)
+  }
+
   const openAccountMenu = () => {
-    setMegaMenuOpen(false)
-    setResearchMenuOpen(false)
-    setHubMenuOpen(false)
+    closeAllMegaMenus()
     if (typeof window !== "undefined") {
       window.dispatchEvent(
         new CustomEvent("pepstack:header-popover-opened", { detail: "account" })
@@ -55,46 +87,49 @@ export default function NavHeaderClient({
   }
 
   const closeAccountMenu = useCallback(() => {
-    if (accountTimer) {
-      clearTimeout(accountTimer)
-      setAccountTimer(undefined)
-    }
     setAccountMenuOpen(false)
-  }, [accountTimer])
+  }, [])
 
-  const openAccountMenuAndCancel = () => {
-    if (accountTimer) {
-      clearTimeout(accountTimer)
-      setAccountTimer(undefined)
-    }
-    openAccountMenu()
-  }
-
-  const handleAccountMouseLeave = () => {
-    if (accountTimer) {
-      clearTimeout(accountTimer)
-    }
-    const timer = setTimeout(closeAccountMenu, 150)
-    setAccountTimer(timer)
-  }
-
-  // Clean up timer on unmount
+  // ESC key listener to close active menus
   useEffect(() => {
-    return () => {
-      if (accountTimer) {
-        clearTimeout(accountTimer)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeAllMegaMenus()
+        closeAccountMenu()
+        setSearchModalOpen(false)
       }
     }
-  }, [accountTimer])
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [closeAllMegaMenus, closeAccountMenu])
 
-  // Close menus when route changes
+  // Close menus when route or query params change
   useEffect(() => {
-    setMegaMenuOpen(false)
-    setResearchMenuOpen(false)
-    setHubMenuOpen(false)
+    closeAllMegaMenus()
     closeAccountMenu()
     setSearchModalOpen(false)
-  }, [pathname, closeAccountMenu])
+  }, [pathname, searchParams, closeAccountMenu, closeAllMegaMenus])
+
+  // Auto-close open menus on page scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (activeMenu) {
+        closeAllMegaMenus()
+      }
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [activeMenu, closeAllMegaMenus])
+
+  // Auto-close open menus when a product variant is selected
+  useEffect(() => {
+    const handleVariant = () => {
+      closeAllMegaMenus()
+    }
+    window.addEventListener("pepstack:variant_selected", handleVariant)
+    return () =>
+      window.removeEventListener("pepstack:variant_selected", handleVariant)
+  }, [closeAllMegaMenus])
 
   // Click outside listener for account dropdown
   useEffect(() => {
@@ -117,14 +152,13 @@ export default function NavHeaderClient({
       if (customEvent.detail !== "account") {
         setAccountMenuOpen(false)
       }
-      if (customEvent.detail !== "megamenu") {
-        setMegaMenuOpen(false)
-      }
-      if (customEvent.detail !== "researchmenu") {
-        setResearchMenuOpen(false)
-      }
-      if (customEvent.detail !== "hubmenu") {
-        setHubMenuOpen(false)
+      if (
+        customEvent.detail !== "megamenu" &&
+        customEvent.detail !== "protocolsmenu" &&
+        customEvent.detail !== "researchmenu" &&
+        customEvent.detail !== "hubmenu"
+      ) {
+        closeAllMegaMenus()
       }
     }
 
@@ -135,7 +169,7 @@ export default function NavHeaderClient({
         handleOtherPopover
       )
     }
-  }, [])
+  }, [closeAllMegaMenus])
 
   const formatResearcherName = (cust: HttpTypes.StoreCustomer | null) => {
     if (!cust) return "Account"
@@ -150,123 +184,110 @@ export default function NavHeaderClient({
 
   return (
     <>
-      {/* Desktop Main Navigation Links */}
-      <div className="hidden small:flex items-center gap-x-8 h-full">
-        {/* Peptides Mega-Menu Trigger */}
-        <div
-          className="relative h-full flex items-center"
-          onMouseEnter={() => {
-            setMegaMenuOpen(true)
-            setResearchMenuOpen(false)
-            setHubMenuOpen(false)
-            closeAccountMenu()
-          }}
-        >
+      {/* Desktop Main Navigation Links (4 Semantic Pillars) */}
+      <div className="hidden small:flex items-center gap-x-3 lg:gap-x-5 xl:gap-x-6 h-full">
+        {/* Pillar 1: Compounds Mega-Menu Trigger */}
+        <div className="relative h-full flex items-center">
           <button
             type="button"
-            onClick={() => {
-              setMegaMenuOpen(!megaMenuOpen)
-              setResearchMenuOpen(false)
-              setHubMenuOpen(false)
-            }}
+            onClick={() => handleTriggerClick("compounds")}
             className={clx(
-              "flex items-center gap-1 text-sm font-medium transition-colors py-2 focus:outline-none",
+              "flex items-center gap-1.5 text-sm font-medium transition-all py-1.5 px-2.5 rounded-lg focus:outline-none cursor-pointer",
               megaMenuOpen
-                ? "text-emerald-500 font-semibold"
-                : "text-ui-fg-subtle hover:text-ui-fg-base"
+                ? "bg-emerald-50 text-emerald-700 font-semibold border border-emerald-300 shadow-2xs"
+                : pathname.startsWith("/categories") || pathname.startsWith("/products") || pathname === "/store"
+                ? "text-emerald-600 font-semibold"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/80"
             )}
             aria-expanded={megaMenuOpen}
+            aria-haspopup="true"
+            title="Click to view Compounds catalog"
           >
-            <span>Peptides</span>
+            <span>Compounds</span>
             <ChevronDownMini
               className={clx(
-                "h-4 w-4 transition-transform duration-200",
-                megaMenuOpen && "rotate-180 text-emerald-500"
+                "h-4 w-4 transition-transform duration-200 shrink-0",
+                megaMenuOpen ? "rotate-180 text-emerald-600" : "text-slate-400"
               )}
             />
           </button>
         </div>
 
-        {/* Research Library Mega-Menu Trigger */}
-        <div
-          className="relative h-full flex items-center"
-          onMouseEnter={() => {
-            setResearchMenuOpen(true)
-            setMegaMenuOpen(false)
-            setHubMenuOpen(false)
-            closeAccountMenu()
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => {
-              setResearchMenuOpen(!researchMenuOpen)
-              setMegaMenuOpen(false)
-              setHubMenuOpen(false)
-            }}
+        {/* Pillar 2: Research Library Direct Link */}
+        <div className="relative h-full flex items-center">
+          <LocalizedClientLink
+            href="/research-library"
+            onClick={closeAllMegaMenus}
             className={clx(
-              "flex items-center gap-1.5 text-sm font-medium transition-colors py-2 focus:outline-none",
-              researchMenuOpen || pathname.includes("/research-library") || pathname.includes("/research-protocols")
-                ? "text-emerald-500 font-semibold"
-                : "text-ui-fg-subtle hover:text-ui-fg-base"
+              "flex items-center text-sm font-medium transition-all py-1.5 px-2.5 rounded-lg focus:outline-none cursor-pointer",
+              pathname.startsWith("/research-library") ||
+                pathname.startsWith("/research-articles") ||
+                pathname.startsWith("/peptide-comparisons") ||
+                pathname.startsWith("/research-protocols")
+                ? "text-emerald-600 font-semibold bg-emerald-50/70 border border-emerald-200"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/80"
             )}
-            aria-expanded={researchMenuOpen}
           >
             <span>Research Library</span>
-            <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded">
-              Open Access
-            </span>
+          </LocalizedClientLink>
+        </div>
+
+        {/* Pillar 3: Calculators & Tools Dropdown Trigger */}
+        <div className="relative h-full flex items-center">
+          <button
+            type="button"
+            onClick={() => handleTriggerClick("tools")}
+            className={clx(
+              "flex items-center gap-1.5 text-sm font-medium transition-all py-1.5 px-2.5 rounded-lg focus:outline-none cursor-pointer",
+              toolsMenuOpen
+                ? "bg-emerald-50 text-emerald-700 font-semibold border border-emerald-300 shadow-2xs"
+                : pathname.includes("/calculator") ||
+                  pathname.includes("/dosage-chart") ||
+                  pathname.includes("/research-stacks") ||
+                  pathname.includes("/custom-kit-builder") ||
+                  pathname.startsWith("/learn")
+                ? "text-emerald-600 font-semibold"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/80"
+            )}
+            aria-expanded={toolsMenuOpen}
+            aria-haspopup="true"
+            title="Click to view Calculators & Tools"
+          >
+            <span>Calculators &amp; Tools</span>
             <ChevronDownMini
               className={clx(
-                "h-4 w-4 transition-transform duration-200",
-                researchMenuOpen && "rotate-180 text-emerald-500"
+                "h-4 w-4 transition-transform duration-200 shrink-0",
+                toolsMenuOpen ? "rotate-180 text-emerald-600" : "text-slate-400"
               )}
             />
           </button>
         </div>
 
-        {/* Research Hub Mega-Menu Trigger */}
-        <div
-          className="relative h-full flex items-center"
-          onMouseEnter={() => {
-            setHubMenuOpen(true)
-            setMegaMenuOpen(false)
-            setResearchMenuOpen(false)
-            closeAccountMenu()
-          }}
-        >
+        {/* Pillar 4: Researcher Portal Mega-Menu Trigger */}
+        <div className="relative h-full flex items-center">
           <button
             type="button"
-            onClick={() => {
-              setHubMenuOpen(!hubMenuOpen)
-              setMegaMenuOpen(false)
-              setResearchMenuOpen(false)
-            }}
+            onClick={() => handleTriggerClick("hub")}
             className={clx(
-              "flex items-center gap-1.5 text-sm font-medium transition-colors py-2 focus:outline-none",
-              hubMenuOpen || pathname.includes("/account/research-hub")
-                ? "text-emerald-500 font-semibold"
-                : "text-ui-fg-subtle hover:text-ui-fg-base"
+              "flex items-center gap-1.5 text-sm font-medium transition-all py-1.5 px-2.5 rounded-lg focus:outline-none cursor-pointer",
+              hubMenuOpen
+                ? "bg-emerald-50 text-emerald-700 font-semibold border border-emerald-300 shadow-2xs"
+                : pathname.includes("/account/research-hub")
+                ? "text-emerald-600 font-semibold"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/80"
             )}
             aria-expanded={hubMenuOpen}
+            aria-haspopup="true"
+            title="Click to view Researcher Portal"
           >
-            {signedIn ? (
-              <>
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Research Hub</span>
-              </>
-            ) : (
-              <>
-                <span>Research Hub</span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
-                  Client Portal
-                </span>
-              </>
+            {signedIn && (
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
             )}
+            <span>Researcher Portal</span>
             <ChevronDownMini
               className={clx(
-                "h-4 w-4 transition-transform duration-200",
-                hubMenuOpen && "rotate-180 text-emerald-500"
+                "h-4 w-4 transition-transform duration-200 shrink-0",
+                hubMenuOpen ? "rotate-180 text-emerald-600" : "text-slate-400"
               )}
             />
           </button>
@@ -294,8 +315,6 @@ export default function NavHeaderClient({
           <div
             className="relative"
             ref={accountMenuRef}
-            onMouseEnter={openAccountMenuAndCancel}
-            onMouseLeave={handleAccountMouseLeave}
           >
             <button
               type="button"
@@ -303,10 +322,10 @@ export default function NavHeaderClient({
                 if (accountMenuOpen) {
                   closeAccountMenu()
                 } else {
-                  openAccountMenuAndCancel()
+                  openAccountMenu()
                 }
               }}
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle transition-colors focus:outline-none"
+              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle transition-colors focus:outline-none cursor-pointer"
               data-testid="nav-account-dropdown-btn"
               aria-expanded={accountMenuOpen}
             >
@@ -417,17 +436,23 @@ export default function NavHeaderClient({
       {/* Embedded Mega-Menu Panels */}
       <CategoryMegaMenu
         isOpen={megaMenuOpen}
-        onClose={() => setMegaMenuOpen(false)}
+        onClose={closeAllMegaMenus}
+        isPinned={isPinned && megaMenuOpen}
+        onTogglePin={togglePin}
       />
 
-      <ResearchMegaMenu
-        isOpen={researchMenuOpen}
-        onClose={() => setResearchMenuOpen(false)}
+      <ToolsMenu
+        isOpen={toolsMenuOpen}
+        onClose={closeAllMegaMenus}
+        isPinned={isPinned && toolsMenuOpen}
+        onTogglePin={togglePin}
       />
 
       <ResearchHubMegaMenu
         isOpen={hubMenuOpen}
-        onClose={() => setHubMenuOpen(false)}
+        onClose={closeAllMegaMenus}
+        isPinned={isPinned && hubMenuOpen}
+        onTogglePin={togglePin}
         signedIn={signedIn}
         customer={customer}
       />

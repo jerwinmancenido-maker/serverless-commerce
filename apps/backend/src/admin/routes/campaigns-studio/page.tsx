@@ -30,18 +30,18 @@ import { sdk } from "../../lib/sdk"
 const DRAFT_STORAGE_KEY = "hacien_campaign_studio_draft_v1"
 
 const DEFAULT_STATE: CampaignStudioState = {
-  name: "Q3 Clinical Longevity & Recovery Series",
-  campaignIdentifier: "CAMP-LONGEVITY-2026",
-  description: "Targeted seasonal promotion for verified clinical partners and medical researchers focusing on BPC-157 and GHK-Cu protocols.",
+  name: "",
+  campaignIdentifier: "",
+  description: "",
   startsAt: new Date().toISOString().slice(0, 10),
-  endsAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-  hasEndDate: true,
+  endsAt: "",
+  hasEndDate: false,
   budgetType: "spend",
-  budgetLimit: 250000,
+  budgetLimit: 50000,
   currencyCode: "php",
-  targetChannels: ["Partner Clinics & MDs", "Direct Research Storefront"],
-  promotionalHeadline: "Q3 Clinical Series: Up to 25% Off Verified Research Compounds",
-  estimatedAvgOrderValue: 8500,
+  targetChannels: ["Storefront Direct", "B2B Partner Network"],
+  promotionalHeadline: "",
+  estimatedAvgOrderValue: 5000,
 }
 
 export const CampaignsStudioPage: React.FC = () => {
@@ -55,9 +55,35 @@ export const CampaignsStudioPage: React.FC = () => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [draftRestored, setDraftRestored] = useState(false)
 
-  // 1. Draft Storage
+  // 1. Draft Storage & Live Campaign Retrieval
   useEffect(() => {
-    if (!isEditMode) {
+    if (isEditMode && campaignId) {
+      sdk.admin.campaign
+        .retrieve(campaignId)
+        .then((res: any) => {
+          const c = res.campaign
+          if (c) {
+            setFormState({
+              name: c.name || "",
+              campaignIdentifier: c.campaign_identifier || "",
+              description: c.description || "",
+              startsAt: c.starts_at ? c.starts_at.slice(0, 10) : "",
+              endsAt: c.ends_at ? c.ends_at.slice(0, 10) : "",
+              hasEndDate: Boolean(c.ends_at),
+              budgetType: c.budget?.type || "spend",
+              budgetLimit: c.budget?.limit || 50000,
+              currencyCode: c.budget?.currency_code || "php",
+              targetChannels: ["Storefront Direct", "B2B Partner Network"],
+              promotionalHeadline: c.name || "",
+              estimatedAvgOrderValue: 5000,
+            })
+          }
+        })
+        .catch((err: any) => {
+          console.error("Failed to load campaign:", err)
+          toast.error("Failed to load campaign details.")
+        })
+    } else {
       try {
         const raw = localStorage.getItem(DRAFT_STORAGE_KEY)
         if (raw) {
@@ -71,7 +97,7 @@ export const CampaignsStudioPage: React.FC = () => {
         console.error("Draft load error:", e)
       }
     }
-  }, [isEditMode])
+  }, [isEditMode, campaignId])
 
   useEffect(() => {
     if (!isEditMode && formState) {
@@ -98,23 +124,18 @@ export const CampaignsStudioPage: React.FC = () => {
   // Quick preset loader
   const applyPreset = (preset: "spend" | "usage") => {
     if (preset === "spend") {
-      setFormState({
-        ...formState,
+      setFormState((prev) => ({
+        ...prev,
         budgetType: "spend",
-        budgetLimit: 500000,
-        name: "Institutional Volume Incentive (₱500K Spend Cap)",
-        campaignIdentifier: "CAMP-VOLUME-500K",
-        promotionalHeadline: "Wholesale Compounding: Up to ₱500,000 Institutional Subsidy Pool",
-      })
+        budgetLimit: 250000,
+        currencyCode: "php",
+      }))
     } else {
-      setFormState({
-        ...formState,
+      setFormState((prev) => ({
+        ...prev,
         budgetType: "usage",
-        budgetLimit: 1000,
-        name: "First 1,000 Orders Flash Launch",
-        campaignIdentifier: "CAMP-FIRST-1000",
-        promotionalHeadline: "Launch Day Protocol: First 1,000 Orders Receive Tier 1 Compounding Access",
-      })
+        budgetLimit: 500,
+      }))
     }
     toast.success(`Configured ${preset === "spend" ? "Spend Limit" : "Usage Limit"} preset.`)
   }
@@ -164,14 +185,19 @@ export const CampaignsStudioPage: React.FC = () => {
         },
       }
 
-      await sdk.admin.campaign.create(payload)
+      if (isEditMode && campaignId) {
+        await sdk.admin.campaign.update(campaignId, payload)
+        toast.success("Strategic campaign updated successfully!")
+      } else {
+        await sdk.admin.campaign.create(payload)
+        localStorage.removeItem(DRAFT_STORAGE_KEY)
+        toast.success("Strategic campaign successfully created and registered!")
+      }
 
-      localStorage.removeItem(DRAFT_STORAGE_KEY)
-      toast.success("Strategic campaign successfully created and registered!")
       navigate("/promotions")
     } catch (err: any) {
-      console.error("Failed to create campaign:", err)
-      toast.error(err.message || "Failed to create campaign")
+      console.error("Failed to save campaign:", err)
+      toast.error(err.message || "Failed to save campaign")
     } finally {
       setIsSubmitting(false)
     }
@@ -239,10 +265,10 @@ export const CampaignsStudioPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Split Canvas Layout */}
-      <div className="max-w-[1700px] mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Form Builder (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-6">
+      {/* Main Maximized Canvas Layout */}
+      <div className="px-6 py-6 flex flex-col gap-8 w-full">
+        {/* Primary Form Builder */}
+        <div className="w-full flex flex-col gap-6">
           {/* Quick Presets Bar */}
           <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -486,8 +512,8 @@ export const CampaignsStudioPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Live Simulator (5 cols) */}
-        <div className="lg:col-span-5">
+        {/* Live Campaign Exposure & ROI Simulator (Full Width Bottom Dock) */}
+        <div className="w-full mt-6">
           <CampaignBudgetPreview state={formState} />
         </div>
       </div>

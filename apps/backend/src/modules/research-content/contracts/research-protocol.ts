@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/modules/research-content/contracts/research-protocol.ts
+ * @module  ResearchProtocolContracts (Research Content Module)
+ * @purpose Zod schemas, types, and validation contracts for analytical research protocols and monographs.
+ * @contracts
+ *   API:     GET/POST /admin/research-protocols · GET /store/research-protocols
+ *   Service: ResearchContentModuleService
+ */
+
 import { z } from "@medusajs/framework/zod"
 
 import {
@@ -16,7 +25,7 @@ const ProtocolKey = z
   .trim()
   .min(1)
   .max(120)
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+  .regex(/^[a-z0-9]+(?:[-_][a-z0-9]+)*$/)
 const ShortText = z.string().trim().min(1).max(255)
 const LongText = z.string().trim().max(20_000)
 const OptionalLongText = LongText.nullable().default(null)
@@ -47,26 +56,33 @@ const ResearchMaterial = z.strictObject({
   equipment_notes: z.string().trim().max(2_000).nullable().default(null),
 })
 
-const ResearchReference = z.strictObject({
-  reference_key: ProtocolKey.nullable().default(null),
-  title: ShortText,
-  authors: z.string().trim().max(1_000).nullable().default(null),
-  published_at: z.string().trim().max(64).nullable().default(null),
-  url: z.url().nullable().default(null),
-  doi: z.string().trim().max(255).nullable().default(null),
-  evidence_type: z.string().trim().max(120).nullable().default(null),
-  supported_claim: z.string().trim().max(2_000).nullable().default(null),
-  customer_annotation: z.string().trim().max(2_000).nullable().default(null),
-})
+const ResearchReference = z
+  .object({
+    reference_key: ProtocolKey.nullable().default(null),
+    title: ShortText,
+    authors: z.string().trim().max(1_000).nullable().default(null),
+    published_at: z.string().trim().max(64).nullable().default(null),
+    url: z.url().nullable().default(null),
+    doi: z.string().trim().max(255).nullable().default(null),
+    evidence_type: z.string().trim().max(120).nullable().default(null),
+    supported_claim: z.string().trim().max(2_000).nullable().default(null),
+    customer_annotation: z.string().trim().max(2_000).nullable().default(null),
+    pmid: z.string().trim().max(64).nullable().optional(),
+    journal: z.string().trim().max(255).nullable().optional(),
+    year: z.union([z.number(), z.string()]).nullable().optional(),
+  })
+  .passthrough()
 
-const ResearchQuickReference = z.strictObject({
-  key: ProtocolKey,
-  label: ShortText,
-  value: z.string().trim().min(1).max(500),
-  description: z.string().trim().max(2_000).nullable().default(null),
-  evidence_label: z.string().trim().max(255).nullable().default(null),
-  reference_keys: z.array(ProtocolKey).max(20).default([]),
-})
+const ResearchQuickReference = z
+  .object({
+    key: ProtocolKey,
+    label: ShortText,
+    value: z.string().trim().min(1).max(500),
+    description: z.string().trim().max(2_000).nullable().default(null),
+    evidence_label: z.string().trim().max(255).nullable().default(null),
+    reference_keys: z.array(ProtocolKey).max(20).default([]),
+  })
+  .passthrough()
 
 const ResearchProtocolScheduleRow = z.strictObject({
   row_key: ProtocolKey.nullable().default(null),
@@ -138,6 +154,8 @@ const ResearchMolecularDetails = z.strictObject({
   pubchem_cid: z.number().int().positive().nullable().default(null),
   sequence_or_formula: z.string().trim().max(2_000).nullable().default(null),
   molecular_weight_g_per_mol: z.number().positive().nullable().default(null),
+  purity: z.string().trim().max(255).nullable().optional(),
+  analytical_verification: z.string().trim().max(255).nullable().optional(),
 })
 
 const ResearchReconstitutionDetails = z.strictObject({
@@ -157,17 +175,18 @@ const ResearchStorageDetails = z.strictObject({
 
 const ResearchReconstitutionOption = z.strictObject({
   diluentMl: z.number().positive(),
-  concMgMl: z.number().positive(),
+  concMgMl: z.number().nonnegative(),
   label: z.string().trim().max(255),
   tickConversion: z.string().trim().max(255),
 })
 
-const ResearchVialStrengthOption = z.strictObject({
-  vialMg: z.number().positive(),
-  diluentMl: z.number().positive(),
-  concMgMl: z.number().positive(),
+const ResearchVialStrengthOption = z.object({
+  vialMg: z.number().nonnegative(),
+  diluentMl: z.number().nonnegative(),
+  concMgMl: z.number().nonnegative(),
   badge: z.string().trim().max(120),
-})
+  isStandard: z.boolean().optional(),
+}).passthrough()
 
 const ResearchSyringeGraduation = z.strictObject({
   doseDisplay: z.string().trim().max(120),
@@ -177,18 +196,37 @@ const ResearchSyringeGraduation = z.strictObject({
   tickLabel: z.string().trim().max(255),
 })
 
+const ResearchCalibratedInstrument = z.object({
+  instrumentType: z.string().trim().max(120),
+  barrelStandard: z.string().trim().max(255),
+  needleGauge: z.string().trim().max(120),
+  needleLength: z.string().trim().max(120),
+  needleWall: z.string().trim().max(255),
+  hubType: z.string().trim().max(255),
+  recommendedBarrel: z.string().trim().max(255),
+  transferNeedle: z.string().trim().max(255),
+})
+
 const ResearchSyringeGuide = z.strictObject({
   syringeType: z.string().trim().max(255),
-  standardIUDisplay: z.string().trim().max(120).optional(),
-  needleGauge: z.string().trim().max(120).optional(),
-  deadSpaceCorrection: z.string().trim().max(255).optional(),
+  standardIUDisplay: z.string().trim().max(120).nullable().optional(),
+  needleGauge: z.string().trim().max(120).nullable().optional(),
+  needleLength: z.string().trim().max(120).nullable().optional(),
+  hubType: z.string().trim().max(255).nullable().optional(),
+  deadSpaceCorrection: z.string().trim().max(255).nullable().optional(),
+  recommendedBarrel: z.string().trim().max(255).nullable().optional(),
+  transferNeedle: z.string().trim().max(255).nullable().optional(),
+  calibratedInstrument: ResearchCalibratedInstrument.nullable().optional(),
   graduations: z.array(ResearchSyringeGraduation).default([]),
 })
 
-const ResearchBlendConstituent = z.strictObject({
-  name: z.string().trim().max(255),
-  ratioMg: z.number().nonnegative(),
-  percentageOfTotal: z.number().nonnegative(),
+const ResearchBlendConstituent = z.object({
+  name: z.string().trim().max(255).nullable().optional(),
+  compoundName: z.string().trim().max(255).nullable().optional(),
+  ratioMg: z.number().nonnegative().nullable().optional(),
+  ratio: z.string().trim().max(255).nullable().optional(),
+  percentageOfTotal: z.number().nonnegative().nullable().optional(),
+  primaryPathway: z.string().trim().max(500).nullable().optional(),
 })
 
 export const ResearchBundleVial = z.object({
@@ -207,11 +245,22 @@ export const ResearchProtocolContent = z.strictObject({
   compound_name: z.string().trim().max(255).nullable().default(null),
   short_introduction: z.string().trim().max(2_000).nullable().default(null),
   product_format: z.string().trim().max(120).nullable().default(null),
+  primary_delivery_route: z.string().trim().max(50).nullable().optional(),
+  delivery_routes: z.array(z.string().trim().max(50)).optional(),
   category: z.string().trim().max(255).nullable().default(null),
-  protocol_category_type: z.enum(["single_peptide", "blend", "bundle", "topical"]).nullable().default(null),
+  protocol_category_type: z.enum(["single_peptide", "blend", "bundle", "topical", "supply"]).nullable().default(null),
   full_description: z.string().trim().max(10_000).nullable().default(null),
   investigated_benefits: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
   adverse_observations: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
+  clinical_adverse_observations: z.array(z.string().trim()).optional(),
+  community_reported_observations: z.array(z.string().trim()).optional(),
+  adverse_mechanisms: z.record(z.string(), z.string()).nullable().optional(),
+  mitigation_protocols: z.array(z.string().trim()).optional(),
+  scientific_dossier: z.record(z.string(), z.any()).nullable().optional(),
+  oral_guide: z.record(z.string(), z.any()).nullable().optional(),
+  nasal_guide: z.record(z.string(), z.any()).nullable().optional(),
+  topical_guide: z.record(z.string(), z.any()).nullable().optional(),
+  supply_guide: z.record(z.string(), z.any()).nullable().optional(),
   molecular_details: ResearchMolecularDetails.nullable().default(null),
   reconstitution_details: ResearchReconstitutionDetails.nullable().default(null),
   reconstitution_options: z.record(z.string(), ResearchReconstitutionOption).nullable().optional(),
@@ -296,7 +345,7 @@ export const AdminListResearchProtocols = z.strictObject({
   product_id: RequiredId.optional(),
   status: z.enum(RESEARCH_CONTENT_STATUSES).optional(),
   link_status: z.enum(["linked", "unlinked"]).optional(),
-  limit: z.coerce.number().int().min(1).max(100).default(50),
+  limit: z.coerce.number().int().min(1).max(500).default(50),
   offset: z.coerce.number().int().min(0).default(0),
 })
 

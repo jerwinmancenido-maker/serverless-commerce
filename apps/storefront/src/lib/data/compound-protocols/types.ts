@@ -1,3 +1,12 @@
+/**
+ * @file    apps/storefront/src/lib/data/compound-protocols/types.ts
+ * @module  CompoundProtocolsTypes
+ * @purpose Strict TypeScript definitions and contracts for peptide monographs, reconstitution options, and calibration guides.
+ * @contracts
+ *   Type: CompoundAnalyticalProtocol
+ *   Catalog: ALL_COMPOUND_PROTOCOLS (@lib/data/compound-protocols)
+ */
+
 export type TitrationStep = {
   stage: string              // e.g., "Phase 1: Initial Tolerance Titration"
   timeframe: string          // e.g., "Weeks 1–2" or "Days 1–5"
@@ -25,6 +34,17 @@ export type BlendConstituent = {
 // Delivery route classification for calculator mode selection
 export type DeliveryRoute = "subq" | "nasal" | "oral" | "topical"
 
+export type CalibratedInstrument = {
+  instrumentType: "u100_insulin_syringe" | "oral_dispenser" | "nasal_atomizer" | "cosmetic_dropper" | string
+  barrelStandard: string
+  needleGauge: string
+  needleLength: string
+  needleWall: string
+  hubType: string
+  recommendedBarrel: string
+  transferNeedle: string
+}
+
 // Nasal atomizer calibration data
 export type NasalGuide = {
   pumpVolumeMl: number        // Fixed metered pump output per spray, e.g., 0.10
@@ -32,6 +52,7 @@ export type NasalGuide = {
   defaultDiluentMl: number    // e.g., 5.0
   deviceLabel: string         // e.g., "Amber nasal spray bottle (10 mL)"
   notes?: string
+  calibratedInstrument?: CalibratedInstrument
 }
 
 // Oral solution calibration data
@@ -39,6 +60,7 @@ export type OralGuide = {
   defaultSuspensionMl: number // e.g., 30.0
   deviceLabel: string         // e.g., "Calibrated oral dropper (1 mL marks)"
   notes?: string
+  calibratedInstrument?: CalibratedInstrument
 }
 
 // Laboratory supplies & hardware handling guide
@@ -84,6 +106,17 @@ export type CompoundAnalyticalProtocol = {
   longDescription?: string   // Comprehensive publication-grade scientific narrative: mechanism of action, receptor binding, pathways
   investigatedBenefits?: string[] // Key researched endpoints and observed mechanisms
   adverseObservations?: string[]  // Practical adverse observations, safety notes, and sensitivities
+  clinicalAdverseObservations?: string[]
+  communityReportedObservations?: string[]
+  adverseMechanisms?: Record<string, string>
+  mitigationProtocols?: string[]
+  scientificDossier?: {
+    title?: string
+    documentPath?: string
+    webUrl?: string
+    keyReceptors?: string[]
+    hasCommunityAdverseProfile?: boolean
+  }
   category: 
     | "Tissue Repair & Healing"
     | "Skin, Hair & Cellular Matrix"
@@ -99,6 +132,7 @@ export type CompoundAnalyticalProtocol = {
   storeProductHandle?: string // Defined only if catalogStatus === "in_catalog"
   purityStandard?: string
   evidenceTier?: string
+  pubchemCid?: number
   isBlend?: boolean
   protocolCategoryType?: "single_peptide" | "blend" | "bundle" | "topical"
   bundleVials?: BundleVial[]
@@ -120,6 +154,7 @@ export type CompoundAnalyticalProtocol = {
     badge: string
     isStandard?: boolean
   }>
+  primaryDeliveryRoute?: DeliveryRoute
   // Optional: specifies which routes are clinically applicable for this compound.
   // When absent or undefined, defaults to ["subq"] (standard injectable).
   deliveryRoutes?: DeliveryRoute[]
@@ -139,6 +174,8 @@ export type CompoundAnalyticalProtocol = {
     handlingRule: string     // Visual inspection, light sensitivity, and particulate warnings
   }
   dosing: {
+    routeLabel?: string
+    deliveryRoute?: DeliveryRoute
     standardDoseDisplay: string
     standardDoseMcg: number
     cadence: string
@@ -150,6 +187,13 @@ export type CompoundAnalyticalProtocol = {
   syringeGuide: {
     syringeType: string      // "Standard U-100 Insulin Syringe (100 units = 1.0 mL)"
     standardIUDisplay: string// e.g., "5.0 units (0.05 mL)"
+    needleGauge?: string
+    needleLength?: string
+    hubType?: string
+    deadSpaceCorrection?: string
+    recommendedBarrel?: string
+    transferNeedle?: string
+    calibratedInstrument?: CalibratedInstrument
     graduations: SyringeGraduation[] // Minimum 3 graduations
   }
   storage: {
@@ -159,12 +203,41 @@ export type CompoundAnalyticalProtocol = {
   }
   molecularDetails?: {
     casNumber?: string
+    casNumberAlternate?: string
+    casNotes?: string
     formula?: string
     molarMass?: string
     pubchemCid?: number
+    sequence?: string
     sequenceOrFormula?: string
     molecularWeightGPerMol?: number
+    purity?: string
+    analyticalVerification?: string
+    stoichiometryNote?: string
+    endotoxin?: string
   }
+  quickReference?: Array<{
+    key: string
+    label: string
+    value: string
+    description?: string | null
+    evidence_label?: string | null
+    reference_keys?: string[]
+  }>
+  references?: Array<{
+    reference_key?: string
+    title: string
+    authors?: string
+    published_at?: string
+    journal?: string
+    year?: number
+    url?: string | null
+    doi?: string | null
+    pmid?: string | null
+    evidence_type?: string
+    supported_claim?: string
+    customer_annotation?: string
+  }>
   citations: {
     sourceReference: string  // PubMed PMID or primary literature citation
     notes: string

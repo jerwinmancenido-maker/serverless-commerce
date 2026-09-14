@@ -1,9 +1,24 @@
+/**
+ * @file    apps/backend/src/admin/routes/rewards/page.tsx
+ * @module  RewardsAdminPage
+ * @purpose Admin settings for customer rewards points, redemption limits, and referral programs with live SADS 2.0 CRUD rules.
+ * @contracts
+ *   Route:   /app/rewards
+ *   API:     GET/POST /admin/rewards/program · POST /admin/rewards/rules · DELETE /admin/rewards/rules/:id
+ *   Service: RewardsModuleService
+ */
+
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { Sparkles } from "@medusajs/icons"
-import { Button, Container, Heading, Input, Label, Select, Text, toast } from "@medusajs/ui"
+import { Sparkles, Plus, Trash, CheckCircleSolid, ArrowPath } from "@medusajs/icons"
+import { Button, Heading, Input, Label, Select, Text, toast } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 
+import { PageHeader } from "../../components/page-header"
+import { AdminMetricCard } from "../../components/ui/admin-metric-card"
+import { AdminTelemetryNotice } from "../../components/ui/admin-telemetry-notice"
+import { SovereignPageSkeleton } from "../../components/ui/sovereign-page-skeleton"
+import { RuleCreateDrawer } from "./rule-create-drawer"
 import { sdk } from "../../lib/sdk"
 
 type Program = {
@@ -71,127 +86,546 @@ const defaultProgram: Omit<Program, "id"> = {
   referral_ends_at: null,
 }
 
-const numberOrNull = (value: string) => value.trim() ? Number(value) : null
+const numberOrNull = (value: string) => (value.trim() ? Number(value) : null)
 
 function RuleEditor({ rule }: { rule: Rule }) {
   const client = useQueryClient()
   const [value, setValue] = useState(rule)
+  const [isDeleting, setIsDeleting] = useState(false)
+
   useEffect(() => setValue(rule), [rule.id, rule.updated_at])
+
   const mutation = useMutation({
-    mutationFn: () => sdk.client.fetch(`/admin/rewards/rules/${rule.id}`, {
-      method: "POST",
-      body: {
-        name: value.name,
-        point_value: value.point_value,
-        purchase_amount_per_point: value.purchase_amount_per_point,
-        daily_cap: value.daily_cap,
-        weekly_cap: value.weekly_cap,
-        lifetime_cap: value.lifetime_cap,
-        starts_at: value.starts_at,
-        ends_at: value.ends_at,
-      status: value.status,
-      show_as_badge: value.show_as_badge,
-      badge_name: value.badge_name,
-      badge_icon: value.badge_icon,
-      streak_target: value.streak_target,
-      skip_policy: value.skip_policy,
-      },
-    }),
-    onSuccess: async () => { await client.invalidateQueries({ queryKey: ["rewards-program"] }); toast.success("Reward rule saved") },
-    onError: (error) => toast.error(error.message || "Reward rule could not be saved"),
+    mutationFn: () =>
+      sdk.client.fetch(`/admin/rewards/rules/${rule.id}`, {
+        method: "POST",
+        body: {
+          name: value.name,
+          point_value: value.point_value,
+          purchase_amount_per_point: value.purchase_amount_per_point,
+          daily_cap: value.daily_cap,
+          weekly_cap: value.weekly_cap,
+          lifetime_cap: value.lifetime_cap,
+          starts_at: value.starts_at,
+          ends_at: value.ends_at,
+          status: value.status,
+          show_as_badge: value.show_as_badge,
+          badge_name: value.badge_name,
+          badge_icon: value.badge_icon,
+          streak_target: value.streak_target,
+          skip_policy: value.skip_policy,
+        },
+      }),
+    onSuccess: async () => {
+      await client.invalidateQueries({ queryKey: ["rewards-program"] })
+      toast.success("Reward rule saved.")
+    },
+    onError: (error: any) => toast.error(error?.message || "Reward rule could not be saved."),
   })
+
+  const handleDelete = async () => {
+    if (!window.confirm(`Are you sure you want to remove rule "${rule.name}"?`)) return
+    setIsDeleting(true)
+    try {
+      await sdk.client.fetch(`/admin/rewards/rules/${rule.id}`, {
+        method: "DELETE",
+      })
+      toast.success("Rule removed successfully.")
+      await client.invalidateQueries({ queryKey: ["rewards-program"] })
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to remove rule.")
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
   return (
-    <div className="rounded-lg border border-ui-border-base p-4">
+    <div className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-2xs">
       <div className="flex items-start justify-between gap-4">
-        <div><Text weight="plus">{rule.name}</Text><Text size="xsmall" className="mt-1 text-ui-fg-subtle">{rule.event_type.replaceAll("_", " ")}</Text></div>
-        <Select value={value.status} onValueChange={(status) => setValue({ ...value, status: status as Rule["status"] })}><Select.Trigger className="w-28"><Select.Value /></Select.Trigger><Select.Content><Select.Item value="active">Active</Select.Item><Select.Item value="inactive">Inactive</Select.Item></Select.Content></Select>
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-slate-900">{rule.name}</span>
+            <span
+              className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase ${
+                value.status === "active"
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  : "bg-slate-100 text-slate-500"
+              }`}
+            >
+              {value.status}
+            </span>
+          </div>
+          <span className="text-[11px] font-mono text-slate-500 mt-0.5 block">
+            event: {rule.event_type}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Select
+            value={value.status}
+            onValueChange={(status) =>
+              setValue({ ...value, status: status as Rule["status"] })
+            }
+          >
+            <Select.Trigger className="w-24 h-7 text-xs">
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value="active">Active</Select.Item>
+              <Select.Item value="inactive">Inactive</Select.Item>
+            </Select.Content>
+          </Select>
+
+          <Button
+            size="small"
+            variant="transparent"
+            onClick={handleDelete}
+            isLoading={isDeleting}
+            className="h-7 w-7 p-0 text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+            title="Delete Rule"
+          >
+            <Trash className="size-3.5" />
+          </Button>
+        </div>
       </div>
-      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
-        <div><Label>{rule.award_type === "fixed" ? "Points" : "₱ per point"}</Label><Input type="number" min="1" value={rule.award_type === "fixed" ? value.point_value || "" : value.purchase_amount_per_point || ""} onChange={(event) => rule.award_type === "fixed" ? setValue({ ...value, point_value: numberOrNull(event.target.value) }) : setValue({ ...value, purchase_amount_per_point: numberOrNull(event.target.value) })} /></div>
-        <div><Label>Daily cap</Label><Input type="number" min="1" value={value.daily_cap || ""} onChange={(event) => setValue({ ...value, daily_cap: numberOrNull(event.target.value) })} /></div>
-        <div><Label>Weekly cap</Label><Input type="number" min="1" value={value.weekly_cap || ""} onChange={(event) => setValue({ ...value, weekly_cap: numberOrNull(event.target.value) })} /></div>
-        <div><Label>Lifetime cap</Label><Input type="number" min="1" value={value.lifetime_cap || ""} onChange={(event) => setValue({ ...value, lifetime_cap: numberOrNull(event.target.value) })} /></div>
-        <div className="flex items-end"><Button size="small" variant="secondary" isLoading={mutation.isPending} onClick={() => mutation.mutate()}>Save rule</Button></div>
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={value.show_as_badge} onChange={(event) => setValue({ ...value, show_as_badge: event.target.checked })} />Show as badge</label>
-        <div><Label>Badge name</Label><Input value={value.badge_name || ""} onChange={(event) => setValue({ ...value, badge_name: event.target.value || null })} /></div>
-        <div><Label>Badge icon key</Label><Input value={value.badge_icon || ""} onChange={(event) => setValue({ ...value, badge_icon: event.target.value || null })} /></div>
-        <div><Label>Streak target</Label><Input type="number" min="1" value={value.streak_target || ""} onChange={(event) => setValue({ ...value, streak_target: numberOrNull(event.target.value) })} /></div>
-        <div><Label>Skipped activity</Label><Select value={value.skip_policy} onValueChange={(skip_policy) => setValue({ ...value, skip_policy: skip_policy as Rule["skip_policy"] })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content><Select.Item value="ignore">Does not break</Select.Item><Select.Item value="break">Breaks streak</Select.Item></Select.Content></Select></div>
+
+      <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+        <div>
+          <Label className="text-[10px] font-semibold text-slate-500">
+            {rule.award_type === "fixed" ? "Points" : "₱ per point"}
+          </Label>
+          <Input
+            type="number"
+            min="1"
+            className="h-7 text-xs mt-0.5"
+            value={
+              rule.award_type === "fixed"
+                ? value.point_value || ""
+                : value.purchase_amount_per_point || ""
+            }
+            onChange={(event) =>
+              rule.award_type === "fixed"
+                ? setValue({ ...value, point_value: numberOrNull(event.target.value) })
+                : setValue({
+                    ...value,
+                    purchase_amount_per_point: numberOrNull(event.target.value),
+                  })
+            }
+          />
+        </div>
+        <div>
+          <Label className="text-[10px] font-semibold text-slate-500">Daily Cap</Label>
+          <Input
+            type="number"
+            min="1"
+            className="h-7 text-xs mt-0.5"
+            value={value.daily_cap || ""}
+            onChange={(event) =>
+              setValue({ ...value, daily_cap: numberOrNull(event.target.value) })
+            }
+          />
+        </div>
+        <div>
+          <Label className="text-[10px] font-semibold text-slate-500">Lifetime Cap</Label>
+          <Input
+            type="number"
+            min="1"
+            className="h-7 text-xs mt-0.5"
+            value={value.lifetime_cap || ""}
+            onChange={(event) =>
+              setValue({ ...value, lifetime_cap: numberOrNull(event.target.value) })
+            }
+          />
+        </div>
+        <div className="flex items-end">
+          <Button
+            size="small"
+            variant="secondary"
+            className="h-7 text-xs w-full bg-slate-50 hover:bg-slate-100"
+            isLoading={mutation.isPending}
+            onClick={() => mutation.mutate()}
+          >
+            Save Rule
+          </Button>
+        </div>
       </div>
     </div>
   )
 }
 
-const RewardsAdminPage = () => {
+export const RewardsAdminPage = () => {
   const client = useQueryClient()
-  const query = useQuery({ queryKey: ["rewards-program"], queryFn: () => sdk.client.fetch<Response>("/admin/rewards/program") })
-  const [program, setProgram] = useState<Omit<Program, "id"> & { id?: string }>(defaultProgram)
-  useEffect(() => { if (query.data?.program) setProgram(query.data.program) }, [query.data?.program?.id, query.data?.program?.updated_at])
-  const mutation = useMutation({
-    mutationFn: () => sdk.client.fetch("/admin/rewards/program", { method: "POST", body: {
-      program_id: program.id,
-      name: program.name,
-      status: program.status,
-      currency_code: program.currency_code,
-      purchase_amount_per_point: Number(program.purchase_amount_per_point),
-      peso_value_per_point: Number(program.peso_value_per_point),
-      minimum_redemption_points: Number(program.minimum_redemption_points),
-      maximum_redemption_points: program.maximum_redemption_points,
-      points_expire_after_days: program.points_expire_after_days,
-      pending_period_days: Number(program.pending_period_days),
-      referral_enabled: program.referral_enabled,
-      referral_minimum_order_amount: Number(program.referral_minimum_order_amount),
-      referral_waiting_period_days: Number(program.referral_waiting_period_days),
-      referral_maximum_per_customer: program.referral_maximum_per_customer,
-      referral_refund_reversal_enabled: program.referral_refund_reversal_enabled,
-      referral_eligible_product_ids: Array.isArray(program.referral_eligible_product_ids)
-        ? program.referral_eligible_product_ids
-        : program.referral_eligible_product_ids?.values ?? [],
-      referral_starts_at: program.referral_starts_at,
-      referral_ends_at: program.referral_ends_at,
-    } }),
-    onSuccess: async () => { await client.invalidateQueries({ queryKey: ["rewards-program"] }); toast.success("Rewards program saved") },
-    onError: (error) => toast.error(error.message || "Rewards program could not be saved"),
+  const query = useQuery({
+    queryKey: ["rewards-program"],
+    queryFn: () => sdk.client.fetch<Response>("/admin/rewards/program"),
   })
-  const setNumber = (key: keyof typeof program, raw: string) => setProgram({ ...program, [key]: Number(raw) })
+  const [program, setProgram] = useState<Omit<Program, "id"> & { id?: string }>(defaultProgram)
+  const [isRuleDrawerOpen, setIsRuleDrawerOpen] = useState(false)
+
+  useEffect(() => {
+    if (query.data?.program) setProgram(query.data.program)
+  }, [query.data?.program?.id, query.data?.program?.updated_at])
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      sdk.client.fetch("/admin/rewards/program", {
+        method: "POST",
+        body: {
+          program_id: program.id,
+          name: program.name,
+          status: program.status,
+          currency_code: program.currency_code,
+          purchase_amount_per_point: Number(program.purchase_amount_per_point),
+          peso_value_per_point: Number(program.peso_value_per_point),
+          minimum_redemption_points: Number(program.minimum_redemption_points),
+          maximum_redemption_points: program.maximum_redemption_points,
+          points_expire_after_days: program.points_expire_after_days,
+          pending_period_days: Number(program.pending_period_days),
+          referral_enabled: program.referral_enabled,
+          referral_minimum_order_amount: Number(program.referral_minimum_order_amount),
+          referral_waiting_period_days: Number(program.referral_waiting_period_days),
+          referral_maximum_per_customer: program.referral_maximum_per_customer,
+          referral_refund_reversal_enabled: program.referral_refund_reversal_enabled,
+          referral_eligible_product_ids: Array.isArray(program.referral_eligible_product_ids)
+            ? program.referral_eligible_product_ids
+            : program.referral_eligible_product_ids?.values ?? [],
+          referral_starts_at: program.referral_starts_at,
+          referral_ends_at: program.referral_ends_at,
+        },
+      }),
+    onSuccess: async () => {
+      await client.invalidateQueries({ queryKey: ["rewards-program"] })
+      toast.success("Rewards program saved.")
+    },
+    onError: (error: any) => toast.error(error?.message || "Rewards program could not be saved."),
+  })
+
+  const setNumber = (key: keyof typeof program, raw: string) =>
+    setProgram({ ...program, [key]: Number(raw) })
+
+  if (query.isLoading) {
+    return (
+      <div className="sovereign-page px-6 pt-6 pb-8">
+        <SovereignPageSkeleton cards={4} rows={6} />
+      </div>
+    )
+  }
+
+  const rulesList = query.data?.rules || []
+  const activeRulesCount = rulesList.filter((r) => r.status === "active").length
+
   return (
-    <div className="flex flex-col gap-4">
-      <Container className="px-6 py-4"><Heading>Rewards</Heading><Text size="small" className="mt-1 text-ui-fg-subtle">Configure purchase points, redemption value and editable onboarding or engagement rules. No private Journal text or measurement values are used.</Text></Container>
-      <Container className="px-6 py-4">
-        <Heading level="h2">Program settings</Heading>
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div><Label>Name</Label><Input value={program.name} onChange={(event) => setProgram({ ...program, name: event.target.value })} /></div>
-          <div><Label>Status</Label><Select value={program.status} onValueChange={(status) => setProgram({ ...program, status: status as Program["status"] })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content><Select.Item value="draft">Draft</Select.Item><Select.Item value="active">Active</Select.Item><Select.Item value="paused">Paused</Select.Item></Select.Content></Select></div>
-          <div><Label>Purchase amount per point</Label><Input type="number" min="1" value={program.purchase_amount_per_point} onChange={(event) => setNumber("purchase_amount_per_point", event.target.value)} /></div>
-          <div><Label>Peso value per point</Label><Input type="number" min="0.01" step="0.01" value={program.peso_value_per_point} onChange={(event) => setNumber("peso_value_per_point", event.target.value)} /></div>
-          <div><Label>Minimum redemption</Label><Input type="number" min="0" value={program.minimum_redemption_points} onChange={(event) => setNumber("minimum_redemption_points", event.target.value)} /></div>
-          <div><Label>Maximum redemption</Label><Input type="number" min="1" value={program.maximum_redemption_points || ""} onChange={(event) => setProgram({ ...program, maximum_redemption_points: numberOrNull(event.target.value) })} /></div>
-          <div><Label>Pending days</Label><Input type="number" min="0" value={program.pending_period_days} onChange={(event) => setNumber("pending_period_days", event.target.value)} /></div>
-          <div><Label>Expiration days</Label><Input type="number" min="1" value={program.points_expire_after_days || ""} onChange={(event) => setProgram({ ...program, points_expire_after_days: numberOrNull(event.target.value) })} /></div>
+    <div className="sovereign-page px-6 pt-6 pb-8 flex flex-col gap-y-6">
+      <PageHeader
+        title="Rewards & Referrals Studio"
+        subtitle="Manage customer loyalty points, redemption rates, and automated research milestone rewards."
+        eyebrowText="Customer Operations · Loyalty Engine"
+        actions={
+          <div className="flex items-center gap-2">
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => query.refetch()}
+              className="h-8 rounded-xl px-3 text-xs font-bold"
+            >
+              <ArrowPath className="size-3.5 mr-1" />
+              Refresh
+            </Button>
+            <Button
+              size="small"
+              onClick={() => setIsRuleDrawerOpen(true)}
+              className="h-8 rounded-xl px-3 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white"
+            >
+              <Plus className="size-3.5 mr-1" />
+              Add Earning Rule
+            </Button>
+          </div>
+        }
+      />
+
+      {/* 4-Tile Top Executive Metric Rail */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <AdminMetricCard
+          label="Program Status"
+          value={program.status.toUpperCase()}
+          status={program.status === "active" ? "healthy" : "neutral"}
+          subtext="PepStack Loyalty Engine"
+        />
+        <AdminMetricCard
+          label="Earning Rate"
+          value={`₱${program.purchase_amount_per_point} / pt`}
+          status="healthy"
+          subtext="Philippine Peso ratio"
+        />
+        <AdminMetricCard
+          label="Redemption Floor"
+          value={`${program.minimum_redemption_points} pts`}
+          status="info"
+          subtext={`= ₱${program.minimum_redemption_points * program.peso_value_per_point} discount`}
+        />
+        <AdminMetricCard
+          label="Active Rules"
+          value={`${activeRulesCount} / ${rulesList.length}`}
+          status="healthy"
+          subtext="Triggered milestones"
+        />
+      </div>
+
+      {/* Telemetry Notice Banner */}
+      <AdminTelemetryNotice
+        title="Compliant Non-Monetary Loyalty Vault"
+        description="All PepStack reward points and referral bonuses are accounted for as research discount credits for institutional peptide procurement."
+        statusText="LOYALTY ENGINE ACTIVE"
+        variant="indigo"
+      />
+
+      {/* Full-Width Operational Settings & Earning Matrix */}
+      <div className="flex flex-col gap-6">
+        {/* Top 2-Column Grid: Base Program Settings & Referral Program Engine */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Card 1: Base Program Settings */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Program Currency & Accrual</h3>
+                <p className="text-xs text-slate-500">Core point generation and redemption limits.</p>
+              </div>
+              <Button
+                size="small"
+                className="h-8 bg-slate-900 text-white"
+                isLoading={mutation.isPending}
+                onClick={() => mutation.mutate()}
+              >
+                Save Settings
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Program Name</Label>
+                <Input
+                  value={program.name}
+                  onChange={(e) => setProgram({ ...program, name: e.target.value })}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Operational Status</Label>
+                <Select
+                  value={program.status}
+                  onValueChange={(s) => setProgram({ ...program, status: s as Program["status"] })}
+                >
+                  <Select.Trigger className="mt-1 w-full">
+                    <Select.Value />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="draft">Draft</Select.Item>
+                    <Select.Item value="active">Active</Select.Item>
+                    <Select.Item value="paused">Paused</Select.Item>
+                  </Select.Content>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Spend per point (₱)
+                </Label>
+                <Input
+                  type="number"
+                  min="1"
+                  value={program.purchase_amount_per_point}
+                  onChange={(e) => setNumber("purchase_amount_per_point", e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Peso value per point (₱)
+                </Label>
+                <Input
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={program.peso_value_per_point}
+                  onChange={(e) => setNumber("peso_value_per_point", e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Minimum redemption points
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={program.minimum_redemption_points}
+                  onChange={(e) => setNumber("minimum_redemption_points", e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Maximum redemption points
+                </Label>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder="Unlimited"
+                  value={program.maximum_redemption_points || ""}
+                  onChange={(e) =>
+                    setProgram({
+                      ...program,
+                      maximum_redemption_points: numberOrNull(e.target.value),
+                    })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Referral Program Settings */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Referral Program Engine</h3>
+                <p className="text-xs text-slate-500">
+                  Incentivize verified researcher invitations and laboratory network growth.
+                </p>
+              </div>
+              <span
+                className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold ${
+                  program.referral_enabled
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    : "bg-slate-100 text-slate-600"
+                }`}
+              >
+                {program.referral_enabled ? "REFERRALS ACTIVE" : "REFERRALS DISABLED"}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Referral Switch</Label>
+                <Select
+                  value={program.referral_enabled ? "enabled" : "disabled"}
+                  onValueChange={(val) =>
+                    setProgram({ ...program, referral_enabled: val === "enabled" })
+                  }
+                >
+                  <Select.Trigger className="mt-1 w-full">
+                    <Select.Value />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="enabled">Enabled</Select.Item>
+                    <Select.Item value="disabled">Disabled</Select.Item>
+                  </Select.Content>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Min Qualifying Order (₱)
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={program.referral_minimum_order_amount}
+                  onChange={(e) => setNumber("referral_minimum_order_amount", e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Waiting Period (Days)
+                </Label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="365"
+                  value={program.referral_waiting_period_days}
+                  onChange={(e) => setNumber("referral_waiting_period_days", e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Max Referrals per Customer
+                </Label>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder="Unlimited"
+                  value={program.referral_maximum_per_customer || ""}
+                  onChange={(e) =>
+                    setProgram({
+                      ...program,
+                      referral_maximum_per_customer: numberOrNull(e.target.value),
+                    })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="mt-4 flex justify-end"><Button size="small" isLoading={mutation.isPending} onClick={() => mutation.mutate()}>Save program</Button></div>
-      </Container>
-      <Container className="px-6 py-4">
-        <Heading level="h2">Referral program</Heading>
-        <Text size="small" className="mt-1 text-ui-fg-subtle">
-          Referral awards remain disabled until this switch and both referral
-          earning rules below are active. Self-referrals and duplicate referred
-          accounts are always rejected.
-        </Text>
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div><Label>Status</Label><Select value={program.referral_enabled ? "enabled" : "disabled"} onValueChange={(value) => setProgram({ ...program, referral_enabled: value === "enabled" })}><Select.Trigger><Select.Value /></Select.Trigger><Select.Content><Select.Item value="disabled">Disabled</Select.Item><Select.Item value="enabled">Enabled</Select.Item></Select.Content></Select></div>
-          <div><Label>Minimum qualifying order (₱)</Label><Input type="number" min="0" value={program.referral_minimum_order_amount} onChange={(event) => setNumber("referral_minimum_order_amount", event.target.value)} /></div>
-          <div><Label>Waiting period (days)</Label><Input type="number" min="0" max="365" value={program.referral_waiting_period_days} onChange={(event) => setNumber("referral_waiting_period_days", event.target.value)} /></div>
-          <div><Label>Maximum qualified referrals</Label><Input type="number" min="1" value={program.referral_maximum_per_customer || ""} onChange={(event) => setProgram({ ...program, referral_maximum_per_customer: numberOrNull(event.target.value) })} /></div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={program.referral_refund_reversal_enabled} onChange={(event) => setProgram({ ...program, referral_refund_reversal_enabled: event.target.checked })} />Reverse awards after qualifying refund</label>
-          <div className="col-span-2"><Label>Eligible product IDs (optional, comma-separated)</Label><Input value={(Array.isArray(program.referral_eligible_product_ids) ? program.referral_eligible_product_ids : program.referral_eligible_product_ids?.values ?? []).join(", ")} onChange={(event) => setProgram({ ...program, referral_eligible_product_ids: event.target.value.split(",").map((value) => value.trim()).filter(Boolean) })} /></div>
-          <div><Label>Campaign starts (optional)</Label><Input type="datetime-local" value={program.referral_starts_at?.slice(0, 16) || ""} onChange={(event) => setProgram({ ...program, referral_starts_at: event.target.value ? new Date(event.target.value).toISOString() : null })} /></div>
-          <div><Label>Campaign ends (optional)</Label><Input type="datetime-local" value={program.referral_ends_at?.slice(0, 16) || ""} onChange={(event) => setProgram({ ...program, referral_ends_at: event.target.value ? new Date(event.target.value).toISOString() : null })} /></div>
+
+        {/* Bottom Full-Width Section: Earning Rules Suite */}
+        <div className="w-full">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Earning Rules ({rulesList.length})</h3>
+                <p className="text-xs text-slate-500">Configured milestone triggers and fixed rewards.</p>
+              </div>
+              <Button
+                size="small"
+                onClick={() => setIsRuleDrawerOpen(true)}
+                className="h-7 text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200"
+              >
+                <Plus className="size-3.5 mr-1" />
+                Add Rule
+              </Button>
+            </div>
+
+            {rulesList.length === 0 ? (
+              <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200/60">
+                <Sparkles className="size-6 text-slate-400 mx-auto mb-2" />
+                <p className="text-xs font-semibold text-slate-700">No custom earning rules yet</p>
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Click "Add Earning Rule" to set up purchase points or account milestones.
+                </p>
+                <Button
+                  size="small"
+                  onClick={() => setIsRuleDrawerOpen(true)}
+                  className="mt-3 bg-indigo-600 text-white"
+                >
+                  Create Rule Now
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {rulesList.map((rule) => (
+                  <RuleEditor key={rule.id} rule={rule} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </Container>
-      <Container className="px-6 py-4"><Heading level="h2">Earning rules</Heading><div className="mt-4 space-y-3">{query.data?.rules.map((rule) => <RuleEditor key={rule.id} rule={rule} />) || <Text size="small" className="text-ui-fg-subtle">Save the program to create its default editable rules.</Text>}</div></Container>
+      </div>
+
+      {/* Slide-Over Drawer for Adding New Earning Rules */}
+      <RuleCreateDrawer
+        open={isRuleDrawerOpen}
+        onOpenChange={setIsRuleDrawerOpen}
+        onSuccess={() => client.invalidateQueries({ queryKey: ["rewards-program"] })}
+      />
     </div>
   )
 }

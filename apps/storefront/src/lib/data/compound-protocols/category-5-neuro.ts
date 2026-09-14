@@ -127,7 +127,7 @@ export const CATEGORY_5_NEURO_PROTOCOLS: CompoundAnalyticalProtocol[] = [
       "**Mild Over-Stimulation / Jitteriness**: Doses taken too late in the evening may cause mild restlessness or delayed sleep onset.",
       "**Transient Hair Shedding Warning**: High BDNF elevation can rarely cause temporary hair shedding (telogen effluvium) in predisposed subjects; cycling is advised.",
       "**Mild Nasal Irritation**: When researched as a nasal spray, can occasionally cause brief tickling or dry nasal passages.",
-      "**Cold Chain Sensitivity**: Keep reconstituted solution refrigerated at 2°C–8°C to maintain peptide integrity."
+      "**Refrigerated Storage Sensitivity**: Keep reconstituted solution refrigerated at 2°C–8°C to maintain peptide integrity."
     ]
   },
   {

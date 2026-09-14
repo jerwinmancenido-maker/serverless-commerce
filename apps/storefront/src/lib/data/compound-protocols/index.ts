@@ -1,12 +1,12 @@
+/**
+ * @file    apps/storefront/src/lib/data/compound-protocols/index.ts
+ * @module  CompoundProtocolsData (Storefront)
+ * @purpose Registry of analytical compound and blend protocols.
+ * @contracts
+ *   API: GET /store/research-protocols
+ */
+
 import type { CompoundAnalyticalProtocol } from "./types.ts"
-import { CATEGORY_1_TISSUE_REPAIR_PROTOCOLS } from "./category-1-tissue-repair.ts"
-import { CATEGORY_2_METABOLIC_INCRETIN_PROTOCOLS } from "./category-2-metabolic.ts"
-import { CATEGORY_3_GH_AXIS_PROTOCOLS } from "./category-3-gh-axis.ts"
-import { CATEGORY_4_LONGEVITY_PROTOCOLS } from "./category-4-longevity.ts"
-import { CATEGORY_5_NEURO_PROTOCOLS } from "./category-5-neuro.ts"
-import { CATEGORY_6_IMMUNE_SEXUAL_PROTOCOLS } from "./category-6-immune-sexual.ts"
-import { CATEGORY_7_BLENDS_PROTOCOLS } from "./category-7-blends.ts"
-import { CATEGORY_8_SUPPLIES_PROTOCOLS } from "./category-8-supplies.ts"
 
 import allProtocolsRaw from "./all-protocols.json" with { type: "json" }
 

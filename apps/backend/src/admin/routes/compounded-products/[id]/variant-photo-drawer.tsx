@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/[id]/variant-photo-drawer.tsx
+ * @module  VariantPhotoDrawer
+ * @purpose Variation photo selection and upload drawer for specific variant combinations.
+ * @contracts
+ *   Service: ProductModuleService
+ */
+
 import { ArrowUpTray, CheckCircle, Trash } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Button, Drawer, Text, toast } from "@medusajs/ui"

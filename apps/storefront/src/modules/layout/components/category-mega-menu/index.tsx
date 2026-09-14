@@ -1,83 +1,69 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/layout/components/category-mega-menu/index.tsx
+ * @module  CategoryMegaMenuComponent (Storefront Layout)
+ * @purpose Product categories mega menu dropdown with 50% compressed, high-density clinical layout.
+ */
+
 import { Transition } from "@headlessui/react"
 import {
   ArrowRightMini,
-  BuildingStorefront,
-  SquaresPlus,
   Beaker,
-  DocumentText,
+  BuildingStorefront,
   CheckCircleSolid,
+  Sparkles,
+  SquaresPlus,
+  ArchiveBox,
 } from "@medusajs/icons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { Fragment } from "react"
+import { Fragment, useRef, useEffect } from "react"
+
+import {
+  getFeaturedNavCompounds,
+  getNavCategories,
+  getNavMetrics,
+} from "@lib/data/navigation-data"
 
 type MegaMenuProps = {
   isOpen: boolean
   onClose: () => void
+  isPinned?: boolean
+  onTogglePin?: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
-const CATEGORIES = [
-  {
-    name: "Metabolic & GLP-1",
-    desc: "Tirzepatide, Semaglutide & incretin mimetics",
-    href: "/categories/metabolic-weight-management-peptides",
-  },
-  {
-    name: "Healing & Tissue Repair",
-    desc: "BPC-157, TB-500 & regenerative peptides",
-    href: "/categories/healing-tissue-repair-peptides",
-  },
-  {
-    name: "Growth Hormone Axis",
-    desc: "Tesamorelin, CJC-1295 & secretagogues",
-    href: "/categories/growth-hormone-recovery-peptides",
-  },
-  {
-    name: "Longevity & Cellular Health",
-    desc: "GHK-Cu, Epithalon & cellular rejuvenation",
-    href: "/categories/longevity-cellular-health-peptides",
-  },
-  {
-    name: "Supplies & Accessories",
-    desc: "Bacteriostatic (BAC) water, syringes & vials",
-    href: "/categories/research-supplies-accessories",
-  },
-]
+export default function CategoryMegaMenu({
+  isOpen,
+  onClose,
+  onMouseEnter,
+  onMouseLeave,
+}: MegaMenuProps) {
+  const metrics = getNavMetrics()
+  const categories = getNavCategories()
+  const featuredCompounds = getFeaturedNavCompounds()
+  const menuContainerRef = useRef<HTMLDivElement>(null)
 
-const FEATURED_COMPOUNDS = [
-  {
-    title: "Tirzepatide (10mg)",
-    tag: "Dual Incretin",
-    desc: "GIP / GLP-1 receptor dual agonist reference vial",
-    href: "/products/tirzepatide",
-  },
-  {
-    title: "BPC-157 (5mg)",
-    tag: "Tissue Repair",
-    desc: "Pentadecapeptide for tissue repair & gut research",
-    href: "/products/bpc-157",
-  },
-  {
-    title: "Tesamorelin (10mg)",
-    tag: "GH Secretagogue",
-    desc: "Synthetic GHRH analog for lipodystrophy research",
-    href: "/categories/growth-hormone-recovery-peptides",
-  },
-  {
-    title: "GHK-Cu (50mg SubQ Set)",
-    tag: "Copper Peptide",
-    desc: "Complete peptide vial & reconstitution set",
-    href: "/products/ghk-cu",
-  },
-]
+  useEffect(() => {
+    if (!isOpen) return
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        menuContainerRef.current &&
+        !menuContainerRef.current.contains(e.target as Node)
+      ) {
+        onClose()
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [isOpen, onClose])
 
-export default function CategoryMegaMenu({ isOpen, onClose }: MegaMenuProps) {
   return (
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 top-[96px] z-30 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 top-[92px] z-30 bg-slate-950/60 backdrop-blur-xs transition-opacity"
           onClick={onClose}
         />
       )}
@@ -93,165 +79,184 @@ export default function CategoryMegaMenu({ isOpen, onClose }: MegaMenuProps) {
         leaveTo="opacity-0 -translate-y-2"
       >
         <div
-          className="absolute top-full inset-x-0 z-40 bg-white border-b border-slate-200 shadow-2xl text-slate-900"
-          onMouseLeave={onClose}
+          ref={menuContainerRef}
+          data-testid="category-mega-menu"
+          className="absolute top-full inset-x-0 z-40 bg-white border-b border-slate-200/90 shadow-2xl text-slate-900"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         >
-          <div className="content-container py-10">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-              {/* Column 1: Research Categories */}
-              <div className="md:col-span-4 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-200 pb-6 md:pb-0 md:pr-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <SquaresPlus className="h-4 w-4 text-emerald-600" />
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                      Research Categories
-                    </h3>
-                  </div>
-                  <ul className="space-y-1">
-                    {CATEGORIES.map((cat) => (
-                      <li key={cat.href}>
-                        <LocalizedClientLink
-                          href={cat.href}
-                          onClick={onClose}
-                          className="group flex flex-col rounded-xl px-3 py-2 hover:bg-slate-50 transition-colors"
-                        >
-                          <span className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                            {cat.name}
-                          </span>
-                          <span className="text-xs text-slate-500 line-clamp-1">
-                            {cat.desc}
-                          </span>
-                        </LocalizedClientLink>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+          <div className="content-container py-3.5 max-w-7xl mx-auto px-6 lg:px-8">
+            {/* Header bar / Eyebrow (Compact 24px) */}
+            <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded bg-emerald-600 text-white shadow-2xs">
+                  <SquaresPlus className="h-3 w-3" />
+                </span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-900">
+                  Classifications &amp; Reference Standards
+                </span>
+              </div>
+              <LocalizedClientLink
+                href="/store"
+                onClick={onClose}
+                className="text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1 group"
+              >
+                <span>Explore Full Catalog ({metrics.totalCompounds})</span>
+                <ArrowRightMini className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+              </LocalizedClientLink>
+            </div>
 
-                <div className="pt-4 mt-2 border-t border-slate-200">
+            {/* 3-Column High-Density Matrix (~136px content height) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Column 1: 8 Pharmacological Classes in 2x4 single-line grid (5 cols) */}
+              <div className="lg:col-span-5 border-b lg:border-b-0 lg:border-r border-slate-100 pb-3 lg:pb-0 lg:pr-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Pharmacological Classes ({categories.length})
+                  </span>
                   <LocalizedClientLink
                     href="/categories"
                     onClick={onClose}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+                    className="text-[10px] font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-0.5"
                   >
-                    <span>Browse all compound categories</span>
-                    <ArrowRightMini className="h-4 w-4" />
+                    <span>View All</span>
+                    <ArrowRightMini className="h-3 w-3" />
                   </LocalizedClientLink>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                  {categories.map((cat) => (
+                    <LocalizedClientLink
+                      key={cat.href}
+                      href={cat.href}
+                      onClick={onClose}
+                      className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-slate-50 border border-transparent hover:border-slate-200/70 transition-all text-xs"
+                    >
+                      <span className="font-medium text-slate-700 group-hover:text-emerald-700 truncate pr-1">
+                        {cat.shortName || cat.name}
+                      </span>
+                      <span className="text-[10px] font-mono font-medium text-slate-500 group-hover:text-emerald-700 bg-slate-100 group-hover:bg-emerald-50 border border-slate-200/60 rounded px-1.5 py-0.2 shrink-0">
+                        {cat.count}
+                      </span>
+                    </LocalizedClientLink>
+                  ))}
                 </div>
               </div>
 
-              {/* Column 2: Featured Reference Compounds */}
-              <div className="md:col-span-4 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-200 pb-6 md:pb-0 md:pr-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <BuildingStorefront className="h-4 w-4 text-emerald-600" />
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                      Featured Compounds
-                    </h3>
+              {/* Column 2: 4 Core Flagship Standards (4 cols single-line) */}
+              <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-slate-100 pb-3 lg:pb-0 lg:pr-6">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <BuildingStorefront className="h-3.5 w-3.5 text-emerald-600" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                      Flagship Standards
+                    </span>
                   </div>
-                  <ul className="space-y-1">
-                    {FEATURED_COMPOUNDS.map((comp) => (
-                      <li key={comp.href}>
-                        <LocalizedClientLink
-                          href={comp.href}
-                          onClick={onClose}
-                          className="group flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-slate-50 transition-colors"
-                        >
-                          <div className="flex flex-col pr-2">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                                {comp.title}
-                              </span>
-                              <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 border border-slate-200">
-                                {comp.tag}
-                              </span>
-                            </div>
-                            <span className="text-xs text-slate-500 line-clamp-1">
-                              {comp.desc}
-                            </span>
-                          </div>
-                          <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
-                        </LocalizedClientLink>
-                      </li>
-                    ))}
-                  </ul>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                    RUO Reference
+                  </span>
                 </div>
 
-                <div className="pt-4 mt-2 border-t border-slate-200">
-                  <LocalizedClientLink
-                    href="/store"
-                    onClick={onClose}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
-                  >
-                    <span>View full peptide catalog</span>
-                    <ArrowRightMini className="h-4 w-4" />
-                  </LocalizedClientLink>
+                <div className="space-y-1.5">
+                  {featuredCompounds.map((comp) => (
+                    <LocalizedClientLink
+                      key={comp.href}
+                      href={comp.href}
+                      onClick={onClose}
+                      className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all text-xs"
+                    >
+                      <span className="font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors truncate pr-2">
+                        {comp.title}
+                      </span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded px-1.5 py-0.2">
+                          {comp.tag}
+                        </span>
+                        <ArrowRightMini className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                    </LocalizedClientLink>
+                  ))}
                 </div>
               </div>
 
-              {/* Column 3: Research Utilities & Trust Card */}
-              <div className="md:col-span-4 flex flex-col justify-between">
+              {/* Column 3: Reagent Tools & Support (3 cols) */}
+              <div className="lg:col-span-3 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <Beaker className="h-4 w-4 text-emerald-600" />
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                      Research Utilities
-                    </h3>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                      Reagent Tools &amp; Desk
+                    </span>
                   </div>
 
-                  {/* Calculator Highlight Box */}
-                  <LocalizedClientLink
-                    href="/research-library#calculator"
-                    onClick={onClose}
-                    className="group block rounded-2xl bg-gradient-to-br from-emerald-50/80 via-teal-50/30 to-white border border-emerald-200 p-4 hover:border-emerald-300 transition-all mb-4 shadow-2xs"
-                  >
-                    <div className="flex items-center justify-between mb-2">
+                  <div className="space-y-1.5">
+                    <LocalizedClientLink
+                      href="/calculator"
+                      onClick={onClose}
+                      className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-emerald-50/80 border border-emerald-200/70 transition-all text-xs font-semibold text-emerald-900 bg-emerald-50/40"
+                    >
                       <div className="flex items-center gap-2">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold font-mono">
-                          calc
-                        </span>
-                        <span className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                          Reconstitution Calculator
-                        </span>
+                        <span>📐</span>
+                        <span>Reconstitution Calculator</span>
                       </div>
-                      <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
-                    </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      Instant BAC water dilution math, concentration per unit, and insulin syringe tick unit reference.
-                    </p>
-                  </LocalizedClientLink>
+                      <ArrowRightMini className="h-3.5 w-3.5 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+                    </LocalizedClientLink>
 
-                  {/* Protocol Guides Link */}
-                  <LocalizedClientLink
-                    href="/research-library#protocols"
-                    onClick={onClose}
-                    className="group flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-slate-50 transition-colors mb-2"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <DocumentText className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                          Research Protocol Guides
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          Dosage schedules, reconstitution &amp; storage data
-                        </span>
+                    <LocalizedClientLink
+                      href="/research-library"
+                      onClick={onClose}
+                      className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all text-xs font-medium text-slate-700 hover:text-emerald-700"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Beaker className="h-3.5 w-3.5 text-emerald-600" />
+                        <span>Research Library &amp; Guides</span>
                       </div>
-                    </div>
-                    <ArrowRightMini className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-all" />
-                  </LocalizedClientLink>
-                </div>
+                      <ArrowRightMini className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                    </LocalizedClientLink>
 
-                {/* Trust & Dispatch Signals */}
-                <div className="mt-4 rounded-xl bg-slate-50 border border-slate-200 p-3 space-y-2 text-xs">
-                  <div className="flex items-center gap-2 text-slate-700">
-                    <CheckCircleSolid className="h-4 w-4 text-emerald-600 shrink-0" />
-                    <span>Reference Grade Lyophilized Compounds</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-700">
-                    <CheckCircleSolid className="h-4 w-4 text-emerald-600 shrink-0" />
-                    <span>Dispatched from Metro Manila &middot; J&amp;T Express</span>
+                    <LocalizedClientLink
+                      href="/categories/research-supplies-accessories"
+                      onClick={onClose}
+                      className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all text-xs font-medium text-slate-700 hover:text-emerald-700"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ArchiveBox className="h-3.5 w-3.5 text-slate-500" />
+                        <span>Sterile Consumables &amp; Labware</span>
+                      </div>
+                      <ArrowRightMini className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                    </LocalizedClientLink>
+
+                    <LocalizedClientLink
+                      href="/account/support"
+                      onClick={onClose}
+                      className="group flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all text-xs font-medium text-slate-700 hover:text-emerald-700"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>💬</span>
+                        <span>Custom Formulation Desk</span>
+                      </div>
+                      <ArrowRightMini className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                    </LocalizedClientLink>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Bottom Logistics Strip (Compact 24px) */}
+            <div className="mt-3 pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1">
+                  <CheckCircleSolid className="h-3 w-3 text-emerald-600" />
+                  Dispatched in protective cushioning &middot; J&amp;T Express Nationwide
+                </span>
+                <span className="hidden md:flex items-center gap-1">
+                  <CheckCircleSolid className="h-3 w-3 text-emerald-600" />
+                  Metro Manila Logistics Hub
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 font-medium text-slate-600">
+                <span>Instant Payment:</span>
+                <span className="text-emerald-700 font-semibold">GCash &bull; Maya &bull; QR Ph</span>
               </div>
             </div>
           </div>

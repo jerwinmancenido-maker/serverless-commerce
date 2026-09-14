@@ -85,8 +85,15 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
     }),
   )
 
+  const unreadConversations = results.filter((c) => (c.unread_count > 0 || c.status === "new"))
   const visible = input.queue === "unread" || input.unread
-    ? results.filter((conversation) => conversation.unread_count > 0)
+    ? unreadConversations
     : results
-  res.json({ conversations: visible, count: visible.length === results.length ? count : visible.length, limit: input.limit, offset: input.offset })
+  res.json({
+    conversations: visible,
+    count: input.queue === "unread" || input.unread ? unreadConversations.length : count,
+    unread_count: unreadConversations.length,
+    limit: input.limit,
+    offset: input.offset,
+  })
 }

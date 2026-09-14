@@ -85,6 +85,13 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>(() => {
     if (!product.variants?.length) return {}
+    const urlVariantId = searchParams.get("v_id")
+    if (urlVariantId) {
+      const urlVariant = product.variants.find((v) => v.id === urlVariantId)
+      if (urlVariant) {
+        return optionsAsKeymap(urlVariant.options) ?? {}
+      }
+    }
     const defaultVariant =
       product.variants.find(
         (v) => !v.manage_inventory || (v.inventory_quantity ?? 1) > 0
@@ -231,10 +238,27 @@ export default function ProductActions({
 
   // update the options when a variant is selected
   const setOptionValue = (optionId: string, value: string) => {
-    setOptions((prev) => ({
-      ...prev,
-      [optionId]: value,
-    }))
+    setOptions((prev) => {
+      const nextOptions = {
+        ...prev,
+        [optionId]: value,
+      }
+
+      // Proactively notify sibling components like ImageGallery immediately
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent("pepstack:variant_selected", {
+            detail: {
+              optionId,
+              value,
+              options: nextOptions,
+            },
+          })
+        )
+      }
+
+      return nextOptions
+    })
   }
 
   //check if the selected options produce a valid variant
@@ -244,6 +268,27 @@ export default function ProductActions({
       return isEqual(variantOptions, options)
     })
   }, [product.variants, options])
+
+  // Sync selectedVariant to ImageGallery whenever it resolves (skip initial mount to prevent clobbering SSR initialImageIndex)
+  const isFirstMount = useRef(true)
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false
+      return
+    }
+    if (typeof window !== "undefined" && selectedVariant) {
+      window.dispatchEvent(
+        new CustomEvent("pepstack:variant_selected", {
+          detail: {
+            variantId: selectedVariant.id,
+            variantTitle: selectedVariant.title,
+            inclusion: selectedInclusion,
+            options,
+          },
+        })
+      )
+    }
+  }, [selectedVariant, selectedInclusion, options])
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString())
@@ -283,7 +328,7 @@ export default function ProductActions({
   const stockQty = selectedVariant?.manage_inventory
     ? (selectedVariant.inventory_quantity ?? 0)
     : 999
-  const maxQty = Math.max(1, stockQty)
+  const maxQty = selectedVariant?.allow_backorder ? 99 : Math.max(1, stockQty)
 
 
   // ---------------------------------------------------------------------------
@@ -379,6 +424,11 @@ export default function ProductActions({
                 <span className="size-2 rounded-full bg-red-500" />
                 Out of stock
               </span>
+            ) : selectedVariant?.allow_backorder && stockQty === 0 ? (
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                <span className="size-2 rounded-full bg-sky-500 animate-pulse" />
+                Available on Backorder · Dispatches in 48h
+              </span>
             ) : stockQty < 10 ? (
               <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-700">
                 <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
@@ -415,25 +465,14 @@ export default function ProductActions({
           </div>
         )}
 
-        {/* Tier 1 Inclusion Callout */}
+        {/* Selected Configuration Summary */}
         {!isBundle && !isSupply && (
-          <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-2.5 text-xs">
-            {selectedInclusion?.includes("BAC") ? (
-              <div className="flex items-center gap-1.5 text-emerald-800 font-semibold">
-                <span className="text-sm">💧</span>
-                <span>Includes 10mL Bacteriostatic Water USP (+₱180 — Save 50% vs standalone diluent)</span>
-              </div>
-            ) : selectedInclusion?.includes("SubQ") ? (
-              <div className="flex items-center gap-1.5 text-indigo-900 font-semibold">
-                <span className="text-sm">💉</span>
-                <span>Complete SubQ Prep Kit (+₱250 — Save 47% on BAC Water + 10x Syringes + Swabs)</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1.5 text-slate-700 font-medium">
-                <span className="text-sm">🧪</span>
-                <span>Pure Analytical Lyophilized Vial (Bacteriostatic Water &amp; accessories selectable above)</span>
-              </div>
-            )}
+          <div className="flex items-center gap-2 text-xs text-slate-600 px-1 py-0.5">
+            <CheckCircleSolid className="h-4 w-4 text-emerald-600 shrink-0" />
+            <span>
+              Configured: <strong className="text-slate-900 font-semibold">{selectedNetContent}</strong> ·{" "}
+              <strong className="text-slate-900 font-semibold">{selectedInclusion}</strong>
+            </span>
           </div>
         )}
 

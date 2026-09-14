@@ -5,6 +5,8 @@ import { MagnifyingGlass, XMark, ArrowRightMini, Beaker } from "@medusajs/icons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Fragment, useEffect, useState } from "react"
 
+import SEARCH_INDEX from "@lib/data/search-index.json"
+
 type SearchItem = {
   title: string
   subtitle: string
@@ -12,92 +14,7 @@ type SearchItem = {
   badge?: string
 }
 
-const DEFAULT_ITEMS: SearchItem[] = [
-  {
-    title: "Tirzepatide (10mg)",
-    subtitle: "Metabolic & GIP/GLP-1 receptor dual agonist reference standard",
-    href: "/products/tirzepatide",
-    badge: "GLP-1",
-  },
-  {
-    title: "BPC-157 (5mg)",
-    subtitle: "Body protection compound peptide for angiogenic tissue research",
-    href: "/products/bpc-157",
-    badge: "Recovery",
-  },
-  {
-    title: "Tesamorelin",
-    subtitle: "Growth hormone releasing hormone (GHRH) analog peptide",
-    href: "/categories/growth-hormone-recovery-peptides",
-    badge: "GH Axis",
-  },
-  {
-    title: "GHK-Cu (50mg SubQ Set)",
-    subtitle: "Copper tripeptide for cellular vitality & collagen remodeling",
-    href: "/products/ghk-cu",
-    badge: "Longevity",
-  },
-  {
-    title: "Metabolic & Weight Management Peptides",
-    subtitle: "Explore all metabolic, incretin mimetic & appetite research compounds",
-    href: "/categories/metabolic-weight-management-peptides",
-    badge: "Category",
-  },
-  {
-    title: "Healing & Tissue Repair Peptides",
-    subtitle: "Explore tissue repair, fibroblast activation & angiogenic peptides",
-    href: "/categories/healing-tissue-repair-peptides",
-    badge: "Category",
-  },
-  {
-    title: "Certificates of Analysis (CoA)",
-    subtitle: "Third-party analytical test reports, HPLC chromatograms & mass verification",
-    href: "/research-library#coa",
-    badge: "CoA",
-  },
-  {
-    title: "GHK-Cu CoA (Lot #PH8-GHK-2026B)",
-    subtitle: "≥99.34% HPLC purity report, ESI mass spectrum & sterility pass",
-    href: "/research-library#coa",
-    badge: "Batch CoA",
-  },
-  {
-    title: "BPC-157 CoA (Lot #BPC-2026-03)",
-    subtitle: "≥99.42% HPLC purity report, C18 chromatography & endotoxin test",
-    href: "/research-library#coa",
-    badge: "Batch CoA",
-  },
-  {
-    title: "Tirzepatide CoA (Lot #TZP-2026-01)",
-    subtitle: "≥99.51% HPLC analytical report & intact mass deconvolution",
-    href: "/research-library#coa",
-    badge: "Batch CoA",
-  },
-  {
-    title: "Head-to-Head Peptide Comparisons",
-    subtitle: "Compare receptor selectivity, mechanisms & research endpoints",
-    href: "/research-library#comparisons",
-    badge: "Compare",
-  },
-  {
-    title: "Scientific Monographs & Studies",
-    subtitle: "Peer-reviewed literature, clinical studies & pharmacology library",
-    href: "/research-library#articles",
-    badge: "Monograph",
-  },
-  {
-    title: "Reconstitution Calculator",
-    subtitle: "Calculate BAC water dilution volume & insulin syringe tick units",
-    href: "/research-library#calculator",
-    badge: "Calculator",
-  },
-  {
-    title: "Research Protocol Guides",
-    subtitle: "Detailed dosage schedules, reconstitution rules & storage data",
-    href: "/research-library#protocols",
-    badge: "Guide",
-  },
-]
+const DEFAULT_ITEMS: SearchItem[] = SEARCH_INDEX as SearchItem[]
 
 export default function SearchModal({
   isOpen,

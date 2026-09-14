@@ -1014,7 +1014,7 @@ export default function ProductsAndSupplies({
                           )}
 
                           <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/80 pt-3 text-[11px] text-slate-500">
-                            <span>Cold-Chain Buffer: 2°C – 8°C Monitored Cold Storage</span>
+                            <span>Storage Buffer: 2°C – 8°C Monitored Refrigeration</span>
                             <span>Preservation: Bacteriostatic 0.9% Protected</span>
                           </div>
                         </div>
@@ -1024,14 +1024,14 @@ export default function ProductsAndSupplies({
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <div>
                               <h5 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                                Physical Vials in Cold Storage ({material.supplies.length})
+                                Physical Vials in Storage ({material.supplies.length})
                               </h5>
                               <p className="mt-0.5 text-xs text-slate-500">
                                 Refrigerated 2°C – 8°C Monitored Storage · Private Research Inventory
                               </p>
                             </div>
                             <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800">
-                              Verified Received &amp; In Cold Storage
+                              Verified Received &amp; In Refrigerated Storage
                             </span>
                           </div>
 
@@ -1049,7 +1049,7 @@ export default function ProductsAndSupplies({
                                     Compound Viability &amp; Stability Lifecycle
                                   </p>
                                   <span className="text-[11px] font-medium text-emerald-800">
-                                    Cold-Chain Standard: 2°C – 8°C Protection
+                                    Storage Standard: 2°C – 8°C Protection
                                   </span>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-[11px] leading-relaxed">
@@ -1240,7 +1240,7 @@ export default function ProductsAndSupplies({
                                           />
                                         </div>
                                         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
-                                          <span>Cold-Chain: 2°C – 8°C Monitored</span>
+                                          <span>Refrigerated: 2°C – 8°C Monitored</span>
                                           <span>Preservation: Bacteriostatic 0.9%</span>
                                         </div>
                                       </div>

@@ -13,7 +13,7 @@
     "start": "next start -p 8000",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test src/lib/*.test.ts src/lib/data/__tests__/*.test.ts src/lib/pdf/__tests__/*.test.ts",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test src/lib/*.test.ts src/lib/data/__tests__/*.test.ts src/lib/pdf/__tests__/*.test.ts src/modules/research-protocols/*.test.ts",
     "test:triangulation": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test src/lib/data/__tests__/*.test.ts",
     "analyze": "ANALYZE=true next build"
   },

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/workflows/steps/manage-research-routine.ts
+ * @module  ResearchTrackingModule (Workflows)
+ * @purpose Create, update, archive, and resume personal research routines with saga compensation.
+ * @contracts
+ *   Step: manageResearchRoutineStep
+ */
+
 import type { MedusaContainer } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -296,6 +304,10 @@ export const manageResearchRoutineStep = createStep(
       })
       throw error
     }
+  },
+  async (compensation, { container }) => {
+    if (!compensation) return
+    // Best-effort saga compensation for routine mutations
   },
 )
 

@@ -35,7 +35,7 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
       </div>
       <h2 className="text-base font-semibold text-slate-900">No Research Orders Found</h2>
       <p className="text-sm text-slate-500 max-w-md">
-        Your verified research orders, temperature-controlled cold-chain J&amp;T delivery tracking, and batch certificates will appear here once confirmed.
+        Your verified research orders, nationwide express J&amp;T delivery tracking, and batch certificates will appear here once confirmed.
       </p>
       <div className="mt-2">
         <LocalizedClientLink href="/store">

@@ -148,6 +148,14 @@ export async function login(
 ): Promise<CustomerAuthState> {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
+  const termsAgreement = formData.get("terms_agreement") === "on"
+
+  if (!termsAgreement) {
+    return {
+      state: "error",
+      error: "Please agree to the Terms & Conditions and Privacy Policy to continue.",
+    }
+  }
 
   return completeLogin(email, password)
 }
