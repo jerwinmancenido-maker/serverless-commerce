@@ -52,7 +52,7 @@
           "timeframe": "Weeks 1–2",
           "doseDisplay": "50 mg daily (50,000 mcg)",
           "doseMcg": 50000,
-          "cadence": "1x Daily (Morning with Food)",
+          "cadence": "1x Daily (Simulated Post-Prandial Phase / Morning Analytical Cycle)",
           "focus": "Selective inhibition of NNMT, preventing 1-methylnicotinamide (1-MNA) accumulation and elevating cellular NAD+ levels",
           "notes": "100.0 units (1.00 mL) from 50.0 mg/mL solution (or 50 mg analytical capsule)"
         },
@@ -838,7 +838,7 @@
           "timeframe": "Weeks 3–10",
           "doseDisplay": "500 mcg daily",
           "doseMcg": 500,
-          "cadence": "1x Daily (Morning Fasted or Pre-Cardio)",
+          "cadence": "1x Daily (Simulated Fasted Baseline Assay Interval)",
           "focus": "Inhibition of acetyl-CoA carboxylase, fatty acid release, and non-glycemic lipid breakdown",
           "notes": "20.0 units (0.20 mL) on U-100 syringe"
         },
@@ -2004,7 +2004,7 @@
     ],
     "pubchemCid": 135409408,
     "adverseObservations": [
-      "**Transient Local Erythema**: Rare, self-limiting mild warmth or redness at the subcutaneous injection site resolving within 30 minutes."
+      "**Transient Local Erythema**: Rare, self-limiting mild warmth or transient reactivity at localized subcutaneous application sites resolving within 30 minutes."
     ],
     "purityStandard": "≥99.0% (HPLC-grade)",
     "evidenceTier": "Preclinical (Synthetic Bioregulator Tripeptide — chondrocyte & cartilage ECM regulation; Khavinson peptide class)"
@@ -2336,11 +2336,11 @@
       "**Restores Youthful Hormone Balance**: Re-establishes healthy nocturnal growth hormone pulses that decline with age."
     ],
     "adverseObservations": [
-      "**[Clinical] **Temporary Facial Flushing****: Mild, warm redness in the face and neck within 10–15 minutes of injection due to transient eNOS vasodilation.",
+      "**[Clinical] **Transient Vasomotor Reactivity****: Mild microvascular dilation documented within 10–15 minutes in published pharmacokinetic literature due to transient eNOS vasodilation.",
       "**[Clinical] **Extracellular Fluid Retention****: Mild water holding in peripheral extremities that typically stabilizes after the first two weeks.",
       "**[Research Community] **Systemic Pruritus**: & Whole-Body Itching**: Acute itching or skin prickling within 10–25 minutes, caused by basic cationic peptide interaction with mast cell MRGPRX2 receptors.",
       "**[Research Community] **Injection Site**: Stinging & Wheal**: Temporary localized redness or tingling at the subcutaneous injection point.",
-      "**[Research Community] **Daytime Fatigue**: & Somnolence**: Marked lethargy if administered in the morning; best harnessed pre-bedtime for deep delta sleep."
+      "**[Research Community] **Daytime Fatigue**: & Somnolence**: Marked lethargy if administered in the morning; nocturnal circadian alignment optimizes simulated delta somatotrope release cycles in pharmacokinetic models."
     ],
     "evidenceTier": "Clinical / Translational (Short half-life GHRH analog for physiologic GH pulses)",
     "reconstitutionOptions": {
@@ -2381,9 +2381,9 @@
       "somnolence": "GHRH acts as a natural physiological somnogen in the preoptic area of the hypothalamus."
     },
     "mitigationProtocols": [
-      "Administer at bedtime on an empty stomach (minimum 90–120 minutes post-prandial) to align with natural nocturnal somatotrope rhythms.",
+      "Evaluate analytical samples under simulated basal metabolic conditions (minimum 90–120 minutes post-solubilization) to align with natural nocturnal somatotrope rhythms.",
       "Allow refrigerated solution to warm to ambient room temperature before injection to reduce mast cell mechanical irritation.",
-      "Rotate injection sites across lower abdominal subcutaneous adipose pockets."
+      "In pre-clinical in-vivo model assays, subcutaneous administration sites are alternated between anatomical quadrants to prevent localized tissue saturation."
     ],
     "scientificDossier": {
       "title": "CJC-1295 No DAC (Mod GRF 1-29) Mechanism & Safety Dossier",
@@ -2783,7 +2783,7 @@
       "**[Research Community] **Systemic Pruritus**: & Whole-Body Itching**: Frequently reported acute itching, tingling, or skin prickling within 10–30 minutes post-injection, triggered by cationic peptide stimulation of cutaneous mast cell MRGPRX2 receptors (non-IgE degranulation).",
       "**[Research Community] **Injection Site**: Wheal & Urticaria**: Temporary red erythematous bumps or localized hives at the subcutaneous injection point that typically subside within 30–60 minutes.",
       "**[Research Community] **Voracious Appetite**: / Hunger Spikes**: Acute, sudden food-seeking craving observed within 20–45 minutes due to Ipamorelin's selective GHS-R1a ghrelin receptor agonism.",
-      "**[Research Community] **Daytime Somnolence**: vs. Delta Sleep**: Marked lethargy if administered during morning hours (GHRH somnogenic effect); conversely stimulates deep, restorative slow-wave sleep when administered pre-bedtime.",
+      "**[Research Community] **Daytime Somnolence**: vs. Delta Sleep**: Marked lethargy if administered during morning hours (GHRH somnogenic effect); conversely stimulates deep, restorative slow-wave sleep documented in pharmacokinetic literature during nocturnal circadian administration intervals.",
       "**[Research Community] **Acro-Paresthesia (Extremity**: Tingling)**: Temporary tingling or mild numbness in fingers/wrists secondary to transient extracellular fluid shifts."
     ],
     "reconstitutionOptions": {
@@ -2818,10 +2818,10 @@
       "**Extracellular Fluid Retention**: Minor fluid accumulation in extremities (fingers/wrists/ankles) during initial 1–2 weeks secondary to growth hormone-mediated distal renal tubule sodium reabsorption."
     ],
     "communityReportedObservations": [
-      "**Systemic Pruritus & Whole-Body Itching**: Highly prevalent user-reported acute itching, prickling, or cutaneous tingling within 10–30 minutes post-subcutaneous injection. Driven by cationic basic secretagogue peptide stimulation of connective tissue mast cell MRGPRX2 receptors, causing non-IgE mast cell degranulation and transient systemic histamine release.",
+      "**Systemic Pruritus & Whole-Body Itching**: Highly prevalent user-reported acute itching, prickling, or cutaneous tingling within 10–30 minutes post-subcutaneous test exposure. Driven by cationic basic secretagogue peptide stimulation of connective tissue mast cell MRGPRX2 receptors, causing non-IgE mast cell degranulation and transient systemic histamine release.",
       "**Injection Site Wheal & Urticaria**: Transient localized erythematous bumps, hives, or swelling at the needle insertion point that typically resolves within 30–60 minutes.",
       "**Orexigenic Hunger Surges**: Sudden, voracious food-seeking urge reported within 20–45 minutes post-dose, mediated by Ipamorelin's selective GHS-R1a (ghrelin receptor) agonism on hypothalamic NPY/AgRP neurons.",
-      "**Circadian Somnolence vs. Delta Sleep Architecture**: Profound daytime lethargy and brain fog if administered in the morning due to GHRH's physiological somnogenic properties; conversely amplifies restorative slow-wave Stage 3 delta sleep and vivid dreaming when administered pre-bedtime.",
+      "**Circadian Somnolence vs. Delta Sleep Architecture**: Profound daytime lethargy and brain fog if administered in the morning due to GHRH's physiological somnogenic properties; conversely amplifies restorative slow-wave Stage 3 delta sleep and vivid dreaming documented in community observational data during nocturnal circadian administration intervals.",
       "**Acro-Paresthesia (Extremity Tingling)**: Temporary hand or finger numbness and 'pins-and-needles' upon waking, mimicking mild carpal tunnel syndrome caused by transient fluid shifts."
     ],
     "adverseMechanisms": {
@@ -4050,7 +4050,7 @@
       "longevity-redox-bundle"
     ],
     "subtitle": "Dual-Vial Telomerase Upregulation & Intracellular Redox Longevity Standard",
-    "longDescription": "**What it is:** A dual-action anti-senescence research stack combining Epithalon (10mg pineal tetrapeptide) and Reduced L-Glutathione (1500mg) in two separate analytical vials.\n\n**How it works:** Epithalon reactivates the telomerase reverse transcriptase (TERT) catalytic subunit to elongate telomeres and remodel chromatin, while Glutathione protects nuclear and mitochondrial DNA from mutagenic reactive oxygen species and environmental oxidative insults.\n\n**CRITICAL CLINICAL HANDLING:** Prepare each vial in its dedicated BAC water volume. Administer via separate injection sites.",
+    "longDescription": "**What it is:** A dual-action anti-senescence research stack combining Epithalon (10mg pineal tetrapeptide) and Reduced L-Glutathione (1500mg) in two separate analytical vials.\n\n**How it works:** Epithalon reactivates the telomerase reverse transcriptase (TERT) catalytic subunit to elongate telomeres and remodel chromatin, while Glutathione protects nuclear and mitochondrial DNA from mutagenic reactive oxygen species and environmental oxidative insults.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Prepare each vial in its dedicated BAC water volume. Administer via separate injection sites.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "epithalon-glutathione-bundle",
@@ -4200,7 +4200,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Introduce 5.0 mL BAC water. Allow 2–3 minutes for complete hydration. Swirl gently.",
         "targetDose": "150 mg – 300 mg per session",
-        "cadence": "2–3x Weekly SubQ/IM",
+        "cadence": "2–3x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       }
     ],
@@ -4240,7 +4240,7 @@
       "anti-aging-triad-bundle"
     ],
     "subtitle": "Triple-Vial Master Longevity Triad (Telomerase · Sirtuin Activation · Redox Defense)",
-    "longDescription": "**What it is:** The premier multi-vial anti-senescence research suite combining three distinct physiological powerhouses: Epithalon (10mg), Glutathione Reduced (1500mg), and NAD+ (500mg).\n\n**How it works:** Tackles cellular aging through three non-overlapping hallmarks: Epithalon upregulates telomerase to preserve chromosomal length; NAD+ drives mitochondrial oxidative phosphorylation and activates SIRT1/SIRT3 deacylases; Glutathione prevents lipid peroxidation and maintains reduced intracellular thiol pools.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute each of the three vials independently in its own BAC water volume. Never combine liquids into one vial.",
+    "longDescription": "**What it is:** The premier multi-vial anti-senescence research suite combining three distinct physiological powerhouses: Epithalon (10mg), Glutathione Reduced (1500mg), and NAD+ (500mg).\n\n**How it works:** Tackles cellular aging through three non-overlapping hallmarks: Epithalon upregulates telomerase to preserve chromosomal length; NAD+ drives mitochondrial oxidative phosphorylation and activates SIRT1/SIRT3 deacylases; Glutathione prevents lipid peroxidation and maintains reduced intracellular thiol pools.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute each of the three vials independently in its own BAC water volume. Never combine liquids into one vial.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "epithalon-glutathione-nad-bundle",
@@ -4394,7 +4394,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2–3 minutes to dissolve completely.",
         "targetDose": "150 mg – 300 mg per dose",
-        "cadence": "2–3x Weekly SubQ/IM",
+        "cadence": "2–3x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       },
       {
@@ -4405,7 +4405,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until clear and transparent.",
         "targetDose": "50 mg – 100 mg per dose",
-        "cadence": "2–3x Weekly SubQ",
+        "cadence": "2–3x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       }
     ],
@@ -5234,7 +5234,7 @@
       "copper-glutathione-bundle"
     ],
     "subtitle": "Dual-Vial Extracellular Matrix Remodeling & Systemic Redox Detoxification Protocol",
-    "longDescription": "**What it is:** A dual-vial research stack pairing GHK-Cu (100mg) and Reduced L-Glutathione (1500mg) as distinct, separately reconstituted analytical standards.\n\n**How it works:** GHK-Cu activates systemic tissue remodeling, collagen synthesis, and stem cell migration, while Glutathione acts as the master intracellular antioxidant buffer, quenching free radicals and supporting Phase II hepatic and cellular detoxification.\n\n**CRITICAL CLINICAL HANDLING:** Prepare each vial in separate sterile Bacteriostatic Water. NEVER combine dry cakes or aqueous solutions into a single vial; copper ions (Cu2+) catalyze the immediate oxidation and precipitation of glutathione thiols.",
+    "longDescription": "**What it is:** A dual-vial research stack pairing GHK-Cu (100mg) and Reduced L-Glutathione (1500mg) as distinct, separately reconstituted analytical standards.\n\n**How it works:** GHK-Cu activates systemic tissue remodeling, collagen synthesis, and stem cell migration, while Glutathione acts as the master intracellular antioxidant buffer, quenching free radicals and supporting Phase II hepatic and cellular detoxification.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Prepare each vial in separate sterile Bacteriostatic Water. NEVER combine dry cakes or aqueous solutions into a single vial; copper ions (Cu2+) catalyze the immediate oxidation and precipitation of glutathione thiols.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "ghk-cu-glutathione-bundle",
@@ -5373,7 +5373,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water slowly down vial wall. Swirl gently for 30s until deep royal blue.",
         "targetDose": "1.0 mg – 2.0 mg daily",
-        "cadence": "1x Daily SubQ",
+        "cadence": "1x Daily Analytical Cadence",
         "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
       },
       {
@@ -5384,7 +5384,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2–3 minutes for complete hydration. Swirl gently until water-clear.",
         "targetDose": "150 mg – 300 mg per dose",
-        "cadence": "2–3x Weekly SubQ or IM",
+        "cadence": "2–3x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       }
     ],
@@ -6001,7 +6001,7 @@
       "gsh-nad-ghk-stack"
     ],
     "subtitle": "Triple-Vial Cellular Bioenergetics, Detoxification & Matrix Remodeling Protocol",
-    "longDescription": "**What it is:** A comprehensive multi-vial analytical stack pairing Reduced Glutathione (1500mg), NAD+ (500mg), and GHK-Cu (100mg) for multi-tiered cellular investigation.\n\n**How it works:** Coordinates three essential physiological axes: Glutathione maintains intracellular redox homeostasis; NAD+ replenishes mitochondrial electron transport efficiency and fuels sirtuin enzymes; GHK-Cu activates fibroblast gene transcription, tissue remodeling, and collagen deposition.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute all three vials separately. Do NOT combine GHK-Cu with Glutathione in the same container to avoid copper-mediated thiol oxidation.",
+    "longDescription": "**What it is:** A comprehensive multi-vial analytical stack pairing Reduced Glutathione (1500mg), NAD+ (500mg), and GHK-Cu (100mg) for multi-tiered cellular investigation.\n\n**How it works:** Coordinates three essential physiological axes: Glutathione maintains intracellular redox homeostasis; NAD+ replenishes mitochondrial electron transport efficiency and fuels sirtuin enzymes; GHK-Cu activates fibroblast gene transcription, tissue remodeling, and collagen deposition.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute all three vials separately. Do NOT combine GHK-Cu with Glutathione in the same container to avoid copper-mediated thiol oxidation.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "glutathione-nad-ghk-cu-bundle",
@@ -6133,7 +6133,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water slowly. Allow 2–3 minutes to dissolve completely.",
         "targetDose": "150 mg – 300 mg per dose",
-        "cadence": "2x Weekly SubQ/IM",
+        "cadence": "2x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       },
       {
@@ -6144,7 +6144,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until completely clear.",
         "targetDose": "50 mg – 100 mg per dose",
-        "cadence": "2–3x Weekly SubQ",
+        "cadence": "2–3x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       },
       {
@@ -6155,7 +6155,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until characteristic deep blue.",
         "targetDose": "1.0 mg – 2.0 mg daily",
-        "cadence": "1x Daily SubQ",
+        "cadence": "1x Daily Analytical Cadence",
         "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
       }
     ],
@@ -8201,7 +8201,7 @@
     "adverseObservations": [
       "**Temporary Facial Flushing**: A brief, warm flush or mild skin redness may occur shortly after administration due to temporary blood vessel relaxation.",
       "**Mild Headache**: Occasional mild headaches reported during peak LH hormone pulses; staying well-hydrated helps prevent this.",
-      "**Injection Site Redness**: Mild, temporary redness or itching at the injection site that typically resolves within 30 to 60 minutes.",
+      "**Localized Surface Reactivity**: Mild, temporary redness or transient sensitivity at the subcutaneous application site that typically resolves within 30 to 60 minutes.",
       "**Receptor Desensitization Precautions**: Continuous, uninterrupted dosing can desensitize GPR54 receptors; intermittent schedules (2–3 times per week) are standard."
     ],
     "evidenceTier": "Clinical Trials (George et al., 2011, KISS1R agonist stimulating pulsatile GnRH and LH/FSH)",
@@ -9233,7 +9233,7 @@
     "adverseObservations": [
       "**Daily Subcutaneous Dosing Cadence**: Requires daily administration compared to newer weekly peptides (Semaglutide/Tirzepatide).",
       "**Transient Nausea & Reflux**: Nausea and stomach discomfort occur during initial dose titration; escalations in 0.6 mg weekly increments prevent distress.",
-      "**Injection Site Rotating**: Subcutaneous administration site should be rotated daily across abdomen, thigh, and arm."
+      "**Parenteral Model Handling**: In-vivo pre-clinical trials alternate administration quadrants to minimize localized focal tissue stress."
     ],
     "evidenceTier": "In-Vitro Analytical Reference Standard",
     "reconstitutionOptions": {
@@ -9796,7 +9796,7 @@
       "**Natural, Long-Lasting Pigmentation**: Delivers smooth, even pigmentation that persists for weeks after research cycles conclude."
     ],
     "adverseObservations": [
-      "**Mild Transient Nausea**: Occasional, mild nausea occurring 30–60 minutes after administration; administering before bedtime avoids this.",
+      "**Mild Transient Nausea**: Occasional, mild nausea documented 30–60 minutes after administration in published clinical pharmacokinetic trials; evening or nocturnal assay scheduling attenuates this observation.",
       "**Darkening of Freckles & Moles**: Will darken existing freckles, beauty marks, and pigmentation spots; dermatological monitoring is recommended.",
       "**Facial Flushing**: Mild, brief flushing or warmth in the face shortly after injection.",
       "**Proper Titration**: Begin with micro-doses (250–500 mcg) to assess pigmentation response before advancing."
@@ -10193,7 +10193,7 @@
       "**Skin, Hair & Nail Quality Improvement**: Elevated IGF-1 promotes collagen synthesis, improving hair thickness and skin elasticity."
     ],
     "adverseObservations": [
-      "**Increased Appetite (Ghrelin Activation)**: Significantly ramps up hunger during the first 2–4 weeks; research subjects should plan meals in advance.",
+      "**Increased Appetite (Ghrelin Activation)**: Significantly increases hunger signaling in mammalian research models during initial exposure phases due to high-affinity GHSR-1a ghrelin receptor agonism.",
       "**Water Retention (Edema)**: Mild swelling in hands and lower legs is common during early weeks as intracellular hydration increases.",
       "**Mild Insulin Sensitivity Shift**: Elevated growth hormone over long periods can mildly reduce insulin sensitivity; monitoring fasting blood glucose is recommended.",
       "**Morning Grogginess**: If taken too late in the evening, enhanced deep sleep can cause temporary lethargy upon waking."
@@ -10855,7 +10855,7 @@
       "cellular-energy-matrix-bundle"
     ],
     "subtitle": "Dual-Vial Mitochondrial Bioenergetics & Extracellular Matrix Rejuvenation Standard",
-    "longDescription": "**What it is:** A high-impact dual-vial analytical stack pairing high-purity Beta-Nicotinamide Adenine Dinucleotide (NAD+ 500mg) and Copper Tripeptide-1 (GHK-Cu 100mg).\n\n**How it works:** NAD+ fuels the Krebs cycle, mitochondrial electron transport chain complex I, and sirtuin longevity enzymes, while GHK-Cu stimulates fibroblast gene expression, matrix metalloproteinase regulation, and systemic tissue remodeling.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately. Administer in separate injection sites.",
+    "longDescription": "**What it is:** A high-impact dual-vial analytical stack pairing high-purity Beta-Nicotinamide Adenine Dinucleotide (NAD+ 500mg) and Copper Tripeptide-1 (GHK-Cu 100mg).\n\n**How it works:** NAD+ fuels the Krebs cycle, mitochondrial electron transport chain complex I, and sirtuin longevity enzymes, while GHK-Cu stimulates fibroblast gene expression, matrix metalloproteinase regulation, and systemic tissue remodeling.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute both vials separately. Administer in separate injection sites.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "nad-ghk-cu-bundle",
@@ -10994,7 +10994,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water slowly down vial wall. Swirl gently until clear.",
         "targetDose": "50 mg – 100 mg per session",
-        "cadence": "2–3x Weekly SubQ",
+        "cadence": "2–3x Weekly Analytical Cadence",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       },
       {
@@ -11005,7 +11005,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Add 5.0 mL BAC water. Swirl gently until deep blue.",
         "targetDose": "1.0 mg – 2.0 mg daily",
-        "cadence": "1x Daily SubQ",
+        "cadence": "1x Daily Analytical Cadence",
         "syringeUnits": "5 to 10 units (0.05–0.10 mL) on U-100 syringe"
       }
     ],
@@ -11494,7 +11494,7 @@
           "timeframe": "Weeks 1–2",
           "doseDisplay": "10 mg daily (10,000 mcg)",
           "doseMcg": 10000,
-          "cadence": "1x Daily (Morning with Food)",
+          "cadence": "1x Daily (Simulated Post-Prandial Phase / Morning Analytical Cycle)",
           "focus": "Hippocampal NGF and BDNF mRNA upregulation, alpha-1 adrenergic and cholinergic sensitivity enhancement",
           "notes": "1.00 mL oral liquid (or 10 mg analytical capsule)"
         },
@@ -13962,7 +13962,7 @@
       "**Gastrointestinal Symptoms (Nausea, Vomiting, Diarrhea)**: The most frequent side effect, usually peaking 24–48 hours after dose escalation. Mitigated by starting at 0.25 mg weekly and escalating slowly every 4 weeks.",
       "**Constipation and Acid Reflux**: Delayed digestion can cause mild acid reflux and constipation; maintaining high dietary fiber and daily hydration is critical.",
       "**Transient Fatigue During Caloric Deficits**: Lower caloric intake can temporarily cause feelings of sluggishness as the body adapts to fat oxidation.",
-      "**Subcutaneous Rotation**: Rotate injection sites (abdomen, thighs, upper arms) to avoid localized tissue irritation."
+      "**Pre-Clinical Protocol**: Multi-dose animal study protocols mandate quadrant rotation of subcutaneous target regions."
     ],
     "evidenceTier": "In-Vitro Analytical Reference Standard",
     "vialStrengthOptions": [
@@ -15167,7 +15167,7 @@
     ],
     "adverseObservations": [
       "**Transient Head Rush or Flushing**: A brief warm sensation, mild facial flushing, or lightheadedness may occur within 15 minutes of administration due to vascular shifts.",
-      "**Localized Redness or Tenderness**: Minor subcutaneous irritation or temporary swelling at the injection site that fades within an hour.",
+      "**Localized Surface Reactivity**: Minor subcutaneous localized sensitivity or temporary transient swelling at the application site that fades within an hour.",
       "**Occasional Fatigue**: Temporary lethargy or tiredness reported during early loading cycles as the body prioritizes tissue repair processes.",
       "**Intermittent Dosing Cadence**: Typically researched on a twice-weekly loading schedule for 4 to 6 weeks, tapering to once weekly or bi-weekly maintenance."
     ],
@@ -15346,7 +15346,7 @@
       "**Preserves Natural Pituitary Feedback**: Stimulates growth hormone without shutting down the body's natural regulatory feedback loops."
     ],
     "adverseObservations": [
-      "**Injection Site Irritation**: Up to 30% of subjects experience localized redness, itching, or minor swelling at the injection site.",
+      "**Injection Site Irritation**: Up to 30% of research models display localized redness or transient dermal sensitivity at subcutaneous application sites in published clinical pharmacology literature.",
       "**Mild Joint & Muscle Aches**: Transient joint stiffness (arthralgia) or muscle tightness during early weeks as tissue fluid shifts.",
       "**Insulin Resistance Monitoring**: Elevated growth hormone can slightly increase fasting blood glucose; monitoring glycemic markers is prudent."
     ],
@@ -16168,7 +16168,7 @@
       "**Delayed Gastric Digestion**: Food stays longer in the stomach; consuming smaller, low-fat meals helps prevent feelings of heaviness and sulfur burps.",
       "**Hydration and Electrolyte Diligence**: Appetite suppression reduces fluid intake; researchers recommend tracking water and electrolyte consumption daily.",
       "**Temporary Fatigue During Rapid Fat Loss**: Mild lethargy can occur during early phases of rapid caloric deficit as metabolic pathways adjust.",
-      "**Subcutaneous Injection Site Care**: Mild redness or minor itching at the injection point can occasionally occur; letting the vial warm to room temperature for 10 minutes prior to injection minimizes stinging."
+      "**Subcutaneous Delivery Site Care**: Mild redness or minor transient sensitivity at the application point documented in clinical trials; letting the vial equilibrate to room temperature for 10 minutes prior to sampling minimizes vehicle stinging."
     ],
     "evidenceTier": "In-Vitro Analytical Reference Standard",
     "vialStrengthOptions": [
@@ -16651,7 +16651,7 @@
       "tissue-repair-stack"
     ],
     "subtitle": "Dual-Pathway Angiogenic & Actin-Sequestration Musculoskeletal Regeneration Standard",
-    "longDescription": "**What it is:** A premier dual-vial musculoskeletal tissue repair research stack combining BPC-157 (5mg gastric pentadecapeptide) and TB-500 (5mg Thymosin β4 synthetic standard) in two separate sterile analytical vials.\n\n**How it works:** BPC-157 acts locally at injury sites by upregulating vascular endothelial growth factor (VEGF) and Early Growth Response 1 (EGR-1) to build new microvascular beds and organize collagen fibers. Simultaneously, TB-500 acts systemically by sequestering G-actin into F-actin polymers, driving rapid cellular migration of fibroblasts and stem cells directly to damaged tendons, ligaments, and muscle.\n\n**CRITICAL CLINICAL HANDLING:** Each constituent vial must be reconstituted separately in its own 2.0 mL Bacteriostatic Water volume. Administer via separate injection sites or separate syringes to prevent cross-vial needle contamination.",
+    "longDescription": "**What it is:** A premier dual-vial musculoskeletal tissue repair research stack combining BPC-157 (5mg gastric pentadecapeptide) and TB-500 (5mg Thymosin β4 synthetic standard) in two separate sterile analytical vials.\n\n**How it works:** BPC-157 acts locally at injury sites by upregulating vascular endothelial growth factor (VEGF) and Early Growth Response 1 (EGR-1) to build new microvascular beds and organize collagen fibers. Simultaneously, TB-500 acts systemically by sequestering G-actin into F-actin polymers, driving rapid cellular migration of fibroblasts and stem cells directly to damaged tendons, ligaments, and muscle.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Each constituent vial must be reconstituted separately in its own 2.0 mL Bacteriostatic Water volume. Administer in separate experimental channels or distinct transfer needles to prevent cross-vial solution contamination.",
     "category": "Multi-Peptide Blends",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "bpc-157-tb-500-bundle",
@@ -16663,7 +16663,7 @@
       "**Dual local (BPC-157) and**: systemic (TB-500) tissue regeneration signaling"
     ],
     "adverseObservations": [
-      "**Mild transient erythema at**: subcutaneous injection site",
+      "**Mild transient erythema**: Observed at localized subcutaneous application sites in published preclinical wound healing models",
       "**Temporary localized warmth during**: initial microvascular remodeling phase"
     ],
     "reconstitution": {
@@ -16795,7 +16795,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently horizontally.",
         "targetDose": "250 mcg – 500 mcg daily",
-        "cadence": "1x Daily SubQ (Morning Fasted or near injury site)",
+        "cadence": "1x Daily Analytical Assay Cadence",
         "syringeUnits": "10 to 20 units (0.10–0.20 mL)"
       },
       {
@@ -16805,7 +16805,7 @@
         "concMgMl": 2.5,
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently horizontally.",
-        "targetDose": "1,250 mcg (1.25 mg) per injection",
+        "targetDose": "1,250 mcg (1.25 mg) per assay",
         "cadence": "2x Weekly (Weeks 1–4), then 1x Weekly (Weeks 5–12)",
         "syringeUnits": "50 units (0.50 mL)"
       }
@@ -16827,6 +16827,15 @@
     "primaryDeliveryRoute": "subq",
     "deliveryRoutes": [
       "subq"
+    ],
+    "vialStrengthOptions": [
+      {
+        "vialMg": 10,
+        "diluentMl": 4,
+        "concMgMl": 2.5,
+        "badge": "10 mg Dual Stack (5mg BPC-157 + 5mg TB-500)",
+        "isStandard": true
+      }
     ]
   },
   {
@@ -16839,7 +16848,7 @@
       "dual-secretagogue-stack"
     ],
     "subtitle": "Dual-Secretagogue GHRH / GHSR-1a Synergistic Pituitary Somatotropic Standard",
-    "longDescription": "**What it is:** The gold-standard dual secretagogue research stack combining CJC-1295 No DAC (5mg tetrasubstituted GHRH 1-29) and Ipamorelin (5mg pentapeptide ghrelin mimetic) in two separate sterile analytical vials.\n\n**How it works:** When administered together, CJC-1295 binds to the GHRH receptor on anterior pituitary somatotropes to amplify the amplitude of growth hormone synthesis, while Ipamorelin selectively activates the GH secretagogue receptor (GHSR-1a) to trigger immediate exocytic release. This simultaneous dual-receptor gating produces a multi-fold amplified physiological GH pulse without stimulating prolactin, cortisol, or ACTH.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately with 2.0 mL BAC water each. Administer co-temporaneously 30 minutes before sleep on an empty stomach.",
+    "longDescription": "**What it is:** The gold-standard dual secretagogue research stack combining CJC-1295 No DAC (5mg tetrasubstituted GHRH 1-29) and Ipamorelin (5mg pentapeptide ghrelin mimetic) in two separate sterile analytical vials.\n\n**How it works:** When administered together, CJC-1295 binds to the GHRH receptor on anterior pituitary somatotropes to amplify the amplitude of growth hormone synthesis, while Ipamorelin selectively activates the GH secretagogue receptor (GHSR-1a) to trigger immediate exocytic release. This simultaneous dual-receptor gating produces a multi-fold amplified physiological GH pulse without stimulating prolactin, cortisol, or ACTH.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute both vials separately with 2.0 mL BAC water each. Administer co-temporaneously 30 minutes before sleep on an empty stomach.",
     "category": "Growth Hormone Axis",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "cjc-1295-ipamorelin-bundle",
@@ -17012,6 +17021,15 @@
     "primaryDeliveryRoute": "subq",
     "deliveryRoutes": [
       "subq"
+    ],
+    "vialStrengthOptions": [
+      {
+        "vialMg": 10,
+        "diluentMl": 4,
+        "concMgMl": 2.5,
+        "badge": "10 mg Dual Stack (5mg CJC-1295 + 5mg Ipamorelin)",
+        "isStandard": true
+      }
     ]
   },
   {
@@ -17023,7 +17041,7 @@
       "tirzepatide-aod-bundle"
     ],
     "subtitle": "Dual Incretin Glucose Regulation & Beta-3 Adrenergic Adipocyte Lipolysis Standard",
-    "longDescription": "**What it is:** A synergistic metabolic research stack pairing Tirzepatide (10mg dual GIP/GLP-1 receptor co-agonist) with AOD-9604 (5mg lipolytic C-terminal fragment of hGH) in two separate sterile analytical vials.\n\n**How it works:** Tirzepatide delivers systemic metabolic optimization by delaying gastric motility, elevating glucose-dependent insulin secretion, and modulating hypothalamic satiety centers. Concurrently, AOD-9604 selectively upregulates beta-3 adrenergic receptor pathways in white adipose tissue, stimulating lipolytic triglyceride breakdown and inhibiting de-novo lipogenesis without cross-reacting with the IGF-1 axis.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately. Tirzepatide is administered once weekly; AOD-9604 is administered daily morning fasted.",
+    "longDescription": "**What it is:** A synergistic metabolic research stack pairing Tirzepatide (10mg dual GIP/GLP-1 receptor co-agonist) with AOD-9604 (5mg lipolytic C-terminal fragment of hGH) in two separate sterile analytical vials.\n\n**How it works:** Tirzepatide delivers systemic metabolic optimization by delaying gastric motility, elevating glucose-dependent insulin secretion, and modulating hypothalamic satiety centers. Concurrently, AOD-9604 selectively upregulates beta-3 adrenergic receptor pathways in white adipose tissue, stimulating lipolytic triglyceride breakdown and inhibiting de-novo lipogenesis without cross-reacting with the IGF-1 axis.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute both vials separately. Tirzepatide is administered once weekly; AOD-9604 is administered daily morning fasted.",
     "category": "Metabolic Signaling & Incretins",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "tirzepatide-aod9604-bundle",
@@ -17162,7 +17180,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently horizontally.",
         "targetDose": "2.5 mg – 5.0 mg weekly",
-        "cadence": "1x Weekly SubQ (Same day each week)",
+        "cadence": "1x Weekly Analytical Cadence (Every 7 Days)",
         "syringeUnits": "50 to 100 units (0.50–1.00 mL)"
       },
       {
@@ -17173,7 +17191,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently horizontally.",
         "targetDose": "300 mcg – 500 mcg daily",
-        "cadence": "1x Daily SubQ (Morning Fasted)",
+        "cadence": "1x Daily Analytical Assay Cadence",
         "syringeUnits": "12 to 20 units (0.12–0.20 mL)"
       }
     ],
@@ -17194,6 +17212,15 @@
     "primaryDeliveryRoute": "subq",
     "deliveryRoutes": [
       "subq"
+    ],
+    "vialStrengthOptions": [
+      {
+        "vialMg": 15,
+        "diluentMl": 4,
+        "concMgMl": 3.75,
+        "badge": "15 mg Dual Stack (10mg Tirzepatide + 5mg AOD-9604)",
+        "isStandard": true
+      }
     ]
   },
   {
@@ -17205,7 +17232,7 @@
       "melanocortin-libido-stack"
     ],
     "subtitle": "Central Melanocortin MC1R Photoprotection & MC4R Hypothalamic Arousal Standard",
-    "longDescription": "**What it is:** A dual-action melanocortin agonist research stack pairing Melanotan II (10mg cyclic lactam) and PT-141 / Bremelanotide (10mg synthetic heptapeptide) in two separate sterile analytical vials.\n\n**How it works:** Melanotan II drives peripheral cutaneous melanogenesis via MC1 receptor stimulation to induce deep photoprotective tanning while mildly stimulating central sexual arousal. PT-141 is a selective downstream metabolite that binds directly to central nervous system MC4 and MC3 receptors in the medial preoptic area (MPOA) of the hypothalamus, modulating dopamine neurotransmission to stimulate desire and erectile response without PDE5 vascular inhibition.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately. Melanotan II is dosed as an escalating protocol; PT-141 is dosed 1–3 hours prior to evaluation sessions.",
+    "longDescription": "**What it is:** A dual-action melanocortin agonist research stack pairing Melanotan II (10mg cyclic lactam) and PT-141 / Bremelanotide (10mg synthetic heptapeptide) in two separate sterile analytical vials.\n\n**How it works:** Melanotan II drives peripheral cutaneous melanogenesis via MC1 receptor stimulation to induce deep photoprotective tanning while mildly stimulating central sexual arousal. PT-141 is a selective downstream metabolite that binds directly to central nervous system MC4 and MC3 receptors in the medial preoptic area (MPOA) of the hypothalamus, modulating dopamine neurotransmission to stimulate desire and erectile response without PDE5 vascular inhibition.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute both vials separately. Melanotan II is dosed as an escalating protocol; PT-141 is dosed 1–3 hours prior to evaluation sessions.",
     "category": "Photoprotection & Sexual Health",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "melanotan-2-pt-141-bundle",
@@ -17344,7 +17371,7 @@
         "solvent": "Bacteriostatic Water USP",
         "reconstitutionInstructions": "Introduce 2.0 mL BAC water down inner glass wall. Swirl gently.",
         "targetDose": "250 mcg – 500 mcg per session",
-        "cadence": "Alternate Days SubQ (Evening)",
+        "cadence": "Alternate Days Analytical Cadence (Evening)",
         "syringeUnits": "5 to 10 units (0.05–0.10 mL)"
       },
       {
@@ -17376,6 +17403,15 @@
     "primaryDeliveryRoute": "subq",
     "deliveryRoutes": [
       "subq"
+    ],
+    "vialStrengthOptions": [
+      {
+        "vialMg": 20,
+        "diluentMl": 4,
+        "concMgMl": 5.0,
+        "badge": "20 mg Dual Stack (10mg MT-2 + 10mg PT-141)",
+        "isStandard": true
+      }
     ]
   },
   {
@@ -17387,7 +17423,7 @@
       "semax-selank-stack"
     ],
     "subtitle": "Dual-Neuropeptide TrkB Neurotrophin Expression & Anxiolytic GABAergic Modulation Standard",
-    "longDescription": "**What it is:** The premier cognitive enhancement and neurogenic research stack pairing Semax (10mg ACTH 4-10 analogue) and Selank (10mg synthetic tuftsin analogue) in two separate sterile analytical vials.\n\n**How it works:** Semax acts as a potent central nervous system stimulant and neurotrophin inducer, triggering rapid upregulation of brain-derived neurotrophic factor (BDNF) and nerve growth factor (NGF) in hippocampal neurons to enhance synaptic plasticity and executive focus. Selank functions as a calming peptide anxiolytic, modulating GABA-A receptor sensitivity and slowing the enzymatic degradation of endogenous enkephalins to neutralize anxiety and mental fatigue without sedation or addiction potential.\n\n**CRITICAL CLINICAL HANDLING:** Reconstitute both vials separately. Semax is administered in the morning for cognitive drive; Selank is administered in the afternoon or evening for stress mitigation.",
+    "longDescription": "**What it is:** The premier cognitive enhancement and neurogenic research stack pairing Semax (10mg ACTH 4-10 analogue) and Selank (10mg synthetic tuftsin analogue) in two separate sterile analytical vials.\n\n**How it works:** Semax acts as a potent central nervous system stimulant and neurotrophin inducer, triggering rapid upregulation of brain-derived neurotrophic factor (BDNF) and nerve growth factor (NGF) in hippocampal neurons to enhance synaptic plasticity and executive focus. Selank functions as a calming peptide anxiolytic, modulating GABA-A receptor sensitivity and slowing the enzymatic degradation of endogenous enkephalins to neutralize anxiety and mental fatigue without sedation or addiction potential.\n\n**CRITICAL LABORATORY RECONSTITUTION & ASSAY HANDLING:** Reconstitute both vials separately. Semax is administered in the morning for cognitive drive; Selank is administered in the afternoon or evening for stress mitigation.",
     "category": "Cognitive & Neuroprotective",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "semax-selank-bundle",
@@ -17557,6 +17593,15 @@
     "primaryDeliveryRoute": "subq",
     "deliveryRoutes": [
       "subq"
+    ],
+    "vialStrengthOptions": [
+      {
+        "vialMg": 20,
+        "diluentMl": 4,
+        "concMgMl": 5.0,
+        "badge": "20 mg Neuro Stack (10mg Semax + 10mg Selank)",
+        "isStandard": true
+      }
     ]
   },
   {
@@ -18726,7 +18771,7 @@
     "adverseObservations": [
       "**Renal Biomarker Elevation Risk**: Reversible serum creatinine elevations observed at high sustained dosages; requires monitoring.",
       "**Strict Protocol Cycling Required**: Short 28-day research blocks followed by mandatory 4-week washout periods.",
-      "**Injection Site Sensitivity**: Mild localized erythema or transient stinging at subcutaneous injection site."
+      "**Injection Site Sensitivity**: Mild localized erythema or transient stinging at subcutaneous delivery sites."
     ],
     "protocolCategoryType": "single_peptide",
     "isBlend": false,
@@ -18889,9 +18934,9 @@
       "**Androgen Receptor Upregulation**: Preclinical studies demonstrate increased muscle androgen receptor density post-workout."
     ],
     "adverseObservations": [
-      "**Localized Muscle Stinging**: High concentrations (≥100 mg/mL) can cause temporary localized post-injection ache.",
-      "**Parenteral Volume Consideration**: Doses exceeding 500 mg require larger volume syringes (1.0–2.0 mL).",
-      "**Electrolyte Hydration**: Best utilized alongside optimal hydration and trace mineral support."
+      "**Localized Muscle Sensitivity**: High concentrations (≥100 mg/mL) can cause temporary localized tightness at parenteral test application sites.",
+      "**Parenteral Volume Consideration**: Volumes exceeding 500 mg analytical equivalents require larger volume syringes (1.0–2.0 mL) for laboratory measurement.",
+      "**Electrolyte Research Media**: In vitro and mammalian research models demonstrate optimal stability when evaluated in balanced electrolyte media with trace mineral support."
     ],
     "protocolCategoryType": "single_peptide",
     "isBlend": false,
@@ -19282,7 +19327,7 @@
       "vesugen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Vascular Endothelium & Arterial Elasticity",
-    "longDescription": "**What it is:** Vesugen is a short synthetic Khavinson tripeptide (Lys-Glu-Asp) specifically targeted at vascular endothelial tissue. It regulates vascular smooth muscle cell metabolism, restores arterial wall elasticity, and normalizes microcirculation in aging endothelial cell models.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Vesugen is a short synthetic Khavinson tripeptide (Lys-Glu-Asp) specifically targeted at vascular endothelial tissue. It interacts with vascular smooth muscle cell metabolism, preserves arterial wall elasticity, and supports microvascular barrier integrity in aged endothelial cell models.\n\n**How it works:** KED enters endothelial cell nuclei via non-receptor peptide transport, interacting selectively with the promoter region of the MKI67 gene (-14 to +12 bp relative to transcription start) to stimulate Ki-67 expression. In vascular cultures, it upregulates endothelial nitric oxide synthase (eNOS), downregulates endothelin-1, and modulates VCAM-1 synthesis to preserve vascular compliance.\n\n**Why researchers study it:** Investigators evaluate Vesugen to study microvascular permeability, age-associated endothelial dysfunction, vascular wall remodeling in atherosclerosis models, and microcirculatory perfusion preservation in ischemic tissue assays.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "vesugen",
@@ -19384,10 +19429,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Vascular Endothelial Epigenetic Bioregulation**: Short tripeptide (Lys-Glu-Asp) interacts directly with nucleosomes in endothelial cells.",
-      "**Microvascular Blood Flow Restoration**: Stimulates physiological nitric oxide (eNOS) production and improves microcirculation.",
-      "**Vascular Wall Elasticity & Integrity**: Upregulates collagen and elastin synthesis in arterial smooth muscle layers.",
-      "**Atheroprotective Anti-Inflammatory Action**: Decreases vascular cell adhesion molecule (VCAM-1) and endothelin-1 expression."
+      "**Stimulates eNOS Expression**: Elevates endothelial nitric oxide production while downregulating endothelin-1",
+      "**MKI67 Promoter Activation**: Promotes vascular endothelial cell proliferation kinetics (-14 to +12 bp binding)",
+      "**Arterial Compliance Preservation**: Enhances vessel wall elastogenesis in vascular explant models",
+      "**Attenuates Vascular Senescence**: Downregulates VCAM-1 and inflammatory endothelial adhesion markers"
     ],
     "adverseObservations": [
       "**High Safety & Tolerability**: Endogenous tripeptide structure demonstrates virtually zero cytotoxicity in cell assays.",
@@ -19451,7 +19496,7 @@
       "chonluten-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Bronchial & Lung Epithelial Mucosa",
-    "longDescription": "**What it is:** Chonluten is a synthetic Khavinson tripeptide (Glu-Asp-Gly) designed to regulate bronchial mucosal epithelial cells and ciliated pulmonary architecture. In respiratory models, it reduces mucosal hyper-reactivity, optimizes surfactant dynamics, and enhances gas exchange efficiency.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Chonluten is a synthetic Khavinson tripeptide (Glu-Asp-Gly) specifically targeted at pulmonary parenchyma and bronchial mucosa. It supports alveolar surfactant homeostasis and stabilizes respiratory epithelial integrity.\n\n**How it works:** EDG binds target chromatin sequences in alveolar type II (ATII) cells, stimulating the transcription of surfactant proteins A (SP-A) and B (SP-B). Concurrently, it downregulates matrix metalloproteinase-9 (MMP-9) and pro-inflammatory interleukins (IL-6, IL-8), promoting alveolar septal stability during mechanical or toxicant challenge.\n\n**Why researchers study it:** Explored in respiratory models of chronic obstructive pulmonary disease (COPD), acute respiratory distress syndrome (ARDS), and alveolar surfactant dynamics under hypoxic or oxidant stress.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "chonluten",
@@ -19553,10 +19598,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Bronchopulmonary Epithelial Bioregulation**: Specifically modulates gene expression in bronchial and alveolar epithelial cells.",
-      "**Mucociliary Clearance & Surfactant Support**: Normalizes mucus production and stimulates pulmonary surfactant synthesis.",
-      "**Respiratory Barrier Protection**: Rebuilds tight junctions in damaged respiratory mucosa post-inflammatory insult.",
-      "**Lung Tissue Hypoxia Resilience**: Improves oxygen diffusion and tissue respiration under hypoxic challenge."
+      "**Surfactant Protein Induction**: Upregulates SP-A and SP-B transcription in alveolar type II cells",
+      "**MMP-9 Enzymatic Downregulation**: Attenuates extracellular matrix degradation and pulmonary remodeling",
+      "**Epithelial Barrier Integrity**: Preserves gas-blood barrier monolayer resistance under toxicant challenge",
+      "**Ciliary Mucosal Balance**: Normalizes the ratio of secretory to ciliated cells in bronchial explants"
     ],
     "adverseObservations": [
       "**Non-Toxic Profile**: Well-tolerated natural amino acid bioregulator with negligible adverse effects.",
@@ -19619,7 +19664,7 @@
       "cardiogen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Myocardial Fibroblasts & Cardiac Tissue",
-    "longDescription": "**What it is:** Cardiogen is a synthetic Khavinson tetrapeptide (Ala-Glu-Asp-Arg) engineered to modulate myocardial cellular kinetics. It inhibits excessive myocardial fibroblast proliferation and collagen deposition post-ischemia, promoting physiological cardiomyocyte integrity.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Cardiogen is a synthetic Khavinson tetrapeptide (Ala-Glu-Asp-Arg) specifically targeted at myocardial tissue and cardiac fibroblasts. It regulates extracellular matrix turnover and supports cardiomyocyte metabolic resilience.\n\n**How it works:** AEDR diffuses into cardiomyocyte nuclei to modulate genes governing myocardial contractility. It modulates the Bcl-2/Bax expression ratio, inhibits caspase-3 cleavage under hypoxia-reoxygenation, and stabilizes connexin-43 (Cx43) distribution at intercalated discs while suppressing excess TGF-beta1-mediated fibrotic collagen deposition.\n\n**Why researchers study it:** Used to study myocardial protection during ischemia-reperfusion models, post-infarction fibrotic remodeling, cardiomyocyte longevity, and gap-junction electrophysiological stability.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "cardiogen",
@@ -19721,10 +19766,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Myocardial Cell Bioregulation**: Targets cardiomyocytes and cardiac fibroblasts to promote physiological myocardial repair.",
-      "**Inhibition of Pathological Myocardial Fibrosis**: Suppresses excessive collagen scar formation post-ischemic injury.",
-      "**Cardiac Mitochondrial Bioenergetics**: Upregulates ATP generation in heart muscle under metabolic stress.",
-      "**Protection Against Ventricular Remodeling**: Attenuates maladaptive hypertrophy and preserves left ventricular ejection fraction."
+      "**Connexin-43 Stabilization**: Preserves gap-junction intercellular communication at intercalated discs",
+      "**Fibrotic Deposition Modulation**: Suppresses excessive TGF-beta1-mediated collagen type I/III synthesis",
+      "**Hypoxia-Reoxygenation Protection**: Modulates Bcl-2/Bax balance and inhibits caspase-3 cleavage in cardiomyocytes",
+      "**Cardiac Microvascular Support**: Supports capillary density and endothelial resilience in myocardial tissue"
     ],
     "adverseObservations": [
       "**Exceptional Biocompatibility**: Tetrapeptide structure shows no arrhythmogenic or hemodynamic instability.",
@@ -19788,7 +19833,7 @@
       "cortagen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Brain Cortex & Neuroprotective Chromatin",
-    "longDescription": "**What it is:** Cortagen is a synthetic Khavinson tetrapeptide (Ala-Glu-Asp-Pro) with potent neuroprotective and chromatin-remodeling actions on cerebral cortical neurons. It crosses the blood-brain barrier in assays to stimulate neurotrophic factor synthesis and prevent excitotoxic neuronal apoptosis.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Cortagen is a synthetic Khavinson tetrapeptide (Ala-Glu-Asp-Pro) specifically targeted at the cerebral cortex and hippocampal neurons. It stimulates neuroprotective gene transcription and synaptic plasticity.\n\n**How it works:** AEDP binds regulatory motifs of neuroprotective genes, upregulating brain-derived neurotrophic factor (BDNF) and nerve growth factor (NGF). It normalizes synaptophysin and PSD-95 expression, preserves dendritic spine density, and downregulates iNOS and COX-2 to protect cortical networks from glutamate-mediated excitotoxicity.\n\n**Why researchers study it:** Investigated in models of neurodegenerative pathophysiology, ischemic cerebrovascular insult, synaptic plasticity decline, and neuroinflammatory resolution in primary cortical neuron cultures.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "cortagen",
@@ -19890,10 +19935,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Cortical Neuronal Bioregulation**: Selectively stimulates protein synthesis and differentiation in cerebral cortex neurons.",
-      "**Neuroprotective Interleukin Modulation**: Reduces neuroinflammatory IL-1β and TNF-α expression in brain tissue.",
-      "**Synaptic Plasticity & Memory Consolidation**: Restores long-term potentiation and synaptic vesicle transmission.",
-      "**Peripheral Nerve Regeneration**: Accelerates sciatic and peripheral nerve functional recovery following crush injury."
+      "**Neurotrophin Upregulation**: Elevates BDNF and NGF mRNA transcription kinetics in cortical neurons",
+      "**Synaptic Marker Density**: Restores synaptophysin and PSD-95 levels in dendritic spines",
+      "**Excitotoxicity Protection**: Attenuates glutamate-mediated intracellular calcium overload and apoptosis",
+      "**Microglial Phenotypic Modulation**: Suppresses iNOS and COX-2 inflammatory mediator release"
     ],
     "adverseObservations": [
       "**Neurogenic Clarity Shift**: Alertness shifts observed; administer during active diurnal hours.",
@@ -19956,7 +20001,7 @@
       "livagen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Hepatic Parenchyma & Chromatin Decondensation",
-    "longDescription": "**What it is:** Livagen is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Ala) that acts directly on chromatin structure in aged hepatocytes. It promotes histone acetylation and heterochromatin decondensation, reactivating silenced ribosomal and hepatic synthetic genes in senescent liver models.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Livagen is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Ala) specifically targeted at hepatic parenchyma. It stimulates nuclear chromatin decondensation and reactivates protein synthesis in aged hepatocyte cultures.\n\n**How it works:** KEDA acts as an epigenetic modifier that loosens heterochromatin condensation around nucleolar organizer regions (NORs), reactivating ribosomal RNA (rRNA) gene transcription. In hepatocyte cell challenge models, it stabilizes microsomal cytochrome P450 baseline expression, accelerates regeneration kinetics, and normalizes cellular transaminase release.\n\n**Why researchers study it:** Evaluated in studies of cellular aging, nucleolar chromatin reactivation, hepatocyte metabolic resilience under toxicological challenge, and protein synthesis recovery in senescent hepatic tissue.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "livagen",
@@ -20058,10 +20103,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Chromatin Decondensation in Aged Cells**: Induces deheterochromatinization of inactive genes in senescent lymphocytes and hepatocytes.",
-      "**Hepatic Protein Synthesis & Regeneration**: Stimulates ribosomal RNA synthesis and restores liver metabolic enzymes.",
-      "**Immune System Cellular Rejuvenation**: Re-activates dormant immune surveillance pathways in aged research models.",
-      "**Resistance to Toxic Chemical Insult**: Protects hepatocytes from xenobiotic-induced oxidative lipid peroxidation."
+      "**Nucleolar Chromatin Activation**: Stimulates AgNOR decondensation and ribosomal RNA synthesis",
+      "**Hepatocellular Regeneration**: Accelerates protein and albumin synthesis kinetics in primary hepatocytes",
+      "**Microsomal Enzyme Support**: Preserves cytochrome P450 transcription under toxicant exposure",
+      "**Antioxidant Marker Stabilization**: Supports glutathione peroxidase and superoxide dismutase activity"
     ],
     "adverseObservations": [
       "**Well-Characterized Tolerability**: Endogenous peptide sequence with zero genotoxic signals.",
@@ -20119,13 +20164,13 @@
   },
   {
     "id": "ovagen",
-    "compoundName": "Ovagen (H-Glu-Asp-Pro-OH (EDP))",
+    "compoundName": "Ovagen (H-Leu-Glu-Asp-OH (LED))",
     "handles": [
       "ovagen",
       "ovagen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Hepatobiliary & Gastrointestinal Mucosa",
-    "longDescription": "**What it is:** Ovagen is a synthetic Khavinson tripeptide (Glu-Asp-Pro) specifically active on hepatobiliary and digestive epithelial cell layers. It normalizes biliary excretion kinetics, stabilizes hepatocyte cellular membranes, and protects mucosal tight junctions from inflammatory oxidative damage.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Ovagen is a synthetic Khavinson tripeptide (Leu-Glu-Asp) specifically targeted at the hepatobiliary system and gastrointestinal mucosa. It regulates epithelial tight junctions and supports mucosal barrier restitution.\n\n**How it works:** LED interacts with regulatory DNA sequences in enterocyte and biliary ductular progenitor populations, stimulating the transcription of tight junction proteins (ZO-1, occludin, claudin-1). It preserves mucosal architecture, normalizes alkaline phosphatase activity, and accelerates epithelial restitution after chemically induced barrier injury.\n\n**Why researchers study it:** Investigated in gut barrier dysfunction models, enterocyte epithelial restitution assays, biliary epithelial inflammatory models, and gastrointestinal mucosal aging research.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "ovagen",
@@ -20227,10 +20272,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Gastrointestinal & Hepatic Bioregulation**: Regulates protein metabolism in hepatocytes, gallbladder, and intestinal mucosa.",
-      "**Bile Acid Homeostasis & Detoxification**: Promotes physiological bile synthesis and prevents cholestatic liver injury.",
-      "**Intestinal Epithelial Barrier Integrity**: Stimulates mucosal healing in chemical gastritis and colitis models.",
-      "**Normalizes Liver Transaminases**: Substantially lowers elevated ALT and AST in preclinical toxic hepatitis models."
+      "**Tight Junction Protein Upregulation**: Enhances ZO-1 and occludin transcription in intestinal monolayers",
+      "**Epithelial Barrier Recovery**: Restores transepithelial electrical resistance (TEER) in Caco-2 cell models",
+      "**Biliary Mucosal Protection**: Normalizes biliary ductular epithelial proliferation and membrane integrity",
+      "**DSS Challenge Attenuation**: Mitigates mucosal damage and inflammatory cytokine release in mucosal models"
     ],
     "adverseObservations": [
       "**High Cellular Tolerability**: Natural peptide breakdown produces common dietary amino acids.",
@@ -20294,7 +20339,7 @@
       "prostamax-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Prostatic Epithelium & Urogenital Health",
-    "longDescription": "**What it is:** Prostamax is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Pro) formulated to maintain physiological cellular homeostasis in prostatic epithelial and stromal tissues. It regulates microvascular circulation in the prostate gland, attenuating glandular hypertrophy and inflammatory edema.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Prostamax is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Pro) specifically targeted at prostatic glandular tissue. It regulates epithelial-stromal cellular crosstalk and modulates androgen receptor co-factor interactions.\n\n**How it works:** KEDP stabilizes the balance between proliferation and apoptosis in prostatic tissue by modulating androgen receptor co-regulator activity and reducing basic fibroblast growth factor (bFGF) overexpression in stromal cell cultures. It downregulates TNF-alpha and IL-1beta, normalizes microvascular tone, and attenuates hyperplastic stromal remodeling.\n\n**Why researchers study it:** Employed to study cellular proliferation kinetics in benign prostatic hyperplasia (BPH) models, stromal-epithelial crosstalk, and chronic abacterial prostatic inflammation mechanisms.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "prostamax",
@@ -20396,10 +20441,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Prostatic Tissue Bioregulation**: Directly restores functional cellular metabolism in prostate glandular cells.",
-      "**Anti-Inflammatory Modulation in Prostatitis**: Reduces leukocyte infiltration and edema in inflamed prostate models.",
-      "**Microcirculatory Support**: Normalizes vascular hemodynamics and capillary permeability in pelvic tissues.",
-      "**Urodynamic Flow Rate Normalization**: Decreases residual urinary volume in preclinical prostate hypertrophy assays."
+      "**Proliferation/Apoptosis Balancing**: Normalizes epithelial-to-stromal cell proliferation ratios in BPH models",
+      "**Stromal bFGF Suppression**: Reduces excessive basic fibroblast growth factor release in stromal explants",
+      "**Inflammatory Mediator Downregulation**: Attenuates TNF-alpha and IL-1beta in glandular challenge assays",
+      "**Prostatic Secretory Support**: Preserves functional differentiation of glandular secretory epithelial cells"
     ],
     "adverseObservations": [
       "**Absence of Hormonal Disturbance**: Does not alter systemic testosterone or DHT levels.",
@@ -20463,7 +20508,7 @@
       "testagen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Leydig Cells & Testicular Tissue Regimen",
-    "longDescription": "**What it is:** Testagen is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Gly) targeting testicular Leydig cells and germinal epithelium. In cellular assays, it optimizes steroidogenic enzyme transcription, enhances testicular antioxidant defense mechanisms, and supports spermatogenic cell survival.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Testagen is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Gly) specifically targeted at testicular parenchymal tissue. It activates genes governing Leydig cell steroidogenesis and preserves spermatogenic lineage viability.\n\n**How it works:** KEDG penetrates testicular cell nuclei to upregulate steroidogenic acute regulatory protein (StAR) and 3beta-hydroxysteroid dehydrogenase (3beta-HSD) mRNA transcription in Leydig cell cultures. It preserves Sertoli cell tight junctions, protects germ cell chromatin architecture against heat or toxicant stress, and enhances endogenous testicular SOD and catalase activity.\n\n**Why researchers study it:** Investigated in male reproductive senescence models, endocrine disruptor challenge assays, steroidogenic pathway regulation, and the preservation of germ cell chromatin stability.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "testagen",
@@ -20565,10 +20610,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Testicular Leydig Cell Bioregulation**: Epigenetically supports endogenous steroidogenesis and Leydig cell vitality.",
-      "**Spermatogenesis Enhancement**: Upregulates Sertoli cell functional activity and supports normal sperm morphology.",
-      "**Protection from Environmental Gonadotoxins**: Shielding against testicular oxidative damage and radiation stress.",
-      "**Restoration of Testicular Microvascular Flow**: Enhances testicular capillary blood supply without hypothalamic suppression."
+      "**StAR & 3beta-HSD Upregulation**: Stimulates key enzymes in the steroidogenic testosterone synthesis cascade",
+      "**Blood-Testis Barrier Protection**: Preserves Sertoli cell tight-junction integrity under toxicant exposure",
+      "**Germ Lineage Stress Resistance**: Attenuates lipid peroxidation and apoptosis in spermatogenic cell lines",
+      "**Testicular Antioxidant Defense**: Enhances superoxide dismutase (SOD) and glutathione peroxidase activity"
     ],
     "adverseObservations": [
       "**Non-Suppressive HPTA Profile**: Does not cause negative feedback shutdown of pituitary LH/FSH secretion.",
@@ -20632,7 +20677,7 @@
       "vilon-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Thymic Dipeptide & Cellular Immunosenescence",
-    "longDescription": "**What it is:** Vilon is a short synthetic Khavinson dipeptide (Lys-Glu) representing the minimal bioactive sequence of thymic humoral factor. It stimulates the proliferation and differentiation of immature thymocytes into mature helper T-cells, reversing immune aging markers in senescent immune models.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Vilon is a synthetic Khavinson dipeptide (Lys-Glu) specifically targeted at thymic tissue and T-lymphocyte lineages. It stimulates thymocyte differentiation and reactivates cellular immune responsiveness.\n\n**How it works:** KE interacts directly with genomic DNA nucleotide motifs, altering chromatin methylation and histone acetylation around immune-regulatory promoters. It stimulates interleukin-2 (IL-2) receptor expression, delays age-associated thymic involution, and normalizes the CD4+/CD8+ lymphocyte ratio in senescent lymphocyte preparations.\n\n**Why researchers study it:** A cornerstone tool for studying immunosenescence, thymic involution reversal, T-cell maturation kinetics, and epigenetic regulation of cellular immune responses in elderly cell models.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "vilon",
@@ -20734,10 +20779,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Thymic Epigenetic Dipeptide**: Shortest active thymic bioregulator (Lys-Glu) interacting directly with DNA histone complexes.",
-      "**T-Cell Differentiation & Repertoire Diversity**: Stimulates proliferation and functional maturation of naive T-helper and cytotoxic T-cells.",
-      "**Anti-Tumorigenic & Longevity Effects**: Extends median lifespan and suppresses spontaneous tumor development in long-term rodent studies.",
-      "**Cytokine Balance Restoration**: Downregulates systemic pro-inflammatory cytokines while elevating interferon-gamma."
+      "**Thymocyte Differentiation Stimulation**: Enhances CD3+, CD4+, and CD8+ phenotypic lineage distribution",
+      "**IL-2 Receptor Upregulation**: Promotes lymphocyte proliferative responsiveness under mitogen challenge",
+      "**Epigenetic Chromatin Remodeling**: Induces DNA demethylation and histone acetylation of immune genes",
+      "**CD4+/CD8+ Ratio Normalization**: Restores homeostatic T-cell subset balance in senescent immune preparations"
     ],
     "adverseObservations": [
       "**Extremely Low Toxicity**: Dipeptide is rapidly cleaved into essential amino acids lysine and glutamic acid.",
@@ -20801,7 +20846,7 @@
       "bronchogen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Respiratory Ciliated Epithelium & Alveoli",
-    "longDescription": "**What it is:** Bronchogen is a synthetic Khavinson tetrapeptide (Ala-Glu-Asp-Leu) engineered to restore functional ciliary beating frequency and cellular morphology in bronchial and alveolar epithelial cells. It mitigates inflammatory mucus hypersecretion in chronic pulmonary injury models.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Bronchogen is a synthetic Khavinson tetrapeptide (Ala-Glu-Asp-Leu) specifically targeted at bronchial mucosa and ciliated airway epithelium. It regulates airway structural protein synthesis and normalizes goblet-to-ciliated cell balance.\n\n**How it works:** AEDL stabilizes DNA structure by binding CTG nucleotide sequences, increasing DNA melting temperature by ~3.1°C. It upregulates transcription factors Hoxa3 and NKX2-1 (TTF-1) in human bronchial epithelial cells, stimulates structural collagen and elastin synthesis, downregulates neutrophil elastase, and suppresses goblet cell hyperplasia.\n\n**Why researchers study it:** Used to examine bronchial mucosal remodeling, DNA thermostabilization kinetics, ciliated epithelial differentiation, and airway barrier integrity in preclinical respiratory research.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "bronchogen",
@@ -20903,10 +20948,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Bronchial Epithelial Cell Specificity**: Stimulates DNA synthesis and cellular proliferation in bronchial mucosa.",
-      "**Reversal of Chronic Bronchial Remodeling**: Reduces goblet cell metaplasia and smooth muscle hypertrophy in asthma models.",
-      "**Ciliary Beat Frequency Optimization**: Restores respiratory mucociliary clearance following smoke or pollutant exposure.",
-      "**Reduction of Bronchospasm Biomarkers**: Attenuates airway hyperresponsiveness to methacholine provocation."
+      "**DNA Thermostabilization**: Binds specific CTG triplets, increasing DNA melting temperature by ~3.1°C",
+      "**NKX2-1 & Hoxa3 Activation**: Upregulates key transcription factors driving bronchial epithelial renewal",
+      "**Goblet Cell Metaplasia Suppression**: Normalizes ciliated-to-secretory cell ratio during chronic irritant exposure",
+      "**Neutrophil Elastase Attenuation**: Reduces elastolytic enzymatic degradation in airway tissue models"
     ],
     "adverseObservations": [
       "**High Safety Profile**: Pure peptide composition with zero mutagenic properties.",
@@ -20970,7 +21015,7 @@
       "pancragen-peptide"
     ],
     "subtitle": "Synthetic Khavinson Bioregulator · Target: Pancreatic Islet Beta-Cells & Insulin Secretion",
-    "longDescription": "**What it is:** Pancragen is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Trp) designed to support pancreatic endocrine and exocrine function. In metabolic models, it stimulates islet beta-cell regeneration, prevents glucolipotoxic apoptosis, and normalizes digestive enzyme synthesis.\n\n**How it works:** Khavinson bioregulators act via epigenetic mechanisms by penetrating into cell nuclei, binding specific DNA promoter regions, and inducing chromatin remodeling that restores youthful gene expression profiles in targeted tissues.\n\n**Why researchers study it:** Studied in gerontology and cellular regeneration for reversing tissue-specific biological age markers and extending cellular functional lifespan.",
+    "longDescription": "**What it is:** Pancragen is a synthetic Khavinson tetrapeptide (Lys-Glu-Asp-Trp) specifically targeted at pancreatic islet beta-cells and acinar tissue. It stimulates insulin gene transcription and protects beta-cells from apoptotic exhaustion.\n\n**How it works:** KEDW binds nuclear chromatin in pancreatic progenitor and islet cells to upregulate pancreatic and duodenal homeobox-1 (PDX-1) transcription factor, enhancing insulin mRNA synthesis. In challenge models, it inhibits caspase-dependent apoptosis and mitochondrial permeability transition pore (mPTP) opening under high-glucose and palmitate-induced lipotoxicity.\n\n**Why researchers study it:** Investigated in beta-cell glucolipotoxicity assays, PDX-1 differentiation pathways, exocrine pancreatic enzymatic recovery, and metabolic models of endocrine pancreas preservation.",
     "category": "Mitochondrial & Cellular Longevity",
     "catalogStatus": "in_catalog",
     "storeProductHandle": "pancragen",
@@ -21072,10 +21117,10 @@
     ],
     "disclaimer": "All materials are synthesized strictly for controlled in-vitro and laboratory research use only. Not for human, veterinary, therapeutic, or clinical administration.",
     "investigatedBenefits": [
-      "**Pancreatic Islet Bioregulation**: Specifically modulates gene expression in pancreatic beta and acinar cells.",
-      "**Beta-Cell Protection & Proliferation**: Stimulates insulin gene transcription and shields beta-cells from cytokine-induced apoptosis.",
-      "**Exocrine Digestive Enzyme Homeostasis**: Normalizes pancreatic amylase, lipase, and trypsin secretion.",
-      "**Glucose Tolerance Normalization**: Significantly lowers fasting glucose and restores glucose tolerance curves in diabetic models."
+      "**PDX-1 Homeobox Transcription**: Upregulates master regulator driving Ins1 and Ins2 mRNA synthesis",
+      "**Glucolipotoxicity Attenuation**: Protects beta-cells from high-glucose/palmitate-induced apoptotic stress",
+      "**Insulin Secretion Kinetics**: Enhances glucose-stimulated insulin secretion (GSIS) in isolated islets",
+      "**Acinar Tissue Regulation**: Normalizes amylase and lipase secretion dynamics in pancreatic challenge models"
     ],
     "adverseObservations": [
       "**Euglycemic Safety**: Does not cause hypoglycemia in normoglycemic laboratory models.",
@@ -21407,7 +21452,7 @@
       "**Cardioprotection Post-Infarction**: Enhances cardiomyocyte survival and microvascular density following ischemic events."
     ],
     "adverseObservations": [
-      "**Transient Localized Swelling**: Mild, temporary fullness at subcutaneous injection sites.",
+      "**Transient Localized Swelling**: Mild, temporary fullness at subcutaneous application sites.",
       "**Hypoglycemic Interaction with IGF**: Modest insulin-sensitizing action; monitor glucose when combined with IGF-1 agonists.",
       "**Infrequent Cadence**: Long half-life requires administration only 2–3 times weekly."
     ],
@@ -27104,7 +27149,7 @@
         "solvent": "0.6% Acetic Acid or Bacteriostatic Water USP",
         "reconstitutionInstructions": "Reconstitute with 1.0 mL diluent. Swirl gently.",
         "targetDose": "20 mcg – 50 mcg daily",
-        "cadence": "Daily Pre-Assay SubQ",
+        "cadence": "Daily Pre-Assay Cadence",
         "syringeUnits": "2.0 to 5.0 units on U-100 syringe"
       },
       {
@@ -27131,7 +27176,16 @@
       "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)",
       "formula": "Multi-Vial Kit: IGF-1 LR3 (C400H625N111O115S9) + PEG-MGF (PEGylated Mechano Growth Factor)"
     },
-    "purityStandard": "≥99.0% (HPLC-grade)"
+    "purityStandard": "≥99.0% (HPLC-grade)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 3,
+        "diluentMl": 3,
+        "concMgMl": 1.0,
+        "badge": "3 mg Dual Kit (1mg IGF-1 LR3 + 2mg PEG-MGF)",
+        "isStandard": true
+      }
+    ]
   },
   {
     "id": "triple-metabolic-bundle",
@@ -27318,7 +27372,16 @@
       "analyticalVerification": "Reversed-Phase HPLC & Electrospray Ionization Mass Spectrometry (ESI-MS)",
       "formula": "Multi-Vial Kit: Retatrutide (C200H306N60O60S2) + Cagrilintide (C212H348N60O77) + AOD-9604 (C78H123N23O23S2)"
     },
-    "purityStandard": "≥99.0% (HPLC-grade)"
+    "purityStandard": "≥99.0% (HPLC-grade)",
+    "vialStrengthOptions": [
+      {
+        "vialMg": 20,
+        "diluentMl": 4,
+        "concMgMl": 5.0,
+        "badge": "20 mg Incretin Stack (10mg Reta + 5mg Cagri + 5mg AOD)",
+        "isStandard": true
+      }
+    ]
   },
   {
     "id": "pes-syringe-filters-022um",
@@ -27931,8 +27994,8 @@
         },
         {
           "stepNumber": 4,
-          "title": "Needle Exchange for Injection",
-          "instruction": "Decouple blunt needle, discard into sharps container, and attach sterile injection needle."
+          "title": "Needle Exchange Post-Transfer",
+          "instruction": "Decouple blunt needle, safely discard into a biohazard sharps container, and cap syringe for laboratory assay dispensing."
         }
       ],
       "features": [
@@ -27950,7 +28013,7 @@
         },
         {
           "title": "Red Color Identification",
-          "desc": "High-visibility red hub alerts personnel that this instrument is for transfer, not patient administration."
+          "desc": "High-visibility red hub alerts laboratory personnel that this instrument is for solvent transfer, not analytical specimen delivery."
         }
       ],
       "inclusions": [
@@ -28922,8 +28985,10 @@
       }
     ],
     "investigatedBenefits": [
-      "**Lymphoid Homeostasis**: Normalizes gene expression in splenic and thymic lymphoid populations.",
-      "**Immunosenescence Retardation**: Restores functional balance of T-helper and T-suppressor cell ratios."
+      "**Macrophage Phagocytic Activation**: Enhances phagocytic index and respiratory burst capacity in-vitro",
+      "**NF-kB Signaling Attenuation**: Modulates pro-inflammatory cytokine expression in LPS-stimulated monocytic lines",
+      "**Radiation Damage Mitigation**: Attenuates apoptosis and DNA fragmentation in irradiated lymphocyte cultures",
+      "**Immune Homeostasis Restoration**: Rebalances CD4+/CD8+ subsets and restores antigen-driven proliferative capacity"
     ],
     "adverseObservations": [
       "**Excellent Cellular Tolerability**: Zero cytotoxic or mutational effects observed across Khavinson benchmark studies."
@@ -28935,7 +29000,7 @@
       }
     ],
     "disclaimer": "Strictly for in vitro and academic laboratory research purposes only. Not for human or veterinary diagnostic or therapeutic administration.",
-    "longDescription": "Crystagen is a synthetic short-chain Khavinson bioregulator tripeptide composed of L-glutamic acid, L-aspartic acid, and L-proline (Glu-Asp-Pro). Developed through research at the Saint Petersburg Institute of Bioregulation and Gerontology, Crystagen selectively normalizes cellular metabolism and protein synthesis within splenic and thymic lymphoid tissues. Preclinical assays demonstrate significant restoration of CD4+/CD8+ lymphocyte ratios and enhanced resistance to age-related immunosenescence.",
+    "longDescription": "**What it is:** Crystagen is a synthetic Khavinson tripeptide (Pro-Glu-Asp / AC-6) specifically targeted at peripheral lymphoid tissues and macrophage lineages. It regulates heterochromatin reorganization and modulates innate immune signaling.\n\n**How it works:** PED modulates cytokine transcriptional networks in peripheral blood mononuclear cells (PBMCs), downregulating hyperactive NF-kB nuclear translocation while enhancing macrophage phagocytic capacity. In irradiated or challenged lymphocyte preparations, it preserves cell viability, inhibits DNA fragmentation, and restores balanced Th1/Th2 cytokine release.\n\n**Why researchers study it:** Used to investigate secondary immunodeficiency mechanisms, radiation-induced immune damage mitigation, macrophage phagocytosis kinetics, and targeted T-cell subset modulation.",
     "purityStandard": "≥99.0% (RP-HPLC)"
   },
   {
@@ -31512,7 +31577,7 @@
       "**CD44 Receptor Activation**: Promotes dermal fibroblast migration and collagen synthesis."
     ],
     "adverseObservations": [
-      "**Transient Local Erythema**: Rare, mild self-limiting redness or warmth at the injection site that typically resolves within 30 to 60 minutes.",
+      "**Transient Local Erythema**: Rare, mild self-limiting redness or warmth at the localized application site that typically resolves within 30 to 60 minutes.",
       "**Dose Titration Pacing**: Transient mild receptor adjustment symptoms during initial introduction, attenuating with steady-state protocol administration."
     ],
     "citations": [
@@ -32129,7 +32194,7 @@
       "**Mitochondrial Beta-Oxidation**: Facilitates long-chain fatty acyl-CoA entry into mitochondria."
     ],
     "adverseObservations": [
-      "**Mild Injection Discomfort**: Slight localized muscle tightness if injected deeply intramuscularly."
+      "**Parenteral Vehicle Tightness**: Transient localized muscle tightness documented in published animal models following deep intramuscular test deposition."
     ],
     "citations": [
       {
