@@ -101,33 +101,69 @@ function disaggregatePackingItems(item: any): DisaggregatedComponent[] {
   const sku = (item.variant_sku || "").toUpperCase()
   const results: DisaggregatedComponent[] = []
 
+  let isMultiStack = false
+
   // Multi-Compound Stacks
   if (sku.includes("BNDL-EGN") || (title.includes("epithalon") && title.includes("glutathione") && title.includes("nad"))) {
     results.push({ title: "Epithalon 10MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "NAD+ 500MG Lyophilized Research Vial", quantity: 1 })
+    isMultiStack = true
   } else if (sku.includes("BNDL-GNG") || (title.includes("glutathione") && title.includes("nad") && title.includes("ghk"))) {
     results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "NAD+ 500MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "GHK-Cu 100MG Lyophilized Research Vial", quantity: 1 })
+    isMultiStack = true
   } else if (sku.includes("BNDL-GG") || (title.includes("ghk-cu") && title.includes("glutathione"))) {
     results.push({ title: "GHK-Cu 100MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
+    isMultiStack = true
   } else if (sku.includes("BNDL-EG") || (title.includes("epithalon") && title.includes("glutathione"))) {
     results.push({ title: "Epithalon 10MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "Glutathione 1500MG Lyophilized Research Vial", quantity: 1 })
+    isMultiStack = true
   } else if (sku.includes("BNDL-NG") || (title.includes("nad") && title.includes("ghk"))) {
     results.push({ title: "NAD+ 500MG Lyophilized Research Vial", quantity: 1 })
     results.push({ title: "GHK-Cu 100MG Lyophilized Research Vial", quantity: 1 })
+    isMultiStack = true
   }
 
-  // Tier 1 Inclusions (BAC Water / Complete SubQ Set)
-  if (subtitle.includes("subq") || title.includes("subq")) {
-    results.push({ title: "10mL Bacteriostatic Water USP (Diluent)", quantity: 1 })
-    results.push({ title: "10x 1mL Sterile Syringes (31G, 5/16\")", quantity: 1 })
-    results.push({ title: "10x Sterile Alcohol Antiseptic Swabs", quantity: 1 })
-  } else if (subtitle.includes("bac") || title.includes("bac")) {
-    results.push({ title: "10mL Bacteriostatic Water USP (Diluent)", quantity: 1 })
+  // Tier Inclusions (Analytical Lab Set / Complete Set / Reconstitution Diluent)
+  const isLabSet =
+    subtitle.includes("analytical lab set") ||
+    subtitle.includes("complete set") ||
+    subtitle.includes("lab set") ||
+    subtitle.includes("subq") ||
+    sku.includes("LAB-SET") ||
+    sku.includes("COMPLETE") ||
+    sku.includes("SUBQ")
+
+  const isBac = !isLabSet && (
+    subtitle.includes("bac") ||
+    subtitle.includes("diluent") ||
+    sku.includes("BAC")
+  )
+
+  if (isLabSet) {
+    if (!isMultiStack) {
+      const dosePart = item.subtitle ? item.subtitle.split("/")[0].trim() : ""
+      const vialTitle = dosePart && !dosePart.toLowerCase().includes("set")
+        ? `${item.title} (${dosePart}) Lyophilized Reference Standard Vial`
+        : `${item.title} Lyophilized Reference Standard Vial`
+      results.push({ title: vialTitle, quantity: 1 })
+    }
+    results.push({ title: "10mL Bacteriostatic Water USP (Reconstitution Diluent)", quantity: 1 })
+    results.push({ title: "10x U-100 LDS Analytical Syringes (31G, 5/16\")", quantity: 1 })
+    results.push({ title: "10x Sterile Alcohol Antiseptic Prep Swabs", quantity: 1 })
+  } else if (isBac) {
+    if (!isMultiStack) {
+      const dosePart = item.subtitle ? item.subtitle.split("/")[0].trim() : ""
+      const vialTitle = dosePart && !dosePart.toLowerCase().includes("set")
+        ? `${item.title} (${dosePart}) Lyophilized Reference Standard Vial`
+        : `${item.title} Lyophilized Reference Standard Vial`
+      results.push({ title: vialTitle, quantity: 1 })
+    }
+    results.push({ title: "10mL Bacteriostatic Water USP (Reconstitution Diluent)", quantity: 1 })
   }
 
   return results
@@ -253,6 +289,48 @@ export const OrderCockpitDetailRoute = () => {
   )
   const displayId = order?.display_id || (order?.id ? order.id.slice(-8) : "—")
   const items = order?.items ?? []
+  const itemsSubtotal = useMemo(() => {
+    return items.reduce(
+      (sum: number, item: any) => sum + ((item.unit_price || 0) * (item.quantity || 1)),
+      0
+    )
+  }, [items])
+
+  const [checkedPackingItems, setCheckedPackingItems] = useState<Record<string, boolean>>({})
+
+  const allChecklistKeys = useMemo(() => {
+    const keys: string[] = []
+    items.forEach((item: any) => {
+      const disaggregated = disaggregatePackingItems(item)
+      if (disaggregated.length > 0) {
+        disaggregated.forEach((_, idx) => {
+          keys.push(`${item.id}-disagg-${idx}`)
+        })
+      } else {
+        keys.push(`${item.id}-single`)
+      }
+    })
+    return keys
+  }, [items])
+
+  const allItemsPacked = useMemo(() => {
+    if (isFulfilledOrShipped) return true
+    if (allChecklistKeys.length === 0) return true
+    return allChecklistKeys.every((key) => checkedPackingItems[key] === true)
+  }, [isFulfilledOrShipped, allChecklistKeys, checkedPackingItems])
+
+  const toggleAllPackingItems = () => {
+    if (allItemsPacked) {
+      setCheckedPackingItems({})
+    } else {
+      const next: Record<string, boolean> = {}
+      allChecklistKeys.forEach((key) => {
+        next[key] = true
+      })
+      setCheckedPackingItems(next)
+    }
+  }
+
   const customerName = order?.customer
     ? `${order.customer.first_name || ""} ${order.customer.last_name || ""}`.trim() || order.customer.email
     : (order?.shipping_address ? `${order.shipping_address.first_name || ""} ${order.shipping_address.last_name || ""}`.trim() : "Guest Customer")
@@ -566,8 +644,8 @@ export const OrderCockpitDetailRoute = () => {
         />
         <AdminMetricCard
           label="Cold-Chain SLA"
-          value="-20°C Cryo"
-          subtext="Insulated Gel Pack Shield"
+          value="2°C – 8°C"
+          subtext="Thermal Barrier Shield"
           variant="blue"
           icon={<Beaker className="size-4 text-indigo-600" />}
           status="healthy"
@@ -687,9 +765,21 @@ export const OrderCockpitDetailRoute = () => {
                   {items.length} {items.length === 1 ? "Line Item" : "Line Items"}
                 </Badge>
               </div>
-              <Text size="xsmall" className="text-slate-400 font-mono">
-                Verify constituent reference vials before courier sealing
-              </Text>
+              <div className="flex items-center gap-3">
+                <Text size="xsmall" className="text-slate-400 font-mono hidden sm:inline">
+                  Verify constituent reference vials before courier sealing
+                </Text>
+                {canPack && !isFulfilledOrShipped && (
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    onClick={toggleAllPackingItems}
+                    className="text-[11px] h-7 px-2.5 bg-white border-slate-200"
+                  >
+                    {allItemsPacked ? "Uncheck All" : "Verify All Units"}
+                  </Button>
+                )}
+              </div>
             </div>
 
             <div className="divide-y divide-slate-100">
@@ -759,39 +849,67 @@ export const OrderCockpitDetailRoute = () => {
                           </span>
                         </div>
                         <div className="divide-y divide-indigo-100/70 rounded-md border border-indigo-100/70 bg-white overflow-hidden text-xs">
-                          {disaggregated.map((comp, idx) => (
-                            <div key={idx} className="flex items-center justify-between px-3 py-2 hover:bg-slate-50/60 transition-colors">
-                              <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                                <input
-                                  type="checkbox"
-                                  disabled={!canPack}
-                                  className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50"
-                                  defaultChecked={isFulfilledOrShipped}
-                                />
-                                <span className={`font-medium ${!canPack ? "text-slate-400" : "text-slate-800"}`}>{comp.title}</span>
-                              </label>
-                              <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
-                                x {comp.quantity * item.quantity}
-                              </span>
-                            </div>
-                          ))}
+                          {disaggregated.map((comp, idx) => {
+                            const itemKey = `${item.id}-disagg-${idx}`
+                            const isChecked = isFulfilledOrShipped || Boolean(checkedPackingItems[itemKey])
+
+                            return (
+                              <div key={idx} className="flex items-center justify-between px-3 py-2 hover:bg-slate-50/60 transition-colors">
+                                <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                                  <input
+                                    type="checkbox"
+                                    disabled={!canPack || isFulfilledOrShipped}
+                                    className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50 cursor-pointer"
+                                    checked={isChecked}
+                                    onChange={(e) => {
+                                      setCheckedPackingItems((prev) => ({
+                                        ...prev,
+                                        [itemKey]: e.target.checked,
+                                      }))
+                                    }}
+                                  />
+                                  <span className={`font-medium ${!canPack ? "text-slate-400" : isChecked ? "text-indigo-950 font-semibold" : "text-slate-800"}`}>
+                                    {comp.title}
+                                  </span>
+                                </label>
+                                <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
+                                  x {comp.quantity * item.quantity}
+                                </span>
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50/60 px-3 py-2 text-xs mt-1">
-                        <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                          <input
-                            type="checkbox"
-                            disabled={!canPack}
-                            className="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
-                            defaultChecked={isFulfilledOrShipped}
-                          />
-                          <span className={`font-medium ${!canPack ? "text-slate-400" : "text-slate-700"}`}>Verified single reference standard vial packed</span>
-                        </label>
-                        <span className="font-mono text-xs font-bold text-slate-700">
-                          x {item.quantity}
-                        </span>
-                      </div>
+                      (() => {
+                        const itemKey = `${item.id}-single`
+                        const isChecked = isFulfilledOrShipped || Boolean(checkedPackingItems[itemKey])
+
+                        return (
+                          <div className="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50/60 px-3 py-2 text-xs mt-1">
+                            <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                              <input
+                                type="checkbox"
+                                disabled={!canPack || isFulfilledOrShipped}
+                                className="size-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50 cursor-pointer"
+                                checked={isChecked}
+                                onChange={(e) => {
+                                  setCheckedPackingItems((prev) => ({
+                                    ...prev,
+                                    [itemKey]: e.target.checked,
+                                  }))
+                                }}
+                              />
+                              <span className={`font-medium ${!canPack ? "text-slate-400" : isChecked ? "text-blue-950 font-semibold" : "text-slate-700"}`}>
+                                Verified single reference standard vial packed
+                              </span>
+                            </label>
+                            <span className="font-mono text-xs font-bold text-slate-700">
+                              x {item.quantity}
+                            </span>
+                          </div>
+                        )
+                      })()
                     )}
                   </div>
                 )
@@ -935,7 +1053,7 @@ export const OrderCockpitDetailRoute = () => {
                       value={waybillNumber}
                       onChange={(e) => setWaybillNumber(e.target.value)}
                     />
-                    {trackingNumber.length > 0 && (
+                    {trackingNumber.length > 0 ? (
                       <div className="flex items-center gap-1.5 mt-0.5">
                         {isValidJntWaybill(trackingNumber) ? (
                           <Badge color="green" className="text-[10px]">
@@ -947,19 +1065,33 @@ export const OrderCockpitDetailRoute = () => {
                           </Badge>
                         )}
                       </div>
+                    ) : (
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="text-[11px] text-slate-400 font-mono">
+                          12-digit barcode required to seal and dispatch
+                        </span>
+                      </div>
                     )}
                   </div>
 
                   <Button
                     size="small"
                     variant={isTerminal ? "danger" : "primary"}
-                    disabled={!canPack || isFulfilling}
+                    disabled={!canPack || isFulfilling || !allItemsPacked || !isValidJntWaybill(trackingNumber)}
                     isLoading={isFulfilling}
                     onClick={() => dispatchMutation.mutate()}
                     className="font-semibold"
                   >
                     <ArchiveBox className="mr-1.5 size-3.5" />
-                    {isTerminal ? "Fulfillment Terminated" : canPack ? "Fulfill & Dispatch Parcel" : "Locked: Awaiting Payment"}
+                    {isTerminal
+                      ? "Fulfillment Terminated"
+                      : !canPack
+                      ? "Locked: Awaiting Payment"
+                      : !allItemsPacked
+                      ? "Verify All Units First"
+                      : !isValidJntWaybill(trackingNumber)
+                      ? "Enter Valid 12-Digit Waybill"
+                      : "Fulfill & Dispatch Parcel"}
                   </Button>
                 </div>
               </div>
@@ -981,7 +1113,7 @@ export const OrderCockpitDetailRoute = () => {
             <div className="p-6 space-y-3 text-xs">
               <div className="flex items-center justify-between text-slate-600">
                 <span>Subtotal ({items.length} items):</span>
-                <span className="font-mono font-medium text-slate-900">{phpFormatter.format(order.subtotal || order.total || 0)}</span>
+                <span className="font-mono font-medium text-slate-900">{phpFormatter.format(itemsSubtotal || order.item_subtotal || order.subtotal || 0)}</span>
               </div>
               <div className="flex items-center justify-between text-slate-600">
                 <span>Cold-Chain Express Delivery (J&amp;T Priority):</span>
@@ -1281,7 +1413,7 @@ export const OrderCockpitDetailRoute = () => {
             <div className="p-5 space-y-3 text-xs">
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-blue-50/50 border border-blue-100">
                 <span className="font-semibold text-slate-900">Temperature Spec:</span>
-                <span className="font-mono text-blue-700 font-bold">-20°C Cryo Gel Shield</span>
+                <span className="font-mono text-blue-700 font-bold">2°C – 8°C Cold-Chain Shield</span>
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
                 <span className="font-semibold text-slate-900">Packaging Barrier:</span>
@@ -1293,7 +1425,7 @@ export const OrderCockpitDetailRoute = () => {
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
                 <span className="font-semibold text-slate-900">Laboratory Notice:</span>
-                <span className="font-mono text-slate-700">Store Lyophilized at -20°C</span>
+                <span className="font-mono text-slate-700">Store Lyophilized at -20°C Upon Receipt</span>
               </div>
             </div>
           </div>
@@ -1363,6 +1495,7 @@ export const OrderCockpitDetailRoute = () => {
 
       <ManualPaymentProofReviewDrawer
         proof={selectedProof}
+        order={order}
         open={proofDrawerOpen}
         onOpenChange={setProofDrawerOpen}
       />

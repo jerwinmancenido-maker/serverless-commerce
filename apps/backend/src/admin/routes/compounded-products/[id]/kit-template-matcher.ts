@@ -137,6 +137,8 @@ export function detectKitTypeFromTitle(title: string): KitType {
   const lower = title.toLowerCase()
 
   if (
+    lower.includes("analytical") ||
+    lower.includes("lab set") ||
     lower.includes("subq") ||
     lower.includes("complete") ||
     lower.includes("injection kit") ||
