@@ -305,6 +305,14 @@ export const ProductsRegistryPage: React.FC = () => {
               <div
                 key={p.id}
                 className="block no-underline group focus:outline-hidden"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
+                    navigate(`/compounded-products/${p.id}`)
+                  }
+                }}
               >
                 <AdminListRowCard
                   onClick={() => navigate(`/compounded-products/${p.id}`)}
@@ -392,6 +400,7 @@ export const ProductsRegistryPage: React.FC = () => {
                           target="_blank"
                           rel="noreferrer"
                           title="View on Storefront"
+                          aria-label={`View ${p.title} on Storefront`}
                         >
                           <ArrowUpRightOnBox className="size-3.5" />
                         </a>

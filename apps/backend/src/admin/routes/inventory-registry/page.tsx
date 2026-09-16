@@ -23,7 +23,7 @@ import {
 } from "@medusajs/icons"
 import { Button, Heading, Input, Select, Text } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 import { sdk } from "../../lib/sdk"
@@ -37,6 +37,8 @@ import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { SovereignPageSkeleton } from "../../components/ui/sovereign-page-skeleton"
 import { InventoryAdjustDrawer } from "../../components/inventory/inventory-adjust-drawer"
 import type { BuildableProductsResponse } from "../bom/types"
+
+type StockFilter = "all" | "in_stock" | "constrained" | "controlled"
 
 type InventoryItemRow = {
   id: string
@@ -58,11 +60,12 @@ type InventoryItemRow = {
 
 export const InventoryRegistryPage: React.FC = () => {
   const navigate = useNavigate()
-  const [activeFilter, setActiveFilter] = useState<"all" | "in_stock" | "constrained" | "controlled">("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [activeFilter, setActiveFilter] = useState<StockFilter>("all")
   const [selectedLocationId, setSelectedLocationId] = useState<string>("")
-  const [selectedAdjustItem, setSelectedAdjustItem] = useState<InventoryItemRow | null>(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const [adjustDrawerOpen, setAdjustDrawerOpen] = useState(false)
+  const [selectedAdjustItem, setSelectedAdjustItem] = useState<InventoryItemRow | null>(null)
 
   // 1. Fetch live inventory items
   const inventoryQuery = useQuery({
@@ -86,6 +89,14 @@ export const InventoryRegistryPage: React.FC = () => {
     () => (locationsQuery.data?.stock_locations || []).map((l) => ({ id: l.id, name: l.name })),
     [locationsQuery.data?.stock_locations],
   )
+
+  useEffect(() => {
+    if (!locationsQuery.data) return
+    if (!locations.some((location) => location.id === selectedLocationId)) {
+      setSelectedLocationId(locations[0]?.id || "")
+    }
+  }, [locations, locationsQuery.data, selectedLocationId])
+
   const primaryLocationId = locations[0]?.id
   const activeLocationId = selectedLocationId || primaryLocationId
 
@@ -209,7 +220,7 @@ export const InventoryRegistryPage: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <AdminMetricCard
           label="Total Tracked SKUs"
-          value={totalCount}
+          value={isLoading ? "—" : totalCount}
           subtext="Variant & component items"
           icon={<Tag className="size-4" />}
           variant="blue"
@@ -217,7 +228,7 @@ export const InventoryRegistryPage: React.FC = () => {
         />
         <AdminMetricCard
           label="Buildable Stock"
-          value={buildableCount || 46}
+          value={buildableReportQuery.isLoading ? "—" : buildableCount}
           subtext="Calculated from BOM recipes"
           icon={<Buildings className="size-4" />}
           variant="emerald"
@@ -226,7 +237,7 @@ export const InventoryRegistryPage: React.FC = () => {
         />
         <AdminMetricCard
           label="Constrained SKUs"
-          value={constrainedCount || 3}
+          value={buildableReportQuery.isLoading ? "—" : constrainedCount}
           subtext={constrainedCount > 0 ? "Requires raw material batch" : "All recipes buildable"}
           icon={<Component className="size-4" />}
           variant={constrainedCount > 0 ? "amber" : "default"}
@@ -234,7 +245,7 @@ export const InventoryRegistryPage: React.FC = () => {
         />
         <AdminMetricCard
           label="Controlled Storage"
-          value={controlledCount || 43}
+          value={isLoading ? "—" : controlledCount}
           subtext="20°C–25°C Ambient Desiccated"
           icon={<ArchiveBox className="size-4" />}
           variant="purple"

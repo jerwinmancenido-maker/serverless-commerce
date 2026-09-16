@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/api/admin/customer-support/staff/route.ts
+ * @module  AdminCustomerSupportStaffRoute (Customer Support Module)
+ * @purpose Retrieve internal support agents and managers for assignment workflows.
+ * @contracts
+ *   API: GET /admin/customer-support/staff
+ */
+
 import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
@@ -9,7 +17,7 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
     pagination: { take: 250 },
   })
   res.json({
-    staff: users
+    staff: (users || [])
       .filter((user: any) =>
         user.rbac_roles?.some((role: any) =>
           ["Support Agent", "Support Manager"].includes(role.name),
@@ -19,7 +27,7 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
         id: user.id,
         email: user.email,
         name: [user.first_name, user.last_name].filter(Boolean).join(" ") || user.email,
-        roles: user.rbac_roles.map((role: any) => role.name),
+        roles: (user.rbac_roles || []).map((role: any) => role.name),
       })),
   })
 }
