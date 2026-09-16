@@ -27,6 +27,7 @@ import { storeCustomerSupportMiddlewares } from "./store/customers/me/support/mi
 import { adminCustomerSupportMiddlewares } from "./admin/customer-support/middlewares"
 import { storeCustomerNotificationMiddlewares } from "./store/customers/me/notifications/middlewares"
 import { adminCustomerNotificationMiddlewares } from "./admin/notification-center/middlewares"
+import { storeNewsletterMiddlewares } from "./store/newsletter/middlewares"
 
 const defaultErrorHandler = errorHandler()
 
@@ -79,5 +80,6 @@ export default defineMiddlewares({
     ...storeRewardsMiddlewares,
     ...storeResearchTrackingMiddlewares,
     ...storeCustomerNotificationMiddlewares,
+    ...storeNewsletterMiddlewares,
   ],
 })

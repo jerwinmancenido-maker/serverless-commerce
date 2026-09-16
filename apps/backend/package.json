@@ -40,7 +40,8 @@
     "seed:publications": "medusa exec ./src/scripts/seed-research-publications.ts",
     "seed:protocol-comparisons": "medusa exec ./src/scripts/seed-protocol-comparisons.ts",
     "catalog:seed-unified": "medusa exec ./src/scripts/seed-unified-catalog.ts",
-    "inventory:enrich-titles": "medusa exec ./src/scripts/enrich-inventory-item-titles.ts"
+    "inventory:enrich-titles": "medusa exec ./src/scripts/enrich-inventory-item-titles.ts",
+    "db:indexes": "medusa exec ./src/scripts/create-core-foreign-key-indexes.ts"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.19.0",

@@ -22,6 +22,16 @@ module.exports = defineConfig({
     vite: routineAdminViteConfig,
   },
   modules: [
+    ...(process.env.REDIS_URL
+      ? [
+          {
+            resolve: "@medusajs/medusa/event-bus-redis",
+            options: {
+              redisUrl: process.env.REDIS_URL,
+            },
+          },
+        ]
+      : []),
     {
       resolve: "@medusajs/medusa/rbac",
     },

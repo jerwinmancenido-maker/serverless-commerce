@@ -1,27 +1,17 @@
 /**
- * @file apps/backend/src/api/store/newsletter/route.ts
- * @module StorefrontAPI · Newsletter
- * @purpose Public storefront endpoint for researcher newsletter subscription with instant discount voucher.
- * @contracts POST /store/newsletter -> { success: boolean, discountCode: string, message: string }
+ * @file    apps/backend/src/api/store/newsletter/route.ts
+ * @module  StoreNewsletterRoute (Storefront API)
+ * @purpose Public storefront endpoint for researcher newsletter subscription backed by Medusa Customer Module and PostgreSQL.
+ * @contracts
+ *   API:      POST /store/newsletter
+ *   Workflow: subscribeNewsletterWorkflow
  */
 
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import fs from "node:fs/promises"
-import path from "node:path"
-
-type SubscriberEntry = {
-  email: string
-  source?: string
-  subscribedAt: string
-  discountCode: string
-}
+import { subscribeNewsletterWorkflow } from "../../../workflows/subscribe-newsletter"
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const SUBSCRIBERS_FILE = path.join(
-  process.cwd(),
-  "data",
-  "newsletter-subscribers.json"
-)
+const DISCOUNT_CODE = "RESEARCH10"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { email, source } = (req.body as { email?: string; source?: string }) || {}
@@ -34,38 +24,23 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   }
 
   const normalizedEmail = email.trim().toLowerCase()
-  const discountCode = "RESEARCH10"
+  const leadSource = typeof source === "string" && source.trim() ? source.trim() : "footer_lead_widget"
 
   try {
-    let subscribers: SubscriberEntry[] = []
-
-    try {
-      const fileContent = await fs.readFile(SUBSCRIBERS_FILE, "utf8")
-      subscribers = JSON.parse(fileContent)
-    } catch {
-      // File does not exist yet or empty; start fresh
-      subscribers = []
-    }
-
-    const existing = subscribers.find((s) => s.email === normalizedEmail)
-
-    if (!existing) {
-      subscribers.push({
+    await subscribeNewsletterWorkflow(req.scope).run({
+      input: {
         email: normalizedEmail,
-        source: source || "footer_lead_widget",
-        subscribedAt: new Date().toISOString(),
-        discountCode,
-      })
-
-      await fs.writeFile(SUBSCRIBERS_FILE, JSON.stringify(subscribers, null, 2), "utf8")
-    }
+        source: leadSource,
+        discountCode: DISCOUNT_CODE,
+      },
+    })
 
     return res.status(200).json({
       success: true,
-      discountCode,
+      discountCode: DISCOUNT_CODE,
       message: "Subscription confirmed. Use voucher code RESEARCH10 for 10% off your research kit order.",
     })
-  } catch (error) {
+  } catch {
     return res.status(500).json({
       success: false,
       message: "An error occurred while saving your subscription. Please try again.",
