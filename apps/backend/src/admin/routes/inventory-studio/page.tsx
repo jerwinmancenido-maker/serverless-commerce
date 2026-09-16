@@ -40,7 +40,7 @@ const DEFAULT_STATE: InventoryStudioState = {
   hsCode: "2937.19.00",
   countryOfOrigin: "PH",
   material: "Lyophilized Peptide Powder",
-  storageCondition: "cryo_minus_20",
+  storageCondition: "controlled_room",
   purityPercentage: 99.0,
   casNumber: "",
   locationId: "",
@@ -58,7 +58,7 @@ const PRESETS = [
       weight: 25,
       hsCode: "2937.19.00",
       material: "Lyophilized Powder",
-      storageCondition: "cryo_minus_20" as StorageCondition,
+      storageCondition: "controlled_room" as StorageCondition,
       purityPercentage: 99.4,
       casNumber: "137525-51-0",
       stockedQuantity: 50,
@@ -74,7 +74,7 @@ const PRESETS = [
       weight: 20,
       hsCode: "2937.19.00",
       material: "Lyophilized Powder",
-      storageCondition: "cryo_minus_20" as StorageCondition,
+      storageCondition: "controlled_room" as StorageCondition,
       purityPercentage: 99.2,
       casNumber: "77591-33-4",
       stockedQuantity: 40,
@@ -219,7 +219,7 @@ export const InventoryStudioPage: React.FC = () => {
 
       toast.success(publish ? "Inventory item published successfully!" : "Inventory draft saved!")
       localStorage.removeItem(DRAFT_STORAGE_KEY)
-      navigate("/inventory")
+      navigate("/inventory-registry")
     } catch (err: any) {
       console.error("Failed to save inventory item:", err)
       toast.error(err?.message || "Failed to submit inventory item.")
@@ -231,14 +231,14 @@ export const InventoryStudioPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 pb-24">
       {/* ── STICKY TOP STUDIO BAR ── */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-6 py-3.5">
-        <div className="w-full flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-3 sm:px-6 py-3">
+        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-4">
             <button
               type="button"
-              onClick={() => navigate("/inventory")}
+              onClick={() => navigate("/inventory-registry")}
               className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
-              title="Back to Inventory"
+              title="Back to Inventory Registry"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
@@ -267,8 +267,8 @@ export const InventoryStudioPage: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => navigate("/inventory")}
-              className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all"
+              onClick={() => navigate("/inventory-registry")}
+              className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all cursor-pointer"
             >
               Cancel
             </button>
@@ -320,14 +320,14 @@ export const InventoryStudioPage: React.FC = () => {
       )}
 
       {/* ── MAIN MAXIMIZED WORKSPACE ── */}
-      <main className="w-full px-6 py-6 flex flex-col gap-6">
+      <main className="w-full px-1 sm:px-6 py-4 sm:py-6 flex flex-col gap-6">
         {/* ── PRIMARY CANVAS: Configuration Form ── */}
         <section className="w-full space-y-6">
           {/* Presets Bar */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              <span>Laboratory Inventory Presets</span>
+              <span>Compound Inventory Presets</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {PRESETS.map((p, idx) => (
@@ -387,7 +387,7 @@ export const InventoryStudioPage: React.FC = () => {
             <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
               <div>
                 <span className="text-xs font-semibold text-slate-800">Requires Physical Fulfillment</span>
-                <p className="text-[11px] text-slate-500">Enable if item is managed in physical warehouse or cold chain.</p>
+                <p className="text-[11px] text-slate-500">Enable if item is managed in physical warehouse.</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -420,9 +420,8 @@ export const InventoryStudioPage: React.FC = () => {
                   }
                   className="w-full text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white"
                 >
-                  <option value="cryo_minus_20">-20°C Deep Cryo</option>
+                  <option value="controlled_room">20°C - 25°C Controlled Ambient (Desiccated)</option>
                   <option value="refrigerated_2_8">2°C - 8°C Refrigerator</option>
-                  <option value="controlled_room">15°C - 25°C Controlled Room</option>
                 </select>
               </div>
 
@@ -574,9 +573,9 @@ export const InventoryStudioPage: React.FC = () => {
         </section>
 
         {/* ── HORIZONTAL DOCK: Live BOM Readiness & Storage Simulation ── */}
-        <aside className="w-full mt-6">
+        <section className="w-full mt-6" aria-label="BOM Readiness & Storage Simulation">
           <InventoryBomPreview state={formState} locations={locations} />
-        </aside>
+        </section>
       </main>
     </div>
   )

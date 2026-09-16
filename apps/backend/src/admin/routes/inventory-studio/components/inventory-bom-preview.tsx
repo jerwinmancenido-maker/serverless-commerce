@@ -27,23 +27,18 @@ export const InventoryBomPreview: React.FC<InventoryBomPreviewProps> = ({ state,
 
   const getStorageBadge = () => {
     switch (state.storageCondition) {
-      case "cryo_minus_20":
-        return {
-          label: "-20°C Deep Cryo Storage",
-          detail: "Desiccated with inert Argon/Nitrogen backfill to prevent hygroscopic peptide hydrolysis.",
-          badgeClass: "bg-blue-100 text-blue-800 border-blue-200",
-        }
       case "refrigerated_2_8":
         return {
-          label: "2°C - 8°C Cold Chain",
-          detail: "Active refrigeration with temperature log telemetry.",
+          label: "2°C - 8°C Regulated Storage",
+          detail: "Regulated temperature storage with ambient monitoring.",
           badgeClass: "bg-cyan-100 text-cyan-800 border-cyan-200",
         }
       case "controlled_room":
+      case "cryo_minus_20":
       default:
         return {
-          label: "15°C - 25°C Controlled Room Temp",
-          detail: "Standard secondary packaging and diluent vial storage.",
+          label: "20°C - 25°C Controlled Ambient Desiccated",
+          detail: "Ambient temperature storage with desiccant to prevent peptide degradation.",
           badgeClass: "bg-slate-100 text-slate-800 border-slate-200",
         }
     }

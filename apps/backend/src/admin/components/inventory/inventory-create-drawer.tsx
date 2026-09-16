@@ -65,7 +65,7 @@ const BLANK_STATE: InventoryDrawerFormState = {
   hsCode: "2937.19.00",
   countryOfOrigin: "PH",
   material: "Lyophilized Peptide Powder",
-  storageCondition: "cryo_minus_20",
+  storageCondition: "controlled_room",
   purityPercentage: 99.0,
   casNumber: "",
   locationId: "",
@@ -78,12 +78,12 @@ const PRESETS = [
     state: {
       title: "BPC-157 Pure Lyophilized Acetate",
       sku: "RAW-BPC157-01",
-      description: "Ultra-pure synthetic pentadecapeptide active raw powder for laboratory formulation.",
+      description: "Ultra-pure synthetic pentadecapeptide active raw powder for formulation.",
       requiresShipping: true,
       weight: 25,
       hsCode: "2937.19.00",
       material: "Lyophilized Powder",
-      storageCondition: "cryo_minus_20" as StorageCondition,
+      storageCondition: "controlled_room" as StorageCondition,
       purityPercentage: 99.4,
       casNumber: "137525-51-0",
       stockedQuantity: 50,
@@ -94,12 +94,12 @@ const PRESETS = [
     state: {
       title: "TB-500 (Thymosin Beta-4) Raw Acetate",
       sku: "RAW-TB500-01",
-      description: "Sterile grade synthetic regenerative peptide for B2B formulation.",
+      description: "Synthetic regenerative peptide for B2B formulation.",
       requiresShipping: true,
       weight: 20,
       hsCode: "2937.19.00",
       material: "Lyophilized Powder",
-      storageCondition: "cryo_minus_20" as StorageCondition,
+      storageCondition: "controlled_room" as StorageCondition,
       purityPercentage: 99.2,
       casNumber: "77591-33-4",
       stockedQuantity: 40,
@@ -170,7 +170,7 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
       .catch(() => {
         const fallback = [
           { id: "sloc_storage_vault", name: "Central Storage Vault (Makati HQ)" },
-          { id: "sloc_storage", name: "Cold-Chain Depository (BGC)" },
+          { id: "sloc_storage", name: "Central Ambient Depository (BGC)" },
         ]
         setLocations(fallback)
         setFormState((prev) => (prev.locationId ? prev : { ...prev, locationId: fallback[0].id }))
@@ -269,9 +269,9 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="max-w-2xl bg-white flex flex-col h-full border-l border-slate-200 shadow-2xl">
+      <Drawer.Content className="w-full sm:max-w-2xl bg-white flex flex-col h-full border-l border-slate-200 shadow-2xl">
         {/* Drawer Header */}
-        <Drawer.Header className="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+        <Drawer.Header className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 bg-slate-50/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600">
@@ -320,7 +320,7 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
         </Drawer.Header>
 
         {/* Drawer Form Body */}
-        <Drawer.Body className="px-6 py-5 overflow-y-auto flex-1 space-y-6">
+        <Drawer.Body className="px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto flex-1 space-y-4 sm:space-y-6">
           <form id="inventory-create-drawer-form" onSubmit={handleSubmit} className="space-y-6">
             {/* Live Quality & Yield Banner Card */}
             <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 rounded-xl shadow-sm border border-slate-700">
@@ -330,11 +330,9 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
                   <span>Quality Standard & BOM Synthesis</span>
                 </span>
                 <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-700 text-slate-300">
-                  {formState.storageCondition === "cryo_minus_20"
-                    ? "-20°C Deep Cryo"
-                    : formState.storageCondition === "refrigerated_2_8"
-                    ? "2°C–8°C Cold Chain"
-                    : "Room Temp"}
+                  {formState.storageCondition === "refrigerated_2_8"
+                    ? "2°C–8°C Regulated"
+                    : "20°C–25°C Ambient Desiccated"}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-700/60 text-xs">
@@ -446,9 +444,8 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
                       <Select.Value />
                     </Select.Trigger>
                     <Select.Content>
-                      <Select.Item value="cryo_minus_20">-20°C Deep Cryo</Select.Item>
-                      <Select.Item value="refrigerated_2_8">2°C–8°C Cold Chain</Select.Item>
-                      <Select.Item value="controlled_room">15°C–25°C Room Temp</Select.Item>
+                      <Select.Item value="controlled_room">20°C–25°C Ambient Desiccated</Select.Item>
+                      <Select.Item value="refrigerated_2_8">2°C–8°C Regulated Storage</Select.Item>
                     </Select.Content>
                   </Select>
                 </div>
