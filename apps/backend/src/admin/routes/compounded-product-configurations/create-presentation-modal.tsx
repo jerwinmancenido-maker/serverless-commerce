@@ -174,17 +174,21 @@ export const CreatePresentationModal = ({
           <FocusModal.Body className="flex-1 overflow-auto">
             <div className="mx-auto flex w-full max-w-3xl flex-col gap-y-6 px-6 py-8">
               <div className="flex flex-col gap-y-1">
-                <Text size="large" leading="compact" weight="plus">
-                  Create presentation configuration
-                </Text>
-                <Text
-                  size="small"
-                  leading="compact"
-                  className="text-ui-fg-subtle"
-                >
-                  Create an empty or fully configured draft. Presentation names,
-                  fields, units, and variation axes are stored as configuration.
-                </Text>
+                <FocusModal.Title asChild>
+                  <Text size="large" leading="compact" weight="plus">
+                    Create presentation configuration
+                  </Text>
+                </FocusModal.Title>
+                <FocusModal.Description asChild>
+                  <Text
+                    size="small"
+                    leading="compact"
+                    className="text-ui-fg-subtle"
+                  >
+                    Create an empty or fully configured draft. Presentation names,
+                    fields, units, and variation axes are stored as configuration.
+                  </Text>
+                </FocusModal.Description>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

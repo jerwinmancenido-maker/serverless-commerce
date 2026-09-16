@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/admin/routes/compounded-products/[id]/compounded-product-edit-drawer.tsx
+ * @module  CompoundedProductEditDrawer
+ * @purpose Drawer component for editing compounded product title, physical format, categories, and monograph.
+ * @contracts
+ *   Route: /compounded-products/:id
+ *   API: POST /admin/products/:id
+ */
+
 import type { HttpTypes } from "@medusajs/types"
 import {
   Button,
@@ -124,10 +133,14 @@ export const CompoundedProductEditDrawer = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Content className="max-w-4xl overflow-y-auto">
         <Drawer.Header>
-          <Heading level="h2">Edit Compounded Product</Heading>
-          <Text size="small" className="text-ui-fg-subtle">
-            Update storefront identity, physical format, categories, and research monograph.
-          </Text>
+          <Drawer.Title asChild>
+            <Heading level="h2">Edit Compounded Product</Heading>
+          </Drawer.Title>
+          <Drawer.Description asChild>
+            <Text size="small" className="text-ui-fg-subtle">
+              Update storefront identity, physical format, categories, and research monograph.
+            </Text>
+          </Drawer.Description>
         </Drawer.Header>
 
         <Drawer.Body className="flex flex-col gap-y-5 px-6 py-4">

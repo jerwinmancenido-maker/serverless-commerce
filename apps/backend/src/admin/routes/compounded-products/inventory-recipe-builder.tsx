@@ -518,12 +518,16 @@ export const InventoryRecipeBuilder = ({
           <div className="flex h-full flex-col overflow-hidden">
             <FocusModal.Header>
               <div className="flex flex-col gap-y-1">
-                <h2 className="text-base font-bold text-slate-900">Choose inventory component</h2>
-                <p className="text-xs text-slate-500">
-                  {targetClassification
-                    ? classificationLabel[targetClassification]
-                    : "Configured component"}
-                </p>
+                <FocusModal.Title asChild>
+                  <h2 className="text-base font-bold text-slate-900">Choose inventory component</h2>
+                </FocusModal.Title>
+                <FocusModal.Description asChild>
+                  <p className="text-xs text-slate-500">
+                    {targetClassification
+                      ? classificationLabel[targetClassification]
+                      : "Configured component"}
+                  </p>
+                </FocusModal.Description>
               </div>
             </FocusModal.Header>
             <FocusModal.Body className="flex-1 overflow-auto">
