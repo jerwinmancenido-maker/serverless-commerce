@@ -217,7 +217,7 @@ const RED_TEAM_SPECIALISTS = [
     id: "customer",
     name: "Customer Journey Agent",
     tag: "Persona Lifecycle",
-    desc: "Initial contact -> Storefront catalog -> Cart reload check -> GCash manual QR proof -> 1-Click Accept -> Cold-chain J&T delivery.",
+    desc: "Initial contact -> Storefront catalog -> Cart reload check -> GCash manual QR proof -> 1-Click Accept -> J&T Express / Lalamove delivery.",
     scenarios: 8940,
     passRate: 100,
     targetMission: "e2e_buyer_fulfillment_smoke" as BotMissionType,
@@ -654,7 +654,7 @@ const BotLabPage = () => {
         : "Visual, UX & Copy Heuristics Auditor"))
 
   return (
-    <div className="flex flex-col gap-y-6 pb-16 font-sans">
+    <div className="flex flex-col gap-y-6 px-3.5 sm:px-6 pt-4 pb-16 font-sans w-full min-h-screen">
       {/* ── 1. Page Header (Matching Image) ── */}
       <header className="flex flex-col gap-1 pb-1">
         <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-blue-600">

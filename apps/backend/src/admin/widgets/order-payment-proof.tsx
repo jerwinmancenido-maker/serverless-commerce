@@ -224,6 +224,7 @@ const OrderPaymentProofWidget = ({
 
       <ManualPaymentProofReviewDrawer
         proof={selectedProof}
+        order={order}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
       />

@@ -166,6 +166,53 @@ export const PriceListsStudioPage: React.FC = () => {
     }))
   }, [])
 
+  const handleUpdateDiscount = useCallback((variantId: string, percentage: number) => {
+    const factor = Math.max(0, (100 - percentage) / 100)
+    setFormState((prev) => ({
+      ...prev,
+      prices: prev.prices.map((p) =>
+        p.variantId === variantId
+          ? { ...p, customPrice: Math.round(p.defaultPrice * factor) }
+          : p
+      ),
+    }))
+  }, [])
+
+  const handleSwitchVariant = useCallback((oldVariantId: string, newVariantId: string) => {
+    setFormState((prev) => {
+      const oldItem = prev.prices.find((p) => p.variantId === oldVariantId)
+      if (!oldItem) return prev
+      if (prev.prices.some((p) => p.variantId === newVariantId)) {
+        toast.info("Variant is already in the price matrix.")
+        return prev
+      }
+      const product = availableProducts.find((prod) => prod.id === oldItem.productId)
+      const variant = product?.variants?.find((v: any) => v.id === newVariantId)
+      if (!variant) return prev
+
+      const basePhpPrice =
+        variant.prices?.find((pr: any) => pr.currency_code?.toLowerCase() === "php")?.amount || 4000
+      const estimatedCost = Math.round(basePhpPrice * 0.4)
+
+      return {
+        ...prev,
+        prices: prev.prices.map((p) =>
+          p.variantId === oldVariantId
+            ? {
+                ...p,
+                variantId: variant.id,
+                variantTitle: variant.title || "Default Variant",
+                sku: variant.sku || `SKU-${variant.id.slice(-6)}`,
+                defaultPrice: basePhpPrice,
+                customPrice: Math.round(basePhpPrice * 0.8),
+                estimatedCost,
+              }
+            : p
+        ),
+      }
+    })
+  }, [availableProducts])
+
   const handleRemoveItem = useCallback((variantId: string) => {
     setFormState((prev) => ({
       ...prev,
@@ -295,7 +342,7 @@ export const PriceListsStudioPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 pb-24">
       {/* ── STICKY TOP STUDIO BAR ── */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-6 py-3.5">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-3.5 sm:px-6 py-3">
         <div className="w-full flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
@@ -362,7 +409,7 @@ export const PriceListsStudioPage: React.FC = () => {
 
       {/* Restored Draft Alert Banner */}
       {draftRestored && (
-        <div className="bg-blue-50 border-b border-blue-200 px-6 py-2 text-xs text-blue-900 flex items-center justify-between">
+        <div className="bg-blue-50 border-b border-blue-200 px-3.5 sm:px-6 py-2 text-xs text-blue-900 flex items-center justify-between">
           <div className="w-full flex items-center justify-between">
             <span className="flex items-center gap-2 font-medium">
               <CheckCircle className="w-4 h-4 text-blue-600" />
@@ -385,7 +432,7 @@ export const PriceListsStudioPage: React.FC = () => {
       )}
 
       {/* ── MAIN MAXIMIZED WORKSPACE ── */}
-      <main className="w-full px-6 py-6 flex flex-col gap-6">
+      <main className="w-full px-3.5 sm:px-6 py-4 sm:py-6 flex flex-col gap-6">
         {/* ── PRIMARY CANVAS: Configuration & Price Matrix ── */}
         <section className="w-full space-y-6">
           {/* Card 1: Pricing Model Selector */}
@@ -558,6 +605,9 @@ export const PriceListsStudioPage: React.FC = () => {
           <PriceMatrixTable
             prices={formState.prices}
             onUpdatePrice={handleUpdatePrice}
+            onUpdateDiscount={handleUpdateDiscount}
+            onSwitchVariant={handleSwitchVariant}
+            availableProducts={availableProducts}
             onRemoveItem={handleRemoveItem}
             onBulkDiscount={handleBulkDiscount}
             onResetAll={handleResetAll}
@@ -566,15 +616,15 @@ export const PriceListsStudioPage: React.FC = () => {
         </section>
 
         {/* ── HORIZONTAL DOCK: Live Simulator & Margin Gauge ── */}
-        <aside className="w-full mt-6">
+        <section className="w-full mt-6" aria-label="Price List Preview & Margin Intelligence">
           <PriceListPreview state={formState} availableCustomerGroups={customerGroups} />
-        </aside>
+        </section>
       </main>
 
       {/* ── PRODUCT PICKER SLIDE-OVER MODAL ── */}
       {showProductPicker && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-2xl w-full max-h-[90dvh] sm:max-h-[85vh] flex flex-col overflow-hidden">
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between">
               <div>

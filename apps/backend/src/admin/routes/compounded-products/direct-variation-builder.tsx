@@ -205,7 +205,7 @@ export const DirectVariationBuilder = ({
           if (!open) setEditingValue(null)
         }}
       >
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-md h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>Option measurement</Drawer.Title>
             <Drawer.Description>
@@ -214,7 +214,7 @@ export const DirectVariationBuilder = ({
             </Drawer.Description>
           </Drawer.Header>
           {selectedAxis && selectedValue ? (
-            <Drawer.Body className="flex flex-col gap-y-5 overflow-y-auto p-6">
+            <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
               <div className="rounded-lg border border-ui-border-base p-4">
                 <Text size="small" leading="compact" weight="plus">
                   {selectedAxis.name || "Unnamed variation"}
@@ -287,7 +287,7 @@ export const DirectVariationBuilder = ({
               ) : null}
             </Drawer.Body>
           ) : null}
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end">
             <Drawer.Close asChild>
               <Button size="small">Done</Button>
             </Drawer.Close>

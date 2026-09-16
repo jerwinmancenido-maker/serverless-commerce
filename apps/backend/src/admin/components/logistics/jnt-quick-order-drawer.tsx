@@ -69,7 +69,7 @@ export const JntQuickOrderDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="max-w-2xl">
+      <Drawer.Content className="w-full sm:max-w-2xl h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header className="border-b border-ui-border-base pb-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -103,7 +103,7 @@ export const JntQuickOrderDrawer = ({
           </div>
         </Drawer.Header>
 
-        <Drawer.Body className="bg-ui-bg-subtle p-6 space-y-5 overflow-y-auto max-h-[calc(100vh-160px)]">
+        <Drawer.Body className="bg-ui-bg-subtle p-4 sm:p-6 pb-[env(safe-area-inset-bottom,1.5rem)] space-y-4 sm:space-y-5 overflow-y-auto flex-1">
           {/* Smart Recognition Box */}
           <div className="rounded-xl border border-ui-border-base bg-ui-bg-base p-4 space-y-3 shadow-sm">
             <div className="flex items-center justify-between">

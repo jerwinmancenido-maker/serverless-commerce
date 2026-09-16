@@ -104,14 +104,14 @@ const OrdersOperationsHeader = () => {
                 Commercial Fulfillment Operations
               </span>
               <AdminBadge variant="blue" dot>
-                Cold-Chain Telemetry
+                Operations Telemetry
               </AdminBadge>
             </div>
             <Heading level="h1" className="text-xl font-bold tracking-tight text-slate-900 mt-1">
               Orders &amp; Commercial Fulfillment
             </Heading>
             <Text size="small" className="text-slate-500 mt-0.5">
-              Real-time commercial transaction flow, manual payment proof verifications, and cold-chain parcel packing queue.
+              Real-time commercial transaction flow, manual payment proof verifications, and courier dispatch queue.
             </Text>
           </div>
 
@@ -160,7 +160,7 @@ const OrdersOperationsHeader = () => {
           <AdminMetricCard
             label="Ready to Pack &amp; Ship"
             value={packReadyCount}
-            subtext={packReadyCount > 0 ? "Paid orders in dispatch queue" : "Cold-chain queue clear"}
+            subtext={packReadyCount > 0 ? "Paid orders in dispatch queue" : "Fulfillment queue clear"}
             icon={<ArchiveBox className="h-4 w-4" />}
             variant={packReadyCount > 0 ? "blue" : "default"}
             status={packReadyCount > 0 ? "info" : "healthy"}
@@ -178,7 +178,7 @@ const OrdersOperationsHeader = () => {
         {/* SADS 2.0 Telemetry Notice Banner */}
         <AdminTelemetryNotice
           title="Order Fulfillment & Settle Operations"
-          description="Order processing, manual QR payment proof verifications, and cold-chain temperature-controlled dispatch. Every order maintains ₱0.00 General Ledger balance parity."
+          description="Order processing, manual QR payment proof verifications, and standard courier dispatch. Every order maintains ₱0.00 General Ledger balance parity."
           statusText="ORDER ENGINE NOMINAL"
           variant="indigo"
         />
@@ -188,7 +188,7 @@ const OrdersOperationsHeader = () => {
           items={[
             { label: "All Commercial Orders", active: true, count: totalOrdersMtd },
             { label: "Payment Proofs Queue", href: "/manual-payment-proofs", count: pendingProofsCount || undefined },
-            { label: "Cold-Chain Dispatch", href: "/customer-support" },
+            { label: "Orders Cockpit", href: "/orders-cockpit" },
             { label: "Pricing & Price Lists", href: "/price-lists-studio" },
           ]}
           rightContent={

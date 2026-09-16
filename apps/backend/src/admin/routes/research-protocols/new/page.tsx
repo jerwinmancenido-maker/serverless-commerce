@@ -1,7 +1,7 @@
 /**
  * @file    apps/backend/src/admin/routes/research-protocols/new/page.tsx
  * @module  NewResearchProtocolRoute (Admin Dashboard Extension)
- * @purpose Admin route for authoring and drafting new clinical research protocol series.
+ * @purpose Admin route for authoring and drafting new analytical research protocol series.
  * @contracts
  *   API:     POST /admin/research-protocols
  *   Service: ResearchProtocolModuleService
@@ -43,7 +43,7 @@ const NewResearchProtocolPage = () => {
   })
 
   return (
-    <div className="flex flex-col gap-4 pb-8 px-6 pt-6 w-full">
+    <div className="flex flex-col gap-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       <PageHeader
         eyebrowText="Research Protocols · New Protocol Series"
         breadcrumbs={[

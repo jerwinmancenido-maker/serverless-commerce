@@ -13,6 +13,7 @@ import {
   ArrowUpRightOnBox,
   Buildings,
   CheckCircle,
+  ChevronRight,
   Component,
   ExclamationCircle,
   MagnifyingGlass,
@@ -125,14 +126,14 @@ export const BuildableProductsPage: React.FC = () => {
 
   if (locationsQuery.isLoading && !locations.length) {
     return (
-      <div className="p-6">
+      <div className="px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
         <SovereignPageSkeleton cards={4} rows={8} />
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-y-4 p-6 w-full min-h-screen">
+    <div className="flex flex-col gap-y-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       {/* 1. Header & Eyebrow */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -304,8 +305,14 @@ export const BuildableProductsPage: React.FC = () => {
             return (
               <AdminListRowCard
                 key={p.variant_id}
+                className="cursor-pointer group-hover:border-slate-300 group-hover:shadow-xs transition-all group"
+                onClick={() => navigate(`/compounded-products/${p.product_id}?tab=bom`)}
                 icon={<Component className={`size-4 ${isReady ? "text-emerald-600" : isConfigured ? "text-amber-600" : "text-slate-400"}`} />}
-                title={p.product_title || "Untitled Product"}
+                title={
+                  <span className="group-hover:text-blue-600 transition-colors">
+                    {p.product_title || "Untitled Product"}
+                  </span>
+                }
                 subtitle={
                   <span className="flex items-center gap-1.5 flex-wrap">
                     <span className="font-medium text-slate-800">{p.variant_title}</span>
@@ -336,8 +343,18 @@ export const BuildableProductsPage: React.FC = () => {
                     )}
                   </div>
                 }
+                statusPill={
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] font-semibold text-slate-500 group-hover:text-blue-600 transition-colors hidden sm:inline">
+                      BOM Cockpit
+                    </span>
+                    <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all ml-1">
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                }
                 actions={
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                     <Button
                       asChild
                       size="small"
@@ -346,24 +363,6 @@ export const BuildableProductsPage: React.FC = () => {
                     >
                       <Link to={`/research-protocols?q=${encodeURIComponent(p.product_title || "")}`}>
                         Protocol ↗
-                      </Link>
-                    </Button>
-                    <Button
-                      size="small"
-                      variant="secondary"
-                      className="h-7 px-2.5 text-xs font-semibold"
-                      onClick={() => navigate(`/compounded-products/${p.product_id}`)}
-                    >
-                      Recipe
-                    </Button>
-                    <Button
-                      asChild
-                      size="small"
-                      variant="secondary"
-                      className="h-7 px-2.5 text-xs font-semibold text-blue-600 hover:text-blue-700"
-                    >
-                      <Link to={`/compounded-products/${p.product_id}`}>
-                        Inspect ↗
                       </Link>
                     </Button>
                   </div>

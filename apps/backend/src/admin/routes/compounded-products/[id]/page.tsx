@@ -40,7 +40,7 @@ import {
 } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 import { sdk } from "../../../lib/sdk"
 import { AdminCard } from "../../../components/admin-card"
@@ -446,8 +446,22 @@ const CompoundedProductReadinessPage = () => {
     }
   }
 
-  // Active Workspace Tab
-  const [activeTab, setActiveTab] = useState("variants")
+  // Active Workspace Tab (Overview, Formulation Variations, BOM Kit Builder, Inventory Allocation, Research Protocols)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tabFromUrl = searchParams.get("tab")
+  const [activeTab, setActiveTab] = useState(() => tabFromUrl || "overview")
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId)
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        next.set("tab", tabId)
+        return next
+      },
+      { replace: true },
+    )
+  }
 
   // In-Page Direct Editing: Metadata
   const [isEditingMetadata, setIsEditingMetadata] = useState(false)
@@ -565,7 +579,7 @@ const CompoundedProductReadinessPage = () => {
   const complianceDefaults = useMemo(
     () => ({
       storage_and_handling:
-        "Store lyophilized compound at -20°C in a dry environment protected from light. Once reconstituted with Bacteriostatic Water, keep refrigerated at 2°C–8°C and use within 28 days for maximum stability. Avoid repeated freeze-thaw cycles.",
+        "Store lyophilized compound at controlled ambient temperature (20°C–25°C) in a dry, dark environment protected from moisture. Reconstituted solutions should be stored according to research protocol specifications. J&T Express / Lalamove ambient dispatch compatible.",
       intended_use:
         "Synthesized strictly for in-vitro laboratory research, analytical calibration, and scientific evaluation. Not for human, clinical, veterinary, therapeutic, or household administration.",
       terms_of_sale:
@@ -817,7 +831,7 @@ const CompoundedProductReadinessPage = () => {
         toast.info("Compounding governance removed", {
           description: "Product reverted to standard catalog supply.",
         })
-        navigate("/buildable-products")
+        navigate("/products-registry")
         return
       }
       await Promise.all([
@@ -853,21 +867,58 @@ const CompoundedProductReadinessPage = () => {
     return <SovereignPageSkeleton cards={4} rows={10} />
   }
 
+  if (productQuery.isError || !productQuery.data?.product) {
+    return (
+      <div className="p-8 max-w-2xl mx-auto flex flex-col items-center text-center gap-4 pt-16">
+        <SovereignEmptyState
+          heading="Product not found"
+          subtext="The requested product could not be resolved from Medusa backend services."
+        />
+        <Button asChild size="small" variant="secondary">
+          <Link to="/products-registry">Back to Master Catalog</Link>
+        </Button>
+      </div>
+    )
+  }
+
   if (
-    productQuery.isError ||
     productTypesQuery.isError ||
     readinessQuery.isError ||
     profilesQuery.isError ||
     inventoryQuery.isError ||
-    !productQuery.data?.product ||
     !readinessQuery.data
   ) {
+    const nativeProduct = productQuery.data.product
     return (
-      <div className="p-8">
-        <SovereignEmptyState
-          heading="Compounded product review unavailable"
-          subtext="The native product, component profiles, or readiness report could not be resolved from Medusa backend services."
-        />
+      <div className="p-8 max-w-2xl mx-auto flex flex-col items-center text-center gap-5 pt-16">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-2xs w-full text-left space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+              Standard Catalog Item
+            </span>
+            <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+              Governance Unlinked
+            </span>
+          </div>
+          <div>
+            <Heading level="h2" className="text-lg font-bold text-slate-900">
+              {nativeProduct.title || "Untitled Product"}
+            </Heading>
+            <Text size="small" className="text-slate-500 mt-1">
+              This product exists in the Medusa catalog but has not yet been registered for compounding BOM governance. You can open its native product editor or return to the master catalog.
+            </Text>
+          </div>
+          <div className="flex items-center gap-3 pt-2">
+            <Button asChild size="small" variant="secondary">
+              <Link to="/products-registry">Back to Master Catalog</Link>
+            </Button>
+            <Button asChild size="small" className="bg-slate-900 text-white hover:bg-slate-800">
+              <a href={`/app/products/${id}?view=advanced`}>
+                Open Standard Product <ArrowUpRightOnBox className="ml-1 size-3.5" />
+              </a>
+            </Button>
+          </div>
+        </div>
       </div>
     )
   }
@@ -930,6 +981,37 @@ const CompoundedProductReadinessPage = () => {
     : "—"
   const basePriceFormatted = formatVariantPrices(product.variants?.[0]?.prices || null)
 
+  const renderVariantBomMatrix = (mode: "variations" | "bom" | "inventory") => (
+    <VariantBomMatrix
+      product={product}
+      readiness={readiness}
+      availabilityByVariantId={availabilityByVariantId}
+      availabilityQuery={availabilityQuery}
+      stockLocations={stockLocationsQuery.data?.stock_locations || []}
+      selectedStockLocationId={selectedStockLocationId}
+      setSelectedStockLocationId={setSelectedStockLocationId}
+      stockLocationsQuery={stockLocationsQuery}
+      editingPriceVariantId={editingPriceVariantId}
+      setEditingPriceVariantId={setEditingPriceVariantId}
+      editingPriceAmount={editingPriceAmount}
+      setEditingPriceAmount={setEditingPriceAmount}
+      isSavingPrice={isSavingPrice}
+      handleSavePrice={handleSavePrice}
+      recipes={recipes}
+      setRecipes={setRecipes}
+      expandedRecipeIds={expandedRecipeIds}
+      toggleRecipe={toggleRecipe}
+      seedRecipeRows={seedRecipeRows}
+      updateRecipe={updateRecipe}
+      recipeMutation={recipeMutation}
+      profileByInventoryId={profileByInventoryId}
+      inventoryById={inventoryById}
+      profiles={profiles}
+      formatVariantPrices={formatVariantPrices}
+      viewMode={mode}
+    />
+  )
+
   return (
     <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
       {/* 1. Standard Page Header with Breadcrumbs and Quick Actions */}
@@ -943,70 +1025,62 @@ const CompoundedProductReadinessPage = () => {
           </div>
         }
         breadcrumbs={[
-          { label: "Products", href: "/buildable-products" },
+          { label: "Products", href: "/products-registry" },
           { label: "Compounded Products", href: "/compounded-products" },
           { label: product.title },
         ]}
-        backHref="/compounded-products"
+        backHref="/products-registry"
         subtitle="Manage this product's storefront identity, variants, stock capacity, BOM recipes, and publication readiness."
         badge={
-          product.status === "published" ? null : readiness.ready ? (
-            <Badge
-              color="blue"
-              size="small"
-              className="cursor-pointer hover:opacity-80 transition-opacity font-medium"
-              onClick={() => setPublicationDrawerOpen(true)}
-              title="Click to review and publish product"
-            >
-              ● Ready to Publish
-            </Badge>
-          ) : (
-            <Badge
-              color="orange"
-              size="small"
-              className="cursor-pointer hover:opacity-80 transition-opacity font-medium"
-              onClick={() => setPublicationDrawerOpen(true)}
-              title="Click to review missing publication checks"
-            >
-              ● Draft ({readiness.blockers.length} check{readiness.blockers.length === 1 ? "" : "s"} pending)
-            </Badge>
-          )
+          <Badge
+            color={
+              readiness.registration.state === "published"
+                ? "green"
+                : readiness.ready
+                  ? "blue"
+                  : "orange"
+            }
+          >
+            {readiness.registration.state === "published"
+              ? "Published"
+              : readiness.ready
+                ? "Ready to Publish"
+                : "Needs Review"}
+          </Badge>
         }
         actions={
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
-              <IconButton size="small" variant="transparent" className="size-7" title="More Actions">
-                <EllipsisHorizontal className="size-4" />
+              <IconButton size="small" variant="transparent">
+                <EllipsisHorizontal className="size-4 text-ui-fg-subtle" />
               </IconButton>
             </DropdownMenu.Trigger>
-            <DropdownMenu.Content align="end" className="w-56">
-              {product.handle && product.status === "published" ? (
-                <DropdownMenu.Item asChild className="gap-x-2">
-                  <a
-                    href={`http://localhost:8000/ph/products/${product.handle}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <ArrowUpRightOnBox className="size-4 text-ui-fg-subtle" />
-                    <span>View on Storefront</span>
-                  </a>
-                </DropdownMenu.Item>
-              ) : (
-                <DropdownMenu.Item disabled className="gap-x-2 opacity-50 cursor-not-allowed">
-                  <ArrowUpRightOnBox className="size-4 text-ui-fg-muted" />
-                  <span>View on Storefront (Draft)</span>
-                </DropdownMenu.Item>
-              )}
+            <DropdownMenu.Content align="end" className="w-52">
+              <DropdownMenu.Item
+                className="gap-x-2"
+                onClick={() => setClassificationDrawerOpen(true)}
+              >
+                <PencilSquare className="size-4 text-ui-fg-subtle" />
+                <span>Classification & Types</span>
+              </DropdownMenu.Item>
+
+              <DropdownMenu.Item
+                className="gap-x-2"
+                onClick={() => setAuditDrawerOpen(true)}
+              >
+                <ArrowPath className="size-4 text-ui-fg-subtle" />
+                <span>Governance Audit Log</span>
+              </DropdownMenu.Item>
 
               <DropdownMenu.Separator />
 
-              {product.status === "published" ? (
+              {readiness.registration.state === "published" ? (
                 <DropdownMenu.Item
-                  className="gap-x-2"
+                  className="gap-x-2 text-ui-fg-warning"
                   onClick={() => setPublicationDrawerOpen(true)}
                 >
-                  <ArrowPath className="size-4 text-ui-fg-subtle" />
-                  <span>Withdraw to Draft</span>
+                  <ArrowPath className="size-4 text-amber-600" />
+                  <span>Withdraw from Storefront</span>
                 </DropdownMenu.Item>
               ) : (
                 <DropdownMenu.Item
@@ -1038,8 +1112,14 @@ const CompoundedProductReadinessPage = () => {
         <div className="w-full flex flex-col gap-y-3 min-w-0">
           <AdminSegmentedTabs
             tabs={[
-              { id: "variants", label: "Variants & Inventory" },
-              { id: "catalog", label: "Details & Media" },
+              { id: "overview", label: "Overview (Details & Media)" },
+              {
+                id: "variations",
+                label: "Formulation Variations",
+                count: product.variants?.length || 0,
+              },
+              { id: "bom", label: "BOM Kit Builder" },
+              { id: "inventory", label: "Inventory Allocation" },
               {
                 id: "protocols",
                 label: "Research Protocols",
@@ -1047,45 +1127,14 @@ const CompoundedProductReadinessPage = () => {
               },
             ]}
             activeTab={activeTab}
-            onChange={(id) => setActiveTab(id)}
+            onChange={handleTabChange}
             className="mb-2"
           />
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
 
-            {/* Tab 1: Variants & BOM */}
-            <Tabs.Content value="variants">
-              <VariantBomMatrix
-                product={product}
-                readiness={readiness}
-                availabilityByVariantId={availabilityByVariantId}
-                availabilityQuery={availabilityQuery}
-                stockLocations={stockLocationsQuery.data?.stock_locations || []}
-                selectedStockLocationId={selectedStockLocationId}
-                setSelectedStockLocationId={setSelectedStockLocationId}
-                stockLocationsQuery={stockLocationsQuery}
-                editingPriceVariantId={editingPriceVariantId}
-                setEditingPriceVariantId={setEditingPriceVariantId}
-                editingPriceAmount={editingPriceAmount}
-                setEditingPriceAmount={setEditingPriceAmount}
-                isSavingPrice={isSavingPrice}
-                handleSavePrice={handleSavePrice}
-                recipes={recipes}
-                setRecipes={setRecipes}
-                expandedRecipeIds={expandedRecipeIds}
-                toggleRecipe={toggleRecipe}
-                seedRecipeRows={seedRecipeRows}
-                updateRecipe={updateRecipe}
-                recipeMutation={recipeMutation}
-                profileByInventoryId={profileByInventoryId}
-                inventoryById={inventoryById}
-                profiles={profiles}
-                formatVariantPrices={formatVariantPrices}
-              />
-            </Tabs.Content>
-
-            {/* Tab 2: Catalog Information & Media */}
-            <Tabs.Content value="catalog" className="flex flex-col gap-y-4">
+            {/* Panel 1: Overview & Monograph */}
+            <Tabs.Content value="overview" className="flex flex-col gap-y-4">
               {/* Top Row: Format & Categories + Media Cards */}
               <div className="grid gap-4 md:grid-cols-2">
                 {/* Product Details Card (In-Page Direct Editing) */}
@@ -1616,7 +1665,22 @@ const CompoundedProductReadinessPage = () => {
               </AdminCard>
             </Tabs.Content>
 
-            {/* Tab 3: Research Protocols */}
+            {/* Panel 2: Formulation Variations */}
+            <Tabs.Content value="variations">
+              {renderVariantBomMatrix("variations")}
+            </Tabs.Content>
+
+            {/* Panel 3: BOM Kit Builder */}
+            <Tabs.Content value="bom">
+              {renderVariantBomMatrix("bom")}
+            </Tabs.Content>
+
+            {/* Panel 4: Inventory Allocation */}
+            <Tabs.Content value="inventory">
+              {renderVariantBomMatrix("inventory")}
+            </Tabs.Content>
+
+            {/* Panel 5: Research Protocols */}
             <Tabs.Content value="protocols">
               <AdminCard
                 title="Research Protocols & Reference Standards"
@@ -1699,14 +1763,14 @@ const CompoundedProductReadinessPage = () => {
         open={publicationDrawerOpen}
         onOpenChange={setPublicationDrawerOpen}
       >
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>Publication readiness</Drawer.Title>
             <Drawer.Description>
               Review blockers and record a reason before changing publication.
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-4 sm:p-6">
             <div className="flex items-center justify-between gap-x-4">
               <Text size="small" className="text-ui-fg-subtle">
                 Policy revision:{" "}
@@ -1745,7 +1809,7 @@ const CompoundedProductReadinessPage = () => {
               ) : null}
             </div>
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end gap-2">
             <Button
               variant="secondary"
               onClick={() => setPublicationDrawerOpen(false)}
@@ -1777,14 +1841,14 @@ const CompoundedProductReadinessPage = () => {
         open={classificationDrawerOpen}
         onOpenChange={setClassificationDrawerOpen}
       >
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>Governance and classification</Drawer.Title>
             <Drawer.Description>
               Advanced, irreversible-boundary operations for the native product.
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-4 sm:p-6">
             <Text size="small" className="text-ui-fg-subtle">
               Published or ordered products cannot be reclassified and cannot
               have governance removed.
@@ -1894,7 +1958,7 @@ const CompoundedProductReadinessPage = () => {
               </div>
             ) : null}
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end">
             <Button
               variant="secondary"
               onClick={() => setClassificationDrawerOpen(false)}
@@ -1906,7 +1970,7 @@ const CompoundedProductReadinessPage = () => {
       </Drawer>
 
       <Drawer open={auditDrawerOpen} onOpenChange={setAuditDrawerOpen}>
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>Governance audit history</Drawer.Title>
             <Drawer.Description>
@@ -1914,7 +1978,7 @@ const CompoundedProductReadinessPage = () => {
               fields that are no longer part of current product creation.
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-1 flex-col gap-y-3 overflow-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-3 overflow-y-auto p-4 sm:p-6">
             {auditQuery.isLoading ? (
               <div className="flex min-h-40 items-center justify-center">
                 <Spinner />
@@ -1951,7 +2015,7 @@ const CompoundedProductReadinessPage = () => {
               </Text>
             )}
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end">
             <Button
               variant="secondary"
               onClick={() => setAuditDrawerOpen(false)}

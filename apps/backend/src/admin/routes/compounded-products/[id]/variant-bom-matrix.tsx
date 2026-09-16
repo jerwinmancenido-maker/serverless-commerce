@@ -106,6 +106,7 @@ type VariantBomMatrixProps = {
   inventoryById: Map<string, HttpTypes.AdminInventoryItem>
   profiles: any[]
   formatVariantPrices: (prices?: any) => string
+  viewMode?: "all" | "variations" | "bom" | "inventory"
 }
 
 export const VariantBomMatrix = ({
@@ -134,11 +135,29 @@ export const VariantBomMatrix = ({
   inventoryById,
   profiles,
   formatVariantPrices,
+  viewMode = "all",
 }: VariantBomMatrixProps) => {
   const queryClient = useQueryClient()
   const location = useLocation()
   const targetVariantId = new URLSearchParams(location.search).get("variant")
   const [activeHighlightId, setActiveHighlightId] = useState<string | null>(targetVariantId)
+  const [collapsedRecipeIds, setCollapsedRecipeIds] = useState<Set<string>>(new Set())
+
+  const handleToggleRecipe = (variantId: string) => {
+    if (viewMode === "bom") {
+      setCollapsedRecipeIds((current) => {
+        const next = new Set(current)
+        if (next.has(variantId)) {
+          next.delete(variantId)
+        } else {
+          next.add(variantId)
+        }
+        return next
+      })
+    } else {
+      toggleRecipe(variantId)
+    }
+  }
 
   useEffect(() => {
     if (targetVariantId) {
@@ -362,78 +381,241 @@ export const VariantBomMatrix = ({
     }
   }
 
+  const cardTitle =
+    viewMode === "variations"
+      ? "Formulation Variations & Dosage Presets"
+      : viewMode === "bom"
+      ? "Bill of Materials (BOM) Kit Builder"
+      : viewMode === "inventory"
+      ? "Warehouse & Inventory Allocation"
+      : "Variants & Component Inventory"
+
+  const cardSubtitle =
+    viewMode === "variations"
+      ? "Manage dosage presets, container fill volumes, delivery formats, and commercial pricing."
+      : viewMode === "bom"
+      ? "Map active raw materials, excipients, reconstitution diluents, and protective packaging to each formulation."
+      : viewMode === "inventory"
+      ? "Monitor staging nodes, live physical inventory, stock reservation guards, and assembly capacity."
+      : "Calculated stock reflects available assembly components at the selected warehouse."
+
   return (
     <AdminCard
       headerClassName="px-4 py-3 bg-ui-bg-subtle/40 flex flex-wrap items-center justify-between gap-3"
-      title="Variants & Component Inventory"
-      subtitle="Calculated stock reflects available assembly components at the selected warehouse."
+      title={cardTitle}
+      subtitle={cardSubtitle}
       headerAction={
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Text size="xsmall" className="text-ui-fg-subtle shrink-0">
-              Warehouse:
-            </Text>
-            <div className="w-48">
-              <Select
-                value={selectedStockLocationId || undefined}
-                onValueChange={setSelectedStockLocationId}
-              >
-                <Select.Trigger className="h-7 text-xs">
-                  <Select.Value placeholder="Select facility" />
-                </Select.Trigger>
-                <Select.Content>
-                  {stockLocations.map((location) => (
-                    <Select.Item key={location.id} value={location.id} className="text-xs">
-                      {location.name}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select>
+          {(viewMode === "inventory" || viewMode === "all") && (
+            <div className="flex items-center gap-2">
+              <Text size="xsmall" className="text-ui-fg-subtle shrink-0">
+                Warehouse:
+              </Text>
+              <div className="w-48">
+                <Select
+                  value={selectedStockLocationId || undefined}
+                  onValueChange={setSelectedStockLocationId}
+                >
+                  <Select.Trigger className="h-7 text-xs">
+                    <Select.Value placeholder="Select facility" />
+                  </Select.Trigger>
+                  <Select.Content>
+                    {stockLocations.map((location) => (
+                      <Select.Item key={location.id} value={location.id} className="text-xs">
+                        {location.name}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select>
+              </div>
             </div>
-          </div>
-          <Button
-            size="small"
-            variant="secondary"
-            isLoading={isAutoMatchingAll}
-            disabled={isAutoMatchingAll || !profiles.length}
-            onClick={handleAutoMatchAll}
-            className="h-7 text-xs font-medium inline-flex items-center gap-1.5 text-ui-fg-interactive border-ui-border-base shadow-2xs"
-            title="Auto-match and configure BOM recipes for all variants based on their names (Vial, Pharma BAC, SubQ Set)"
-          >
-            <Sparkles className="size-3.5 text-purple-600" />
-            <span>Auto-Match Kits</span>
-          </Button>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => setIsStockAdjustAllOpen(true)}
-            className="h-7 text-xs font-medium inline-flex items-center gap-1.5 border-ui-border-base shadow-2xs"
-            title="Adjust physical component stock levels at this warehouse"
-          >
-            <ArchiveBox className="size-3.5 text-ui-fg-subtle" />
-            <span>Adjust Stock</span>
-          </Button>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => {
-              setIsAddingVariant(true)
-              setNewVariantTitle("")
-              setNewVariantSku(
-                product.handle
-                  ? `${product.handle.toUpperCase().replace(/[^A-Z0-9]/g, "-")}-${(product.variants?.length || 0) + 1}`
-                  : "",
-              )
-            }}
-            className="h-7 text-xs font-medium inline-flex items-center gap-1"
-          >
-            <Plus className="size-3.5" />
-            Add Variant
-          </Button>
+          )}
+
+          {(viewMode === "bom" || viewMode === "all") && (
+            <Button
+              size="small"
+              variant="secondary"
+              isLoading={isAutoMatchingAll}
+              disabled={isAutoMatchingAll || !profiles.length}
+              onClick={handleAutoMatchAll}
+              className="h-7 text-xs font-medium inline-flex items-center gap-1.5 text-ui-fg-interactive border-ui-border-base shadow-2xs"
+              title="Auto-match and configure BOM recipes for all variants based on their names (Vial, Pharma BAC, SubQ Set)"
+            >
+              <Sparkles className="size-3.5 text-purple-600" />
+              <span>Auto-Match Kits</span>
+            </Button>
+          )}
+
+          {(viewMode === "inventory" || viewMode === "all") && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => setIsStockAdjustAllOpen(true)}
+              className="h-7 text-xs font-medium inline-flex items-center gap-1.5 border-ui-border-base shadow-2xs"
+              title="Adjust physical component stock levels at this warehouse"
+            >
+              <ArchiveBox className="size-3.5 text-ui-fg-subtle" />
+              <span>Adjust Stock</span>
+            </Button>
+          )}
+
+          {(viewMode === "variations" || viewMode === "all") && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => {
+                setIsAddingVariant(true)
+                setNewVariantTitle("")
+                setNewVariantSku(
+                  product.handle
+                    ? `${product.handle.toUpperCase().replace(/[^A-Z0-9]/g, "-")}-${(product.variants?.length || 0) + 1}`
+                    : "",
+                )
+              }}
+              className="h-7 text-xs font-medium inline-flex items-center gap-1"
+            >
+              <Plus className="size-3.5" />
+              Add Variant
+            </Button>
+          )}
         </div>
       }
       contentClassName="p-0"
     >
+      {/* ViewMode Banners */}
+      {viewMode === "variations" && (
+        <div className="bg-slate-50/80 border-b border-slate-200/80 px-4 py-3 flex flex-col gap-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-blue-600 animate-pulse" />
+              <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider font-mono">
+                Variation Axes &amp; Dosage Presets
+              </span>
+              <Badge size="2xsmall" color="blue" className="text-[10px]">
+                Active Matrix
+              </Badge>
+            </div>
+            <span className="text-[11px] text-slate-500 font-medium">
+              Click any dosage preset to initialize a new formulation variant
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+            <div className="flex flex-col gap-1.5 p-2.5 rounded-lg border border-slate-200/80 bg-white shadow-2xs">
+              <span className="font-semibold text-slate-700 text-[11px] flex items-center gap-1.5">
+                <Sparkles className="size-3 text-blue-600" />
+                Dosage Strengths
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {["5 mg", "10 mg", "15 mg", "20 mg", "30 mg", "50 mg", "100 mg"].map((dose) => (
+                  <button
+                    key={dose}
+                    type="button"
+                    onClick={() => {
+                      setIsAddingVariant(true)
+                      setNewVariantTitle(`${product.title} ${dose} Lyophilized Vial`)
+                      setNewVariantSku(
+                        product.handle
+                          ? `${product.handle.toUpperCase().replace(/[^A-Z0-9]/g, "-")}-${dose.replace(/\s+/g, "").toUpperCase()}`
+                          : ""
+                      )
+                    }}
+                    className="inline-flex items-center px-2 py-0.5 rounded-md border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 text-[11px] font-mono text-slate-700 transition-colors cursor-pointer"
+                  >
+                    +{dose}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5 p-2.5 rounded-lg border border-slate-200/80 bg-white shadow-2xs">
+              <span className="font-semibold text-slate-700 text-[11px] flex items-center gap-1.5">
+                <Beaker className="size-3 text-purple-600" />
+                Container Fill Volumes
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {["2 mL Borosilicate", "3 mL Crimp Top", "5 mL Serum Vial", "10 mL Diluent"].map((vol) => (
+                  <span
+                    key={vol}
+                    className="inline-flex items-center px-2 py-0.5 rounded-md border border-purple-100 bg-purple-50/60 text-[11px] font-mono text-purple-700"
+                  >
+                    {vol}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5 p-2.5 rounded-lg border border-slate-200/80 bg-white shadow-2xs">
+              <span className="font-semibold text-slate-700 text-[11px] flex items-center gap-1.5">
+                <ArchiveBox className="size-3 text-emerald-600" />
+                Delivery Formats
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {["Lyophilized Cake", "Sterile BAC Water", "SubQ Reconstitution Kit"].map((fmt) => (
+                  <span
+                    key={fmt}
+                    className="inline-flex items-center px-2 py-0.5 rounded-md border border-emerald-100 bg-emerald-50/60 text-[11px] font-medium text-emerald-700"
+                  >
+                    {fmt}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewMode === "bom" && (
+        <div className="bg-blue-50/50 border-b border-blue-100 px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 shrink-0">
+              <Sparkles className="size-4" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-blue-900 tracking-tight">
+                  Active Constituent BOM Mapping
+                </span>
+                <Badge size="2xsmall" color="blue" className="text-[10px]">
+                  COGS Engine Active
+                </Badge>
+                <Badge size="2xsmall" color="green" className="text-[10px]">
+                  ≥ 35.0% Margin Floor Guaranteed
+                </Badge>
+              </div>
+              <Text className="text-[11px] text-blue-700 mt-0.5">
+                Every unit sold dynamically decrements physical active API vials, reconstitution diluent, and protective packaging.
+              </Text>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewMode === "inventory" && (
+        <div className="bg-emerald-50/50 border-b border-emerald-100 px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+              <ArchiveBox className="size-4" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-emerald-900 tracking-tight">
+                  Warehouse Facility &amp; Storage Regime
+                </span>
+                <Badge size="2xsmall" color="green" className="text-[10px]">
+                  20°C–25°C Ambient Desiccated
+                </Badge>
+                <Badge size="2xsmall" color="blue" className="text-[10px]">
+                  J&amp;T &amp; Lalamove Pickup Active
+                </Badge>
+              </div>
+              <Text className="text-[11px] text-emerald-700 mt-0.5">
+                Orders decrement inventory atomically upon proof confirmation. Zero cold-chain or lab freezer dependencies.
+              </Text>
+            </div>
+          </div>
+        </div>
+      )}
       {isAddingVariant && (
         <div className="bg-ui-bg-subtle/60 border-b border-ui-border-base p-4 flex flex-col gap-3">
           <div className="flex items-center justify-between">
@@ -537,7 +719,10 @@ export const VariantBomMatrix = ({
           const componentCount = readinessVariant?.recipe_components.length ?? 0
           const rows = recipes[variant.id]
           const isEditingRecipe = Boolean(rows)
-          const isExpanded = expandedRecipeIds.has(variant.id) || isEditingRecipe
+          const isExpanded =
+            viewMode === "bom"
+              ? !collapsedRecipeIds.has(variant.id)
+              : expandedRecipeIds.has(variant.id) || isEditingRecipe
           const isEditingThisVariant = editingVariantId === variant.id
 
           const isTargeted = activeHighlightId === variant.id
@@ -825,7 +1010,7 @@ export const VariantBomMatrix = ({
                       <Button
                         size="small"
                         variant="transparent"
-                        onClick={() => toggleRecipe(variant.id)}
+                        onClick={() => handleToggleRecipe(variant.id)}
                         className="h-6 px-1 text-xs text-ui-fg-subtle hover:text-ui-fg-base gap-0.5"
                         title={isExpanded ? "Collapse Recipe" : "Expand Recipe"}
                       >

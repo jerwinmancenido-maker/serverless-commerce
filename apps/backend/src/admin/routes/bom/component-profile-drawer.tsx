@@ -271,7 +271,7 @@ export function ComponentProfileDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
         <form className="flex h-full flex-col" onSubmit={submit}>
           <Drawer.Header>
             <Drawer.Title asChild>
@@ -281,7 +281,7 @@ export function ComponentProfileDrawer({
               {inventoryItem?.title || inventoryItem?.sku || "Inventory item"}
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-1 flex-col gap-y-6 overflow-y-auto">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-6 overflow-y-auto p-4 sm:p-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="base-unit">Inventory ledger unit</Label>
@@ -544,7 +544,7 @@ export function ComponentProfileDrawer({
               />
             </div>
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end gap-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary" type="button">
                 Cancel

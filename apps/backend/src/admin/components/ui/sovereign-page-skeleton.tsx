@@ -22,7 +22,7 @@ export const SovereignPageSkeleton = ({
   className = "",
 }: SovereignPageSkeletonProps) => {
   return (
-    <div className={`flex flex-col gap-4 pb-8 px-6 pt-6 animate-pulse ${className}`}>
+    <div className={`flex flex-col gap-4 pb-8 px-1 sm:px-6 pt-3 sm:pt-6 animate-pulse ${className}`}>
       {/* Header skeleton */}
       {hasHeader && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200/80">

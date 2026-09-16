@@ -269,7 +269,7 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="w-full sm:max-w-2xl bg-white flex flex-col h-full border-l border-slate-200 shadow-2xl">
+      <Drawer.Content className="w-full sm:max-w-2xl bg-white flex flex-col h-dvh sm:h-full border-l border-slate-200 shadow-2xl justify-between">
         {/* Drawer Header */}
         <Drawer.Header className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 bg-slate-50/50">
           <div className="flex items-center justify-between">
@@ -621,7 +621,7 @@ export const InventoryCreateDrawer: React.FC<InventoryCreateDrawerProps> = ({
         </Drawer.Body>
 
         {/* Drawer Footer Actions */}
-        <Drawer.Footer className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-3">
+        <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-3">
           <Button
             variant="secondary"
             size="small"

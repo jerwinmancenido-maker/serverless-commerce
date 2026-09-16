@@ -6,7 +6,7 @@
  *   Service: ProductModuleService
  */
 
-import { ArrowUpTray, CheckCircle, Trash } from "@medusajs/icons"
+import { ArrowUpTray, CheckCircle, Photo, Trash } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Button, Drawer, Text, toast } from "@medusajs/ui"
 import { useQueryClient } from "@tanstack/react-query"
@@ -108,7 +108,7 @@ export const VariantPhotoDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="w-full sm:max-w-md h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header>
           <Drawer.Title>Variation Photo</Drawer.Title>
           <Drawer.Description>
@@ -116,7 +116,7 @@ export const VariantPhotoDrawer = ({
           </Drawer.Description>
         </Drawer.Header>
 
-        <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-6">
+        <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
           {/* Active Photo Preview */}
           <div className="flex items-center gap-4 p-3.5 rounded-xl border border-ui-border-base bg-ui-bg-subtle/50">
             <div className="size-20 shrink-0 rounded-lg border border-ui-border-base bg-ui-bg-base overflow-hidden flex items-center justify-center shadow-xs">
@@ -127,7 +127,7 @@ export const VariantPhotoDrawer = ({
                   className="size-full object-cover"
                 />
               ) : (
-                <span className="text-2xl text-ui-fg-muted">📷</span>
+                <Photo className="size-8 text-ui-fg-muted" />
               )}
             </div>
 
@@ -230,7 +230,7 @@ export const VariantPhotoDrawer = ({
           </div>
         </Drawer.Body>
 
-        <Drawer.Footer className="flex items-center justify-end gap-x-2">
+        <Drawer.Footer className="flex items-center justify-end gap-2 border-t border-ui-border-base px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)]">
           <Button
             size="small"
             variant="secondary"

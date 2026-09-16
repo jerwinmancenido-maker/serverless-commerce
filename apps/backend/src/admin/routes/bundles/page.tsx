@@ -12,6 +12,7 @@ import {
   ArchiveBox,
   ArrowUpRightOnBox,
   CheckCircleSolid,
+  ChevronRight,
   Component,
   ExclamationCircle,
   Plus,
@@ -212,12 +213,12 @@ export const BundlesManagementPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
+    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-3.5 sm:px-6 w-full min-h-screen">
       {/* 1. Header with Eyebrow, Badges, and Create Action */}
       <PageHeader
         eyebrowText="Catalog Stacking &amp; Multi-Compound Protocols"
         title="Research Bundles &amp; Stacks"
-        subtitle="Manage synergistic peptide kits with automated constituent vial allocation, package savings, and cold-chain manifests."
+        subtitle="Manage synergistic peptide kits with automated constituent vial allocation, package savings, and shipping manifests."
         actions={
           <div className="flex items-center gap-2">
             <Button asChild size="small" variant="secondary" className="h-8 text-xs font-semibold">
@@ -284,7 +285,7 @@ export const BundlesManagementPage = () => {
 
       {/* 4. Single-Row Tab Bar Strip with Inline Search */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
           {[
             { id: "all", label: "All Stacks", count: kpis.total },
             { id: "buildable", label: "Buildable Ready", count: kpis.buildable },
@@ -366,9 +367,33 @@ export const BundlesManagementPage = () => {
               }
               value={`₱${b.bundlePrice.toLocaleString()}`}
               secondaryValue={`Save ₱${b.savingsAmount.toLocaleString()} (${b.savingsPercent}%)`}
-              onEdit={() => handleEdit(b)}
-              onDelete={() => promptDelete(b.id, b.title)}
-              href={`http://localhost:8000/ph/products/${b.handle}`}
+              onClick={() => handleEdit(b)}
+              statusPill={
+                <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all">
+                  <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              }
+              actions={
+                <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                  <a
+                    href={`http://localhost:8000/ph/products/${b.handle}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center size-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-blue-700 hover:border-blue-300 hover:bg-blue-50/40 transition-colors shadow-2xs"
+                    title="View on Storefront"
+                  >
+                    <ArrowUpRightOnBox className="size-3.5" />
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => promptDelete(b.id, b.title)}
+                    className="inline-flex items-center justify-center size-7 rounded-lg border border-rose-200 bg-rose-50/50 text-rose-700 hover:bg-rose-100 hover:text-rose-800 transition-colors shadow-2xs cursor-pointer"
+                    title="Delete Stack"
+                  >
+                    <Trash className="size-3.5" />
+                  </button>
+                </div>
+              }
             />
           ))
         )}
@@ -409,11 +434,11 @@ export const BundlesManagementPage = () => {
         <AdminSuiteCard
           variant="slate"
           icon={<ArchiveBox className="size-4 text-slate-700" />}
-          eyebrow="Cold-Chain Packaging"
-          statusBadge="2°C – 8°C Insulated"
+          eyebrow="Protective Packaging"
+          statusBadge="Padded Courier Shield"
           statusVariant="neutral"
-          title="Insulated Kit Dispatch Protocol"
-          description="All multi-compound stacks are shipped in thermal bubble pouches with certified phase-change cold gel bricks guaranteeing 48h thermal stability."
+          title="Standard Protective Kit Dispatch"
+          description="All multi-compound stacks are shipped in secure padded bubble mailers with protective sleeves guaranteeing physical vial integrity during transit."
         />
       </div>
 

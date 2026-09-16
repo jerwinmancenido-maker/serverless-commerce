@@ -739,7 +739,7 @@ const DashboardPage = () => {
             Founder Command Center
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Real-time commercial telemetry, cold-chain fulfillment dispatch, and inventory controls.
+            Real-time commercial telemetry, courier fulfillment dispatch, and inventory controls.
           </p>
         </div>
 
@@ -984,7 +984,7 @@ const DashboardPage = () => {
           }
           status={ordersQuery.isError ? "critical" : "healthy"}
           subtext={cardSubtext(ordersQuery, "captured payments · MTD")}
-          onClick={() => navigate("/orders")}
+          onClick={() => navigate("/orders-cockpit")}
         />
         <AdminMetricCard
           icon={<ArchiveBox className="size-4" />}
@@ -998,7 +998,7 @@ const DashboardPage = () => {
               : "neutral"
           }
           subtext={cardSubtext(packReadyQuery, "paid · ready to dispatch")}
-          onClick={() => navigate("/orders")}
+          onClick={() => navigate("/orders-cockpit")}
         />
         <AdminMetricCard
           icon={<CreditCard className="size-4" />}
@@ -1220,7 +1220,7 @@ const DashboardPage = () => {
 
       {/* 5. Maximized Full-Screen Operational Grid */}
       <div className="w-full flex flex-col gap-6">
-        {/* Primary Recent Orders & Cold-Chain Fulfillment Table */}
+        {/* Primary Recent Orders & Courier Fulfillment Table */}
         <div className="w-full">
           <AdminCard
             title="Recent Orders & Fulfillment"
@@ -1229,7 +1229,7 @@ const DashboardPage = () => {
               <Button
                 size="small"
                 variant="transparent"
-                onClick={() => navigate("/orders")}
+                onClick={() => navigate("/orders-cockpit")}
                 className="h-7 text-xs font-bold text-blue-700 hover:text-blue-900"
               >
                 View all orders &rarr;
@@ -1254,11 +1254,11 @@ const DashboardPage = () => {
                 {recentOrdersQuery.data.orders.map((order: HttpTypes.AdminOrder) => {
                   const customerName = order.customer
                     ? `${order.customer.first_name ?? ""} ${order.customer.last_name ?? ""}`.trim() || order.customer.email
-                    : "Dr. Client"
+                    : "Research Client"
                   return (
                     <div
                       key={order.id}
-                      onClick={() => navigate(`/orders/${order.id}`)}
+                      onClick={() => navigate(`/orders-cockpit/${order.id}`)}
                       className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-slate-50/70 transition-all cursor-pointer"
                     >
                       <div className="flex items-center gap-3">

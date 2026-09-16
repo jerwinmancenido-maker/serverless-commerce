@@ -54,7 +54,7 @@ export function RecipeHistoryDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header>
           <Drawer.Title asChild>
             <Heading>Recipe history</Heading>
@@ -64,7 +64,7 @@ export function RecipeHistoryDrawer({
             {variant?.sku ? ` (${variant.sku})` : ""}
           </Drawer.Description>
         </Drawer.Header>
-        <Drawer.Body className="flex flex-col gap-y-6 overflow-y-auto">
+        <Drawer.Body className="flex flex-1 flex-col gap-y-6 overflow-y-auto p-4 sm:p-6 pb-[env(safe-area-inset-bottom,1.5rem)]">
           {historyQuery.isLoading ? (
             <div className="flex flex-col gap-3">
               <Skeleton className="h-24 w-full" />

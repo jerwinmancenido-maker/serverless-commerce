@@ -24,7 +24,7 @@ const InventoryCreateRedirect = () => {
   useEffect(() => {
     if (shouldRedirectInventoryCreate(location.pathname, location.search)) {
       setDrawerOpen(true)
-      navigate("/inventory", { replace: true })
+      navigate("/inventory-registry", { replace: true })
     }
   }, [location.pathname, location.search, navigate])
 

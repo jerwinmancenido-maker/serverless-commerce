@@ -198,7 +198,7 @@ const ResearchHubSettingsPage = () => {
   ]
 
   return (
-    <div className="flex flex-col gap-4 pb-8 px-6 pt-6 w-full">
+    <div className="flex flex-col gap-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       {/* 1. Standard PageHeader */}
       <PageHeader
         eyebrowText="Research Hub · System Settings"

@@ -849,14 +849,14 @@ const CompoundedProductsPage = () => {
 
   if (isLoadingReferenceData) {
     return (
-      <div className="sovereign-page px-6 pt-6 pb-8">
+      <div className="sovereign-page px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
         <SovereignPageSkeleton cards={2} rows={8} />
       </div>
     )
   }
 
   return (
-    <div className="sovereign-page px-6 pt-6 pb-8 flex flex-col gap-y-6">
+    <div className="sovereign-page px-3.5 sm:px-6 pt-4 pb-12 flex flex-col gap-y-6 w-full min-h-screen">
       <PageHeader
         title="Create product"
         subtitle="Add product information, images, variations, and prices."
@@ -1425,14 +1425,14 @@ const CompoundedProductsPage = () => {
         open={presentationDrawerOpen}
         onOpenChange={setPresentationDrawerOpen}
       >
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-md h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>Add product format</Drawer.Title>
             <Drawer.Description>
               Add a reusable physical format and select it for this product.
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-col gap-y-5 overflow-y-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
             <div className="flex flex-col gap-y-2">
               <Label htmlFor="new-presentation-name">Format name *</Label>
               <Input
@@ -1459,7 +1459,7 @@ const CompoundedProductsPage = () => {
               />
             </div>
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end gap-2">
             <Drawer.Close asChild>
               <Button type="button" variant="secondary">
                 Cancel
@@ -1483,7 +1483,7 @@ const CompoundedProductsPage = () => {
           if (!open) setImagePickerRowKey(null)
         }}
       >
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-lg h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>Combination photo</Drawer.Title>
             <Drawer.Description>
@@ -1491,7 +1491,7 @@ const CompoundedProductsPage = () => {
               combination.
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-col gap-y-4 overflow-y-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-4 sm:p-6">
             <Button
               size="small"
               variant="secondary"
@@ -1545,7 +1545,7 @@ const CompoundedProductsPage = () => {
               </Text>
             )}
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end gap-2">
             <Drawer.Close asChild>
               <Button size="small">Done</Button>
             </Drawer.Close>

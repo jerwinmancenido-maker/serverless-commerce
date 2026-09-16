@@ -49,9 +49,9 @@ export const PriceListPreview: React.FC<PriceListPreviewProps> = ({ state, avail
     previewItem.defaultPrice > 0 ? ((discountAmount / previewItem.defaultPrice) * 100).toFixed(0) : "0"
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
       {/* ── CARD 1: Storefront Live Simulation ── */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-w-0 flex flex-col">
         <div className="p-4 border-b border-slate-100 bg-slate-50/75 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-blue-600" />
@@ -120,7 +120,7 @@ export const PriceListPreview: React.FC<PriceListPreviewProps> = ({ state, avail
       </div>
 
       {/* ── CARD 2: Margin Floor & Sovereign Guard ── */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 min-w-0 flex flex-col justify-between">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
@@ -178,14 +178,20 @@ export const PriceListPreview: React.FC<PriceListPreviewProps> = ({ state, avail
       </div>
 
       {/* ── CARD 3: Clinical Formulation Governance ── */}
-      <div className="bg-slate-50 rounded-xl border border-slate-200 p-3.5 text-xs text-slate-600 space-y-1.5">
-        <div className="flex items-center gap-1.5 font-bold text-slate-800 text-[11px] uppercase tracking-wider">
-          <Tag className="w-3.5 h-3.5 text-blue-600" />
-          <span>Clinical Formulation & Wholesale Governance</span>
+      <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 text-xs text-slate-600 space-y-3 min-w-0 flex flex-col justify-between">
+        <div>
+          <div className="flex items-center gap-1.5 font-bold text-slate-800 text-[11px] uppercase tracking-wider mb-2">
+            <Tag className="w-3.5 h-3.5 text-blue-600" />
+            <span>Clinical Formulation & Wholesale Governance</span>
+          </div>
+          <p className="text-[11px] leading-relaxed text-slate-500">
+            Price lists establish authoritative institutional pricing tiers across clinic and research partners. All overrides are applied directly to unit checkout costs with zero tax.
+          </p>
         </div>
-        <p className="text-[11px] leading-relaxed text-slate-500">
-          Price lists establish authoritative institutional pricing tiers across clinic and research partners. All overrides are applied directly to unit checkout costs with zero tax.
-        </p>
+        <div className="pt-3 border-t border-slate-200/60 text-[10px] text-slate-400 flex items-center justify-between">
+          <span>Sovereign RUO Reference Standard</span>
+          <span className="font-semibold text-slate-600">PHP Direct Ledger</span>
+        </div>
       </div>
     </div>
   )

@@ -102,14 +102,14 @@ export const AdvancedSettingsDrawer = ({
   onCurrencyChange: (value: string) => void
 }) => (
   <Drawer open={open} onOpenChange={onOpenChange}>
-    <Drawer.Content>
+    <Drawer.Content className="w-full sm:max-w-md h-dvh sm:h-full flex flex-col justify-between">
       <Drawer.Header>
         <Drawer.Title>Advanced product settings</Drawer.Title>
         <Drawer.Description>
           Configure optional catalog routing and merchandising references.
         </Drawer.Description>
       </Drawer.Header>
-      <Drawer.Body className="flex flex-col gap-y-5 overflow-y-auto p-6">
+      <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
         <div className="flex flex-col gap-y-2">
           <Label htmlFor="product-handle">Storefront handle</Label>
           <Input
@@ -183,7 +183,7 @@ export const AdvancedSettingsDrawer = ({
           </div>
         ) : null}
       </Drawer.Body>
-      <Drawer.Footer>
+      <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end">
         <Drawer.Close asChild>
           <Button size="small">Done</Button>
         </Drawer.Close>

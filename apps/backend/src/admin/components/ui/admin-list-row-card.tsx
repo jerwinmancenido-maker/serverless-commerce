@@ -117,13 +117,25 @@ export const AdminListRowCard: React.FC<AdminListRowCardProps> = ({
             )}
 
             {href && (
-              <Link
-                to={href}
-                className="inline-flex items-center justify-center size-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-blue-700 hover:border-blue-300 hover:bg-blue-50/40 transition-colors shadow-2xs"
-                title="Open Details"
-              >
-                &rarr;
-              </Link>
+              href.startsWith("http://") || href.startsWith("https://") ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center size-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-blue-700 hover:border-blue-300 hover:bg-blue-50/40 transition-colors shadow-2xs"
+                  title="Open Storefront View"
+                >
+                  &rarr;
+                </a>
+              ) : (
+                <Link
+                  to={href}
+                  className="inline-flex items-center justify-center size-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-blue-700 hover:border-blue-300 hover:bg-blue-50/40 transition-colors shadow-2xs"
+                  title="Open Details"
+                >
+                  &rarr;
+                </Link>
+              )
             )}
           </div>
         )}

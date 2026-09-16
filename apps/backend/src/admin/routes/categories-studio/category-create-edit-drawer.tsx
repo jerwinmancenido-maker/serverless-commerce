@@ -111,17 +111,17 @@ export const CategoryCreateEditDrawer: React.FC<CategoryCreateEditDrawerProps> =
 
   return (
     <Drawer open={open} onOpenChange={onClose}>
-      <Drawer.Content className="max-w-lg">
+      <Drawer.Content className="w-full sm:max-w-lg h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header>
           <Drawer.Title>
-            {isEdit ? "Edit Therapeutic Category" : "Create Therapeutic Category"}
+            {isEdit ? "Edit Compound Category" : "Create Compound Category"}
           </Drawer.Title>
           <Drawer.Description>
             Configure category taxonomy, storefront handle, and visibility across customer navigation rails.
           </Drawer.Description>
         </Drawer.Header>
 
-        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-y-auto p-6 gap-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-y-auto p-4 sm:p-6 gap-y-4">
           <div className="flex flex-col gap-y-1.5">
             <Label htmlFor="cat-name" className="text-xs font-semibold text-slate-900">
               Category Name *
@@ -154,13 +154,13 @@ export const CategoryCreateEditDrawer: React.FC<CategoryCreateEditDrawerProps> =
 
           <div className="flex flex-col gap-y-1.5">
             <Label htmlFor="cat-desc" className="text-xs font-semibold text-slate-900">
-              Clinical Taxonomy Description
+              Compound Taxonomy Description
             </Label>
             <Textarea
               id="cat-desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Authoritative description of compounds belonging to this clinical class..."
+              placeholder="Authoritative description of compounds belonging to this reference standard class..."
               rows={3}
               className="text-xs bg-white"
             />
@@ -182,7 +182,7 @@ export const CategoryCreateEditDrawer: React.FC<CategoryCreateEditDrawerProps> =
             <Switch checked={isInternal} onCheckedChange={setIsInternal} />
           </div>
 
-          <Drawer.Footer className="px-0 pt-4 mt-auto">
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-slate-100 bg-slate-50/50 mt-auto">
             <div className="flex items-center justify-end gap-2 w-full">
               <Button type="button" variant="secondary" size="small" onClick={onClose} disabled={isSaving}>
                 Cancel

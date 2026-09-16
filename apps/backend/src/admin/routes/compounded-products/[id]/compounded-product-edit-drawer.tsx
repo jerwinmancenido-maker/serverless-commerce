@@ -131,7 +131,7 @@ export const CompoundedProductEditDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="max-w-4xl overflow-y-auto">
+      <Drawer.Content className="w-full sm:max-w-4xl h-dvh sm:h-full flex flex-col justify-between overflow-y-auto">
         <Drawer.Header>
           <Drawer.Title asChild>
             <Heading level="h2">Edit Compounded Product</Heading>
@@ -143,7 +143,7 @@ export const CompoundedProductEditDrawer = ({
           </Drawer.Description>
         </Drawer.Header>
 
-        <Drawer.Body className="flex flex-col gap-y-5 px-6 py-4">
+        <Drawer.Body className="flex flex-1 flex-col gap-y-5 px-4 sm:px-6 py-4 overflow-y-auto">
           <div className="flex flex-col gap-y-1.5">
             <Label htmlFor="edit-product-title">Product name *</Label>
             <Input
@@ -226,7 +226,7 @@ export const CompoundedProductEditDrawer = ({
           </div>
         </Drawer.Body>
 
-        <Drawer.Footer className="flex items-center justify-end gap-2 border-t border-ui-border-base px-6 py-4">
+        <Drawer.Footer className="flex items-center justify-end gap-2 border-t border-ui-border-base px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)]">
           <Button
             size="small"
             variant="secondary"

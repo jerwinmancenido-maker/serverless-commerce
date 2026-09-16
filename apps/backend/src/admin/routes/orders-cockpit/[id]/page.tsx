@@ -505,7 +505,7 @@ export const OrderCockpitDetailRoute = () => {
 
   if (isError || !order) {
     return (
-      <div className="p-8 max-w-5xl mx-auto">
+      <div className="p-4 sm:p-8 max-w-5xl mx-auto">
         <SovereignEmptyState
           heading="Order Not Found"
           description={`Order #${id} could not be retrieved from active records.`}
@@ -522,7 +522,7 @@ export const OrderCockpitDetailRoute = () => {
   const trackingNumber = cleanJntWaybill(waybillNumber)
 
   return (
-    <div className="flex flex-col gap-6 p-6 max-w-7xl mx-auto">
+    <div className="flex flex-col gap-4 sm:gap-6 px-3.5 sm:px-6 pt-4 pb-12 max-w-7xl mx-auto w-full min-h-screen">
       {/* 1. Top Executive Navigation & Header */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -643,11 +643,11 @@ export const OrderCockpitDetailRoute = () => {
           status={isTerminal ? "critical" : canPack ? "healthy" : "warning"}
         />
         <AdminMetricCard
-          label="Cold-Chain SLA"
-          value="2°C – 8°C"
-          subtext="Thermal Barrier Shield"
+          label="Courier Partner"
+          value="J&T / Lalamove"
+          subtext="Standard Domestic Express"
           variant="blue"
-          icon={<Beaker className="size-4 text-indigo-600" />}
+          icon={<ArchiveBox className="size-4 text-indigo-600" />}
           status="healthy"
         />
       </div>
@@ -756,7 +756,7 @@ export const OrderCockpitDetailRoute = () => {
         <div className="lg:col-span-8 flex flex-col gap-6">
           {/* Card 1: Line Item & Formulation Breakdown */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/50">
               <div className="flex items-center gap-2">
                 <Heading level="h2" className="text-sm font-bold text-slate-900">
                   Item &amp; Formulation Breakdown
@@ -919,7 +919,7 @@ export const OrderCockpitDetailRoute = () => {
 
           {/* Card 2: High-Velocity J&T Logistics & Dispatch Desk */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/50">
               <div>
                 <div className="flex items-center gap-2">
                   <Heading level="h2" className="text-sm font-bold text-slate-900">
@@ -958,7 +958,7 @@ export const OrderCockpitDetailRoute = () => {
 
             {/* Active Dispatched Shipments List */}
             {hasFulfillments ? (
-              <div className="space-y-3 px-6 py-4 bg-white">
+              <div className="space-y-3 px-4 sm:px-6 py-3.5 sm:py-4 bg-white">
                 <Text size="xsmall" weight="plus" className="uppercase tracking-wider text-slate-500 font-mono">
                   Dispatched Shipments
                 </Text>
@@ -1100,7 +1100,7 @@ export const OrderCockpitDetailRoute = () => {
 
           {/* Card 3: Commercial Financial Ledger */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/50">
               <Heading level="h2" className="text-sm font-bold text-slate-900">
                 Commercial Financial Ledger
               </Heading>
@@ -1110,13 +1110,13 @@ export const OrderCockpitDetailRoute = () => {
               </div>
             </div>
 
-            <div className="p-6 space-y-3 text-xs">
+            <div className="p-4 sm:p-6 space-y-3 text-xs">
               <div className="flex items-center justify-between text-slate-600">
                 <span>Subtotal ({items.length} items):</span>
                 <span className="font-mono font-medium text-slate-900">{phpFormatter.format(itemsSubtotal || order.item_subtotal || order.subtotal || 0)}</span>
               </div>
               <div className="flex items-center justify-between text-slate-600">
-                <span>Cold-Chain Express Delivery (J&amp;T Priority):</span>
+                <span>J&amp;T Express / Lalamove Delivery:</span>
                 <span className="font-mono font-medium text-slate-900">{phpFormatter.format(order.shipping_total || 0)}</span>
               </div>
               <div className="flex items-center justify-between text-slate-600">
@@ -1160,7 +1160,7 @@ export const OrderCockpitDetailRoute = () => {
 
           {/* Card 4: QR Payment Proof & Settlement Vault */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/50">
               <div>
                 <Heading level="h2" className="text-sm font-bold text-slate-900">
                   Manual QR Payment Proof &amp; Settlement
@@ -1276,7 +1276,7 @@ export const OrderCockpitDetailRoute = () => {
 
           {/* Card 5: Digital Research Protocol Delivery */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/50">
               <div>
                 <Heading level="h2" className="text-sm font-bold text-slate-900">
                   Digital Research Protocol Delivery
@@ -1399,38 +1399,7 @@ export const OrderCockpitDetailRoute = () => {
             </div>
           </div>
 
-          {/* Card 2: Cold-Chain Logistics Protocol */}
-          <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="px-5 py-4 bg-slate-50/50">
-              <Heading level="h2" className="text-sm font-bold text-slate-900">
-                Cold-Chain Transport Protocol
-              </Heading>
-              <Text size="xsmall" className="text-slate-500 mt-0.5">
-                Protective ambient and cryogenic thermal guarantee.
-              </Text>
-            </div>
-
-            <div className="p-5 space-y-3 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-blue-50/50 border border-blue-100">
-                <span className="font-semibold text-slate-900">Temperature Spec:</span>
-                <span className="font-mono text-blue-700 font-bold">2°C – 8°C Cold-Chain Shield</span>
-              </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
-                <span className="font-semibold text-slate-900">Packaging Barrier:</span>
-                <span className="font-mono text-slate-700">Insulated Foil Sleeve</span>
-              </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
-                <span className="font-semibold text-slate-900">Courier SLA:</span>
-                <span className="font-mono text-slate-700">Same-Day / 24-48h Luzon</span>
-              </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
-                <span className="font-semibold text-slate-900">Laboratory Notice:</span>
-                <span className="font-mono text-slate-700">Store Lyophilized at -20°C Upon Receipt</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3: Audit Ledger Timeline */}
+          {/* Card 2: Audit Ledger Timeline */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
             <div className="px-5 py-4 bg-slate-50/50">
               <Heading level="h2" className="text-sm font-bold text-slate-900">

@@ -109,7 +109,7 @@ export const PackingStationDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="max-w-4xl">
+      <Drawer.Content className="w-full sm:max-w-4xl h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header className="border-b border-ui-border-base pb-3">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -135,7 +135,7 @@ export const PackingStationDrawer = ({
           </div>
 
           {/* Document Format Tabs */}
-          <div className="mt-3 flex flex-wrap gap-1.5 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-1">
+          <div className="mt-3 flex overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap gap-1.5 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-1 shrink-0 max-w-full">
             <Button
               size="small"
               variant={activeDoc === "packing-slip" ? "primary" : "transparent"}
@@ -167,7 +167,7 @@ export const PackingStationDrawer = ({
           </div>
         </Drawer.Header>
 
-        <Drawer.Body className="bg-ui-bg-subtle p-6 overflow-y-auto max-h-[calc(100vh-180px)]">
+        <Drawer.Body className="bg-ui-bg-subtle p-4 sm:p-6 pb-[env(safe-area-inset-bottom,1.5rem)] overflow-y-auto flex-1">
           <div id="rc-printable-area" className="mx-auto rounded-lg shadow-sm">
             {activeDoc === "receipt" && <OrderReceiptTemplate order={order} />}
             {activeDoc === "packing-slip" && <PackingSlipTemplate order={order} />}

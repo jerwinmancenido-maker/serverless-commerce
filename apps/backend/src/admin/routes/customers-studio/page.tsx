@@ -287,7 +287,7 @@ export const CustomersStudioPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50/50 pb-20">
       {/* Studio Top Navigation Bar */}
-      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-6 py-3.5 flex items-center justify-between shadow-xs">
+      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3.5 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-4">
           <button
             type="button"
@@ -318,7 +318,7 @@ export const CustomersStudioPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
           {lastSaved && (
             <span className="text-[11px] text-slate-400 flex items-center gap-1">
               <Clock className="w-3 h-3 text-slate-400" />
@@ -347,34 +347,34 @@ export const CustomersStudioPage: React.FC = () => {
       </div>
 
       {/* Main Maximized Canvas Layout */}
-      <div className="px-6 py-6 flex flex-col gap-8 w-full">
+      <div className="px-1 sm:px-6 py-4 sm:py-6 flex flex-col gap-6 sm:gap-8 w-full">
         {/* Primary Form Builder */}
         <div className="w-full flex flex-col gap-6">
           {/* Quick Presets Bar */}
-          <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-amber-500" />
               Quick Archetype Presets:
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar flex-nowrap shrink-0 max-w-full pb-1 sm:pb-0">
               <button
                 type="button"
                 onClick={() => applyPreset("institutional_lab")}
-                className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-blue-600 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-md transition-all cursor-pointer"
+                className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-blue-600 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-md transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 + Enterprise BioLab
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset("analytical_center")}
-                className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-purple-600 bg-slate-50 hover:bg-purple-50 border border-slate-200 rounded-md transition-all cursor-pointer"
+                className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-purple-600 bg-slate-50 hover:bg-purple-50 border border-slate-200 rounded-md transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 + Calibration Center
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset("direct_researcher")}
-                className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-emerald-600 bg-slate-50 hover:bg-emerald-50 border border-slate-200 rounded-md transition-all cursor-pointer"
+                className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-emerald-600 bg-slate-50 hover:bg-emerald-50 border border-slate-200 rounded-md transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 + Independent Researcher
               </button>

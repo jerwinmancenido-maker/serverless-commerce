@@ -271,7 +271,7 @@ export const ProductMerchandising = ({ protocolId }: Props) => {
       )}
 
       <Drawer open={open} onOpenChange={setOpen}>
-        <Drawer.Content className="w-full max-w-[620px]">
+        <Drawer.Content className="w-full sm:max-w-[620px] h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>
               {editing ? "Edit product recommendation" : "Add product recommendation"}
@@ -281,7 +281,7 @@ export const ProductMerchandising = ({ protocolId }: Props) => {
               research guide’s product applicability.
             </Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="flex flex-col gap-y-4 overflow-y-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-4 sm:p-6">
             {!selected ? (
               <>
                 <Input
@@ -474,7 +474,7 @@ export const ProductMerchandising = ({ protocolId }: Props) => {
               </>
             )}
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base">
             <div className="flex justify-end gap-x-2">
               <Drawer.Close asChild>
                 <Button size="small" variant="secondary">Cancel</Button>

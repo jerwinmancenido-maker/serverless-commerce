@@ -88,7 +88,7 @@ const OrderBotQaAlertWidget = ({
             </div>
             <Text className="text-xs text-amber-800 mt-1 max-w-2xl">
               This order was created autonomously by Bot Mission Control for end-to-end verification.
-              Do not pull physical inventory or pack cold-chain vials for this shipment.
+              Do not pull physical inventory or pack reference vials for this shipment.
             </Text>
             <div className="flex flex-wrap items-center gap-2 mt-2 font-mono text-[11px] text-amber-900/80">
               <span className="bg-amber-100/80 px-2 py-0.5 rounded border border-amber-200">

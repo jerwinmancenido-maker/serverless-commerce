@@ -11,6 +11,7 @@ import { defineRouteConfig } from "@medusajs/admin-sdk"
 import {
   ArrowUpRightOnBox,
   CheckCircleSolid,
+  ChevronRight,
   Folder,
   ListTree,
   MagnifyingGlass,
@@ -147,11 +148,11 @@ export const CategoriesStudioPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
+    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-3.5 sm:px-6 w-full min-h-screen">
       {/* 1. Header with Eyebrow, Badges, and Create Action */}
       <PageHeader
-        eyebrowText="Therapeutic Taxonomy Governance · Clinical Hierarchy"
-        title="Therapeutic Product Categories"
+        eyebrowText="Compound Taxonomy Governance · Research Hierarchy"
+        title="Compound Categories & Taxonomies"
         subtitle="Governs customer storefront navigation rails, research library taxonomies, and compound class filtering."
         actions={
           <div className="flex items-center gap-2">
@@ -219,7 +220,7 @@ export const CategoriesStudioPage = () => {
 
       {/* 4. Single-Row Tab Bar Strip with Inline Search */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
           {[
             { id: "all", label: "All Categories", count: kpis.total },
             { id: "active", label: "Active Rails", count: kpis.active },
@@ -289,6 +290,7 @@ export const CategoriesStudioPage = () => {
             return (
               <AdminListRowCard
                 key={cat.id}
+                onClick={() => handleEdit(cat)}
                 icon={<Folder className="size-4 text-blue-600" />}
                 title={cat.name}
                 subtitle={
@@ -319,7 +321,12 @@ export const CategoriesStudioPage = () => {
                 }
                 value={isInternal ? "Internal Labware" : "Public Storefront"}
                 secondaryValue={cat.parent_category_id ? "Subcategory" : "Primary Category"}
-                onEdit={() => handleEdit(cat)}
+                statusPill={
+                  <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-700 group-hover:border-slate-300 group-hover:bg-slate-100 transition-colors">
+                    <span>Edit Class</span>
+                    <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-slate-700" />
+                  </span>
+                }
                 onDelete={() => promptDelete(cat.id, cat.name)}
                 href={`http://localhost:8000/ph/categories/${cat.handle}`}
               />
@@ -371,7 +378,7 @@ export const CategoriesStudioPage = () => {
             </div>
             <div className="flex items-center gap-2 text-slate-700">
               <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />
-              <span>Cold-chain hardware categorized separately</span>
+              <span>Accessories &amp; supplies categorized separately</span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
               <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />

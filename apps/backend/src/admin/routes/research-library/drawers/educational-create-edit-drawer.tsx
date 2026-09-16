@@ -140,8 +140,8 @@ export const EducationalCreateEditDrawer: React.FC<EducationalCreateEditDrawerPr
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="right-0 top-0 bottom-0 h-full w-full sm:max-w-2xl lg:max-w-3xl bg-white border-l border-slate-200 p-0 flex flex-col justify-between shadow-2xl">
-        <Drawer.Header className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+      <Drawer.Content className="right-0 top-0 bottom-0 h-dvh sm:h-full w-full sm:max-w-2xl lg:max-w-3xl bg-white border-l border-slate-200 p-0 flex flex-col justify-between shadow-2xl">
+        <Drawer.Header className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="flex size-7 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs shadow-2xs">
               <BookOpen className="size-4" />
@@ -149,8 +149,8 @@ export const EducationalCreateEditDrawer: React.FC<EducationalCreateEditDrawerPr
             <div>
               <Drawer.Title className="text-sm font-bold text-slate-900 tracking-tight">
                 {isEdit
-                  ? form.type === "glossary" ? "Edit Glossary Term" : "Edit Clinical FAQ"
-                  : form.type === "glossary" ? "Add Glossary Term" : "Add Clinical FAQ"}
+                  ? form.type === "glossary" ? "Edit Glossary Term" : "Edit Research FAQ"
+                  : form.type === "glossary" ? "Add Glossary Term" : "Add Research FAQ"}
               </Drawer.Title>
               <Drawer.Description className="text-xs text-slate-500 mt-0.5">
                 Educational reference monograph and customer hub definitions.
@@ -160,7 +160,7 @@ export const EducationalCreateEditDrawer: React.FC<EducationalCreateEditDrawerPr
         </Drawer.Header>
 
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
-          <Drawer.Body className="p-6 overflow-y-auto space-y-4 flex-1">
+          <Drawer.Body className="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
             {!isEdit && (
               <div className="space-y-1">
                 <Label className="text-xs font-semibold text-slate-700">Content Type</Label>
@@ -233,7 +233,7 @@ export const EducationalCreateEditDrawer: React.FC<EducationalCreateEditDrawerPr
             </div>
           </Drawer.Body>
 
-          <Drawer.Footer className="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-end gap-2 shrink-0">
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-slate-100 bg-slate-50/50 flex items-center justify-end gap-2 shrink-0">
             <Button
               type="button"
               variant="secondary"

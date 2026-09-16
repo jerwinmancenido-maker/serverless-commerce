@@ -82,7 +82,7 @@ export const VialLabelsTemplate = ({ order }: { order: HttpTypes.AdminOrder }) =
             <div className="border-t border-zinc-200 pt-1 flex justify-between items-end text-[8px] font-mono text-zinc-600">
               <div>
                 <span className="block font-bold text-zinc-900">LOT: {unit.lotNumber}</span>
-                <span className="block text-[7px] text-zinc-400">STORAGE: -20°C</span>
+                <span className="block text-[7px] text-zinc-400">STORAGE: 20°C-25°C AMBIENT</span>
               </div>
               <div className="text-right">
                 <span className="font-bold text-red-600 uppercase block">RESEARCH ONLY</span>

@@ -6,7 +6,7 @@
  *   Service: InventoryModuleService · CompoundedProductsModuleService
  */
 
-import { ArrowUpRightOnBox, CheckCircle, ExclamationCircle, Sparkles } from "@medusajs/icons"
+import { ArchiveBox, ArrowUpRightOnBox, CheckCircle, ExclamationCircle, Sparkles } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { Badge, Button, Drawer, Input, Text, toast } from "@medusajs/ui"
 import { useQueryClient } from "@tanstack/react-query"
@@ -226,10 +226,10 @@ export const QuickStockAdjustDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header>
           <Drawer.Title className="flex items-center gap-2">
-            <span>📦</span>
+            <ArchiveBox className="size-4 text-ui-fg-muted" />
             <span>
               {targetVariant
                 ? `Adjust Stock: ${targetVariant.title}`
@@ -242,7 +242,7 @@ export const QuickStockAdjustDrawer = ({
           </Drawer.Description>
         </Drawer.Header>
 
-        <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-6">
+        <Drawer.Body className="flex flex-1 flex-col gap-y-4 overflow-y-auto p-4 sm:p-6">
           {relevantComponentRows.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-8 text-center rounded-xl border border-dashed border-ui-border-base bg-ui-bg-subtle/30">
               <Sparkles className="size-8 text-purple-500 mb-2" />
@@ -356,7 +356,7 @@ export const QuickStockAdjustDrawer = ({
           )}
         </Drawer.Body>
 
-        <Drawer.Footer className="flex items-center justify-end gap-x-2">
+        <Drawer.Footer className="flex items-center justify-end gap-2 border-t border-ui-border-base px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)]">
           <Button
             size="small"
             variant="secondary"

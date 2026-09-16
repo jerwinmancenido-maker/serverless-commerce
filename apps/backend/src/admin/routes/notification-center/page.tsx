@@ -12,6 +12,7 @@ import {
   BellAlert,
   Bolt,
   CheckCircleSolid,
+  ChevronRight,
   DocumentText,
   ExclamationCircle,
   InformationCircleSolid,
@@ -214,7 +215,7 @@ const NotificationCenterAdminPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
+    <div className="flex flex-col gap-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       {/* 1. Standard PageHeader */}
       <PageHeader
         eyebrowText="Notification Center · Lifecycle Events"
@@ -384,15 +385,16 @@ const NotificationCenterAdminPage = () => {
                     Retention: {template.retention_days} days
                   </span>
                 }
-                actions={
-                  <Button
-                    size="small"
-                    variant="secondary"
-                    onClick={() => setSelected(template)}
-                    className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white"
-                  >
-                    Edit Template
-                  </Button>
+                onClick={() => setSelected(template)}
+                statusPill={
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-semibold text-slate-500 group-hover:text-blue-600 transition-colors">
+                      Configure
+                    </span>
+                    <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all">
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
                 }
               />
             ))
@@ -523,12 +525,12 @@ const NotificationCenterAdminPage = () => {
 
       {/* Drawer: Template Editor */}
       <Drawer open={Boolean(selected)} onOpenChange={(open) => { if (!open) setSelected(null) }}>
-        <Drawer.Content>
+        <Drawer.Content className="w-full sm:max-w-xl h-dvh sm:h-full flex flex-col justify-between">
           <Drawer.Header>
             <Drawer.Title>{draft?.display_name || "Notification template"}</Drawer.Title>
             <Drawer.Description>{draft?.event_key}</Drawer.Description>
           </Drawer.Header>
-          <Drawer.Body className="overflow-y-auto">
+          <Drawer.Body className="overflow-y-auto px-4 sm:px-6 py-4">
             {draft ? (
               <div className="flex flex-col gap-5 py-2">
                 <Field label="Title">
@@ -635,7 +637,7 @@ const NotificationCenterAdminPage = () => {
               </div>
             ) : null}
           </Drawer.Body>
-          <Drawer.Footer>
+          <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base bg-slate-50/50">
             <div className="flex w-full items-center justify-between gap-3">
               <Button
                 variant="secondary"

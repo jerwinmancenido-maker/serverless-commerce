@@ -81,7 +81,7 @@ export const RuleCreateDrawer: React.FC<RuleCreateDrawerProps> = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="overflow-y-auto max-w-lg">
+      <Drawer.Content className="w-full sm:max-w-lg h-dvh sm:h-full flex flex-col justify-between overflow-y-auto">
         <Drawer.Header>
           <div className="flex items-center gap-2">
             <div className="flex size-7 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700">
@@ -215,7 +215,7 @@ export const RuleCreateDrawer: React.FC<RuleCreateDrawerProps> = ({
             )}
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 border-t border-slate-100 pt-4">
+          <div className="mt-4 flex items-center justify-end gap-2 border-t border-slate-100 pt-4 pb-[env(safe-area-inset-bottom,1rem)]">
             <Button
               type="button"
               variant="secondary"

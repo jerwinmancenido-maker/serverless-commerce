@@ -36,7 +36,7 @@ export const AdminSubNavPills = ({
   return (
     <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 ${className}`}>
       {/* Segmented Pill Container */}
-      <div className="flex flex-wrap items-center gap-1.5 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60 text-xs font-medium">
+      <div className="flex overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap items-center gap-1.5 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60 text-xs font-medium shrink-0 max-w-full">
         {items.map((item, idx) => {
           const isActive = item.active || (activeId && item.id === activeId)
 
@@ -46,7 +46,7 @@ export const AdminSubNavPills = ({
                 key={item.id || idx}
                 type="button"
                 onClick={item.onClick}
-                className="h-7 px-3 flex items-center gap-1.5 bg-white text-blue-700 font-semibold rounded-lg shadow-xs border border-blue-200/60 select-none cursor-default"
+                className="h-7 px-3 flex items-center gap-1.5 bg-white text-blue-700 font-semibold rounded-lg shadow-xs border border-blue-200/60 select-none cursor-default whitespace-nowrap shrink-0"
               >
                 {item.dot !== false && <span className="size-1.5 rounded-full bg-blue-600 animate-pulse" />}
                 <span>{item.label}</span>
@@ -71,7 +71,7 @@ export const AdminSubNavPills = ({
                 asChild
                 variant="transparent"
                 size="small"
-                className="h-7 px-3 text-slate-600 hover:text-slate-900 font-medium transition-colors"
+                className="h-7 px-3 text-slate-600 hover:text-slate-900 font-medium transition-colors whitespace-nowrap shrink-0"
               >
                 <Link to={cleanHref}>
                   <span>{item.label}</span>
@@ -90,7 +90,7 @@ export const AdminSubNavPills = ({
               key={item.id || idx}
               type="button"
               onClick={item.onClick}
-              className="h-7 px-3 flex items-center gap-1.5 text-slate-600 hover:text-slate-900 font-medium transition-colors cursor-pointer rounded-lg hover:bg-slate-200/50"
+              className="h-7 px-3 flex items-center gap-1.5 text-slate-600 hover:text-slate-900 font-medium transition-colors cursor-pointer rounded-lg hover:bg-slate-200/50 whitespace-nowrap shrink-0"
             >
               <span>{item.label}</span>
               {typeof item.count === "number" && (

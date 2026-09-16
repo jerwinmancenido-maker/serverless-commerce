@@ -73,3 +73,28 @@ export type ClassificationMappingListResponse = {
   limit: number
   offset: number
 }
+
+export type CompoundFormat = {
+  id: string
+  key: string
+  name: string
+  description: string | null
+  status: "active" | "archived"
+  created_at?: string
+  updated_at?: string
+}
+
+export type CompoundFormatListResponse = {
+  formats: CompoundFormat[]
+  count: number
+  limit: number
+  offset: number
+}
+
+export type CreateCompoundFormatResponse = {
+  format: CompoundFormat
+}
+
+export type UpdateCompoundFormatResponse = {
+  format: CompoundFormat
+}

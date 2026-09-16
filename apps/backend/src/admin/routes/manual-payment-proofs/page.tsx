@@ -12,6 +12,7 @@ import {
   CreditCard,
   CurrencyDollar,
   DocumentText,
+  ChevronRight,
   MagnifyingGlass,
   ShieldCheck,
   Sparkles,
@@ -102,7 +103,7 @@ export const ManualPaymentProofsPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 p-6 w-full min-h-screen">
+    <div className="flex flex-col gap-y-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       {/* 1. Header & Eyebrow */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -283,19 +284,18 @@ export const ManualPaymentProofsPage: React.FC = () => {
                     </span>
                   </div>
                 }
-                actions={
+                onClick={() => {
+                  setSelectedProof(proof)
+                  setDrawerOpen(true)
+                }}
+                statusPill={
                   <div className="flex items-center gap-2">
-                    <Button
-                      size="small"
-                      variant={isPending ? "primary" : "secondary"}
-                      className="h-7 px-2.5 text-xs font-semibold"
-                      onClick={() => {
-                        setSelectedProof(proof)
-                        setDrawerOpen(true)
-                      }}
-                    >
+                    <span className={`text-[11px] font-semibold ${isPending ? "text-amber-600" : "text-slate-500"}`}>
                       {isPending ? "Review Proof" : "Inspect"}
-                    </Button>
+                    </span>
+                    <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all">
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
                   </div>
                 }
               />
@@ -313,7 +313,7 @@ export const ManualPaymentProofsPage: React.FC = () => {
           icon={<ShieldCheck className="size-4 text-emerald-600" />}
           statusBadge="Settlement Active"
           statusVariant="emerald"
-          description="Merchant banking and QR payment references undergo dual verification before order fulfillment dispatches sterile cold-chain vials."
+          description="Merchant banking and QR payment references undergo dual verification before order fulfillment dispatches sterile reference standard vials."
           actionLabel="View Orders Cockpit"
           actionHref="/orders-cockpit"
         >

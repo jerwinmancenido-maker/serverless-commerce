@@ -199,13 +199,13 @@ export const EditPresentationDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="w-full sm:max-w-lg h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header>
           <Drawer.Title>
             {item?.current_revision?.snapshot.label || "Edit configuration"}
           </Drawer.Title>
         </Drawer.Header>
-        <Drawer.Body className="flex flex-col gap-y-5 overflow-auto p-4">
+        <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
           <Text size="small" leading="compact" className="text-ui-fg-subtle">
             Saving creates an immutable draft revision. Activating, disabling,
             blocking, or archiving is a separate explicit action.
@@ -336,7 +336,7 @@ export const EditPresentationDrawer = ({
             </Text>
           ) : null}
         </Drawer.Body>
-        <Drawer.Footer>
+        <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base">
           <div className="flex w-full items-center justify-end gap-x-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary" disabled={pending}>

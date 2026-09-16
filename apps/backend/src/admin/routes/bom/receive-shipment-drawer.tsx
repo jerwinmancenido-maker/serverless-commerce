@@ -148,8 +148,8 @@ export function ReceiveShipmentDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="max-w-[560px]">
-        <form className="flex h-full flex-col" onSubmit={handleSubmit}>
+      <Drawer.Content className="w-full sm:max-w-[560px] h-dvh sm:h-full flex flex-col justify-between">
+        <form className="flex h-full flex-col justify-between" onSubmit={handleSubmit}>
           <Drawer.Header className="border-b border-ui-border-base pb-4">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -177,7 +177,7 @@ export function ReceiveShipmentDrawer({
             </Drawer.Description>
           </Drawer.Header>
 
-          <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-6">
+          <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
             {/* Receiving Mode & Packaging Math */}
             <div className="rounded-xl border border-ui-border-base bg-ui-bg-subtle/50 p-4">
               <div className="flex items-center justify-between">
@@ -343,7 +343,7 @@ export function ReceiveShipmentDrawer({
             </div>
           </Drawer.Body>
 
-          <Drawer.Footer className="border-t border-ui-border-base p-4">
+          <Drawer.Footer className="border-t border-ui-border-base px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] flex items-center justify-end gap-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary" type="button">
                 Cancel

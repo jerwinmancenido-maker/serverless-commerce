@@ -9,7 +9,7 @@
 import { Navigate } from "react-router-dom"
 
 const LegacyProductResearchProtocolsRedirect = () => (
-  <Navigate to="/app/research-protocols" replace />
+  <Navigate to="/research-protocols" replace />
 )
 
 export default LegacyProductResearchProtocolsRedirect

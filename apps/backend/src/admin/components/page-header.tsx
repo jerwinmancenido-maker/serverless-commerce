@@ -92,7 +92,7 @@ export const PageHeader = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2.5 min-w-0">
           {typeof title === "string" ? (
-            <Heading level="h1" className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
+            <Heading level="h1" className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight break-words sm:truncate">
               {title}
             </Heading>
           ) : (
@@ -102,7 +102,7 @@ export const PageHeader = ({
           {statusDropdown}
         </div>
 
-        {actions && <div className="flex flex-wrap items-center gap-2 shrink-0">{actions}</div>}
+        {actions && <div className="flex flex-wrap items-center gap-2 shrink-0 w-full sm:w-auto">{actions}</div>}
       </div>
 
       {/* Subtitle */}

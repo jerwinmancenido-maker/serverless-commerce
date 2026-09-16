@@ -159,8 +159,8 @@ export const InventoryAdjustDrawer: React.FC<InventoryAdjustDrawerProps> = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content className="w-full sm:max-w-[540px]">
-        <form className="flex h-full flex-col" onSubmit={handleSubmit}>
+      <Drawer.Content className="w-full sm:max-w-[540px] h-dvh sm:h-full flex flex-col justify-between">
+        <form className="flex h-full flex-col justify-between" onSubmit={handleSubmit}>
           {/* Header */}
           <Drawer.Header className="border-b border-slate-200/80 pb-4">
             <div className="flex items-center justify-between gap-2">
@@ -373,7 +373,7 @@ export const InventoryAdjustDrawer: React.FC<InventoryAdjustDrawerProps> = ({
           </Drawer.Body>
 
           {/* Footer */}
-          <Drawer.Footer className="border-t border-slate-200/80 p-4">
+          <Drawer.Footer className="border-t border-slate-200/80 px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] flex items-center justify-end gap-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary" type="button">
                 Cancel

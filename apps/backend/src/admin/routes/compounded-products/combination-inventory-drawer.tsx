@@ -695,7 +695,7 @@ export const CombinationInventoryDrawer = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
+      <Drawer.Content className="w-full sm:max-w-2xl h-dvh sm:h-full flex flex-col justify-between">
         <Drawer.Header>
           <Drawer.Title>
             Inventory contents — {row?.title || "Combination"}
@@ -705,7 +705,7 @@ export const CombinationInventoryDrawer = ({
             this combination.
           </Drawer.Description>
         </Drawer.Header>
-        <Drawer.Body className="flex flex-col gap-y-5 overflow-auto p-4">
+        <Drawer.Body className="flex flex-1 flex-col gap-y-5 overflow-y-auto p-4 sm:p-6">
           {target ? (
             <div className="rounded-lg border border-ui-border-base bg-ui-bg-subtle p-3">
               <div className="mb-3 flex items-start justify-between gap-3">
@@ -1233,7 +1233,7 @@ export const CombinationInventoryDrawer = ({
             </>
           )}
         </Drawer.Body>
-        <Drawer.Footer>
+        <Drawer.Footer className="px-4 sm:px-6 py-3 sm:py-4 pb-[env(safe-area-inset-bottom,1rem)] border-t border-ui-border-base flex items-center justify-end gap-2">
           <Drawer.Close asChild>
             <Button size="small" variant="secondary">
               Cancel

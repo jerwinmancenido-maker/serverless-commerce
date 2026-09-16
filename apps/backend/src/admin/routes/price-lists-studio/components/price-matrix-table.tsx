@@ -13,6 +13,9 @@ import { PriceOverrideItem } from "../types"
 interface PriceMatrixTableProps {
   prices: PriceOverrideItem[]
   onUpdatePrice: (variantId: string, customPrice: number) => void
+  onUpdateDiscount?: (variantId: string, percentage: number) => void
+  onSwitchVariant?: (oldVariantId: string, newVariantId: string) => void
+  availableProducts?: any[]
   onRemoveItem: (variantId: string) => void
   onBulkDiscount: (percentage: number) => void
   onResetAll: () => void
@@ -22,6 +25,9 @@ interface PriceMatrixTableProps {
 export const PriceMatrixTable: React.FC<PriceMatrixTableProps> = ({
   prices,
   onUpdatePrice,
+  onUpdateDiscount,
+  onSwitchVariant,
+  availableProducts = [],
   onRemoveItem,
   onBulkDiscount,
   onResetAll,
@@ -138,9 +144,22 @@ export const PriceMatrixTable: React.FC<PriceMatrixTableProps> = ({
             <thead className="bg-slate-50/75 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
               <tr>
                 <th className="py-3 px-4">Compound / SKU</th>
-                <th className="py-3 px-4">Standard Retail</th>
-                <th className="py-3 px-4">New Override Price (₱)</th>
-                <th className="py-3 px-4">Discount</th>
+                <th className="py-3 px-4">
+                  <span>Standard Retail</span>
+                  <span className="ml-1.5 text-[9px] font-semibold text-slate-400 lowercase">(catalog)</span>
+                </th>
+                <th className="py-3 px-4">
+                  <span>New Override Price (₱)</span>
+                  <span className="ml-1.5 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">
+                    Editable
+                  </span>
+                </th>
+                <th className="py-3 px-4">
+                  <span>Discount</span>
+                  <span className="ml-1.5 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">
+                    Editable %
+                  </span>
+                </th>
                 <th className="py-3 px-4">Gross Margin</th>
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
@@ -153,14 +172,35 @@ export const PriceMatrixTable: React.FC<PriceMatrixTableProps> = ({
                 const grossMarginPct = item.customPrice > 0 ? (grossProfit / item.customPrice) * 100 : 0
                 const isMarginProtected = grossMarginPct >= 35
 
+                const parentProduct = availableProducts.find((p) => p.id === item.productId)
+                const otherVariants = parentProduct?.variants || []
+
                 return (
                   <tr key={item.variantId} className="hover:bg-slate-50/50 transition-colors">
-                    {/* Compound Name */}
+                    {/* Compound Name & Variant Switcher */}
                     <td className="py-3 px-4">
                       <div className="font-semibold text-slate-900">{item.productTitle}</div>
-                      <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
-                        <span className="font-medium text-slate-600">{item.variantTitle}</span>
-                        {item.sku && <span>• SKU: {item.sku}</span>}
+                      <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-1">
+                        {otherVariants.length > 1 && onSwitchVariant ? (
+                          <div className="flex items-center gap-1">
+                            <span className="text-slate-400 text-[10px]">Variant:</span>
+                            <select
+                              value={item.variantId}
+                              onChange={(e) => onSwitchVariant(item.variantId, e.target.value)}
+                              className="text-[11px] font-semibold text-blue-700 bg-blue-50/80 hover:bg-blue-100/80 border border-blue-200 rounded px-2 py-0.5 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer transition-colors"
+                              title="Switch variant for this compound"
+                            >
+                              {otherVariants.map((v: any) => (
+                                <option key={v.id} value={v.id}>
+                                  {v.title} {v.sku ? `(${v.sku})` : ""}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : (
+                          <span className="font-medium text-slate-600">{item.variantTitle}</span>
+                        )}
+                        {item.sku && <span className="text-slate-400">• SKU: {item.sku}</span>}
                       </div>
                     </td>
 
@@ -169,10 +209,10 @@ export const PriceMatrixTable: React.FC<PriceMatrixTableProps> = ({
                       ₱{item.defaultPrice.toLocaleString("en-PH", { minimumFractionDigits: 2 })}
                     </td>
 
-                    {/* New Custom Price Input */}
+                    {/* New Custom Price Input (Editable) */}
                     <td className="py-3 px-4">
-                      <div className="relative w-36">
-                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-xs">
+                      <div className="relative w-36 group">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs pointer-events-none group-focus-within:text-blue-600">
                           ₱
                         </span>
                         <input
@@ -180,38 +220,60 @@ export const PriceMatrixTable: React.FC<PriceMatrixTableProps> = ({
                           min="0"
                           step="10"
                           value={item.customPrice || ""}
+                          placeholder="0.00"
                           onChange={(e) => onUpdatePrice(item.variantId, parseFloat(e.target.value) || 0)}
-                          className={`w-full pl-6 pr-2 py-1.5 text-xs font-mono font-bold rounded-lg border ${
+                          className={`w-full pl-6 pr-2 py-1.5 text-xs font-mono font-bold rounded-lg border transition-all ${
                             isMarginProtected
-                              ? "border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-900"
-                              : "border-red-300 bg-red-50/30 text-red-900 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                              ? "border-slate-300 bg-white hover:border-blue-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 text-slate-900 shadow-2xs"
+                              : "border-red-300 bg-red-50/40 text-red-900 hover:border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100 shadow-2xs"
                           }`}
+                          title="Direct override price in Philippine Pesos"
                         />
                       </div>
                     </td>
 
-                    {/* Discount % */}
-                    <td className="py-3 px-4 font-mono">
-                      {discountPct > 0 ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                          -{discountPct.toFixed(1)}%
+                    {/* Discount % Input (Editable) */}
+                    <td className="py-3 px-4">
+                      <div className="relative w-28 group">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs pointer-events-none group-focus-within:text-amber-600">
+                          -
                         </span>
-                      ) : (
-                        <span className="text-slate-400">0%</span>
-                      )}
+                        <input
+                          type="number"
+                          min="0"
+                          max="99"
+                          step="0.5"
+                          placeholder="0"
+                          value={discountPct > 0 ? Number(discountPct.toFixed(1)) : ""}
+                          onChange={(e) => {
+                            const val = Math.min(99, Math.max(0, parseFloat(e.target.value) || 0))
+                            if (onUpdateDiscount) {
+                              onUpdateDiscount(item.variantId, val)
+                            } else {
+                              const factor = (100 - val) / 100
+                              onUpdatePrice(item.variantId, Math.round(item.defaultPrice * factor))
+                            }
+                          }}
+                          className="w-full pl-5 pr-5 py-1.5 text-xs font-mono font-bold rounded-lg border border-slate-300 bg-white hover:border-amber-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-100 text-slate-900 shadow-2xs transition-all"
+                          title="Direct discount percentage (auto-calculates custom price)"
+                        />
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs pointer-events-none">
+                          %
+                        </span>
+                      </div>
                     </td>
 
                     {/* Gross Margin % */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1.5">
                         {isMarginProtected ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <CheckCircle className="w-3 h-3" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
                             <span>{grossMarginPct.toFixed(1)}%</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
-                            <ExclamationCircle className="w-3 h-3" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
+                            <ExclamationCircle className="w-3.5 h-3.5 text-red-600" />
                             <span>{grossMarginPct.toFixed(1)}% (Floor Alert)</span>
                           </span>
                         )}
@@ -223,8 +285,8 @@ export const PriceMatrixTable: React.FC<PriceMatrixTableProps> = ({
                       <button
                         type="button"
                         onClick={() => onRemoveItem(item.variantId)}
-                        className="p-1 text-slate-400 hover:text-red-600 rounded hover:bg-red-50 transition-all"
-                        title="Remove Variant"
+                        className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-all cursor-pointer"
+                        title="Remove Variant from Price List"
                       >
                         <Trash className="w-4 h-4" />
                       </button>

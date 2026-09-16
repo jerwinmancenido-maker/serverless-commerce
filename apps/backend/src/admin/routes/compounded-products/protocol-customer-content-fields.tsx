@@ -203,7 +203,7 @@ export const ProtocolCustomerContentFields = ({ value, onChange, disabled = fals
             <Input
               value={content.storage_details?.lyophilized || ""}
               disabled={disabled}
-              placeholder="e.g. -20°C (desiccated, stable 24 months)"
+              placeholder="e.g. 20°C–25°C (ambient desiccated, stable 24 months)"
               onChange={(e) => update({
                 storage_details: {
                   lyophilized: e.target.value || null,

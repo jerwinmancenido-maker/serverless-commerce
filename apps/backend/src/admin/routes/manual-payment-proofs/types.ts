@@ -46,8 +46,31 @@ export type ManualPaymentProofListResponse = {
   offset: number
 }
 
+export type ManualPaymentProofLinkedOrder = {
+  id: string
+  display_id: number
+  total: number
+  status: string
+  currency_code: string
+  created_at: string
+  customer?: {
+    id: string
+    first_name: string | null
+    last_name: string | null
+    email: string
+    phone: string | null
+  } | null
+  items?: Array<{
+    id: string
+    title: string
+    quantity: number
+    unit_price: number
+  }>
+} | null
+
 export type ManualPaymentProofDetailsResponse = {
   manual_payment_proof: ManualPaymentProof
+  order?: ManualPaymentProofLinkedOrder
   events: ManualPaymentProofEvent[]
   settlement?: {
     status: ManualPaymentSettlementStatus

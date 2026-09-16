@@ -27,12 +27,12 @@ export const CompoundingSubnav: React.FC<CompoundingSubnavProps> = ({
     {
       id: "catalog",
       label: "Master Catalog",
-      href: "/compound-catalog",
+      href: "/products-registry",
       active: activeTab === "catalog",
     },
     {
       id: "governance",
-      label: "Quality Governance",
+      label: "Product Builder",
       href: "/compounded-products",
       active: activeTab === "governance",
     },
@@ -45,7 +45,7 @@ export const CompoundingSubnav: React.FC<CompoundingSubnavProps> = ({
     {
       id: "bom",
       label: "Bill of Materials (BOM)",
-      href: "/bom",
+      href: "/buildable-products",
       active: activeTab === "bom",
     },
   ]

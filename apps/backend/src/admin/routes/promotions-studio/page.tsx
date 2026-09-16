@@ -9,7 +9,7 @@
 
 import React, { useState, useEffect, useCallback } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, CheckCircle, Sparkles } from "@medusajs/icons"
+import { ArrowLeft, CheckCircle, InformationCircleSolid, Sparkles } from "@medusajs/icons"
 import { toast } from "@medusajs/ui"
 
 import { PromotionStudioState, ClinicalPreset } from "./types"
@@ -119,7 +119,7 @@ export const PromotionsStudioPage: React.FC = () => {
   const handleDiscard = () => {
     if (confirm("Are you sure you want to discard this promotion? Unsaved changes will be cleared.")) {
       clearDraft()
-      navigate("/app/promotions")
+      navigate("/promotions")
     }
   }
 
@@ -159,7 +159,7 @@ export const PromotionsStudioPage: React.FC = () => {
         clearDraft()
       }
 
-      navigate("/app/promotions")
+      navigate("/promotions")
     } catch (err: any) {
       console.error("Failed to save promotion:", err)
       const msg = err?.message || err?.toString() || "Server validation error."
@@ -188,12 +188,12 @@ export const PromotionsStudioPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-24">
       {/* ── TOP STUDIO NAVIGATION BAR ── */}
-      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-6 py-3.5">
+      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3.5 sm:px-6 py-3">
         <div className="w-full flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => navigate("/app/promotions")}
+              onClick={() => navigate("/promotions")}
               className="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition-colors cursor-pointer"
               title="Return to Promotions List"
             >
@@ -242,10 +242,11 @@ export const PromotionsStudioPage: React.FC = () => {
 
       {/* ── RESTORED DRAFT BANNER ── */}
       {!isEditMode && draftRestored && (
-        <div className="w-full px-6 pt-4">
+        <div className="w-full px-3.5 sm:px-6 pt-4">
           <div className="bg-blue-50/80 border border-blue-200 text-blue-900 text-xs px-4 py-2.5 rounded-xl flex items-center justify-between">
-            <span>
-              ℹ️ We automatically restored your unsaved promotion draft from your previous session.
+            <span className="flex items-center gap-1.5">
+              <InformationCircleSolid className="size-4 text-blue-600 shrink-0" />
+              <span>We automatically restored your unsaved promotion draft from your previous session.</span>
             </span>
             <button
               type="button"
@@ -262,7 +263,7 @@ export const PromotionsStudioPage: React.FC = () => {
       )}
 
       {/* ── MAIN STUDIO WORKSPACE ── */}
-      <div className="px-6 pt-6 flex flex-col gap-6 w-full">
+      <div className="px-3.5 sm:px-6 pt-4 pb-12 flex flex-col gap-6 w-full">
         {/* 1-Click Clinical Presets */}
         {!isEditMode && (
           <PresetPills onSelectPreset={handleSelectPreset} activeCode={formState.code} />

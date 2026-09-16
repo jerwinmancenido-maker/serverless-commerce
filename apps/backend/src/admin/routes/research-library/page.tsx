@@ -12,6 +12,7 @@ import { defineRouteConfig } from "@medusajs/admin-sdk"
 import {
   ArrowUpRightOnBox,
   BookOpen,
+  ChevronRight,
   DocumentText,
   MagnifyingGlass,
   Plus,
@@ -179,7 +180,7 @@ export const ResearchLibraryPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
+    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-3.5 sm:px-6 w-full min-h-screen">
       {/* 1. Header with Eyebrow, Badges, and Dynamic Create Action */}
       <PageHeader
         eyebrowText="Scientific Monograph &amp; Educational Knowledge Engine"
@@ -265,7 +266,7 @@ export const ResearchLibraryPage = () => {
 
       {/* 4. Single-Row Tab Bar Strip with Inline Search */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
           {[
             { id: "articles", label: "Articles", count: articles.length },
             { id: "comparisons", label: "Comparisons", count: comparisons.length },
@@ -324,6 +325,10 @@ export const ResearchLibraryPage = () => {
             articles.map((art: any) => (
               <AdminListRowCard
                 key={art.id}
+                onClick={() => {
+                  setSelectedArticle(art)
+                  setIsAuthoringArticle(true)
+                }}
                 icon={<DocumentText className="size-4 text-blue-600" />}
                 title={art.title}
                 subtitle={`${art.category || "Research"} · ${art.reading_time || "5 min"} · Reviewed by ${art.reviewed_by || "Staff"}`}
@@ -334,10 +339,12 @@ export const ResearchLibraryPage = () => {
                 }
                 value={art.compound_tag}
                 secondaryValue={art.slug}
-                onEdit={() => {
-                  setSelectedArticle(art)
-                  setIsAuthoringArticle(true)
-                }}
+                statusPill={
+                  <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-700 group-hover:border-slate-300 group-hover:bg-slate-100 transition-colors">
+                    <span>Edit Monograph</span>
+                    <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-slate-700" />
+                  </span>
+                }
                 onDelete={() => promptDelete(art.id, art.title, "/admin/research-articles")}
                 href={`http://localhost:8000/ph/research-library/${art.slug}`}
               />
@@ -359,6 +366,10 @@ export const ResearchLibraryPage = () => {
             comparisons.map((comp: any) => (
               <AdminListRowCard
                 key={comp.id}
+                onClick={() => {
+                  setSelectedComparison(comp)
+                  setComparisonDrawerOpen(true)
+                }}
                 icon={<Sparkles className="size-4 text-purple-600" />}
                 title={comp.title}
                 subtitle={`${comp.compound_a?.name || "A"} vs ${comp.compound_b?.name || "B"} · ${comp.category || "General"}`}
@@ -369,10 +380,12 @@ export const ResearchLibraryPage = () => {
                 }
                 value="Verdict"
                 secondaryValue={comp.synergy_verdict || "Synergistic"}
-                onEdit={() => {
-                  setSelectedComparison(comp)
-                  setComparisonDrawerOpen(true)
-                }}
+                statusPill={
+                  <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-700 group-hover:border-slate-300 group-hover:bg-slate-100 transition-colors">
+                    <span>Edit Matrix</span>
+                    <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-slate-700" />
+                  </span>
+                }
                 onDelete={() => promptDelete(comp.id, comp.title, "/admin/peptide-comparisons")}
                 href={`http://localhost:8000/ph/comparisons/${comp.slug}`}
               />
@@ -396,6 +409,10 @@ export const ResearchLibraryPage = () => {
               {glossary.map((item: any) => (
                 <AdminListRowCard
                   key={item.id || item.term}
+                  onClick={() => {
+                    setSelectedEducational(item)
+                    setEducationalDrawerOpen(true)
+                  }}
                   icon={<BookOpen className="size-4 text-emerald-600" />}
                   title={item.term}
                   subtitle={item.definition}
@@ -405,10 +422,12 @@ export const ResearchLibraryPage = () => {
                     </Badge>
                   }
                   value={item.relatedCompounds?.length ? `${item.relatedCompounds.length} compounds` : undefined}
-                  onEdit={() => {
-                    setSelectedEducational(item)
-                    setEducationalDrawerOpen(true)
-                  }}
+                  statusPill={
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-700 group-hover:border-slate-300 group-hover:bg-slate-100 transition-colors">
+                      <span>Edit Term</span>
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-slate-700" />
+                    </span>
+                  }
                   onDelete={() =>
                     promptDelete(
                       item.id || item.term.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
@@ -423,6 +442,10 @@ export const ResearchLibraryPage = () => {
               {faqs.map((faq: any) => (
                 <AdminListRowCard
                   key={faq.id || faq.question}
+                  onClick={() => {
+                    setSelectedEducational(faq)
+                    setEducationalDrawerOpen(true)
+                  }}
                   icon={<BookOpen className="size-4 text-amber-600" />}
                   title={faq.question}
                   subtitle={faq.answer}
@@ -431,10 +454,12 @@ export const ResearchLibraryPage = () => {
                       FAQ · {faq.category || "General"}
                     </Badge>
                   }
-                  onEdit={() => {
-                    setSelectedEducational(faq)
-                    setEducationalDrawerOpen(true)
-                  }}
+                  statusPill={
+                    <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-700 group-hover:border-slate-300 group-hover:bg-slate-100 transition-colors">
+                      <span>Edit FAQ</span>
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-slate-700" />
+                    </span>
+                  }
                   onDelete={() =>
                     promptDelete(faq.id || faq.question, faq.question, "/admin/educational-content")
                   }
@@ -458,6 +483,10 @@ export const ResearchLibraryPage = () => {
             stackRules.map((rule: any) => (
               <AdminListRowCard
                 key={rule.id || `${rule.compound_a}_${rule.compound_b}`}
+                onClick={() => {
+                  setSelectedStack(rule)
+                  setStackDrawerOpen(true)
+                }}
                 icon={<Bolt className="size-4 text-amber-600" />}
                 title={rule.title}
                 subtitle={`${rule.compound_a?.toUpperCase()} + ${rule.compound_b?.toUpperCase()} · ${rule.mechanismSummary}`}
@@ -478,10 +507,12 @@ export const ResearchLibraryPage = () => {
                 }
                 value={`Score ${rule.score || rule.synergyScore || 90}/100`}
                 secondaryValue={rule.timingProtocol}
-                onEdit={() => {
-                  setSelectedStack(rule)
-                  setStackDrawerOpen(true)
-                }}
+                statusPill={
+                  <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-700 group-hover:border-slate-300 group-hover:bg-slate-100 transition-colors">
+                    <span>Edit Rule</span>
+                    <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-slate-700" />
+                  </span>
+                }
                 onDelete={() =>
                   promptDelete(
                     rule.id || `${rule.compound_a}_${rule.compound_b}`,

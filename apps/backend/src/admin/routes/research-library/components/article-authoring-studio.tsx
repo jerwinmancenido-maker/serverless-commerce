@@ -61,7 +61,7 @@ const BLANK_STATE: ArticleFormState = {
   category: "Cellular Longevity & Senescence",
   compound_tag: "BPC-157",
   reading_time: "8 min read",
-  reviewed_by: "Medical Advisory Board (Dr. M. Chen, MD, PhD)",
+  reviewed_by: "Analytical Chemistry & Quality Assurance Review",
   status: "draft",
   abstract: "",
   citations: "",
