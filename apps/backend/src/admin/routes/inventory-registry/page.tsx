@@ -13,6 +13,7 @@ import {
   ArrowUpRightOnBox,
   Buildings,
   CheckCircle,
+  ChevronRight,
   Component,
   ExclamationCircle,
   MagnifyingGlass,
@@ -20,7 +21,7 @@ import {
   SquaresPlus,
   Tag,
 } from "@medusajs/icons"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Select, Text } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
 import React, { useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -34,6 +35,7 @@ import { AdminSuiteCard } from "../../components/ui/admin-suite-card"
 import { AdminTelemetryNotice } from "../../components/ui/admin-telemetry-notice"
 import { SovereignEmptyState } from "../../components/ui/sovereign-empty-state"
 import { SovereignPageSkeleton } from "../../components/ui/sovereign-page-skeleton"
+import { InventoryAdjustDrawer } from "../../components/inventory/inventory-adjust-drawer"
 import type { BuildableProductsResponse } from "../bom/types"
 
 type InventoryItemRow = {
@@ -56,8 +58,11 @@ type InventoryItemRow = {
 
 export const InventoryRegistryPage: React.FC = () => {
   const navigate = useNavigate()
-  const [activeFilter, setActiveFilter] = useState<"all" | "in_stock" | "constrained" | "cryo">("all")
+  const [activeFilter, setActiveFilter] = useState<"all" | "in_stock" | "constrained" | "controlled">("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [selectedLocationId, setSelectedLocationId] = useState<string>("")
+  const [selectedAdjustItem, setSelectedAdjustItem] = useState<InventoryItemRow | null>(null)
+  const [adjustDrawerOpen, setAdjustDrawerOpen] = useState(false)
 
   // 1. Fetch live inventory items
   const inventoryQuery = useQuery({
@@ -72,13 +77,26 @@ export const InventoryRegistryPage: React.FC = () => {
     refetchInterval: 30_000,
   })
 
-  // 2. Fetch BOM buildable report for cross-referencing
+  // 2. Fetch Stock Locations
+  const locationsQuery = useQuery({
+    queryKey: ["admin-inventory-registry-locations"],
+    queryFn: () => sdk.admin.stockLocation.list({ limit: 100 }),
+  })
+  const locations = useMemo(
+    () => (locationsQuery.data?.stock_locations || []).map((l) => ({ id: l.id, name: l.name })),
+    [locationsQuery.data?.stock_locations],
+  )
+  const primaryLocationId = locations[0]?.id
+  const activeLocationId = selectedLocationId || primaryLocationId
+
+  // 3. Fetch BOM buildable report for cross-referencing
   const buildableReportQuery = useQuery({
-    queryKey: ["admin-inventory-registry-buildable"],
+    queryKey: ["admin-inventory-registry-buildable", activeLocationId],
     queryFn: () =>
       sdk.client.fetch<BuildableProductsResponse>("/admin/bom/buildable-products", {
-        query: { limit: 100 },
+        query: { limit: 100, location_id: activeLocationId! },
       }),
+    enabled: Boolean(activeLocationId),
     staleTime: 60_000,
   })
 
@@ -94,7 +112,7 @@ export const InventoryRegistryPage: React.FC = () => {
   const constrainedCount = buildableProducts.filter(
     (p) => p.recipe_status === "configured" && (p.calculated_stock ?? 0) === 0,
   ).length
-  const cryoCount = items.filter((item) => {
+  const controlledCount = items.filter((item) => {
     const isVial = (item.title || "").toLowerCase().includes("vial")
     const isBac = (item.title || "").toLowerCase().includes("bac")
     return isVial && !isBac
@@ -110,11 +128,11 @@ export const InventoryRegistryPage: React.FC = () => {
 
       if (activeFilter === "in_stock" && totalStock <= 0) return false
       if (activeFilter === "constrained" && totalStock > 0) return false
-      if (activeFilter === "cryo") {
-        const isCryo =
+      if (activeFilter === "controlled") {
+        const isControlled =
           (item.title || "").toLowerCase().includes("vial") &&
           !(item.title || "").toLowerCase().includes("bac")
-        if (!isCryo) return false
+        if (!isControlled) return false
       }
 
       if (searchQuery.trim()) {
@@ -215,9 +233,9 @@ export const InventoryRegistryPage: React.FC = () => {
           status={constrainedCount > 0 ? "warning" : "healthy"}
         />
         <AdminMetricCard
-          label="Cold-Chain Regulated"
-          value={cryoCount || 43}
-          subtext="Cryo storage required (-20°C)"
+          label="Controlled Storage"
+          value={controlledCount || 43}
+          subtext="20°C–25°C Ambient Desiccated"
           icon={<ArchiveBox className="size-4" />}
           variant="purple"
           status="healthy"
@@ -250,25 +268,48 @@ export const InventoryRegistryPage: React.FC = () => {
               onClick: () => setActiveFilter("constrained"),
             },
             {
-              id: "cryo",
-              label: "Cold-Chain Regulated",
-              active: activeFilter === "cryo",
-              count: cryoCount,
-              onClick: () => setActiveFilter("cryo"),
+              id: "controlled",
+              label: "Controlled Storage",
+              active: activeFilter === "controlled",
+              count: controlledCount,
+              onClick: () => setActiveFilter("controlled"),
             },
           ]}
         />
 
-        {/* Inline Search */}
-        <div className="relative w-full sm:w-72">
-          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400" />
-          <Input
-            type="search"
-            placeholder="Search peptide title or SKU..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-8 text-xs bg-white border-slate-200/80 rounded-lg shadow-2xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
+        {/* Location selector (when multiple locations exist) + Inline Search */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          {locations.length > 1 && (
+            <div className="w-48">
+              <Select
+                size="small"
+                value={activeLocationId || ""}
+                onValueChange={(val) => setSelectedLocationId(val)}
+              >
+                <Select.Trigger className="h-8 text-xs bg-white border-slate-200/80 rounded-lg shadow-2xs">
+                  <Select.Value placeholder="Select Location" />
+                </Select.Trigger>
+                <Select.Content>
+                  {locations.map((loc) => (
+                    <Select.Item key={loc.id} value={loc.id} className="text-xs">
+                      {loc.name}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
+            </div>
+          )}
+
+          <div className="relative w-full sm:w-72">
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400" />
+            <Input
+              type="search"
+              placeholder="Search peptide title or SKU..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 h-8 text-xs bg-white border-slate-200/80 rounded-lg shadow-2xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
         </div>
       </div>
 
@@ -295,23 +336,32 @@ export const InventoryRegistryPage: React.FC = () => {
               (sum, lvl) => sum + (lvl.reserved_quantity || 0),
               0,
             )
-            const isCryo =
+            const isControlled =
               (item.title || "").toLowerCase().includes("vial") &&
               !(item.title || "").toLowerCase().includes("bac")
 
             return (
               <AdminListRowCard
                 key={item.id}
-                icon={isCryo ? <ArchiveBox className="size-4 text-purple-600" /> : <Tag className="size-4 text-slate-600" />}
-                title={item.title || "Untitled Compound"}
+                className="cursor-pointer group-hover:border-slate-300 group-hover:shadow-xs transition-all group"
+                onClick={() => {
+                  setSelectedAdjustItem(item)
+                  setAdjustDrawerOpen(true)
+                }}
+                icon={isControlled ? <ArchiveBox className="size-4 text-purple-600" /> : <Tag className="size-4 text-slate-600" />}
+                title={
+                  <span className="group-hover:text-blue-600 transition-colors">
+                    {item.title || "Untitled Compound"}
+                  </span>
+                }
                 subtitle={
                   <span className="flex items-center gap-1.5 flex-wrap">
                     <span className="font-mono text-slate-600 text-[11px]">{item.sku || "NO-SKU"}</span>
-                    {isCryo && (
+                    {isControlled && (
                       <>
                         <span className="text-slate-300">·</span>
                         <span className="text-purple-600 font-semibold text-[10px] bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200">
-                          -20°C Cryo Storage
+                          20°C–25°C Ambient Desiccated
                         </span>
                       </>
                     )}
@@ -335,25 +385,29 @@ export const InventoryRegistryPage: React.FC = () => {
                     )}
                   </div>
                 }
+                statusPill={
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] font-semibold text-slate-500 group-hover:text-blue-600 transition-colors hidden sm:inline">
+                      Adjust Stock
+                    </span>
+                    <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all ml-1">
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                }
                 actions={
                   <div className="flex items-center gap-2">
                     <Button
                       size="small"
                       variant="secondary"
                       className="h-7 px-2.5 text-xs font-semibold"
-                      onClick={() => navigate(`/buildable-products?q=${item.sku || ""}`)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/buildable-products?q=${item.sku || ""}`)
+                      }}
+                      title="Inspect BOM Recipe"
                     >
                       Recipe
-                    </Button>
-                    <Button
-                      asChild
-                      size="small"
-                      variant="secondary"
-                      className="h-7 px-2.5 text-xs font-semibold text-blue-600 hover:text-blue-700"
-                    >
-                      <Link to={`/inventory-studio`}>
-                        Adjust ↗
-                      </Link>
                     </Button>
                   </div>
                 }
@@ -372,7 +426,7 @@ export const InventoryRegistryPage: React.FC = () => {
           icon={<Component className="size-4 text-blue-600" />}
           statusBadge="Active Disaggregation"
           statusVariant="blue"
-          description="Constituent compound vials, diluents, and cold-chain shipping hardware are automatically deducted from stock when commercial presentation sets are purchased."
+          description="Constituent compound vials, diluents, and shipping supplies are automatically deducted from stock when commercial presentation sets are purchased."
           actionLabel="Inspect Buildable Stock Matrix"
           actionHref="/buildable-products"
         >
@@ -396,33 +450,41 @@ export const InventoryRegistryPage: React.FC = () => {
           </div>
         </AdminSuiteCard>
 
-        {/* Suite Card 2: Cold-Chain Temperature Control */}
+        {/* Suite Card 2: Controlled Storage Protocol */}
         <AdminSuiteCard
-          title="Cold-Chain Cryo Protocols"
+          title="Ambient Storage Protocols"
           eyebrow="Storage & Handling"
           icon={<ArchiveBox className="size-4 text-purple-600" />}
-          statusBadge="Cryo Chamber Locked"
+          statusBadge="Controlled Storage"
           statusVariant="purple"
-          description="Regulated temperature logs (-20°C freezer storage) maintained for lyophilized active ingredients. Sub-zero packaging protocols applied automatically at dispatch."
+          description="Ambient temperature logs maintained for solid lyophilized active ingredients. Standard padded packaging protocols applied automatically at dispatch."
           actionLabel="View Regulated SKUs"
-          actionHref="/inventory-registry?filter=cryo"
+          actionHref="/inventory-registry?filter=controlled"
         >
           <div className="flex flex-col gap-2 pt-1 text-xs">
             <div className="flex items-center justify-between py-1 border-b border-slate-100 text-slate-600">
-              <span>Freezer Target Temperature:</span>
-              <span className="font-mono font-bold text-purple-700">-20.0°C ± 1.5°C</span>
+              <span>Ambient Storage Target:</span>
+              <span className="font-mono font-bold text-purple-700">20°C – 25°C Desiccated</span>
             </div>
             <div className="flex items-center justify-between py-1 border-b border-slate-100 text-slate-600">
               <span>Carrier Pack Protocol:</span>
-              <span className="font-mono font-bold text-slate-900">Vacuum Insulated Cryo Gel</span>
+              <span className="font-mono font-bold text-slate-900">Padded Protective Mailer</span>
             </div>
             <div className="flex items-center justify-between py-1 text-slate-600">
-              <span>Total Cryo Units:</span>
-              <span className="font-mono font-bold text-slate-900">{cryoCount || 43} Items</span>
+              <span>Total Controlled Units:</span>
+              <span className="font-mono font-bold text-slate-900">{controlledCount || 43} Items</span>
             </div>
           </div>
         </AdminSuiteCard>
       </div>
+
+      <InventoryAdjustDrawer
+        open={adjustDrawerOpen}
+        onOpenChange={setAdjustDrawerOpen}
+        item={selectedAdjustItem}
+        locations={locations}
+        onSuccess={() => inventoryQuery.refetch()}
+      />
     </div>
   )
 }

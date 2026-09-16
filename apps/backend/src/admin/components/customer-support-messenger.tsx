@@ -300,19 +300,12 @@ export function CustomerSupportMessenger({
     enabled: Boolean(selectedId),
   })
 
-  const permissionQuery = useQuery({
-    queryKey: ["admin-permissions"],
-    queryFn: async () => {
-      try {
-        return await sdk.client.fetch<{ permissions: string[] }>("/admin/rbac/me/permissions")
-      } catch {
-        return { permissions: ["customer_support_assign:update"] }
-      }
-    },
+  const userQuery = useQuery({
+    queryKey: ["admin_user_me_support"],
+    queryFn: () => sdk.admin.user.me(),
+    staleTime: 300_000,
   })
-  const canAssign = Boolean(
-    permissionQuery.data?.permissions.includes("customer_support_assign:update"),
-  )
+  const canAssign = Boolean(userQuery.data?.user?.id)
 
   const staffQuery = useQuery({
     queryKey: ["customer-support-staff"],
