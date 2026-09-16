@@ -30,7 +30,7 @@ import {
 } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
 import React, { useMemo, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { PageHeader } from "../../components/page-header"
 import { AdminMetricCard } from "../../components/ui/admin-metric-card"
@@ -102,6 +102,7 @@ const readinessDetails = (protocol: ResearchProtocolSeries) => {
 }
 
 export const ResearchProtocolsPage = () => {
+  const navigate = useNavigate()
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [pageIndex, setPageIndex] = useState(0)
@@ -429,7 +430,8 @@ export const ResearchProtocolsPage = () => {
               return (
                 <AdminListRowCard
                   key={protocol.id}
-                  href={`/research-protocols/${protocol.id}`}
+                  onClick={() => navigate(`/research-protocols/${protocol.id}`)}
+                  className="group"
                   icon={icon}
                   title={protocolTitle}
                   subtitle={
@@ -469,29 +471,28 @@ export const ResearchProtocolsPage = () => {
                       Updated {new Date(protocol.revisions[0]?.updated_at || protocol.updated_at).toLocaleDateString("en-PH")}
                     </span>
                   }
+                  statusPill={
+                    <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all">
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  }
                   actions={
-                    <div className="flex items-center gap-1.5">
-                      <Button
-                        asChild
-                        size="small"
-                        variant="secondary"
-                        className="h-7 text-xs font-semibold px-2.5 text-blue-700 hover:text-blue-950 bg-blue-50/80 border-blue-200/90 hover:bg-blue-100/80 shadow-2xs"
-                      >
-                        <Link to={`/research-protocols/${protocol.id}`}>
-                          <PencilSquare className="size-3 mr-1" /> Edit
-                        </Link>
-                      </Button>
+                    <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
                       <Button
                         size="small"
                         variant="secondary"
-                        onClick={() => setPreviewProtocol(protocol)}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setPreviewProtocol(protocol)
+                        }}
                         className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white"
                       >
                         Customer Preview
                       </Button>
                       <Button asChild size="small" variant="secondary" className="h-7 text-xs font-semibold px-2 text-slate-600 hover:text-slate-900">
                         <Link to={`/research-protocols/${protocol.id}/preview`}>
-                          Preview <ArrowUpRightOnBox className="size-3 ml-1" />
+                          Monograph <ArrowUpRightOnBox className="size-3 ml-1" />
                         </Link>
                       </Button>
                     </div>
@@ -578,7 +579,7 @@ export const ResearchProtocolsPage = () => {
             </div>
             <div className="flex items-center gap-2 text-slate-700">
               <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />
-              <span>Cryogenic cold-chain handling (-20°C storage)</span>
+              <span>Protected desiccated ambient storage</span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
               <CheckCircleSolid className="size-3.5 text-emerald-600 shrink-0" />

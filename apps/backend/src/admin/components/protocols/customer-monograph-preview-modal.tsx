@@ -1,3 +1,11 @@
+/**
+ * @file    apps/backend/src/admin/components/protocols/customer-monograph-preview-modal.tsx
+ * @module  CustomerMonographPreviewModal (Research Protocols Component)
+ * @purpose Modal previewing published customer monographs with strict Non-FDA RUO compliance.
+ * @contracts
+ *   Component: CustomerMonographPreviewModal
+ */
+
 import { AdminBadge } from "../ui/admin-badge"
 import type { ResearchProtocolSeries } from "../../routes/compounded-products/research-protocol-types"
 
@@ -213,7 +221,7 @@ export const CustomerMonographPreviewModal = ({
             <span className="font-bold uppercase tracking-wider block mb-1">
               Regulatory Compliance &amp; Intended Use
             </span>
-            {content?.disclaimer || "For laboratory research use only. Not for human or veterinary administration, diagnosis, treatment, or consumption."}
+            {content?.disclaimer || "Strictly for in-vitro laboratory research and analytical calibration. Not for human, veterinary, diagnostic, or therapeutic consumption. Not evaluated or approved by the FDA."}
           </div>
         </div>
 
