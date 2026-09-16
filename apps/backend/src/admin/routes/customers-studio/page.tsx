@@ -390,7 +390,7 @@ export const CustomersStudioPage: React.FC = () => {
               Select the professional research domain for reference standard clearance and tier allocation.
             </p>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {/* Option 1: Institutional Lab */}
               <button
                 type="button"
@@ -664,7 +664,7 @@ export const CustomersStudioPage: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-500 mb-4">
-              Registered clinic or facility receiving address for courier parcel delivery.
+              Registered laboratory or institutional facility receiving address for courier parcel delivery.
             </p>
 
             <div className="grid grid-cols-2 gap-4">

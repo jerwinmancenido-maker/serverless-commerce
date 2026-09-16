@@ -41,7 +41,7 @@ const Overview = ({
     <div data-testid="overview-page-wrapper" className="space-y-6 w-full">
       {/* Accessible telemetry anchors for test suite */}
       <span className="sr-only" data-testid="welcome-message">
-        {customer?.first_name || "Doctor"}
+        {customer?.first_name || "Researcher"}
       </span>
       <span className="sr-only" data-testid="customer-email">
         {customer?.email || ""}

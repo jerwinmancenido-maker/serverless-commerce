@@ -102,7 +102,7 @@ describe("BotRunnerService", () => {
   it("purges synthetic QA test orders safely while preserving production orders", async () => {
     const mockOrders = [
       { id: "ord_qa_1", email: "qa-bot-123@pepstack.internal", metadata: { is_bot_qa: true }, status: "pending" },
-      { id: "ord_real_2", email: "dr.smith@clinic.ph", metadata: {}, status: "completed" },
+      { id: "ord_real_2", email: "lab.analyst@institution.ph", metadata: {}, status: "completed" },
     ]
 
     const mockGraph = jest.fn().mockResolvedValue({ data: mockOrders })

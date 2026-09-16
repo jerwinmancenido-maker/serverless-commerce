@@ -646,7 +646,7 @@ class BotRunnerManager {
 ---
 
 ## 🌐 360° 6-LENS COMPREHENSIVE STATUS
-1. 👤 **Lens 1: Customer & Buyer Journey**: GCash & Manual QR checkout, prescription protocol gating, cart session isolation PASS.
+1. 👤 **Lens 1: Customer & Buyer Journey**: GCash & Manual QR checkout, research protocol access gating, cart session isolation PASS.
 2. 👔 **Lens 2: Founder & Staff Operations**: Admin dashboard telemetry, waybill generation, batch order approval PASS.
 3. 🔐 **Lens 3: Security & Defense-in-Depth**: DPA 2012 PII & credential protection, role-based access, air-gapped QA sandboxing PASS.
 4. 🔌 **Lens 4: API Contract & Data Validation**: Medusa V2 route shapes, JSON schema strictness, zero drift PASS.

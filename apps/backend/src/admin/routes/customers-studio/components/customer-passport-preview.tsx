@@ -101,7 +101,7 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
             </span>
           </div>
           <span className="text-[10px] font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
-            PASSPORT #PH-{state.facilityRegistrationId ? state.facilityRegistrationId.slice(-4) : "2026"}
+            PASSPORT #PH-{state.facilityRegistrationId ? state.facilityRegistrationId.replace(/^FAC-/, "").slice(-4) : "2026"}
           </span>
         </div>
 

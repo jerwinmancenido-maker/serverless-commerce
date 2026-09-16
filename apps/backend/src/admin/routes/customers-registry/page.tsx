@@ -344,7 +344,7 @@ export const CustomersRegistryPage: React.FC = () => {
           icon={<ShieldCheck className="size-4 text-emerald-600" />}
           statusBadge="Active & Partitioned"
           statusVariant="emerald"
-          description="Patient identities, institutional tax credentials, and clinical shipping addresses are isolated per Philippine Data Privacy Act of 2012 regulations."
+          description="Institutional researcher identities, tax credentials, and facility delivery addresses are isolated per Philippine Data Privacy Act of 2012 regulations."
           actionLabel="Review Privacy Covenants"
           actionHref="/research-agreements"
         >

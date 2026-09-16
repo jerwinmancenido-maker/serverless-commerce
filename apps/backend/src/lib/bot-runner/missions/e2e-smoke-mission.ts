@@ -232,13 +232,13 @@ export async function executeE2eSmokeMission(ctx: MissionContext): Promise<void>
     title: "Configure Customer & Shipping Address",
     status: "running",
     timestamp: new Date().toISOString(),
-    message: "Assigning Metro Manila cold-chain delivery address...",
+    message: "Assigning Metro Manila courier delivery address...",
   })
 
   const address = {
-    first_name: "Dr. Jerwin",
-    last_name: "Mancenido (Agent QA)",
-    address_1: "Unit 802 Clinical Research Tower, BGC",
+    first_name: "Automated",
+    last_name: "QA Runner (PepStack Testing Lab)",
+    address_1: "Unit 802 Analytical Research Center, BGC",
     city: "Taguig City",
     province: "Metro Manila",
     postal_code: "1634",
@@ -276,7 +276,7 @@ export async function executeE2eSmokeMission(ctx: MissionContext): Promise<void>
   })
 
   // ──────────────────────────────────────────────────────────────────────────
-  // STEP 4: Select Cold-Chain Shipping Method (J&T Express)
+  // STEP 4: Select Express Courier Shipping Method (J&T Express)
   // ──────────────────────────────────────────────────────────────────────────
   checkAborted()
   const step4Start = Date.now()
