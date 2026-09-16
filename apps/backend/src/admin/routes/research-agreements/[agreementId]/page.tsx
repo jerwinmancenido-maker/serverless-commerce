@@ -23,6 +23,7 @@ type EnrichedAcceptance = {
   customer_id: string
   customer_email?: string
   customer_name?: string
+  customer_company?: string
   acceptance_source: string
   accepted_at: string
   locale: string
@@ -92,15 +93,15 @@ const ResearchAgreementDetailsPage = () => {
 
   const editable = bundle.status === "draft" || bundle.status === "scheduled"
   return (
-    <div className="flex flex-col gap-6 pb-8 px-6 pt-6">
+    <div className="flex flex-col gap-6 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       <PageHeader
-        eyebrowText="Customer Agreements · Version Bundle"
+        eyebrowText="Research Agreements · Version Bundle"
         breadcrumbs={[
           { label: "Agreements", href: "/research-agreements" },
           { label: `Version ${bundle.public_version}` },
         ]}
         title={`Agreement Bundle v${bundle.public_version}`}
-        subtitle={`${acceptances.length} customer acceptances recorded under this legal terms bundle.`}
+        subtitle={`${acceptances.length} institutional researcher acceptances recorded under this legal terms bundle.`}
         badge={
           <Badge color={bundle.status === "active" ? "green" : "orange"} size="small">
             ● {bundle.status}
@@ -168,12 +169,12 @@ const ResearchAgreementDetailsPage = () => {
         )}
       </div>
 
-      {/* Card 2: Customer Signature Acceptance Ledger */}
+      {/* Card 2: Researcher Signature Acceptance Ledger */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-2xs flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
           <div>
             <Heading level="h2" className="text-sm font-semibold text-slate-900">
-              Customer Signature Acceptance Ledger
+              Researcher Signature Acceptance Ledger
             </Heading>
             <Text size="small" className="text-slate-500 mt-0.5">
               Cryptographically verified consent events recorded under public bundle v{bundle.public_version}.
@@ -187,7 +188,7 @@ const ResearchAgreementDetailsPage = () => {
         {acceptances.length === 0 ? (
           <div className="rounded-lg border border-dashed border-slate-200 p-8 text-center">
             <Text size="small" className="text-slate-500">
-              No customer signatures recorded for this agreement bundle yet.
+              No researcher signatures recorded for this agreement bundle yet.
             </Text>
           </div>
         ) : (
@@ -195,7 +196,7 @@ const ResearchAgreementDetailsPage = () => {
             <Table>
               <Table.Header>
                 <Table.Row className="bg-slate-50/75">
-                  <Table.HeaderCell className="text-xs font-semibold text-slate-700">Customer</Table.HeaderCell>
+                  <Table.HeaderCell className="text-xs font-semibold text-slate-700">Researcher / Institution</Table.HeaderCell>
                   <Table.HeaderCell className="text-xs font-semibold text-slate-700">Origin / Channel</Table.HeaderCell>
                   <Table.HeaderCell className="text-xs font-semibold text-slate-700">Signed Timestamp</Table.HeaderCell>
                   <Table.HeaderCell className="text-xs font-semibold text-slate-700">Terms SHA-256 Digest</Table.HeaderCell>
@@ -209,10 +210,10 @@ const ResearchAgreementDetailsPage = () => {
                     <Table.Cell>
                       <div className="flex flex-col">
                         <span className="text-xs font-semibold text-slate-900">
-                          {acceptance.customer_name || acceptance.customer_email || "Customer"}
+                          {acceptance.customer_name || acceptance.customer_company || "Institutional Researcher"}
                         </span>
                         <span className="text-[11px] text-slate-500 font-mono">
-                          {acceptance.customer_email}
+                          {acceptance.customer_company ? `${acceptance.customer_company} · ` : ""}{acceptance.customer_email}
                         </span>
                       </div>
                     </Table.Cell>

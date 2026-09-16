@@ -41,12 +41,12 @@ export async function GET(
   })
 
   const customerIds = Array.from(new Set(acceptances.map((a) => a.customer_id)))
-  const customersMap = new Map<string, { email: string; first_name?: string; last_name?: string }>()
+  const customersMap = new Map<string, { email: string; first_name?: string; last_name?: string; company_name?: string }>()
 
   if (customerIds.length > 0) {
     const { data: customers } = await query.graph({
       entity: "customer",
-      fields: ["id", "email", "first_name", "last_name"],
+      fields: ["id", "email", "first_name", "last_name", "company_name"],
       filters: { id: customerIds },
     })
     customers.forEach((c: any) => customersMap.set(c.id, c))
@@ -56,6 +56,7 @@ export async function GET(
     ...a,
     customer_email: customersMap.get(a.customer_id)?.email || a.customer_id,
     customer_name: [customersMap.get(a.customer_id)?.first_name, customersMap.get(a.customer_id)?.last_name].filter(Boolean).join(" ") || undefined,
+    customer_company: customersMap.get(a.customer_id)?.company_name || undefined,
   }))
 
   res.setHeader("Cache-Control", "private, no-store")

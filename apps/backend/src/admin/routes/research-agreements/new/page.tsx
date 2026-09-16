@@ -50,15 +50,15 @@ const NewResearchAgreementPage = () => {
   })
 
   return (
-    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
+    <div className="flex flex-col gap-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       <PageHeader
-        eyebrowText="Customer Agreements · New Compliance Bundle"
+        eyebrowText="Research Agreements · New Compliance Bundle"
         breadcrumbs={[
           { label: "Agreements", href: "/research-agreements" },
           { label: "New Agreement Bundle" },
         ]}
-        title="New Customer Agreement"
-        subtitle="Create the immutable source bundle customers will review once."
+        title="New Research Agreement"
+        subtitle="Create the immutable source bundle researchers will review once."
         actions={
           <div className="flex items-center gap-2">
             <Button asChild size="small" variant="secondary">

@@ -8,7 +8,7 @@
  */
 
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { BookOpen, CheckCircleSolid, DocumentText, Plus, ShieldCheck } from "@medusajs/icons"
+import { BookOpen, CheckCircleSolid, ChevronRight, DocumentText, MagnifyingGlass, Plus, ShieldCheck, XMark } from "@medusajs/icons"
 import { Badge, Button, Input } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
@@ -83,16 +83,16 @@ const ResearchAgreementsPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 pb-8 px-6 pt-6">
+    <div className="flex flex-col gap-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       {/* 1. Standard PageHeader */}
       <PageHeader
-        eyebrowText="Customer Agreements · Compliance & Legal"
+        eyebrowText="Compliance & Governance · Legal Covenants"
         breadcrumbs={[
           { label: "Compliance", href: "/research-agreements" },
-          { label: "Customer Agreements" },
+          { label: "Research Agreements" },
         ]}
-        title="Customer Agreements"
-        subtitle="Version and publish the combined Terms, Privacy Policy, and Research Hub compliance bundle used at checkout & customer onboarding."
+        title="Research Agreements"
+        subtitle="Version and publish institutional research terms, DPA 2012 privacy covenants, and Research Hub compliance bundles."
         statusDropdown={
           activeBundle ? (
             <Badge size="small" color="green" className="font-mono text-[11px]">
@@ -151,7 +151,7 @@ const ResearchAgreementsPage = () => {
 
       {/* 3. SADS 2.0 Telemetry Notice Banner */}
       <AdminTelemetryNotice
-        title="FDA 21 CFR & Research Use Only (RUO) Legal Bundle"
+        title="Research Use Only (RUO) Governance & Legal Bundle"
         description="Versioned customer terms, privacy policy, and research hub consent covenants. Every checkout and onboarding agreement is cryptographically hash-logged with timestamped customer consent."
         statusText="LEGAL GOVERNANCE LOCKED"
         variant="indigo"
@@ -197,16 +197,14 @@ const ResearchAgreementsPage = () => {
             placeholder="Search versions or locales…"
             className="h-8 text-xs pl-8 pr-7"
           />
-          <span className="absolute left-2.5 top-2 text-slate-400 text-xs pointer-events-none">
-            🔍
-          </span>
+          <MagnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-400 pointer-events-none" />
           {search && (
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="absolute right-2 top-2 text-slate-400 hover:text-slate-600 text-xs"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
             >
-              ✕
+              <XMark className="size-3.5" />
             </button>
           )}
         </div>
@@ -224,34 +222,42 @@ const ResearchAgreementsPage = () => {
             filteredBundles.map((bundle) => {
               const count = acceptanceCounts[bundle.id] || 0
               return (
-                <AdminListRowCard
+                <Link
                   key={bundle.id}
-                  icon={
-                    <div className="size-8 rounded-lg bg-indigo-50 border border-indigo-200/60 flex items-center justify-center text-indigo-700">
-                      <DocumentText className="size-4" />
-                    </div>
-                  }
-                  title={`Version ${bundle.public_version}`}
-                  subtitle={`Effective ${new Date(bundle.effective_at).toLocaleDateString("en-PH", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}`}
-                  badge={
-                    <AdminBadge variant={statusVariant(bundle.status)} dot>
-                      {bundle.status}
-                    </AdminBadge>
-                  }
-                  value={`${count} ${count === 1 ? "acceptance" : "acceptances"}`}
-                  secondaryValue={bundle.locale.toUpperCase()}
-                  actions={
-                    <Button asChild size="small" variant="secondary" className="h-7 text-xs">
-                      <Link to={`/research-agreements/${bundle.id}`}>
-                        Review Bundle ↗
-                      </Link>
-                    </Button>
-                  }
-                />
+                  to={`/research-agreements/${bundle.id}`}
+                  className="block no-underline group focus:outline-hidden"
+                >
+                  <AdminListRowCard
+                    icon={
+                      <div className="size-8 rounded-lg bg-indigo-50 border border-indigo-200/60 flex items-center justify-center text-indigo-700">
+                        <DocumentText className="size-4" />
+                      </div>
+                    }
+                    title={`Version ${bundle.public_version}`}
+                    subtitle={`Effective ${new Date(bundle.effective_at).toLocaleDateString("en-PH", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}`}
+                    badge={
+                      <AdminBadge variant={statusVariant(bundle.status)} dot>
+                        {bundle.status}
+                      </AdminBadge>
+                    }
+                    value={`${count} ${count === 1 ? "acceptance" : "acceptances"}`}
+                    secondaryValue={bundle.locale.toUpperCase()}
+                    statusPill={
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-semibold text-slate-500 group-hover:text-blue-600 transition-colors">
+                          Review Bundle
+                        </span>
+                        <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all">
+                          <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                      </div>
+                    }
+                  />
+                </Link>
               )
             })
           ) : (
@@ -279,7 +285,7 @@ const ResearchAgreementsPage = () => {
           <AdminSuiteCard
             icon={<ShieldCheck className="size-4 text-indigo-600" />}
             eyebrow="Compliance Vault"
-            title="FDA 21 CFR & RUO Legal Vault"
+            title="RUO Legal & Compliance Vault"
             description="Every research checkout and B2B onboarding covenant is cryptographically hash-logged with timestamped customer consent."
             statusBadge={activeBundle ? `Active v${activeBundle.public_version}` : "Draft Required"}
             statusVariant={activeBundle ? "emerald" : "amber"}
@@ -307,7 +313,7 @@ const ResearchAgreementsPage = () => {
             icon={<DocumentText className="size-4 text-blue-600" />}
             eyebrow="Consent Audit"
             title="Cryptographic Hash-Log Sentry"
-            description="Tamper-evident legal compliance vault. Customer signatures and electronic consent tokens are permanently stored for FDA 21 CFR and RUO scientific regulatory inspection."
+            description="Tamper-evident legal compliance vault. Customer signatures and electronic consent tokens are permanently stored with cryptographic integrity for institutional RUO governance and DPA 2012 auditability."
             statusBadge="100% Compliant"
             statusVariant="blue"
             variant="blue"
