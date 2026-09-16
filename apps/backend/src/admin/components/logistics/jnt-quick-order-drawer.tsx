@@ -74,12 +74,16 @@ export const JntQuickOrderDrawer = ({
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <Heading level="h2">J&T Express VIP QuickOrder Assistant</Heading>
+                <Drawer.Title asChild>
+                  <Heading level="h2">J&T Express VIP QuickOrder Assistant</Heading>
+                </Drawer.Title>
                 <Badge color="red">J&T Express PH</Badge>
               </div>
-              <Text size="xsmall" className="text-ui-fg-subtle">
-                Order #{displayId} · Fast Ingestion for vip.jtexpress.ph/order/quickOrder
-              </Text>
+              <Drawer.Description asChild>
+                <Text size="xsmall" className="text-ui-fg-subtle">
+                  Order #{displayId} · Fast Ingestion for vip.jtexpress.ph/order/quickOrder
+                </Text>
+              </Drawer.Description>
             </div>
 
             <Button

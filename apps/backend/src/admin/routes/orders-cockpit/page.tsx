@@ -12,6 +12,7 @@ import {
   ArchiveBox,
   ArrowUpRightOnBox,
   CheckCircleSolid,
+  ChevronRight,
   CreditCard,
   CurrencyDollar,
   ExclamationCircle,
@@ -77,7 +78,7 @@ export const OrdersCockpitPage = () => {
         const res = await sdk.client.fetch<any>("/admin/manual-payment-proofs", {
           query: { status: "pending" },
         })
-        return res?.proofs || []
+        return res?.manual_payment_proofs || []
       } catch {
         return []
       }
@@ -171,9 +172,9 @@ export const OrdersCockpitPage = () => {
     <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
       {/* 1. Header with Eyebrow, Badges, and Action Suite */}
       <PageHeader
-        eyebrowText="Commercial Operations · Cold-Chain Logistics"
+        eyebrowText="Commercial Operations · Order Fulfillment"
         title="Commercial Orders Cockpit"
-        subtitle="Executive order processing, temperature-controlled courier dispatch, manual QR payment proof verification, and settlement ledger."
+        subtitle="Executive order processing, standard courier dispatch, manual QR payment proof verification, and settlement ledger."
         actions={
           <div className="flex items-center gap-2">
             <Button asChild size="small" variant="secondary" className="h-8 text-xs font-semibold">
@@ -194,8 +195,8 @@ export const OrdersCockpitPage = () => {
       {/* 2. Top Telemetry Notice */}
       <AdminTelemetryNotice
         icon={<ArchiveBox className="size-4" />}
-        title="Order Fulfillment & Cold-Chain Dispatch Operations Active"
-        description="Every order maintains ₱0.00 General Ledger debit/credit balance parity with real-time temperature log compliance and lyophilized batch disaggregation."
+        title="Order Fulfillment & Courier Dispatch Active"
+        description="Every order maintains ₱0.00 General Ledger debit/credit balance parity with automated batch disaggregation and courier waybill tracking."
         statusText="ORDER ENGINE NOMINAL"
         variant="indigo"
       />
@@ -221,7 +222,7 @@ export const OrdersCockpitPage = () => {
         <AdminMetricCard
           label="Pack-Ready Queue"
           value={kpis.packReady}
-          subtext="Paid, awaiting cold-chain pack"
+          subtext="Paid, awaiting pack"
           icon={<ArchiveBox className="size-4" />}
           variant="amber"
           status={kpis.packReady > 0 ? "warning" : "healthy"}
@@ -345,53 +346,59 @@ export const OrdersCockpitPage = () => {
                 : "red"
 
             return (
-              <AdminListRowCard
+              <Link
                 key={order.id}
-                icon={<ShoppingBag className="size-4 text-blue-600" />}
-                title={
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-xs text-slate-900">#{displayId}</span>
-                    <span className="text-xs text-slate-700 font-medium">· {customerName}</span>
-                  </div>
-                }
-                subtitle={
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700">
-                      {dateStr}
-                    </span>
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-blue-50 border border-blue-100 text-[10px] font-mono text-blue-700">
-                      {itemsCount} {itemsCount === 1 ? "vial" : "vials"}
-                    </span>
-                    <span className="text-[11px] text-slate-400 truncate max-w-[200px]">
-                      {firstItem}
-                    </span>
-                  </div>
-                }
-                badge={
-                  <div className="flex items-center gap-1">
-                    {order.metadata?.confirmed_for_packing && paymentStatus !== "captured" && order.status !== "canceled" && paymentStatus !== "refunded" && (
-                      <Badge size="small" color="blue" className="text-[10px]">
-                        Pack Confirmed
+                to={`/orders-cockpit/${order.id}`}
+                className="block no-underline group focus:outline-hidden"
+              >
+                <AdminListRowCard
+                  icon={<ShoppingBag className="size-4 text-blue-600" />}
+                  className="cursor-pointer group-hover:border-slate-300 group-hover:shadow-xs transition-all"
+                  title={
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono font-bold text-xs text-slate-900 group-hover:text-blue-600 transition-colors">
+                        #{displayId}
+                      </span>
+                      <span className="text-xs text-slate-700 font-medium">· {customerName}</span>
+                    </div>
+                  }
+                  subtitle={
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700">
+                        {dateStr}
+                      </span>
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-blue-50 border border-blue-100 text-[10px] font-mono text-blue-700">
+                        {itemsCount} {itemsCount === 1 ? "vial" : "vials"}
+                      </span>
+                      <span className="text-[11px] text-slate-400 truncate max-w-[200px]">
+                        {firstItem}
+                      </span>
+                    </div>
+                  }
+                  badge={
+                    <div className="flex items-center gap-1">
+                      {order.metadata?.confirmed_for_packing && paymentStatus !== "captured" && order.status !== "canceled" && paymentStatus !== "refunded" && (
+                        <Badge size="small" color="blue" className="text-[10px]">
+                          Pack Confirmed
+                        </Badge>
+                      )}
+                      <Badge size="small" color={paymentColor as any} className="text-[10px] capitalize">
+                        {paymentStatus.replace("_", " ")}
                       </Badge>
-                    )}
-                    <Badge size="small" color={paymentColor as any} className="text-[10px] capitalize">
-                      {paymentStatus.replace("_", " ")}
-                    </Badge>
-                    <Badge size="small" color={fulfillmentColor as any} className="text-[10px] capitalize">
-                      {fulfillmentStatus.replace("_", " ")}
-                    </Badge>
-                  </div>
-                }
-                value={phpFormatter.format(order.total || 0)}
-                secondaryValue="Online Store"
-                actions={
-                  <Button asChild size="small" variant="secondary" className="h-7 text-xs font-semibold px-2.5 text-slate-700 hover:text-slate-950 bg-white">
-                    <Link to={`/orders-cockpit/${order.id}`}>
-                      Inspect <ArrowUpRightOnBox className="size-3 ml-1" />
-                    </Link>
-                  </Button>
-                }
-              />
+                      <Badge size="small" color={fulfillmentColor as any} className="text-[10px] capitalize">
+                        {fulfillmentStatus.replace("_", " ")}
+                      </Badge>
+                    </div>
+                  }
+                  value={phpFormatter.format(order.total || 0)}
+                  secondaryValue="Online Store"
+                  statusPill={
+                    <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all ml-1">
+                      <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  }
+                />
+              </Link>
             )
           })
         )}
@@ -399,12 +406,12 @@ export const OrdersCockpitPage = () => {
 
       {/* 6. Horizontal Operational Action Suites Dock */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        {/* Suite 1: Cold-Chain Logistics Desk */}
+        {/* Suite 1: Courier Fulfillment Desk */}
         <AdminSuiteCard
           icon={<ArchiveBox className="size-4 text-blue-600" />}
-          eyebrow="Cold-Chain Logistics"
-          title="Temperature-Controlled Dispatch"
-          description="Verified orders are pre-allocated with insulated cryo-coolers and freeze-shield barrier sleeves before handover to couriers."
+          eyebrow="Courier Fulfillment"
+          title="Parcel Packing & Dispatch"
+          description="Verified orders are allocated with protective padded mailers and handed over to standard domestic couriers."
           actionLabel="View Pack-Ready Queue"
           onActionClick={() => setActiveTab("pack_ready")}
           statusBadge={`${kpis.packReady} Pack Ready`}
@@ -413,12 +420,12 @@ export const OrdersCockpitPage = () => {
         >
           <div className="flex flex-col gap-2 text-xs">
             <div className="flex items-center justify-between p-2.5 rounded-lg bg-blue-50/50 border border-blue-100">
-              <span className="font-semibold text-slate-900">Cold-Chain Protocol:</span>
-              <span className="font-mono text-blue-700 font-semibold">-20°C Cryo Gel Packs</span>
+              <span className="font-semibold text-slate-900">Courier Partners:</span>
+              <span className="font-mono text-blue-700 font-semibold">J&amp;T Express / Lalamove</span>
             </div>
             <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
               <span className="font-semibold text-slate-900">Carrier Dispatch Window:</span>
-              <span className="font-mono text-slate-700">Same-Day Priority</span>
+              <span className="font-mono text-slate-700">Same-Day / Standard Express</span>
             </div>
           </div>
         </AdminSuiteCard>
