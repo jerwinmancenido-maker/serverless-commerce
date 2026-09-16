@@ -26,16 +26,18 @@ ${ROUTINE_HIDDEN_ADMIN_PATHS.flatMap((path) => [
    Linear / Shopify Polaris aesthetic with zero Radix collapsible conflicts
    ========================================================================== */
 
-/* 1. Sidebar Shell */
-div:has(> aside),
-aside:not([data-collapsed="true"]):not([data-state="collapsed"]) {
+/* 1. Sidebar Shell — strictly scoped to the primary navigation sidebar */
+div:has(> aside:has(#rc-custom-nav)),
+aside:has(#rc-custom-nav),
+aside[data-sidebar="true"] {
   width: 248px !important;
   min-width: 248px !important;
   max-width: 248px !important;
 }
 
-aside,
-aside > div,
+aside:has(#rc-custom-nav),
+aside:has(#rc-custom-nav) > div,
+aside[data-sidebar="true"],
 [data-sidebar="true"] {
   background-color: #FFFFFF !important;
   border-right-color: #E2E8F0 !important;
@@ -43,8 +45,9 @@ aside > div,
   font-family: inherit !important;
 }
 
-aside,
-aside > .flex.flex-1.flex-col {
+aside:has(#rc-custom-nav),
+aside:has(#rc-custom-nav) > .flex.flex-1.flex-col,
+aside[data-sidebar="true"] > .flex.flex-1.flex-col {
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
@@ -53,24 +56,95 @@ aside > .flex.flex-1.flex-col {
   border-right: 1px solid #E2E8F0 !important;
 }
 
-aside .sticky.top-0,
-aside > div:first-child {
+aside:has(#rc-custom-nav) .sticky.top-0,
+aside[data-sidebar="true"] .sticky.top-0,
+aside:has(#rc-custom-nav) > div:first-child,
+aside[data-sidebar="true"] > div:first-child {
   padding: 0 !important;
 }
 
-/* 2. Hide Native Medusa Collapsible Nav, Search, and Duplicate Elements (Scoped to when custom nav is present) */
-aside:has(#rc-custom-nav) nav,
-aside:has(#rc-custom-nav) [data-testid="search-button"],
-aside:has(#rc-custom-nav) button:has(kbd) {
+/* 2. Hide Native Medusa Collapsible Nav, Search, and Duplicate Elements (Scoped to Main Mode) */
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) nav,
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) [data-testid="search-button"],
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) button:has(kbd) {
   display: none !important;
 }
 
-aside:has(#rc-custom-nav) .sticky.bottom-0 > div:not(.rc-system-section),
-aside:has(#rc-custom-nav) .sticky.bottom-0 [class*="bg-[linear-gradient"],
-aside:has(#rc-custom-nav) a[href="/app/settings"]:not(.rc-nav-link),
-aside:has(#rc-custom-nav) div:has(> div > a[href="/app/settings"]:not(.rc-nav-link)),
-aside:has(#rc-custom-nav) div[class*="gap-y-0.5"] {
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) .sticky.bottom-0 > div:not(.rc-system-section),
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) .sticky.bottom-0 [class*="bg-[linear-gradient"],
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) a[href="/app/settings"]:not(.rc-nav-link),
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) div:has(> div > a[href="/app/settings"]:not(.rc-nav-link)),
+aside:not([data-rc-mode="settings"]):has(#rc-custom-nav) div[class*="gap-y-0.5"] {
   display: none !important;
+}
+
+/* 3. Settings Sidebar Modernization Theme */
+aside[data-rc-mode="settings"] #rc-custom-nav {
+  display: none !important;
+}
+
+aside[data-rc-mode="settings"] div[class*="gap-y-0.5"] {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+aside[data-rc-mode="settings"] a[href^="/app/settings"],
+aside[data-rc-mode="settings"] a[href^="/settings"],
+aside[data-rc-mode="settings"] .rc-settings-custom-link {
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #334155 !important;
+  text-decoration: none !important;
+  transition: all 0.12s ease !important;
+}
+
+aside[data-rc-mode="settings"] a[href^="/app/settings"]:hover,
+aside[data-rc-mode="settings"] a[href^="/settings"]:hover,
+aside[data-rc-mode="settings"] .rc-settings-custom-link:hover {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+aside[data-rc-mode="settings"] a[aria-current="page"],
+aside[data-rc-mode="settings"] a[data-active="true"],
+aside[data-rc-mode="settings"] a.rc-settings-active {
+  background-color: #EFF6FF !important;
+  color: #1D4ED8 !important;
+  font-weight: 600 !important;
+}
+
+aside[data-rc-mode="settings"] .sticky.top-0 {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+  padding: 10px 12px !important;
+}
+
+aside[data-rc-mode="settings"] .sticky.top-0 a,
+aside[data-rc-mode="settings"] a.rc-settings-back-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 7px 11px !important;
+  border-radius: 8px !important;
+  background-color: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+}
+
+aside[data-rc-mode="settings"] .sticky.top-0 a:hover,
+aside[data-rc-mode="settings"] a.rc-settings-back-btn:hover {
+  background-color: #EFF6FF !important;
+  color: #1D4ED8 !important;
+  border-color: #BFDBFE !important;
 }
 
 aside .sticky.top-0:has(.rc-brand-card) button[id^="radix-"],
@@ -1592,6 +1666,98 @@ export const researchCompoundsSidebarScript = `
     var aside = document.querySelector('aside');
     if (!aside) return;
 
+    var isSettingsPath = window.location.pathname.startsWith('/app/settings') || window.location.pathname === '/app/settings';
+
+    if (isSettingsPath) {
+      aside.setAttribute('data-rc-mode', 'settings');
+      var cNav = document.getElementById("rc-custom-nav");
+      if (cNav) cNav.style.display = "none";
+
+      // 1. Enhance Settings Header / Back to Dashboard Link
+      var topBackLink = aside.querySelector('.sticky.top-0 a') || aside.querySelector('a[href="/orders"]') || aside.querySelector('a:has(svg)');
+      if (topBackLink && !topBackLink.dataset.rcEnhancedBack) {
+        topBackLink.dataset.rcEnhancedBack = "true";
+        topBackLink.setAttribute('href', '/app/dashboard');
+        topBackLink.classList.add('rc-settings-back-btn');
+        topBackLink.innerHTML = [
+          '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">',
+          '  <polyline points="15 18 9 12 15 6"></polyline>',
+          '</svg>',
+          '<span>Back to Dashboard</span>'
+        ].join('');
+        topBackLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.history.pushState({}, '', '/app/dashboard');
+          window.dispatchEvent(new PopStateEvent('popstate'));
+          setTimeout(enhanceSidebar, 20);
+        });
+      }
+
+      // 2. Inject Sovereign Engine Settings Group into Settings Sidebar
+      var settingsNavContainer = aside.querySelector('.flex.flex-1.flex-col.overflow-y-auto') || aside.querySelector('.flex.flex-1.flex-col');
+      if (settingsNavContainer && !settingsNavContainer.querySelector('.rc-settings-sovereign-group')) {
+        var sovGroup = document.createElement('div');
+        sovGroup.className = 'rc-settings-sovereign-group py-3 border-t border-slate-200/60 mt-2';
+        sovGroup.innerHTML = [
+          '<div class="px-3 mb-1.5">',
+          '  <div class="flex items-center justify-between px-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">',
+          '    <span>Sovereign & Operations</span>',
+          '  </div>',
+          '</div>',
+          '<div class="flex flex-col gap-y-0.5 px-3">',
+          '  <a href="/app/research-hub-settings" class="rc-settings-custom-link" title="Research Hub Settings">',
+          '    <span>Research Hub Settings</span>',
+          '  </a>',
+          '  <a href="/app/notification-center" class="rc-settings-custom-link" title="Notification Center">',
+          '    <span>Notification Center</span>',
+          '  </a>',
+          '  <a href="/app/customer-support/settings" class="rc-settings-custom-link" title="Customer Support Settings">',
+          '    <span>Support & AI Settings</span>',
+          '  </a>',
+          '</div>'
+        ].join('');
+        settingsNavContainer.appendChild(sovGroup);
+
+        sovGroup.addEventListener('click', function(e) {
+          var a = e.target && (e.target.closest ? e.target.closest('a') : null);
+          if (!a) return;
+          var href = a.getAttribute('href');
+          if (!href) return;
+          e.preventDefault();
+          window.history.pushState({}, '', href);
+          window.dispatchEvent(new PopStateEvent('popstate'));
+          setTimeout(enhanceSidebar, 20);
+        });
+      }
+
+      // 3. Highlight Active Settings Link
+      var currentPath = window.location.pathname;
+      var allSettingsLinks = aside.querySelectorAll('a[href^="/app/settings"], a[href^="/settings"], .rc-settings-custom-link');
+      var normPath = currentPath.indexOf('/app') === 0 ? currentPath : ('/app' + currentPath);
+      allSettingsLinks.forEach(function(l) {
+        var h = l.getAttribute('href');
+        if (!h) return;
+        var normH = h.indexOf('/app') === 0 ? h : ('/app' + h);
+        var active = normPath === normH || (
+          normH !== '/app/settings' &&
+          normH !== '/app/settings/store' &&
+          (normPath.indexOf(normH + '/') === 0 || normPath.indexOf(normH + '?') === 0)
+        );
+        if (active) {
+          l.classList.add('rc-settings-active');
+        } else {
+          l.classList.remove('rc-settings-active');
+        }
+      });
+
+      return;
+    }
+
+    aside.setAttribute('data-rc-mode', 'main');
+    var existingCustomNav = document.getElementById("rc-custom-nav");
+    if (existingCustomNav) existingCustomNav.style.display = "block";
+
     // 1. Research Compounds Brand Anchor & Global Controls
     var topSection = aside.querySelector('.sticky.top-0') || aside.firstElementChild;
     if (topSection && !topSection.querySelector('[data-rc-brand-card="true"]')) {
@@ -1671,7 +1837,8 @@ export const researchCompoundsSidebarScript = `
         {
           title: "Catalog & Science",
           items: [
-            { href: "/app/buildable-products", label: "Products", icon: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>' },
+            { href: "/app/products-registry", label: "Products", icon: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>' },
+            { href: "/app/buildable-products", label: "Component BOM", icon: '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>' },
             { href: "/app/categories-studio", label: "Categories", icon: '<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>' },
             { href: "/app/bundles", label: "Bundles", icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>' },
             { href: "/app/research-protocols", label: "Research Protocols", icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>' },
@@ -1694,7 +1861,7 @@ export const researchCompoundsSidebarScript = `
           items: [
             { href: "/app/research-hub-settings", label: "Research Hub Settings", icon: '<path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>' },
             { href: "/app/notification-center", label: "Notification Center", icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>' },
-            { href: "/app/settings", label: "Settings", icon: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>' }
+            { href: "/app/settings/store", label: "Settings", icon: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>' }
           ]
         }
       ];
@@ -2116,7 +2283,7 @@ export const researchCompoundsSidebarScript = `
       '      <div class="rc-radar-dot"></div>',
       '    </div>',
       '    <h5 class="rc-radar-title">Event Bus Synchronized</h5>',
-      '    <p class="rc-radar-subtitle">All customer lifecycle dispatches, order webhooks, and cold-chain monitors are running with 100% nominal telemetry.</p>',
+      '    <p class="rc-radar-subtitle">All customer lifecycle dispatches, order webhooks, and fulfillment monitors are running with 100% nominal telemetry.</p>',
       '  </div>',
       '</div>',
       '<div class="rc-notif-footer-actions">',
@@ -2286,7 +2453,7 @@ export const researchCompoundsSidebarScript = `
           '    <div class="rc-radar-dot"></div>',
           '  </div>',
           '  <h5 class="rc-radar-title">Event Bus Synchronized</h5>',
-          '  <p class="rc-radar-subtitle">All customer lifecycle dispatches, order webhooks, and cold-chain monitors are running with 100% nominal telemetry.</p>',
+          '  <p class="rc-radar-subtitle">All customer lifecycle dispatches, order webhooks, and fulfillment monitors are running with 100% nominal telemetry.</p>',
           '</div>'
         ].join(''));
 
