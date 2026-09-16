@@ -159,13 +159,13 @@ export const InventoryRegistryPage: React.FC = () => {
       {/* 1. Header & Eyebrow */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-blue-600 animate-pulse" />
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="size-2 rounded-full bg-blue-600 animate-pulse shrink-0" />
             <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider font-mono">
               Precision Biotechnology Operations · Stock Registry
             </span>
             <AdminBadge variant="blue" dot>
-              Clinical BOM Parity
+              Analytical BOM Parity
             </AdminBadge>
           </div>
           <Heading level="h1" className="text-xl font-bold tracking-tight text-slate-900 mt-1">

@@ -64,13 +64,13 @@ const InventoryClinicalOperationsHeader = () => {
       <div className="flex flex-col gap-y-3.5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse shrink-0" />
               <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider font-mono">
                 Precision Biotechnology Operations
               </span>
               <AdminBadge variant="blue" dot>
-                Clinical BOM Parity
+                Analytical BOM Parity
               </AdminBadge>
             </div>
             <Heading level="h1" className="text-xl font-bold tracking-tight text-slate-900 mt-1">
@@ -105,7 +105,7 @@ const InventoryClinicalOperationsHeader = () => {
           title="Live BOM Inventory Disaggregation Active"
           description="Physical compound inventory is continuously decremented from raw constituent vials upon order confirmation. Real-time lot tracking and formulation parity active."
           actionLabel="Component BOM Matrix"
-          actionHref="/app/buildable-products"
+          actionHref="/buildable-products"
           variant="blue"
         />
 
@@ -126,7 +126,7 @@ const InventoryClinicalOperationsHeader = () => {
             icon={<Buildings className="h-4 w-4" />}
             variant="emerald"
             status="healthy"
-            href="/app/buildable-products"
+            href="/buildable-products"
           />
           <AdminMetricCard
             label="Constrained SKUs"
@@ -137,9 +137,9 @@ const InventoryClinicalOperationsHeader = () => {
             status={constrainedCount > 0 ? "warning" : "healthy"}
           />
           <AdminMetricCard
-            label="Cold-Chain Regulated"
+            label="Controlled Storage"
             value={buildableProducts.length ? Math.round(buildableProducts.length * 0.85) : 38}
-            subtext="Cryo storage required"
+            subtext="Standard packaging"
             icon={<ArchiveBox className="h-4 w-4" />}
             variant="purple"
             status="healthy"
