@@ -376,7 +376,7 @@ export const ManualPaymentProofReviewDrawer = ({
               </div>
 
               {/* RIGHT COLUMN: Financial Match & Audit Console (5 cols) */}
-              <div className="lg:col-span-5 flex flex-col overflow-y-auto bg-slate-50/50 p-4 sm:p-6 space-y-4">
+              <div className="lg:col-span-5 flex flex-col overflow-y-auto bg-slate-50/50 p-3.5 sm:p-6 pb-[env(safe-area-inset-bottom,1.5rem)] space-y-4">
                 {/* 1. Target Order Balance Card */}
                 <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-4 shadow-xs">
                   <div className="flex items-center justify-between mb-1.5">

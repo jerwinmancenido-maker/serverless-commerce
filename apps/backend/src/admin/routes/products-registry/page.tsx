@@ -120,14 +120,14 @@ export const ProductsRegistryPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
+      <div className="p-1.5 sm:p-6 w-full min-h-screen">
         <SovereignPageSkeleton cards={4} rows={6} />
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-y-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
+    <div className="flex flex-col gap-y-4 p-1.5 sm:p-6 pb-12 w-full min-h-screen">
       {/* 1. Header & Eyebrow */}
       <PageHeader
         eyebrowText="Commercial Catalog · Master Compound Directory"
@@ -263,7 +263,7 @@ export const ProductsRegistryPage: React.FC = () => {
         />
 
         {/* Inline Search */}
-        <div className="relative w-full sm:w-72">
+        <div className="relative w-full sm:w-64">
           <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400" />
           <Input
             type="search"

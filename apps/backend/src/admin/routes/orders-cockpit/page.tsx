@@ -169,7 +169,7 @@ export const OrdersCockpitPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-3.5 sm:px-6 w-full min-h-screen">
+    <div className="flex flex-col gap-y-4 pb-12 pt-4 px-1 sm:px-6 w-full min-h-screen">
       {/* 1. Header with Eyebrow, Badges, and Action Suite */}
       <PageHeader
         eyebrowText="Commercial Operations · Order Fulfillment"
@@ -240,7 +240,7 @@ export const OrdersCockpitPage = () => {
 
       {/* 4. Single-Row Tab Bar Strip with Inline Search */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+        <div className="flex overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap items-center gap-1.5 pb-1 sm:pb-0">
           {[
             { id: "all", label: "All Orders", count: kpis.total },
             { id: "pack_ready", label: "Pack Ready", count: kpis.packReady },

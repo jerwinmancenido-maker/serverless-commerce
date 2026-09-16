@@ -522,7 +522,7 @@ export const OrderCockpitDetailRoute = () => {
   const trackingNumber = cleanJntWaybill(waybillNumber)
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-6 px-3.5 sm:px-6 pt-4 pb-12 max-w-7xl mx-auto w-full min-h-screen">
+    <div className="flex flex-col gap-4 sm:gap-6 p-2 sm:p-6 max-w-7xl mx-auto w-full min-h-screen">
       {/* 1. Top Executive Navigation & Header */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -756,7 +756,7 @@ export const OrderCockpitDetailRoute = () => {
         <div className="lg:col-span-8 flex flex-col gap-6">
           {/* Card 1: Line Item & Formulation Breakdown */}
           <div className="rounded-xl border border-slate-200/80 bg-white shadow-2xs overflow-hidden divide-y divide-slate-100">
-            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/50">
+            <div className="flex flex-wrap items-center justify-between px-3.5 sm:px-6 py-3 sm:py-4 bg-slate-50/50 gap-2">
               <div className="flex items-center gap-2">
                 <Heading level="h2" className="text-sm font-bold text-slate-900">
                   Item &amp; Formulation Breakdown
@@ -765,7 +765,7 @@ export const OrderCockpitDetailRoute = () => {
                   {items.length} {items.length === 1 ? "Line Item" : "Line Items"}
                 </Badge>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2">
                 <Text size="xsmall" className="text-slate-400 font-mono hidden sm:inline">
                   Verify constituent reference vials before courier sealing
                 </Text>

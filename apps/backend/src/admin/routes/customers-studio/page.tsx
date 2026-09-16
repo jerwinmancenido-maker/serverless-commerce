@@ -287,7 +287,7 @@ export const CustomersStudioPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50/50 pb-20">
       {/* Studio Top Navigation Bar */}
-      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3.5 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-4">
           <button
             type="button"

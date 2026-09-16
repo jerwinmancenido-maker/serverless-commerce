@@ -96,14 +96,14 @@ export const ManualPaymentProofsPage: React.FC = () => {
 
   if (isLoading && proofs.length === 0) {
     return (
-      <div className="p-6">
+      <div className="p-1.5 sm:p-6">
         <SovereignPageSkeleton cards={4} rows={8} />
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-y-4 px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
+    <div className="flex flex-col gap-y-4 px-1.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
       {/* 1. Header & Eyebrow */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

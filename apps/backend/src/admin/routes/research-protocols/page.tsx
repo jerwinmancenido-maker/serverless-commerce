@@ -211,7 +211,7 @@ export const ResearchProtocolsPage = () => {
 
   if (protocolsQuery.isError) {
     return (
-      <div className="flex flex-col gap-y-4 pb-12 pt-4 px-6 w-full">
+      <div className="flex flex-col gap-y-4 pb-12 pt-4 px-1 sm:px-6 w-full">
         <PageHeader
           eyebrowText="Product Protocols · Research Operations"
           title="Product Protocols"
@@ -303,7 +303,7 @@ export const ResearchProtocolsPage = () => {
 
       {/* Syringe Stoichiometry Workbench (Collapsible Tool) */}
       {showCalculatorWorkbench && (
-        <div className="rounded-xl border border-blue-200/80 bg-blue-50/30 p-4 shadow-2xs">
+        <div className="w-full overflow-x-auto rounded-xl border border-blue-200/80 bg-blue-50/30 p-4 shadow-2xs">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Beaker className="size-4 text-blue-600" />
@@ -329,7 +329,7 @@ export const ResearchProtocolsPage = () => {
 
       {/* 4. Single-Row Tab Bar Strip with Inline Search */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+        <div className="flex overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap items-center gap-1.5 pb-1 sm:pb-0">
           {[
             { id: "all", label: "All Protocols", count: kpis.total },
             { id: "singles", label: "Single Peptides", count: kpis.singlePeptides },

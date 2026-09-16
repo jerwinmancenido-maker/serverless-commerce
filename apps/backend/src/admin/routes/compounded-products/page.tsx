@@ -849,14 +849,14 @@ const CompoundedProductsPage = () => {
 
   if (isLoadingReferenceData) {
     return (
-      <div className="sovereign-page px-3.5 sm:px-6 pt-4 pb-12 w-full min-h-screen">
+      <div className="sovereign-page px-1 sm:px-6 pt-3 sm:pt-6 pb-8 w-full min-h-screen">
         <SovereignPageSkeleton cards={2} rows={8} />
       </div>
     )
   }
 
   return (
-    <div className="sovereign-page px-3.5 sm:px-6 pt-4 pb-12 flex flex-col gap-y-6 w-full min-h-screen">
+    <div className="sovereign-page px-1 sm:px-6 pt-3 sm:pt-6 pb-8 flex flex-col gap-y-6 w-full min-h-screen">
       <PageHeader
         title="Create product"
         subtitle="Add product information, images, variations, and prices."
