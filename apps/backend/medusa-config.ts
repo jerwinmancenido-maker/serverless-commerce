@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "@medusajs/framework/utils"
 
 import { resolveSessionProjectConfig } from "./src/lib/session-config"
+import { resolveDatabaseDriverOptions } from "./src/lib/db-pool-config"
 import { routineAdminViteConfig } from "./src/lib/admin-navigation"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
@@ -8,6 +9,7 @@ loadEnv(process.env.NODE_ENV || "development", process.cwd())
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    databaseDriverOptions: resolveDatabaseDriverOptions(),
     ...resolveSessionProjectConfig(),
     http: {
       storeCors: process.env.STORE_CORS!,
