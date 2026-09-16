@@ -12,6 +12,7 @@ import {
   ArrowUpRightOnBox,
   Buildings,
   CheckCircle,
+  ChevronRight,
   DocumentText,
   MagnifyingGlass,
   Plus,
@@ -130,10 +131,10 @@ export const CustomersRegistryPage: React.FC = () => {
             </AdminBadge>
           </div>
           <Heading level="h1" className="text-xl font-bold tracking-tight text-slate-900 mt-1">
-            Customer &amp; Clinical Researcher Registry
+            Customer &amp; Research Registry
           </Heading>
           <Text size="small" className="text-slate-500 mt-0.5">
-            Institutional researcher accounts, verified physician credentials, and repeat research procurement history.
+            Institutional researcher accounts, verified institutional credentials, and repeat research procurement history.
           </Text>
         </div>
 
@@ -159,7 +160,7 @@ export const CustomersRegistryPage: React.FC = () => {
       <AdminTelemetryNotice
         icon={<ShieldCheck className="size-4 text-indigo-600" />}
         title="B2B Researcher Accounts & Identity Vault Active"
-        description="Clinical accounts, institutional tax identification, and verified medical credentials. PII is encrypted and partitioned strictly per DPA 2012 compliance standards."
+        description="Institutional accounts, BIR tax identification, and verified research credentials. PII is encrypted and partitioned strictly per DPA 2012 compliance standards."
         statusText="VAULT ENCRYPTED"
         variant="indigo"
         actionLabel="Agreements Audit"
@@ -277,60 +278,58 @@ export const CustomersRegistryPage: React.FC = () => {
             })
 
             return (
-              <AdminListRowCard
+              <Link
                 key={customer.id}
-                icon={customer.has_account ? <User className="size-4 text-blue-600" /> : <Users className="size-4 text-slate-500" />}
-                title={displayName}
-                subtitle={
-                  <span className="flex items-center gap-1.5 flex-wrap">
-                    <span className="font-mono text-slate-600">{customer.email}</span>
-                    {companyName && (
-                      <>
-                        <span className="text-slate-300">·</span>
-                        <span className="text-slate-700 font-medium">{companyName}</span>
-                      </>
-                    )}
-                  </span>
-                }
-                badge={
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
-                        customer.has_account
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          : "bg-slate-100 text-slate-600 border-slate-200"
-                      }`}
-                    >
-                      {customer.has_account ? "Registered" : "Guest"}
+                to={`/customers-studio?id=${customer.id}`}
+                className="block no-underline group focus:outline-hidden"
+              >
+                <AdminListRowCard
+                  icon={customer.has_account ? <User className="size-4 text-blue-600" /> : <Users className="size-4 text-slate-500" />}
+                  className="cursor-pointer group-hover:border-slate-300 group-hover:shadow-xs transition-all"
+                  title={
+                    <span className="group-hover:text-blue-600 transition-colors">
+                      {displayName}
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">
-                      Joined {createdFormatted}
+                  }
+                  subtitle={
+                    <span className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-mono text-slate-600">{customer.email}</span>
+                      {companyName && (
+                        <>
+                          <span className="text-slate-300">·</span>
+                          <span className="text-slate-700 font-medium">{companyName}</span>
+                        </>
+                      )}
                     </span>
-                  </div>
-                }
-                actions={
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="small"
-                      variant="secondary"
-                      className="h-7 px-2.5 text-xs font-semibold"
-                      onClick={() => navigate(`/customers-studio?id=${customer.id}`)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      asChild
-                      size="small"
-                      variant="secondary"
-                      className="h-7 px-2.5 text-xs font-semibold text-blue-600 hover:text-blue-700"
-                    >
-                      <Link to={`/customers-studio?id=${customer.id}`}>
-                        Passport ↗
-                      </Link>
-                    </Button>
-                  </div>
-                }
-              />
+                  }
+                  badge={
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                          customer.has_account
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            : "bg-slate-100 text-slate-600 border-slate-200"
+                        }`}
+                      >
+                        {customer.has_account ? "Registered" : "Guest"}
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-400">
+                        Joined {createdFormatted}
+                      </span>
+                    </div>
+                  }
+                  statusPill={
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] font-semibold text-slate-500 group-hover:text-blue-600 transition-colors hidden sm:inline">
+                        Buyer Passport
+                      </span>
+                      <div className="size-7 rounded-lg border border-slate-200/80 bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50 transition-all ml-1">
+                        <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                    </div>
+                  }
+                />
+              </Link>
             )
           })
         )}
@@ -359,8 +358,8 @@ export const CustomersRegistryPage: React.FC = () => {
               <span className="font-mono font-bold text-slate-900">ph-central (NCR)</span>
             </div>
             <div className="flex items-center justify-between py-1 text-slate-600">
-              <span>Medical License Verification:</span>
-              <span className="font-mono font-bold text-emerald-700">PRC Telemetry Active</span>
+              <span>Tax ID &amp; Facility Verification:</span>
+              <span className="font-mono font-bold text-emerald-700">BIR TIN Active</span>
             </div>
           </div>
         </AdminSuiteCard>

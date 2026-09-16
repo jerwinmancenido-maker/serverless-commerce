@@ -35,25 +35,33 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
     state.customerGroupIds.includes(g.id)
   )
 
-  const isPhysician = state.archetype === "clinical_physician"
-  const isLab = state.archetype === "research_lab"
+  const isLab = state.archetype === "institutional_lab" || state.archetype === "research_lab"
+  const isAnalytical = state.archetype === "analytical_center"
+  const isDirect = state.archetype === "direct_researcher" || state.archetype === "direct_client"
 
   const hasName = Boolean(state.firstName || state.lastName)
   const displayName = hasName
     ? `${state.firstName} ${state.lastName}`.trim()
-    : "Dr. Alexander Reyes, MD"
+    : "Verified Research Director"
 
-  const displayCompany = state.companyName || (isPhysician ? "St. Luke's Medical Aesthetic Clinic" : isLab ? "Apex BioAnalytics Research Lab" : "Private Research Practice")
+  const displayCompany = state.companyName || (isLab ? "BioAnalytics Research Facility" : isAnalytical ? "Analytical Testing Laboratory" : "Apex BioAnalytics Research Center")
 
   // Compliance completeness check
   const checks = [
     { label: "Full Identity", valid: Boolean(state.firstName && state.lastName) },
     { label: "Verified Email", valid: Boolean(state.email && state.email.includes("@")) },
-    { label: isPhysician ? "PRC MD License" : isLab ? "Facility Reg ID" : "Contact Phone", valid: isPhysician ? Boolean(state.prcLicenseNumber) : isLab ? Boolean(state.facilityRegistrationId) : Boolean(state.phone) },
+    { label: "BIR Tax ID (TIN)", valid: Boolean(state.prcLicenseNumber) },
     { label: "Delivery Address", valid: Boolean(state.shippingAddress.address1 && state.shippingAddress.city) },
   ]
   const passedChecks = checks.filter((c) => c.valid).length
   const complianceScore = Math.round((passedChecks / checks.length) * 100)
+
+  const archetypeBadgeText =
+    state.archetype === "institutional_lab" || state.archetype === "research_lab"
+      ? "Institutional Research Facility"
+      : state.archetype === "analytical_center"
+      ? "Analytical Testing Center"
+      : "Direct Analytical Researcher"
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -81,19 +89,15 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
           <div className="flex items-center gap-2">
             <span
               className={`text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm ${
-                isPhysician
-                  ? "bg-blue-500/20 text-blue-300 border border-blue-400/40"
-                  : isLab
+                isLab
                   ? "bg-purple-500/20 text-purple-300 border border-purple-400/40"
+                  : isAnalytical
+                  ? "bg-blue-500/20 text-blue-300 border border-blue-400/40"
                   : "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40"
               }`}
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              {isPhysician
-                ? "Licensed Physician (MD)"
-                : isLab
-                ? "Research Institution / Lab"
-                : "Direct Researcher"}
+              {archetypeBadgeText}
             </span>
           </div>
           <span className="text-[10px] font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
@@ -132,11 +136,11 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
           </div>
         </div>
 
-        {/* Verification & Clinical Accreditation Matrix */}
+        {/* Verification & Institutional Accreditation Matrix */}
         <div className="grid grid-cols-2 gap-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 mb-5 relative z-10 text-xs">
           <div>
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
-              PRC MD License
+              BIR Tax ID (TIN)
             </span>
             <span className="font-mono text-xs font-bold text-white mt-0.5 block">
               {state.prcLicenseNumber || "— Not Submitted"}
@@ -147,16 +151,16 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
               Facility / Lab Reg ID
             </span>
             <span className="font-mono text-xs font-bold text-white mt-0.5 block">
-              {state.facilityRegistrationId || "REG-2026-0001"}
+              {state.facilityRegistrationId || "FAC-2026-0001"}
             </span>
           </div>
           <div className="col-span-2 pt-2 border-t border-slate-700/50 flex items-center justify-between">
             <span className="text-[11px] text-slate-300 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-              <span>Clinical Onboarding Status</span>
+              <span>Institutional Clearance Status</span>
             </span>
             <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/40">
-              Verified Clinical Partner
+              Verified Research Partner
             </span>
           </div>
         </div>
@@ -185,7 +189,7 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
           </div>
         </div>
 
-        {/* Cold-Chain Shipping Destination */}
+        {/* Verified Delivery Destination */}
         <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 relative z-10">
           <div className="flex items-center justify-between text-xs mb-1">
             <span className="font-semibold text-slate-300 flex items-center gap-1">
@@ -193,7 +197,7 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
               Verified Shipping Route
             </span>
             <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
-              Cold-Chain Insulated
+              Standard Express (J&amp;T / Lalamove)
             </span>
           </div>
           <p className="text-xs text-slate-400 font-medium">
@@ -208,7 +212,7 @@ export const CustomerPassportPreview: React.FC<CustomerPassportPreviewProps> = (
               </>
             ) : (
               <span className="italic text-slate-600">
-                Clinic Address Pending · Default Metro Manila Hub
+                Facility Address Pending · Default Metro Manila Hub
               </span>
             )}
           </p>

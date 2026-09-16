@@ -7,7 +7,13 @@
  *   API:     POST /admin/customers · POST /admin/customers/:id
  */
 
-export type CustomerArchetype = "clinical_physician" | "research_lab" | "direct_client"
+export type CustomerArchetype =
+  | "institutional_lab"
+  | "analytical_center"
+  | "direct_researcher"
+  | "clinical_physician"
+  | "research_lab"
+  | "direct_client"
 
 export interface CustomerStudioState {
   archetype: CustomerArchetype

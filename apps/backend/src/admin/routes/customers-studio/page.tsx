@@ -30,7 +30,7 @@ import { sdk } from "../../lib/sdk"
 const DRAFT_STORAGE_KEY = "hacien_customer_studio_draft_v1"
 
 const DEFAULT_STATE: CustomerStudioState = {
-  archetype: "clinical_physician",
+  archetype: "institutional_lab",
   firstName: "",
   lastName: "",
   email: "",
@@ -92,7 +92,7 @@ export const CustomersStudioPage: React.FC = () => {
           if (c) {
             const defaultAddr = c.addresses?.[0] || {}
             setFormState({
-              archetype: (c.metadata?.archetype as any) || "clinical_physician",
+              archetype: (c.metadata?.archetype as any) || "institutional_lab",
               firstName: c.first_name || "",
               lastName: c.last_name || "",
               email: c.email || "",
@@ -154,42 +154,42 @@ export const CustomersStudioPage: React.FC = () => {
     toast.info("Draft reset to default.")
   }
 
-  // Preset quick fill for clinical testing
+  // Preset quick fill for institutional testing
   const applyPreset = (presetType: CustomerArchetype) => {
-    if (presetType === "clinical_physician") {
+    if (presetType === "institutional_lab" || presetType === "clinical_physician") {
       setFormState({
-        archetype: "clinical_physician",
-        firstName: "Alexander",
-        lastName: "Reyes",
-        email: "dr.reyes@stlukesaesthetics.ph",
-        phone: "+63 917 829 1102",
-        companyName: "St. Luke's Medical Aesthetic Clinic",
-        prcLicenseNumber: "PRC-MD-0129482",
-        facilityRegistrationId: "FAC-SLMC-082",
+        archetype: "institutional_lab",
+        firstName: "Lead",
+        lastName: "Investigator",
+        email: "procurement@apexbioresearch.ph",
+        phone: "+63 917 800 1102",
+        companyName: "Apex BioAnalytics Research Center",
+        prcLicenseNumber: "009-812-491-000",
+        facilityRegistrationId: "FAC-APEX-082",
         customerGroupIds: customerGroups.slice(0, 1).map((g) => g.id),
         shippingAddress: {
-          address1: "Suite 804, Medical Arts Building",
-          address2: "32nd Street, Bonifacio Global City",
+          address1: "Suite 804, Science Hub Tower 2",
+          address2: "Campus Ave, McKinley Hill",
           city: "Taguig",
           province: "Metro Manila",
           postalCode: "1634",
           countryCode: "ph",
         },
       })
-    } else if (presetType === "research_lab") {
+    } else if (presetType === "analytical_center" || presetType === "research_lab") {
       setFormState({
-        archetype: "research_lab",
-        firstName: "Clarissa",
-        lastName: "Mendoza",
-        email: "c.mendoza@apexbioresearch.edu.ph",
-        phone: "+63 920 918 4481",
-        companyName: "Apex BioAnalytics Research Center",
-        prcLicenseNumber: "PRC-CHM-008129",
-        facilityRegistrationId: "FAC-APEX-192",
+        archetype: "analytical_center",
+        firstName: "Principal",
+        lastName: "Analyst",
+        email: "standards@sovereign-reference.ph",
+        phone: "+63 920 900 4481",
+        companyName: "Sovereign Analytical Reference Laboratories",
+        prcLicenseNumber: "008-129-650-000",
+        facilityRegistrationId: "FAC-SOV-192",
         customerGroupIds: customerGroups.slice(1, 2).map((g) => g.id),
         shippingAddress: {
-          address1: "Biochemistry Annex, Science Hub Tower 2",
-          address2: "Campus Ave, McKinley Hill",
+          address1: "Biochemistry Annex, Science City",
+          address2: "West Valley Road",
           city: "Taguig",
           province: "Metro Manila",
           postalCode: "1630",
@@ -198,13 +198,13 @@ export const CustomersStudioPage: React.FC = () => {
       })
     } else {
       setFormState({
-        archetype: "direct_client",
-        firstName: "Marc",
-        lastName: "Villanueva",
-        email: "m.villanueva@biotech-innovations.ph",
-        phone: "+63 918 554 9912",
+        archetype: "direct_researcher",
+        firstName: "Senior",
+        lastName: "Researcher",
+        email: "research@invitro-studies.ph",
+        phone: "+63 918 500 9912",
         companyName: "Self-Directed Biomolecular Research",
-        prcLicenseNumber: "",
+        prcLicenseNumber: "004-912-330-000",
         facilityRegistrationId: "FAC-INDIV-419",
         customerGroupIds: [],
         shippingAddress: {
@@ -275,7 +275,7 @@ export const CustomersStudioPage: React.FC = () => {
         }
       }
 
-      navigate("/customers")
+      navigate("/customers-registry")
     } catch (err: any) {
       console.error("Failed to save customer:", err)
       toast.error(err.message || "Failed to save customer")
@@ -291,9 +291,9 @@ export const CustomersStudioPage: React.FC = () => {
         <div className="flex items-center gap-4">
           <button
             type="button"
-            onClick={() => navigate("/customers")}
+            onClick={() => navigate("/customers-registry")}
             className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all cursor-pointer"
-            title="Return to Customers"
+            title="Return to Customers Registry"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -313,7 +313,7 @@ export const CustomersStudioPage: React.FC = () => {
               )}
             </div>
             <p className="text-xs text-slate-500">
-              Autonomous Physician & Institutional Clinical Onboarding and Dynamic Tier Allocation.
+              Institutional Researcher Onboarding, B2B Accounts, and Dynamic Tier Allocation.
             </p>
           </div>
         </div>
@@ -359,24 +359,24 @@ export const CustomersStudioPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => applyPreset("clinical_physician")}
+                onClick={() => applyPreset("institutional_lab")}
                 className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-blue-600 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-md transition-all cursor-pointer"
               >
-                + St. Luke's MD
+                + Enterprise BioLab
               </button>
               <button
                 type="button"
-                onClick={() => applyPreset("research_lab")}
+                onClick={() => applyPreset("analytical_center")}
                 className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-purple-600 bg-slate-50 hover:bg-purple-50 border border-slate-200 rounded-md transition-all cursor-pointer"
               >
-                + Apex BioLab
+                + Calibration Center
               </button>
               <button
                 type="button"
-                onClick={() => applyPreset("direct_client")}
+                onClick={() => applyPreset("direct_researcher")}
                 className="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-emerald-600 bg-slate-50 hover:bg-emerald-50 border border-slate-200 rounded-md transition-all cursor-pointer"
               >
-                + Direct Researcher
+                + Independent Researcher
               </button>
             </div>
           </div>
@@ -384,19 +384,19 @@ export const CustomersStudioPage: React.FC = () => {
           {/* Card 1: Archetype ChoiceCards */}
           <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-xs">
             <h2 className="text-sm font-bold text-slate-900 mb-1">
-              1. Customer Archetype & Legal Standing
+              1. Customer Archetype &amp; Institutional Standing
             </h2>
             <p className="text-xs text-slate-500 mb-4">
-              Select the professional clinical domain for verification and catalog allocation.
+              Select the professional research domain for reference standard clearance and tier allocation.
             </p>
 
             <div className="grid grid-cols-3 gap-3">
-              {/* Option 1: Physician */}
+              {/* Option 1: Institutional Lab */}
               <button
                 type="button"
-                onClick={() => setFormState({ ...formState, archetype: "clinical_physician" })}
+                onClick={() => setFormState({ ...formState, archetype: "institutional_lab" })}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                  formState.archetype === "clinical_physician"
+                  formState.archetype === "institutional_lab" || formState.archetype === "clinical_physician"
                     ? "border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/20"
                     : "border-slate-200 hover:border-slate-300 bg-white"
                 }`}
@@ -405,22 +405,22 @@ export const CustomersStudioPage: React.FC = () => {
                   <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-3">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-bold text-slate-900">Clinical Physician</h3>
+                  <h3 className="text-xs font-bold text-slate-900">Institutional Research Facility</h3>
                   <p className="text-[11px] text-slate-500 mt-1 leading-normal">
-                    Licensed Medical Doctor with verified PRC credentials and clinic affiliation.
+                    Biotech lab, university research group, or clinical trial laboratory.
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-blue-600 mt-3 block">
-                  Prescription Compound Ready
+                  Analytical Reference Standard Clearance
                 </span>
               </button>
 
-              {/* Option 2: Research Lab */}
+              {/* Option 2: Analytical Center */}
               <button
                 type="button"
-                onClick={() => setFormState({ ...formState, archetype: "research_lab" })}
+                onClick={() => setFormState({ ...formState, archetype: "analytical_center" })}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                  formState.archetype === "research_lab"
+                  formState.archetype === "analytical_center" || formState.archetype === "research_lab"
                     ? "border-purple-500 bg-purple-50/50 ring-2 ring-purple-500/20"
                     : "border-slate-200 hover:border-slate-300 bg-white"
                 }`}
@@ -429,22 +429,22 @@ export const CustomersStudioPage: React.FC = () => {
                   <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mb-3">
                     <Buildings className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-bold text-slate-900">Research Institution</h3>
+                  <h3 className="text-xs font-bold text-slate-900">Analytical Testing Center</h3>
                   <p className="text-[11px] text-slate-500 mt-1 leading-normal">
-                    Biotech lab, university research group, or clinical trial laboratory.
+                    Chemical calibration facility, CRO organization, or independent testing lab.
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-purple-600 mt-3 block">
-                  Bulk Lyophilized Compounds
+                  Bulk Lyophilized Reference Standards
                 </span>
               </button>
 
-              {/* Option 3: Direct Client */}
+              {/* Option 3: Direct Researcher */}
               <button
                 type="button"
-                onClick={() => setFormState({ ...formState, archetype: "direct_client" })}
+                onClick={() => setFormState({ ...formState, archetype: "direct_researcher" })}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                  formState.archetype === "direct_client"
+                  formState.archetype === "direct_researcher" || formState.archetype === "direct_client"
                     ? "border-emerald-500 bg-emerald-50/50 ring-2 ring-emerald-500/20"
                     : "border-slate-200 hover:border-slate-300 bg-white"
                 }`}
@@ -453,9 +453,9 @@ export const CustomersStudioPage: React.FC = () => {
                   <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
                     <User className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-bold text-slate-900">Direct Researcher</h3>
+                  <h3 className="text-xs font-bold text-slate-900">Individual Analytical Researcher</h3>
                   <p className="text-[11px] text-slate-500 mt-1 leading-normal">
-                    Individual peptide researcher or biohacker ordering RUO standards.
+                    Independent laboratory researcher or scientific analyst ordering reference standards.
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-600 mt-3 block">
@@ -483,7 +483,7 @@ export const CustomersStudioPage: React.FC = () => {
                   type="text"
                   value={formState.firstName}
                   onChange={(e) => setFormState({ ...formState, firstName: e.target.value })}
-                  placeholder="e.g. Alexander"
+                  placeholder="e.g. Lead"
                   className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
@@ -496,20 +496,20 @@ export const CustomersStudioPage: React.FC = () => {
                   type="text"
                   value={formState.lastName}
                   onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
-                  placeholder="e.g. Reyes"
+                  placeholder="e.g. Researcher"
                   className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Professional Email Address <span className="text-rose-500">*</span>
+                  Institutional Email Address <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="email"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  placeholder="e.g. dr.reyes@clinic.ph"
+                  placeholder="e.g. research@institution.ph"
                   className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
@@ -529,50 +529,50 @@ export const CustomersStudioPage: React.FC = () => {
 
               <div className="col-span-2">
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Practice / Clinic / Institution Name
+                  Institution / Laboratory / Facility Name
                 </label>
                 <input
                   type="text"
                   value={formState.companyName}
                   onChange={(e) => setFormState({ ...formState, companyName: e.target.value })}
-                  placeholder="e.g. St. Luke's Medical Aesthetic Clinic"
+                  placeholder="e.g. Apex BioAnalytics Research Center"
                   className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
             </div>
           </div>
 
-          {/* Card 3: Professional Accreditation & Facility Verification */}
+          {/* Card 3: Institutional Tax Identification & Facility Verification */}
           <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-sm font-bold text-slate-900">
-                3. Professional Medical Accreditation & Clinical Verification
+                3. Institutional Tax Identification &amp; Facility Verification
               </h2>
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                Verified Clinical Partner
+                Verified Research Account
               </span>
             </div>
             <p className="text-xs text-slate-500 mb-4">
-              Professional credential verification and clinical facility registration for B2B compound access.
+              Institutional credentials and research facility registration for B2B analytical reference standard procurement.
             </p>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  PRC Medical License Number
+                  BIR Tax Identification Number (TIN)
                 </label>
                 <input
                   type="text"
                   value={formState.prcLicenseNumber || ""}
                   onChange={(e) => setFormState({ ...formState, prcLicenseNumber: e.target.value })}
-                  placeholder="PRC-MD-XXXXXXX"
+                  placeholder="000-000-000-000"
                   className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-mono"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Clinical Facility / Laboratory Registration ID
+                  Research Facility / Laboratory ID
                 </label>
                 <input
                   type="text"
@@ -590,15 +590,15 @@ export const CustomersStudioPage: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-900">
-                      Verified Clinical Protocol Access
+                      Verified Research Reference Standard Clearance
                     </h4>
                     <p className="text-[11px] text-slate-500">
-                      Accredited partner status unlocks specialized lyophilized formulations and cold-chain hospital shipping routes.
+                      Accredited institutional partner status unlocks specialized analytical reference formulations, priority batch release, and dispatch tracking.
                     </p>
                   </div>
                 </div>
                 <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
-                  Accredited Status Active
+                  Research Standard Approved
                 </span>
               </div>
             </div>
@@ -653,18 +653,18 @@ export const CustomersStudioPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Card 5: Cold-Chain Shipping Destination */}
+          {/* Card 5: Default Delivery Destination */}
           <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-sm font-bold text-slate-900">
-                5. Default Cold-Chain Delivery Destination
+                5. Default Delivery Destination
               </h2>
               <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                Metro Manila Hub & Provincial
+                Metro Manila Hub &amp; Provincial
               </span>
             </div>
             <p className="text-xs text-slate-500 mb-4">
-              Registered clinic or facility receiving address for temperature-controlled parcels.
+              Registered clinic or facility receiving address for courier parcel delivery.
             </p>
 
             <div className="grid grid-cols-2 gap-4">
