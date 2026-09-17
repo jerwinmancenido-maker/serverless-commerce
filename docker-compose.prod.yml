@@ -1,0 +1,122 @@
+name: pepstack-commerce-production
+
+services:
+  backend-api:
+    image: ghcr.io/pepstack/backend:v1.0.0-prod-release
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: pepstack-backend-api
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-9000}:9000"
+    environment:
+      - NODE_ENV=production
+      - MEDUSA_WORKER_MODE=server
+      - PORT=9000
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_PREFIX=${REDIS_PREFIX:-pepstack:}
+      - JWT_SECRET=${JWT_SECRET}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - SESSION_COOKIE_NAME=${SESSION_COOKIE_NAME:-pepstack.admin.sid}
+      - SESSION_TTL_MS=${SESSION_TTL_MS:-2592000000}
+      - STORE_CORS=${STORE_CORS}
+      - ADMIN_CORS=${ADMIN_CORS}
+      - AUTH_CORS=${AUTH_CORS}
+      - DB_POOL_MIN=${DB_POOL_MIN:-2}
+      - DB_POOL_MAX=${DB_POOL_MAX:-20}
+      - DB_POOL_IDLE_TIMEOUT=${DB_POOL_IDLE_TIMEOUT:-30000}
+      - DB_POOL_CONN_TIMEOUT=${DB_POOL_CONN_TIMEOUT:-5000}
+      - DATABASE_SSL=${DATABASE_SSL:-false}
+      - MANUAL_QR_DISPLAY_NAME=${MANUAL_QR_DISPLAY_NAME:-MariBank InstaPay}
+      - MANUAL_QR_INSTRUCTIONS=${MANUAL_QR_INSTRUCTIONS}
+      - MANUAL_QR_IMAGE_URL=${MANUAL_QR_IMAGE_URL}
+      - MANUAL_QR_EXPIRES_IN_MINUTES=${MANUAL_QR_EXPIRES_IN_MINUTES:-1440}
+      - JNT_DEFAULT_SHIPPING_AMOUNT=${JNT_DEFAULT_SHIPPING_AMOUNT:-150}
+      - MEDUSA_FF_RBAC=${MEDUSA_FF_RBAC:-true}
+      - SUPPORT_ALLOW_UNSCANNED_ATTACHMENTS=${SUPPORT_ALLOW_UNSCANNED_ATTACHMENTS:-false}
+      - RESEARCH_TRACKING_CUSTOMER_API_ENABLED=${RESEARCH_TRACKING_CUSTOMER_API_ENABLED:-false}
+    volumes:
+      - backend-uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - pepstack-network
+
+  backend-worker:
+    image: ghcr.io/pepstack/backend:v1.0.0-prod-release
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: pepstack-backend-worker
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - MEDUSA_WORKER_MODE=worker
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_PREFIX=${REDIS_PREFIX:-pepstack:}
+      - JWT_SECRET=${JWT_SECRET}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - DB_POOL_MIN=${DB_POOL_MIN:-2}
+      - DB_POOL_MAX=${DB_POOL_MAX:-20}
+      - DB_POOL_IDLE_TIMEOUT=${DB_POOL_IDLE_TIMEOUT:-30000}
+      - DB_POOL_CONN_TIMEOUT=${DB_POOL_CONN_TIMEOUT:-5000}
+      - DATABASE_SSL=${DATABASE_SSL:-false}
+      - MEDUSA_FF_RBAC=${MEDUSA_FF_RBAC:-true}
+      - SUPPORT_ALLOW_UNSCANNED_ATTACHMENTS=${SUPPORT_ALLOW_UNSCANNED_ATTACHMENTS:-false}
+      - RESEARCH_TRACKING_CUSTOMER_API_ENABLED=${RESEARCH_TRACKING_CUSTOMER_API_ENABLED:-false}
+    depends_on:
+      backend-api:
+        condition: service_healthy
+    volumes:
+      - backend-uploads:/app/uploads
+    networks:
+      - pepstack-network
+
+  storefront:
+    image: ghcr.io/pepstack/storefront:v1.0.0-prod-release
+    build:
+      context: ./apps/storefront
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_MEDUSA_BACKEND_URL=${NEXT_PUBLIC_MEDUSA_BACKEND_URL}
+        - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+        - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+    container_name: pepstack-storefront
+    restart: unless-stopped
+    ports:
+      - "${STOREFRONT_PORT:-8000}:8000"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_MEDUSA_BACKEND_URL=${NEXT_PUBLIC_MEDUSA_BACKEND_URL}
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+      - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+      - NEXT_PUBLIC_DEFAULT_REGION=${NEXT_PUBLIC_DEFAULT_REGION:-ph}
+      - NEXT_PUBLIC_STRIPE_KEY=${NEXT_PUBLIC_STRIPE_KEY:-}
+    depends_on:
+      backend-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - pepstack-network
+
+volumes:
+  backend-uploads:
+    name: pepstack-backend-uploads
+
+networks:
+  pepstack-network:
+    driver: bridge
