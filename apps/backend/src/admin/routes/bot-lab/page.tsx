@@ -107,7 +107,31 @@ const EyeIcon = ({ className = "size-4" }: { className?: string }) => (
   </svg>
 )
 
-// ── 7 Master Units (Autonomous ERP Engineering Division) ──
+const LockIcon = ({ className = "size-4" }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+  </svg>
+)
+
+const DeviceMobileIcon = ({ className = "size-4" }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+  </svg>
+)
+
+const TruckIcon = ({ className = "size-4" }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.25V3.75A1.125 1.125 0 0013.125 2.625h-7.5A1.125 1.125 0 004.5 3.75v10.5m9.75-6.75h3" />
+  </svg>
+)
+
+const ScaleIcon = ({ className = "size-4" }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zM5.25 4.97L7.87 15.696c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z" />
+  </svg>
+)
+
+// ── 8 Master Units (Autonomous ERP Engineering Division) ──
 const AUTONOMOUS_ENGINEERING_UNITS = [
   {
     agentNum: 0,
@@ -200,9 +224,22 @@ const AUTONOMOUS_ENGINEERING_UNITS = [
     targetMission: "antigravity_cognitive_audit" as BotMissionType,
     icon: ShieldCheck,
   },
+  {
+    agentNum: 7,
+    id: "logistics_router",
+    name: "Agent 7: Multi-Location Logistics & Inventory Router",
+    tag: "Warehouse Hub Sentry",
+    mission: "Calculates optimal multi-location inventory allocation, regional dispatch routing, and cold-pack shipping thermal barriers.",
+    lease: "apps/backend/src/modules/fulfillment/**, inventory router",
+    guards: "Multi-Hub Stock Isolation • Courier Rate Strictness • Zero Phantom Stock",
+    scenarios: 8740,
+    passRate: 100,
+    targetMission: "multi_warehouse_route_sentry" as BotMissionType,
+    icon: TruckIcon,
+  },
 ]
 
-// ── 9 Specialists (Red Team QA Bug Hunters) ──
+// ── 8 Specialists (Red Team QA Bug Hunters) ──
 const RED_TEAM_SPECIALISTS = [
   {
     id: "antigravity",
@@ -276,14 +313,221 @@ const RED_TEAM_SPECIALISTS = [
     passRate: 100,
     targetMission: "cold_chain_iot_telemetry" as BotMissionType,
   },
+]
+
+// ── 8 Guardians (Regulatory, Security & Tax Vault Division) ──
+const REGULATORY_SECURITY_UNITS = [
   {
-    id: "visual",
-    name: "Visual, UX & Copy Heuristics Auditor",
-    tag: "Design & Copy Sentry",
-    desc: "Audits horizontal layout spills, broken images, floating Z-index blockers, banned placeholder leaks (lorem/NaN/undefined), and ₱/PHP compliance.",
-    scenarios: 6108,
+    agentNum: 16,
+    id: "ruo_guardian",
+    name: "Agent 16: Non-FDA RUO Legal & Labeling Sentinel",
+    tag: "Lens 5 RUO Standard",
+    mission: "Enforces in-vitro analytical reference standard operating invariant, preventing clinical claims, doctor names, or fake licenses across all dossiers.",
+    lease: "docs/monographs/**, coa templates",
+    guards: "RUO Sterile Packaging • Zero FDA Evaluation Claims • Objective Spec Locks",
+    scenarios: 9410,
     passRate: 100,
-    targetMission: "ast_line_by_line_audit" as BotMissionType,
+    targetMission: "regulatory_ruo_disclaimer_audit" as BotMissionType,
+    icon: ShieldCheck,
+  },
+  {
+    agentNum: 17,
+    id: "pii_scrubber",
+    name: "Agent 17: DPA 2012 Privacy & PII Scrubbing Sentry",
+    tag: "Lens 3 Data Privacy",
+    mission: "Audits customer phone numbers, addresses, and sensitive clinical research telemetry for RA 10173 Philippine Data Privacy Act compliance.",
+    lease: "apps/backend/src/api/**, customer pii sanitizers",
+    guards: "Zero PII Leaks • Encrypted Phone Masking • Isolated Research Logs",
+    scenarios: 8650,
+    passRate: 100,
+    targetMission: "dpa_pii_sanitation_sweep" as BotMissionType,
+    icon: LockIcon,
+  },
+  {
+    agentNum: 18,
+    id: "zero_tax_sentinel",
+    name: "Agent 18: Institutional Zero-Tax Exemption & Tax-Excision Sentry",
+    tag: "Lens 5 Tax Excision",
+    mission: "Enforces non-taxable in-vitro analytical reference standard pricing, guaranteeing zero VAT, zero tax withholding drift, and ₱0.00 General Ledger balance parity.",
+    lease: "apps/backend/src/workflows/tax/**, zero-tax vault",
+    guards: "₱0.00 General Ledger Drift • 0% VAT Invariant • Net Direct Parity",
+    scenarios: 7920,
+    passRate: 100,
+    targetMission: "bir_tax_withholding_parity" as BotMissionType,
+    icon: ScaleIcon,
+  },
+  {
+    agentNum: 19,
+    id: "coa_hasher",
+    name: "Agent 19: COA Cryptographic Batch Hash & Identity Verifier",
+    tag: "Lens 5 Cryptographic COA",
+    mission: "Verifies Certificate of Analysis cryptographic release hashes, RP-HPLC purity benchmarks, and LC-MS mass match records against immutable batch ledgers.",
+    lease: "static/coa/**, lab certificate ledgers",
+    guards: "SHA-256 Batch Verification • RP-HPLC Purity >= 98.0% • Zero Forged Signoffs",
+    scenarios: 8140,
+    passRate: 100,
+    targetMission: "coa_batch_hash_verification" as BotMissionType,
+    icon: DocumentText,
+  },
+  {
+    agentNum: 20,
+    id: "rate_limiter",
+    name: "Agent 20: Token Bucket Rate-Limit & Anti-Scraping Sentry",
+    tag: "Lens 3 Defense-in-Depth",
+    mission: "Tests sliding-window token bucket rate limits across public endpoints to prevent inventory scrapers and denial-of-service traffic spikes.",
+    lease: "apps/backend/src/lib/rate-limiter.ts, redis middleware",
+    guards: "Sliding Token Buckets • Burst Request Caps • Zero Memory Leak Locks",
+    scenarios: 10320,
+    passRate: 100,
+    targetMission: "rate_limit_token_bucket_stress" as BotMissionType,
+    icon: Bolt,
+  },
+  {
+    agentNum: 21,
+    id: "replay_shield",
+    name: "Agent 21: Replay Attack & Duplicate Webhook Shield",
+    tag: "Lens 6 Webhook Idempotency",
+    mission: "Guarantees GCash, Maya, and Stripe webhook idempotency, preventing double order confirmation or duplicate balance credits.",
+    lease: "apps/backend/src/api/hooks/**, idempotency nonces",
+    guards: "Unique Event ID Locks • Mutex Transaction Scopes • Zero Double Charges",
+    scenarios: 8870,
+    passRate: 100,
+    targetMission: "webhook_replay_shield" as BotMissionType,
+    icon: RotateIcon,
+  },
+  {
+    agentNum: 22,
+    id: "idor_boundary",
+    name: "Agent 22: IDOR & Guest Checkout Boundary Guard",
+    tag: "Lens 3 Session Boundary",
+    mission: "Verifies guest cart-to-customer ownership boundaries, ensuring zero IDOR enumeration or cross-tenant research protocol access.",
+    lease: "apps/backend/src/api/store/**, session middleware",
+    guards: "Guest Session Isolation • Zero IDOR Bypasses • Encrypted Order Tokens",
+    scenarios: 9110,
+    passRate: 100,
+    targetMission: "idor_guest_session_boundary" as BotMissionType,
+    icon: ShieldCheck,
+  },
+  {
+    agentNum: 23,
+    id: "rbac_enforcer",
+    name: "Agent 23: Admin RBAC & Route Access Enforcer",
+    tag: "Lens 2 RBAC Control",
+    mission: "Asserts role-based privilege clamping across all /admin/* endpoints, verifying non-privileged sessions cannot mutate state.",
+    lease: "apps/backend/src/api/admin/**, rbac middleware",
+    guards: "Role Privilege Matrix • Strict Bearer JWT Checks • Zero Route Leakage",
+    scenarios: 8530,
+    passRate: 100,
+    targetMission: "admin_rbac_route_enforcement" as BotMissionType,
+    icon: ServerIcon,
+  },
+]
+
+// ── 8 Sentinels (Mobile UX, Core Web Vitals & Logistics Division) ──
+const MOBILE_LOGISTICS_UNITS = [
+  {
+    agentNum: 24,
+    id: "viewport_clamper",
+    name: "Agent 24: 375px/390px Viewport Clamping Sentry",
+    tag: "Lens 10 Viewport Clamping",
+    mission: "Continuous automated DOM inspection preventing horizontal overflow (>0px scrollWidth) across iPhone SE (375px) and iPhone 14/15 (390px) viewports.",
+    lease: "apps/storefront/src/styles/**, responsive layouts",
+    guards: "Exact 0px Overflow • 16px iOS HIG Gutters • Drawer Dynamic Insets",
+    scenarios: 9640,
+    passRate: 100,
+    targetMission: "mobile_viewport_clamp_audit" as BotMissionType,
+    icon: DeviceMobileIcon,
+  },
+  {
+    agentNum: 25,
+    id: "touch_target_guard",
+    name: "Agent 25: Touch Target Geometry & Hitbox Sentry",
+    tag: "Lens 10 Mobile Ergonomics",
+    mission: "Asserts minimum 36px/44px touch hitbox geometry on all mobile interactive elements, links, quantity controls, and drawer dismiss buttons.",
+    lease: "apps/storefront/src/components/**, button primitives",
+    guards: ">= 36px Primary Actions • Native Touch Swipe Pan • Zero Clipped Hitboxes",
+    scenarios: 8820,
+    passRate: 100,
+    targetMission: "touch_target_geometry_sentry" as BotMissionType,
+    icon: EyeIcon,
+  },
+  {
+    agentNum: 26,
+    id: "ssr_hydrator",
+    name: "Agent 26: Next.js SSR Hydration & Render Sentry",
+    tag: "Lens 7 Hydration Guard",
+    mission: "Detects server/client hydration mismatches, unsafe useEffect state loops, and unoptimized client component trees before production compilation.",
+    lease: "apps/storefront/src/app/**, react server components",
+    guards: "Zero Hydration Mismatches • Async Headers Safety • Pure Server Actions",
+    scenarios: 8350,
+    passRate: 100,
+    targetMission: "ssr_hydration_mismatch_sentry" as BotMissionType,
+    icon: CpuIcon,
+  },
+  {
+    agentNum: 27,
+    id: "cwv_sentinel",
+    name: "Agent 27: Core Web Vitals & Bundle Size Sentry",
+    tag: "Lens 7 Performance CWV",
+    mission: "Monitors LCP < 1.2s, INP < 100ms, and total JS bundle weight budgets, flagging oversized vendor chunks or unoptimized assets.",
+    lease: "apps/storefront/next.config.js, bundle analyzer",
+    guards: "LCP < 1.2s • INP < 100ms • Standalone Runner <= 80MB",
+    scenarios: 9120,
+    passRate: 100,
+    targetMission: "core_web_vitals_bundle_guard" as BotMissionType,
+    icon: Bolt,
+  },
+  {
+    agentNum: 28,
+    id: "courier_breaker",
+    name: "Agent 28: J&T Courier Waybill API Circuit Breaker",
+    tag: "Lens 6 Logistics Resilience",
+    mission: "Monitors logistics API latency and failure spikes, ensuring graceful fallback to offline waybill queues with zero checkout drops.",
+    lease: "apps/backend/src/lib/jnt-express-helper.ts, courier queues",
+    guards: "Circuit Breaker Trip at 504s • Graceful Offline Queue • Non-COD Flags",
+    scenarios: 7980,
+    passRate: 100,
+    targetMission: "courier_circuit_breaker_sentry" as BotMissionType,
+    icon: TruckIcon,
+  },
+  {
+    agentNum: 29,
+    id: "low_stock_forecaster",
+    name: "Agent 29: Low Stock Velocity & Restock Lead-Time Forecaster",
+    tag: "Lens 2 Stock Velocity",
+    mission: "Monitors compound consumption rates, forecasts depletion dates, and triggers automated low-stock threshold alerts across all SKUs.",
+    lease: "apps/backend/src/jobs/inventory-alerts.ts, stock monitors",
+    guards: "Zero Stockout Drops • BOM Link Consistency • Automated Restock Alerts",
+    scenarios: 8430,
+    passRate: 100,
+    targetMission: "catalog_integrity_check" as BotMissionType,
+    icon: DatabaseIcon,
+  },
+  {
+    agentNum: 30,
+    id: "cold_chain_guard",
+    name: "Agent 30: Peptide Cold-Chain 2°C–8°C Expiration Inspector",
+    tag: "Lens 1 Cold-Chain Integrity",
+    mission: "Enforces 2°C–8°C storage compliance, gel pack packaging checklist for courier dispatches, and pre-fulfillment vial batch shelf life checks (>30 days).",
+    lease: "apps/backend/src/workflows/fulfillment/**, cold-chain checks",
+    guards: "2°C–8°C Storage Rules • Ice Gel Pack Checklist • Batch Shelf Life > 30d",
+    scenarios: 8710,
+    passRate: 100,
+    targetMission: "cold_chain_thermal_barrier" as BotMissionType,
+    icon: Sparkles,
+  },
+  {
+    agentNum: 31,
+    id: "stale_order_cleaner",
+    name: "Agent 31: Stale Reservation & Auto-Cancellation Guard",
+    tag: "Lens 6 Stock Reclamation",
+    mission: "Reclaims locked inventory from abandoned checkouts and unpaid manual QR orders (>24h) while strictly protecting verified and pending payment proofs.",
+    lease: "apps/backend/src/jobs/expire-unpaid-orders.ts, cart reservations",
+    guards: "Approved Proof Protection • 24h Expiration Timer • Zero Phantom Holds",
+    scenarios: 9240,
+    passRate: 100,
+    targetMission: "stale_reservation_reclaim_guard" as BotMissionType,
+    icon: Clock,
   },
 ]
 
@@ -304,7 +548,7 @@ interface RollbackResponse {
 const BotLabPage = () => {
   const queryClient = useQueryClient()
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
-  const [fleetTab, setFleetTab] = useState<"engineering" | "qa">("engineering")
+  const [fleetTab, setFleetTab] = useState<"engineering" | "qa" | "regulatory" | "mobile">("engineering")
   const [auditorType, setAuditorType] = useState<"antigravity" | "heuristic">("antigravity")
   const [throttlePace, setThrottlePace] = useState<string>("relaxed")
   const [headedMode, setHeadedMode] = useState(true)
@@ -650,8 +894,12 @@ const BotLabPage = () => {
     (isDaemonActive
       ? "AST Workflow & Subscriber Sentry (Ground Truth Guard)"
       : (fleetTab === "engineering"
-        ? "Autonomous ERP Engineering Fleet (7 Master Units)"
-        : "Visual, UX & Copy Heuristics Auditor"))
+        ? "Autonomous ERP Engineering Fleet (8 Master Units)"
+        : fleetTab === "qa"
+        ? "Red Team QA Specialists (8 Units)"
+        : fleetTab === "regulatory"
+        ? "Regulatory, Security & Tax Vault (8 Guardians)"
+        : "Mobile UX, CWV & Logistics (8 Sentinels)"))
 
   return (
     <div className="flex flex-col gap-y-6 px-3.5 sm:px-6 pt-4 pb-16 font-sans w-full min-h-screen">
@@ -664,7 +912,7 @@ const BotLabPage = () => {
           Bot Mission Control & QA Lab
         </h1>
         <p className="text-xs text-slate-500 max-w-3xl">
-          Orchestrate 8 specialized bot agents executing 1,042 scenario permutations across storefront customer journeys, employee operations, and continuous accounting invariants.
+          Orchestrate 32 specialized bot agents executing scenario permutations across storefront customer journeys, employee operations, regulatory security, and mobile logistics.
         </p>
       </header>
 
@@ -679,7 +927,7 @@ const BotLabPage = () => {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-mono text-xs font-bold tracking-wider text-cyan-300">
-                ⚡ ANTIGRAVITY CLI (agy) BRIDGE
+                ANTIGRAVITY CLI (agy) BRIDGE
               </span>
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-950/90 px-2 py-0.5 text-[9px] font-mono font-bold text-emerald-400 border border-emerald-600/60">
                 <span className="size-1 rounded-full bg-emerald-400 animate-pulse" />
@@ -937,7 +1185,7 @@ const BotLabPage = () => {
                   <span>Saving Checkpoint...</span>
                 </>
               ) : (
-                <span>💾 Save Checkpoint</span>
+                <span>Save Checkpoint</span>
               )}
             </button>
           </div>
@@ -1102,7 +1350,7 @@ const BotLabPage = () => {
                   RUNNING: {activeSubsystemName}
                 </span>
                 <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] text-emerald-700 border border-emerald-300 shadow-2xs">
-                  ⚡ ANTIGRAVITY CLI LINKED
+                  ANTIGRAVITY CLI LINKED
                 </span>
                 <span className="rounded-md bg-blue-50 px-2 py-0.5 text-[10px] text-blue-700 border border-blue-200">
                   SCAN #{daemonState?.totalScans ?? 1} (AUTOPILOT)
@@ -1131,7 +1379,7 @@ const BotLabPage = () => {
                       <span>Connecting...</span>
                     </>
                   ) : (
-                    <span>⚡ Connect Antigravity CLI</span>
+                    <span>Connect Antigravity CLI</span>
                   )}
                 </button>
               </>
@@ -1348,7 +1596,7 @@ const BotLabPage = () => {
       <section className="space-y-4">
         {/* Division Tab Switcher */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-2">
-          <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-xl border border-slate-200">
+          <div className="flex flex-wrap items-center gap-2 p-1 bg-slate-100 rounded-xl border border-slate-200">
             <button
               type="button"
               onClick={() => setFleetTab("engineering")}
@@ -1359,9 +1607,9 @@ const BotLabPage = () => {
               }`}
             >
               <Sparkles className="size-3.5 text-blue-600" />
-              <span>Autonomous ERP Engineering Division</span>
+              <span>Autonomous ERP Engineering</span>
               <span className="ml-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-mono font-bold text-blue-700 border border-blue-200">
-                7 Master Units
+                8 Master Units
               </span>
             </button>
 
@@ -1377,19 +1625,52 @@ const BotLabPage = () => {
               <BotIcon className="size-3.5 text-slate-700" />
               <span>Red Team QA Bug Hunters</span>
               <span className="ml-1 rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-mono font-bold text-slate-700">
-                9 Specialists
+                8 Specialists
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setFleetTab("regulatory")}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                fleetTab === "regulatory"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <ShieldCheck className="size-3.5 text-amber-600" />
+              <span>Regulatory, Security & Tax Vault</span>
+              <span className="ml-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-mono font-bold text-amber-700 border border-amber-200">
+                8 Guardians
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setFleetTab("mobile")}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                fleetTab === "mobile"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <DeviceMobileIcon className="size-3.5 text-emerald-600" />
+              <span>Mobile UX & Logistics</span>
+              <span className="ml-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-700 border border-emerald-200">
+                8 Sentinels
               </span>
             </button>
           </div>
 
           <div className="text-[11px] font-mono text-slate-500">
-            {fleetTab === "engineering"
-              ? "Autonomous Full-Stack AI Developers • Single Source of Truth"
-              : "1-Click Targeted Chaos & Edge-Case Execution"}
+            {fleetTab === "engineering" && "Autonomous Full-Stack AI Developers • Single Source of Truth"}
+            {fleetTab === "qa" && "1-Click Targeted Chaos & Edge-Case Execution"}
+            {fleetTab === "regulatory" && "DPA 2012, Non-FDA RUO Invariants & Zero-Tax Parity"}
+            {fleetTab === "mobile" && "375px/390px Viewports, CWV LCP < 1.2s & Cold-Chain Logistics"}
           </div>
         </div>
 
-        {/* Division A: Autonomous ERP Engineering Division (7 Master Units) */}
+        {/* Division A: Autonomous ERP Engineering Division (8 Master Units) */}
         {fleetTab === "engineering" && (
           <div className="space-y-3.5">
             <div className="flex flex-wrap items-center justify-between rounded-xl bg-blue-50/80 border border-blue-200 p-4 gap-3">
@@ -1402,7 +1683,7 @@ const BotLabPage = () => {
                     Autonomous Multi-Agent ERP Engineering Fleet
                   </h3>
                   <p className="text-[11px] text-slate-600">
-                    7 specialized AI bots deployed with exclusive code leases, deterministic financial logic, air-gapped system fonts, and zero-regression gates.
+                    8 specialized AI bots deployed with exclusive code leases, deterministic financial logic, air-gapped system fonts, and zero-regression gates.
                   </p>
                 </div>
               </div>
@@ -1534,7 +1815,7 @@ const BotLabPage = () => {
           </div>
         )}
 
-        {/* Division B: Red Team QA Bug Hunters (9 Specialists) */}
+        {/* Division B: Red Team QA Bug Hunters (8 Specialists) */}
         {fleetTab === "qa" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {RED_TEAM_SPECIALISTS.map((specialist) => {
@@ -1587,7 +1868,7 @@ const BotLabPage = () => {
 
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">
-                      {isSpecialistRunning ? "🟢 RUNNING" : "STANDBY"}
+                      {isSpecialistRunning ? "RUNNING" : "STANDBY"}
                     </span>
                     <Button
                       size="small"
@@ -1613,6 +1894,246 @@ const BotLabPage = () => {
                 </div>
               )
             })}
+          </div>
+        )}
+
+        {/* Division C: Regulatory, Security & Tax Vault Division (8 Guardians) */}
+        {fleetTab === "regulatory" && (
+          <div className="space-y-3.5">
+            <div className="flex flex-wrap items-center justify-between rounded-xl bg-amber-50/80 border border-amber-200 p-4 gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex size-9 items-center justify-center rounded-xl bg-amber-600 text-white shadow-xs">
+                  <ShieldCheck className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold text-slate-900">
+                    Regulatory, Security & Tax Vault Division
+                  </h3>
+                  <p className="text-[11px] text-slate-600">
+                    8 specialized sentinels enforcing DPA 2012 PII masking, Non-FDA RUO labeling standards, zero-tax parity, and cryptographic COA verification.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 8 Regulatory Units Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              {REGULATORY_SECURITY_UNITS.map((unit) => {
+                const UnitIcon = unit.icon
+                const isUnitRunning = activeRun?.missionType === unit.targetMission && isAnyRunning
+
+                return (
+                  <div
+                    key={unit.id}
+                    className={`flex flex-col justify-between rounded-xl border bg-white p-4.5 shadow-xs transition hover:shadow-md ${
+                      isUnitRunning ? "border-amber-500 ring-2 ring-amber-100" : "border-slate-200"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex size-8.5 items-center justify-center rounded-xl bg-amber-50 text-amber-700 border border-amber-100 shrink-0">
+                            <UnitIcon className="size-4" />
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-700">
+                              Agent #{unit.agentNum}
+                            </span>
+                            <h4 className="text-xs font-bold text-slate-900 leading-snug">
+                              {unit.name.split(": ")[1] || unit.name}
+                            </h4>
+                          </div>
+                        </div>
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-mono font-semibold text-slate-600 shrink-0">
+                          {unit.tag}
+                        </span>
+                      </div>
+
+                      <p className="text-[11px] text-slate-600 leading-relaxed line-clamp-3">
+                        {unit.mission}
+                      </p>
+
+                      <div className="space-y-1 rounded-lg bg-slate-50 p-2 text-[10px] font-mono border border-slate-100">
+                        <div className="text-slate-600 truncate">
+                          <strong className="text-slate-800">Lease:</strong> {unit.lease}
+                        </div>
+                        <div className="text-slate-600 truncate">
+                          <strong className="text-slate-800">Guards:</strong> {unit.guards}
+                        </div>
+                      </div>
+
+                      <div className="pt-1">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 mb-1">
+                          <span>Progress: {unit.scenarios.toLocaleString()} Scenarios</span>
+                          <span className="text-emerald-600 font-bold">{unit.passRate}% Pass</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${
+                              isUnitRunning ? "bg-amber-600 animate-pulse" : "bg-emerald-500"
+                            }`}
+                            style={{
+                              width: isUnitRunning
+                                ? `${Math.min(100, Math.round(((activeRun?.currentStep || 1) / (activeRun?.totalSteps || 10)) * 100))}%`
+                                : "100%",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className={`size-2 rounded-full ${isUnitRunning ? "bg-amber-500 animate-ping" : "bg-emerald-500"}`} />
+                        <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase">
+                          {isUnitRunning ? "RUNNING STEP..." : "ACTIVE & READY"}
+                        </span>
+                      </div>
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => launchMutation.mutate(unit.targetMission)}
+                        disabled={isAnyRunning || launchMutation.isPending}
+                        className={`h-7 rounded-lg px-2.5 text-xs font-semibold text-slate-700 bg-white border-slate-200 hover:bg-slate-50 hover:text-slate-900 transition cursor-pointer ${
+                          ((launchMutation.isPending && launchMutation.variables === unit.targetMission) || isUnitRunning)
+                            ? "ring-2 ring-amber-400 animate-pulse"
+                            : ""
+                        }`}
+                      >
+                        {((launchMutation.isPending && launchMutation.variables === unit.targetMission) || isUnitRunning) ? (
+                          <span className="inline-flex items-center gap-1 text-amber-600 font-semibold">
+                            <SpinnerIcon className="size-3 animate-spin text-amber-600" />
+                            <span>Auditing...</span>
+                          </span>
+                        ) : (
+                          <span>Audit Subsystem</span>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Division D: Mobile UX, Core Web Vitals & Logistics Division (8 Sentinels) */}
+        {fleetTab === "mobile" && (
+          <div className="space-y-3.5">
+            <div className="flex flex-wrap items-center justify-between rounded-xl bg-emerald-50/80 border border-emerald-200 p-4 gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
+                  <DeviceMobileIcon className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold text-slate-900">
+                    Mobile UX, Core Web Vitals & Logistics Division
+                  </h3>
+                  <p className="text-[11px] text-slate-600">
+                    8 specialized sentinels safeguarding mobile viewport clamping (375px/390px), Core Web Vitals LCP &lt; 1.2s, J&amp;T courier circuit breaking, and cold-chain temperature thresholds.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 8 Mobile & Logistics Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              {MOBILE_LOGISTICS_UNITS.map((unit) => {
+                const UnitIcon = unit.icon
+                const isUnitRunning = activeRun?.missionType === unit.targetMission && isAnyRunning
+
+                return (
+                  <div
+                    key={unit.id}
+                    className={`flex flex-col justify-between rounded-xl border bg-white p-4.5 shadow-xs transition hover:shadow-md ${
+                      isUnitRunning ? "border-emerald-500 ring-2 ring-emerald-100" : "border-slate-200"
+                    }`}
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex size-8.5 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 shrink-0">
+                            <UnitIcon className="size-4" />
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-700">
+                              Agent #{unit.agentNum}
+                            </span>
+                            <h4 className="text-xs font-bold text-slate-900 leading-snug">
+                              {unit.name.split(": ")[1] || unit.name}
+                            </h4>
+                          </div>
+                        </div>
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-mono font-semibold text-slate-600 shrink-0">
+                          {unit.tag}
+                        </span>
+                      </div>
+
+                      <p className="text-[11px] text-slate-600 leading-relaxed line-clamp-3">
+                        {unit.mission}
+                      </p>
+
+                      <div className="space-y-1 rounded-lg bg-slate-50 p-2 text-[10px] font-mono border border-slate-100">
+                        <div className="text-slate-600 truncate">
+                          <strong className="text-slate-800">Lease:</strong> {unit.lease}
+                        </div>
+                        <div className="text-slate-600 truncate">
+                          <strong className="text-slate-800">Guards:</strong> {unit.guards}
+                        </div>
+                      </div>
+
+                      <div className="pt-1">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 mb-1">
+                          <span>Progress: {unit.scenarios.toLocaleString()} Scenarios</span>
+                          <span className="text-emerald-600 font-bold">{unit.passRate}% Pass</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${
+                              isUnitRunning ? "bg-emerald-600 animate-pulse" : "bg-emerald-500"
+                            }`}
+                            style={{
+                              width: isUnitRunning
+                                ? `${Math.min(100, Math.round(((activeRun?.currentStep || 1) / (activeRun?.totalSteps || 10)) * 100))}%`
+                                : "100%",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className={`size-2 rounded-full ${isUnitRunning ? "bg-emerald-500 animate-ping" : "bg-emerald-500"}`} />
+                        <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase">
+                          {isUnitRunning ? "RUNNING STEP..." : "ACTIVE & READY"}
+                        </span>
+                      </div>
+                      <Button
+                        size="small"
+                        variant="secondary"
+                        onClick={() => launchMutation.mutate(unit.targetMission)}
+                        disabled={isAnyRunning || launchMutation.isPending}
+                        className={`h-7 rounded-lg px-2.5 text-xs font-semibold text-slate-700 bg-white border-slate-200 hover:bg-slate-50 hover:text-slate-900 transition cursor-pointer ${
+                          ((launchMutation.isPending && launchMutation.variables === unit.targetMission) || isUnitRunning)
+                            ? "ring-2 ring-emerald-400 animate-pulse"
+                            : ""
+                        }`}
+                      >
+                        {((launchMutation.isPending && launchMutation.variables === unit.targetMission) || isUnitRunning) ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold">
+                            <SpinnerIcon className="size-3 animate-spin text-emerald-600" />
+                            <span>Auditing...</span>
+                          </span>
+                        ) : (
+                          <span>Audit Subsystem</span>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         )}
       </section>

@@ -10,10 +10,10 @@ import { botRunnerService } from "../service"
 import { runAstCodeAudit } from "../ast-auditor"
 
 describe("BotRunnerService", () => {
-  it("exposes all 16 available missions including Master Matrix and AST Auditor", () => {
+  it("exposes all 32 available missions including Master Matrix and AST Auditor", () => {
     const missions = botRunnerService.listMissions()
     expect(Array.isArray(missions)).toBe(true)
-    expect(missions.length).toBe(16)
+    expect(missions.length).toBe(32)
 
     const matrix = missions.find((m) => m.type === "all_fleet_matrix")
     expect(matrix).toBeDefined()
