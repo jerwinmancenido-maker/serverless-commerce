@@ -1707,7 +1707,7 @@ const BotLabPage = () => {
                 onClick={() => setShowFullDossier(false)}
                 className="text-xs font-mono text-slate-400 hover:text-white cursor-pointer"
               >
-                Close ✕
+                Close [X]
               </button>
             </div>
             <pre className="max-h-96 overflow-y-auto rounded-xl bg-slate-950 p-4 text-[11px] font-mono text-slate-300 border border-slate-800 whitespace-pre-wrap leading-relaxed shadow-inner">
