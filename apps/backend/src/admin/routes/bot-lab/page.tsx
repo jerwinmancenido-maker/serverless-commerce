@@ -1669,7 +1669,7 @@ const BotLabPage = () => {
                   onClick={() => setSearchQuery("")}
                   className="absolute right-2.5 top-2 text-[11px] font-bold text-slate-400 hover:text-slate-700"
                 >
-                  ✕
+                  [x]
                 </button>
               )}
             </div>
@@ -1781,7 +1781,7 @@ const BotLabPage = () => {
                       className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 transition cursor-pointer flex items-center gap-1"
                     >
                       <span>{isExpanded ? "Hide Contract" : "Inspect Invariant"}</span>
-                      <span>{isExpanded ? "▲" : "▼"}</span>
+                      <span>{isExpanded ? "[-]" : "[+]"}</span>
                     </button>
                   </div>
                 </div>
