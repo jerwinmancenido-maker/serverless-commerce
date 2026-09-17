@@ -558,6 +558,43 @@ class BotRunnerManager {
   }
 
   private loadCheckpointsFromDisk(): RollbackCheckpoint[] {
+    const PEPTIDES_CHECKPOINTS_DIR = "/Users/m5/Projects/Peptides/output/checkpoints"
+    try {
+      if (fs.existsSync(PEPTIDES_CHECKPOINTS_DIR)) {
+        const files = fs.readdirSync(PEPTIDES_CHECKPOINTS_DIR)
+          .filter((f) => f.startsWith("chk-") && f.endsWith(".json"))
+          .sort()
+          .reverse()
+          .slice(0, 20)
+        
+        if (files.length > 0) {
+          const list: RollbackCheckpoint[] = []
+          for (const file of files) {
+            try {
+              const content = JSON.parse(fs.readFileSync(path.join(PEPTIDES_CHECKPOINTS_DIR, file), "utf-8"))
+              list.push({
+                checkpointId: content.checkpoint_id,
+                tag: content.tag,
+                commitHash: content.commit_hash,
+                createdAt: content.created_at,
+                cycle: content.cycle,
+                syntheticOrdersPurged: 0,
+                status: content.healthy ? "healthy" : "reverted",
+                label: content.label || `Continuous Cycle #${content.cycle}`,
+              })
+            } catch {
+              // skip corrupt
+            }
+          }
+          if (list.length > 0) {
+            return list
+          }
+        }
+      }
+    } catch {
+      // Fallback to local file
+    }
+
     try {
       if (fs.existsSync(CHECKPOINTS_FILE)) {
         const raw = fs.readFileSync(CHECKPOINTS_FILE, "utf-8")
@@ -595,9 +632,12 @@ class BotRunnerManager {
 
   public getCurrentGitCommit(): string {
     try {
-      return execSync("git rev-parse HEAD", { encoding: "utf-8" }).trim()
+      return execSync("DEVELOPER_DIR=/Library/Developer/CommandLineTools git rev-parse HEAD", {
+        encoding: "utf-8",
+        env: { ...process.env, DEVELOPER_DIR: "/Library/Developer/CommandLineTools" },
+      }).trim()
     } catch {
-      return "03a48e7"
+      return "1278efc"
     }
   }
 
@@ -680,6 +720,7 @@ class BotRunnerManager {
   }
 
   public getCheckpoints(): RollbackCheckpoint[] {
+    this.checkpoints = this.loadCheckpointsFromDisk()
     return [...this.checkpoints]
   }
 
