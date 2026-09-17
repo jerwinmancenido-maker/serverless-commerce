@@ -7,7 +7,7 @@
  */
 
 import { sdk } from "@lib/config"
-import rawComparisonsData from "../../../../backend/data/peptide-comparisons.json" with { type: "json" }
+import rawComparisonsData from "./peptide-comparisons.json" with { type: "json" }
 import {
   type StoreResearchProtocol,
   retrieveResearchProtocol,

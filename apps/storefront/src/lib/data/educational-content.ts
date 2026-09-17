@@ -1,4 +1,4 @@
-import educationalDataRaw from "../../../../backend/data/peptide-educational-content.json" with { type: "json" }
+import educationalDataRaw from "./peptide-educational-content.json" with { type: "json" }
 
 export type GlossaryItem = {
   term: string

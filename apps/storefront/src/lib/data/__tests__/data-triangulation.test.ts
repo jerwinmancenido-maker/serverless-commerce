@@ -16,9 +16,9 @@ import assert from "node:assert/strict"
 import rawProtocols from "../compound-protocols/all-protocols.json" with { type: "json" }
 import rawCatalogProducts from "../../../../../backend/data/unified-catalog.json" with { type: "json" }
 import type { CompoundAnalyticalProtocol } from "../compound-protocols/types.ts"
-import rawComparisons from "../../../../../backend/data/peptide-comparisons.json" with { type: "json" }
-import rawEducational from "../../../../../backend/data/peptide-educational-content.json" with { type: "json" }
-import rawStackInteractions from "../../../../../backend/data/peptide-stack-interactions.json" with { type: "json" }
+import rawComparisons from "../peptide-comparisons.json" with { type: "json" }
+import rawEducational from "../peptide-educational-content.json" with { type: "json" }
+import rawStackInteractions from "../peptide-stack-interactions.json" with { type: "json" }
 import {
   RETATRUTIDE_PHASE2_SCHEDULE,
   RETATRUTIDE_PHASE3_SCHEDULE,

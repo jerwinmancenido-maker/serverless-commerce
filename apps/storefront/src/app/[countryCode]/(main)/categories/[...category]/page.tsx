@@ -33,33 +33,44 @@ type Props = {
 }
 
 export async function generateStaticParams() {
-  const product_categories = await listCategories()
+  try {
+    const product_categories = await listCategories()
 
-  if (!product_categories) {
+    if (!product_categories) {
+      return []
+    }
+
+    const countryCodes = await listRegions()
+      .then((regions: StoreRegion[]) =>
+        regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+      )
+      .catch(() => [])
+
+    const categoryHandles = product_categories.map(
+      (category: HttpTypes.StoreProductCategory) => category.handle
+    )
+    const allHandles = Array.from(
+      new Set([...categoryHandles, ...Object.keys(CATEGORY_HANDLE_ALIASES)])
+    )
+
+    const staticParams = countryCodes
+      ?.map((countryCode: string | undefined) =>
+        allHandles.map((handle: string) => ({
+          countryCode,
+          category: [handle],
+        }))
+      )
+      .flat()
+
+    return staticParams || []
+  } catch (error) {
+    console.warn(
+      `Failed to generate static paths for categories: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }.`
+    )
     return []
   }
-
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-  )
-
-  const categoryHandles = product_categories.map(
-    (category: HttpTypes.StoreProductCategory) => category.handle
-  )
-  const allHandles = Array.from(
-    new Set([...categoryHandles, ...Object.keys(CATEGORY_HANDLE_ALIASES)])
-  )
-
-  const staticParams = countryCodes
-    ?.map((countryCode: string | undefined) =>
-      allHandles.map((handle: string) => ({
-        countryCode,
-        category: [handle],
-      }))
-    )
-    .flat()
-
-  return staticParams
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

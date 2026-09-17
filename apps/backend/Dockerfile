@@ -33,15 +33,15 @@ ENV PORT=9000
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 medusa
 
-COPY --from=builder /app/package*.json ./
-COPY --from=dependencies /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/.medusa ./.medusa
-COPY --from=builder /app/medusa-config.ts ./
-COPY --from=builder /app/static ./static
+COPY --chown=medusa:nodejs --from=builder /app/package*.json ./
+COPY --chown=medusa:nodejs --from=dependencies /app/node_modules ./node_modules
+COPY --chown=medusa:nodejs --from=builder /app/dist ./dist
+COPY --chown=medusa:nodejs --from=builder /app/.medusa ./.medusa
+COPY --chown=medusa:nodejs --from=builder /app/medusa-config.ts ./
+COPY --chown=medusa:nodejs --from=builder /app/static ./static
 
 # Ensure upload/cache permissions
-RUN mkdir -p /app/uploads && chown -R medusa:nodejs /app
+RUN mkdir -p /app/uploads && chown medusa:nodejs /app/uploads
 
 USER medusa
 EXPOSE 9000

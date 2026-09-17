@@ -1,0 +1,3038 @@
+[
+  {
+    "id": "01M220XP27BCD7NR7VBZQ7BT6K",
+    "slug": "melanotan-1-vs-melanotan-2",
+    "title": "Melanotan I vs. Melanotan II: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard against Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard.",
+    "category": "Photoprotection & Sexual Health",
+    "compound_a": {
+      "id": "melanotan-1",
+      "tag": "Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard",
+      "name": "Melanotan I",
+      "handle": "melanotan-1",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Photoprotection & Sexual Health",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/15262693/",
+          "text": "Dorr et al. Effects of a superpotent melanotropic peptide in combination with solar UV radiation on tanning of the human skin. [PubMed PMID: 15262693]",
+          "number": 1
+        }
+      ],
+      "half_life": "~30 Minutes (Selective MC1R activation stimulates eumelanin synthesis for days without nausea)",
+      "primary_focus": "Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard",
+      "molecular_mass": "1646.85 g/mol",
+      "primary_target": "Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard",
+      "typical_cadence": "1x Daily (SubQ)",
+      "sequence_or_class": "Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH2",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "melanotan-2",
+      "tag": "Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard",
+      "name": "Melanotan II",
+      "handle": "melanotan-2",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Photoprotection & Sexual Health",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/11018622/",
+          "text": "Dorr et al. Evaluation of melanotan-II, a superpotent cyclic melanotropic peptide, in a pilot phase-I clinical study. [PubMed PMID: 11018622]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/17584130/",
+          "text": "Wessells et al. Synthetic melanotropic peptide initiates erections in men with psychogenic erectile dysfunction. [PubMed PMID: 17584130]",
+          "number": 2
+        }
+      ],
+      "half_life": "~1–2 Hours (Central MC3R/MC4R and peripheral MC1R activation with persistent multi-day effects)",
+      "primary_focus": "Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard",
+      "molecular_mass": "1024.18 g/mol",
+      "primary_target": "Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard",
+      "typical_cadence": "Every 2–3 Days (Pre-Bed SubQ)",
+      "sequence_or_class": "Ac-cyclo[Nle4, Asp5, D-Phe7, Lys10]alpha-MSH-(4-10)-NH2",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Melanotan I (Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard) alongside Melanotan II (Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard). While Melanotan I targets Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard, Melanotan II focuses on Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Receptor Selectivity Profile: Melanotan I functions as a linear, selective MC1R agonist for photoprotective eumelanin synthesis, whereas cyclic Melanotan II crosses the blood-brain barrier to trigger central MC3R/MC4R sexual arousal pathways.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard",
+        "compoundB_val": "Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard vs Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard",
+        "compoundA_val": "1646.85 g/mol (Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH2)",
+        "compoundB_val": "1024.18 g/mol (Ac-cyclo[Nle4, Asp5, D-Phe7, Lys10]alpha-MSH-(4-10)-NH2)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~30 Minutes (Selective MC1R activation stimulates eumelanin synthesis for days without nausea)",
+        "compoundB_val": "~1–2 Hours (Central MC3R/MC4R and peripheral MC1R activation with persistent multi-day effects)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Selective Melanocortin MC1R Agonist Eumelanin Photoprotection Standard",
+        "compoundB_val": "Non-Selective Cyclic Lactam Melanocortin Agonist Pigmentation & Libido Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (SubQ)",
+        "compoundB_val": "Every 2–3 Days (Pre-Bed SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15262693/",
+        "text": "Dorr et al. Effects of a superpotent melanotropic peptide in combination with solar UV radiation on tanning of the human skin. [PubMed PMID: 15262693]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/11018622/",
+        "text": "Dorr et al. Evaluation of melanotan-II, a superpotent cyclic melanotropic peptide, in a pilot phase-I clinical study. [PubMed PMID: 11018622]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/17584130/",
+        "text": "Wessells et al. Synthetic melanotropic peptide initiates erections in men with psychogenic erectile dysfunction. [PubMed PMID: 17584130]",
+        "number": 3
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.632Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.519Z",
+    "updated_at": "2026-09-09T03:13:16.633Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP26GVWN06Q05Z7BJ8XG",
+    "slug": "thymosin-alpha-1-vs-ll-37",
+    "title": "Thymosin Alpha-1 vs. LL-37: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard against Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard.",
+    "category": "Antimicrobial & Immune",
+    "compound_a": {
+      "id": "thymosin-alpha-1",
+      "tag": "Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard",
+      "name": "Thymosin Alpha-1",
+      "handle": "thymosin-alpha-1",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Antimicrobial & Immune",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20146312/",
+          "text": "Matteucci et al. Thymosin alpha 1 and cancer: personal experience and review of the literature. [PubMed PMID: 20146312]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/17466858/",
+          "text": "Garaci et al. Thymosin alpha 1 in the treatment of cancer: from bench to bedside. [PubMed PMID: 17466858]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2 Hours (Induces sustained transcription of TLR-7/9 and MHC Class I molecules for days)",
+      "primary_focus": "Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard",
+      "molecular_mass": "3108.3 g/mol",
+      "primary_target": "Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard",
+      "typical_cadence": "2x Weekly (e.g., Mon / Thu SubQ)",
+      "sequence_or_class": "Ac-Ser-Asp-Ala-Ala-Val-Asp-Thr-Ser-Ser-Glu-Ile-Thr-Thr-Lys-Asp-Leu-Lys-Glu-Lys-Lys-Glu-Val-Val-Glu-Glu-Ala-Glu-Asn",
+      "standard_dilution": "2.5 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "ll-37",
+      "tag": "Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard",
+      "name": "LL-37",
+      "handle": "ll-37",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Antimicrobial & Immune",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12782669/",
+          "text": "Koczulla et al. An angiogenic role for the human peptide antibiotic LL-37/hCAP-18. J Clin Invest. 2003. [PubMed PMID: 12782669]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18840508/",
+          "text": "Overhage et al. Human host defense peptide LL-37 prevents bacterial biofilm formation. Infect Immun. 2008. [PubMed PMID: 18840508]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2–3 Hours (Direct electrostatic pore formation in bacterial membranes and intracellular signaling)",
+      "primary_focus": "Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard",
+      "molecular_mass": "4492.27 g/mol",
+      "primary_target": "Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard",
+      "typical_cadence": "1x Daily (SubQ)",
+      "sequence_or_class": "Leu-Leu-Gly-Asp-Phe-Phe-Arg-Lys-Ser-Lys-Glu-Lys-Ile-Gly-Lys-Glu-Phe-Lys-Arg-Ile-Val-Gln-Arg-Ile-Lys-Asp-Phe-Leu-Arg-Asn-Leu-Val-Pro-Arg-Thr-Glu-Ser",
+      "standard_dilution": "2.5 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Thymosin Alpha-1 (Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard) alongside LL-37 (Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard). While Thymosin Alpha-1 targets Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard, LL-37 focuses on Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Adaptive Immunomodulation vs. Antimicrobial Membrane Lysis: Thymosin Alpha-1 promotes dendritic cell maturation and CD4+/CD8+ T-cell differentiation, while LL-37 exerts direct biophysical disruption of microbial membranes.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard",
+        "compoundB_val": "Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard vs Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard",
+        "compoundA_val": "3108.3 g/mol (Ac-Ser-Asp-Ala-Ala-Val-Asp-Thr-Ser-Ser-Glu-Ile-Thr-Thr-Lys-Asp-Leu-Lys-Glu-Lys-Lys-Glu-Val-Val-Glu-Glu-Ala-Glu-Asn)",
+        "compoundB_val": "4492.27 g/mol (Leu-Leu-Gly-Asp-Phe-Phe-Arg-Lys-Ser-Lys-Glu-Lys-Ile-Gly-Lys-Glu-Phe-Lys-Arg-Ile-Val-Gln-Arg-Ile-Lys-Asp-Phe-Leu-Arg-Asn-Leu-Val-Pro-Arg-Thr-Glu-Ser)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~2 Hours (Induces sustained transcription of TLR-7/9 and MHC Class I molecules for days)",
+        "compoundB_val": "~2–3 Hours (Direct electrostatic pore formation in bacterial membranes and intracellular signaling)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 5 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 5 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Synthetic 28-Amino Acid Thymic Peptide TLR9 & Cytotoxic T-Cell Modulator Standard",
+        "compoundB_val": "Human Cathelicidin Antimicrobial Peptide & Biofilm Disruption Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "2x Weekly (e.g., Mon / Thu SubQ)",
+        "compoundB_val": "1x Daily (SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20146312/",
+        "text": "Matteucci et al. Thymosin alpha 1 and cancer: personal experience and review of the literature. [PubMed PMID: 20146312]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/17466858/",
+        "text": "Garaci et al. Thymosin alpha 1 in the treatment of cancer: from bench to bedside. [PubMed PMID: 17466858]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/12782669/",
+        "text": "Koczulla et al. An angiogenic role for the human peptide antibiotic LL-37/hCAP-18. J Clin Invest. 2003. [PubMed PMID: 12782669]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18840508/",
+        "text": "Overhage et al. Human host defense peptide LL-37 prevents bacterial biofilm formation. Infect Immun. 2008. [PubMed PMID: 18840508]",
+        "number": 4
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.629Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.518Z",
+    "updated_at": "2026-09-09T03:13:16.630Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP25TJ6M0VVNPEDF568B",
+    "slug": "na-semax-amidate-vs-semax",
+    "title": "N-Acetyl Semax Amidate vs. Semax: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Acetylated & Amidated High-Stability Semax Analogue Standard against Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard.",
+    "category": "Cognitive & Neuroprotective",
+    "compound_a": {
+      "id": "na-semax-amidate",
+      "tag": "Acetylated & Amidated High-Stability Semax Analogue Standard",
+      "name": "N-Acetyl Semax Amidate",
+      "handle": "na-semax-amidate",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Cognitive & Neuroprotective",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16996037/",
+          "text": "Grivennikov et al. Semax analogues: metabolic stability and neurotrophin induction. [PubMed PMID: 16996037]",
+          "number": 1
+        }
+      ],
+      "half_life": "~2–4 Hours (Significantly extended enzymatic stability compared to native Semax)",
+      "primary_focus": "Acetylated & Amidated High-Stability Semax Analogue Standard",
+      "molecular_mass": "855.0 g/mol",
+      "primary_target": "Acetylated & Amidated High-Stability Semax Analogue Standard",
+      "typical_cadence": "1x Daily (Morning SubQ or Intranasal)",
+      "sequence_or_class": "Ac-Met-Glu-His-Phe-Pro-Gly-Pro-NH2",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "semax",
+      "tag": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+      "name": "Semax",
+      "handle": "semax",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Cognitive & Neuroprotective",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16996037/",
+          "text": "Grivennikov et al. Semax, an analog of ACTH(4-10) with cognitive effects, regulates BDNF and trkB expression in the rat hippocampus. [PubMed PMID: 16996037]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28255762/",
+          "text": "Medvedeva et al. Semax, an analog of ACTH((4-7)), regulates expression of immune-response genes in ischemic rat brain. [PubMed PMID: 28255762]",
+          "number": 2
+        }
+      ],
+      "half_life": "~30–60 Minutes (Rapid plasma clearance; induces persistent TrkB receptor & BDNF expression >24h)",
+      "primary_focus": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+      "molecular_mass": "813.92 g/mol",
+      "primary_target": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+      "typical_cadence": "1x to 2x Daily (Morning / Midday SubQ or Intranasal)",
+      "sequence_or_class": "Met-Glu-His-Phe-Pro-Gly-Pro (MEHFPGP)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ)"
+    },
+    "summary": "Evaluating N-Acetyl Semax Amidate (Acetylated & Amidated High-Stability Semax Analogue Standard) alongside Semax (Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard). While N-Acetyl Semax Amidate targets Acetylated & Amidated High-Stability Semax Analogue Standard, Semax focuses on Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Enhanced Bioavailability & BBB Permeance: N-terminal acetylation and C-terminal amidation in NA-Semax-Amidate drastically decrease carboxypeptidase degradation, allowing prolonged central nervous system half-life over standard Semax.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Acetylated & Amidated High-Stability Semax Analogue Standard",
+        "compoundB_val": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Acetylated & Amidated High-Stability Semax Analogue Standard vs Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+        "compoundA_val": "855.0 g/mol (Ac-Met-Glu-His-Phe-Pro-Gly-Pro-NH2)",
+        "compoundB_val": "813.92 g/mol (Met-Glu-His-Phe-Pro-Gly-Pro (MEHFPGP))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~2–4 Hours (Significantly extended enzymatic stability compared to native Semax)",
+        "compoundB_val": "~30–60 Minutes (Rapid plasma clearance; induces persistent TrkB receptor & BDNF expression >24h)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Acetylated & Amidated High-Stability Semax Analogue Standard",
+        "compoundB_val": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (Morning SubQ or Intranasal)",
+        "compoundB_val": "1x to 2x Daily (Morning / Midday SubQ or Intranasal)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16996037/",
+        "text": "Grivennikov et al. Semax analogues: metabolic stability and neurotrophin induction. [PubMed PMID: 16996037]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16996037/",
+        "text": "Grivennikov et al. Semax, an analog of ACTH(4-10) with cognitive effects, regulates BDNF and trkB expression in the rat hippocampus. [PubMed PMID: 16996037]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28255762/",
+        "text": "Medvedeva et al. Semax, an analog of ACTH((4-7)), regulates expression of immune-response genes in ischemic rat brain. [PubMed PMID: 28255762]",
+        "number": 3
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.627Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.517Z",
+    "updated_at": "2026-09-09T03:13:16.628Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP20AQ3RXNEBK7NS4BVX",
+    "slug": "semax-vs-selank",
+    "title": "Semax vs. Selank: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard against Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard.",
+    "category": "Cognitive & Neuroprotective",
+    "compound_a": {
+      "id": "semax",
+      "tag": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+      "name": "Semax",
+      "handle": "semax",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Cognitive & Neuroprotective",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16996037/",
+          "text": "Grivennikov et al. Semax, an analog of ACTH(4-10) with cognitive effects, regulates BDNF and trkB expression in the rat hippocampus. [PubMed PMID: 16996037]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28255762/",
+          "text": "Medvedeva et al. Semax, an analog of ACTH((4-7)), regulates expression of immune-response genes in ischemic rat brain. [PubMed PMID: 28255762]",
+          "number": 2
+        }
+      ],
+      "half_life": "~30–60 Minutes (Rapid plasma clearance; induces persistent TrkB receptor & BDNF expression >24h)",
+      "primary_focus": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+      "molecular_mass": "813.92 g/mol",
+      "primary_target": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+      "typical_cadence": "1x to 2x Daily (Morning / Midday SubQ or Intranasal)",
+      "sequence_or_class": "Met-Glu-His-Phe-Pro-Gly-Pro (MEHFPGP)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ)"
+    },
+    "compound_b": {
+      "id": "selank",
+      "tag": "Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard",
+      "name": "Selank",
+      "handle": "selank",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Cognitive & Neuroprotective",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/11550013/",
+          "text": "Kost et al. The inhibitory effect of Selank on enkephalin-degrading enzymes as a possible mechanism of its anxiolytic activity. [PubMed PMID: 11550013]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20919548/",
+          "text": "Semenova et al. Experimental optimization of learning and memory processes by selank. [PubMed PMID: 20919548]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2–3 Hours (Allosteric GABA-A modulation with continuous anxiolysis without sedative motor impairment)",
+      "primary_focus": "Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard",
+      "molecular_mass": "751.87 g/mol",
+      "primary_target": "Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard",
+      "typical_cadence": "1x to 2x Daily (SubQ or Intranasal)",
+      "sequence_or_class": "Thr-Lys-Pro-Arg-Pro-Gly-Pro (TKPRPGP)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Semax (Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard) alongside Selank (Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard). While Semax targets Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard, Selank focuses on Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Neuro-Restorative Equilibrium: Semax stimulates central BDNF/TrkB signaling for cognitive agility and neuroprotection, while Selank modulates GABAergic and enkephalin pathways to dampen anxiogenic stress markers.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+        "compoundB_val": "Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard vs Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard",
+        "compoundA_val": "813.92 g/mol (Met-Glu-His-Phe-Pro-Gly-Pro (MEHFPGP))",
+        "compoundB_val": "751.87 g/mol (Thr-Lys-Pro-Arg-Pro-Gly-Pro (TKPRPGP))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~30–60 Minutes (Rapid plasma clearance; induces persistent TrkB receptor & BDNF expression >24h)",
+        "compoundB_val": "~2–3 Hours (Allosteric GABA-A modulation with continuous anxiolysis without sedative motor impairment)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP or Deionized Saline (Intranasal/SubQ) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Heptapeptide (Met-Glu-His-Phe-Pro-Gly-Pro) ACTH 4-10 Neurotrophic Standard",
+        "compoundB_val": "Synthetic Tuftsin-Derived Heptapeptide Anxiolytic & Neuro-Immunomodulator Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x to 2x Daily (Morning / Midday SubQ or Intranasal)",
+        "compoundB_val": "1x to 2x Daily (SubQ or Intranasal)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16996037/",
+        "text": "Grivennikov et al. Semax, an analog of ACTH(4-10) with cognitive effects, regulates BDNF and trkB expression in the rat hippocampus. [PubMed PMID: 16996037]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28255762/",
+        "text": "Medvedeva et al. Semax, an analog of ACTH((4-7)), regulates expression of immune-response genes in ischemic rat brain. [PubMed PMID: 28255762]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/11550013/",
+        "text": "Kost et al. The inhibitory effect of Selank on enkephalin-degrading enzymes as a possible mechanism of its anxiolytic activity. [PubMed PMID: 11550013]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20919548/",
+        "text": "Semenova et al. Experimental optimization of learning and memory processes by selank. [PubMed PMID: 20919548]",
+        "number": 4
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.625Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.512Z",
+    "updated_at": "2026-09-09T03:13:16.626Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1Z1YD6NM0KKWCQQQKH",
+    "slug": "foxo4-dri-vs-epithalon",
+    "title": "FOXO4-DRI vs. Epithalon: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard against Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard.",
+    "category": "Mitochondrial & Cellular Longevity",
+    "compound_a": {
+      "id": "foxo4-dri",
+      "tag": "D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard",
+      "name": "FOXO4-DRI",
+      "handle": "foxo4-dri",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Mitochondrial & Cellular Longevity",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28340339/",
+          "text": "Baar et al. Targeted Apoptosis of Senescent Cells Restores Tissue Homeostasis in Response to Chemotoxicity and Aging (Cell). [PubMed PMID: 28340339]",
+          "number": 1
+        }
+      ],
+      "half_life": "~24–36 Hours (Retro-inverso D-amino acid backbone confers high protease resistance)",
+      "primary_focus": "D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard",
+      "molecular_mass": "5358.2 g/mol",
+      "primary_target": "D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard",
+      "typical_cadence": "3x Weekly (e.g., Mon / Wed / Fri SubQ)",
+      "sequence_or_class": "D-amino acid retro-inverso sequence of FOXO4 segment",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "epithalon",
+      "tag": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+      "name": "Epithalon",
+      "handle": "epithalon",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Mitochondrial & Cellular Longevity",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12937682/",
+          "text": "Khavinson et al. Epithalon peptide induces telomerase activity and telomere elongation in human somatic cells (Bulletin of Experimental Biology and Medicine). [PubMed PMID: 12937682]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/14501183/",
+          "text": "Anisimov et al. Effect of Epitalon on biomarkers of aging, life span and spontaneous tumor incidence in mice. [PubMed PMID: 14501183]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2–3 Hours (Direct epigenetic chromatin remodeling and telomerase reverse transcriptase activation)",
+      "primary_focus": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+      "molecular_mass": "390.35 g/mol",
+      "primary_target": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+      "typical_cadence": "1x Daily (Morning or Pre-Bed SubQ)",
+      "sequence_or_class": "Ala-Glu-Asp-Gly (AEDG)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating FOXO4-DRI (D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard) alongside Epithalon (Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard). While FOXO4-DRI targets D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard, Epithalon focuses on Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Senolytic Clearance vs. Telomere Protection: FOXO4-DRI disrupts the FOXO4-p53 complex to trigger apoptosis in senescent cells, while Epithalon preserves telomeric integrity in surrounding healthy progenitor populations.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard",
+        "compoundB_val": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard vs Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+        "compoundA_val": "5358.2 g/mol (D-amino acid retro-inverso sequence of FOXO4 segment)",
+        "compoundB_val": "390.35 g/mol (Ala-Glu-Asp-Gly (AEDG))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~24–36 Hours (Retro-inverso D-amino acid backbone confers high protease resistance)",
+        "compoundB_val": "~2–3 Hours (Direct epigenetic chromatin remodeling and telomerase reverse transcriptase activation)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "D-Retro-Inverso Peptide Disruptor of FOXO4-p53 Interaction Senolytic Standard",
+        "compoundB_val": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "3x Weekly (e.g., Mon / Wed / Fri SubQ)",
+        "compoundB_val": "1x Daily (Morning or Pre-Bed SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28340339/",
+        "text": "Baar et al. Targeted Apoptosis of Senescent Cells Restores Tissue Homeostasis in Response to Chemotoxicity and Aging (Cell). [PubMed PMID: 28340339]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/12937682/",
+        "text": "Khavinson et al. Epithalon peptide induces telomerase activity and telomere elongation in human somatic cells (Bulletin of Experimental Biology and Medicine). [PubMed PMID: 12937682]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/14501183/",
+        "text": "Anisimov et al. Effect of Epitalon on biomarkers of aging, life span and spontaneous tumor incidence in mice. [PubMed PMID: 14501183]",
+        "number": 3
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.622Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.511Z",
+    "updated_at": "2026-09-09T03:13:16.624Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1X2R8QNF7FW7AZS56J",
+    "slug": "mots-c-vs-ss-31",
+    "title": "MOTS-c vs. SS-31: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard against Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard.",
+    "category": "Mitochondrial & Cellular Longevity",
+    "compound_a": {
+      "id": "mots-c",
+      "tag": "Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard",
+      "name": "MOTS-c",
+      "handle": "mots-c",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Mitochondrial & Cellular Longevity",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25738459/",
+          "text": "Lee et al. The mitochondrial-derived peptide MOTS-c promotes metabolic homeostasis and prevents diet-induced obesity (Cell Metabolism). [PubMed PMID: 25738459]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33473109/",
+          "text": "Reynolds et al. MOTS-c is an exercise-induced mitochondrial-encoded regulator of age-dependent physical capacity and metabolic homeostasis (Nat Commun). [PubMed PMID: 33473109]",
+          "number": 2
+        }
+      ],
+      "half_life": "~4 Hours (Triggers durable downstream AMPK phosphorylation and GLUT4 translocation >24h)",
+      "primary_focus": "Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard",
+      "molecular_mass": "2174.62 g/mol",
+      "primary_target": "Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard",
+      "typical_cadence": "2x to 3x Weekly (Fasted SubQ or Intramuscular)",
+      "sequence_or_class": "Met-Arg-Trp-Gln-Glu-Met-Gly-Tyr-Ile-Phe-Tyr-Pro-Arg-Lys-Leu-Arg (MRWQEMGYIFYPRKLR)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "ss-31",
+      "tag": "Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard",
+      "name": "SS-31",
+      "handle": "ss-31",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Mitochondrial & Cellular Longevity",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24117165/",
+          "text": "Birk et al. First-in-class cardiolipin-protective compound as a therapeutic agent to restore mitochondrial bioenergetics (Br J Pharmacol). [PubMed PMID: 24117165]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35913044/",
+          "text": "Szeto et al. Structure-activity relationships of mitochondria-targeted tetrapeptide pharmacological compounds (J Med Chem). [PubMed PMID: 35913044]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2–4 Hours (Selectively concentrates in inner mitochondrial membrane bound to cardiolipin)",
+      "primary_focus": "Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard",
+      "molecular_mass": "639.8 g/mol",
+      "primary_target": "Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard",
+      "typical_cadence": "1x Daily (SubQ)",
+      "sequence_or_class": "D-Arg-Dmt-Lys-Phe-NH2 (where Dmt is 2',6'-dimethyltyrosine)",
+      "standard_dilution": "2.5 mL / 50 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating MOTS-c (Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard) alongside SS-31 (Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard). While MOTS-c targets Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard, SS-31 focuses on Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Mitochondrial Dual-Axis Synergy: SS-31 selectively binds cardiolipin to optimize inner mitochondrial membrane cristae and electron flux, while MOTS-c activates AMPK to govern systemic metabolic plasticity and glucose disposal.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard",
+        "compoundB_val": "Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard vs Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard",
+        "compoundA_val": "2174.62 g/mol (Met-Arg-Trp-Gln-Glu-Met-Gly-Tyr-Ile-Phe-Tyr-Pro-Arg-Lys-Leu-Arg (MRWQEMGYIFYPRKLR))",
+        "compoundB_val": "639.8 g/mol (D-Arg-Dmt-Lys-Phe-NH2 (where Dmt is 2',6'-dimethyltyrosine))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~4 Hours (Triggers durable downstream AMPK phosphorylation and GLUT4 translocation >24h)",
+        "compoundB_val": "~2–4 Hours (Selectively concentrates in inner mitochondrial membrane bound to cardiolipin)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 50 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Mitochondrial-Derived 16-AA Peptide Metabolic Homeostasis & AMPK Activation Standard",
+        "compoundB_val": "Cardiolipin-Targeting Mitochondrial Inner Membrane Restorative Tetra-Peptide Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "2x to 3x Weekly (Fasted SubQ or Intramuscular)",
+        "compoundB_val": "1x Daily (SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25738459/",
+        "text": "Lee et al. The mitochondrial-derived peptide MOTS-c promotes metabolic homeostasis and prevents diet-induced obesity (Cell Metabolism). [PubMed PMID: 25738459]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33473109/",
+        "text": "Reynolds et al. MOTS-c is an exercise-induced mitochondrial-encoded regulator of age-dependent physical capacity and metabolic homeostasis (Nat Commun). [PubMed PMID: 33473109]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/24117165/",
+        "text": "Birk et al. First-in-class cardiolipin-protective compound as a therapeutic agent to restore mitochondrial bioenergetics (Br J Pharmacol). [PubMed PMID: 24117165]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35913044/",
+        "text": "Szeto et al. Structure-activity relationships of mitochondria-targeted tetrapeptide pharmacological compounds (J Med Chem). [PubMed PMID: 35913044]",
+        "number": 4
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.620Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.509Z",
+    "updated_at": "2026-09-09T03:13:16.622Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1WY92PJ740K2BRQFYW",
+    "slug": "epithalon-vs-ghk-cu",
+    "title": "Epithalon vs. GHK-Cu: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard against Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard.",
+    "category": "Mitochondrial & Cellular Longevity",
+    "compound_a": {
+      "id": "epithalon",
+      "tag": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+      "name": "Epithalon",
+      "handle": "epithalon",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Mitochondrial & Cellular Longevity",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12937682/",
+          "text": "Khavinson et al. Epithalon peptide induces telomerase activity and telomere elongation in human somatic cells (Bulletin of Experimental Biology and Medicine). [PubMed PMID: 12937682]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/14501183/",
+          "text": "Anisimov et al. Effect of Epitalon on biomarkers of aging, life span and spontaneous tumor incidence in mice. [PubMed PMID: 14501183]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2–3 Hours (Direct epigenetic chromatin remodeling and telomerase reverse transcriptase activation)",
+      "primary_focus": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+      "molecular_mass": "390.35 g/mol",
+      "primary_target": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+      "typical_cadence": "1x Daily (Morning or Pre-Bed SubQ)",
+      "sequence_or_class": "Ala-Glu-Asp-Gly (AEDG)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "ghk-cu",
+      "tag": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+      "name": "GHK-Cu",
+      "handle": "ghk-cu",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29760773/",
+          "text": "Pickart et al. GHK-Cu: A copper peptide that protects against oxidative damage and stimulates stem cell regeneration. [PubMed PMID: 29760773]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25927873/",
+          "text": "Pickart et al. GHK peptide as a natural modulator of multiple cellular pathways in human health and anti-aging. [PubMed PMID: 25927873]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16029679/",
+          "text": "Maquart et al. In vivo stimulation of connective tissue accumulation by the tripeptide-copper complex glycyl-L-histidyl-L-lysine-Cu2+. [PubMed PMID: 16029679]",
+          "number": 3
+        }
+      ],
+      "half_life": "~1–2 Hours (Rapid systemic copper exchange; tissue extracellular retention ~48–72h)",
+      "primary_focus": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+      "molecular_mass": "403.92 g/mol",
+      "primary_target": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+      "typical_cadence": "1x Daily (or cyclical 30-day research blocks)",
+      "sequence_or_class": "[Cu2+]-Gly-His-Lys (Copper [2+] complex)",
+      "standard_dilution": "2.5 mL / 50 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Epithalon (Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard) alongside GHK-Cu (Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard). While Epithalon targets Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard, GHK-Cu focuses on Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Cellular Longevity & Gene Reset: Epithalon induces telomerase catalytic subunit (hTERT) transcription, complementing GHK-Cu's broad-spectrum reset of over 4,000 human genes toward youthful expression profiles.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+        "compoundB_val": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard vs Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+        "compoundA_val": "390.35 g/mol (Ala-Glu-Asp-Gly (AEDG))",
+        "compoundB_val": "403.92 g/mol ([Cu2+]-Gly-His-Lys (Copper [2+] complex))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~2–3 Hours (Direct epigenetic chromatin remodeling and telomerase reverse transcriptase activation)",
+        "compoundB_val": "~1–2 Hours (Rapid systemic copper exchange; tissue extracellular retention ~48–72h)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 50 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Synthetic Pineal Tetrapeptide (Ala-Glu-Asp-Gly) Telomerase & Chromatin Standard",
+        "compoundB_val": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (Morning or Pre-Bed SubQ)",
+        "compoundB_val": "1x Daily (or cyclical 30-day research blocks)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/12937682/",
+        "text": "Khavinson et al. Epithalon peptide induces telomerase activity and telomere elongation in human somatic cells (Bulletin of Experimental Biology and Medicine). [PubMed PMID: 12937682]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/14501183/",
+        "text": "Anisimov et al. Effect of Epitalon on biomarkers of aging, life span and spontaneous tumor incidence in mice. [PubMed PMID: 14501183]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29760773/",
+        "text": "Pickart et al. GHK-Cu: A copper peptide that protects against oxidative damage and stimulates stem cell regeneration. [PubMed PMID: 29760773]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25927873/",
+        "text": "Pickart et al. GHK peptide as a natural modulator of multiple cellular pathways in human health and anti-aging. [PubMed PMID: 25927873]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16029679/",
+        "text": "Maquart et al. In vivo stimulation of connective tissue accumulation by the tripeptide-copper complex glycyl-L-histidyl-L-lysine-Cu2+. [PubMed PMID: 16029679]",
+        "number": 5
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.618Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.508Z",
+    "updated_at": "2026-09-09T03:13:16.619Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1TY54P0PDJ96M7JCZQ",
+    "slug": "bpc-157-vs-kpv",
+    "title": "BPC-157 vs. KPV: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard against C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor.",
+    "category": "Tissue Repair & Healing",
+    "compound_a": {
+      "id": "bpc-157",
+      "tag": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "name": "BPC-157",
+      "handle": "bpc-157-vial",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/",
+          "text": "Sikiric et al. Brain-gut axis and pentadecapeptide BPC 157: Theoretical and practical implications in tissue repair. [PubMed PMID: 21030672]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20388954/",
+          "text": "Chang et al. Promoting effect of BPC 157 on tendon healing involves tendon outgrowth, cell survival, and cell migration. [PubMed PMID: 20388954]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27847966/",
+          "text": "Gwyer et al. Gastric pentadecapeptide BPC 157 accelerates musculoskeletal soft tissue healing. [PubMed PMID: 27847966]",
+          "number": 3
+        }
+      ],
+      "half_life": "~4–6 Hours (Systemic peptide stability; localized extracellular retention ~24h)",
+      "primary_focus": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "molecular_mass": "1419.55 g/mol",
+      "primary_target": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "typical_cadence": "1x Daily (or 250 mcg BID / Twice Daily in acute soft tissue trauma models)",
+      "sequence_or_class": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "kpv",
+      "tag": "C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor",
+      "name": "KPV",
+      "handle": "kpv",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12807987/",
+          "text": "Kannengiesser et al. Melanocortin alpha-MSH and its C-terminal tripeptide KPV attenuate NF-kappaB activation and gastrointestinal inflammation. [PubMed PMID: 12807987]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16788249/",
+          "text": "Land. KPV peptide: novel anti-inflammatory therapeutic approaches for inflammatory bowel disease. [PubMed PMID: 16788249]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20829871/",
+          "text": "Dalmasso et al. PepT1-mediated transport of the anti-inflammatory tripeptide KPV in intestinal epithelial cells. [PubMed PMID: 20829871]",
+          "number": 3
+        }
+      ],
+      "half_life": "~2–3 Hours (Direct local mucosal and cellular nuclear translocation)",
+      "primary_focus": "C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor",
+      "molecular_mass": "357.45 g/mol",
+      "primary_target": "C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor",
+      "typical_cadence": "1x Daily (SubQ, or mucosal application in barrier models)",
+      "sequence_or_class": "Lys-Pro-Val (C-terminal tripeptide of alpha-MSH)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating BPC-157 (Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard) alongside KPV (C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor). While BPC-157 targets Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard, KPV focuses on C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Vascular Healing vs. Mucosal Immunomodulation: BPC-157 accelerates granulation tissue formation, while KPV (Alpha-MSH C-terminal tripeptide) inhibits NF-κB nuclear translocation to quell acute mucosal and intestinal inflammation.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+        "compoundB_val": "C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard vs C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor",
+        "compoundA_val": "1419.55 g/mol (Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV))",
+        "compoundB_val": "357.45 g/mol (Lys-Pro-Val (C-terminal tripeptide of alpha-MSH))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~4–6 Hours (Systemic peptide stability; localized extracellular retention ~24h)",
+        "compoundB_val": "~2–3 Hours (Direct local mucosal and cellular nuclear translocation)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+        "compoundB_val": "C-Terminal alpha-MSH Tripeptide Nuclear NF-kappaB Translocation Inhibitor"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (or 250 mcg BID / Twice Daily in acute soft tissue trauma models)",
+        "compoundB_val": "1x Daily (SubQ, or mucosal application in barrier models)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/",
+        "text": "Sikiric et al. Brain-gut axis and pentadecapeptide BPC 157: Theoretical and practical implications in tissue repair. [PubMed PMID: 21030672]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20388954/",
+        "text": "Chang et al. Promoting effect of BPC 157 on tendon healing involves tendon outgrowth, cell survival, and cell migration. [PubMed PMID: 20388954]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27847966/",
+        "text": "Gwyer et al. Gastric pentadecapeptide BPC 157 accelerates musculoskeletal soft tissue healing. [PubMed PMID: 27847966]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/12807987/",
+        "text": "Kannengiesser et al. Melanocortin alpha-MSH and its C-terminal tripeptide KPV attenuate NF-kappaB activation and gastrointestinal inflammation. [PubMed PMID: 12807987]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16788249/",
+        "text": "Land. KPV peptide: novel anti-inflammatory therapeutic approaches for inflammatory bowel disease. [PubMed PMID: 16788249]",
+        "number": 5
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20829871/",
+        "text": "Dalmasso et al. PepT1-mediated transport of the anti-inflammatory tripeptide KPV in intestinal epithelial cells. [PubMed PMID: 20829871]",
+        "number": 6
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.615Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.506Z",
+    "updated_at": "2026-09-09T03:13:16.617Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1SZ3Y4KP205SXJVAMJ",
+    "slug": "bpc-157-vs-ghk-cu",
+    "title": "BPC-157 vs. GHK-Cu: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard against Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard.",
+    "category": "Tissue Repair & Healing",
+    "compound_a": {
+      "id": "bpc-157",
+      "tag": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "name": "BPC-157",
+      "handle": "bpc-157-vial",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/",
+          "text": "Sikiric et al. Brain-gut axis and pentadecapeptide BPC 157: Theoretical and practical implications in tissue repair. [PubMed PMID: 21030672]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20388954/",
+          "text": "Chang et al. Promoting effect of BPC 157 on tendon healing involves tendon outgrowth, cell survival, and cell migration. [PubMed PMID: 20388954]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27847966/",
+          "text": "Gwyer et al. Gastric pentadecapeptide BPC 157 accelerates musculoskeletal soft tissue healing. [PubMed PMID: 27847966]",
+          "number": 3
+        }
+      ],
+      "half_life": "~4–6 Hours (Systemic peptide stability; localized extracellular retention ~24h)",
+      "primary_focus": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "molecular_mass": "1419.55 g/mol",
+      "primary_target": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "typical_cadence": "1x Daily (or 250 mcg BID / Twice Daily in acute soft tissue trauma models)",
+      "sequence_or_class": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "ghk-cu",
+      "tag": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+      "name": "GHK-Cu",
+      "handle": "ghk-cu",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29760773/",
+          "text": "Pickart et al. GHK-Cu: A copper peptide that protects against oxidative damage and stimulates stem cell regeneration. [PubMed PMID: 29760773]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25927873/",
+          "text": "Pickart et al. GHK peptide as a natural modulator of multiple cellular pathways in human health and anti-aging. [PubMed PMID: 25927873]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16029679/",
+          "text": "Maquart et al. In vivo stimulation of connective tissue accumulation by the tripeptide-copper complex glycyl-L-histidyl-L-lysine-Cu2+. [PubMed PMID: 16029679]",
+          "number": 3
+        }
+      ],
+      "half_life": "~1–2 Hours (Rapid systemic copper exchange; tissue extracellular retention ~48–72h)",
+      "primary_focus": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+      "molecular_mass": "403.92 g/mol",
+      "primary_target": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+      "typical_cadence": "1x Daily (or cyclical 30-day research blocks)",
+      "sequence_or_class": "[Cu2+]-Gly-His-Lys (Copper [2+] complex)",
+      "standard_dilution": "2.5 mL / 50 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating BPC-157 (Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard) alongside GHK-Cu (Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard). While BPC-157 targets Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard, GHK-Cu focuses on Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Regenerative & Epigenetic Matrix: BPC-157 drives rapid localized microvascular angiogenesis, while GHK-Cu regulates decorin synthesis and rebalances matrix metalloproteinases for functional collagen architecture.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+        "compoundB_val": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard vs Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard",
+        "compoundA_val": "1419.55 g/mol (Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV))",
+        "compoundB_val": "403.92 g/mol ([Cu2+]-Gly-His-Lys (Copper [2+] complex))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~4–6 Hours (Systemic peptide stability; localized extracellular retention ~24h)",
+        "compoundB_val": "~1–2 Hours (Rapid systemic copper exchange; tissue extracellular retention ~48–72h)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 50 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+        "compoundB_val": "Copper Tripeptide Transcriptional Modulator & Matrix Reconstitution Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (or 250 mcg BID / Twice Daily in acute soft tissue trauma models)",
+        "compoundB_val": "1x Daily (or cyclical 30-day research blocks)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/",
+        "text": "Sikiric et al. Brain-gut axis and pentadecapeptide BPC 157: Theoretical and practical implications in tissue repair. [PubMed PMID: 21030672]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20388954/",
+        "text": "Chang et al. Promoting effect of BPC 157 on tendon healing involves tendon outgrowth, cell survival, and cell migration. [PubMed PMID: 20388954]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27847966/",
+        "text": "Gwyer et al. Gastric pentadecapeptide BPC 157 accelerates musculoskeletal soft tissue healing. [PubMed PMID: 27847966]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29760773/",
+        "text": "Pickart et al. GHK-Cu: A copper peptide that protects against oxidative damage and stimulates stem cell regeneration. [PubMed PMID: 29760773]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25927873/",
+        "text": "Pickart et al. GHK peptide as a natural modulator of multiple cellular pathways in human health and anti-aging. [PubMed PMID: 25927873]",
+        "number": 5
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16029679/",
+        "text": "Maquart et al. In vivo stimulation of connective tissue accumulation by the tripeptide-copper complex glycyl-L-histidyl-L-lysine-Cu2+. [PubMed PMID: 16029679]",
+        "number": 6
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.613Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.505Z",
+    "updated_at": "2026-09-09T03:13:16.614Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1R4C55Q8VAT2C3EQM2",
+    "slug": "mk-677-vs-ipamorelin",
+    "title": "MK-677 vs. Ipamorelin: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph against Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard.",
+    "category": "Growth Hormone Axis",
+    "compound_a": {
+      "id": "mk-677",
+      "tag": "Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph",
+      "name": "MK-677",
+      "handle": "mk-677",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Growth Hormone Axis",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9467534/",
+          "text": "Murphy et al. MK-677, an orally active growth hormone secretagogue, reverses diet-induced catabolism. [PubMed PMID: 9467534]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18981485/",
+          "text": "Nass et al. Effects of an oral ghrelin mimetic on body composition and clinical outcomes in healthy older adults (Ann Intern Med). [PubMed PMID: 18981485]",
+          "number": 2
+        }
+      ],
+      "half_life": "~24 Hours (Sustained continuous 24-hour IGF-1 elevation via once-daily administration)",
+      "primary_focus": "Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph",
+      "molecular_mass": "528.66 g/mol",
+      "primary_target": "Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph",
+      "typical_cadence": "1x Daily (Morning or Pre-Bed Oral Research Formulation)",
+      "sequence_or_class": "C27H36N4O5S (Mesylate salt)",
+      "standard_dilution": "30 mL / 750 mg",
+      "reconstitution_diluent": "Propylene Glycol / Polyethylene Glycol (PEG-400) Research Liquid Vehicle"
+    },
+    "compound_b": {
+      "id": "ipamorelin",
+      "tag": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+      "name": "Ipamorelin",
+      "handle": "ipamorelin",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Growth Hormone Axis",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9849822/",
+          "text": "Raun et al. Ipamorelin, the first selective growth hormone secretagogue. [PubMed PMID: 9849822]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9879640/",
+          "text": "Johansen et al. Pharmacokinetic evaluation of ipamorelin and other peptidyl growth hormone secretagogues. [PubMed PMID: 9879640]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2 Hours (Selective somatotropic pulsatility without desensitization)",
+      "primary_focus": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+      "molecular_mass": "711.85 g/mol",
+      "primary_target": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+      "typical_cadence": "1x to 2x Daily (Fasted, Pre-Bed or Post-Workout SubQ)",
+      "sequence_or_class": "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating MK-677 (Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph) alongside Ipamorelin (Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard). While MK-677 targets Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph, Ipamorelin focuses on Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Oral vs. Pulsatile GH Secretagogue: MK-677 provides sustained 24-hour ghrelin receptor activation via oral bioavailability, whereas Ipamorelin offers precise, pulsatile pituitary somatotroph release without elevating cortisol or prolactin.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph",
+        "compoundB_val": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph vs Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+        "compoundA_val": "528.66 g/mol (C27H36N4O5S (Mesylate salt))",
+        "compoundB_val": "711.85 g/mol (Aib-His-D-2-Nal-D-Phe-Lys-NH2)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~24 Hours (Sustained continuous 24-hour IGF-1 elevation via once-daily administration)",
+        "compoundB_val": "~2 Hours (Selective somatotropic pulsatility without desensitization)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Propylene Glycol / Polyethylene Glycol (PEG-400) Research Liquid Vehicle · 30 mL / 750 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Orally Active Non-Peptide Ghrelin Receptor GHS-R1a Agonist Monograph",
+        "compoundB_val": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (Morning or Pre-Bed Oral Research Formulation)",
+        "compoundB_val": "1x to 2x Daily (Fasted, Pre-Bed or Post-Workout SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9467534/",
+        "text": "Murphy et al. MK-677, an orally active growth hormone secretagogue, reverses diet-induced catabolism. [PubMed PMID: 9467534]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18981485/",
+        "text": "Nass et al. Effects of an oral ghrelin mimetic on body composition and clinical outcomes in healthy older adults (Ann Intern Med). [PubMed PMID: 18981485]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9849822/",
+        "text": "Raun et al. Ipamorelin, the first selective growth hormone secretagogue. [PubMed PMID: 9849822]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9879640/",
+        "text": "Johansen et al. Pharmacokinetic evaluation of ipamorelin and other peptidyl growth hormone secretagogues. [PubMed PMID: 9879640]",
+        "number": 4
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.610Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.504Z",
+    "updated_at": "2026-09-09T03:13:16.612Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1P7G3AVZ9J67MP65GQ",
+    "slug": "tesamorelin-vs-sermorelin",
+    "title": "Tesamorelin vs. Sermorelin: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard against Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard.",
+    "category": "Growth Hormone Axis",
+    "compound_a": {
+      "id": "tesamorelin",
+      "tag": "Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard",
+      "name": "Tesamorelin",
+      "handle": "tesamorelin",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Growth Hormone Axis",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18057338/",
+          "text": "Falutz et al. Metabolic effects of a growth hormone-releasing factor in patients with HIV (NEJM). [PubMed PMID: 18057338]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31611038/",
+          "text": "Stanley et al. Effects of tesamorelin on non-alcoholic fatty liver disease (Lancet). [PubMed PMID: 31611038]",
+          "number": 2
+        }
+      ],
+      "half_life": "~26–38 Minutes (Rapid somatotropic pulse with potent visceral lipolytic effect)",
+      "primary_focus": "Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard",
+      "molecular_mass": "5135.86 g/mol",
+      "primary_target": "Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard",
+      "typical_cadence": "1x Daily (Morning Fasted or Pre-Bed SubQ)",
+      "sequence_or_class": "C221H366N72O67S (Trans-3-hexenoyl-GHRH 1-44)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "sermorelin",
+      "tag": "Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard",
+      "name": "Sermorelin",
+      "handle": "sermorelin",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Growth Hormone Axis",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18031173/",
+          "text": "Prakash et al. Sermorelin: a review of its use in the diagnosis and treatment of children with idiopathic growth hormone deficiency. [PubMed PMID: 18031173]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18046908/",
+          "text": "Walker. Sermorelin: a better approach to management of adult-onset growth hormone insufficiency? [PubMed PMID: 18046908]",
+          "number": 2
+        }
+      ],
+      "half_life": "~10–12 Minutes (Rapid physiologic somatotrope stimulation; clears without pituitary suppression)",
+      "primary_focus": "Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard",
+      "molecular_mass": "3357.88 g/mol",
+      "primary_target": "Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard",
+      "typical_cadence": "1x Daily (Pre-Bed Fasted SubQ)",
+      "sequence_or_class": "Tyr-Ala-Asp-Ala-Ile-Phe-Thr-Asn-Ser-Tyr-Arg-Lys-Val-Leu-Gly-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Met-Ser-Arg-NH2",
+      "standard_dilution": "2.5 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Tesamorelin (Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard) alongside Sermorelin (Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard). While Tesamorelin targets Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard, Sermorelin focuses on Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "GHRH Analog Specificity: Tesamorelin features an N-terminal trans-3-hexenoyl modification conferring superior enzymatic stability and visceral adipose selectivity compared to native Sermorelin (GHRH 1-29).",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard",
+        "compoundB_val": "Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard vs Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard",
+        "compoundA_val": "5135.86 g/mol (C221H366N72O67S (Trans-3-hexenoyl-GHRH 1-44))",
+        "compoundB_val": "3357.88 g/mol (Tyr-Ala-Asp-Ala-Ile-Phe-Thr-Asn-Ser-Tyr-Arg-Lys-Val-Leu-Gly-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Met-Ser-Arg-NH2)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~26–38 Minutes (Rapid somatotropic pulse with potent visceral lipolytic effect)",
+        "compoundB_val": "~10–12 Minutes (Rapid physiologic somatotrope stimulation; clears without pituitary suppression)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 5 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Trans-3-Hexenoyl GHRH Analogue Visceral Adipose Mobilization Standard",
+        "compoundB_val": "Bioidentical GHRH 1-29 Pituitary Neuroendocrine Peptide Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (Morning Fasted or Pre-Bed SubQ)",
+        "compoundB_val": "1x Daily (Pre-Bed Fasted SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18057338/",
+        "text": "Falutz et al. Metabolic effects of a growth hormone-releasing factor in patients with HIV (NEJM). [PubMed PMID: 18057338]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31611038/",
+        "text": "Stanley et al. Effects of tesamorelin on non-alcoholic fatty liver disease (Lancet). [PubMed PMID: 31611038]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18031173/",
+        "text": "Prakash et al. Sermorelin: a review of its use in the diagnosis and treatment of children with idiopathic growth hormone deficiency. [PubMed PMID: 18031173]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18046908/",
+        "text": "Walker. Sermorelin: a better approach to management of adult-onset growth hormone insufficiency? [PubMed PMID: 18046908]",
+        "number": 4
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.608Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.502Z",
+    "updated_at": "2026-09-09T03:13:16.609Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1M0G91HXSBV5K2M0ZQ",
+    "slug": "cjc-1295-no-dac-vs-ipamorelin",
+    "title": "CJC-1295 No DAC vs. Ipamorelin: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard against Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard.",
+    "category": "Growth Hormone Axis",
+    "compound_a": {
+      "id": "cjc-1295-no-dac",
+      "tag": "Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard",
+      "name": "CJC-1295 No DAC",
+      "handle": "cjc-1295-no-dac",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Growth Hormone Axis",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16352683/",
+          "text": "Teichman et al. Prolonged stimulation of growth hormone (GH) and insulin-like growth factor I secretion by CJC-1295. [PubMed PMID: 16352683]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/15817669/",
+          "text": "Jetté et al. Human growth hormone-releasing factor (hGRF)1-29 bioconjugates: identification of CJC-1295. [PubMed PMID: 15817669]",
+          "number": 2
+        }
+      ],
+      "half_life": "~30 Minutes (Physiological somatotropic pulsatility matching natural GHRH release)",
+      "primary_focus": "Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard",
+      "molecular_mass": "3367.97 g/mol",
+      "primary_target": "Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard",
+      "typical_cadence": "1x to 3x Daily (Fasted SubQ)",
+      "sequence_or_class": "Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-NH2",
+      "standard_dilution": "2.5 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "ipamorelin",
+      "tag": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+      "name": "Ipamorelin",
+      "handle": "ipamorelin",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Growth Hormone Axis",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9849822/",
+          "text": "Raun et al. Ipamorelin, the first selective growth hormone secretagogue. [PubMed PMID: 9849822]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9879640/",
+          "text": "Johansen et al. Pharmacokinetic evaluation of ipamorelin and other peptidyl growth hormone secretagogues. [PubMed PMID: 9879640]",
+          "number": 2
+        }
+      ],
+      "half_life": "~2 Hours (Selective somatotropic pulsatility without desensitization)",
+      "primary_focus": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+      "molecular_mass": "711.85 g/mol",
+      "primary_target": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+      "typical_cadence": "1x to 2x Daily (Fasted, Pre-Bed or Post-Workout SubQ)",
+      "sequence_or_class": "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating CJC-1295 No DAC (Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard) alongside Ipamorelin (Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard). While CJC-1295 No DAC targets Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard, Ipamorelin focuses on Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Dual Somatotrophic Amplification: GHRH receptor stimulation synergizes with selective GHSR ghrelin-mimetic secretagogue pulses to elevate endogenous IGF-1 without somatotroph desensitization.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard",
+        "compoundB_val": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard vs Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard",
+        "compoundA_val": "3367.97 g/mol (Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-NH2)",
+        "compoundB_val": "711.85 g/mol (Aib-His-D-2-Nal-D-Phe-Lys-NH2)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~30 Minutes (Physiological somatotropic pulsatility matching natural GHRH release)",
+        "compoundB_val": "~2 Hours (Selective somatotropic pulsatility without desensitization)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2.5 mL / 5 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Tetrasubstituted GHRH 1-29 Pulsatile Growth Hormone Releasing Factor Standard",
+        "compoundB_val": "Selective Pentapeptide Growth Hormone Secretagogue Receptor (GHS-R1a) Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x to 3x Daily (Fasted SubQ)",
+        "compoundB_val": "1x to 2x Daily (Fasted, Pre-Bed or Post-Workout SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16352683/",
+        "text": "Teichman et al. Prolonged stimulation of growth hormone (GH) and insulin-like growth factor I secretion by CJC-1295. [PubMed PMID: 16352683]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15817669/",
+        "text": "Jetté et al. Human growth hormone-releasing factor (hGRF)1-29 bioconjugates: identification of CJC-1295. [PubMed PMID: 15817669]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9849822/",
+        "text": "Raun et al. Ipamorelin, the first selective growth hormone secretagogue. [PubMed PMID: 9849822]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9879640/",
+        "text": "Johansen et al. Pharmacokinetic evaluation of ipamorelin and other peptidyl growth hormone secretagogues. [PubMed PMID: 9879640]",
+        "number": 4
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.605Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.500Z",
+    "updated_at": "2026-09-09T03:13:16.606Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1JWPXDS3D1ZSKZXWVK",
+    "slug": "cagrilintide-vs-semaglutide",
+    "title": "Cagrilintide vs. Semaglutide: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph against Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard.",
+    "category": "Metabolic Signaling & Incretins",
+    "compound_a": {
+      "id": "cagrilintide",
+      "tag": "Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph",
+      "name": "Cagrilintide",
+      "handle": "cagrilintide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Metabolic Signaling & Incretins",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34798060/",
+          "text": "Lau et al. Once-weekly cagrilintide for weight management in people with overweight and obesity: a multicentre, randomised trial (Lancet). [PubMed PMID: 34798060]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37364590/",
+          "text": "Frias et al. Efficacy and safety of co-administered once-weekly cagrilintide 2.4 mg with once-weekly semaglutide 2.4 mg in type 2 diabetes (Lancet). [PubMed PMID: 37364590]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33894838/",
+          "text": "Enebo et al. Safety, tolerability, pharmacokinetics, and pharmacodynamics of concomitant administration of multiple doses of cagrilintide with semaglutide (Lancet). [PubMed PMID: 33894838]",
+          "number": 3
+        }
+      ],
+      "half_life": "~168–192 Hours (~7–8 Days terminal elimination half-life)",
+      "primary_focus": "Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph",
+      "molecular_mass": "3617.96 g/mol",
+      "primary_target": "Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "C186H288N46O57",
+      "standard_dilution": "2 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "semaglutide",
+      "tag": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+      "name": "Semaglutide",
+      "handle": "semaglutide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Metabolic Signaling & Incretins",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33567185/",
+          "text": "Wilding et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1 Trial). [PubMed PMID: 33567185]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30122305/",
+          "text": "O'Neil et al. Efficacy and safety of semaglutide compared with liraglutide and placebo for weight loss in patients with obesity (Lancet). [PubMed PMID: 30122305]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29617641/",
+          "text": "Drucker. Mechanisms of Action and Therapeutic Application of Glucagon-like Peptide-1. [PubMed PMID: 29617641]",
+          "number": 3
+        }
+      ],
+      "half_life": "~168 Hours (~7 Days terminal elimination half-life)",
+      "primary_focus": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+      "molecular_mass": "4113.58 g/mol",
+      "primary_target": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "C187H291N45O59",
+      "standard_dilution": "2 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Cagrilintide (Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph) alongside Semaglutide (Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard). While Cagrilintide targets Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph, Semaglutide focuses on Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Incretin + Amylin Synergy: Cagrilintide complements GLP-1 receptor agonism through calcitonin/RAMP amylin receptor binding, suppressing postprandial glucagon and decelerating gastric emptying via independent neurochemical pathways.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph",
+        "compoundB_val": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph vs Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+        "compoundA_val": "3617.96 g/mol (C186H288N46O57)",
+        "compoundB_val": "4113.58 g/mol (C187H291N45O59)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~168–192 Hours (~7–8 Days terminal elimination half-life)",
+        "compoundB_val": "~168 Hours (~7 Days terminal elimination half-life)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 5 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 5 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Long-Acting Non-Selective Amylin / Calcitonin Receptor Agonist Monograph",
+        "compoundB_val": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Every 7 Days (Weekly SubQ)",
+        "compoundB_val": "1x Every 7 Days (Weekly SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34798060/",
+        "text": "Lau et al. Once-weekly cagrilintide for weight management in people with overweight and obesity: a multicentre, randomised trial (Lancet). [PubMed PMID: 34798060]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37364590/",
+        "text": "Frias et al. Efficacy and safety of co-administered once-weekly cagrilintide 2.4 mg with once-weekly semaglutide 2.4 mg in type 2 diabetes (Lancet). [PubMed PMID: 37364590]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33894838/",
+        "text": "Enebo et al. Safety, tolerability, pharmacokinetics, and pharmacodynamics of concomitant administration of multiple doses of cagrilintide with semaglutide (Lancet). [PubMed PMID: 33894838]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33567185/",
+        "text": "Wilding et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1 Trial). [PubMed PMID: 33567185]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30122305/",
+        "text": "O'Neil et al. Efficacy and safety of semaglutide compared with liraglutide and placebo for weight loss in patients with obesity (Lancet). [PubMed PMID: 30122305]",
+        "number": 5
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29617641/",
+        "text": "Drucker. Mechanisms of Action and Therapeutic Application of Glucagon-like Peptide-1. [PubMed PMID: 29617641]",
+        "number": 6
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.603Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.498Z",
+    "updated_at": "2026-09-09T03:13:16.604Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M220XP1GX535K14ZVM4G0RC9",
+    "slug": "retatrutide-vs-tirzepatide",
+    "title": "Retatrutide vs. Tirzepatide: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard against Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard.",
+    "category": "Metabolic Signaling & Incretins",
+    "compound_a": {
+      "id": "retatrutide",
+      "tag": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard",
+      "name": "Retatrutide",
+      "handle": "retatrutide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Metabolic Signaling & Incretins",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37366315/",
+          "text": "Jastreboff et al. Triple-Hormone-Receptor Agonist Retatrutide for Obesity — A Randomized, Phase 2 Trial (NEJM). [PubMed PMID: 37366315]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37385280/",
+          "text": "Rosenstock et al. Retatrutide, a GIP, GLP-1 and glucagon receptor agonist, for people with type 2 diabetes (Lancet). [PubMed PMID: 37385280]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36354040/",
+          "text": "Coskun et al. LY3437943, a novel triple GIP, GLP-1, and glucagon receptor agonist in people with type 2 diabetes (Lancet). [PubMed PMID: 36354040]",
+          "number": 3
+        }
+      ],
+      "half_life": "~144 Hours (~6 Days terminal half-life)",
+      "primary_focus": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard",
+      "molecular_mass": "4731.33 g/mol",
+      "primary_target": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "C221H342N46O68",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "tirzepatide",
+      "tag": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+      "name": "Tirzepatide",
+      "handle": "tirzepatide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Metabolic Signaling & Incretins",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35658024/",
+          "text": "Jastreboff et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). [PubMed PMID: 35658024]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34170647/",
+          "text": "Frias et al. Tirzepatide versus Semaglutide Once Weekly in Patients with Type 2 Diabetes (SURPASS-2 NEJM). [PubMed PMID: 34170647]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30473097/",
+          "text": "Coskun et al. LY3298176, a novel dual GIP and GLP-1 receptor agonist for the treatment of type 2 diabetes mellitus. [PubMed PMID: 30473097]",
+          "number": 3
+        }
+      ],
+      "half_life": "~120 Hours (~5 Days terminal half-life)",
+      "primary_focus": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+      "molecular_mass": "4813.45 g/mol",
+      "primary_target": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "C225H348N48O68",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Retatrutide (Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard) alongside Tirzepatide (Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard). While Retatrutide targets Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard, Tirzepatide focuses on Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Triple vs. Dual Incretin Hierarchy: Retatrutide introduces glucagon receptor agonism to stimulate hepatic fatty acid oxidation and thermogenesis beyond GLP-1/GIP incretin boundaries.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard",
+        "compoundB_val": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard vs Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+        "compoundA_val": "4731.33 g/mol (C221H342N46O68)",
+        "compoundB_val": "4813.45 g/mol (C225H348N48O68)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~144 Hours (~6 Days terminal half-life)",
+        "compoundB_val": "~120 Hours (~5 Days terminal half-life)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Triple GIP / GLP-1 / Glucagon Tri-Agonist Stoichiometric Research Standard",
+        "compoundB_val": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Every 7 Days (Weekly SubQ)",
+        "compoundB_val": "1x Every 7 Days (Weekly SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37366315/",
+        "text": "Jastreboff et al. Triple-Hormone-Receptor Agonist Retatrutide for Obesity — A Randomized, Phase 2 Trial (NEJM). [PubMed PMID: 37366315]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37385280/",
+        "text": "Rosenstock et al. Retatrutide, a GIP, GLP-1 and glucagon receptor agonist, for people with type 2 diabetes (Lancet). [PubMed PMID: 37385280]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36354040/",
+        "text": "Coskun et al. LY3437943, a novel triple GIP, GLP-1, and glucagon receptor agonist in people with type 2 diabetes (Lancet). [PubMed PMID: 36354040]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35658024/",
+        "text": "Jastreboff et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). [PubMed PMID: 35658024]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34170647/",
+        "text": "Frias et al. Tirzepatide versus Semaglutide Once Weekly in Patients with Type 2 Diabetes (SURPASS-2 NEJM). [PubMed PMID: 34170647]",
+        "number": 5
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30473097/",
+        "text": "Coskun et al. LY3298176, a novel dual GIP and GLP-1 receptor agonist for the treatment of type 2 diabetes mellitus. [PubMed PMID: 30473097]",
+        "number": 6
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.600Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:46:00.496Z",
+    "updated_at": "2026-09-09T03:13:16.601Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M21YCWHR9WY52SBH8QMPTQND",
+    "slug": "tirzepatide-vs-semaglutide",
+    "title": "Tirzepatide vs. Semaglutide: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard against Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard.",
+    "category": "Metabolic Signaling & Incretins",
+    "compound_a": {
+      "id": "tirzepatide",
+      "tag": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+      "name": "Tirzepatide",
+      "handle": "tirzepatide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Metabolic Signaling & Incretins",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35658024/",
+          "text": "Jastreboff et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). [PubMed PMID: 35658024]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34170647/",
+          "text": "Frias et al. Tirzepatide versus Semaglutide Once Weekly in Patients with Type 2 Diabetes (SURPASS-2 NEJM). [PubMed PMID: 34170647]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30473097/",
+          "text": "Coskun et al. LY3298176, a novel dual GIP and GLP-1 receptor agonist for the treatment of type 2 diabetes mellitus. [PubMed PMID: 30473097]",
+          "number": 3
+        }
+      ],
+      "half_life": "~120 Hours (~5 Days terminal half-life)",
+      "primary_focus": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+      "molecular_mass": "4813.45 g/mol",
+      "primary_target": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "C225H348N48O68",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "semaglutide",
+      "tag": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+      "name": "Semaglutide",
+      "handle": "semaglutide",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Metabolic Signaling & Incretins",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33567185/",
+          "text": "Wilding et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1 Trial). [PubMed PMID: 33567185]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30122305/",
+          "text": "O'Neil et al. Efficacy and safety of semaglutide compared with liraglutide and placebo for weight loss in patients with obesity (Lancet). [PubMed PMID: 30122305]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/29617641/",
+          "text": "Drucker. Mechanisms of Action and Therapeutic Application of Glucagon-like Peptide-1. [PubMed PMID: 29617641]",
+          "number": 3
+        }
+      ],
+      "half_life": "~168 Hours (~7 Days terminal elimination half-life)",
+      "primary_focus": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+      "molecular_mass": "4113.58 g/mol",
+      "primary_target": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "C187H291N45O59",
+      "standard_dilution": "2 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Tirzepatide (Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard) alongside Semaglutide (Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard). While Tirzepatide targets Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard, Semaglutide focuses on Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "Incretin Receptor Benchmark: Semaglutide functions selectively as a GLP-1 mono-agonist, whereas Tirzepatide adds GIP co-agonism for direct adipose lipid buffering and reduced emetic distress.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+        "compoundB_val": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard vs Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard",
+        "compoundA_val": "4813.45 g/mol (C225H348N48O68)",
+        "compoundB_val": "4113.58 g/mol (C187H291N45O59)"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~120 Hours (~5 Days terminal half-life)",
+        "compoundB_val": "~168 Hours (~7 Days terminal elimination half-life)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 5 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Analytical Titration Standard",
+        "compoundB_val": "Selective GLP-1 Receptor Agonist Analytical Titration & Satiety Signaling Standard"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Every 7 Days (Weekly SubQ)",
+        "compoundB_val": "1x Every 7 Days (Weekly SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35658024/",
+        "text": "Jastreboff et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). [PubMed PMID: 35658024]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34170647/",
+        "text": "Frias et al. Tirzepatide versus Semaglutide Once Weekly in Patients with Type 2 Diabetes (SURPASS-2 NEJM). [PubMed PMID: 34170647]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30473097/",
+        "text": "Coskun et al. LY3298176, a novel dual GIP and GLP-1 receptor agonist for the treatment of type 2 diabetes mellitus. [PubMed PMID: 30473097]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33567185/",
+        "text": "Wilding et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1 Trial). [PubMed PMID: 33567185]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30122305/",
+        "text": "O'Neil et al. Efficacy and safety of semaglutide compared with liraglutide and placebo for weight loss in patients with obesity (Lancet). [PubMed PMID: 30122305]",
+        "number": 5
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29617641/",
+        "text": "Drucker. Mechanisms of Action and Therapeutic Application of Glucagon-like Peptide-1. [PubMed PMID: 29617641]",
+        "number": 6
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.596Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:01:52.952Z",
+    "updated_at": "2026-09-09T03:13:16.598Z",
+    "deleted_at": null
+  },
+  {
+    "id": "01M21YCWHCMRQVRWCWHERHNTB5",
+    "slug": "bpc-157-vs-tb-500",
+    "title": "BPC-157 vs. TB-500: Comparative Pharmacodynamics & Molecular Targets",
+    "subtitle": "A side-by-side analytical assessment evaluating Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard against Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph.",
+    "category": "Tissue Repair & Healing",
+    "compound_a": {
+      "id": "bpc-157",
+      "tag": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "name": "BPC-157",
+      "handle": "bpc-157-vial",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/",
+          "text": "Sikiric et al. Brain-gut axis and pentadecapeptide BPC 157: Theoretical and practical implications in tissue repair. [PubMed PMID: 21030672]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20388954/",
+          "text": "Chang et al. Promoting effect of BPC 157 on tendon healing involves tendon outgrowth, cell survival, and cell migration. [PubMed PMID: 20388954]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/27847966/",
+          "text": "Gwyer et al. Gastric pentadecapeptide BPC 157 accelerates musculoskeletal soft tissue healing. [PubMed PMID: 27847966]",
+          "number": 3
+        }
+      ],
+      "half_life": "~4–6 Hours (Systemic peptide stability; localized extracellular retention ~24h)",
+      "primary_focus": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "molecular_mass": "1419.55 g/mol",
+      "primary_target": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+      "typical_cadence": "1x Daily (or 250 mcg BID / Twice Daily in acute soft tissue trauma models)",
+      "sequence_or_class": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "tb-500",
+      "tag": "Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph",
+      "name": "TB-500",
+      "handle": "tb-500",
+      "purity": "≥99.0% (HPLC-grade)",
+      "category": "Tissue Repair & Healing",
+      "citations": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20536453/",
+          "text": "Philp et al. Animal studies with thymosin beta4, a multifunctional tissue repair and regenerative peptide. [PubMed PMID: 20536453]",
+          "number": 1
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20536454/",
+          "text": "Smart et al. Thymosin beta4 promotes endothelial progenitor cell differentiation and angiogenesis. [PubMed PMID: 20536454]",
+          "number": 2
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/26096726/",
+          "text": "Kleinman et al. Advances in the basic and clinical applications of thymosin beta4. [PubMed PMID: 26096726]",
+          "number": 3
+        }
+      ],
+      "half_life": "~24–36 Hours (Biological tissue effect extends up to 7–10 days via actin sequestration)",
+      "primary_focus": "Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph",
+      "molecular_mass": "4963.5 g/mol",
+      "primary_target": "Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph",
+      "typical_cadence": "2x Weekly (e.g., Monday / Thursday SubQ)",
+      "sequence_or_class": "Ac-Leu-Lys-Lys-Thr-Glu-Thr-Gln (Ac-LKKTETQ)",
+      "standard_dilution": "2 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating BPC-157 (Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard) alongside TB-500 (Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph). While BPC-157 targets Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard, TB-500 focuses on Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph. Both compounds represent distinct molecular targets within modern peptide research.",
+    "synergy_verdict": "The Wolverine Synergy: Angiogenic microvascular sprouting from BPC-157 provides nutrient perfusion, while TB-500 accelerates tenocyte and myoblast migration into the repaired zone.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Target",
+        "verdict": "Distinct Target Receptors",
+        "compoundA_val": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+        "compoundB_val": "Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph"
+      },
+      {
+        "feature": "Molecular Mass & Classification",
+        "verdict": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard vs Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph",
+        "compoundA_val": "1419.55 g/mol (Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (GEPPPGKPADDAGLV))",
+        "compoundB_val": "4963.5 g/mol (Ac-Leu-Lys-Lys-Thr-Glu-Thr-Gln (Ac-LKKTETQ))"
+      },
+      {
+        "feature": "In-Vitro Half-Life",
+        "verdict": "Pharmacokinetic Persistence",
+        "compoundA_val": "~4–6 Hours (Systemic peptide stability; localized extracellular retention ~24h)",
+        "compoundB_val": "~24–36 Hours (Biological tissue effect extends up to 7–10 days via actin sequestration)"
+      },
+      {
+        "feature": "Reconstitution Standard",
+        "verdict": "Solvent & Dilution Requirement",
+        "compoundA_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg",
+        "compoundB_val": "Bacteriostatic Water USP (0.9% Benzyl Alcohol) · 2 mL / 10 mg"
+      },
+      {
+        "feature": "Primary Research Focus",
+        "verdict": "Differential Tissue Affinity",
+        "compoundA_val": "Gastric Pentadecapeptide Laboratory Protocol & In-Vitro Angiogenesis Standard",
+        "compoundB_val": "Synthetic Thymosin Beta-4 Ac-LKKTETQ Actin-Sequestration Research Monograph"
+      },
+      {
+        "feature": "Standard Analytical Cadence",
+        "verdict": "Protocol Cadence Comparison",
+        "compoundA_val": "1x Daily (or 250 mcg BID / Twice Daily in acute soft tissue trauma models)",
+        "compoundB_val": "2x Weekly (e.g., Monday / Thursday SubQ)"
+      }
+    ],
+    "citations": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/",
+        "text": "Sikiric et al. Brain-gut axis and pentadecapeptide BPC 157: Theoretical and practical implications in tissue repair. [PubMed PMID: 21030672]",
+        "number": 1
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20388954/",
+        "text": "Chang et al. Promoting effect of BPC 157 on tendon healing involves tendon outgrowth, cell survival, and cell migration. [PubMed PMID: 20388954]",
+        "number": 2
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27847966/",
+        "text": "Gwyer et al. Gastric pentadecapeptide BPC 157 accelerates musculoskeletal soft tissue healing. [PubMed PMID: 27847966]",
+        "number": 3
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20536453/",
+        "text": "Philp et al. Animal studies with thymosin beta4, a multifunctional tissue repair and regenerative peptide. [PubMed PMID: 20536453]",
+        "number": 4
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20536454/",
+        "text": "Smart et al. Thymosin beta4 promotes endothelial progenitor cell differentiation and angiogenesis. [PubMed PMID: 20536454]",
+        "number": 5
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/26096726/",
+        "text": "Kleinman et al. Advances in the basic and clinical applications of thymosin beta4. [PubMed PMID: 26096726]",
+        "number": 6
+      }
+    ],
+    "status": "published",
+    "published_at": "2026-09-09T03:13:16.586Z",
+    "metadata": null,
+    "created_at": "2026-09-09T02:01:52.940Z",
+    "updated_at": "2026-09-09T03:13:16.592Z",
+    "deleted_at": null
+  },
+  {
+    "id": "COMP-CAGRISEMA-TIRZ",
+    "slug": "cagrisema-vs-tirzepatide",
+    "title": "CagriSema vs. Tirzepatide: Dual Amylin/GLP-1 vs. Dual GIP/GLP-1 Receptor Agonism",
+    "subtitle": "Comparative pharmacological assessment of coordinated amylin and GLP-1 co-agonism against dual GIP and GLP-1 incretin activation.",
+    "category": "Metabolic Signaling & Incretins",
+    "compound_a": {
+      "id": "cagrisema-blend",
+      "name": "CagriSema",
+      "handle": "cagrisema-blend",
+      "tag": "Dual Amylin & GLP-1 Co-Agonist Stoichiometric Standard",
+      "category": "Metabolic Signaling & Incretins",
+      "purity": "≥99.0% (HPLC-grade dual component)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Frias et al. Efficacy and safety of cagrilintide plus semaglutide in individuals with obesity: REDEFINE Phase 2 (Lancet). [PubMed PMID: 37385280]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37385280/"
+        }
+      ],
+      "half_life": "~168 Hours (~7 Days Terminal Half-Life)",
+      "primary_focus": "Dual Amylin & GLP-1 Co-Agonist Stoichiometric Standard",
+      "molecular_mass": "8,530.8 g/mol Combined Equimolar Basis",
+      "primary_target": "Amylin (AMY1-3), Calcitonin, and GLP-1 Receptors",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "Cagrilintide + Semaglutide Fixed-Ratio Stoichiometric Standard",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "tirzepatide",
+      "name": "Tirzepatide",
+      "handle": "tirzepatide",
+      "tag": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Standard",
+      "category": "Metabolic Signaling & Incretins",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Jastreboff et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). [PubMed PMID: 35658024]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35658024/"
+        }
+      ],
+      "half_life": "~120 Hours (~5 Days Terminal Half-Life)",
+      "primary_focus": "Dual GIP / GLP-1 Incretin Receptor Co-Agonist Standard",
+      "molecular_mass": "4813.45 g/mol",
+      "primary_target": "Dual GIP and GLP-1 Receptors",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "Synthetic 39-aa Peptide with C20 Diacid Fatty Acid Side Chain",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating CagriSema (dual amylin and GLP-1 co-agonist) alongside Tirzepatide (dual GIP and GLP-1 co-agonist). While CagriSema pairs calcitonin/RAMP neuro-satiety with GLP-1 anorectic signaling to produce unmatched appetite suppression, Tirzepatide couples GIP adipocyte lipid buffering with GLP-1 insulinotropic actions. Both represent pinnacle multi-pathway incretin research standards.",
+    "synergy_verdict": "Complementary Receptor Architecture: CagriSema achieves greater central satiety through dual area postrema/hypothalamic targeting, whereas Tirzepatide excels in peripheral glucose-dependent insulin sensitivity and subcutaneous fat buffering.",
+    "vectors": [
+      {
+        "feature": "Primary Receptor Targets",
+        "verdict": "Amylin/GLP-1 vs GIP/GLP-1",
+        "compoundA_val": "Calcitonin/RAMP Amylin (AMY1-3) & GLP-1 Receptors",
+        "compoundB_val": "Dual GIP (Glucose-Dependent Insulinotropic) & GLP-1 Receptors"
+      },
+      {
+        "feature": "Mean Clinical Weight Reduction",
+        "verdict": "Comparable Pinnacle Efficacy (>20–25%)",
+        "compoundA_val": "~25.3% mean weight reduction in REDEFINE Phase 2/3 cohorts",
+        "compoundB_val": "~20.9% to 22.5% mean weight reduction in SURMOUNT Phase 3 cohorts"
+      },
+      {
+        "feature": "Gastric Transit Modulation",
+        "verdict": "Profound Dual Deceleration (CagriSema)",
+        "compoundA_val": "Synergistic amylin and GLP-1 deceleration of solid and liquid gastric emptying",
+        "compoundB_val": "Moderate transient GLP-1 gastric deceleration with GIP metabolic balancing"
+      },
+      {
+        "feature": "Insulin & Glycemic Dynamics",
+        "verdict": "Direct Incretin Sensitization (Tirzepatide)",
+        "compoundA_val": "Reduces postprandial glucagon and food intake; indirect insulin sensitization",
+        "compoundB_val": "Direct glucose-dependent insulin secretion and enhanced adipocyte insulin sensitivity via GIP"
+      },
+      {
+        "feature": "Pharmacokinetic Half-Life",
+        "verdict": "Extended Weekly Profiles",
+        "compoundA_val": "~168 Hours (~7 Days terminal half-life for both components)",
+        "compoundB_val": "~120 Hours (~5 Days terminal half-life)"
+      },
+      {
+        "feature": "Gastrointestinal Tolerability & Titration",
+        "verdict": "Stepwise 4-Week Titration Required",
+        "compoundA_val": "Requires 4-week step-up (0.5mg -> 1.0mg -> 1.7mg -> 2.4mg) to adapt to amylin nausea",
+        "compoundB_val": "Requires 4-week step-up (2.5mg -> 5.0mg -> 7.5mg -> 10.0mg -> 15.0mg)"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Frias et al. Efficacy and safety of cagrilintide plus semaglutide in individuals with obesity: REDEFINE Phase 2 (Lancet). [PubMed PMID: 37385280]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37385280/"
+      },
+      {
+        "number": 2,
+        "text": "Jastreboff et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). [PubMed PMID: 35658024]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35658024/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-ORFOR-SEMA",
+    "slug": "orforglipron-vs-semaglutide",
+    "title": "Orforglipron vs. Semaglutide: Oral Non-Peptide Small Molecule vs. Injectable Peptide Incretin",
+    "subtitle": "A comparative evaluation of oral transmembrane GLP-1 receptor activation versus subcutaneous long-acting peptide agonism.",
+    "category": "Metabolic Signaling & Incretins",
+    "compound_a": {
+      "id": "orforglipron",
+      "name": "Orforglipron (LY3502970)",
+      "handle": "orforglipron",
+      "tag": "Oral Non-Peptide GLP-1 Receptor Small Molecule Standard",
+      "category": "Metabolic Signaling & Incretins",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Pratt et al. Daily Oral GLP-1 Receptor Agonist Orforglipron in Adults with Obesity (ACHIEVE). [PubMed PMID: 37351564]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37351564/"
+        }
+      ],
+      "half_life": "~29 to 49 Hours",
+      "primary_focus": "Oral Non-Peptide GLP-1 Receptor Small Molecule Standard",
+      "molecular_mass": "766.8 g/mol",
+      "primary_target": "Transmembrane Domain of GLP-1 Receptor",
+      "typical_cadence": "1x Daily (Oral / SubQ)",
+      "sequence_or_class": "Synthetic Non-Peptide Heterocyclic Small Molecule (C42H44F2N6O6)",
+      "standard_dilution": "2.0 mL / 12 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "semaglutide",
+      "name": "Semaglutide",
+      "handle": "semaglutide",
+      "tag": "Selective GLP-1 Receptor Long-Acting Peptide Agonist",
+      "category": "Metabolic Signaling & Incretins",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Wilding et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1). [PubMed PMID: 33567185]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33567185/"
+        }
+      ],
+      "half_life": "~168 Hours (~7 Days Terminal Half-Life)",
+      "primary_focus": "Selective GLP-1 Receptor Long-Acting Peptide Agonist",
+      "molecular_mass": "4113.58 g/mol",
+      "primary_target": "Extracellular & Transmembrane GLP-1 Receptor",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "Synthetic 31-aa Peptide with C18 Diacid Albumin-Binding Chain",
+      "standard_dilution": "2.0 mL / 5 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Comparing Orforglipron (oral non-peptide small-molecule GLP-1 agonist) with Semaglutide (subcutaneous peptide incretin). Orforglipron achieves robust oral absorption without requiring sodium caprate (SNAC) carriers by binding allosterically within the GLP-1R transmembrane pocket, whereas Semaglutide requires parenteral injection to overcome gastrointestinal enzymatic degradation.",
+    "synergy_verdict": "Pharmacokinetic & Delivery Divergence: Orforglipron represents needle-free, food-independent oral bioavailability with daily dosing, while Semaglutide delivers proven weekly parenteral exposure with extensive cardiovascular outcomes trial evidence.",
+    "vectors": [
+      {
+        "feature": "Chemical Classification",
+        "verdict": "Small Molecule vs 31-aa Peptide",
+        "compoundA_val": "Small molecule organic heterocyclic (MW 766.8 g/mol)",
+        "compoundB_val": "Acylated peptide incretin analogue (MW 4113.58 g/mol)"
+      },
+      {
+        "feature": "Route & Absorption Restrictions",
+        "verdict": "Oral Food-Independent vs SubQ Injection",
+        "compoundA_val": "Oral tablet/solution with high bioavailability; no water/food intake restrictions",
+        "compoundB_val": "Subcutaneous weekly injection (oral tablet requires strict 30-min fasting and 4oz water)"
+      },
+      {
+        "feature": "Receptor Binding Pocket",
+        "verdict": "Allosteric Transmembrane vs Orthosteric",
+        "compoundA_val": "Binds transmembrane core (TM1/TM2/TM7) of GLP-1 receptor",
+        "compoundB_val": "Binds extracellular N-terminal domain and transmembrane core orthosterically"
+      },
+      {
+        "feature": "Terminal Elimination Half-Life",
+        "verdict": "29–49 Hours vs 168 Hours (7 Days)",
+        "compoundA_val": "~29 to 49 Hours (optimized for once-daily dosing)",
+        "compoundB_val": "~168 Hours (~7 Days; steady-state across weekly injections)"
+      },
+      {
+        "feature": "Phase 3 Weight Reduction Endpoint",
+        "verdict": "Comparable High-Efficacy Range",
+        "compoundA_val": "~14.7% to 15.4% mean weight reduction in Phase 2/3 ACHIEVE cohorts",
+        "compoundB_val": "~14.9% to 16.0% mean weight reduction in STEP 1 Phase 3 cohorts"
+      },
+      {
+        "feature": "Manufacturing & Supply Chain Stability",
+        "verdict": "Chemical Synthesis vs Recombinant Peptide",
+        "compoundA_val": "Scalable small-molecule chemical synthesis; room-temperature chemical stability",
+        "compoundB_val": "Recombinant/solid-phase peptide synthesis; requires strict cold-chain distribution"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Pratt et al. Daily Oral GLP-1 Receptor Agonist Orforglipron in Adults with Obesity (ACHIEVE). [PubMed PMID: 37351564]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37351564/"
+      },
+      {
+        "number": 2,
+        "text": "Wilding et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1). [PubMed PMID: 33567185]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33567185/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-PEMV-SURV",
+    "slug": "pemvidutide-vs-survodutide",
+    "title": "Pemvidutide vs. Survodutide: Hepatic-Targeted Dual GLP-1/Glucagon Co-Agonism",
+    "subtitle": "Side-by-side analysis of balanced 1:1 dual incretin-glucagon agonism versus biased glucagon-predominant receptor modulation.",
+    "category": "Metabolic Signaling & Incretins",
+    "compound_a": {
+      "id": "pemvidutide",
+      "name": "Pemvidutide (ALT-801)",
+      "handle": "pemvidutide",
+      "tag": "Balanced 1:1 GLP-1 / Glucagon Dual Receptor Agonist",
+      "category": "Metabolic Signaling & Incretins",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Alkhouri et al. Pemvidutide, a balanced GLP-1/glucagon dual receptor agonist, in MASH: MOMENTUM Phase 2. [PubMed PMID: 38552718]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38552718/"
+        }
+      ],
+      "half_life": "~4 to 5 Days",
+      "primary_focus": "Balanced 1:1 GLP-1 / Glucagon Dual Receptor Agonist",
+      "molecular_mass": "3702.2 g/mol",
+      "primary_target": "Equimolar (1:1) GLP-1 and Glucagon Receptors",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "Synthetic Acylated Peptide Glucagon/GLP-1 Co-Agonist",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "survodutide",
+      "name": "Survodutide (BI 456906)",
+      "handle": "survodutide",
+      "tag": "Glucagon-Biased Dual GLP-1 / Glucagon Agonist Standard",
+      "category": "Metabolic Signaling & Incretins",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Sanyal et al. A Phase 2 Trial of Survodutide for Non-Alcoholic Steatohepatitis (NASH). [PubMed PMID: 38848301]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38848301/"
+        }
+      ],
+      "half_life": "~120 Hours (~5 Days)",
+      "primary_focus": "Glucagon-Biased Dual GLP-1 / Glucagon Agonist Standard",
+      "molecular_mass": "3784.3 g/mol",
+      "primary_target": "Dual GLP-1 and Glucagon (Glucagon-Biased Potency)",
+      "typical_cadence": "1x Every 7 Days (Weekly SubQ)",
+      "sequence_or_class": "Synthetic 29-aa Glucagon-Derived Dual Agonist",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Pemvidutide (balanced 1:1 GLP-1/Glucagon co-agonist) and Survodutide (glucagon-biased dual agonist). Both compounds harness hepatic glucagon receptor activation to stimulate intrahepatic mitochondrial beta-oxidation and eliminate liver fat in MASH/NASH, but differ in their relative receptor potency balance and lean mass preservation ratios.",
+    "synergy_verdict": "Mechanistic Specificity: Pemvidutide optimizes the 1:1 stoichiometric balance for maximal lean body mass retention during weight loss, while Survodutide prioritizes robust hepatic fibrosis resolution and energy expenditure.",
+    "vectors": [
+      {
+        "feature": "Receptor Agonism Ratio",
+        "verdict": "Balanced 1:1 vs Glucagon-Biased",
+        "compoundA_val": "Equimolar 1:1 functional potency at GLP-1R and GlucagonR",
+        "compoundB_val": "Glucagon-biased co-agonism (~5-fold higher relative glucagon potency)"
+      },
+      {
+        "feature": "Hepatic Fat Clearance (MASH)",
+        "verdict": "Over 75% Liver Fat Reduction",
+        "compoundA_val": "76.4% relative reduction in liver fat at 24 weeks in MOMENTUM trial",
+        "compoundB_val": "83.0% of patients achieved MASH improvement with no worsening of fibrosis"
+      },
+      {
+        "feature": "Lean Mass Retention Ratio",
+        "verdict": "Superior Lean Preservation (Pemvidutide)",
+        "compoundA_val": "Lean mass constituted only ~21.9% of total weight lost (78.1% pure fat mass loss)",
+        "compoundB_val": "Standard GLP-1 class lean mass loss ratio (~30–35% of total loss)"
+      },
+      {
+        "feature": "Serum Lipid Optimization",
+        "verdict": "Substantial Atherogenic Lipid Clearance",
+        "compoundA_val": "Marked reductions in serum triglycerides (-50%) and total cholesterol (-20%)",
+        "compoundB_val": "Significant improvements in liver enzymes (ALT/AST) and circulating lipids"
+      },
+      {
+        "feature": "Heart Rate & Chronotropic Effect",
+        "verdict": "Modest Pulse Increase (Glucagon Activity)",
+        "compoundA_val": "Mean resting heart rate increase of 2–4 bpm with no clinically meaningful arrhythmia",
+        "compoundB_val": "Dose-dependent heart rate increase of 3–5 bpm typical of glucagon agonism"
+      },
+      {
+        "feature": "Dosing Cadence",
+        "verdict": "Once Weekly Subcutaneous",
+        "compoundA_val": "1x Weekly SubQ (1.2 mg, 1.8 mg, 2.4 mg escalation tiers)",
+        "compoundB_val": "1x Weekly SubQ (up to 4.8 mg weekly maintenance)"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Alkhouri et al. Pemvidutide, a balanced GLP-1/glucagon dual receptor agonist, in MASH: MOMENTUM Phase 2. [PubMed PMID: 38552718]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38552718/"
+      },
+      {
+        "number": 2,
+        "text": "Sanyal et al. A Phase 2 Trial of Survodutide for Non-Alcoholic Steatohepatitis (NASH). [PubMed PMID: 38848301]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38848301/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-PEGMGF-IGF1LR3",
+    "slug": "peg-mgf-vs-igf1-lr3",
+    "title": "PEG-MGF vs. IGF-1 LR3: Muscle Stem Cell Proliferation vs. Myofibrillar Differentiation",
+    "subtitle": "Comparative assessment of pegylated mechano-growth factor autocrine stem cell activation against systemic IGF-1 receptor anabolism.",
+    "category": "Growth Hormone Axis",
+    "compound_a": {
+      "id": "peg-mgf",
+      "name": "PEG-MGF",
+      "handle": "peg-mgf",
+      "tag": "Pegylated Mechano Growth Factor Stem Cell Activation Standard",
+      "category": "Growth Hormone Axis",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Goldspink G. Mechano Growth Factor: local autocrine and paracrine hormone for muscle repair. [PubMed PMID: 15735957]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/15735957/"
+        }
+      ],
+      "half_life": "~48 to 72 Hours (Pegylated Long-Acting)",
+      "primary_focus": "Pegylated Mechano Growth Factor Stem Cell Activation Standard",
+      "molecular_mass": "~2867 g/mol Peptide + PEG",
+      "primary_target": "IGF-1Ec C-Terminal Autocrine Pathway",
+      "typical_cadence": "2–3x Weekly (SubQ Post-Workout)",
+      "sequence_or_class": "Pegylated IGF-1Ec Splice Variant C-Terminal 24-aa Fragment",
+      "standard_dilution": "1.0 mL / 2 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "igf-1-lr3",
+      "name": "IGF-1 LR3",
+      "handle": "igf-1-lr3",
+      "tag": "Long R3 Insulin-Like Growth Factor-1 Hyperplasia Standard",
+      "category": "Growth Hormone Axis",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Tomas et al. Long R3 IGF-1: enhanced potency via reduced IGFBP binding. [PubMed PMID: 1719370]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1719370/"
+        }
+      ],
+      "half_life": "~20 to 30 Hours",
+      "primary_focus": "Long R3 Insulin-Like Growth Factor-1 Hyperplasia Standard",
+      "molecular_mass": "9117.5 g/mol",
+      "primary_target": "IGF-1 Receptor (IGF-1R) & Insulin Receptor Subtypes",
+      "typical_cadence": "Daily on Training Days (SubQ Post-Workout)",
+      "sequence_or_class": "83-aa Recombinant Analogue with Arg3 Substitution and 13-aa N-Terminal Extension",
+      "standard_dilution": "1.0 mL / 1 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating PEG-MGF (autocrine mechano-growth factor splice variant) alongside IGF-1 LR3 (systemic long-acting IGF-1 analogue). While PEG-MGF specifically triggers the proliferation of quiescent muscle satellite cells into an expanded pool of new stem cells, IGF-1 LR3 drives those committed cells into myofibrillar fusion, protein synthesis, and mature hypertrophy.",
+    "synergy_verdict": "Biphasic Hypertrophy Synergy: PEG-MGF provides the cellular substrate by multiplying satellite cells, and IGF-1 LR3 matures that substrate into permanent functional myofibers.",
+    "vectors": [
+      {
+        "feature": "Primary Cellular Role",
+        "verdict": "Satellite Stem Cell Proliferation vs Differentiation",
+        "compoundA_val": "Activates quiescent satellite stem cells; drives local self-renewal without premature differentiation",
+        "compoundB_val": "Stimulates myoblast differentiation, amino acid uptake, and protein translation into mature myofibers"
+      },
+      {
+        "feature": "Target Receptors",
+        "verdict": "IGF-1Ec Local Splice Target vs IGF-1R / Hybrid Receptors",
+        "compoundA_val": "Acts via distinct autocrine signaling cascades independent of classic IGF-1R activation",
+        "compoundB_val": "Direct high-affinity binding to IGF-1R and IGF-1R/Insulin hybrid receptors"
+      },
+      {
+        "feature": "IGF-Binding Protein (IGFBP) Affinity",
+        "verdict": "Free Circulation",
+        "compoundA_val": "PEG moiety prevents enzymatic proteolysis and neutral endopeptidase cleavage",
+        "compoundB_val": "Arg3 and N-terminal extension reduces IGFBP binding by >100-fold, maximizing free active hormone"
+      },
+      {
+        "feature": "Hypoglycemic Potential",
+        "verdict": "Zero Hypoglycemia (PEG-MGF) vs Active Glycemic Shift (IGF-1 LR3)",
+        "compoundA_val": "No affinity for insulin receptors; zero hypoglycemic risk",
+        "compoundB_val": "Activates glucose transporter (GLUT4) translocation; requires post-workout carbohydrate co-ingestion"
+      },
+      {
+        "feature": "Circulating Half-Life",
+        "verdict": "48–72 Hours vs 20–30 Hours",
+        "compoundA_val": "~48 to 72 Hours (sustained exposure from PEG shield)",
+        "compoundB_val": "~20 to 30 Hours (substantially extended over 10-minute native IGF-1)"
+      },
+      {
+        "feature": "Ideal Protocol Cadence",
+        "verdict": "Post-Workout Rest Days vs Training Day Administration",
+        "compoundA_val": "200–400 mcg 2–3x weekly on post-workout rest days",
+        "compoundB_val": "20–50 mcg daily on training days immediately post-exercise with carbohydrates"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Goldspink G. Mechano Growth Factor: local autocrine and paracrine hormone for muscle repair. [PubMed PMID: 15735957]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15735957/"
+      },
+      {
+        "number": 2,
+        "text": "Tomas et al. Long R3 IGF-1: enhanced potency via reduced IGFBP binding. [PubMed PMID: 1719370]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/1719370/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-FOLLI-ACE031",
+    "slug": "follistatin-344-vs-ace-031",
+    "title": "Follistatin-344 vs. ACE-031: Myostatin Neutralization vs. Soluble ActRIIB Decoy Receptor",
+    "subtitle": "Analysis of circulating myostatin glycoprotein sequestration versus broad soluble activin receptor type IIB blockade.",
+    "category": "Growth Hormone Axis",
+    "compound_a": {
+      "id": "follistatin-344",
+      "name": "Follistatin-344",
+      "handle": "follistatin-344",
+      "tag": "Recombinant Human Myostatin Neutralizing Glycoprotein Standard",
+      "category": "Growth Hormone Axis",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Kota et al. Follistatin Gene Delivery Enhances Muscle Growth and Strength in Non-Human Primates. [PubMed PMID: 19897839]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/19897839/"
+        }
+      ],
+      "half_life": "~2 to 4 Hours (Biological Cascade Lasts Weeks)",
+      "primary_focus": "Recombinant Human Myostatin Neutralizing Glycoprotein Standard",
+      "molecular_mass": "~37,800 g/mol Monomer",
+      "primary_target": "Circulating Myostatin (GDF-8) & Activin-A",
+      "typical_cadence": "1x Daily for 10–30 Days (SubQ)",
+      "sequence_or_class": "Recombinant 344-aa Glycoprotein Isoform",
+      "standard_dilution": "1.0 mL / 1 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "ace-031",
+      "name": "ACE-031",
+      "handle": "ace-031",
+      "tag": "Soluble Activin Receptor Type IIB (ActRIIB-Fc Fusion) Standard",
+      "category": "Growth Hormone Axis",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Campbell et al. Myostatin inhibitor ACE-031 treatment of Duchenne muscular dystrophy. [PubMed PMID: 28094471]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28094471/"
+        }
+      ],
+      "half_life": "~10 to 15 Days",
+      "primary_focus": "Soluble Activin Receptor Type IIB (ActRIIB-Fc Fusion) Standard",
+      "molecular_mass": "~110,000 g/mol Homodimer",
+      "primary_target": "ActRIIB Ligands (Myostatin, Activin A/B, GDF-11, BMPs)",
+      "typical_cadence": "1x Weekly (SubQ)",
+      "sequence_or_class": "Extracellular Domain of Human ActRIIB Fused to IgG1 Fc",
+      "standard_dilution": "1.0 mL / 1 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Comparing Follistatin-344 (endogenous glycoprotein antagonist) and ACE-031 (recombinant soluble ActRIIB decoy receptor). Follistatin-344 neutralizes myostatin and activin-A through stoichiometric binding complexes, while ACE-031 captures a broader spectrum of TGF-beta superfamily ligands including BMP9 and BMP10.",
+    "synergy_verdict": "Selectivity Profile: Follistatin-344 provides targeted myostatin neutralization with lower risk of microvascular telangiectasias, while ACE-031 delivers unprecedented hypertrophic velocity with strict micro-dosing safety boundaries.",
+    "vectors": [
+      {
+        "feature": "Molecular Mechanism",
+        "verdict": "Ligand Sequestration vs Soluble Decoy Receptor",
+        "compoundA_val": "Secreted glycoprotein that complexes with and neutralizes myostatin directly",
+        "compoundB_val": "Recombinant fusion protein acting as a false receptor trap for all ActRIIB ligands"
+      },
+      {
+        "feature": "Target Ligand Spectrum",
+        "verdict": "Narrow (Myostatin/Activin) vs Broad Superfamily Trap",
+        "compoundA_val": "High selectivity for GDF-8 (myostatin) and Activin-A; minimal off-target BMP binding",
+        "compoundB_val": "Binds Myostatin, Activin A/B, GDF-11, BMP-9, and BMP-10"
+      },
+      {
+        "feature": "Hypertrophic Velocity",
+        "verdict": "Rapid Skeletal Muscle Expansion",
+        "compoundA_val": "Increases muscle mass up to 15–20% in preclinical gene/peptide cohorts",
+        "compoundB_val": "Produced fastest rate of lean mass gain recorded in Phase 1 trials (up to 1 kg in 2 weeks)"
+      },
+      {
+        "feature": "Bone Mineral Density",
+        "verdict": "Direct Osteogenic Action (ACE-031)",
+        "compoundA_val": "Secondary bone support mediated through increased muscle mechanical loading",
+        "compoundB_val": "Direct activin-A inhibition stimulates osteoblastogenesis and increases bone volume"
+      },
+      {
+        "feature": "Vascular & Safety Boundaries",
+        "verdict": "Benign Vascular Profile (Follistatin)",
+        "compoundA_val": "Zero reports of vascular telangiectasias or capillary fragility in animal assays",
+        "compoundB_val": "BMP9/10 inhibition can induce reversible telangiectasias and minor gum/nose bleeds at high doses"
+      },
+      {
+        "feature": "Administration Cycle Architecture",
+        "verdict": "10–30 Day Daily Course vs Weekly Micro-Dosing",
+        "compoundA_val": "100 mcg daily SubQ for 10 to 30 days followed by 8-week washout",
+        "compoundB_val": "1 mg once weekly SubQ for 2 to 4 weeks with conservative micro-dosing"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Kota et al. Follistatin Gene Delivery Enhances Muscle Growth and Strength in Non-Human Primates. [PubMed PMID: 19897839]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/19897839/"
+      },
+      {
+        "number": 2,
+        "text": "Campbell et al. Myostatin inhibitor ACE-031 treatment of Duchenne muscular dystrophy. [PubMed PMID: 28094471]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28094471/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-VESU-CARDIO",
+    "slug": "vesugen-vs-cardiogen",
+    "title": "Vesugen vs. Cardiogen: Vascular Endothelial vs. Myocardial Peptide Bioregulation",
+    "subtitle": "Comparing Lys-Glu-Asp vascular microcirculatory restoration with Ala-Glu-Asp-Arg cardiomyocyte cytoprotection.",
+    "category": "Mitochondrial & Cellular Longevity",
+    "compound_a": {
+      "id": "vesugen",
+      "name": "Vesugen (KED)",
+      "handle": "vesugen",
+      "tag": "Vascular Endothelial Epigenetic Bioregulator Tripeptide Standard",
+      "category": "Mitochondrial & Cellular Longevity",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Khavinson et al. Peptide regulation of gene expression and protein synthesis in vascular endothelial cells. [PubMed PMID: 21678788]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21678788/"
+        }
+      ],
+      "half_life": "~2 to 4 Hours (Epigenetic Effects Persist 3–6 Months)",
+      "primary_focus": "Vascular Endothelial Epigenetic Bioregulator Tripeptide Standard",
+      "molecular_mass": "390.39 g/mol",
+      "primary_target": "Endothelial Cell Nucleosomes & eNOS Transcription",
+      "typical_cadence": "1x Daily for 10–20 Days (SubQ)",
+      "sequence_or_class": "Synthetic Tripeptide (Lys-Glu-Asp)",
+      "standard_dilution": "2.0 mL / 20 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "cardiogen",
+      "name": "Cardiogen (AEDR)",
+      "handle": "cardiogen",
+      "tag": "Myocardial Cytoprotective Bioregulator Tetrapeptide Standard",
+      "category": "Mitochondrial & Cellular Longevity",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Khavinson et al. Cardioprotective effect of short peptides in myocardial ischemia and reperfusion. [PubMed PMID: 22896894]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/22896894/"
+        }
+      ],
+      "half_life": "~2 to 4 Hours (Epigenetic Effects Persist 3–6 Months)",
+      "primary_focus": "Myocardial Cytoprotective Bioregulator Tetrapeptide Standard",
+      "molecular_mass": "488.50 g/mol",
+      "primary_target": "Cardiomyocyte DNA & Cardiac Fibroblast Gene Expression",
+      "typical_cadence": "1x Daily for 10–20 Days (SubQ)",
+      "sequence_or_class": "Synthetic Tetrapeptide (Ala-Glu-Asp-Arg)",
+      "standard_dilution": "2.0 mL / 20 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Evaluating Vesugen (Lys-Glu-Asp vascular endothelial peptide) alongside Cardiogen (Ala-Glu-Asp-Arg myocardial peptide). Both are short Khavinson bioregulators that penetrate cell nuclei to interact with histone proteins, but Vesugen targets the vascular tree and capillary microcirculation while Cardiogen targets cardiomyocyte metabolism and prevents fibrous cardiac remodeling.",
+    "synergy_verdict": "Cardiovascular Axis Synergy: Vesugen optimizes vascular compliance, capillary perfusion, and nitric oxide bioavailability, while Cardiogen fortifies heart muscle cells against ischemic apoptosis and excessive fibrous scarring.",
+    "vectors": [
+      {
+        "feature": "Target Tissue Specificity",
+        "verdict": "Vascular Endothelium vs Myocardium",
+        "compoundA_val": "Vascular endothelial cells, arterial walls, and microcirculatory capillary beds",
+        "compoundB_val": "Cardiomyocytes, cardiac conduction fibers, and cardiac fibroblasts"
+      },
+      {
+        "feature": "Primary Biological Mechanism",
+        "verdict": "eNOS & Elasticity vs Anti-Fibrosis & ATP Synthesis",
+        "compoundA_val": "Upregulates endothelial nitric oxide synthase (eNOS) and preserves elastin in blood vessels",
+        "compoundB_val": "Suppresses pathological collagen scar formation and preserves ATP production under ischemic stress"
+      },
+      {
+        "feature": "Hemodynamic Impact",
+        "verdict": "Peripheral Resistance Normalization",
+        "compoundA_val": "Lowers systemic vascular resistance and improves microvascular tissue oxygen delivery",
+        "compoundB_val": "Preserves left ventricular contractility and protects against heart failure remodeling"
+      },
+      {
+        "feature": "Chemical Structure & Sequence",
+        "verdict": "Tripeptide (KED) vs Tetrapeptide (AEDR)",
+        "compoundA_val": "Lys-Glu-Asp (MW 390.39 g/mol)",
+        "compoundB_val": "Ala-Glu-Asp-Arg (MW 488.50 g/mol)"
+      },
+      {
+        "feature": "Safety & Tolerability Profile",
+        "verdict": "Exceptional Physiological Safety",
+        "compoundA_val": "Endogenous amino acid cleavage; zero arrhythmogenic or hemodynamic volatility",
+        "compoundB_val": "Completely non-cytotoxic with zero mutagenic or immunogenic signals"
+      },
+      {
+        "feature": "Cyclical Protocol Window",
+        "verdict": "10–20 Day Cohorts Twice Yearly",
+        "compoundA_val": "10–20 mg daily SubQ for 10 to 20 days; repeat every 3 to 6 months",
+        "compoundB_val": "10–20 mg daily SubQ for 10 to 20 days; frequently co-administered with Vesugen"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Khavinson et al. Peptide regulation of gene expression and protein synthesis in vascular endothelial cells. [PubMed PMID: 21678788]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21678788/"
+      },
+      {
+        "number": 2,
+        "text": "Khavinson et al. Cardioprotective effect of short peptides in myocardial ischemia and reperfusion. [PubMed PMID: 22896894]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/22896894/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-BPCARG-BPCSTD",
+    "slug": "bpc-157-arginate-vs-bpc-157",
+    "title": "BPC-157 Arginate vs. BPC-157 Acetate: Gastric Acid Stability & Pharmacokinetics",
+    "subtitle": "A deep dive comparing the acid-resistant L-arginine salt formulation against the standard pentadecapeptide acetate salt.",
+    "category": "Tissue Repair & Healing",
+    "compound_a": {
+      "id": "bpc-157-arginate",
+      "name": "BPC-157 Arginate (Stable Salt)",
+      "handle": "bpc-157-arginate",
+      "tag": "Acid-Resistant L-Arginine Pentadecapeptide Salt Standard",
+      "category": "Tissue Repair & Healing",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Sikiric et al. Stable gastric pentadecapeptide BPC 157 in gastrointestinal healing. [PubMed PMID: 21030672]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/"
+        }
+      ],
+      "half_life": "~6 Hours (>5 Hours Gastric Juice Stability)",
+      "primary_focus": "Acid-Resistant L-Arginine Pentadecapeptide Salt Standard",
+      "molecular_mass": "1593.7 g/mol (Arg Complex)",
+      "primary_target": "VEGFR2, FAK-Paxillin, Gut Epithelial Tight Junctions",
+      "typical_cadence": "1x Daily Oral Solution or SubQ",
+      "sequence_or_class": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val · L-Arginine",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "bpc-157",
+      "name": "BPC-157 (Acetate Standard)",
+      "handle": "bpc-157",
+      "tag": "Standard Pentadecapeptide Acetate Salt Research Standard",
+      "category": "Tissue Repair & Healing",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Chang et al. The promoting effect of pentadecapeptide BPC 157 on tendon healing. [PubMed PMID: 21030672]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/"
+        }
+      ],
+      "half_life": "~4 to 6 Hours (Rapid Gastric Degradation if unbuffered)",
+      "primary_focus": "Standard Pentadecapeptide Acetate Salt Research Standard",
+      "molecular_mass": "1419.55 g/mol",
+      "primary_target": "VEGFR2, eNOS, Early Growth Response Gene 1 (egr-1)",
+      "typical_cadence": "1–2x Daily (SubQ Local to Injury)",
+      "sequence_or_class": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Comparing BPC-157 L-Arginate salt with standard BPC-157 acetate salt. While both deliver the identical 15-amino-acid active peptide sequence (GEPPPGKPADDAGLV), the L-arginate salt confers complete resistance to simulated gastric juice (pH <2.0) for over 5 hours, whereas standard acetate salt degrades rapidly in harsh acidic environments.",
+    "synergy_verdict": "Route Suitability & Stability: BPC-157 Arginate is the gold standard for oral administration, systemic GI tract healing, and room-temperature solution stability, while standard BPC-157 acetate remains the benchmark for localized subcutaneous injections.",
+    "vectors": [
+      {
+        "feature": "Gastric Acid Resistance (pH 2.0)",
+        "verdict": "Superior Acid Survival (>90% at 5 hours)",
+        "compoundA_val": ">90% intact active peptide remaining after 5 hours in human gastric fluid (pH 1.8)",
+        "compoundB_val": "Rapid hydrolytic degradation within 30–60 minutes in acidic gastric environments"
+      },
+      {
+        "feature": "Oral Delivery Bioavailability",
+        "verdict": "High Oral Systemic Absorption (Arginate)",
+        "compoundA_val": "Fully bioavailable orally; reaches duodenum and systemic circulation intact",
+        "compoundB_val": "Primarily utilized via subcutaneous injection to avoid gastric acid loss"
+      },
+      {
+        "feature": "Reconstituted Solution Stability",
+        "verdict": "Enhanced Thermal Resistance",
+        "compoundA_val": "Maintains integrity at room temperature (25°C) for up to 14 days without significant potency loss",
+        "compoundB_val": "Requires continuous refrigeration (2°C–8°C); degrades faster if exposed to ambient temperature"
+      },
+      {
+        "feature": "Angiogenic & Healing Potency",
+        "verdict": "Equimolar Biological Activity",
+        "compoundA_val": "Identical VEGFR2 receptor activation and microvascular collateral angiogenesis",
+        "compoundB_val": "Identical VEGFR2 receptor activation and microvascular collateral angiogenesis"
+      },
+      {
+        "feature": "Primary Research Indication",
+        "verdict": "GI / Oral vs Localized Soft Tissue Injury",
+        "compoundA_val": "Gastrointestinal mucosal repair, IBD/colitis, systemic tissue recovery via oral dosing",
+        "compoundB_val": "Localized subcutaneous administration adjacent to tendon/ligament injury sites"
+      },
+      {
+        "feature": "Cost & Synthesis Complexity",
+        "verdict": "Standard vs Premium Salt Complex",
+        "compoundA_val": "More demanding stoichiometric crystallization; premium analytical standard",
+        "compoundB_val": "Standard acetate lyophilization; widespread catalog availability"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Sikiric et al. Stable gastric pentadecapeptide BPC 157 in gastrointestinal healing. [PubMed PMID: 21030672]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/"
+      },
+      {
+        "number": 2,
+        "text": "Chang et al. The promoting effect of pentadecapeptide BPC 157 on tendon healing. [PubMed PMID: 21030672]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21030672/"
+      }
+    ]
+  },
+  {
+    "id": "COMP-THYM-TA1",
+    "slug": "thymulin-vs-thymosin-alpha-1",
+    "title": "Thymulin vs. Thymosin Alpha-1: Zinc-Dependent Nonapeptide vs. 28-AA Thymic Polypeptide",
+    "subtitle": "Comparative immunopharmacological analysis of zinc-coupled thymic factor against primary thymic humoral hormone.",
+    "category": "Antimicrobial & Immune",
+    "compound_a": {
+      "id": "thymulin",
+      "name": "Thymulin (FTS-Zn)",
+      "handle": "thymulin",
+      "tag": "Zinc-Dependent Thymic Nonapeptide Factor Standard",
+      "category": "Antimicrobial & Immune",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Bach et al. Thymulin (FTS-Zn), a zinc-dependent hormone. [PubMed PMID: 6344237]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/6344237/"
+        }
+      ],
+      "half_life": "~2 Hours (Biological Immunomodulation Persists)",
+      "primary_focus": "Zinc-Dependent Thymic Nonapeptide Factor Standard",
+      "molecular_mass": "924.25 g/mol (Zinc Complex)",
+      "primary_target": "T-Cell Differentiation Markers & Central Neuro-Immune Axis",
+      "typical_cadence": "2–3x Weekly (SubQ)",
+      "sequence_or_class": "Pyr-Ala-Lys-Ser-Gln-Gly-Gly-Ser-Asn · Zn2+",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "compound_b": {
+      "id": "thymosin-alpha-1",
+      "name": "Thymosin Alpha-1 (Zadaxin)",
+      "handle": "thymosin-alpha-1",
+      "tag": "Master Thymic Humoral Polypeptide Immunomodulator Standard",
+      "category": "Antimicrobial & Immune",
+      "purity": "≥99.0% (HPLC-grade)",
+      "citations": [
+        {
+          "number": 1,
+          "text": "Goldstein et al. Thymosin alpha 1: isolation and biological properties. [PubMed PMID: 885623]",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/885623/"
+        }
+      ],
+      "half_life": "~2 Hours (Downstream Toll-Like Receptor Activation)",
+      "primary_focus": "Master Thymic Humoral Polypeptide Immunomodulator Standard",
+      "molecular_mass": "3108.37 g/mol",
+      "primary_target": "Toll-Like Receptors (TLR2, TLR9), Dendritic Cells & CD4+/CD8+ T-Cells",
+      "typical_cadence": "2x Weekly (SubQ)",
+      "sequence_or_class": "Synthetic 28-aa N-Terminal Acetylated Polypeptide",
+      "standard_dilution": "2.0 mL / 10 mg",
+      "reconstitution_diluent": "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"
+    },
+    "summary": "Comparing Thymulin (zinc-dependent thymic nonapeptide factor) with Thymosin Alpha-1 (28-amino-acid master thymic hormone). Thymulin operates in an equimolar zinc complex to drive terminal T-cell maturation and suppress neuro-immune inflammation/pain, whereas Thymosin Alpha-1 acts upstream on Toll-Like Receptors (TLR2/TLR9) to stimulate dendritic cell presentation, interferon-alpha/gamma production, and cytotoxic T-cell immunity.",
+    "synergy_verdict": "Dual Thymic Network Synergy: Thymosin Alpha-1 primes systemic innate and adaptive antiviral immunity, while Thymulin modulates the neuro-immune inflammatory cascade and promotes fine-tuned T-regulatory balance.",
+    "vectors": [
+      {
+        "feature": "Molecular Size & Structure",
+        "verdict": "Nonapeptide with Zinc vs 28-aa Polypeptide",
+        "compoundA_val": "9-amino-acid peptide with stoichiometric Zn(2+) coordination (MW 924.25 g/mol)",
+        "compoundB_val": "28-amino-acid N-terminally acetylated linear polypeptide (MW 3108.37 g/mol)"
+      },
+      {
+        "feature": "Cofactor Dependency",
+        "verdict": "Strict Zinc Requirement (Thymulin)",
+        "compoundA_val": "Requires 1:1 equimolar zinc ion to adopt active biological conformation; inactive in zinc-deficient states",
+        "compoundB_val": "Independent of heavy metal or trace mineral cofactors for biological receptor binding"
+      },
+      {
+        "feature": "Primary Receptor Pathway",
+        "verdict": "T-Cell Differentiation vs TLR2/TLR9 Dendritic Activation",
+        "compoundA_val": "Interacts directly with high-affinity thymocyte surface binding sites and spinal neuro-immune pathways",
+        "compoundB_val": "Stimulates Toll-Like Receptors 2 and 9 on myeloid dendritic cells, inducing MHC class I/II expression"
+      },
+      {
+        "feature": "Neuro-Inflammation & Hyperalgesia",
+        "verdict": "Potent Anti-Hyperalgesic Action (Thymulin)",
+        "compoundA_val": "Crosses into spinal cord circuits to inhibit TNF-alpha and NGF-induced inflammatory hyperalgesia",
+        "compoundB_val": "Primarily peripheral systemic immune signaling; balances pro- and anti-inflammatory cytokine networks"
+      },
+      {
+        "feature": "Clinical Antiviral & Oncology Trials",
+        "verdict": "Extensive Phase 3 Evidence (Thymosin Alpha-1)",
+        "compoundA_val": "Researched in rheumatoid arthritis, systemic lupus, and neuro-inflammatory autoimmune models",
+        "compoundB_val": "Approved in >30 countries as Zadaxin for chronic Hepatitis B/C, cancer chemotherapy adjunct, and sepsis"
+      },
+      {
+        "feature": "Administration Cadence",
+        "verdict": "2–3x Weekly Subcutaneous",
+        "compoundA_val": "1.0–2.0 mg 2–3x weekly SubQ in 4 to 8 week research blocks",
+        "compoundB_val": "1.6 mg 2x weekly SubQ in 6 to 12 week research cycles"
+      }
+    ],
+    "citations": [
+      {
+        "number": 1,
+        "text": "Bach et al. Thymulin (FTS-Zn), a zinc-dependent hormone. [PubMed PMID: 6344237]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/6344237/"
+      },
+      {
+        "number": 2,
+        "text": "Goldstein et al. Thymosin alpha 1: isolation and biological properties. [PubMed PMID: 885623]",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/885623/"
+      }
+    ]
+  }
+]
