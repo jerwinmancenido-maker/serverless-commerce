@@ -11,7 +11,7 @@
 
 import React, { useState, useMemo } from "react"
 import type { ResearchBundleVial } from "../types"
-import { addToCart } from "@lib/data/cart"
+import { addToCart, addPromotionCode } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 
@@ -67,6 +67,35 @@ export default function StackKitCommerceBuilder({
   const [isAdding, setIsAdding] = useState(false)
   const [cartSuccess, setCartSuccess] = useState<string | null>(null)
   const [cartError, setCartError] = useState<string | null>(null)
+
+  // Detect pure route archetypes
+  const isAllNasal = useMemo(() => {
+    return (
+      bundleVials.length > 0 &&
+      bundleVials.every(
+        (v) =>
+          v.solvent.toLowerCase().includes("saline") ||
+          v.syringeUnits.toLowerCase().includes("nasal") ||
+          v.compoundName.toLowerCase().includes("semax") ||
+          v.compoundName.toLowerCase().includes("selank") ||
+          v.compoundName.toLowerCase().includes("adamax") ||
+          v.compoundName.toLowerCase().includes("oxytocin") ||
+          v.compoundName.toLowerCase().includes("pinealon")
+      )
+    )
+  }, [bundleVials])
+
+  const isAllOral = useMemo(() => {
+    return (
+      bundleVials.length > 0 &&
+      bundleVials.every(
+        (v) =>
+          v.solvent.toLowerCase().includes("oral") ||
+          v.syringeUnits.toLowerCase().includes("pipette") ||
+          v.syringeUnits.toLowerCase().includes("dropper")
+      )
+    )
+  }, [bundleVials])
 
   // Map product prices or realistic defaults
   const bomCalculations = useMemo(() => {
@@ -149,7 +178,27 @@ export default function StackKitCommerceBuilder({
       }
     })
 
-    // Supplies calculations
+    // Supplies calculations adapted to delivery route
+    const nasalBottlesNeeded = Math.max(1, bundleVials.length)
+    const nasalBottleUnitPrice = 350
+    const nasalBottleTotal = nasalBottlesNeeded * nasalBottleUnitPrice
+
+    const salineVialsNeeded = Math.max(1, Math.ceil(totalDiluentMl / 10))
+    const salineUnitPrice = 350
+    const salineTotal = salineVialsNeeded * salineUnitPrice
+
+    const oralVehicleNeeded = Math.max(1, Math.ceil(totalDiluentMl / 30))
+    const oralVehicleUnitPrice = 650
+    const oralVehicleTotal = oralVehicleNeeded * oralVehicleUnitPrice
+
+    const dropperPacksNeeded = 1
+    const dropperUnitPrice = 250
+    const dropperTotal = dropperPacksNeeded * dropperUnitPrice
+
+    const amberBottlesNeeded = Math.max(1, bundleVials.length)
+    const amberBottleUnitPrice = 200
+    const amberBottleTotal = amberBottlesNeeded * amberBottleUnitPrice
+
     const bacVialsNeeded = Math.max(1, Math.ceil(totalDiluentMl / 10))
     const bacUnitPrice = 450
     const bacTotal = bacVialsNeeded * bacUnitPrice
@@ -162,7 +211,15 @@ export default function StackKitCommerceBuilder({
     const swabUnitPrice = 250
     const swabTotal = swabBoxesNeeded * swabUnitPrice
 
-    const suppliesRetailTotal = bacTotal + syringeTotal + swabTotal
+    let suppliesRetailTotal = 0
+    if (isAllNasal) {
+      suppliesRetailTotal = nasalBottleTotal + salineTotal + swabTotal
+    } else if (isAllOral) {
+      suppliesRetailTotal = oralVehicleTotal + dropperTotal + amberBottleTotal
+    } else {
+      suppliesRetailTotal = bacTotal + syringeTotal + swabTotal
+    }
+
     const grossRetail = compoundRetailTotal + (includeSupplies ? suppliesRetailTotal : 0)
 
     // 15% Stack Bundle discount
@@ -173,6 +230,23 @@ export default function StackKitCommerceBuilder({
     return {
       items,
       supplies: {
+        isNasal: isAllNasal,
+        isOral: isAllOral,
+        nasalBottlesNeeded,
+        nasalBottleUnitPrice,
+        nasalBottleTotal,
+        salineVialsNeeded,
+        salineUnitPrice,
+        salineTotal,
+        oralVehicleNeeded,
+        oralVehicleUnitPrice,
+        oralVehicleTotal,
+        dropperPacksNeeded,
+        dropperUnitPrice,
+        dropperTotal,
+        amberBottlesNeeded,
+        amberBottleUnitPrice,
+        amberBottleTotal,
         bacVialsNeeded,
         bacUnitPrice,
         bacTotal,
@@ -189,7 +263,7 @@ export default function StackKitCommerceBuilder({
       netBundlePrice,
       totalInjections,
     }
-  }, [bundleVials, cycleWeeks, includeSupplies, matchedProducts])
+  }, [bundleVials, cycleWeeks, includeSupplies, matchedProducts, isAllNasal, isAllOral])
 
   const handleAddCompleteKitToCart = async () => {
     setIsAdding(true)
@@ -209,6 +283,46 @@ export default function StackKitCommerceBuilder({
         }
       })
 
+      // Route-aware accessory cart injection
+      if (includeSupplies) {
+        if (isAllNasal) {
+          const nasalProduct = (matchedProducts || []).find(
+            (p) =>
+              (p.title || "").toLowerCase().includes("nasal") ||
+              (p.handle || "").toLowerCase().includes("nasal")
+          )
+          if (nasalProduct?.variants?.[0]?.id) {
+            variantsToAdd.push({
+              variantId: nasalProduct.variants[0].id,
+              quantity: bomCalculations.supplies.nasalBottlesNeeded,
+            })
+          }
+        } else if (!isAllOral) {
+          const bacProduct = (matchedProducts || []).find(
+            (p) =>
+              (p.title || "").toLowerCase().includes("bacteriostatic") ||
+              (p.handle || "").toLowerCase().includes("bac")
+          )
+          if (bacProduct?.variants?.[0]?.id) {
+            variantsToAdd.push({
+              variantId: bacProduct.variants[0].id,
+              quantity: bomCalculations.supplies.bacVialsNeeded,
+            })
+          }
+          const syringeProduct = (matchedProducts || []).find(
+            (p) =>
+              (p.title || "").toLowerCase().includes("syringe") ||
+              (p.handle || "").toLowerCase().includes("syringe")
+          )
+          if (syringeProduct?.variants?.[0]?.id) {
+            variantsToAdd.push({
+              variantId: syringeProduct.variants[0].id,
+              quantity: bomCalculations.supplies.syringeBoxesNeeded,
+            })
+          }
+        }
+      }
+
       // If we have matched products with real variants in Medusa, execute addToCart
       if (variantsToAdd.length > 0) {
         for (const v of variantsToAdd) {
@@ -218,8 +332,19 @@ export default function StackKitCommerceBuilder({
             countryCode,
           })
         }
+        try {
+          await addPromotionCode("STACK15")
+        } catch (promoErr) {
+          console.warn("[StackKitCommerceBuilder] Could not auto-apply STACK15:", promoErr)
+        }
+        let suppliesSuffix = ""
+        if (includeSupplies) {
+          if (isAllNasal) suppliesSuffix = " + Nasal Spray Bottles"
+          else if (isAllOral) suppliesSuffix = " + Oral Dispenser Set"
+          else suppliesSuffix = " + Reconstitution Kit"
+        }
         setCartSuccess(
-          `Successfully added ${variantsToAdd.length} stack items to your cart with ${cycleWeeks}-week quantities!`
+          `Successfully added ${variantsToAdd.length} stack items to your cart${suppliesSuffix} with 15% Stack Bundle discount (STACK15) applied!`
         )
       } else if (matchedProducts.length > 0 && matchedProducts[0].variants?.[0]?.id) {
         // Fallback to first matched variant
@@ -229,17 +354,26 @@ export default function StackKitCommerceBuilder({
           quantity: 1,
           countryCode,
         })
+        try {
+          await addPromotionCode("STACK15")
+        } catch (promoErr) {
+          console.warn("[StackKitCommerceBuilder] Could not auto-apply STACK15:", promoErr)
+        }
         setCartSuccess(
-          `Added primary stack compound to cart! Visit your cart to complete the research kit.`
+          `Added primary stack compound to cart with 15% discount (STACK15) applied! Visit your cart to complete the research kit.`
         )
+
       } else {
         // If storefront mock mode or variants pending link, trigger simulated addition
         await new Promise((resolve) => setTimeout(resolve, 600))
+        let suppliesName = "Consumables Pack"
+        if (isAllNasal) suppliesName = "Nasal Atomizer Kit"
+        else if (isAllOral) suppliesName = "Oral Vehicle Dispenser Pack"
         setCartSuccess(
           `Complete ${cycleWeeks}-Week ${compoundName} Research Kit (BOM: ${bomCalculations.items
             .map((i) => `${i.vialsNeeded}x ${i.compoundName}`)
             .join(" + ")}${
-            includeSupplies ? " + Consumables Pack" : ""
+            includeSupplies ? ` + ${suppliesName}` : ""
           }) configured! 15% Stack Bundle discount reserved.`
         )
       }
@@ -312,7 +446,11 @@ export default function StackKitCommerceBuilder({
             <span>📋</span> Prescribed Compounds &amp; Vial Allocation ({cycleWeeks}-Week Protocol)
           </div>
           <span className="text-[11px] font-mono text-slate-500">
-            Total Cycle Injections: ~{bomCalculations.totalInjections}
+            {isAllNasal
+              ? `Total Cycle Actuations: ~${bomCalculations.totalInjections} sprays`
+              : isAllOral
+              ? `Total Cycle Doses: ~${bomCalculations.totalInjections} oral doses`
+              : `Total Cycle Injections: ~${bomCalculations.totalInjections}`}
           </span>
         </div>
 
@@ -390,7 +528,12 @@ export default function StackKitCommerceBuilder({
               htmlFor="include-supplies-checkbox"
               className="text-xs sm:text-sm font-bold text-slate-900 cursor-pointer flex items-center gap-1.5"
             >
-              <span>🧪</span> Include Complete Analytical Preparation Supplies (BAC Water &amp; Syringes)
+              <span>{isAllNasal ? "👃" : isAllOral ? "💧" : "🧪"}</span>{" "}
+              {isAllNasal
+                ? "Include Complete Nasal Atomizer Preparation Supplies (Spray Bottles & Sterile Saline)"
+                : isAllOral
+                ? "Include Complete Oral Liquid Preparation Supplies (Vehicle & Calibrated Pipettes)"
+                : "Include Complete Analytical Preparation Supplies (BAC Water & Syringes)"}
             </label>
           </div>
           <span className="text-xs font-mono font-bold text-slate-700">
@@ -400,32 +543,94 @@ export default function StackKitCommerceBuilder({
 
         {includeSupplies ? (
           <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-3 text-xs">
-            <div className="rounded-lg border border-slate-200 bg-white p-2.5">
-              <div className="font-semibold text-slate-900">Bacteriostatic Water (10 mL)</div>
-              <div className="text-slate-500 text-[11px] mt-0.5">0.9% Benzyl Alcohol USP</div>
-              <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
-                <span>{bomCalculations.supplies.bacVialsNeeded}x 10 mL Vials</span>
-                <span className="font-bold">₱{bomCalculations.supplies.bacTotal.toLocaleString()}</span>
-              </div>
-            </div>
+            {isAllNasal ? (
+              <>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Clear Nasal Spray Bottles</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">10 mL · 0.10 mL Metered Fine Mist</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.nasalBottlesNeeded}x Bottles</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.nasalBottleTotal.toLocaleString()}</span>
+                  </div>
+                </div>
 
-            <div className="rounded-lg border border-slate-200 bg-white p-2.5">
-              <div className="font-semibold text-slate-900">U-100 Insulin Syringes (31G)</div>
-              <div className="text-slate-500 text-[11px] mt-0.5">100-Pack Box · 0.3/0.5 mL</div>
-              <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
-                <span>{bomCalculations.supplies.syringeBoxesNeeded}x Box (100 pcs)</span>
-                <span className="font-bold">₱{bomCalculations.supplies.syringeTotal.toLocaleString()}</span>
-              </div>
-            </div>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Sterile 0.9% Saline Solution</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">10 mL · Isotonic Mucosal Vehicle USP</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.salineVialsNeeded}x 10 mL Vials</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.salineTotal.toLocaleString()}</span>
+                  </div>
+                </div>
 
-            <div className="rounded-lg border border-slate-200 bg-white p-2.5">
-              <div className="font-semibold text-slate-900">Sterile Isopropyl Prep Pads</div>
-              <div className="text-slate-500 text-[11px] mt-0.5">100-Pack 70% IPA Pads</div>
-              <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
-                <span>{bomCalculations.supplies.swabBoxesNeeded}x Box (100 pcs)</span>
-                <span className="font-bold">₱{bomCalculations.supplies.swabTotal.toLocaleString()}</span>
-              </div>
-            </div>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Sterile Isopropyl Prep Pads</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">100-Pack 70% IPA Swabs</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.swabBoxesNeeded}x Box (100 pcs)</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.swabTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+              </>
+            ) : isAllOral ? (
+              <>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Oral Liquid Research Vehicle USP</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">30 mL · Non-Injectable Liquid Matrix</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.oralVehicleNeeded}x 30 mL Bottle</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.oralVehicleTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Calibrated Oral Dosing Pipettes</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">1.0 mL Graduated Precision Droppers</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.dropperPacksNeeded}x Pack</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.dropperTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Amber Borosilicate Storage Bottles</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">30 mL UV-Protective Liquid Storage</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.amberBottlesNeeded}x Bottles</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.amberBottleTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Bacteriostatic Water (10 mL)</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">0.9% Benzyl Alcohol USP</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.bacVialsNeeded}x 10 mL Vials</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.bacTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">U-100 Insulin Syringes (31G)</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">100-Pack Box · 0.3/0.5 mL</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.syringeBoxesNeeded}x Box (100 pcs)</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.syringeTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+                  <div className="font-semibold text-slate-900">Sterile Isopropyl Prep Pads</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">100-Pack 70% IPA Pads</div>
+                  <div className="mt-2 flex justify-between font-mono text-[11px] text-slate-700 border-t border-slate-100 pt-1">
+                    <span>{bomCalculations.supplies.swabBoxesNeeded}x Box (100 pcs)</span>
+                    <span className="font-bold">₱{bomCalculations.supplies.swabTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         ) : null}
       </div>

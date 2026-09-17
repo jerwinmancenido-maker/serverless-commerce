@@ -1,3 +1,10 @@
+/**
+ * @file    apps/backend/src/scripts/sanitize-subq-variants.ts
+ * @module  SanitizeSubqVariantsScript
+ * @purpose Sanitizes legacy SubQ titles in product variants into Analytical Lab Set.
+ */
+
+import { MedusaError } from "@medusajs/framework/utils"
 import { Client } from "pg"
 
 async function sanitizeSubqVariants() {
@@ -51,7 +58,10 @@ async function sanitizeSubqVariants() {
     console.log(`Total 'Analytical Lab Set' count: ${labSetCheck.rows[0].count}`)
 
     if (parseInt(remainingCheck.rows[0].count, 10) !== 0) {
-      throw new Error("Variant sanitization failed: records still contain 'SubQ'")
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Variant sanitization failed: records still contain 'SubQ'"
+      )
     }
   } finally {
     await client.end()

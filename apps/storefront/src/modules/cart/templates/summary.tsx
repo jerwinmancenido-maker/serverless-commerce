@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/cart/templates/summary.tsx
+ * @module  CartSummaryTemplate (Storefront Cart)
+ * @purpose Renders order summary, totals, promotion codes, and proceed to checkout action.
+ * @contracts
+ *   Fetches: cart totals, applied promotions
+ */
+
 import { Heading } from "@modules/common/components/ui"
 
 import CartTotals from "@modules/common/components/cart-totals"
@@ -50,7 +58,7 @@ const Summary = ({ cart }: SummaryProps) => {
       <div className="pt-2 border-t border-slate-100 flex flex-col gap-y-1.5 text-[11px] text-slate-500">
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-          <span>Instant GCash, Maya &amp; Bank QR settlement</span>
+          <span>Manual GCash, Maya &amp; Bank QR · Subject to Admin Verification</span>
         </div>
       </div>
     </div>

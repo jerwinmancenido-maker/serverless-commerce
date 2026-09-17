@@ -26,7 +26,7 @@ import {
   XMark,
 } from "@medusajs/icons"
 import SyringeVisualizer from "@modules/account/components/research-tracking/syringe-visualizer"
-import { addToCart } from "@lib/data/cart"
+import { addToCart, addPromotionCode } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import type {
   KitCompoundConfig,
@@ -248,9 +248,19 @@ export default function CustomKitStudio({
         }
       }
 
+      // If bundle discount is unlocked (multi-compound or bundle tier), auto-apply STACK15
+      if (bundlePricing.discountPercent > 0 || configuredCompounds.length >= 2) {
+        try {
+          await addPromotionCode("STACK15")
+        } catch (promoErr) {
+          console.warn("[CustomKitStudio] Could not auto-apply STACK15:", promoErr)
+        }
+      }
+
       setIsAddingToCart(false)
       setAddingStepMessage("")
       setCartSuccessOpen(true)
+
     } catch (err: unknown) {
       setIsAddingToCart(false)
       setAddingStepMessage("")
@@ -561,7 +571,7 @@ export default function CustomKitStudio({
                     },
                     {
                       id: "complete_subq" as KitPackagingTier,
-                      title: "Complete SubQ Set",
+                      title: "Analytical Lab Set",
                       desc: "BAC Water + 10x 31G U-100 LDS Syringes + 10x 70% IPA Pads.",
                       addon: "+₱750",
                     },
@@ -907,7 +917,7 @@ export default function CustomKitStudio({
             <div>
               <h3 className="font-black text-xl text-slate-900">Custom Kit Added to Cart!</h3>
               <p className="text-xs text-slate-600 mt-1">
-                All {configuredCompounds.length} configured compound vials and SubQ accessories have been staged into your active cart session.
+                All {configuredCompounds.length} configured compound vials and analytical laboratory calibration supplies have been staged into your active cart session.
               </p>
             </div>
 

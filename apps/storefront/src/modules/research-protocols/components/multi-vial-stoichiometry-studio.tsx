@@ -11,6 +11,7 @@
 import React, { useState, useMemo } from "react"
 import type { ResearchBundleVial } from "../types"
 import InteractiveSyringeStoichiometry from "./interactive-syringe-stoichiometry"
+import InteractiveNasalStoichiometry from "./interactive-nasal-stoichiometry"
 import { getCompoundProtocol } from "@lib/data/compound-protocols"
 
 interface MultiVialStoichiometryStudioProps {
@@ -118,6 +119,24 @@ export default function MultiVialStoichiometryStudio({
       const protocol = getCompoundProtocol(vial.compoundName)
       const isKnown = protocol && protocol.id !== "generic-peptide"
 
+      const isNasal =
+        vial.solvent?.toLowerCase().includes("saline") ||
+        vial.syringeUnits?.toLowerCase().includes("nasal") ||
+        vial.compoundName.toLowerCase().includes("semax") ||
+        vial.compoundName.toLowerCase().includes("selank") ||
+        vial.compoundName.toLowerCase().includes("adamax") ||
+        vial.compoundName.toLowerCase().includes("oxytocin") ||
+        vial.compoundName.toLowerCase().includes("pinealon") ||
+        protocol?.primaryDeliveryRoute === "nasal" ||
+        (protocol?.deliveryRoutes && protocol.deliveryRoutes.includes("nasal") && !protocol.deliveryRoutes.includes("subq"))
+
+      const isOral =
+        vial.solvent?.toLowerCase().includes("oral") ||
+        vial.syringeUnits?.toLowerCase().includes("pipette") ||
+        vial.syringeUnits?.toLowerCase().includes("dropper") ||
+        protocol?.primaryDeliveryRoute === "oral" ||
+        (protocol?.deliveryRoutes && protocol.deliveryRoutes.includes("oral") && !protocol.deliveryRoutes.includes("subq"))
+
       return {
         ...vial,
         index: idx,
@@ -131,9 +150,19 @@ export default function MultiVialStoichiometryStudio({
         theme,
         protocol,
         isKnown,
+        isNasal,
+        isOral,
       }
     })
   }, [bundleVials, diluents, customDoses])
+
+  const isAllNasal = useMemo(() => {
+    return calculatedVials.length > 0 && calculatedVials.every((v) => v.isNasal)
+  }, [calculatedVials])
+
+  const isAllOral = useMemo(() => {
+    return calculatedVials.length > 0 && calculatedVials.every((v) => v.isOral)
+  }, [calculatedVials])
 
   const activeVial = calculatedVials[activeVialIndex] || calculatedVials[0]
 
@@ -144,13 +173,25 @@ export default function MultiVialStoichiometryStudio({
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-sky-500/10 border border-sky-500/30 px-3 py-1 text-xs font-mono font-bold text-sky-400 uppercase tracking-wider mb-2">
             <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
-            Dual-Channel Multi-Vial Syringe Calibration
+            {isAllNasal
+              ? "Dual-Channel Metered Nasal Atomizer Calibration"
+              : isAllOral
+              ? "Dual-Channel Calibrated Oral Pipette Dispenser"
+              : "Dual-Channel Multi-Vial Syringe Calibration"}
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            Dual-Channel Reconstitution &amp; Stoichiometry Station
+            {isAllNasal
+              ? "Dual-Channel Intranasal Solution & Atomizer Station"
+              : isAllOral
+              ? "Dual-Channel Oral Liquid & Vehicle Dispenser Station"
+              : "Dual-Channel Reconstitution & Stoichiometry Station"}
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Independent volumetric stoichiometry, fluid graduation, and U-100 syringe barrel calibration for each constituent physical vial.
+            {isAllNasal
+              ? "Independent volumetric stoichiometry, fluid graduation, and metered fine-mist atomizer pump calibration for each constituent nasal solution."
+              : isAllOral
+              ? "Independent volumetric stoichiometry, oral liquid vehicle dissolution, and calibrated pipette dosing for each constituent oral solution."
+              : "Independent volumetric stoichiometry, fluid graduation, and U-100 syringe barrel calibration for each constituent physical vial."}
           </p>
         </div>
 
@@ -234,32 +275,48 @@ export default function MultiVialStoichiometryStudio({
                 </div>
               )}
 
-              <InteractiveSyringeStoichiometry
-                key={`interactive-syringe-${vial.index}-${vial.compoundName}`}
-                compoundId={vial.isKnown ? proto?.id : vial.compoundName.toLowerCase().replace(/[^a-z0-9]/g, "-")}
-                compoundName={vial.compoundName}
-                subtitle={`Constituent Channel #${vial.index + 1} of ${calculatedVials.length} (${vial.compoundName})`}
-                vialMg={vial.netMg}
-                diluentMl={vial.currentDiluent}
-                concMgMl={vial.concMgMl}
-                standardDoseMcg={vial.currentDoseMcg}
-                standardDoseDisplay={vial.targetDose}
-                cadence={vial.cadence}
-                graduations={vial.isKnown ? proto?.syringeGuide?.graduations : undefined}
-                titrationSteps={vial.isKnown ? proto?.dosing?.titrationSteps : undefined}
-                vialStrengthOptions={vial.isKnown ? proto?.vialStrengthOptions : undefined}
-                reconstitutionOptions={vial.isKnown ? proto?.reconstitutionOptions : undefined}
-                needleGauge={vial.isKnown ? proto?.syringeGuide?.needleGauge : undefined}
-                needleLength={vial.isKnown ? proto?.syringeGuide?.needleLength : undefined}
-                hubType={vial.isKnown ? proto?.syringeGuide?.hubType : undefined}
-                recommendedBarrel={vial.isKnown ? proto?.syringeGuide?.recommendedBarrel : undefined}
-                transferNeedle={vial.isKnown ? proto?.syringeGuide?.transferNeedle : undefined}
-                syringeType={vial.isKnown ? proto?.syringeGuide?.syringeType : undefined}
-                standardIUDisplay={vial.isKnown ? proto?.syringeGuide?.standardIUDisplay : undefined}
-                hideHardwareSpec={false}
-                hideTitrationTable={false}
-                className="border-slate-800/80 bg-slate-900/60 shadow-xl"
-              />
+              {vial.isNasal ? (
+                <InteractiveNasalStoichiometry
+                  key={`interactive-nasal-${vial.index}-${vial.compoundName}`}
+                  compoundId={vial.isKnown ? proto?.id : vial.compoundName.toLowerCase().replace(/[^a-z0-9]/g, "-")}
+                  compoundName={vial.compoundName}
+                  subtitle={`Constituent Channel #${vial.index + 1} of ${calculatedVials.length} (${vial.compoundName})`}
+                  vialMg={vial.netMg}
+                  diluentMl={vial.currentDiluent}
+                  concMgMl={vial.concMgMl}
+                  standardDoseMcg={vial.currentDoseMcg}
+                  standardDoseDisplay={vial.targetDose}
+                  cadence={vial.cadence}
+                  className="border-slate-800/80 bg-slate-900/60 shadow-xl"
+                />
+              ) : (
+                <InteractiveSyringeStoichiometry
+                  key={`interactive-syringe-${vial.index}-${vial.compoundName}`}
+                  compoundId={vial.isKnown ? proto?.id : vial.compoundName.toLowerCase().replace(/[^a-z0-9]/g, "-")}
+                  compoundName={vial.compoundName}
+                  subtitle={`Constituent Channel #${vial.index + 1} of ${calculatedVials.length} (${vial.compoundName})`}
+                  vialMg={vial.netMg}
+                  diluentMl={vial.currentDiluent}
+                  concMgMl={vial.concMgMl}
+                  standardDoseMcg={vial.currentDoseMcg}
+                  standardDoseDisplay={vial.targetDose}
+                  cadence={vial.cadence}
+                  graduations={vial.isKnown ? proto?.syringeGuide?.graduations : undefined}
+                  titrationSteps={vial.isKnown ? proto?.dosing?.titrationSteps : undefined}
+                  vialStrengthOptions={vial.isKnown ? proto?.vialStrengthOptions : undefined}
+                  reconstitutionOptions={vial.isKnown ? proto?.reconstitutionOptions : undefined}
+                  needleGauge={vial.isKnown ? proto?.syringeGuide?.needleGauge : undefined}
+                  needleLength={vial.isKnown ? proto?.syringeGuide?.needleLength : undefined}
+                  hubType={vial.isKnown ? proto?.syringeGuide?.hubType : undefined}
+                  recommendedBarrel={vial.isKnown ? proto?.syringeGuide?.recommendedBarrel : undefined}
+                  transferNeedle={vial.isKnown ? proto?.syringeGuide?.transferNeedle : undefined}
+                  syringeType={vial.isKnown ? proto?.syringeGuide?.syringeType : undefined}
+                  standardIUDisplay={vial.isKnown ? proto?.syringeGuide?.standardIUDisplay : undefined}
+                  hideHardwareSpec={false}
+                  hideTitrationTable={false}
+                  className="border-slate-800/80 bg-slate-900/60 shadow-xl"
+                />
+              )}
 
               {/* Reconstitution Instructions Footnote */}
               {vial.reconstitutionInstructions && (
@@ -283,32 +340,94 @@ export default function MultiVialStoichiometryStudio({
           <span>⚠️</span> Non-Negotiable Aseptic Stacking Rules
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-amber-950">
-          <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
-            <span className="font-bold text-amber-900 block mb-1">
-              1. Zero Cross-Vial Needle Reuse
-            </span>
-            <p className="text-[11px] leading-relaxed text-slate-700">
-              Never re-insert a needle into Vial B after drawing from Vial A. Doing so introduces cross-compound enzymes and permanently ruins lot purity.
-            </p>
-          </div>
+          {isAllNasal ? (
+            <>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  1. Dedicated Atomizer Bottles
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Reconstitute each compound into its own dedicated, calibrated metered nasal spray bottle. Never mix solutions in the same atomizer reservoir.
+                </p>
+              </div>
 
-          <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
-            <span className="font-bold text-amber-900 block mb-1">
-              2. Independent Sterile Syringes
-            </span>
-            <p className="text-[11px] leading-relaxed text-slate-700">
-              Always use separate U-100 insulin syringes for each constituent compound. Ensure both syringes are labeled before administration.
-            </p>
-          </div>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  2. Metered 0.10 mL Priming
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Prime each new atomizer pump with 2 test actuations into an absorbent wipe to purge dip-tube air and achieve guaranteed 0.10 mL volumetric delivery.
+                </p>
+              </div>
 
-          <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
-            <span className="font-bold text-amber-900 block mb-1">
-              3. Isolated Assay Channels
-            </span>
-            <p className="text-[11px] leading-relaxed text-slate-700">
-              Dispense constituent peptides into isolated in-vitro assay channels or separate analytical vessels to prevent unquantified cross-reactivity prior to scheduled observation.
-            </p>
-          </div>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  3. Saline Vehicle Protocol
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Intranasal preparations must strictly utilize Sterile 0.9% Saline USP or Sterile Deionized Water. Standard Bacteriostatic Benzyl Alcohol water is contraindicated.
+                </p>
+              </div>
+            </>
+          ) : isAllOral ? (
+            <>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  1. Dedicated Oral Pipettes
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Use separate calibrated oral droppers/pipettes for each compound to eliminate cross-contamination across research liquid aliquots.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  2. Needle-Free Dispensers
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Oral research formulations are non-injectable. Strictly measure and dispense via graduated oral pipettes with 0.1 mL volumetric rings.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  3. Amber Bottle Storage
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Store oral liquid peptide vehicles refrigerated in UV-protective amber borosilicate containers protected from high heat and direct light.
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  1. Zero Cross-Vial Needle Reuse
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Never re-insert a needle into Vial B after drawing from Vial A. Doing so introduces cross-compound enzymes and permanently ruins lot purity.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  2. Independent Sterile Syringes
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Always use separate U-100 insulin syringes for each constituent compound. Ensure both syringes are labeled before administration.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
+                <span className="font-bold text-amber-900 block mb-1">
+                  3. Isolated Assay Channels
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-700">
+                  Dispense constituent peptides into isolated in-vitro assay channels or separate analytical vessels to prevent unquantified cross-reactivity prior to scheduled observation.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>

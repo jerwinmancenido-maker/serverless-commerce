@@ -12,10 +12,7 @@
       "http://localhost:9000/static/catalog/5-amino-1mq/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/5-amino-1mq/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/5-amino-1mq/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/5-amino-1mq/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/5-amino-1mq/variant_vial.webp",
-      "http://localhost:9000/static/catalog/5-amino-1mq/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/5-amino-1mq/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/5-amino-1mq/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -262,10 +259,7 @@
       "http://localhost:9000/static/catalog/aod-9604/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/aod-9604/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/aod-9604/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/aod-9604/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/aod-9604/variant_vial.webp",
-      "http://localhost:9000/static/catalog/aod-9604/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/aod-9604/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/aod-9604/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -512,10 +506,7 @@
       "http://localhost:9000/static/catalog/cagrilintide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cagrilintide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cagrilintide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cagrilintide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cagrilintide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cagrilintide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cagrilintide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cagrilintide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -769,10 +760,7 @@
       "http://localhost:9000/static/catalog/lemon-bottle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/lemon-bottle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/lemon-bottle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/lemon-bottle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/lemon-bottle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/lemon-bottle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/lemon-bottle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/lemon-bottle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -955,10 +943,7 @@
       "http://localhost:9000/static/catalog/lipo-c-b12/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/lipo-c-b12/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/lipo-c-b12/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/lipo-c-b12/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/lipo-c-b12/variant_vial.webp",
-      "http://localhost:9000/static/catalog/lipo-c-b12/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/lipo-c-b12/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/lipo-c-b12/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1077,10 +1062,7 @@
       "http://localhost:9000/static/catalog/mots-c/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/mots-c/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/mots-c/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/mots-c/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/mots-c/variant_vial.webp",
-      "http://localhost:9000/static/catalog/mots-c/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/mots-c/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/mots-c/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1263,10 +1245,7 @@
       "http://localhost:9000/static/catalog/retatrutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/retatrutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/retatrutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/retatrutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/retatrutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/retatrutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/retatrutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/retatrutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1864,10 +1843,7 @@
       "http://localhost:9000/static/catalog/rtt60/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/rtt60/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/rtt60/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/rtt60/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/rtt60/variant_vial.webp",
-      "http://localhost:9000/static/catalog/rtt60/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/rtt60/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/rtt60/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -1986,10 +1962,7 @@
       "http://localhost:9000/static/catalog/semaglutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/semaglutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/semaglutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/semaglutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/semaglutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/semaglutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/semaglutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/semaglutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -2435,10 +2408,7 @@
       "http://localhost:9000/static/catalog/tirzepatide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tirzepatide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tirzepatide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tirzepatide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tirzepatide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tirzepatide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tirzepatide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tirzepatide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3030,10 +3000,7 @@
       "http://localhost:9000/static/catalog/ara-290/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ara-290/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ara-290/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ara-290/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ara-290/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ara-290/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ara-290/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ara-290/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3152,10 +3119,7 @@
       "http://localhost:9000/static/catalog/bpc-157-vial/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bpc-157-vial/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bpc-157-vial/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bpc-157-vial/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bpc-157-vial/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bpc-157-vial/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bpc-157-vial/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bpc-157-vial/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3473,10 +3437,7 @@
       "http://localhost:9000/static/catalog/adamax-1032/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/adamax-1032/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/adamax-1032/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/adamax-1032/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/adamax-1032/variant_vial.webp",
-      "http://localhost:9000/static/catalog/adamax-1032/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/adamax-1032/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/adamax-1032/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3573,10 +3534,7 @@
       "http://localhost:9000/static/catalog/dihexa/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/dihexa/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/dihexa/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/dihexa/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/dihexa/variant_vial.webp",
-      "http://localhost:9000/static/catalog/dihexa/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/dihexa/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/dihexa/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3717,10 +3675,7 @@
       "http://localhost:9000/static/catalog/pe-22-28/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pe-22-28/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pe-22-28/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pe-22-28/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pe-22-28/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pe-22-28/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pe-22-28/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pe-22-28/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3839,10 +3794,7 @@
       "http://localhost:9000/static/catalog/pinealon/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pinealon/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pinealon/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pinealon/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pinealon/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pinealon/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pinealon/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pinealon/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -3939,10 +3891,7 @@
       "http://localhost:9000/static/catalog/selank/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/selank/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/selank/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/selank/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/selank/variant_vial.webp",
-      "http://localhost:9000/static/catalog/selank/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/selank/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/selank/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4196,10 +4145,7 @@
       "http://localhost:9000/static/catalog/semax/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/semax/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/semax/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/semax/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/semax/variant_vial.webp",
-      "http://localhost:9000/static/catalog/semax/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/semax/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/semax/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4453,10 +4399,7 @@
       "http://localhost:9000/static/catalog/selank-semax-combo/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/selank-semax-combo/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/selank-semax-combo/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/selank-semax-combo/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/selank-semax-combo/variant_vial.webp",
-      "http://localhost:9000/static/catalog/selank-semax-combo/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/selank-semax-combo/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/selank-semax-combo/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4727,10 +4670,7 @@
       "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4849,10 +4789,7 @@
       "http://localhost:9000/static/catalog/ghrp-2/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghrp-2/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghrp-2/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghrp-2/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghrp-2/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghrp-2/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghrp-2/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghrp-2/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -4971,10 +4908,7 @@
       "http://localhost:9000/static/catalog/ghrp-6/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghrp-6/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghrp-6/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghrp-6/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghrp-6/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghrp-6/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghrp-6/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghrp-6/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5093,10 +5027,7 @@
       "http://localhost:9000/static/catalog/hgh-somatropin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hgh-somatropin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hgh-somatropin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hgh-somatropin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hgh-somatropin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hgh-somatropin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hgh-somatropin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hgh-somatropin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5599,10 +5530,7 @@
       "http://localhost:9000/static/catalog/igf-1-lr3/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/igf-1-lr3/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/igf-1-lr3/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/igf-1-lr3/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/igf-1-lr3/variant_vial.webp",
-      "http://localhost:9000/static/catalog/igf-1-lr3/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/igf-1-lr3/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/igf-1-lr3/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5721,10 +5649,7 @@
       "http://localhost:9000/static/catalog/igf-des/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/igf-des/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/igf-des/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/igf-des/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/igf-des/variant_vial.webp",
-      "http://localhost:9000/static/catalog/igf-des/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/igf-des/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/igf-des/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5840,10 +5765,7 @@
       "http://localhost:9000/static/catalog/ipamorelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ipamorelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ipamorelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ipamorelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ipamorelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ipamorelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ipamorelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ipamorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -5962,10 +5884,7 @@
       "http://localhost:9000/static/catalog/tesamorelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tesamorelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tesamorelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tesamorelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tesamorelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tesamorelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tesamorelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tesamorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6047,10 +5966,7 @@
       "http://localhost:9000/static/catalog/ti15/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ti15/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ti15/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ti15/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ti15/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ti15/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ti15/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ti15/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6166,10 +6082,7 @@
       "http://localhost:9000/static/catalog/aicar/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/aicar/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/aicar/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/aicar/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/aicar/variant_vial.webp",
-      "http://localhost:9000/static/catalog/aicar/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/aicar/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/aicar/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6288,10 +6201,7 @@
       "http://localhost:9000/static/catalog/epithalon/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/epithalon/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/epithalon/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/epithalon/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/epithalon/variant_vial.webp",
-      "http://localhost:9000/static/catalog/epithalon/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/epithalon/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/epithalon/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6545,10 +6455,7 @@
       "http://localhost:9000/static/catalog/glutathione-1500mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/glutathione-1500mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/glutathione-1500mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/glutathione-1500mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/glutathione-1500mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6738,10 +6645,7 @@
       "http://localhost:9000/static/catalog/nad-plus-500mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/nad-plus-500mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/nad-plus-500mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/nad-plus-500mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/nad-plus-500mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/nad-plus-500mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/nad-plus-500mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/nad-plus-500mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -6992,10 +6896,7 @@
       "http://localhost:9000/static/catalog/ss-31/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ss-31/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ss-31/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ss-31/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ss-31/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ss-31/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ss-31/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ss-31/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7178,10 +7079,7 @@
       "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cuv100-ghk-cu-kpv/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7300,10 +7198,7 @@
       "http://localhost:9000/static/catalog/ghk-cu/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghk-cu/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghk-cu/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghk-cu/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghk-cu/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghk-cu/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghk-cu/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghk-cu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7499,10 +7394,7 @@
       "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghk-cu-anti-aging-serum/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7596,10 +7488,7 @@
       "http://localhost:9000/static/catalog/glow70/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/glow70/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/glow70/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/glow70/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/glow70/variant_vial.webp",
-      "http://localhost:9000/static/catalog/glow70/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/glow70/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/glow70/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7715,10 +7604,7 @@
       "http://localhost:9000/static/catalog/snap-8/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/snap-8/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/snap-8/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/snap-8/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/snap-8/variant_vial.webp",
-      "http://localhost:9000/static/catalog/snap-8/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/snap-8/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/snap-8/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7837,10 +7723,7 @@
       "http://localhost:9000/static/catalog/klow80/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/klow80/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/klow80/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/klow80/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/klow80/variant_vial.webp",
-      "http://localhost:9000/static/catalog/klow80/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/klow80/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/klow80/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -7956,10 +7839,7 @@
       "http://localhost:9000/static/catalog/kpv/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/kpv/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/kpv/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/kpv/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/kpv/variant_vial.webp",
-      "http://localhost:9000/static/catalog/kpv/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/kpv/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/kpv/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8085,10 +7965,7 @@
       "http://localhost:9000/static/catalog/thymosin-alpha-1/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/thymosin-alpha-1/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/thymosin-alpha-1/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/thymosin-alpha-1/variant_vial.webp",
-      "http://localhost:9000/static/catalog/thymosin-alpha-1/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/thymosin-alpha-1/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/thymosin-alpha-1/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8271,10 +8148,7 @@
       "http://localhost:9000/static/catalog/hcg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hcg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hcg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hcg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hcg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hcg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hcg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hcg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8582,10 +8456,7 @@
       "http://localhost:9000/static/catalog/hmg-75iu/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hmg-75iu/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hmg-75iu/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hmg-75iu/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hmg-75iu/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hmg-75iu/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hmg-75iu/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hmg-75iu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8704,10 +8575,7 @@
       "http://localhost:9000/static/catalog/kisspeptin-10/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/kisspeptin-10/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/kisspeptin-10/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/kisspeptin-10/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/kisspeptin-10/variant_vial.webp",
-      "http://localhost:9000/static/catalog/kisspeptin-10/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/kisspeptin-10/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/kisspeptin-10/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8826,10 +8694,7 @@
       "http://localhost:9000/static/catalog/pt-141/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pt-141/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pt-141/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pt-141/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pt-141/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pt-141/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pt-141/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pt-141/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -8948,10 +8813,7 @@
       "http://localhost:9000/static/catalog/dsip/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/dsip/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/dsip/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/dsip/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/dsip/variant_vial.webp",
-      "http://localhost:9000/static/catalog/dsip/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/dsip/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/dsip/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9048,10 +8910,7 @@
       "http://localhost:9000/static/catalog/bacteriostatic-water/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bacteriostatic-water/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bacteriostatic-water/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-water/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-water/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-water/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-water/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bacteriostatic-water/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9255,10 +9114,7 @@
       "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/peptide-reconstitution-set/variant_vial.webp",
-      "http://localhost:9000/static/catalog/peptide-reconstitution-set/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/peptide-reconstitution-set/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/peptide-reconstitution-set/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9330,10 +9186,7 @@
       "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/reusable-metal-insulin-pen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9405,10 +9258,7 @@
       "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/variant_vial.webp",
-      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/50-slot-vial-organizer-box/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9502,10 +9352,7 @@
       "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/variant_vial.webp",
-      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/custom-mixed-vial-organizer-box/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9599,10 +9446,7 @@
       "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/variant_vial.webp",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/clear-nasal-spray-bottles/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9718,10 +9562,7 @@
       "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghk-cu-glutathione-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9829,10 +9670,7 @@
       "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/epithalon-glutathione-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -9934,10 +9772,7 @@
       "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/epithalon-glutathione-nad-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10052,10 +9887,7 @@
       "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/glutathione-nad-ghk-cu-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10176,10 +10008,7 @@
       "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/nad-ghk-cu-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10293,10 +10122,7 @@
       "http://localhost:9000/static/catalog/tb-500/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tb-500/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tb-500/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tb-500/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tb-500/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tb-500/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tb-500/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tb-500/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10600,10 +10426,7 @@
       "http://localhost:9000/static/catalog/ghk-basic/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghk-basic/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghk-basic/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghk-basic/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghk-basic/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghk-basic/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghk-basic/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghk-basic/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10715,10 +10538,7 @@
       "http://localhost:9000/static/catalog/pentosan-polysulfate/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pentosan-polysulfate/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pentosan-polysulfate/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pentosan-polysulfate/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pentosan-polysulfate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10830,10 +10650,7 @@
       "http://localhost:9000/static/catalog/mazdutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/mazdutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/mazdutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/mazdutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/mazdutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/mazdutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/mazdutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/mazdutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -10945,10 +10762,7 @@
       "http://localhost:9000/static/catalog/survodutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/survodutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/survodutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/survodutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/survodutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/survodutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/survodutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/survodutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11060,10 +10874,7 @@
       "http://localhost:9000/static/catalog/tesofensine/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tesofensine/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tesofensine/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tesofensine/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tesofensine/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tesofensine/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tesofensine/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tesofensine/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11131,10 +10942,7 @@
       "http://localhost:9000/static/catalog/liraglutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/liraglutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/liraglutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/liraglutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/liraglutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/liraglutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/liraglutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/liraglutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11246,10 +11054,7 @@
       "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-no-dac/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cjc-1295-no-dac/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11361,10 +11166,7 @@
       "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-with-dac/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cjc-1295-with-dac/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11476,10 +11278,7 @@
       "http://localhost:9000/static/catalog/sermorelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/sermorelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/sermorelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/sermorelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/sermorelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/sermorelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/sermorelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/sermorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11591,10 +11390,7 @@
       "http://localhost:9000/static/catalog/hexarelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hexarelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hexarelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hexarelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hexarelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hexarelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hexarelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hexarelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11706,10 +11502,7 @@
       "http://localhost:9000/static/catalog/mk-677/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/mk-677/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/mk-677/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/mk-677/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/mk-677/variant_vial.webp",
-      "http://localhost:9000/static/catalog/mk-677/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/mk-677/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/mk-677/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11777,10 +11570,7 @@
       "http://localhost:9000/static/catalog/foxo4-dri/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/foxo4-dri/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/foxo4-dri/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/foxo4-dri/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/foxo4-dri/variant_vial.webp",
-      "http://localhost:9000/static/catalog/foxo4-dri/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/foxo4-dri/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/foxo4-dri/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -11892,10 +11682,7 @@
       "http://localhost:9000/static/catalog/humanin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/humanin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/humanin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/humanin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/humanin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/humanin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/humanin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/humanin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12007,10 +11794,7 @@
       "http://localhost:9000/static/catalog/na-semax-amidate/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/na-semax-amidate/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/na-semax-amidate/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/na-semax-amidate/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/na-semax-amidate/variant_vial.webp",
-      "http://localhost:9000/static/catalog/na-semax-amidate/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/na-semax-amidate/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/na-semax-amidate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12122,10 +11906,7 @@
       "http://localhost:9000/static/catalog/na-selank-amidate/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/na-selank-amidate/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/na-selank-amidate/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/na-selank-amidate/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/na-selank-amidate/variant_vial.webp",
-      "http://localhost:9000/static/catalog/na-selank-amidate/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/na-selank-amidate/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/na-selank-amidate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12237,10 +12018,7 @@
       "http://localhost:9000/static/catalog/cerebrolysin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cerebrolysin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cerebrolysin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cerebrolysin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cerebrolysin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cerebrolysin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cerebrolysin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cerebrolysin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12352,10 +12130,7 @@
       "http://localhost:9000/static/catalog/p21/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/p21/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/p21/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/p21/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/p21/variant_vial.webp",
-      "http://localhost:9000/static/catalog/p21/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/p21/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/p21/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12467,10 +12242,7 @@
       "http://localhost:9000/static/catalog/noopept/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/noopept/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/noopept/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/noopept/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/noopept/variant_vial.webp",
-      "http://localhost:9000/static/catalog/noopept/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/noopept/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/noopept/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12538,10 +12310,7 @@
       "http://localhost:9000/static/catalog/ll-37/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ll-37/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ll-37/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ll-37/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ll-37/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ll-37/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ll-37/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ll-37/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12653,10 +12422,7 @@
       "http://localhost:9000/static/catalog/melanotan-1/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/melanotan-1/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/melanotan-1/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/melanotan-1/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/melanotan-1/variant_vial.webp",
-      "http://localhost:9000/static/catalog/melanotan-1/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/melanotan-1/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/melanotan-1/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12768,10 +12534,7 @@
       "http://localhost:9000/static/catalog/melanotan-2/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/melanotan-2/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/melanotan-2/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/melanotan-2/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/melanotan-2/variant_vial.webp",
-      "http://localhost:9000/static/catalog/melanotan-2/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/melanotan-2/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/melanotan-2/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12883,10 +12646,7 @@
       "http://localhost:9000/static/catalog/oxytocin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/oxytocin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/oxytocin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/oxytocin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/oxytocin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/oxytocin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/oxytocin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/oxytocin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -12998,10 +12758,7 @@
       "http://localhost:9000/static/catalog/wolverine-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/wolverine-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/wolverine-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/wolverine-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/wolverine-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/wolverine-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/wolverine-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/wolverine-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13113,10 +12870,7 @@
       "http://localhost:9000/static/catalog/tri-heal-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tri-heal-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tri-heal-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tri-heal-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tri-heal-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tri-heal-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tri-heal-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tri-heal-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13228,10 +12982,7 @@
       "http://localhost:9000/static/catalog/cagrisema-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cagrisema-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cagrisema-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cagrisema-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cagrisema-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cagrisema-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cagrisema-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cagrisema-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13345,10 +13096,7 @@
       "http://localhost:9000/static/catalog/orforglipron/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/orforglipron/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/orforglipron/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/orforglipron/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/orforglipron/variant_vial.webp",
-      "http://localhost:9000/static/catalog/orforglipron/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/orforglipron/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/orforglipron/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13462,10 +13210,7 @@
       "http://localhost:9000/static/catalog/pemvidutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pemvidutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pemvidutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pemvidutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pemvidutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pemvidutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pemvidutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pemvidutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13579,10 +13324,7 @@
       "http://localhost:9000/static/catalog/cotadutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cotadutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cotadutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cotadutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cotadutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cotadutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cotadutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cotadutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13696,10 +13438,7 @@
       "http://localhost:9000/static/catalog/ecnoglutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ecnoglutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ecnoglutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ecnoglutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ecnoglutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ecnoglutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ecnoglutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ecnoglutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13813,10 +13552,7 @@
       "http://localhost:9000/static/catalog/slu-pp-332/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/slu-pp-332/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/slu-pp-332/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/slu-pp-332/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/slu-pp-332/variant_vial.webp",
-      "http://localhost:9000/static/catalog/slu-pp-332/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/slu-pp-332/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/slu-pp-332/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -13930,10 +13666,7 @@
       "http://localhost:9000/static/catalog/adipotide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/adipotide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/adipotide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/adipotide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/adipotide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/adipotide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/adipotide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/adipotide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14047,10 +13780,7 @@
       "http://localhost:9000/static/catalog/l-carnitine/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/l-carnitine/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/l-carnitine/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/l-carnitine/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/l-carnitine/variant_vial.webp",
-      "http://localhost:9000/static/catalog/l-carnitine/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/l-carnitine/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/l-carnitine/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14164,10 +13894,7 @@
       "http://localhost:9000/static/catalog/pramlintide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pramlintide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pramlintide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pramlintide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pramlintide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pramlintide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pramlintide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pramlintide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14281,10 +14008,7 @@
       "http://localhost:9000/static/catalog/sr9009/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/sr9009/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/sr9009/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/sr9009/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/sr9009/variant_vial.webp",
-      "http://localhost:9000/static/catalog/sr9009/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/sr9009/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/sr9009/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14398,10 +14122,7 @@
       "http://localhost:9000/static/catalog/vesugen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/vesugen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/vesugen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/vesugen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/vesugen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/vesugen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/vesugen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/vesugen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14515,10 +14236,7 @@
       "http://localhost:9000/static/catalog/chonluten/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/chonluten/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/chonluten/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/chonluten/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/chonluten/variant_vial.webp",
-      "http://localhost:9000/static/catalog/chonluten/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/chonluten/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/chonluten/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14632,10 +14350,7 @@
       "http://localhost:9000/static/catalog/cardiogen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cardiogen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cardiogen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cardiogen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cardiogen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cardiogen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cardiogen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cardiogen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14749,10 +14464,7 @@
       "http://localhost:9000/static/catalog/cortagen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cortagen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cortagen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cortagen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cortagen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cortagen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cortagen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cortagen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14866,10 +14578,7 @@
       "http://localhost:9000/static/catalog/livagen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/livagen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/livagen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/livagen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/livagen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/livagen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/livagen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/livagen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -14983,10 +14692,7 @@
       "http://localhost:9000/static/catalog/ovagen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ovagen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ovagen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ovagen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ovagen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ovagen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ovagen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ovagen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15100,10 +14806,7 @@
       "http://localhost:9000/static/catalog/prostamax/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/prostamax/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/prostamax/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/prostamax/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/prostamax/variant_vial.webp",
-      "http://localhost:9000/static/catalog/prostamax/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/prostamax/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/prostamax/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15217,10 +14920,7 @@
       "http://localhost:9000/static/catalog/testagen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/testagen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/testagen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/testagen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/testagen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/testagen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/testagen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/testagen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15334,10 +15034,7 @@
       "http://localhost:9000/static/catalog/vilon/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/vilon/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/vilon/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/vilon/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/vilon/variant_vial.webp",
-      "http://localhost:9000/static/catalog/vilon/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/vilon/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/vilon/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15451,10 +15148,7 @@
       "http://localhost:9000/static/catalog/bronchogen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bronchogen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bronchogen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bronchogen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bronchogen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bronchogen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bronchogen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bronchogen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15568,10 +15262,7 @@
       "http://localhost:9000/static/catalog/pancragen/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pancragen/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pancragen/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pancragen/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pancragen/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pancragen/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pancragen/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pancragen/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15685,10 +15376,7 @@
       "http://localhost:9000/static/catalog/cortexin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cortexin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cortexin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cortexin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cortexin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cortexin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cortexin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cortexin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15802,10 +15490,7 @@
       "http://localhost:9000/static/catalog/peg-mgf/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/peg-mgf/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/peg-mgf/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/peg-mgf/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/peg-mgf/variant_vial.webp",
-      "http://localhost:9000/static/catalog/peg-mgf/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/peg-mgf/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/peg-mgf/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -15919,10 +15604,7 @@
       "http://localhost:9000/static/catalog/mgf/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/mgf/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/mgf/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/mgf/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/mgf/variant_vial.webp",
-      "http://localhost:9000/static/catalog/mgf/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/mgf/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/mgf/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16036,10 +15718,7 @@
       "http://localhost:9000/static/catalog/follistatin-344/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/follistatin-344/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/follistatin-344/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/follistatin-344/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/follistatin-344/variant_vial.webp",
-      "http://localhost:9000/static/catalog/follistatin-344/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/follistatin-344/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/follistatin-344/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16153,10 +15832,7 @@
       "http://localhost:9000/static/catalog/follistatin-315/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/follistatin-315/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/follistatin-315/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/follistatin-315/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/follistatin-315/variant_vial.webp",
-      "http://localhost:9000/static/catalog/follistatin-315/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/follistatin-315/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/follistatin-315/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16270,10 +15946,7 @@
       "http://localhost:9000/static/catalog/ace-031/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ace-031/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ace-031/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ace-031/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ace-031/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ace-031/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ace-031/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ace-031/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16387,10 +16060,7 @@
       "http://localhost:9000/static/catalog/gonadorelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/gonadorelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/gonadorelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/gonadorelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/gonadorelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/gonadorelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/gonadorelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/gonadorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16504,10 +16174,7 @@
       "http://localhost:9000/static/catalog/triptorelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/triptorelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/triptorelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/triptorelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/triptorelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/triptorelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/triptorelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/triptorelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16621,10 +16288,7 @@
       "http://localhost:9000/static/catalog/buserelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/buserelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/buserelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/buserelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/buserelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/buserelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/buserelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/buserelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16738,10 +16402,7 @@
       "http://localhost:9000/static/catalog/fgl/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/fgl/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/fgl/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/fgl/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/fgl/variant_vial.webp",
-      "http://localhost:9000/static/catalog/fgl/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/fgl/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/fgl/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16855,10 +16516,7 @@
       "http://localhost:9000/static/catalog/vip/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/vip/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/vip/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/vip/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/vip/variant_vial.webp",
-      "http://localhost:9000/static/catalog/vip/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/vip/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/vip/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -16972,10 +16630,7 @@
       "http://localhost:9000/static/catalog/coluracetam/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/coluracetam/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/coluracetam/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/coluracetam/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/coluracetam/variant_vial.webp",
-      "http://localhost:9000/static/catalog/coluracetam/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/coluracetam/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/coluracetam/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17089,10 +16744,7 @@
       "http://localhost:9000/static/catalog/j-147/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/j-147/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/j-147/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/j-147/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/j-147/variant_vial.webp",
-      "http://localhost:9000/static/catalog/j-147/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/j-147/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/j-147/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17206,10 +16858,7 @@
       "http://localhost:9000/static/catalog/idra-21/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/idra-21/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/idra-21/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/idra-21/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/idra-21/variant_vial.webp",
-      "http://localhost:9000/static/catalog/idra-21/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/idra-21/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/idra-21/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17323,10 +16972,7 @@
       "http://localhost:9000/static/catalog/emoxypine/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/emoxypine/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/emoxypine/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/emoxypine/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/emoxypine/variant_vial.webp",
-      "http://localhost:9000/static/catalog/emoxypine/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/emoxypine/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/emoxypine/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17440,10 +17086,7 @@
       "http://localhost:9000/static/catalog/pnc-27/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pnc-27/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pnc-27/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pnc-27/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pnc-27/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pnc-27/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pnc-27/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pnc-27/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17557,10 +17200,7 @@
       "http://localhost:9000/static/catalog/neuroxelin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/neuroxelin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/neuroxelin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/neuroxelin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/neuroxelin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/neuroxelin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/neuroxelin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/neuroxelin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17674,10 +17314,7 @@
       "http://localhost:9000/static/catalog/bpc-157-arginate/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bpc-157-arginate/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bpc-157-arginate/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bpc-157-arginate/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bpc-157-arginate/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bpc-157-arginate/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bpc-157-arginate/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bpc-157-arginate/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17791,10 +17428,7 @@
       "http://localhost:9000/static/catalog/tb-4-full-length/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tb-4-full-length/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tb-4-full-length/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tb-4-full-length/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tb-4-full-length/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tb-4-full-length/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tb-4-full-length/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tb-4-full-length/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -17908,10 +17542,7 @@
       "http://localhost:9000/static/catalog/ahk-cu/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ahk-cu/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ahk-cu/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ahk-cu/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ahk-cu/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ahk-cu/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ahk-cu/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ahk-cu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18025,10 +17656,7 @@
       "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/variant_vial.webp",
-      "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/capixyl-acetyl-tetrapeptide-3/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18142,10 +17770,7 @@
       "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/variant_vial.webp",
-      "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/procapil-biotinoyl-tripeptide-1/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18259,10 +17884,7 @@
       "http://localhost:9000/static/catalog/argireline-amplified/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/argireline-amplified/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/argireline-amplified/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/argireline-amplified/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/argireline-amplified/variant_vial.webp",
-      "http://localhost:9000/static/catalog/argireline-amplified/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/argireline-amplified/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/argireline-amplified/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18376,10 +17998,7 @@
       "http://localhost:9000/static/catalog/matrixyl-synthe-6/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/matrixyl-synthe-6/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/matrixyl-synthe-6/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/matrixyl-synthe-6/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/matrixyl-synthe-6/variant_vial.webp",
-      "http://localhost:9000/static/catalog/matrixyl-synthe-6/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/matrixyl-synthe-6/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/matrixyl-synthe-6/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18493,10 +18112,7 @@
       "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/variant_vial.webp",
-      "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/palmitoyl-tetrapeptide-20/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18610,10 +18226,7 @@
       "http://localhost:9000/static/catalog/thymulin/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/thymulin/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/thymulin/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/thymulin/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/thymulin/variant_vial.webp",
-      "http://localhost:9000/static/catalog/thymulin/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/thymulin/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/thymulin/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18727,10 +18340,7 @@
       "http://localhost:9000/static/catalog/thymopentin-tp5/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/thymopentin-tp5/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/thymopentin-tp5/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/thymopentin-tp5/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/thymopentin-tp5/variant_vial.webp",
-      "http://localhost:9000/static/catalog/thymopentin-tp5/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/thymopentin-tp5/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/thymopentin-tp5/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18844,10 +18454,7 @@
       "http://localhost:9000/static/catalog/shlp-2/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/shlp-2/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/shlp-2/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/shlp-2/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/shlp-2/variant_vial.webp",
-      "http://localhost:9000/static/catalog/shlp-2/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/shlp-2/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/shlp-2/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -18961,10 +18568,7 @@
       "http://localhost:9000/static/catalog/urolithin-a/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/urolithin-a/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/urolithin-a/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/urolithin-a/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/urolithin-a/variant_vial.webp",
-      "http://localhost:9000/static/catalog/urolithin-a/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/urolithin-a/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/urolithin-a/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19078,10 +18682,7 @@
       "http://localhost:9000/static/catalog/bam15/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bam15/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bam15/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bam15/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bam15/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bam15/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bam15/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bam15/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19195,10 +18796,7 @@
       "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cjc-1295-ghrp-2-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19312,10 +18910,7 @@
       "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tesamorelin-ipamorelin-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19429,10 +19024,7 @@
       "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/aod-cjc-ipam-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19546,10 +19138,7 @@
       "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/ghk-cu-bpc-157-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19663,10 +19252,7 @@
       "http://localhost:9000/static/catalog/epithalon-ta1-blend/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/epithalon-ta1-blend/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/epithalon-ta1-blend/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/epithalon-ta1-blend/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/epithalon-ta1-blend/variant_vial.webp",
-      "http://localhost:9000/static/catalog/epithalon-ta1-blend/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/epithalon-ta1-blend/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/epithalon-ta1-blend/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19780,10 +19366,7 @@
       "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/igf1-lr3-peg-mgf-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -19897,10 +19480,7 @@
       "http://localhost:9000/static/catalog/triple-metabolic-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/triple-metabolic-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/triple-metabolic-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/triple-metabolic-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/triple-metabolic-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/triple-metabolic-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/triple-metabolic-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/triple-metabolic-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20014,10 +19594,7 @@
       "http://localhost:9000/static/catalog/pes-syringe-filters-022um/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/pes-syringe-filters-022um/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/pes-syringe-filters-022um/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/pes-syringe-filters-022um/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/pes-syringe-filters-022um/variant_vial.webp",
-      "http://localhost:9000/static/catalog/pes-syringe-filters-022um/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/pes-syringe-filters-022um/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/pes-syringe-filters-022um/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20087,10 +19664,7 @@
       "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/variant_vial.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/u100-lds-syringes-03ml-100ct/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20160,10 +19734,7 @@
       "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/variant_vial.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/u100-lds-syringes-05ml-100ct/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20233,10 +19804,7 @@
       "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/variant_vial.webp",
-      "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/blunt-fill-filter-needles-18g/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20306,10 +19874,7 @@
       "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/variant_vial.webp",
-      "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/sterile-amber-vials-10ml/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20379,10 +19944,7 @@
       "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/variant_vial.webp",
-      "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/alcohol-prep-swabs-200ct/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20452,10 +20014,7 @@
       "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bacteriostatic-sodium-chloride-30ml/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20525,10 +20084,7 @@
       "http://localhost:9000/static/catalog/cold-chain-transport-case/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cold-chain-transport-case/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cold-chain-transport-case/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cold-chain-transport-case/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cold-chain-transport-case/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cold-chain-transport-case/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cold-chain-transport-case/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cold-chain-transport-case/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20598,10 +20154,7 @@
       "http://localhost:9000/static/catalog/cartalax-20mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cartalax-20mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cartalax-20mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cartalax-20mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cartalax-20mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cartalax-20mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cartalax-20mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cartalax-20mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20717,10 +20270,7 @@
       "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/bpc-157-tb-500-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20854,10 +20404,7 @@
       "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/cjc-1295-ipamorelin-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -20991,10 +20538,7 @@
       "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/tirzepatide-aod9604-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21128,10 +20672,7 @@
       "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/melanotan-2-pt-141-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21265,10 +20806,7 @@
       "http://localhost:9000/static/catalog/semax-selank-bundle/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/semax-selank-bundle/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/semax-selank-bundle/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/semax-selank-bundle/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/semax-selank-bundle/variant_vial.webp",
-      "http://localhost:9000/static/catalog/semax-selank-bundle/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/semax-selank-bundle/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/semax-selank-bundle/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21402,10 +20940,7 @@
       "http://localhost:9000/static/catalog/b7-33/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/b7-33/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/b7-33/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/b7-33/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/b7-33/variant_vial.webp",
-      "http://localhost:9000/static/catalog/b7-33/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/b7-33/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/b7-33/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21574,10 +21109,7 @@
       "http://localhost:9000/static/catalog/crystagen-20mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/crystagen-20mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/crystagen-20mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/crystagen-20mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/crystagen-20mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/crystagen-20mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/crystagen-20mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/crystagen-20mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21682,10 +21214,7 @@
       "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/n-acetyl-epitalon-amidate-5mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21790,10 +21319,7 @@
       "http://localhost:9000/static/catalog/thymalin-10mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/thymalin-10mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/thymalin-10mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/thymalin-10mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/thymalin-10mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/thymalin-10mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/thymalin-10mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/thymalin-10mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -21898,10 +21424,7 @@
       "http://localhost:9000/static/catalog/dulaglutide/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/dulaglutide/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/dulaglutide/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/dulaglutide/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/dulaglutide/variant_vial.webp",
-      "http://localhost:9000/static/catalog/dulaglutide/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/dulaglutide/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/dulaglutide/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22070,10 +21593,7 @@
       "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/retatrutide-cagrilintide-blend-10mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22178,10 +21698,7 @@
       "http://localhost:9000/static/catalog/glp-1-native-5mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/glp-1-native-5mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/glp-1-native-5mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/glp-1-native-5mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/glp-1-native-5mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/glp-1-native-5mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/glp-1-native-5mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/glp-1-native-5mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22286,10 +21803,7 @@
       "http://localhost:9000/static/catalog/teriparatide-10mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/teriparatide-10mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/teriparatide-10mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/teriparatide-10mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/teriparatide-10mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/teriparatide-10mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/teriparatide-10mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/teriparatide-10mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22394,10 +21908,7 @@
       "http://localhost:9000/static/catalog/hgh-fragment-176-191/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hgh-fragment-176-191/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hgh-fragment-176-191/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hgh-fragment-176-191/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hgh-fragment-176-191/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hgh-fragment-176-191/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hgh-fragment-176-191/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hgh-fragment-176-191/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22694,10 +22205,7 @@
       "http://localhost:9000/static/catalog/gdf-8-1mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/gdf-8-1mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/gdf-8-1mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/gdf-8-1mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/gdf-8-1mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/gdf-8-1mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/gdf-8-1mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/gdf-8-1mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22802,10 +22310,7 @@
       "http://localhost:9000/static/catalog/acth-1-39-5mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/acth-1-39-5mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/acth-1-39-5mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/acth-1-39-5mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/acth-1-39-5mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/acth-1-39-5mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/acth-1-39-5mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/acth-1-39-5mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -22910,10 +22415,7 @@
       "http://localhost:9000/static/catalog/dermorphin-5mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/dermorphin-5mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/dermorphin-5mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/dermorphin-5mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/dermorphin-5mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/dermorphin-5mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/dermorphin-5mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/dermorphin-5mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23018,10 +22520,7 @@
       "http://localhost:9000/static/catalog/epo-3000iu/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/epo-3000iu/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/epo-3000iu/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/epo-3000iu/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/epo-3000iu/variant_vial.webp",
-      "http://localhost:9000/static/catalog/epo-3000iu/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/epo-3000iu/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/epo-3000iu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23126,10 +22625,7 @@
       "http://localhost:9000/static/catalog/alprostadil-20mcg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/alprostadil-20mcg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/alprostadil-20mcg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/alprostadil-20mcg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/alprostadil-20mcg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/alprostadil-20mcg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/alprostadil-20mcg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/alprostadil-20mcg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23234,10 +22730,7 @@
       "http://localhost:9000/static/catalog/melatonin-10mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/melatonin-10mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/melatonin-10mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/melatonin-10mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/melatonin-10mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/melatonin-10mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/melatonin-10mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/melatonin-10mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23342,10 +22835,7 @@
       "http://localhost:9000/static/catalog/botulinum-toxin-100iu/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/botulinum-toxin-100iu/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/botulinum-toxin-100iu/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/botulinum-toxin-100iu/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/botulinum-toxin-100iu/variant_vial.webp",
-      "http://localhost:9000/static/catalog/botulinum-toxin-100iu/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/botulinum-toxin-100iu/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/botulinum-toxin-100iu/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23450,10 +22940,7 @@
       "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hyaluronic-acid-5mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23558,10 +23045,7 @@
       "http://localhost:9000/static/catalog/hhb-blend-10mg/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/hhb-blend-10mg/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/hhb-blend-10mg/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/hhb-blend-10mg/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/hhb-blend-10mg/variant_vial.webp",
-      "http://localhost:9000/static/catalog/hhb-blend-10mg/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/hhb-blend-10mg/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/hhb-blend-10mg/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23666,10 +23150,7 @@
       "http://localhost:9000/static/catalog/acetic-acid-water-0-6/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/acetic-acid-water-0-6/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/acetic-acid-water-0-6/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/acetic-acid-water-0-6/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/acetic-acid-water-0-6/variant_vial.webp",
-      "http://localhost:9000/static/catalog/acetic-acid-water-0-6/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/acetic-acid-water-0-6/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/acetic-acid-water-0-6/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23838,10 +23319,7 @@
       "http://localhost:9000/static/catalog/b12-liquid/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/b12-liquid/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/b12-liquid/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/b12-liquid/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/b12-liquid/variant_vial.webp",
-      "http://localhost:9000/static/catalog/b12-liquid/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/b12-liquid/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/b12-liquid/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -23946,10 +23424,7 @@
       "http://localhost:9000/static/catalog/lc120/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/lc120/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/lc120/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/lc120/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/lc120/variant_vial.webp",
-      "http://localhost:9000/static/catalog/lc120/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/lc120/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/lc120/slide6_superapp.webp"
     ],
     "options": [
       {
@@ -24054,10 +23529,7 @@
       "http://localhost:9000/static/catalog/insulin-3ml/slide3_reconstitution.webp",
       "http://localhost:9000/static/catalog/insulin-3ml/slide4_benefits.webp",
       "http://localhost:9000/static/catalog/insulin-3ml/slide5_kit.webp",
-      "http://localhost:9000/static/catalog/insulin-3ml/slide6_superapp.webp",
-      "http://localhost:9000/static/catalog/insulin-3ml/variant_vial.webp",
-      "http://localhost:9000/static/catalog/insulin-3ml/variant_vial_bac.webp",
-      "http://localhost:9000/static/catalog/insulin-3ml/variant_complete_set.webp"
+      "http://localhost:9000/static/catalog/insulin-3ml/slide6_superapp.webp"
     ],
     "options": [
       {

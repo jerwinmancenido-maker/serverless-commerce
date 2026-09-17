@@ -42,7 +42,7 @@ const CATEGORIES: { label: string; value: string }[] = [
 
 const ROUTES: { label: string; value: string }[] = [
   { label: "All Routes", value: "all" },
-  { label: "SubQ Injection", value: "subq" },
+  { label: "Parenteral Analytical Standard", value: "subq" },
   { label: "Intranasal Spray", value: "nasal" },
   { label: "Oral (Arg Salt / Sol)", value: "oral" },
   { label: "Topical / Matrix", value: "topical" },

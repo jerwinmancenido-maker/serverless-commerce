@@ -20,6 +20,7 @@ import {
 import InteractiveSyringeStoichiometry, {
   type CalibrationMetricsPayload,
 } from "./components/interactive-syringe-stoichiometry"
+import InteractiveNasalStoichiometry from "./components/interactive-nasal-stoichiometry"
 import { ALL_COMPOUND_PROTOCOLS, getCompoundProtocol } from "@lib/data/compound-protocols"
 
 const POPULAR_INSTRUMENT_PRESETS = [
@@ -113,7 +114,7 @@ function StandaloneCalculatorInner({
     const text = [
       `🧪 RECONSTITUTION PROTOCOL RECIPE: ${activeProtocol?.compoundName || selectedPresetId.toUpperCase()}`,
       `Active Compound Mass: ${activeMetrics.mass} ${activeMetrics.massUnit}`,
-      `Diluent Added: ${activeMetrics.diluent} mL (Bacteriostatic Water USP)`,
+      `Diluent Added: ${activeMetrics.diluent} mL (${routeMode === "nasal" ? "Sterile 0.9% Saline USP (Benzyl Alcohol Free)" : "Bacteriostatic Water USP"})`,
       `Resulting Concentration: ${activeMetrics.conc.toFixed(2)} mg/mL`,
       `Target Assay Dose: ${activeMetrics.targetDose} ${activeMetrics.targetDoseUnit}`,
       routeMode === "nasal"
@@ -373,7 +374,7 @@ function StandaloneCalculatorInner({
                 Metered Intranasal Atomizer Calibration Mode
               </span>
               <p className="text-[11px] leading-relaxed text-purple-900/90">
-                Calibrated for a standard metered nasal pump discharging exactly <strong>0.10 mL per actuation</strong>. Reconstituting a <strong>{nasalStats.massMg} mg</strong> neuropeptide vial with <strong>{nasalStats.diluentMl} mL</strong> Bacteriostatic Water yields a concentration of <strong>{nasalStats.concMgMl} mg/mL</strong>, delivering approximately <strong>{nasalStats.mcgPerSpray} mcg per single spray</strong> across <strong>{nasalStats.totalSprays} total sprays</strong> per bottle.
+                Calibrated for a standard metered nasal pump discharging exactly <strong>0.10 mL per actuation</strong>. Reconstituting a <strong>{nasalStats.massMg} mg</strong> neuropeptide vial with <strong>{nasalStats.diluentMl} mL</strong> Sterile 0.9% Saline or USP Nasal Vehicle yields a concentration of <strong>{nasalStats.concMgMl} mg/mL</strong>, delivering approximately <strong>{nasalStats.mcgPerSpray} mcg per single spray</strong> across <strong>{nasalStats.totalSprays} total sprays</strong> per bottle.
               </p>
             </div>
           </div>
@@ -398,12 +399,37 @@ function StandaloneCalculatorInner({
       )}
 
       {/* Flagship Interactive Stoichiometry Console */}
-      <InteractiveSyringeStoichiometry
-        key={selectedPresetId}
-        enableCatalogPicker={true}
-        initialCompoundId={selectedPresetId}
-        onCalibrationChange={setActiveMetrics}
-      />
+      {routeMode === "nasal" ? (
+        <InteractiveNasalStoichiometry
+          key={selectedPresetId}
+          compoundId={selectedPresetId}
+          compoundName={activeProtocol?.compoundName || selectedPresetId}
+          vialMg={nasalStats.massMg}
+          diluentMl={nasalStats.diluentMl}
+          concMgMl={parseFloat(nasalStats.concMgMl)}
+          standardDoseMcg={nasalStats.mcgPerSpray}
+          onCalibrationChange={(m) => {
+            setActiveMetrics({
+              mass: m.mass,
+              massUnit: "mg",
+              diluent: m.volumeMl,
+              conc: m.concMgMl,
+              targetDose: m.targetMcg,
+              targetDoseUnit: "mcg",
+              volumeMl: 0.10,
+              units: 0,
+              totalDoses: m.totalSprays,
+            })
+          }}
+        />
+      ) : (
+        <InteractiveSyringeStoichiometry
+          key={selectedPresetId}
+          enableCatalogPicker={true}
+          initialCompoundId={selectedPresetId}
+          onCalibrationChange={setActiveMetrics}
+        />
+      )}
 
       {/* Smart Bridge: Public Visitor vs. Customer Private Hub */}
       <div className="rounded-2xl border border-sky-200/90 bg-gradient-to-r from-sky-50/80 via-blue-50/40 to-white p-6 sm:p-8 shadow-xs">

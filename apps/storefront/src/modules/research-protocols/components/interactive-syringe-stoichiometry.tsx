@@ -1728,11 +1728,11 @@ export function InteractiveSyringeStoichiometry({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
-              <div className="text-[10px] font-bold text-slate-500 uppercase">Administration Needle</div>
+              <div className="text-[10px] font-bold text-slate-500 uppercase">Aliquoting Needle</div>
               <div className="text-xs font-mono font-bold text-slate-900 mt-1">
                 {effectiveNeedleGauge} × {effectiveNeedleLength}
               </div>
-              <div className="text-[10px] text-slate-500 mt-0.5">Short SubQ needle prevents IM deposition</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">Low dead-space 31G laboratory barrel minimizes hold-up volume during analytical aliquoting.</div>
             </div>
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
               <div className="text-[10px] font-bold text-slate-500 uppercase">Hub &amp; Dead Space Retention</div>

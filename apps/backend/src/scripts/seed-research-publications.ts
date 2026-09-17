@@ -87,7 +87,7 @@ const CANONICAL_ARTICLES = [
     slug: "ghk-cu-collagen-extracellular-matrix",
     title: "GHK-Cu: Copper Tripeptide Gene Modulation, Collagen Matrix Synthesis & Cellular Viability",
     subtitle: "Investigating glycyl-L-histidyl-L-lysine copper complex induction of metalloproteinases, decorin, and fibroblast pro-collagen gene expression.",
-    abstract: "Glycyl-L-histidyl-L-lysine (GHK) is a naturally occurring plasma tripeptide with extraordinarily high affinity for copper(II) ions (log K = 16.4). First isolated in human albumin by Dr. Loren Pickart in 1973, GHK-Cu functions as a master transcriptional modulator capable of up- and down-regulating over 4,000 human genes. Preclinical and cellular models demonstrate GHK-Cu's unique capacity to stimulate decorin synthesis, balance matrix metalloproteinases (MMPs) with tissue inhibitors (TIMPs), and suppress inflammatory cytokines while stimulating Type I and Type III pro-collagen synthesis in dermal and soft tissue fibroblasts.",
+    abstract: "Glycyl-L-histidyl-L-lysine (GHK) is a naturally occurring plasma tripeptide with extraordinarily high affinity for copper(II) ions (log K = 16.4). First isolated in human albumin in 1973, GHK-Cu functions as a master transcriptional modulator capable of up- and down-regulating over 4,000 human genes. Preclinical and cellular models demonstrate GHK-Cu's unique capacity to stimulate decorin synthesis, balance matrix metalloproteinases (MMPs) with tissue inhibitors (TIMPs), and suppress inflammatory cytokines while stimulating Type I and Type III pro-collagen synthesis in dermal and soft tissue fibroblasts.",
     category: "Cellular Longevity",
     compound_tag: "GHK-Cu",
     reading_time: "5 min read",

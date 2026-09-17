@@ -415,7 +415,7 @@ export default function ProductActions({
 
   return (
     <>
-      <div className="flex flex-col gap-y-4" ref={actionsRef}>
+      <div className="flex flex-col gap-y-4">
         {/* Top Header Row: Stock Reassurance & Dynamic Price */}
         <div className="flex items-center justify-between gap-4 pb-3 border-b border-zinc-100">
           <div className="flex items-center gap-2">
@@ -526,7 +526,7 @@ export default function ProductActions({
         )}
 
         {/* Compact Ergonomic Action Row: Stepper + Add to Cart + Buy Now */}
-        <div className="flex flex-col gap-2.5 pt-1">
+        <div className="flex flex-col gap-2.5 pt-1" ref={actionsRef}>
           <div className="flex items-center gap-2" data-testid="quantity-stepper">
             {/* Stepper */}
             <div className="flex h-10 items-center rounded-xl border border-zinc-200 bg-white px-1.5 shadow-2xs">
@@ -535,7 +535,7 @@ export default function ProductActions({
                 id="qty-decrement"
                 disabled={quantity <= 1 || !!disabled || isAdding}
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-base leading-none"
+                className="relative touch-manipulation size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-base leading-none after:absolute after:-inset-2.5 after:content-['']"
                 aria-label="Decrease quantity"
               >
                 −
@@ -551,7 +551,7 @@ export default function ProductActions({
                 id="qty-increment"
                 disabled={quantity >= maxQty || !!disabled || isAdding}
                 onClick={() => setQuantity((q) => Math.min(maxQty, q + 1))}
-                className="size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-base leading-none"
+                className="relative touch-manipulation size-7 flex items-center justify-center rounded text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 transition-colors text-base leading-none after:absolute after:-inset-2.5 after:content-['']"
                 aria-label="Increase quantity"
               >
                 +
@@ -613,7 +613,7 @@ export default function ProductActions({
             className="pt-1 text-center text-xs font-medium text-slate-600 hover:text-emerald-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <DocumentText className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="font-semibold">View Full Analytical Protocol &amp; Dosing Instructions &darr;</span>
+            <span className="font-semibold">View Full Analytical Protocol &amp; Preparation SOP &darr;</span>
           </a>
         )}
 

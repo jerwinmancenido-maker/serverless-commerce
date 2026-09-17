@@ -61,3 +61,7 @@ Thumbs.db
 *.backup.json
 **/data/.backups/
 apps/backend/static/private-*
+
+# Scratch & temporary test scripts
+scratch/
+

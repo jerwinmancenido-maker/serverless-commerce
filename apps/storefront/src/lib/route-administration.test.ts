@@ -199,10 +199,36 @@ it("All route-annotated protocols are accessible via barrel getCompoundProtocol"
   }
 })
 
-// Sanity check that ALL_COMPOUND_PROTOCOLS is accessible
+// Sanity check that ALL_COMPOUND_PROTOCOLS includes route-annotated compounds
 it("ALL_COMPOUND_PROTOCOLS includes route-annotated compounds", () => {
   const ids = ALL_COMPOUND_PROTOCOLS.map((p) => p.id)
   assert.ok(ids.includes("adamax-1032"), "adamax-1032 in ALL_COMPOUND_PROTOCOLS")
   assert.ok(ids.includes("semax"), "semax in ALL_COMPOUND_PROTOCOLS")
   assert.ok(ids.includes("mk-677"), "mk-677 in ALL_COMPOUND_PROTOCOLS")
 })
+
+// Priority 1: Pure Nasal Protocol & Atomizer Vehicle Integrity Checks
+it("Priority 1: Pure Nasal Protocols strictly mandate Sterile Saline/USP Water (Benzyl Alcohol Free)", () => {
+  const nasalCompoundIds = ["adamax-1032", "semax", "na-semax-amidate", "selank", "na-selank-amidate"]
+  for (const id of nasalCompoundIds) {
+    const proto = getCompoundProtocol(id)
+    assert.ok(proto, `Protocol ${id} must exist`)
+    // Assert reconstitution instructions never recommend BAC water as primary vehicle for nasal
+    const desc = JSON.stringify(proto).toLowerCase()
+    assert.ok(!desc.includes("bacteriostatic water for nasal"), `${id} must not mandate BAC water for nasal`)
+    assert.ok(
+      proto.primaryDeliveryRoute === "nasal" || proto.deliveryRoutes?.includes("nasal"),
+      `${id} must have nasal delivery route`
+    )
+    assert.ok(
+      proto.nasalGuide !== undefined,
+      `${id} must specify nasalGuide parameters`
+    )
+    assert.strictEqual(
+      proto.nasalGuide?.pumpVolumeMl,
+      0.10,
+      `${id} must calibrate to standard 0.10 mL metered pump displacement`
+    )
+  }
+})
+

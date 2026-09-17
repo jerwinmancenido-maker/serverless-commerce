@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/checkout/components/review/index.tsx
+ * @module  ReviewCheckoutComponent (Checkout Module)
+ * @purpose Final checkout review step enforcing RUO declaration and hosting payment proof submission.
+ * @contracts
+ *   Props: cart
+ */
+
 import { Heading, Text, clx } from "@modules/common/components/ui"
 
 import PaymentButton from "../payment-button"

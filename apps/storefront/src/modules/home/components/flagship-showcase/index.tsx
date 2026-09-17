@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/modules/home/components/flagship-showcase/index.tsx
+ * @module  FlagshipShowcase (Storefront Home Module)
+ * @purpose Renders flagship analytical standards showcase with dynamic backend asset URLs.
+ * @contracts
+ *   Component: FlagshipShowcase
+ */
+
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ArrowRightMini, CheckCircleSolid, Sparkles } from "@medusajs/icons"
@@ -15,6 +23,9 @@ type FlagshipItem = {
   isBestseller?: boolean
 }
 
+const MEDUSA_BACKEND_URL =
+  process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+
 const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
   {
     handle: "retatrutide",
@@ -23,7 +34,7 @@ const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
     category: "Metabolic & Incretin",
     purity: "Reference Grade",
     startingPrice: "₱2,200",
-    imageUrl: "http://localhost:9000/static/catalog/retatrutide/slide1_hero.webp",
+    imageUrl: `${MEDUSA_BACKEND_URL}/static/catalog/retatrutide/slide1_hero.webp`,
     strengths: ["10mg", "20mg", "40mg"],
     isBestseller: true,
   },
@@ -34,7 +45,7 @@ const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
     category: "Metabolic & Incretin",
     purity: "Reference Grade",
     startingPrice: "₱2,100",
-    imageUrl: "http://localhost:9000/static/catalog/tirzepatide/slide1_hero.webp",
+    imageUrl: `${MEDUSA_BACKEND_URL}/static/catalog/tirzepatide/slide1_hero.webp`,
     strengths: ["10mg", "20mg", "30mg", "40mg"],
     isBestseller: true,
   },
@@ -45,7 +56,7 @@ const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
     category: "Tissue Repair & Healing",
     purity: "Reference Grade",
     startingPrice: "₱1,650",
-    imageUrl: "http://localhost:9000/static/catalog/bpc-157-vial/slide1_hero.webp",
+    imageUrl: `${MEDUSA_BACKEND_URL}/static/catalog/bpc-157-vial/slide1_hero.webp`,
     strengths: ["5mg", "10mg"],
     isBestseller: true,
   },
@@ -56,7 +67,7 @@ const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
     category: "GH Axis & Recovery",
     purity: "Reference Grade",
     startingPrice: "₱2,400",
-    imageUrl: "http://localhost:9000/static/catalog/tesamorelin/slide1_hero.webp",
+    imageUrl: `${MEDUSA_BACKEND_URL}/static/catalog/tesamorelin/slide1_hero.webp`,
     strengths: ["10mg"],
   },
   {
@@ -66,7 +77,7 @@ const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
     category: "Cellular Longevity",
     purity: "Reference Grade",
     startingPrice: "₱2,100",
-    imageUrl: "http://localhost:9000/static/catalog/5-amino-1mq/slide1_hero.webp",
+    imageUrl: `${MEDUSA_BACKEND_URL}/static/catalog/5-amino-1mq/slide1_hero.webp`,
     strengths: ["50mg"],
     isNew: true,
   },
@@ -77,7 +88,7 @@ const FLAGSHIP_COMPOUNDS: FlagshipItem[] = [
     category: "Metabolic Research",
     purity: "Reference Grade",
     startingPrice: "₱1,750",
-    imageUrl: "http://localhost:9000/static/catalog/aod-9604/slide1_hero.webp",
+    imageUrl: `${MEDUSA_BACKEND_URL}/static/catalog/aod-9604/slide1_hero.webp`,
     strengths: ["5mg", "10mg"],
   },
 ]

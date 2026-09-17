@@ -1,6 +1,16 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/research-protocols/full-protocol.tsx
+ * @module  FullProtocolView (Research Protocols Module)
+ * @purpose Renders complete analytical reference standard monographs, multi-vial stoichiometry, and reconstitution SOPs.
+ * @contracts
+ *   Fetches: getResearchProtocolBySlug() · getResearchArticles()
+ *   API:     GET /store/research-protocols/[slug]
+ */
+
 import InteractiveSyringeStoichiometry from "./components/interactive-syringe-stoichiometry"
+import InteractiveNasalStoichiometry from "./components/interactive-nasal-stoichiometry"
 import MultiVialStoichiometryStudio from "./components/multi-vial-stoichiometry-studio"
 import StackScheduleTimeline from "./components/stack-schedule-timeline"
 import StackKitCommerceBuilder from "./components/stack-kit-commerce-builder"
@@ -54,7 +64,9 @@ function renderCitationItem(title: string, url?: string | null, notes?: string |
     <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-3 text-xs leading-relaxed">
       <div className="flex items-start justify-between gap-2 font-semibold text-slate-900">
         <div className="flex items-start gap-1.5">
-          <span className="text-slate-400 mt-0.5">🔗</span>
+          <svg className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
           {targetUrl ? (
             <a
               href={targetUrl}
@@ -143,15 +155,15 @@ type ProtocolTab =
   | "safety"
   | "storage_citations"
 
-const PROTOCOL_TABS: { key: ProtocolTab; label: string; icon: string }[] = [
-  { key: "all", label: "Full Protocol", icon: "📋" },
-  { key: "monograph", label: "Monograph & Mechanism", icon: "📖" },
-  { key: "molecular", label: "Molecular Specs", icon: "🔬" },
-  { key: "reconstitution", label: "Reconstitution SOP", icon: "💧" },
-  { key: "titration", label: "Titration Schedule", icon: "📊" },
-  { key: "benefits", label: "Investigated Endpoints", icon: "✓" },
-  { key: "safety", label: "Safety & Handling", icon: "⚠" },
-  { key: "storage_citations", label: "Storage & Citations", icon: "📚" },
+const PROTOCOL_TABS: { key: ProtocolTab; label: string }[] = [
+  { key: "all", label: "Full Protocol" },
+  { key: "monograph", label: "Monograph & Mechanism" },
+  { key: "molecular", label: "Molecular Specs" },
+  { key: "reconstitution", label: "Reconstitution SOP" },
+  { key: "titration", label: "Titration Schedule" },
+  { key: "benefits", label: "Investigated Endpoints" },
+  { key: "safety", label: "Safety & Handling" },
+  { key: "storage_citations", label: "Storage & Citations" },
 ]
 
 export default function FullProtocol({
@@ -181,6 +193,26 @@ export default function FullProtocol({
   const isTopical =
     content.protocol_category_type === "topical" ||
     (protocol.handle || "").includes("serum")
+  const isNasal = useMemo(() => {
+    const rawContent = (content || {}) as Record<string, unknown>
+    const h = (protocol.handle || "").toLowerCase()
+    const n = (content.compound_name || protocol.title || "").toLowerCase()
+    const cat = (content.protocol_category_type || rawContent.protocolCategoryType || "").toString().toLowerCase()
+    const primaryRoute = (rawContent.primaryDeliveryRoute || rawContent.primary_delivery_route || "").toString().toLowerCase()
+    const deliveryRoute = (rawContent.deliveryRoute || rawContent.delivery_route || "").toString().toLowerCase()
+    const routes = (rawContent.delivery_routes || rawContent.deliveryRoutes || []) as string[]
+    const routesStr = (Array.isArray(routes) ? routes.join(" ") : String(routes)).toLowerCase()
+    const routeLabel = (rawContent.routeLabel || rawContent.route_label || "").toString().toLowerCase()
+
+    if (cat === "nasal" || Boolean(rawContent.nasal_guide) || Boolean(rawContent.nasalGuide)) return true
+    if ((rawContent.reconstitution as Record<string, unknown> | undefined)?.instrumentType === "nasal_atomizer") return true
+    if (primaryRoute === "nasal" || deliveryRoute === "nasal") return true
+    if (routeLabel.includes("intranasal") || routeLabel.includes("nasal metered spray")) return true
+    if (h.includes("nasal") || n.includes("nasal") || h.includes("clear-nasal-spray")) return true
+    if ((routesStr.includes("nasal") || routesStr.includes("intranasal")) && !routesStr.includes("subq") && !routesStr.includes("subcutaneous")) return true
+    if ((h.includes("semax") || h.includes("selank") || h.includes("adamax") || h.includes("pinealon")) && (routesStr.includes("nasal") || primaryRoute === "nasal" || deliveryRoute === "nasal")) return true
+    return false
+  }, [content, protocol.handle, protocol.title])
   const isSupply =
     content.category?.toLowerCase().includes("supply") ||
     content.category?.toLowerCase().includes("diluent") ||
@@ -434,28 +466,32 @@ export default function FullProtocol({
           <div className="flex flex-wrap items-center gap-2">
             {content.evidence_tier ? (
               <span className="rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
-                <span>🛡️</span> {content.evidence_tier}
+                {content.evidence_tier}
               </span>
             ) : null}
             {isSupply ? (
               <span className="rounded-full bg-amber-50 text-amber-800 border border-amber-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
-                <span>📦</span> Laboratory Consumable
+                Laboratory Consumable
               </span>
             ) : isBundle ? (
               <span className="rounded-full bg-purple-50 text-purple-800 border border-purple-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
-                <span>📦</span> Multi-Compound Research Bundle
+                Multi-Compound Research Bundle
               </span>
             ) : isTopical ? (
               <span className="rounded-full bg-rose-50 text-rose-800 border border-rose-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
-                <span>✨</span> Topical Cosmetic Formulation
+                Topical Cosmetic Formulation
+              </span>
+            ) : isNasal ? (
+              <span className="rounded-full bg-sky-50 text-sky-800 border border-sky-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
+                Intranasal Metered Spray
               </span>
             ) : isBlend ? (
               <span className="rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
-                <span>🧬</span> Multi-Peptide Blend
+                Multi-Peptide Blend
               </span>
             ) : (
               <span className="rounded-full bg-teal-50 text-teal-800 border border-teal-200 px-3 py-0.5 text-xs font-bold inline-flex items-center gap-1">
-                <span>🧪</span> Single Peptide
+                Single Peptide
               </span>
             )}
           </div>
@@ -505,7 +541,6 @@ export default function FullProtocol({
                       : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200"
                   }`}
                 >
-                  <span className="text-sm">{tab.icon}</span>
                   <span>{tab.label}</span>
                 </button>
               )
@@ -521,7 +556,7 @@ export default function FullProtocol({
         <section className="mt-8 print:mt-2.5 rounded-xl border border-ui-border-base bg-white p-6 print:p-3 print:border-slate-300 print-break-inside-avoid">
           <div className="flex items-center justify-between border-b border-ui-border-base pb-3 print:pb-1.5">
             <h2 className="text-xl print:text-xs font-semibold print:font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
-              <span>📦</span> Laboratory Consumable Specification
+              Laboratory Consumable Specification
             </h2>
             <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 text-xs print:text-[9px] font-semibold uppercase">
               Analytical Supply
@@ -596,7 +631,7 @@ export default function FullProtocol({
           {/* Pharmacokinetic & Bio-Distribution Profile (ADME Grid) */}
           <div className="mt-5 print:mt-2.5">
             <h3 className="text-xs print:text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
-              <span>⚡</span> Pharmacokinetic &amp; Bio-Distribution Parameters (ADME)
+              Pharmacokinetic &amp; Bio-Distribution Parameters (ADME)
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 print:gap-1.5">
               {/* Parameter 1: Elimination Half-Life */}
@@ -622,10 +657,12 @@ export default function FullProtocol({
                 </span>
                 <span className="text-sm print:text-[11px] font-bold text-slate-900 mt-1 block">
                   {quickReference.find((q) => q.key === "route")?.value ||
-                    (isTopical ? "Topical Epicutaneous" : "Subcutaneous / Intramuscular")}
+                    (isTopical ? "Topical Epicutaneous" : isNasal ? "Intranasal Metered Spray" : "Subcutaneous / Intramuscular")}
                 </span>
                 <span className="text-[11px] print:text-[9px] text-slate-600 mt-1 block leading-tight">
-                  Parenteral micro-injection or targeted topical administration standard.
+                  {isNasal
+                    ? "Intranasal mucosal aerosol delivery via metered 0.10 mL pump atomizer."
+                    : "Parenteral micro-injection or targeted topical administration standard."}
                 </span>
               </div>
 
@@ -663,7 +700,6 @@ export default function FullProtocol({
           <div className="mt-4 print:mt-2 rounded-lg border border-emerald-200 bg-emerald-50/50 p-3.5 print:p-2">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="text-emerald-700 font-bold text-sm">🎯</span>
                 <div>
                   <span className="text-[10px] print:text-[8px] font-mono font-bold uppercase text-emerald-800 tracking-wider block">
                     Target Receptors &amp; Signal Transduction Cascade
@@ -685,7 +721,7 @@ export default function FullProtocol({
           <div className="mt-6 print:mt-3 border-t border-slate-200/80 pt-5 print:pt-2.5">
             <div className="flex items-center justify-between mb-4 print:mb-2">
               <h3 className="text-base print:text-xs font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                <span>📑</span> Detailed GLP Pharmacological Monograph
+                Detailed GLP Pharmacological Monograph
               </h3>
               <span className="text-[10px] print:text-[8px] font-mono uppercase text-slate-400">
                 Analytical Specification
@@ -709,8 +745,8 @@ export default function FullProtocol({
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-slate-200 pb-4 print:pb-2">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-800 text-xs font-bold">
-                    📖
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-800 text-[10px] font-mono font-bold">
+                    01
                   </span>
                   <span className="text-[11px] print:text-[9px] font-mono uppercase tracking-wider font-semibold text-blue-800">
                     Peer-Reviewed Scientific Monograph &amp; Literature Review
@@ -743,7 +779,7 @@ export default function FullProtocol({
             {effectiveArticle.key_takeaways && effectiveArticle.key_takeaways.length > 0 ? (
               <div className="mt-5 print:mt-2.5 rounded-xl bg-slate-50/80 border border-slate-200 p-4 print:p-2">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2.5 flex items-center gap-1.5">
-                  <span>💡</span> Executive Key Findings &amp; Clinical Takeaways
+                  Executive Key Findings &amp; Literature Review Takeaways
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                   {effectiveArticle.key_takeaways.map((takeaway, tIdx) => (
@@ -761,7 +797,7 @@ export default function FullProtocol({
               <div className="mt-6 print:mt-3">
                 <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-2">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                    <span>🔬</span> In-Depth Scientific Review Chapters ({effectiveArticle.sections.length} Sections)
+                    In-Depth Scientific Review Chapters ({effectiveArticle.sections.length} Sections)
                   </h4>
                   <button
                     type="button"
@@ -804,7 +840,7 @@ export default function FullProtocol({
             {effectiveArticle.citations && effectiveArticle.citations.length > 0 ? (
               <div className="mt-6 border-t border-slate-200 pt-4">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
-                  <span>📚</span> Peer-Reviewed Primary Citations ({effectiveArticle.citations.length} Studies)
+                  Peer-Reviewed Primary Citations ({effectiveArticle.citations.length} Studies)
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                   {effectiveArticle.citations.map((citation, cIdx) => (
@@ -847,7 +883,7 @@ export default function FullProtocol({
           <section className="mt-6 print:mt-2.5 rounded-xl border border-ui-border-base bg-white p-6 print:p-3 print:border-slate-300 print-break-inside-avoid shadow-2xs">
             <div className="flex items-center justify-between border-b border-ui-border-base pb-3 print:pb-1.5 mb-4">
               <h3 className="text-base print:text-xs font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                <span>🎯</span> Investigated Pharmacodynamic Endpoints &amp; Cellular Mechanisms
+                Investigated Pharmacodynamic Endpoints &amp; Cellular Mechanisms
               </h3>
               <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 text-xs font-semibold">
                 Preclinical Assays
@@ -872,7 +908,7 @@ export default function FullProtocol({
           <section className="mt-6 print:mt-2.5 rounded-xl border border-purple-200 bg-purple-50/40 p-6 print:p-3 print:border-slate-300 print-break-inside-avoid">
             <div className="flex items-center justify-between border-b border-purple-200 pb-3 print:pb-1.5 mb-4 print:mb-2">
               <h2 className="text-xl print:text-xs font-semibold print:font-bold text-purple-950 uppercase tracking-wide flex items-center gap-2">
-                <span>🧬</span> Synergistic Blend Constituents ({content.blend_constituents.length} Active Peptides)
+                Synergistic Blend Constituents ({content.blend_constituents.length} Active Peptides)
               </h2>
               <span className="rounded-full bg-purple-100 text-purple-800 border border-purple-200 px-2.5 py-0.5 text-xs print:text-[9px] font-semibold uppercase">
                 Stoichiometric Blend
@@ -901,14 +937,14 @@ export default function FullProtocol({
           <section className="mt-6 print:mt-2.5 rounded-xl border border-indigo-200 bg-indigo-50/40 p-6 print:p-3 print:border-slate-300 print-break-inside-avoid">
             <div className="flex items-center justify-between border-b border-indigo-200 pb-3 print:pb-1.5 mb-4 print:mb-2">
               <h2 className="text-xl print:text-xs font-semibold print:font-bold text-indigo-950 uppercase tracking-wide flex items-center gap-2">
-                <span>📦</span> Multi-Vial Research Stack ({content.bundle_vials.length} Separate Physical Vials)
+                Multi-Vial Research Stack ({content.bundle_vials.length} Separate Physical Vials)
               </h2>
               <span className="rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200 px-2.5 py-0.5 text-xs print:text-[9px] font-semibold uppercase">
                 Individual Vial Reconstitution
               </span>
             </div>
             <div className="mb-4 rounded-lg bg-amber-50 border border-amber-300 p-3 text-xs text-amber-900 font-medium leading-relaxed">
-              ⚠️ <strong>Clinical Handling Rule:</strong> Each constituent vial must be reconstituted separately in its own designated sterile Bacteriostatic Water volume. Do NOT combine dry lyophilized cakes or mix reconstituted solutions into a single vial.
+              <strong>Aseptic Separation Rule:</strong> Each constituent vial must be reconstituted separately in its own designated sterile Bacteriostatic Water volume. Do NOT combine dry lyophilized cakes or mix reconstituted solutions into a single vial.
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 print:gap-1.5">
               {content.bundle_vials.map((vial, idx) => (
@@ -1050,12 +1086,14 @@ export default function FullProtocol({
               <h2 className="text-xl print:text-xs font-semibold print:font-bold uppercase tracking-wider text-slate-900">
                 {isTopical
                   ? "Formulation, Dropper Pipette Calibration & Dispensing Standard"
+                  : isNasal
+                  ? "Intranasal Metered Atomizer Calibration & Reconstitution Standard"
                   : isBundle
                   ? "Multi-Vial Preparation Station & Reconstitution Matrix"
                   : "Preparation, Reconstitution & Syringe Calibration Matrix"}
               </h2>
               <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 text-xs print:text-[9px] font-semibold uppercase">
-                {isTopical ? "Cosmetic Standard" : "Analytical Reference Standard"}
+                {isTopical ? "Cosmetic Standard" : isNasal ? "Metered Nasal Standard" : "Analytical Reference Standard"}
               </span>
             </div>
 
@@ -1064,14 +1102,14 @@ export default function FullProtocol({
               <div className="mb-6 rounded-xl border border-indigo-200 bg-indigo-50/50 p-5 print:p-3 print:border-slate-300">
                 <div className="flex items-center justify-between border-b border-indigo-200 pb-2.5 mb-3">
                   <h3 className="text-sm print:text-xs font-bold text-indigo-950 uppercase tracking-wide flex items-center gap-2">
-                    <span>📦</span> Multi-Vial Preparation Station ({content.bundle_vials.length} Individual Constituent Vials)
+                    Multi-Vial Preparation Station ({content.bundle_vials.length} Individual Constituent Vials)
                   </h3>
                   <span className="rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200 px-2.5 py-0.5 text-[10px] font-semibold uppercase">
                     Step-by-Step Reconstitution
                   </span>
                 </div>
                 <div className="mb-3 rounded-lg bg-amber-50 border border-amber-300 p-2.5 text-xs text-amber-900 font-medium">
-                  ⚠️ <strong>Aseptic Separation Rule:</strong> Each constituent vial must be reconstituted separately in its own designated sterile Bacteriostatic Water volume. Do NOT combine dry lyophilized cakes or mix reconstituted solutions into a single vial.
+                  <strong>Aseptic Separation Rule:</strong> Each constituent vial must be reconstituted separately in its own designated sterile Bacteriostatic Water volume. Do NOT combine dry lyophilized cakes or mix reconstituted solutions into a single vial.
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 print:gap-1.5">
                   {content.bundle_vials.map((vial, idx) => (
@@ -1173,6 +1211,8 @@ export default function FullProtocol({
               <div className="text-xs print:text-[9px] font-semibold text-slate-500 uppercase tracking-wider mb-2 print:mb-1">
                 {isTopical
                   ? "Topical Cosmetic Dispensing & Application Flow"
+                  : isNasal
+                  ? "Intranasal Atomizer Reconstitution & Spray Flow"
                   : "Stoichiometric Laboratory Protocol Flow"}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 print:grid-cols-4 gap-2 print:gap-1.5 text-center">
@@ -1180,8 +1220,8 @@ export default function FullProtocol({
                   <>
                     {/* Step 1 Topical */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-rose-100 text-rose-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        🧴
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-rose-100 text-rose-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        01
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         1. Liquid Formulation
@@ -1196,8 +1236,8 @@ export default function FullProtocol({
 
                     {/* Step 2 Topical */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-blue-100 text-blue-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        💧
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-blue-100 text-blue-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        02
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         2. Dropper Pipette
@@ -1212,8 +1252,8 @@ export default function FullProtocol({
 
                     {/* Step 3 Topical */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-indigo-100 text-indigo-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        🔄
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        03
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         3. Homogenization
@@ -1228,8 +1268,8 @@ export default function FullProtocol({
 
                     {/* Step 4 Topical */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-amber-100 text-amber-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        ✨
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-amber-100 text-amber-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        04
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         4. Dermal Dispense
@@ -1242,12 +1282,78 @@ export default function FullProtocol({
                       </span>
                     </div>
                   </>
+                ) : isNasal ? (
+                  <>
+                    {/* Step 1 Nasal */}
+                    <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-sky-100 text-sky-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        01
+                      </div>
+                      <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
+                        1. Lyophilized Neuropeptide
+                      </span>
+                      <span className="text-[11px] print:text-[8px] font-mono text-slate-600 mt-0.5 font-bold">
+                        {activeMetrics.mass} mg Peptide Mass
+                      </span>
+                      <span className="text-[10px] print:text-[7.5px] text-slate-500 mt-0.5">
+                        High-purity lyophilized cake
+                      </span>
+                    </div>
+
+                    {/* Step 2 Nasal */}
+                    <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-teal-100 text-teal-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        02
+                      </div>
+                      <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
+                        2. Nasal Vehicle
+                      </span>
+                      <span className="text-[11px] print:text-[8px] font-mono text-slate-600 mt-0.5 font-bold">
+                        {activeMetrics.diluent.toFixed(1)} mL Saline / USP
+                      </span>
+                      <span className="text-[10px] print:text-[7.5px] text-slate-500 mt-0.5">
+                        Benzyl Alcohol-Free (0.9% NaCl)
+                      </span>
+                    </div>
+
+                    {/* Step 3 Nasal */}
+                    <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        03
+                      </div>
+                      <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
+                        3. Atomizer Transfer
+                      </span>
+                      <span className="text-[11px] print:text-[8px] font-mono font-bold text-slate-900 mt-0.5">
+                        {activeMetrics.conc.toFixed(activeMetrics.conc < 0.1 ? 3 : 1)} mg/mL
+                      </span>
+                      <span className="text-[10px] print:text-[7.5px] text-slate-500 mt-0.5">
+                        Transfer to amber spray vial
+                      </span>
+                    </div>
+
+                    {/* Step 4 Nasal */}
+                    <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-sky-100 text-sky-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        04
+                      </div>
+                      <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
+                        4. Metered Nasal Spray
+                      </span>
+                      <span className="text-[11px] print:text-[8px] font-mono text-slate-600 mt-0.5">
+                        0.10 mL / 100 µL Pump
+                      </span>
+                      <span className="text-[10px] print:text-[7.5px] text-slate-500 mt-0.5 font-mono font-bold">
+                        {Math.round(activeMetrics.conc * 100)} µg per spray
+                      </span>
+                    </div>
+                  </>
                 ) : (
                   <>
                     {/* Step 1 Injection */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-teal-100 text-teal-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        🧪
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-teal-100 text-teal-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        01
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         1. Lyophilized Cake
@@ -1262,8 +1368,8 @@ export default function FullProtocol({
 
                     {/* Step 2 Injection */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-blue-100 text-blue-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        💧
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-blue-100 text-blue-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        02
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         2. Aseptic Diluent
@@ -1278,8 +1384,8 @@ export default function FullProtocol({
 
                     {/* Step 3 Injection */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-indigo-100 text-indigo-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        🔬
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        03
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         3. Reconstituted Solution
@@ -1295,8 +1401,8 @@ export default function FullProtocol({
 
                     {/* Step 4 Injection */}
                     <div className="flex flex-col items-center justify-center p-3 print:p-1.5 rounded-lg border border-slate-200 bg-slate-50/80 print:bg-white print:border-slate-300">
-                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-amber-100 text-amber-800 text-sm print:text-xs mb-1.5 print:mb-0.5 font-bold">
-                        💉
+                      <div className="flex items-center justify-center w-8 h-8 print:w-6 print:h-6 rounded-full bg-amber-100 text-amber-800 text-xs print:text-[10px] mb-1.5 print:mb-0.5 font-mono font-bold">
+                        04
                       </div>
                       <span className="font-semibold text-slate-800 text-xs print:text-[9px]">
                         4. Calibrated Draw
@@ -1313,8 +1419,8 @@ export default function FullProtocol({
               </div>
             </div>
 
-            {/* Reference Table (Screen-only for injectables since the Analytical SOP Card renders in print; printed for topicals) */}
-            <div className={`overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs ${!isTopical ? "print:hidden" : ""}`}>
+            {/* Reference Table (Screen-only for injectables since the Analytical SOP Card renders in print; printed for topicals and nasal) */}
+            <div className={`overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs ${!isTopical && !isNasal ? "print:hidden" : ""}`}>
               <table className="table-fixed w-full text-left text-xs border-collapse">
                 <colgroup>
                   <col className="w-[32%] sm:w-[28%]" />
@@ -1323,24 +1429,26 @@ export default function FullProtocol({
                 <tbody className="divide-y divide-slate-100">
                   <tr className="bg-slate-50/50">
                     <td className="py-2.5 px-3.5 font-semibold text-slate-700">
-                      {isTopical ? "Active Compound Strength" : "Standard Compound Mass"}
+                      {isTopical ? "Active Compound Strength" : isNasal ? "Neuropeptide Compound Mass" : "Standard Compound Mass"}
                     </td>
                     <td className="py-2.5 px-3.5 font-mono font-bold text-slate-900">
-                      {activeMetrics.mass} {isHmg ? "IU" : "mg"} active {isTopical ? "per 50 mL bottle" : "per vial"}
+                      {activeMetrics.mass} {isHmg ? "IU" : "mg"} active {isTopical ? "per 50 mL bottle" : isNasal ? "per nasal spray bottle" : "per vial"}
                     </td>
                   </tr>
                   <tr>
                     <td className="py-2.5 px-3.5 font-semibold text-slate-700">
-                      {isTopical ? "Formulation Solvent Base" : "Recommended Diluent"}
+                      {isTopical ? "Formulation Solvent Base" : isNasal ? "Nasal Vehicle / Diluent" : "Recommended Diluent"}
                     </td>
                     <td className="py-2.5 px-3.5 text-slate-900 font-medium">
-                      {content.reconstitution_details.solvent ||
-                        "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"}
+                      {isNasal
+                        ? "Sterile 0.9% Saline (NaCl) or Deionized USP Water (Benzyl Alcohol Free)"
+                        : content.reconstitution_details.solvent ||
+                          "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"}
                     </td>
                   </tr>
                   <tr className="bg-slate-50/50">
                     <td className="py-2.5 px-3.5 font-semibold text-slate-700">
-                      {isTopical ? "Bottle Net Volume" : "Diluent Volume Added"}
+                      {isTopical ? "Bottle Net Volume" : isNasal ? "Final Prepared Nasal Volume" : "Diluent Volume Added"}
                     </td>
                     <td className="py-2.5 px-3.5 font-mono font-bold text-slate-900">
                       {activeMetrics.diluent.toFixed(1)} mL
@@ -1357,11 +1465,13 @@ export default function FullProtocol({
                   </tr>
                   <tr className="bg-slate-50/50">
                     <td className="py-2.5 px-3.5 font-semibold text-slate-700">
-                      {isTopical ? "Dispenser Calibration" : "Syringe Volumetric Scale"}
+                      {isTopical ? "Dispenser Calibration" : isNasal ? "Metered Nasal Atomizer Pump" : "Syringe Volumetric Scale"}
                     </td>
                     <td className="py-2.5 px-3.5 text-slate-900 font-mono">
                       {isTopical
                         ? "Calibrated Cosmetic Dropper Pipette (0.05 mL / drop | 20 drops = 1.0 mL)"
+                        : isNasal
+                        ? `Metered Nasal Pump (0.10 mL / 100 µL spray displacement | ~${Math.round(activeMetrics.conc * 100)} µg/spray)`
                         : `U-100 Syringe (100 units = 1.0 mL | ${activeMetrics.tick})`}
                     </td>
                   </tr>
@@ -1379,10 +1489,26 @@ export default function FullProtocol({
               </table>
             </div>
 
-            {/* Interactive Syringe Calibration & Reconstitution Stoichiometry */}
+            {/* Interactive Syringe / Nasal Calibration & Reconstitution Stoichiometry */}
             {!isTopical && (
               <div className="mt-8 mb-6 print:mt-3 print:mb-3">
-                {isBundle && content.bundle_vials && content.bundle_vials.length > 0 ? (
+                {isNasal ? (
+                  <InteractiveNasalStoichiometry
+                    compoundId={protocol.handle || content.compound_name || "nasal-peptide"}
+                    compoundName={content.compound_name || protocol.title}
+                    vialMg={activeMetrics.mass}
+                    diluentMl={activeMetrics.diluent}
+                    concMgMl={activeMetrics.conc}
+                    standardDoseMcg={
+                      content.syringe_guide?.graduations?.[0]?.doseMcg || 200
+                    }
+                    standardDoseDisplay={
+                      content.syringe_guide?.standardIUDisplay || "200 mcg / spray"
+                    }
+                    titrationSteps={titrationPresets}
+                    className="print:border-slate-300"
+                  />
+                ) : isBundle && content.bundle_vials && content.bundle_vials.length > 0 ? (
                   <>
                     <MultiVialStoichiometryStudio
                       bundleVials={content.bundle_vials}
@@ -1425,8 +1551,8 @@ export default function FullProtocol({
               </div>
             )}
 
-            {/* Dynamic Calibration / Graduation Table */}
-            {content.syringe_guide && content.syringe_guide.graduations?.length ? (
+            {/* Dynamic Calibration / Graduation Table (Injectable / Topical only) */}
+            {!isNasal && content.syringe_guide && content.syringe_guide.graduations?.length ? (
               <div className="mt-6 print:mt-3">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3 print:pb-1 print:mb-1.5">
                   <h3 className="text-xs print:text-[9px] font-bold uppercase tracking-wider text-slate-900">
@@ -1597,8 +1723,8 @@ export default function FullProtocol({
               </div>
             ) : null}
 
-            {/* Syringe Barrel Resolution & Accuracy Guide */}
-            {!isTopical && (
+            {/* Syringe Barrel Resolution & Accuracy Guide (Parenteral only) */}
+            {!isTopical && !isNasal && (
               <div className="mt-6 print:mt-3">
                 <SyringeBarrelAccuracyGuide
                   activeConcMgMl={activeMetrics.conc}
@@ -1634,8 +1760,8 @@ export default function FullProtocol({
           </div>
         ) : null}
 
-        {/* 12-Week vs 24-Week Research Supply & Protocol Planning Matrix */}
-        {!isTopical && (
+        {/* 12-Week vs 24-Week Research Supply & Protocol Planning Matrix (Parenteral only) */}
+        {!isTopical && !isNasal && (
           <div className="mt-8 print:mt-3">
             <ResearchSupplyCyclePlanner
               compoundName={content.compound_name || protocol.title}
@@ -1730,11 +1856,6 @@ export default function FullProtocol({
                         <td className="py-3 px-3.5 print:py-1 print:px-2 align-top text-xs text-slate-700 leading-relaxed">
                           {row.notes ? (
                             <div className="flex items-start gap-1.5">
-                              {row.notes.toLowerCase().includes("syringe") ||
-                              row.notes.toLowerCase().includes("unit") ||
-                              row.notes.toLowerCase().includes("ml") ? (
-                                <span className="text-emerald-600 font-bold shrink-0 text-xs mt-0.5">💉</span>
-                              ) : null}
                               <span>{row.notes}</span>
                             </div>
                           ) : (
@@ -1833,8 +1954,8 @@ export default function FullProtocol({
                   key={idx}
                   className="flex items-start gap-2.5 print:gap-1.5 rounded-lg border border-ui-border-base bg-white p-3.5 print:p-1.5 shadow-2xs print:border-slate-200 print:shadow-none"
                 >
-                  <span className="flex h-5 w-5 print:h-4 print:w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-xs print:text-[9px] font-bold mt-0.5">
-                    ⚠
+                  <span className="flex h-5 w-5 print:h-4 print:w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-xs print:text-[9px] font-mono font-bold mt-0.5">
+                    !
                   </span>
                   <span className="text-sm print:text-[10px] text-slate-800 leading-relaxed print:leading-tight">
                     {renderFormattedText(obs)}
@@ -1893,7 +2014,7 @@ export default function FullProtocol({
             </div>
             {content.storage_details.light_protection ? (
               <div className="mt-3 flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900 font-medium">
-                <span>☀️</span>
+                <span className="font-bold text-amber-700 font-mono text-[10px] uppercase tracking-wider">[UV SENSITIVE]</span>
                 Photosensitive Formulation: Protect reconstituted solution from direct ultraviolet
                 exposure.
               </div>

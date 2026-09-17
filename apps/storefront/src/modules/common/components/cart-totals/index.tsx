@@ -19,6 +19,7 @@ type CartTotalsProps = {
     item_subtotal?: number | null
     shipping_subtotal?: number | null
     discount_subtotal?: number | null
+    discount_total?: number | null
   }
 }
 
@@ -28,8 +29,9 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     total,
     item_subtotal,
     shipping_subtotal,
-    discount_subtotal,
   } = totals
+
+  const discountAmount = totals.discount_total ?? totals.discount_subtotal ?? 0
 
   return (
     <div>
@@ -48,23 +50,24 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
               : <span className="text-ui-fg-subtle italic text-xs">Calculated at checkout</span>}
           </span>
         </div>
-        {!!discount_subtotal && (
+        {discountAmount > 0 && (
           <div className="flex items-center justify-between">
             <span>Discount</span>
             <span
-              className="text-ui-fg-interactive font-mono tracking-tight font-extrabold"
+              className="text-ui-fg-interactive font-mono tracking-tight font-extrabold text-emerald-600"
               data-testid="cart-discount"
-              data-value={discount_subtotal || 0}
+              data-value={discountAmount}
             >
               -{" "}
               {convertToLocale({
-                amount: discount_subtotal ?? 0,
+                amount: discountAmount,
                 currency_code,
               })}
             </span>
           </div>
         )}
       </div>
+
       <div className="h-px w-full border-b border-gray-200 my-4" />
       <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
         <span className="font-semibold text-slate-900">Total</span>

@@ -1,10 +1,19 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/products/components/product-stacking-partners/index.tsx
+ * @module  ProductStackingPartners (Product Detail Page)
+ * @purpose Renders scientifically validated companion stacking compounds with 1-click cart bridge and STACK15 bundle promotion.
+ * @contracts
+ *   Component: ProductStackingPartners
+ *   Commerce:  addToCart, applyPromotions (@lib/data/cart)
+ */
+
 import React, { useState, useMemo } from "react"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ArrowRightMini } from "@medusajs/icons"
-import { addToCart } from "@lib/data/cart"
+import { addToCart, addPromotionCode } from "@lib/data/cart"
 import {
   getCompatiblePartnersForCompound,
   type CompatiblePartnerRecommendation,
@@ -158,11 +167,18 @@ export default function ProductStackingPartners({
         countryCode,
       })
 
+      try {
+        await addPromotionCode("STACK15")
+      } catch (promoErr) {
+        console.warn("[ProductStackingPartners] Could not auto-apply STACK15:", promoErr)
+      }
+
       setCartFeedback({
         partnerId: partner.compound.id,
         status: "success",
-        message: `✓ Added ${partner.compound.shortName} to your cart with 15% bundle savings!`,
+        message: `✓ Added ${partner.compound.shortName} to your cart with 15% bundle savings (STACK15) applied!`,
       })
+
     } catch (err: unknown) {
       console.warn("[handleAddCompanionToCart] Error:", err)
       const message = err instanceof Error ? err.message : "Failed to add companion to cart."

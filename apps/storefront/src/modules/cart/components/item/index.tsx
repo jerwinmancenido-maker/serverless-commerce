@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/cart/components/item/index.tsx
+ * @module  CartItemComponent (Storefront Cart)
+ * @purpose Renders a line item row with quantity changer, thumbnail, options, and deduplicated pricing.
+ * @contracts
+ *   Action: updateLineItem, deleteLineItem
+ */
+
 import { Table, Text, clx } from "@modules/common/components/ui"
 import { updateLineItem } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
@@ -122,9 +130,9 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             "flex flex-col items-end h-full justify-center": type === "preview",
           })}
         >
-          {type === "preview" && (
-            <span className="flex gap-x-1 ">
-              <Text className="text-ui-fg-muted">{item.quantity}x </Text>
+          {type === "preview" && item.quantity > 1 && (
+            <span className="flex items-center gap-x-1 text-xs text-slate-500 mb-0.5 font-mono">
+              <Text className="text-ui-fg-muted">{item.quantity}x @ </Text>
               <LineItemUnitPrice
                 item={item}
                 style="tight"

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/modules/cart/templates/index.tsx
+ * @module  CartTemplate (Storefront Cart)
+ * @purpose Main shopping cart page template containing items table and order summary.
+ * @contracts
+ *   Fetches: cart items, customer session
+ */
+
 import ItemsTemplate from "./items"
 import Summary from "./summary"
 import EmptyCartMessage from "../components/empty-cart-message"

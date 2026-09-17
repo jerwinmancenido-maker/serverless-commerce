@@ -198,9 +198,7 @@ export default function ResearchHubMegaMenu({
                       </span>
                       {customer?.first_name ? (
                         <span className="text-[11px] font-semibold text-slate-700 truncate max-w-[140px]">
-                          {customer.first_name.toLowerCase().startsWith("dr")
-                            ? `${customer.first_name} ${customer.last_name || ""}`.trim()
-                            : `Dr. ${customer.first_name}`}
+                          {`${customer.first_name} ${customer.last_name || ""}`.trim()}
                         </span>
                       ) : null}
                     </div>

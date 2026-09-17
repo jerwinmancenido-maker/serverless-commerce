@@ -848,19 +848,27 @@ export default function ClinicalProtocolPrintDossier({
                 <thead className="bg-slate-50 border-b border-slate-200 font-bold text-[10px] text-slate-600">
                   <tr>
                     <th className="p-2">Net Active Mass</th>
-                    <th className="p-2">Target Solvent</th>
+                    <th className="p-2">{archetype === "nasal_topical" ? "Nasal Vehicle / Solvent" : "Target Solvent"}</th>
                     <th className="p-2">Diluent Volume</th>
                     <th className="p-2">Resulting Concentration</th>
-                    <th className="p-2">Syringe Graduation Scale</th>
+                    <th className="p-2">{archetype === "nasal_topical" ? "Atomizer Delivery Output" : "Syringe Graduation Scale"}</th>
                   </tr>
                 </thead>
                 <tbody className="text-[11px]">
                   <tr>
                     <td className="p-2 font-bold font-mono text-slate-900">{defaultMg} mg Lyophilized Cake</td>
-                    <td className="p-2 text-slate-700">Bacteriostatic Water USP (0.9% Benzyl Alcohol)</td>
+                    <td className="p-2 text-slate-700">
+                      {archetype === "nasal_topical"
+                        ? "Sterile 0.9% Saline USP or Deionized Water (Benzyl Alcohol Free)"
+                        : "Bacteriostatic Water USP (0.9% Benzyl Alcohol)"}
+                    </td>
                     <td className="p-2 font-mono text-blue-800 font-bold">{defaultDiluent.toFixed(1)} mL</td>
-                    <td className="p-2 font-mono text-emerald-800 font-bold">{defaultConc.toFixed(2)} mg/mL ({defaultConc * 10} mcg/0.01 mL)</td>
-                    <td className="p-2 font-mono text-sky-900">1 Unit = {(defaultConc * 10).toFixed(1)} mcg (0.01 mL)</td>
+                    <td className="p-2 font-mono text-emerald-800 font-bold">{defaultConc.toFixed(2)} mg/mL</td>
+                    <td className="p-2 font-mono text-sky-900">
+                      {archetype === "nasal_topical"
+                        ? `1 Spray (0.10 mL) = ~${Math.round(defaultConc * 100)} mcg`
+                        : `1 Unit = ${(defaultConc * 10).toFixed(1)} mcg (0.01 mL)`}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -874,30 +882,56 @@ export default function ClinicalProtocolPrintDossier({
             <PrintVectorSyringe units={defaultUnits} volumeMl={defaultVolumeMl} capacity={defaultUnits <= 30 ? 30 : defaultUnits <= 50 ? 50 : 100} compoundName={cleanTitle} />
           )}
 
-          {/* Syringe Optical Accuracy Matrix */}
-          <div className="mt-3 rounded-lg border border-slate-300 bg-white p-2.5 text-xs">
-            <div className="font-bold text-slate-900 uppercase tracking-wider text-[10px] mb-1.5 border-b border-slate-200 pb-1 flex items-center justify-between">
-              <span>ISO 8537 Standard Barrel Resolution &amp; Precision Matrix</span>
-              <span className="text-emerald-700 font-mono">Tolerance: ±1.5%</span>
+          {/* Instrument Optical Accuracy Matrix (Syringe vs Nasal Atomizer) */}
+          {archetype === "nasal_topical" ? (
+            <div className="mt-3 rounded-lg border border-slate-300 bg-white p-2.5 text-xs">
+              <div className="font-bold text-slate-900 uppercase tracking-wider text-[10px] mb-1.5 border-b border-slate-200 pb-1 flex items-center justify-between">
+                <span>Metered Nasal Atomizer Volumetric Spray Standard (0.10 mL Pump)</span>
+                <span className="text-emerald-700 font-mono">Dose Tolerance: ±2.0%</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-[10.5px]">
+                <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <span className="font-bold text-slate-900 block">Single Spray (1x)</span>
+                  <span className="text-slate-600 block mt-0.5">0.10 mL (100 µL) Mist Plume</span>
+                  <span className="text-sky-800 font-bold block text-[10px]">~{Math.round(defaultConc * 100)} mcg Active Standard</span>
+                </div>
+                <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <span className="font-bold text-slate-900 block">Bilateral Spray (2x)</span>
+                  <span className="text-slate-600 block mt-0.5">1 Spray Per Nostril (0.20 mL)</span>
+                  <span className="text-indigo-800 font-bold block text-[10px]">~{Math.round(defaultConc * 200)} mcg Cumulative</span>
+                </div>
+                <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <span className="font-bold text-slate-900 block">Total Bottle Yield</span>
+                  <span className="text-slate-600 block mt-0.5">5.0 mL / 10.0 mL Capacity</span>
+                  <span className="text-emerald-700 font-bold block text-[10px]">~{Math.floor(defaultDiluent / 0.10)} Metered Sprays</span>
+                </div>
+              </div>
             </div>
-            <div className="grid grid-cols-3 gap-2 text-[10.5px]">
-              <div className="p-2 rounded bg-slate-50 border border-slate-200">
-                <span className="font-bold text-slate-900 block">0.3 mL Syringe (30 Units)</span>
-                <span className="text-slate-600 block mt-0.5">0.5 Unit (5 µL) Graduation</span>
-                <span className="text-emerald-700 font-bold block text-[10px]">Optimal for Doses ≤25 Units</span>
+          ) : (
+            <div className="mt-3 rounded-lg border border-slate-300 bg-white p-2.5 text-xs">
+              <div className="font-bold text-slate-900 uppercase tracking-wider text-[10px] mb-1.5 border-b border-slate-200 pb-1 flex items-center justify-between">
+                <span>ISO 8537 Standard Barrel Resolution &amp; Precision Matrix</span>
+                <span className="text-emerald-700 font-mono">Tolerance: ±1.5%</span>
               </div>
-              <div className="p-2 rounded bg-slate-50 border border-slate-200">
-                <span className="font-bold text-slate-900 block">0.5 mL Syringe (50 Units)</span>
-                <span className="text-slate-600 block mt-0.5">1.0 Unit (10 µL) Graduation</span>
-                <span className="text-slate-700 block text-[10px]">Suitable for 25–45 Units</span>
-              </div>
-              <div className="p-2 rounded bg-slate-50 border border-slate-200">
-                <span className="font-bold text-slate-900 block">1.0 mL Syringe (100 Units)</span>
-                <span className="text-slate-600 block mt-0.5">2.0 Unit (20 µL) Graduation</span>
-                <span className="text-slate-700 block text-[10px]">Suitable for High-Volume Laboratory Fluid Delivery</span>
+              <div className="grid grid-cols-3 gap-2 text-[10.5px]">
+                <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <span className="font-bold text-slate-900 block">0.3 mL Syringe (30 Units)</span>
+                  <span className="text-slate-600 block mt-0.5">0.5 Unit (5 µL) Graduation</span>
+                  <span className="text-emerald-700 font-bold block text-[10px]">Optimal for Doses ≤25 Units</span>
+                </div>
+                <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <span className="font-bold text-slate-900 block">0.5 mL Syringe (50 Units)</span>
+                  <span className="text-slate-600 block mt-0.5">1.0 Unit (10 µL) Graduation</span>
+                  <span className="text-slate-700 block text-[10px]">Suitable for 25–45 Units</span>
+                </div>
+                <div className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <span className="font-bold text-slate-900 block">1.0 mL Syringe (100 Units)</span>
+                  <span className="text-slate-600 block mt-0.5">2.0 Unit (20 µL) Graduation</span>
+                  <span className="text-slate-700 block text-[10px]">Suitable for High-Volume Laboratory Fluid Delivery</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Step-by-Step Aseptic Reconstitution Sequence */}
           <div className="mt-3.5 rounded-xl border border-slate-200/90 bg-slate-50/50 p-3.5 text-xs shadow-2xs">

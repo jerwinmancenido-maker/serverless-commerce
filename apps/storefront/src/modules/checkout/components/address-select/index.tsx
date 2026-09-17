@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/modules/checkout/components/address-select/index.tsx
+ * @module  AddressSelectComponent (Checkout Module)
+ * @purpose Dropdown selector allowing customers to choose from their saved shipping addresses.
+ * @contracts
+ *   Props: addresses, addressInput, onSelect
+ */
+
 import { Listbox, Transition } from "@headlessui/react"
 import { ChevronUpDown } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"

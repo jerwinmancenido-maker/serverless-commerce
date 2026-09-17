@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/lib/data/compound-coa-documents.ts
+ * @module  CompoundCoaDocuments (Storefront Data Layer)
+ * @purpose Registry of authentic analytical Certificates of Analysis (COA) for reference standard compounds.
+ * @contracts
+ *   Service: listCoaDocuments() · getCoaByCompoundId()
+ */
+
 export type CoaDocumentItem = {
   id: string
   compoundName: string

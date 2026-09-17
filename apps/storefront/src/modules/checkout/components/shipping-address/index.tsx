@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/modules/checkout/components/shipping-address/index.tsx
+ * @module  ShippingAddressComponent (Checkout Module)
+ * @purpose Renders shipping address input form with auto-fill from saved customer addresses.
+ * @contracts
+ *   API: POST /store/carts/:id (setAddresses)
+ */
+
 import { HttpTypes } from "@medusajs/types"
 import { Container } from "@modules/common/components/ui"
 import Checkbox from "@modules/common/components/checkbox"
@@ -45,11 +53,20 @@ const ShippingAddress = ({
   // check if customer has saved addresses that are in the current region
   const addressesInRegion = useMemo(
     () =>
-      customer?.addresses.filter(
+      customer?.addresses?.filter(
         (a) => a.country_code && countriesInRegion?.includes(a.country_code)
-      ),
+      ) || [],
     [customer?.addresses, countriesInRegion]
   )
+
+  const defaultAddress = useMemo(() => {
+    if (!addressesInRegion.length) return null
+    return (
+      addressesInRegion.find((a) => a.is_default_shipping) ||
+      addressesInRegion[0] ||
+      null
+    )
+  }, [addressesInRegion])
 
   const setFormAddress = (
     address?: HttpTypes.StoreCartAddress,
@@ -80,15 +97,33 @@ const ShippingAddress = ({
   }
 
   useEffect(() => {
-    // Ensure cart is not null and has a shipping_address before setting form data
-    if (cart && cart.shipping_address) {
-      setFormAddress(cart?.shipping_address, cart?.email)
+    // 1. If cart already has a populated shipping address, use that
+    if (cart?.shipping_address?.address_1) {
+      setFormAddress(cart.shipping_address, cart.email)
+      return
     }
 
-    if (cart && !cart.email && customer?.email) {
-      setFormAddress(undefined, customer.email)
+    // 2. Otherwise, auto-fill from customer default saved address
+    if (defaultAddress) {
+      setFormAddress(
+        defaultAddress as unknown as HttpTypes.StoreCartAddress,
+        customer?.email
+      )
+      return
     }
-  }, [cart, customer?.email])
+
+    // 3. Fallback: prefill customer name & email if available
+    if (customer) {
+      setFormData((prev) => ({
+        ...prev,
+        "shipping_address.first_name":
+          prev["shipping_address.first_name"] || customer.first_name || "",
+        "shipping_address.last_name":
+          prev["shipping_address.last_name"] || customer.last_name || "",
+        email: prev.email || customer.email || "",
+      }))
+    }
+  }, [cart, customer, defaultAddress])
 
   const handleChange = (
     e: React.ChangeEvent<

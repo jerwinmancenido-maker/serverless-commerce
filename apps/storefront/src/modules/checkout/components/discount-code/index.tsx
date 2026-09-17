@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/checkout/components/discount-code/index.tsx
+ * @module  DiscountCode (Checkout & Cart Component)
+ * @purpose Renders promotion code input, manages applied vouchers (fixed & percentage), and displays promotional badges.
+ * @contracts
+ *   Commerce: applyPromotions (@lib/data/cart)
+ */
+
 import { Badge, Heading, Input, Label, Text } from "@modules/common/components/ui"
 import React from "react"
 
@@ -119,24 +127,23 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                           color={promotion.is_automatic ? "green" : "grey"}
                         >
                           {promotion.code}
-                        </Badge>{" "}
-                        (
-                        {promotion.application_method?.value !== undefined &&
-                          promotion.application_method.currency_code !==
-                            undefined && (
-                            <>
-                              {promotion.application_method.type ===
-                              "percentage"
-                                ? `${promotion.application_method.value}%`
-                                : convertToLocale({
-                                    amount: +promotion.application_method.value,
-                                    currency_code:
-                                      promotion.application_method
-                                        .currency_code,
-                                  })}
-                            </>
-                          )}
-                        )
+                        </Badge>
+                        {promotion.application_method?.value !== undefined && (
+                          <span className="text-slate-600 font-mono text-xs ml-1">
+                            (
+                            {promotion.application_method.type === "percentage"
+                              ? `${promotion.application_method.value}%`
+                              : convertToLocale({
+                                  amount: +promotion.application_method.value,
+                                  currency_code:
+                                    promotion.application_method.currency_code ||
+                                    cart.currency_code ||
+                                    "php",
+                                })}
+                            )
+                          </span>
+                        )}
+
                         {/* {promotion.is_automatic && (
                           <Tooltip content="This promotion is automatically applied">
                             <InformationCircleSolid className="inline text-zinc-400" />

@@ -4,6 +4,7 @@
  * @purpose Verifies 0 occurrences of 'Complete SubQ Set' remain and that 'Analytical Lab Set' variants exist with preserved UUIDs.
  */
 
+import { MedusaError } from "@medusajs/framework/utils"
 import { Client } from "pg"
 
 async function verifyVariantSanitization() {
@@ -32,10 +33,16 @@ async function verifyVariantSanitization() {
     console.log(`Variants with 'Analytical Lab Set': ${labSetCount}`)
 
     if (subqCount !== 0) {
-      throw new Error(`Assertion failed: Found ${subqCount} variants still titled with SubQ`)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Assertion failed: Found ${subqCount} variants still titled with SubQ`
+      )
     }
     if (labSetCount < 140) {
-      throw new Error(`Assertion failed: Expected >= 140 Analytical Lab Sets, found ${labSetCount}`)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Assertion failed: Expected >= 140 Analytical Lab Sets, found ${labSetCount}`
+      )
     }
 
     console.log("PASSED: Zero SubQ titles remain and Analytical Lab Sets verified intact.")

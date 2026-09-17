@@ -1,3 +1,12 @@
+/**
+ * @file    apps/backend/src/scripts/configure-launch-promotions.ts
+ * @module  ConfigureLaunchPromotions (Promotion Configuration Script)
+ * @purpose Seeds and configures canonical promotional vouchers (LAUNCH10, WELCOME500, STACK15).
+ * @contracts
+ *   Service: PromotionModuleService
+ *   Workflow: createPromotionsWorkflow
+ */
+
 import type { CreatePromotionDTO, MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, Modules, PromotionStatus } from "@medusajs/framework/utils"
 import { createPromotionsWorkflow } from "@medusajs/medusa/core-flows"
@@ -17,7 +26,7 @@ export default async function configureLaunchPromotions({
   const promotionModuleService = container.resolve(Modules.PROMOTION)
 
   const existingPromotions = await promotionModuleService.listPromotions(
-    { code: ["LAUNCH10", "WELCOME500"] },
+    { code: ["LAUNCH10", "WELCOME500", "STACK15"] },
     { take: 10 }
   )
 
@@ -35,7 +44,6 @@ export default async function configureLaunchPromotions({
         type: "percentage",
         target_type: "order",
         value: 10,
-        max_quantity: 1,
       },
     })
   }
@@ -57,6 +65,22 @@ export default async function configureLaunchPromotions({
     })
   }
 
+  // 3. Stacking voucher: STACK15 (15% off multi-compound stack bundle subtotal)
+  if (!existingCodes.has("STACK15")) {
+    promotionsToCreate.push({
+      code: "STACK15",
+      type: "standard",
+      status: PromotionStatus.ACTIVE,
+      is_automatic: false,
+      application_method: {
+        type: "percentage",
+        target_type: "order",
+        value: 15,
+      },
+    })
+  }
+
+
   if (promotionsToCreate.length > 0) {
     await createPromotionsWorkflow(container).run({
       input: {
@@ -65,6 +89,7 @@ export default async function configureLaunchPromotions({
     })
     logger.info(`Successfully configured ${promotionsToCreate.length} launch promotional voucher(s): ${promotionsToCreate.map((p) => p.code).join(", ")}`)
   } else {
-    logger.info("Launch promotions (LAUNCH10, WELCOME500) are already configured.")
+    logger.info("Launch promotions (LAUNCH10, WELCOME500, STACK15) are already configured.")
   }
 }
+

@@ -27,7 +27,7 @@ import StackKitCommerceBuilder from "./stack-kit-commerce-builder"
 import StackScheduleTimeline from "./stack-schedule-timeline"
 import StackPrintDossier from "./stack-print-dossier"
 import { downloadStackPdf } from "@lib/pdf/stack-pdf-compiler"
-import { addToCart } from "@lib/data/cart"
+import { addToCart, addPromotionCode } from "@lib/data/cart"
 import type { ResearchBundleVial } from "../types"
 import { HttpTypes } from "@medusajs/types"
 
@@ -275,22 +275,49 @@ export default function StackCompatibilityChecker({
       const volMl = targetMcg / 1000 / concMgMl
       const units = Math.round(volMl * 100 * 10) / 10
 
+      const isNasal =
+        p.adminRoute?.toLowerCase().includes("intranasal") ||
+        p.adminRoute?.toLowerCase().includes("nasal") ||
+        analytical?.primaryDeliveryRoute === "nasal"
+      const isOral =
+        (p.adminRoute?.toLowerCase().includes("oral") &&
+          !p.adminRoute?.toLowerCase().includes("subq")) ||
+        p.id === "bpc-157-arginate" ||
+        p.id === "mk-677" ||
+        p.id === "5-amino-1mq" ||
+        analytical?.primaryDeliveryRoute === "oral"
+
+      let resolvedSolvent =
+        analytical?.reconstitution?.solvent ||
+        "Bacteriostatic 0.9% Benzyl Alcohol Water"
+      let resolvedInstructions =
+        analytical?.reconstitution?.dissolutionMethod ||
+        `Gently inject ${diluentMl} mL sterile bacteriostatic water down the inside glass vial wall. Swirl slowly without shaking until completely clear.`
+      let resolvedDeliveryUnits =
+        analytical?.syringeGuide?.standardIUDisplay ||
+        `${units} units (${volMl.toFixed(2)} mL) on U-100 syringe`
+
+      if (isNasal) {
+        resolvedSolvent = "Sterile 0.9% Saline / Reconstitution Diluent"
+        resolvedInstructions = `Aseptically reconstitute with ${diluentMl} mL sterile saline and transfer into metered nasal spray bottle. Prime 2 actuations into test area before research session.`
+        const sprayCount = Math.max(1, Math.round(targetMcg / (concMgMl * 100)))
+        resolvedDeliveryUnits = `${sprayCount} spray(s) (${(sprayCount * 0.1).toFixed(2)} mL) via calibrated nasal atomizer pump`
+      } else if (isOral) {
+        resolvedSolvent = "Oral Liquid Research Vehicle USP"
+        resolvedInstructions = `Dissolve compound completely in ${diluentMl} mL oral liquid research vehicle. Measure strictly with calibrated oral pipette or graduated dispenser.`
+        resolvedDeliveryUnits = `${volMl.toFixed(2)} mL via calibrated oral pipette / dropper (non-injectable)`
+      }
+
       return {
         compoundName: p.name,
         vialNetMass: `${massMg} mg`,
         diluentMl,
         concMgMl,
-        solvent:
-          analytical?.reconstitution?.solvent ||
-          "Bacteriostatic 0.9% Benzyl Alcohol Water",
-        reconstitutionInstructions:
-          analytical?.reconstitution?.dissolutionMethod ||
-          `Gently inject ${diluentMl} mL sterile bacteriostatic water down the inside glass vial wall. Swirl slowly without shaking until completely clear.`,
+        solvent: resolvedSolvent,
+        reconstitutionInstructions: resolvedInstructions,
         targetDose,
         cadence,
-        syringeUnits:
-          analytical?.syringeGuide?.standardIUDisplay ||
-          `${units} units (${volMl.toFixed(2)} mL) on U-100 syringe`,
+        syringeUnits: resolvedDeliveryUnits,
       }
     })
   }, [selectedProfiles])
@@ -332,30 +359,70 @@ export default function StackCompatibilityChecker({
         }
       })
 
-      // Add Bacteriostatic water if available
-      const bacProduct = (matchedProducts || []).find(
-        (p) =>
-          (p.title || "").toLowerCase().includes("bacteriostatic") ||
-          (p.handle || "").toLowerCase().includes("bac")
-      )
-      if (bacProduct?.variants?.[0]?.id) {
-        itemsToAdd.push({
-          variantId: bacProduct.variants[0].id,
-          quantity: 1,
-        })
-      }
+      // Route-aware accessory handling
+      const isAllNasal =
+        bundleVials.length > 0 &&
+        bundleVials.every(
+          (v) =>
+            v.solvent.toLowerCase().includes("saline") ||
+            v.syringeUnits.toLowerCase().includes("nasal") ||
+            v.compoundName.toLowerCase().includes("semax") ||
+            v.compoundName.toLowerCase().includes("selank") ||
+            v.compoundName.toLowerCase().includes("adamax") ||
+            v.compoundName.toLowerCase().includes("oxytocin") ||
+            v.compoundName.toLowerCase().includes("pinealon")
+        )
 
-      // Add U-100 syringes box if available
-      const syringeProduct = (matchedProducts || []).find(
-        (p) =>
-          (p.title || "").toLowerCase().includes("syringe") ||
-          (p.handle || "").toLowerCase().includes("syringe")
-      )
-      if (syringeProduct?.variants?.[0]?.id) {
-        itemsToAdd.push({
-          variantId: syringeProduct.variants[0].id,
-          quantity: 1,
-        })
+      const isAllOral =
+        bundleVials.length > 0 &&
+        bundleVials.every(
+          (v) =>
+            v.solvent.toLowerCase().includes("oral") ||
+            v.syringeUnits.toLowerCase().includes("pipette") ||
+            v.syringeUnits.toLowerCase().includes("dropper")
+        )
+
+      if (isAllNasal) {
+        // Inject Clear Nasal Spray Bottles accessory; suppress BAC water and U-100 syringes
+        const nasalBottleProduct = (matchedProducts || []).find(
+          (p) =>
+            (p.title || "").toLowerCase().includes("nasal") ||
+            (p.handle || "").toLowerCase().includes("nasal")
+        )
+        if (nasalBottleProduct?.variants?.[0]?.id) {
+          itemsToAdd.push({
+            variantId: nasalBottleProduct.variants[0].id,
+            quantity: 1,
+          })
+        }
+      } else if (isAllOral) {
+        // Pure oral stacks do not require injectable BAC water or U-100 syringes
+      } else {
+        // Parenteral / SubQ invariant: Add Bacteriostatic water if available
+        const bacProduct = (matchedProducts || []).find(
+          (p) =>
+            (p.title || "").toLowerCase().includes("bacteriostatic") ||
+            (p.handle || "").toLowerCase().includes("bac")
+        )
+        if (bacProduct?.variants?.[0]?.id) {
+          itemsToAdd.push({
+            variantId: bacProduct.variants[0].id,
+            quantity: 1,
+          })
+        }
+
+        // Add U-100 syringes box if available
+        const syringeProduct = (matchedProducts || []).find(
+          (p) =>
+            (p.title || "").toLowerCase().includes("syringe") ||
+            (p.handle || "").toLowerCase().includes("syringe")
+        )
+        if (syringeProduct?.variants?.[0]?.id) {
+          itemsToAdd.push({
+            variantId: syringeProduct.variants[0].id,
+            quantity: 1,
+          })
+        }
       }
 
       if (itemsToAdd.length > 0) {
@@ -366,9 +433,18 @@ export default function StackCompatibilityChecker({
             countryCode,
           })
         }
+        try {
+          await addPromotionCode("STACK15")
+        } catch (promoErr) {
+          console.warn("[StackCompatibilityChecker] Could not auto-apply STACK15:", promoErr)
+        }
+        let kitDesc = "reconstitution kit"
+        if (isAllNasal) kitDesc = "nasal atomizer kit"
+        else if (isAllOral) kitDesc = "oral vehicle dispenser set"
+
         setQuickCartResult({
           status: "success",
-          message: `✓ Added ${itemsToAdd.length} items (${bundleVials.length} vials + reconstitution kit) to your cart with 15% bundle savings!`,
+          message: `✓ Added ${itemsToAdd.length} items (${bundleVials.length} vials + ${kitDesc}) to your cart with 15% bundle savings (STACK15) applied!`,
         })
       } else if (
         matchedProducts &&
@@ -380,9 +456,14 @@ export default function StackCompatibilityChecker({
           quantity: 1,
           countryCode,
         })
+        try {
+          await addPromotionCode("STACK15")
+        } catch (promoErr) {
+          console.warn("[StackCompatibilityChecker] Could not auto-apply STACK15:", promoErr)
+        }
         setQuickCartResult({
           status: "success",
-          message: `✓ Added ${selectedProfiles.length} stack items to your cart!`,
+          message: `✓ Added ${selectedProfiles.length} stack items to your cart with 15% bundle savings (STACK15) applied!`,
         })
       } else {
         setQuickCartResult({
@@ -390,6 +471,7 @@ export default function StackCompatibilityChecker({
           message: `✓ Research Stack Kit configured for ${selectedProfiles.map((p) => p.shortName).join(" + ")} with 15% savings!`,
         })
       }
+
     } catch (err: unknown) {
       console.warn("[handleQuickKitAddToCart] Error:", err)
       const msg = err instanceof Error ? err.message : "Failed to add kit to cart. Please try again."

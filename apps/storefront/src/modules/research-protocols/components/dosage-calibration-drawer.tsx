@@ -111,6 +111,14 @@ export function DosageCalibrationDrawer({
     )
   }, [protocol])
 
+  const isNasal = useMemo(() => {
+    if (!protocol) return false
+    const h = ((protocol.handles && protocol.handles[0]) || protocol.id || "").toLowerCase()
+    const cat = (protocol.category || "").toLowerCase()
+    const route = (protocol.primaryDeliveryRoute || "").toLowerCase()
+    return route === "nasal" || h.includes("nasal") || cat.includes("nasal")
+  }, [protocol])
+
   // Derived stoichiometric calculations
   const concMgMl = useMemo(() => {
     return diluentMl > 0 ? Math.round((selectedVialMg / diluentMl) * 100) / 100 : 0
@@ -438,10 +446,12 @@ export function DosageCalibrationDrawer({
                 <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-slate-200">
-                      Adjust Diluent Volume (Bacteriostatic Water USP):
+                      {isNasal
+                        ? "Adjust Nasal Vehicle Volume (Sterile Saline / USP Water):"
+                        : "Adjust Diluent Volume (Bacteriostatic Water USP):"}
                     </label>
                     <span className="font-mono text-xs font-bold text-emerald-400">
-                      {diluentMl} mL BAC Water
+                      {diluentMl} mL {isNasal ? "Nasal Vehicle" : "BAC Water"}
                     </span>
                   </div>
                   <input
@@ -844,7 +854,10 @@ export function DosageCalibrationDrawer({
             <span>
               Solvent:{" "}
               <strong className="text-slate-200">
-                {protocol.reconstitution?.solvent || "Bacteriostatic Water USP"}
+                {protocol.reconstitution?.solvent ||
+                  (isNasal
+                    ? "Sterile 0.9% Saline USP (Benzyl Alcohol Free)"
+                    : "Bacteriostatic Water USP")}
               </strong>
             </span>
             <button

@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * @file    apps/storefront/src/modules/layout/components/side-menu/index.tsx
+ * @module  SideMenu (Storefront Layout)
+ * @purpose Renders responsive mobile drawer navigation, catalog directories, and localized region selectors.
+ * @contracts
+ *   Props:  regions, locales, currentLocale
+ */
+
 import { Popover, PopoverPanel, Transition } from "@headlessui/react"
 import useToggleState from "@lib/hooks/use-toggle-state"
 import { storeConfig } from "@lib/store-config"
@@ -60,7 +68,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
               <div className="relative flex h-full items-center">
                 <Popover.Button
                   data-testid="nav-menu-button"
-                  className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle transition-all ease-out duration-200 focus:outline-none"
+                  className="relative flex items-center justify-center gap-1.5 px-3 py-1.5 min-h-[48px] min-w-[48px] rounded-lg text-sm text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle transition-all ease-out duration-200 focus:outline-none"
                   aria-label="Open Navigation Menu"
                 >
                   <BarsThree className="h-5 w-5" />
@@ -70,7 +78,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
 
               {open && (
                 <div
-                  className="fixed inset-0 z-[50] bg-black/60 backdrop-blur-sm pointer-events-auto small:hidden"
+                  className="fixed inset-0 z-[940] bg-black/60 backdrop-blur-sm pointer-events-auto small:hidden"
                   onClick={close}
                   data-testid="side-menu-backdrop"
                 />
@@ -88,7 +96,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
               >
                 <PopoverPanel
                   data-testid="nav-menu-popup"
-                  className="fixed top-[96px] inset-x-0 z-[51] max-h-[85vh] overflow-y-auto bg-white border-b border-slate-200 text-slate-900 shadow-2xl p-5 sm:p-6 small:hidden"
+                  className="fixed top-[96px] inset-x-0 z-[950] max-h-[85vh] overflow-y-auto bg-white border-b border-slate-200 text-slate-900 shadow-2xl p-5 sm:p-6 small:hidden"
                 >
                   <div className="content-container max-w-5xl mx-auto flex flex-col gap-6">
                     {/* Top Bar inside Menu */}

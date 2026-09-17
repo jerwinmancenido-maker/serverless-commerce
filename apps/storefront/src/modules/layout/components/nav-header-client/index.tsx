@@ -173,14 +173,12 @@ export default function NavHeaderClient({
 
   const formatResearcherName = (cust: HttpTypes.StoreCustomer | null) => {
     if (!cust) return "Account"
-    const first = cust.first_name?.trim() || ""
-    const last = cust.last_name?.trim() || ""
-    if (!first) return last ? `Dr. ${last}` : "Account"
-    if (first.toLowerCase().startsWith("dr")) {
-      return `${first} ${last}`.trim()
-    }
-    return `Dr. ${first}`
+    const first = (cust.first_name?.trim() || "").replace(/^dr\.?\s+/i, "")
+    const last = (cust.last_name?.trim() || "").replace(/^dr\.?\s+/i, "")
+    if (!first && !last) return "Account"
+    return [first, last].filter(Boolean).join(" ")
   }
+
 
   return (
     <>
@@ -300,8 +298,9 @@ export default function NavHeaderClient({
         <button
           type="button"
           onClick={() => setSearchModalOpen(true)}
-          className="flex items-center gap-2 rounded-full bg-ui-bg-subtle/80 hover:bg-ui-bg-subtle px-3 py-1.5 text-xs text-ui-fg-subtle hover:text-ui-fg-base transition-colors border border-ui-border-base focus:outline-none"
+          className="flex items-center justify-center gap-2 rounded-full bg-ui-bg-subtle/80 hover:bg-ui-bg-subtle px-3 py-1.5 min-h-[48px] min-w-[48px] text-xs text-ui-fg-subtle hover:text-ui-fg-base transition-colors border border-ui-border-base focus:outline-none"
           title="Search compounds (Cmd+K)"
+          aria-label="Search compounds"
         >
           <MagnifyingGlassMini className="h-4 w-4 text-ui-fg-muted" />
           <span className="hidden md:inline">Search compounds…</span>
@@ -351,9 +350,7 @@ export default function NavHeaderClient({
                 <div className="px-3 py-2.5 border-b border-slate-100 mb-1 bg-slate-50/70 rounded-xl">
                   <div className="flex items-center justify-between gap-2">
                     <p className="font-semibold text-slate-900 truncate text-xs">
-                      {customer.first_name?.toLowerCase().startsWith("dr")
-                        ? `${customer.first_name} ${customer.last_name || ""}`.trim()
-                        : `${customer.first_name || ""} ${customer.last_name || ""}`.trim() || "Researcher"}
+                      {formatResearcherName(customer)}
                     </p>
                     <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded">
                       Verified Lab

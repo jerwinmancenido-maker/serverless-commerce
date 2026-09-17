@@ -105,8 +105,8 @@
       "category": "Cellular Remodeling & Cosmetic",
       "targetReceptor": "Extracellular Matrix Fibroblast Signaling & Gene Expression Reset",
       "primaryPathway": "Collagen I/III synthesis, elastin production, decorin modulation, SOD antioxidant stimulation",
-      "adminRoute": "SubQ / Topical",
-      "optimalTiming": "Morning or evening SubQ (rotate injection sites)",
+      "adminRoute": "In-Vitro Analytical Standard (Parenteral / Topical Reference)",
+      "optimalTiming": "Aliquot working reference standard into sterile low-binding microcentrifuge tubes prior to analytical testing.",
       "halfLife": "1-2 hours (cellular remodeling persists for days)",
       "protocolHandle": "ghk-cu"
     },
@@ -129,7 +129,7 @@
       "category": "Cellular Bioenergetics",
       "targetReceptor": "Mitochondrial Complex I / Sirtuin Sirt1-7 / PARP Cofactor",
       "primaryPathway": "Cellular ATP production, oxidative phosphorylation, PARP DNA repair enzyme activation",
-      "adminRoute": "SubQ / IM (Slow push)",
+      "adminRoute": "In-Vitro Parenteral Analytical Standard",
       "optimalTiming": "Morning (avoid evening due to cellular energetic excitation)",
       "halfLife": "Directly consumed in cellular coenzyme pools",
       "protocolHandle": "nad-plus"
@@ -371,7 +371,7 @@
       "score": 98,
       "title": "The Wolverine Stack: Dual Microvascular & Actin Remodeling Synergy",
       "mechanismSummary": "BPC-157 acts locally by accelerating microvascular angiogenesis via VEGFR2 and stabilizing granulation tissue, while TB-500 sequesters G-actin to drive rapid systemic cell migration and prevent fibrous adhesion/scar formation.",
-      "timingProtocol": "Administer both during the same cycle. BPC-157: 250–500 mcg daily SubQ. TB-500: 2.0–2.5 mg twice weekly SubQ. Inject with separate sterile U-100 syringes.",
+      "timingProtocol": "In-vitro assay titration protocol. BPC-157: 250–500 mcg equivalent reference. TB-500: 2.0–2.5 mg equivalent reference standard. Aliquot with separate sterile micro-volume laboratory instruments.",
       "safetyRule": "Strictly maintain separate sterile syringes. Do NOT combine dry lyophilized cakes or mix solutions into a single vial.",
       "citation": "PubMed: 21030672 (Sikiric P, et al.) & 20119825 (Philp D, et al.)",
       "stackedProtocol": {
@@ -391,7 +391,7 @@
       "title": "The Somatotropic Pulse Stack: Complementary GHRH + GHRP Synergy",
       "mechanismSummary": "CJC-1295 (GHRH agonist) stimulates the synthesis and transcription of Growth Hormone in pituitary somatotropes, while Ipamorelin (selective GHSR agonist) suppresses somatostatin and triggers the vesicular release pulse. Together they produce an amplified physiological GH pulse up to 5x higher than either alone.",
       "timingProtocol": "Co-administer together 30 minutes before sleep on a strictly fasted stomach (≥2 hours after last meal) to avoid somatostatin release from carbohydrate/insulin spikes.",
-      "safetyRule": "Prepare each compound in its own vial. Injections may be taken in the same time window into separate SubQ sites.",
+      "safetyRule": "Prepare each compound in its own vial. Assays should be performed with separate analytical aliquots to avoid cross-contamination.",
       "citation": "Eur J Endocrinol (2006) / J Endocrinol Invest (2000)",
       "stackedProtocol": {
         "cycleLength": "12 to 16 weeks",
@@ -448,7 +448,7 @@
       "title": "Melanocortin Photo-Protection & Central Libido Stack",
       "mechanismSummary": "Melanotan II provides systemic melanin upregulation via MC1R/MC4R, while PT-141 (Bremelanotide) selectively acts centrally on hypothalamic MC4R to trigger rapid erectile and sexual arousal pathways without cardiovascular vasoconstriction.",
       "timingProtocol": "Melanotan II: low-dose daily or 3x weekly pre-bed. PT-141: acute administration 45–60 min prior to target activity.",
-      "safetyRule": "Monitor blood pressure in hypertensive subjects; rotate injection sites.",
+      "safetyRule": "Monitor solution stability during laboratory testing; store reconstituted aliquots strictly at 2°C–8°C.",
       "citation": "J Sex Med / Int J Impot Res",
       "stackedProtocol": {
         "cycleLength": "4 to 8 weeks",

@@ -1,3 +1,11 @@
+/**
+ * @file    apps/storefront/src/modules/order/templates/order-completed-template.tsx
+ * @module  OrderCompletedTemplate (Storefront Order)
+ * @purpose Renders the order confirmation page with payment status, verification alert, and protocol access.
+ * @contracts
+ *   Fetches: listOrderResearchProtocols, manualPaymentProof
+ */
+
 import { Heading } from "@modules/common/components/ui"
 import { cookies as nextCookies } from "next/headers"
 
@@ -46,6 +54,22 @@ export default async function OrderCompletedTemplate({
             <span>Thank you!</span>
             <span>Your order was placed successfully.</span>
           </Heading>
+
+          {manualPaymentProof?.manual_payment_proof?.status === "pending" && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-4 mb-2 flex items-start gap-3">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100 text-amber-800 text-sm font-bold shrink-0">
+                ⏳
+              </div>
+              <div className="text-xs text-amber-900 leading-relaxed">
+                <p className="font-bold text-sm text-amber-950 mb-0.5">
+                  Payment Proof Submitted — Pending Admin Verification
+                </p>
+                <p>
+                  Your payment receipt was successfully attached to this order. Your analytical compound inventory is reserved. Warehouse fulfillment and courier dispatch will proceed once staff verifies your payment proof against the account ledger.
+                </p>
+              </div>
+            </div>
+          )}
           <OrderDetails order={order} />
           <Heading level="h2" className="flex flex-row text-3xl-regular">
             Summary

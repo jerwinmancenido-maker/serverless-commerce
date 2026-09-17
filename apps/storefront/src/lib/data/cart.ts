@@ -1,6 +1,17 @@
 "use server"
 
+/**
+ * @file    apps/storefront/src/lib/data/cart.ts
+ * @module  CartDataLib (Storefront Cart Commerce Bridge)
+ * @purpose Manages cart lifecycle, line item operations, payment sessions, shipping methods, and promotion code applications.
+ * @contracts
+ *   API: POST /store/carts
+ *   API: POST /store/carts/:id/line-items
+ *   API: POST /store/carts/:id/promotions
+ */
+
 import { sdk } from "@lib/config"
+
 import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
@@ -288,17 +299,30 @@ export async function applyPromotions(codes: string[]) {
     .catch(medusaError)
 }
 
+export async function addPromotionCode(code: string) {
+  const cart = await retrieveCart().catch(() => null)
+  const existingCodes = (cart?.promotions || [])
+    .map((p) => p.code)
+    .filter((c): c is string => typeof c === "string" && c.length > 0)
+
+  if (!existingCodes.includes(code)) {
+    return await applyPromotions([...existingCodes, code])
+  }
+  return await applyPromotions(existingCodes)
+}
+
 export async function submitPromotionForm(
   currentState: unknown,
   formData: FormData
 ) {
   const code = formData.get("code") as string
   try {
-    await applyPromotions([code])
+    await addPromotionCode(code)
   } catch (error: unknown) {
     return getErrorMessage(error)
   }
 }
+
 
 // TODO: Pass a POJO instead of a form entity here
 export async function setAddresses(currentState: unknown, formData: FormData) {
@@ -391,6 +415,89 @@ export async function placeOrder(cartId?: string) {
 
     removeCartId()
     redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`)
+  }
+
+  return cartRes.cart
+}
+
+/**
+ * Places an order for a cart with an uploaded proof of payment.
+ * Completes the cart into an order and atomically posts the proof file to the manual payment proof module.
+ * @param formData - Contains 'proof' file
+ */
+export async function placeOrderWithManualProof(formData: FormData) {
+  if (storeConfig.customerAccountsRequired && !(await retrieveCustomer())) {
+    throw new Error("A customer account is required to place an order")
+  }
+
+  const proof = formData.get("proof")
+  if (!(proof instanceof File) || proof.size === 0) {
+    throw new Error(
+      "A valid payment proof (screenshot or receipt) is required before placing the order"
+    )
+  }
+
+  if (proof.size > 10 * 1024 * 1024) {
+    throw new Error("Payment proof file must not exceed 10 MiB")
+  }
+
+  const id = await getCartId()
+  if (!id) {
+    throw new Error("No existing cart found when placing an order")
+  }
+
+  const headers = await getAuthHeaders()
+
+  const cartRes = await sdk.store.cart
+    .complete(id, {}, headers)
+    .then(async (cartRes) => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+      return cartRes
+    })
+    .catch(medusaError)
+
+  if (cartRes?.type === "order") {
+    const order = cartRes.order
+    const backendUrl =
+      process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+
+    // Upload payment proof to backend
+    const uploadBody = new FormData()
+    uploadBody.set("proof", proof, proof.name)
+
+    try {
+      const uploadRes = await fetch(
+        `${backendUrl}/store/customers/me/orders/${order.id}/manual-payment-proof`,
+        {
+          method: "POST",
+          headers: {
+            ...headers,
+            ...(publishableKey
+              ? { "x-publishable-api-key": publishableKey }
+              : {}),
+          },
+          body: uploadBody,
+        }
+      )
+      if (!uploadRes.ok) {
+        console.error(
+          "Manual payment proof upload warning:",
+          await uploadRes.text().catch(() => "unknown")
+        )
+      }
+    } catch (err) {
+      console.error("Failed to upload manual payment proof:", err)
+    }
+
+    const countryCode =
+      order.shipping_address?.country_code?.toLowerCase() || "ph"
+    const orderCacheTag = await getCacheTag("orders")
+    revalidateTag(orderCacheTag)
+
+    removeCartId()
+    redirect(`/${countryCode}/order/${order.id}/confirmed`)
   }
 
   return cartRes.cart

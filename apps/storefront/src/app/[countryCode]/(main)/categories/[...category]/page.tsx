@@ -1,3 +1,12 @@
+/**
+ * @file    apps/storefront/src/app/[countryCode]/(main)/categories/[...category]/page.tsx
+ * @module  CategoryPageRoute (Storefront Category Dynamic Routing)
+ * @purpose Renders product category listings with canonical handle resolution and legacy alias redirects.
+ * @contracts
+ *   Fetches: getCategoryByHandle() · listCategories()
+ *   API:     GET /store/product-categories
+ */
+
 import { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 
@@ -56,6 +65,12 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const rawHandle = `${params.category.join("/")}`
+
+  if (CATEGORY_HANDLE_ALIASES[rawHandle]) {
+    const canonical = CATEGORY_HANDLE_ALIASES[rawHandle]
+    redirect(`/${params.countryCode}/categories/${canonical}`)
+  }
+
   const canonicalHandle = CATEGORY_HANDLE_ALIASES[rawHandle] || rawHandle
 
   try {

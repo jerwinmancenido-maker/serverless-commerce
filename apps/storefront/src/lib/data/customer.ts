@@ -1,5 +1,13 @@
 "use server"
 
+/**
+ * @file    apps/storefront/src/lib/data/customer.ts
+ * @module  CustomerDataLib (Storefront Data)
+ * @purpose Manages customer authentication, profile retrieval, addresses, and session tokens.
+ * @contracts
+ *   API: GET /store/customers/me, POST /store/customers/me
+ */
+
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
@@ -54,7 +62,7 @@ export const retrieveCustomer =
       .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
         method: "GET",
         query: {
-          fields: "*orders",
+          fields: "*orders,*addresses",
         },
         headers,
         cache: "no-store",
